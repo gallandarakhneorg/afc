@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,13 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.grid.MapElementGridSet;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class represents a layer that contains map elements
@@ -156,7 +155,7 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 	}
 
 	private static int computeNumber(double size) {
-		final double s = size / MAXIMUM_CELL_COUNT;
+		final var s = size / MAXIMUM_CELL_COUNT;
 		if (s < MINIMUM_CELL_SIZE) {
 			return (int) Math.ceil(s / MINIMUM_CELL_SIZE);
 		}
@@ -167,14 +166,13 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 	@Override
 	@Pure
 	public GridMapElementLayer<E> clone() {
-		final GridMapElementLayer<E> layer = (GridMapElementLayer<E>) super.clone();
+		final var layer = (GridMapElementLayer<E>) super.clone();
 		layer.mapElements = new MapElementGridSet<>(
 				this.mapElements.getRowCount(),
 				this.mapElements.getColumnCount(),
 				this.mapElements.getBounds());
-		E cloneElt;
-		for (final E elt : this.mapElements) {
-			cloneElt = (E) elt.clone();
+		for (final var elt : this.mapElements) {
+			final var cloneElt = (E) elt.clone();
 			layer.addMapElement(cloneElt);
 		}
 		resetBoundingBox();
@@ -202,11 +200,10 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		final Rectangle2d r = new Rectangle2d();
-		boolean first = true;
-		Rectangle2d subBounds;
-		for (final E mapelement : this.mapElements) {
-			subBounds = mapelement.getBoundingBox();
+		final var r = new Rectangle2d();
+		var first = true;
+		for (final var mapelement : this.mapElements) {
+			final var subBounds = mapelement.getBoundingBox();
 			if (subBounds != null && !subBounds.isEmpty()) {
 				if (first) {
 					first = false;
@@ -245,7 +242,7 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 	@Override
 	public boolean addMapElements(Collection<? extends E> elements) {
 		if (this.mapElements.addAll(elements)) {
-			for (final E e : elements) {
+			for (final var e : elements) {
 				e.setContainer(this);
 			}
 			resetBoundingBox();
@@ -280,7 +277,7 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 	@Override
 	public boolean removeAllMapElements() {
 		if (!this.mapElements.isEmpty()) {
-			for (final MapElement e : this.mapElements) {
+			for (final var e : this.mapElements) {
 				e.setContainer(null);
 			}
 			this.mapElements.clear();
@@ -351,8 +348,8 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 		private void detectNext() {
 			this.next = null;
 			while (this.iterator.hasNext()) {
-				final E n = this.iterator.next();
-				final Rectangle2afp<?, ?, ?, ?, ?, ?> nBounds = n.getBoundingBox();
+				final var n = this.iterator.next();
+				final var nBounds = n.getBoundingBox();
 				if (nBounds != null && nBounds.intersects(this.bounds)) {
 					this.next = n;
 					return;
@@ -368,7 +365,7 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 
 		@Override
 		public E next() {
-			final E toReply = this.next;
+			final var toReply = this.next;
 			detectNext();
 			return toReply;
 		}
@@ -410,7 +407,7 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 
 		@Override
 		public void remove() {
-			final E removed = this.lastReplied;
+			final var removed = this.lastReplied;
 			this.lastReplied = null;
 			this.iterator.remove();
 			if (removed == null) {

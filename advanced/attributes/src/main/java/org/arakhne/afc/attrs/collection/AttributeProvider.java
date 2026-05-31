@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,13 +31,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This interface representes a provider of attributes
@@ -417,7 +416,7 @@ public interface AttributeProvider  extends Cloneable, Serializable, JsonableObj
 	 */
 	@Pure
 	default Map<String, Object> toMap() {
-		final Map<String, Object> map = new TreeMap<>();
+		final var map = new TreeMap<String, Object>();
 		toMap(map);
 		return map;
 	}

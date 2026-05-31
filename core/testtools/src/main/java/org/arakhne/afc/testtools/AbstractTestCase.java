@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,16 +28,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -124,8 +120,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (v1 == v2) {
 			return true;
 		}
-		final boolean nanA = Double.isNaN(v1);
-		final boolean nanB = Double.isNaN(v2);
+		final var nanA = Double.isNaN(v1);
+		final var nanB = Double.isNaN(v2);
 		if (nanA || nanB) {
 			if (isNaNEqual) {
 				return nanA == nanB;
@@ -167,10 +163,10 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @return {@code true} or {@code false}
 	 */
 	public static boolean isEpsilonEquals(BigDecimal v1, BigDecimal v2, int precision) {
-		final BigDecimal ma = v1.movePointRight(precision);
-		final BigDecimal mb = v2.movePointRight(precision);
-		BigDecimal aa = ma.setScale(0, RoundingMode.HALF_UP);
-		BigDecimal bb = mb.setScale(0, RoundingMode.HALF_UP);
+		final var ma = v1.movePointRight(precision);
+		final var mb = v2.movePointRight(precision);
+		var aa = ma.setScale(0, RoundingMode.HALF_UP);
+		var bb = mb.setScale(0, RoundingMode.HALF_UP);
 		if (aa.compareTo(bb) == 0) {
 			return true;
 		}
@@ -195,7 +191,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param v1 the first value.
 	 * @param v2 the second value.
 	 * @return {@code true} if the two arrays are equal, otherwise
-	 * {@code false}.
+	 *      {@code false}.
 	 */
 	public boolean isEpsilonEquals(double[] v1, double[] v2) {
 		if (v1 == v2) {
@@ -209,7 +205,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 			return false;
 		}
 		assert v1 != null && v2 != null;
-		for (int i = 0; i < v1.length; ++i) {
+		for (var i = 0; i < v1.length; ++i) {
 			if (!isEpsilonEquals(v1[i], v2[i])) {
 				return false;
 			}
@@ -262,7 +258,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertNotEquals(int expected, int actual, Supplier<String> message) {
 		if (expected == actual) {
-			fail(formatFailMessage(message, "same value, expecting not equal to:", expected, actual)); //$NON-NLS-1$
+			fail(formatFailMessage(message, "same value, expecting not equal to:", //$NON-NLS-1$
+					Integer.valueOf(expected), Integer.valueOf(actual)));
 		}
 	}
 
@@ -311,7 +308,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertNotEquals(Object expected, Object actual, Supplier<String> message) {
 		if (Objects.equals(expected, actual)) {
-			final String s = message.get();
+			final var s = message.get();
 			if (!Strings.isNullOrEmpty(s)) {
 				fail(s);
 			} else {
@@ -326,7 +323,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertNaN(double value) {
 		if (!Double.isNaN(value)) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting NaN", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting NaN", Double.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -336,7 +333,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertNaN(float value) {
 		if (!Float.isNaN(value)) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting NaN", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting NaN", Float.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -346,7 +343,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertInfinity(double value) {
 		if (!Double.isInfinite(value)) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting infinite", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting infinite", Double.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -356,7 +353,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertInfinity(float value) {
 		if (!Float.isInfinite(value)) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting infinite", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting infinite", Float.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -366,7 +363,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(byte value) {
 		if (value != 0) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", Byte.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -376,7 +373,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(short value) {
 		if (value != 0) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", Short.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -386,7 +383,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(int value) {
 		if (value != 0) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", Integer.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -396,7 +393,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(long value) {
 		if (value != 0) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", Long.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -406,7 +403,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(float value) {
 		if (value != 0f) {
-			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", Float.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -447,7 +444,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(double value, Supplier<String> message) {
 		if (value != 0.) {
-			fail(formatFailMessage(message, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(message, "Expecting zero", Double.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -488,7 +485,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public void assertEpsilonZero(double value, Supplier<String> message) {
 		if (!isEpsilonEquals(value, 0.)) {
-			fail(formatFailMessage(message, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(message, "Expecting zero", Double.valueOf(value))); //$NON-NLS-1$
 		}
 	}
 
@@ -499,14 +496,14 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual the actual value.
 	 */
 	public static <T> void assertCollectionEquals(Iterable<? extends T> expected, Iterable<? extends T> actual) {
-		final Iterator<? extends T> it1 = expected.iterator();
-		final Iterator<? extends T> it2 = actual.iterator();
+		final var it1 = expected.iterator();
+		final var it2 = actual.iterator();
 		while (it1.hasNext()) {
 			if (!it2.hasNext()) {
 				fail(formatFailMessage(NO_MESSAGE, "Element is missed", expected, actual)); //$NON-NLS-1$
 			}
-			final T expect = it1.next();
-			final T act = it2.next();
+			final var expect = it1.next();
+			final var act = it2.next();
 			if (!Objects.equals(expect, act)) {
 				fail(formatFailMessage(NO_MESSAGE, "Not same element", expected, actual)); //$NON-NLS-1$
 			}
@@ -516,39 +513,32 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	private static String arrayToString(Object obj) {
+		final String value;
 		if (obj == null) {
-			return null;
+			value = null;
+		} else if (obj instanceof boolean[] obj0) {
+			value = Arrays.toString(obj0);
+		} else if (obj instanceof byte[] obj0) {
+			value = Arrays.toString(obj0);
+		} else if (obj instanceof char[] obj0) {
+			value = Arrays.toString(obj0);
+		} else if (obj instanceof short[] obj0) {
+			value = Arrays.toString(obj0);
+		} else if (obj instanceof int[] obj0) {
+			value = Arrays.toString(obj0);
+		} else if (obj instanceof long[] obj0) {
+			value = Arrays.toString(obj0);
+		} else if (obj instanceof float[] obj0) {
+			value = Arrays.toString(obj0);
+		} else if (obj instanceof double[] obj0) {
+			value = Arrays.toString(obj0);
+		} else if (obj instanceof Object[] obj0) {
+			value = Arrays.toString(obj0);
+		} else {
+			value = obj.toString();
 		}
-		if (obj instanceof boolean[]) {
-			return Arrays.toString((boolean[]) obj);
-		}
-		if (obj instanceof byte[]) {
-			return Arrays.toString((byte[]) obj);
-		}
-		if (obj instanceof char[]) {
-			return Arrays.toString((char[]) obj);
-		}
-		if (obj instanceof short[]) {
-			return Arrays.toString((short[]) obj);
-		}
-		if (obj instanceof int[]) {
-			return Arrays.toString((int[]) obj);
-		}
-		if (obj instanceof long[]) {
-			return Arrays.toString((long[]) obj);
-		}
-		if (obj instanceof float[]) {
-			return Arrays.toString((float[]) obj);
-		}
-		if (obj instanceof double[]) {
-			return Arrays.toString((double[]) obj);
-		}
-		if (obj instanceof Object[]) {
-			return Arrays.toString((Object[]) obj);
-		}
-		return obj.toString();
+		return value;
 	}
 
 	/** Replies if the given elements is in the array.
@@ -557,11 +547,10 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	private static <T> boolean arrayContainsAll(T[] elts, T[] array) {
 		boolean found;
-		for (final T elt : elts) {
+		for (final var elt : elts) {
 			found = false;
 			for (final T t : array) {
-				if ((t == elt)
-					|| ((t != null) && (t.equals(elt)))) {
+				if (t == elt || t != null && t.equals(elt)) {
 					found = true;
 					break;
 				}
@@ -584,7 +573,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected static String formatFailMessage(String message, Object expected, Object actual) {
-		final StringBuilder formatted = new StringBuilder();
+		final var formatted = new StringBuilder();
 		if (message != null) {
 			formatted.append(message);
 			formatted.append(' ');
@@ -607,9 +596,9 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	protected static String formatFailMessage(Supplier<String> message, Object expected, Object actual) {
-		final StringBuilder formatted = new StringBuilder();
+		final var formatted = new StringBuilder();
 		if (message != null) {
-			final String s = message.get();
+			final var s = message.get();
 			if (!Strings.isNullOrEmpty(s)) {
 				formatted.append(message.get());
 				formatted.append(' ');
@@ -633,7 +622,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected static String formatFailMessage(String message, String msg) {
-		final StringBuilder formatted = new StringBuilder();
+		final var formatted = new StringBuilder();
 		if (message != null) {
 			formatted.append(message);
 			formatted.append(' ');
@@ -651,7 +640,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	protected static String formatFailMessage(Supplier<String> message, String msg) {
-		final StringBuilder formatted = new StringBuilder();
+		final var formatted = new StringBuilder();
 		if (message != null) {
 			final String s = message.get();
 			if (!Strings.isNullOrEmpty(s)) {
@@ -675,7 +664,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected static String formatFailMessage(String message, String msg, Object expected, Object actual) {
-		final StringBuilder formatted = new StringBuilder();
+		final var formatted = new StringBuilder();
 		if (message != null) {
 			formatted.append(message);
 			formatted.append(' ');
@@ -700,7 +689,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	protected static String formatFailMessage(Supplier<String> message, String msg, Object expected, Object actual) {
-		final StringBuilder formatted = new StringBuilder();
+		final var formatted = new StringBuilder();
 		if (message != null) {
 			final String s = message.get();
 			if (!Strings.isNullOrEmpty(s)) {
@@ -728,7 +717,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected static String formatFailMessage(String message, String msg, Object actual) {
-		final StringBuilder formatted = new StringBuilder();
+		final var formatted = new StringBuilder();
 		if (message != null) {
 			formatted.append(message);
 			formatted.append(' ');
@@ -750,7 +739,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0!
 	 */
 	protected static String formatFailMessage(Supplier<String> message, String msg, Object actual) {
-		final StringBuilder formatted = new StringBuilder();
+		final var formatted = new StringBuilder();
 		if (message != null) {
 			final String s = message.get();
 			if (!Strings.isNullOrEmpty(s)) {
@@ -799,12 +788,12 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	public static void assertContains(Object[] expectedObjects, Object actual, Supplier<String> message) {
-		if ((expectedObjects != null) && (expectedObjects.length > 0)) {
-			for (final Object object : expectedObjects) {
-				if ((object == null) && (actual == null)) {
+		if (expectedObjects != null && expectedObjects.length > 0) {
+			for (final var object : expectedObjects) {
+				if (object == null && actual == null) {
 					return;
 				}
-				if ((object != null) && (object.equals(actual))) {
+				if (object != null && object.equals(actual)) {
 					return;
 				}
 			}
@@ -878,7 +867,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @see #assertContains(Object[], Object)
 	 */
 	public static void assertEqualsGeneric(Object expected, Object actual, Supplier<String> message) {
-		if ((expected != null) && (actual != null) && (expected.getClass().isArray())) {
+		if (expected != null && actual != null && expected.getClass().isArray()) {
 			if (actual.getClass().isArray()) {
 				assertContains((Object[]) expected, (Object[]) actual, message);
 			} else {
@@ -940,7 +929,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (expectedObjects == actual) {
 			return;
 		}
-		if ((arrayContainsAll(expectedObjects, actual)) && (arrayContainsAll(actual, expectedObjects))) {
+		if (arrayContainsAll(expectedObjects, actual) && arrayContainsAll(actual, expectedObjects)) {
 			return;
 		}
 		fail(formatFailMessage(message, expectedObjects, actual));
@@ -1047,10 +1036,10 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (expected == actual) {
 			return;
 		}
-		if (expected instanceof Collection) {
-			assertSimilars((Collection<?>) expected, (Collection<?>) actual, message);
-		} else if (expected instanceof Date) {
-			assertSimilars((Date) expected, (Date) actual, message);
+		if (expected instanceof Collection col) {
+			assertSimilars(col, (Collection<?>) actual, message);
+		} else if (expected instanceof Date dt) {
+			assertSimilars(dt, (Date) actual, message);
 		} else if (expected.getClass().isArray()) {
 			assertSimilars((X[]) expected, (X[]) actual, message);
 		} else {
@@ -1059,7 +1048,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	}
 
 	private static <T> boolean similars(Collection<T> c1, Collection<T> c2) {
-		final List<T> a = new ArrayList<>();
+		final var a = new ArrayList<T>();
 		a.addAll(c2);
 		for (final T elt : c1) {
 			if (!a.remove(elt)) {
@@ -1196,9 +1185,9 @@ public abstract class AbstractTestCase extends EnableAssertion {
 			return;
 		}
 		if (similars(expectedObjects.keySet(), actual.keySet())) {
-			for (final Entry<K, V> entry : expectedObjects.entrySet()) {
-				final V v1 = entry.getValue();
-				final V v2 = actual.get(entry.getKey());
+			for (final var entry : expectedObjects.entrySet()) {
+				final var v1 = entry.getValue();
+				final var v2 = actual.get(entry.getKey());
 				assertSimilars(v1, v2, message);
 			}
 			// all values are correct
@@ -1264,9 +1253,9 @@ public abstract class AbstractTestCase extends EnableAssertion {
 				return;
 			}
 
-			for (final Entry<K, V> entry : expectedObjects.entrySet()) {
-				final V v1 = entry.getValue();
-				final V v2 = actual.get(entry.getKey());
+			for (final var entry : expectedObjects.entrySet()) {
+				final var v1 = entry.getValue();
+				final var v2 = actual.get(entry.getKey());
 				if (!isSimilarObjects(v1, v2)) {
 					return;
 				}
@@ -1453,13 +1442,13 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T[] extractRandomValues(T[] availableValues) {
-		final int count = getRandom().nextInt(500);
-		final List<T> tab = new ArrayList<>(count);
-		for (int i = 0; i < count; ++i) {
+		final var count = getRandom().nextInt(500);
+		final var tab = new ArrayList<T>(count);
+		for (var i = 0; i < count; ++i) {
 			tab.add(availableValues[getRandom().nextInt(availableValues.length)]);
 		}
-		final Class<?> clazz = availableValues.getClass().getComponentType();
-		final T[] array = (T[]) Array.newInstance(clazz, tab.size());
+		final var clazz = availableValues.getClass().getComponentType();
+		final var array = (T[]) Array.newInstance(clazz, tab.size());
 		tab.toArray(array);
 		tab.clear();
 		return array;
@@ -1478,12 +1467,11 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param maxSize is the max length of the string.
 	 * @return a random string with a max length.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public String randomString(int maxSize) {
-		final StringBuilder b = new StringBuilder();
-		final int count = getRandom().nextInt(maxSize <= 0 ? 255 : maxSize - 1) + 1;
-		for (int i = 0; i < count; ++i) {
-			final char c = (char) ('A' + getRandom().nextInt(26));
+		final var b = new StringBuilder();
+		final var count = getRandom().nextInt(maxSize <= 0 ? 255 : maxSize - 1) + 1;
+		for (var i = 0; i < count; ++i) {
+			final var c = (char) ('A' + getRandom().nextInt(26));
 			b.append(c);
 		}
 		return b.toString();
@@ -1496,7 +1484,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @return a value from the specified enumeration.
 	 */
 	public <E extends Enum<E>> E randomEnum(Class<E> type) {
-		final E[] constants = type.getEnumConstants();
+		final var constants = type.getEnumConstants();
 		return constants[getRandom().nextInt(constants.length)];
 	}
 
@@ -1547,7 +1535,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (isEpsilonEquals(expected, actual)) {
 			return;
 		}
-		fail(formatFailMessage(message, "not same double value.", expected, actual)); //$NON-NLS-1$
+		fail(formatFailMessage(message, "not same double value.", Double.valueOf(expected), Double.valueOf(actual))); //$NON-NLS-1$
 	}
 
 	/** Test if the two collections contain the same elements without
@@ -1598,8 +1586,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	public static <T> void assertEpsilonEquals(Collection<? extends T> expected, Collection<? extends T> actual, Supplier<String> message) {
-		final List<T> l = new ArrayList<>(actual);
-		for (final T e : expected) {
+		final var l = new ArrayList<>(actual);
+		for (final var e : expected) {
 			if (!l.remove(e)) {
 				fail(formatFailMessage(message, "not similar collections", expected, actual)); //$NON-NLS-1$
 			}
@@ -1607,6 +1595,61 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (!l.isEmpty()) {
 			fail(formatFailMessage(message, "not similar collections, not expected elements", expected, actual)); //$NON-NLS-1$
 		}
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected, Pair<? extends Number, ? extends Number> actual) {
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected,
+			Pair<? extends Number, ? extends Number> actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected,
+			Pair<? extends Number, ? extends Number> actual, Supplier<String> message) {
+		if (expected == actual) {
+			return;
+		}
+		if (expected == null || expected.getKey() == null || expected.getValue() == null) {
+			fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
+			return;
+		}
+		if (actual == null || actual.getKey() == null || actual.getValue() == null) {
+			fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
+			return;
+		}
+		final var e1 = expected.getKey().doubleValue();
+		final var e2 = expected.getValue().doubleValue();
+		final var a1 = actual.getKey().doubleValue();
+		final var a2 = actual.getValue().doubleValue();
+		if (isEpsilonEquals(e1, a1) && isEpsilonEquals(e2, a2)) {
+			return;
+		}
+		fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
 	}
 
 	/** Test if the two collections contain the same elements without
@@ -1657,8 +1700,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	public static <T> void assertEpsilonEquals(T[] expected, T[] actual, Supplier<String> message) {
-		final List<T> l = new ArrayList<>(Arrays.asList(actual));
-		for (final T e : expected) {
+		final var l = new ArrayList<>(Arrays.asList(actual));
+		for (final var e : expected) {
 			if (!l.remove(e)) {
 				fail(formatFailMessage(message, "not similar collections", expected, actual)); //$NON-NLS-1$
 			}
@@ -1686,9 +1729,9 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		}
 
 		assert expected != null && actual != null;
-		final DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
-		final String expectedStr = fmt.format(expected);
-		final String actualStr = fmt.format(expected);
+		final var fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
+		final var expectedStr = fmt.format(expected);
+		final var actualStr = fmt.format(expected);
 		if (expectedStr.equals(actualStr)) {
 			return;
 		}
@@ -1742,7 +1785,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (!isEpsilonEquals(expected, actual, false)) {
 			return;
 		}
-		fail(formatFailMessage(message, "same double value.", expected, actual)); //$NON-NLS-1$
+		fail(formatFailMessage(message, "same double value.", Double.valueOf(expected), Double.valueOf(actual))); //$NON-NLS-1$
 	}
 
 	/** Test if the two collections do no contain the same elements without
@@ -1793,8 +1836,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	public static <T> void assertNotEpsilonEquals(T[] expected, T[] actual, Supplier<String> message) {
-		final List<T> l = new ArrayList<>(Arrays.asList(actual));
-		for (final T e : expected) {
+		final var l = new ArrayList<>(Arrays.asList(actual));
+		for (final var e : expected) {
 			if (!l.remove(e)) {
 				return;
 			}
@@ -1812,7 +1855,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	public Logger getLogger() {
 		if (this.unitLogger == null) {
 			this.unitLogger = Logger.getLogger(getClass().getName());
-			final String value = Strings.nullToEmpty(System.getenv("org.arakhne.afc.tests.logging")); //$NON-NLS-1$
+			final var value = Strings.nullToEmpty(System.getenv("org.arakhne.afc.tests.logging")); //$NON-NLS-1$
 			if ("true".equals(value.toLowerCase())) { //$NON-NLS-1$
 				this.unitLogger.setLevel(Level.ALL);
 			} else {
@@ -1842,7 +1885,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 16.0
 	 */
 	public static boolean isInstanceOf(Object value, @SuppressWarnings("rawtypes") Class... types) {
-		for (final Class<?> type : types) {
+		for (final var type : types) {
 			if (type.isInstance(value)) {
 				return true;
 			}
@@ -1885,16 +1928,16 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (value == null) {
 			fail("Value cannot be null"); //$NON-NLS-1$
 		} else if (!isInstanceOf(value, types)) {
-			final StringBuilder typeMsg = new StringBuilder();
-			for (final Class<?> type : types) {
+			final var typeMsg = new StringBuilder();
+			for (final var type : types) {
 				if (typeMsg.length() > 0) {
 					typeMsg.append(", "); //$NON-NLS-1$
 				}
 				typeMsg.append(type.getSimpleName());
 			}
-			final StringBuilder msg = new StringBuilder();
+			final var msg = new StringBuilder();
 			if (message != null) {
-				final String m = message.get();
+				final var m = message.get();
 				if (!Strings.isNullOrEmpty(m)) {
 					msg.append(m);
 					if (!m.trim().endsWith(".")) { //$NON-NLS-1$
@@ -1933,60 +1976,9 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		}
 		assertNotNull(actual);
 		assertEquals(expected.length, actual.length);
-		for (int i = 0; i < expected.length; ++i) {
+		for (var i = 0; i < expected.length; ++i) {
 			assertEpsilonEquals(expected[i], actual[i]);
 		}
-	}
-
-	/** Test if the actual value is equal to the expected value with
-	 * a distance of epsilon.
-	 *
-	 * @param expected the expected value.
-	 * @param actual the actual value.
-	 * @since 18.0
-	 */
-	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected, Pair<? extends Number, ? extends Number> actual) {
-		assertEpsilonEquals(expected, actual, NO_MESSAGE);
-	}
-
-	/** Test if the actual value is equal to the expected value with
-	 * a distance of epsilon.
-	 *
-	 * @param expected the expected value.
-	 * @param actual the actual value.
-	 * @param message the error message.
-	 * @since 18.0
-	 */
-	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected, Pair<? extends Number, ? extends Number> actual, String message) {
-		assertEpsilonEquals(expected, actual, () -> message);
-	}
-
-	/** Test if the actual value is equal to the expected value with
-	 * a distance of epsilon.
-	 *
-	 * @param expected the expected value.
-	 * @param actual the actual value.
-	 * @param message the error message.
-	 * @since 18.0
-	 */
-	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected, Pair<? extends Number, ? extends Number> actual, Supplier<String> message) {
-		if (expected == actual) {
-			return;
-		}
-		if (expected == null || expected.getKey() == null || expected.getValue() == null) {
-			fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
-		}
-		if (actual == null || actual.getKey() == null || actual.getValue() == null) {
-			fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
-		}
-		final double e1 = expected.getKey().doubleValue();
-		final double e2 = expected.getValue().doubleValue();
-		final double a1 = actual.getKey().doubleValue();
-		final double a2 = actual.getValue().doubleValue();
-		if (isEpsilonEquals(e1, a1) && isEpsilonEquals(e2, a2)) {
-			return;
-		}
-		fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
 	}
 
 }

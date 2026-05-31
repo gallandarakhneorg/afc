@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ class SubProgressionModel extends DefaultProgression {
 		super(minValue, minValue, maxValue, adjusting);
 		assert parent != null;
 		this.level = parent.getTaskDepth() + 1;
-		double uptMaxPValue = maxPValue;
+		var uptMaxPValue = maxPValue;
 		if (minPValue > uptMaxPValue) {
 			uptMaxPValue = minPValue;
 		}
@@ -93,7 +93,7 @@ class SubProgressionModel extends DefaultProgression {
 		super((int) minPValue, (int) minPValue, (int) maxPValue);
 		assert parent != null;
 		this.level = parent.getTaskDepth() + 1;
-		double uptMaxPValue = maxPValue;
+		var uptMaxPValue = maxPValue;
 		if (minPValue > uptMaxPValue) {
 			uptMaxPValue = minPValue;
 		}
@@ -151,11 +151,11 @@ class SubProgressionModel extends DefaultProgression {
 		// Notify subtask listeners
 		super.fireValueChange();
 		// Notify parent
-		final double factor = getProgressionFactor();
+		final var factor = getProgressionFactor();
 		if (factor < 1.) {
-			final DefaultProgression parentInstance = getParent();
+			final var parentInstance = getParent();
 			if (parentInstance != null) {
-				double valueInParent = this.extentInParent * factor + this.minValueInParent;
+				var valueInParent = this.extentInParent * factor + this.minValueInParent;
 				if (valueInParent > this.maxValueInParent) {
 					valueInParent = this.maxValueInParent;
 				}

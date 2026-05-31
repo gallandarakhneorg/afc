@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,9 @@ package org.arakhne.afc.math.physics;
 
 import java.util.concurrent.TimeUnit;
 
+import org.arakhne.afc.math.MathConstants;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.math.MathConstants;
 
 /**
  * This class permits to manipulate measure units.
@@ -546,7 +545,7 @@ public final class MeasureUnitUtil {
 	@Inline(value = "$4.fromSeconds(MeasureUnitUtil.toSeconds(($1), ($2)), ($3))",
 	        imported = {MeasureUnitUtil.class})
 	public static double convert(long value, TimeUnit inputUnit, TimeUnit outputUnit) {
-		final double v = toSeconds(value, inputUnit);
+		final var v = toSeconds(value, inputUnit);
 		return fromSeconds(v, outputUnit);
 	}
 
@@ -562,7 +561,7 @@ public final class MeasureUnitUtil {
 	@Inline(value = "$4.fromSeconds(MeasureUnitUtil.toSeconds(($1), ($2)), ($3))",
 	        imported = {MeasureUnitUtil.class})
 	public static double convert(double value, TimeUnit inputUnit, TimeUnit outputUnit) {
-		final double v = toSeconds(value, inputUnit);
+		final var v = toSeconds(value, inputUnit);
 		return fromSeconds(v, outputUnit);
 	}
 
@@ -578,7 +577,7 @@ public final class MeasureUnitUtil {
 	@Inline(value = "$4.fromMetersPerSecond(MeasureUnitUtil.toMetersPerSecond(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, SpeedUnit inputUnit, SpeedUnit outputUnit) {
-		final double v = toMetersPerSecond(value, inputUnit);
+		final var v = toMetersPerSecond(value, inputUnit);
 		return fromMetersPerSecond(v, outputUnit);
 	}
 
@@ -594,7 +593,7 @@ public final class MeasureUnitUtil {
 	@Inline(value = "$4.fromRadiansPerSecond(MeasureUnitUtil.toRadiansPerSecond(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, AngularUnit inputUnit, AngularUnit outputUnit) {
-		final double v = toRadiansPerSecond(value, inputUnit);
+		final var v = toRadiansPerSecond(value, inputUnit);
 		return fromRadiansPerSecond(v, outputUnit);
 	}
 
@@ -611,7 +610,7 @@ public final class MeasureUnitUtil {
 	@Inline(value = "$4.fromMeters(MeasureUnitUtil.toMeters(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, SpaceUnit inputUnit, SpaceUnit outputUnit) {
-		final double v = toMeters(value, inputUnit);
+		final var v = toMeters(value, inputUnit);
 		return fromMeters(v, outputUnit);
 	}
 
@@ -703,13 +702,11 @@ public final class MeasureUnitUtil {
 	 */
 	@Pure
 	public static SpaceUnit getSmallestUnit(double amount, SpaceUnit unit) {
-		final double meters = toMeters(amount, unit);
-		double v;
-		final SpaceUnit[] units = SpaceUnit.values();
-		SpaceUnit u;
+		final var meters = toMeters(amount, unit);
+		final var units = SpaceUnit.values();
 		for (int i = units.length - 1; i >= 0; --i) {
-			u = units[i];
-			v = Math.floor(fromMeters(meters, u));
+			final var u = units[i];
+			final var v = Math.floor(fromMeters(meters, u));
 			if (v > 0.) {
 				return u;
 			}

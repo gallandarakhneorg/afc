@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,15 +24,13 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.collection.AbstractBufferedAttributeProvider;
 import org.arakhne.afc.util.OutputParameter;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to access to the attributes
@@ -102,15 +100,15 @@ class DBaseFileAttributeAccessor extends AbstractBufferedAttributeProvider {
 	protected AttributeValue loadValue(String name) throws AttributeException {
 		// Get the value and its type and force a cast before replying
 		// to limit the problems of cast by the attribute container.
-		final OutputParameter<AttributeType> param = new OutputParameter<>();
-		final Object value = this.pool.getRawValue(this.recordNumber, name, param);
+		final var param = new OutputParameter<AttributeType>();
+		final var value = this.pool.getRawValue(this.recordNumber, name, param);
 		return new AttributeValueImpl(param.get(), value);
 	}
 
 	@Override
 	@Pure
 	public void toMap(Map<String, Object> mapToFill) {
-		for (final Attribute attr : attributes()) {
+		for (final var attr : attributes()) {
 			try {
 				mapToFill.put(attr.getName(), attr.getValue());
 			} catch (Exception e) {

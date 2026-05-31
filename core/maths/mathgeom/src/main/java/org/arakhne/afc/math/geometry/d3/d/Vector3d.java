@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
@@ -29,6 +27,7 @@ import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Vector with 3 double precision floating-point numbers.
  *
@@ -115,8 +114,8 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 	 * @since 14.0
 	 */
 	public static Vector3d convert(Tuple3D<?> tuple) {
-		if (tuple instanceof Vector3d) {
-			return (Vector3d) tuple;
+		if (tuple instanceof Vector3d vec) {
+			return vec;
 		}
 		return new Vector3d(tuple.getX(), tuple.getY(), tuple.getZ());
 	}
@@ -143,7 +142,7 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void setLength(double newLength) {
-		final double currentLength = getLength();
+		final var currentLength = getLength();
 		if (currentLength != 0.) {
 			if (currentLength == 1.) {
 				this.x *= newLength;
@@ -269,6 +268,7 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 			}
 
 			@Override
+			@SuppressWarnings("checkstyle:superclone")
 			public Vector3d clone() {
 				return Vector3d.this.getGeomFactory().newVector(Vector3d.this.getX(), Vector3d.this.getY(), Vector3d.this.getZ());
 			}

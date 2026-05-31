@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
+import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
 import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
@@ -53,8 +54,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 @SuppressWarnings("all")
-public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?, ?>,
-		B extends AlignedBox3afp<?, ?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
+public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?>,
+		B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
 	
 	/** Is the rectangular shape to test.
 	 */
@@ -86,12 +87,16 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		return this.factory.createAlignedBox(x, y, z, width, height, depth);
 	}
 
-	public final Sphere3afp<?, ?, ?, ?, ?, ?, B> createSphere(double x, double y, double z, double radius) {
+	public final Sphere3afp<?, ?, ?, ?, ?, B> createSphere(double x, double y, double z, double radius) {
 		return this.factory.createSphere(x, y, z, radius);
 	}
 	
-	public final MultiShape3afp<?, ?, ?, ?, ?, ?, ?, B> createMultiShape() {
+	public final MultiShape3afp<?, ?, ?, ?, ?, ?, B> createMultiShape() {
 		return this.factory.createMultiShape();
+	}
+
+	public static Point3D createTmpPoint(double x, double y, double z) {
+		return new InnerComputationPoint3afp(x, y, z);
 	}
 
 	public final Point3D createPoint(double x, double y, double z) {
@@ -102,16 +107,16 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		return this.factory.createVector(x, y, z);
 	}
 
-	public final Path3afp<?, ?, ?, ?, ?, ?, B> createPath() {
+	public final Path3afp<?, ?, ?, ?, ?, B> createPath() {
 		return this.factory.createPath(null);
 	}
 
-	public final Path3afp<?, ?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
+	public final Path3afp<?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
 		return this.factory.createPath(rule);
 	}
 
-	public final Path3afp<?, ?, ?, ?, ?, ?, B> createPolyline(double... coordinates) {
-		Path3afp<?, ?, ?, ?, ?, ?, B>  path = createPath();
+	public final Path3afp<?, ?, ?, ?, ?, B> createPolyline(double... coordinates) {
+		Path3afp<?, ?, ?, ?, ?, B>  path = createPath();
 		path.moveTo(coordinates[0], coordinates[1], coordinates[2]);
 		for (int i = 3; i < coordinates.length; i += 3) {
 			path.lineTo(coordinates[i], coordinates[i + 1], coordinates[i + 2]);
@@ -205,12 +210,6 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	@DisplayName("equals(Object)")
 	public abstract void equalsObject(CoordinateSystem3D cs);
 
-	@DisplayName("equals(Object) with path iterator")
-	public abstract void equalsObject_withPathIterator(CoordinateSystem3D cs);
-
-	@DisplayName("equalsToPathIterator(PathIterator3afp)")
-	public abstract void equalsToPathIterator(CoordinateSystem3D cs);
-
 	@DisplayName("equalsToShape(Shape3D)")
 	public abstract void equalsToShape(CoordinateSystem3D cs);
 
@@ -243,15 +242,6 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 
 	@DisplayName("set(Shape3D)")
 	public abstract void setIT(CoordinateSystem3D cs);
-
-	@DisplayName("getPathIterator")
-	public abstract void getPathIterator(CoordinateSystem3D cs);
-
-	@DisplayName("getPathIterator(Transform3D)")
-	public abstract void getPathIteratorTransform3D(CoordinateSystem3D cs);
-
-	@DisplayName("createTransformedShape(Transform3D)")
-	public abstract void createTransformedShape(CoordinateSystem3D cs);
 
 	@DisplayName("translate(Vector3D)")
 	public abstract void translateVector3D(CoordinateSystem3D cs);
@@ -307,9 +297,6 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	@DisplayName("s - Vector3D")
 	public abstract void operator_minusVector3D(CoordinateSystem3D cs);
 
-	@DisplayName("s * Transform3D")
-	public abstract void operator_multiplyTransform3D(CoordinateSystem3D cs);
-
 	@DisplayName("s && Point3D")
 	public abstract void operator_andPoint3D(CoordinateSystem3D cs);
 
@@ -318,18 +305,6 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 
 	@DisplayName("s .. Point3D")
 	public abstract void operator_upToPoint3D(CoordinateSystem3D cs);
-
-	/** Generate a bitmap containing the given Shape2D.
-	 *
-	 * @param shape.
-	 * @return the filename
-	 * @throws IOException Input/output exception
-	 */
-	public static File generateTestPicture(Shape3afp<?, ?, ?, ?, ?, ?, ?> shape) throws IOException {
-		final AlignedBox3afp box = shape.toBoundingBox();
-		final PathIterator3afp<?> iterator = shape.getPathIterator();
-		return generateTestPicture(1., box, iterator);
-	}
 
 	/** Generate a bitmap containing the given Shape2D.
 	 *

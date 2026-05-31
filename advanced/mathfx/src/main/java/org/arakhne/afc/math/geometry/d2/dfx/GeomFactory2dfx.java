@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.AbstractGeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -63,7 +62,7 @@ public class GeomFactory2dfx extends AbstractGeomFactory2D<Vector2dfx, Point2dfx
 		assert v != null : AssertMessages.notNullParameter();
 		Point2dfx pt;
 		try {
-			final Vector2dfx pp = (Vector2dfx) v;
+			final var pp = (Vector2dfx) v;
 			pt = new Point2dfx(pp.xProperty(), pp.yProperty());
 		} catch (Throwable exception) {
 			pt = new Point2dfx(v.getX(), v.getY());
@@ -76,7 +75,7 @@ public class GeomFactory2dfx extends AbstractGeomFactory2D<Vector2dfx, Point2dfx
 		assert pt != null : AssertMessages.notNullParameter();
 		Vector2dfx v;
 		try {
-			final Point2dfx pp = (Point2dfx) pt;
+			final var pp = (Point2dfx) pt;
 			v = new Vector2dfx(pp.xProperty(), pp.yProperty());
 		} catch (Throwable exception) {
 			v = new Vector2dfx(pt.getX(), pt.getY());

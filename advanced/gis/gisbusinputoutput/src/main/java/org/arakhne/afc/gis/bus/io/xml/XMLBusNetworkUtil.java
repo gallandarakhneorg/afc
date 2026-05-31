@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,14 +43,9 @@ import static org.arakhne.afc.inputoutput.xml.XMLUtil.toColor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import org.arakhne.afc.gis.bus.network.BusHub;
 import org.arakhne.afc.gis.bus.network.BusItinerary;
@@ -67,7 +62,8 @@ import org.arakhne.afc.inputoutput.path.PathBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLResources;
 import org.arakhne.afc.inputoutput.xml.XMLUtil;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /** This class provides tools to create an XML representation of a bus network
  * or to create a bus network from an XML representation.
@@ -136,17 +132,17 @@ public final class XMLBusNetworkUtil {
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static Node writeBusNetwork(BusNetwork busNetwork, XMLBuilder builder, XMLResources resources) throws IOException {
-		final Element element = builder.createElement(NODE_BUSNETWORK);
+		final var element = builder.createElement(NODE_BUSNETWORK);
 
 		writeGISElementAttributes(element, busNetwork, builder, resources);
-		final Integer color = busNetwork.getRawColor();
+		final var color = busNetwork.getRawColor();
 		if (color != null) {
-			element.setAttribute(ATTR_COLOR, toColor(color));
+			element.setAttribute(ATTR_COLOR, toColor(color.intValue()));
 		}
 
-		final Element stopsNode = builder.createElement(NODE_BUSSTOPS);
-		for (final BusStop stop : busNetwork.busStops()) {
-			final Node stopNode = writeBusStop(stop, builder, resources);
+		final var stopsNode = builder.createElement(NODE_BUSSTOPS);
+		for (final var stop : busNetwork.busStops()) {
+			final var stopNode = writeBusStop(stop, builder, resources);
 			if (stopNode != null) {
 				stopsNode.appendChild(stopNode);
 			}
@@ -155,9 +151,9 @@ public final class XMLBusNetworkUtil {
 			element.appendChild(stopsNode);
 		}
 
-		final Element hubsNode = builder.createElement(NODE_BUSHUBS);
-		for (final BusHub hub : busNetwork.busHubs()) {
-			final Node hubNode = writeBusHub(hub, builder, resources);
+		final var hubsNode = builder.createElement(NODE_BUSHUBS);
+		for (final var hub : busNetwork.busHubs()) {
+			final var hubNode = writeBusHub(hub, builder, resources);
 			if (hubNode != null) {
 				hubsNode.appendChild(hubNode);
 			}
@@ -166,9 +162,9 @@ public final class XMLBusNetworkUtil {
 			element.appendChild(hubsNode);
 		}
 
-		final Element linesNode = builder.createElement(NODE_BUSLINES);
-		for (final BusLine line : busNetwork.busLines()) {
-			final Node lineNode = writeBusLine(line, builder, resources);
+		final var linesNode = builder.createElement(NODE_BUSLINES);
+		for (final var line : busNetwork.busLines()) {
+			final var lineNode = writeBusLine(line, builder, resources);
 			if (lineNode != null) {
 				linesNode.appendChild(lineNode);
 			}
@@ -181,15 +177,15 @@ public final class XMLBusNetworkUtil {
 	}
 
 	private static Node writeBusStop(BusStop stop, XMLBuilder builder, XMLResources resources) throws IOException {
-		final Element stopNode = builder.createElement(NODE_BUSSTOP);
+		final var stopNode = builder.createElement(NODE_BUSSTOP);
 
 		writeGISElementAttributes(stopNode, stop, builder, resources);
-		final Integer color = stop.getRawColor();
+		final var color = stop.getRawColor();
 		if (color != null) {
-			stopNode.setAttribute(ATTR_COLOR, toColor(color));
+			stopNode.setAttribute(ATTR_COLOR, toColor(color.intValue()));
 		}
 
-		final Point2d p = stop.getPosition2D();
+		final var p = stop.getPosition2D();
 		if (p != null) {
 			stopNode.setAttribute(ATTR_X, Double.toString(p.getX()));
 			stopNode.setAttribute(ATTR_Y, Double.toString(p.getY()));
@@ -198,17 +194,17 @@ public final class XMLBusNetworkUtil {
 	}
 
 	private static Node writeBusHub(BusHub hub, XMLBuilder builder, XMLResources resources) throws IOException {
-		final Element hubNode = builder.createElement(NODE_BUSHUB);
+		final var hubNode = builder.createElement(NODE_BUSHUB);
 
 		writeGISElementAttributes(hubNode, hub, builder, resources);
 
-		final Integer color = hub.getRawColor();
+		final var color = hub.getRawColor();
 		if (color != null) {
-			hubNode.setAttribute(ATTR_COLOR, toColor(color));
+			hubNode.setAttribute(ATTR_COLOR, toColor(color.intValue()));
 		}
 
-		for (final BusStop stop : hub.busStops()) {
-			final Element stopNode = builder.createElement(NODE_BUSSTOP);
+		for (final var stop : hub.busStops()) {
+			final var stopNode = builder.createElement(NODE_BUSSTOP);
 			stopNode.setAttribute(ATTR_ID, stop.getUUID().toString());
 			hubNode.appendChild(stopNode);
 		}
@@ -216,17 +212,17 @@ public final class XMLBusNetworkUtil {
 	}
 
 	private static Node writeBusLine(BusLine line, XMLBuilder builder, XMLResources resources) throws IOException {
-		final Element lineNode = builder.createElement(NODE_BUSLINE);
+		final var lineNode = builder.createElement(NODE_BUSLINE);
 
 		writeGISElementAttributes(lineNode, line, builder, resources);
-		final Integer color = line.getRawColor();
+		final var color = line.getRawColor();
 		if (color != null) {
-			lineNode.setAttribute(ATTR_COLOR, toColor(color));
+			lineNode.setAttribute(ATTR_COLOR, toColor(color.intValue()));
 		}
 
-		final Element itinerariesNode = builder.createElement(NODE_BUSITINERARIES);
-		for (final BusItinerary itinerary : line.busItineraries()) {
-			final Node itineraryNode = writeBusItinerary(itinerary, builder, resources);
+		final var itinerariesNode = builder.createElement(NODE_BUSITINERARIES);
+		for (final var itinerary : line.busItineraries()) {
+			final var itineraryNode = writeBusItinerary(itinerary, builder, resources);
 			if (itineraryNode != null) {
 				itinerariesNode.appendChild(itineraryNode);
 			}
@@ -238,17 +234,17 @@ public final class XMLBusNetworkUtil {
 	}
 
 	private static Node writeBusItinerary(BusItinerary itinerary, XMLBuilder builder, XMLResources resources) throws IOException {
-		final Element itineraryNode = builder.createElement(NODE_BUSITINERARY);
+		final var itineraryNode = builder.createElement(NODE_BUSITINERARY);
 
 		writeGISElementAttributes(itineraryNode, itinerary, builder, resources);
-		final Integer color = itinerary.getRawColor();
+		final var color = itinerary.getRawColor();
 		if (color != null) {
-			itineraryNode.setAttribute(ATTR_COLOR, toColor(color));
+			itineraryNode.setAttribute(ATTR_COLOR, toColor(color.intValue()));
 		}
 
-		final Element roadsNode = builder.createElement(NODE_ROADS);
-		for (final RoadSegment road : itinerary.roadSegments()) {
-			final Node roadNode = writeItineraryRoad(road, builder);
+		final var roadsNode = builder.createElement(NODE_ROADS);
+		for (final var road : itinerary.roadSegments()) {
+			final var roadNode = writeItineraryRoad(road, builder);
 			if (roadNode != null) {
 				roadsNode.appendChild(roadNode);
 			}
@@ -257,9 +253,9 @@ public final class XMLBusNetworkUtil {
 			itineraryNode.appendChild(roadsNode);
 		}
 
-		final Element haltsNode = builder.createElement(NODE_BUSHALTS);
-		for (final BusItineraryHalt halt : itinerary.busHalts()) {
-			final Node haltNode = writeBusItineraryHalt(halt, builder, resources);
+		final var haltsNode = builder.createElement(NODE_BUSHALTS);
+		for (final var halt : itinerary.busHalts()) {
+			final var haltNode = writeBusItineraryHalt(halt, builder, resources);
 			if (haltNode != null) {
 				haltsNode.appendChild(haltNode);
 			}
@@ -276,17 +272,17 @@ public final class XMLBusNetworkUtil {
 		final Element haltNode = builder.createElement(NODE_BUSHALT);
 
 		writeGISElementAttributes(haltNode, halt, builder, resources);
-		final Integer color = halt.getRawColor();
+		final var color = halt.getRawColor();
 		if (color != null) {
-			haltNode.setAttribute(ATTR_COLOR, toColor(color));
+			haltNode.setAttribute(ATTR_COLOR, toColor(color.intValue()));
 		}
 
 		haltNode.setAttribute(ATTR_TYPE, halt.getType().name());
-		final BusStop stop = halt.getBusStop();
+		final var stop = halt.getBusStop();
 		if (stop != null) {
 			haltNode.setAttribute(ATTR_STOPID, stop.getUUID().toString());
 		}
-		final RoadSegment road = halt.getRoadSegment();
+		final var road = halt.getRoadSegment();
 		if (road != null) {
 			haltNode.setAttribute(ATTR_ROADID, road.getUUID().toString());
 		}
@@ -294,7 +290,7 @@ public final class XMLBusNetworkUtil {
 	}
 
 	private static Node writeItineraryRoad(RoadSegment road, XMLBuilder builder) {
-		final Element roadNode = builder.createElement(NODE_ROAD);
+		final var roadNode = builder.createElement(NODE_ROAD);
 		roadNode.setAttribute(ATTR_ID, road.getUUID().toString());
 		roadNode.setAttribute(ATTR_GEOID, road.getGeoId().toString());
 		return roadNode;
@@ -311,32 +307,31 @@ public final class XMLBusNetworkUtil {
 	 */
 	public static BusNetwork readBusNetwork(Element xmlNode, RoadNetwork roadNetwork,
 			PathBuilder pathBuilder, XMLResources resources) throws IOException {
-		final UUID id = getAttributeUUID(xmlNode, NODE_BUSNETWORK, ATTR_ID);
+		final var id = getAttributeUUID(xmlNode, NODE_BUSNETWORK, ATTR_ID);
 
-		final BusNetwork busNetwork = new BusNetwork(id, roadNetwork);
+		final var busNetwork = new BusNetwork(id, roadNetwork);
 
-		final Node stopsNode = getNodeFromPath(xmlNode, NODE_BUSNETWORK, NODE_BUSSTOPS);
+		final var stopsNode = getNodeFromPath(xmlNode, NODE_BUSNETWORK, NODE_BUSSTOPS);
 		if (stopsNode != null) {
-			for (final Element stopNode : getElementsFromPath(stopsNode, NODE_BUSSTOP)) {
-				final BusStop stop = readBusStop(stopNode, pathBuilder, resources);
+			for (final var stopNode : getElementsFromPath(stopsNode, NODE_BUSSTOP)) {
+				final var stop = readBusStop(stopNode, pathBuilder, resources);
 				if (stop != null) {
 					busNetwork.addBusStop(stop);
 				}
 			}
 		}
 
-		final Node hubsNode = getNodeFromPath(xmlNode, NODE_BUSNETWORK, NODE_BUSHUBS);
+		final var hubsNode = getNodeFromPath(xmlNode, NODE_BUSNETWORK, NODE_BUSHUBS);
 		if (hubsNode != null) {
-			for (final Element hubNode : getElementsFromPath(hubsNode, NODE_BUSHUB)) {
+			for (final var hubNode : getElementsFromPath(hubsNode, NODE_BUSHUB)) {
 				readBusHub(hubNode, busNetwork, pathBuilder, resources);
 			}
 		}
 
-		final Node linesNode = getNodeFromPath(xmlNode, NODE_BUSNETWORK, NODE_BUSLINES);
+		final var linesNode = getNodeFromPath(xmlNode, NODE_BUSNETWORK, NODE_BUSLINES);
 		if (linesNode != null) {
-			BusLine line;
-			for (final Element lineNode : getElementsFromPath(linesNode, NODE_BUSLINE)) {
-				line = readBusLine(lineNode, busNetwork, roadNetwork, pathBuilder, resources);
+			for (final var lineNode : getElementsFromPath(linesNode, NODE_BUSLINE)) {
+				final var line = readBusLine(lineNode, busNetwork, roadNetwork, pathBuilder, resources);
 				if (line != null) {
 					busNetwork.addBusLine(line);
 				}
@@ -344,9 +339,9 @@ public final class XMLBusNetworkUtil {
 		}
 
 		readGISElementAttributes(xmlNode, busNetwork, pathBuilder, resources);
-		final Integer color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
+		final var color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
 		if (color != null) {
-			busNetwork.setColor(color);
+			busNetwork.setColor(color.intValue());
 		}
 
 		// Force the validity checking to be sure
@@ -358,24 +353,24 @@ public final class XMLBusNetworkUtil {
 
 	private static RoadSegment readItineraryRoad(Element xmlNode, RoadNetwork roadNetwork, Map<UUID, RoadSegment> roadMap) {
 		assert roadMap != null;
-		final String s = getAttributeValueWithDefault(xmlNode, null, ATTR_GEOID);
+		final var s = getAttributeValueWithDefault(xmlNode, null, ATTR_GEOID);
 		if (s == null || "".equals(s)) { //$NON-NLS-1$
 			return null;
 		}
-		final GeoId gid = GeoId.valueOf(s);
+		final var gid = GeoId.valueOf(s);
 		if (gid == null) {
 			return null;
 		}
-		RoadSegment road = roadNetwork.getRoadSegment(gid);
+		var road = roadNetwork.getRoadSegment(gid);
 		if (road != null) {
-			final UUID uuid = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
+			final var uuid = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
 			if (uuid != null) {
 				roadMap.put(uuid, road);
 			}
 		} else {
 			//Brutal Find segment
 			road = roadNetwork.getRoadSegment(gid);
-			final Iterator<RoadSegment> it = roadNetwork.iterator();
+			final var it = roadNetwork.iterator();
 			while (it.hasNext()) {
 				road = it.next();
 				if (road.getGeoId().equals(gid)) {
@@ -389,26 +384,26 @@ public final class XMLBusNetworkUtil {
 	private static BusItineraryHalt readBusItineraryHalt(Element xmlNode, BusItinerary itinerary,
 			BusNetwork busNetwork, Map<UUID, RoadSegment> roadMap, PathBuilder pathBuilder,
 			XMLResources resources) throws IOException {
-		final BusItineraryHaltType type = getAttributeEnumWithDefault(xmlNode, BusItineraryHaltType.class,
+		final var type = getAttributeEnumWithDefault(xmlNode, BusItineraryHaltType.class,
 				BusItineraryHaltType.STOP_ON_DEMAND, ATTR_TYPE);
-		UUID id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
+		var id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
 		if (id == null) {
 			throw new IOException("id not found for a bus itinerary"); //$NON-NLS-1$
 		}
-		final BusItineraryHalt halt = itinerary.addBusHalt(id, type);
+		final var halt = itinerary.addBusHalt(id, type);
 		if (halt == null) {
 			return null;
 		}
 
 		readGISElementAttributes(xmlNode, halt, pathBuilder, resources);
-		final Integer color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
+		final var color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
 		if (color != null) {
-			halt.setColor(color);
+			halt.setColor(color.intValue());
 		}
 
 		id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_STOPID);
 		if (id != null) {
-			final BusStop busStop = busNetwork.getBusStop(id);
+			final var busStop = busNetwork.getBusStop(id);
 			if (busStop != null) {
 				halt.setBusStop(busStop);
 			} else {
@@ -418,7 +413,7 @@ public final class XMLBusNetworkUtil {
 
 		id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ROADID);
 		if (id != null) {
-			final RoadSegment road = roadMap.get(id);
+			final var road = roadMap.get(id);
 			if (road == null || !itinerary.putHaltOnRoad(halt, road)) {
 				throw new IOException("road not in itinerary:" + id); //$NON-NLS-1$
 			}
@@ -429,25 +424,24 @@ public final class XMLBusNetworkUtil {
 
 	private static BusItinerary readBusItinerary(Element xmlNode, BusNetwork busNetwork,
 			RoadNetwork roadNetwork, PathBuilder pathBuilder, XMLResources resources) throws IOException {
-		final UUID id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
+		final var id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
 		if (id == null) {
 			throw new IOException("id not found for a bus itinerary"); //$NON-NLS-1$
 		}
-		final BusItinerary itinerary = new BusItinerary(id);
+		final var itinerary = new BusItinerary(id);
 
 		readGISElementAttributes(xmlNode, itinerary, pathBuilder, resources);
-		final Integer color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
+		final var color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
 		if (color != null) {
-			itinerary.setColor(color);
+			itinerary.setColor(color.intValue());
 		}
 
-		final Map<UUID, RoadSegment> roadMap = new TreeMap<>();
+		final var roadMap = new TreeMap<UUID, RoadSegment>();
 
-		final Node roadsNode = getNodeFromPath(xmlNode, NODE_ROADS);
+		final var roadsNode = getNodeFromPath(xmlNode, NODE_ROADS);
 		if (roadsNode != null) {
-			RoadSegment road;
-			for (final Element roadNode : getElementsFromPath(roadsNode, NODE_ROAD)) {
-				road = readItineraryRoad(roadNode, roadNetwork, roadMap);
+			for (final var roadNode : getElementsFromPath(roadsNode, NODE_ROAD)) {
+				final var road = readItineraryRoad(roadNode, roadNetwork, roadMap);
 				if (road == null) {
 					throw new IOException("road segment not found for: " //$NON-NLS-1$
 								+ XMLUtil.toString(roadNode));
@@ -456,9 +450,9 @@ public final class XMLBusNetworkUtil {
 			}
 		}
 
-		final Node haltsNode = getNodeFromPath(xmlNode, NODE_BUSHALTS);
+		final var haltsNode = getNodeFromPath(xmlNode, NODE_BUSHALTS);
 		if (haltsNode != null) {
-			for (final Element haltNode : getElementsFromPath(haltsNode, NODE_BUSHALT)) {
+			for (final var haltNode : getElementsFromPath(haltsNode, NODE_BUSHALT)) {
 				readBusItineraryHalt(haltNode, itinerary, busNetwork, roadMap, pathBuilder, resources);
 			}
 		}
@@ -468,17 +462,16 @@ public final class XMLBusNetworkUtil {
 
 	private static BusLine readBusLine(Element xmlNode, BusNetwork busNetwork, RoadNetwork roadNetwork,
 			PathBuilder pathBuilder, XMLResources resources) throws IOException {
-		final UUID id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
+		final var id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
 		if (id == null) {
 			throw new IOException("id not found for a bus line"); //$NON-NLS-1$
 		}
-		final BusLine line = new BusLine(id);
+		final var line = new BusLine(id);
 
-		final Node itinerariesNode = getNodeFromPath(xmlNode, NODE_BUSITINERARIES);
+		final var itinerariesNode = getNodeFromPath(xmlNode, NODE_BUSITINERARIES);
 		if (itinerariesNode != null) {
-			BusItinerary itinerary;
-			for (final Element itineraryNode : getElementsFromPath(itinerariesNode, NODE_BUSITINERARY)) {
-				itinerary = readBusItinerary(itineraryNode, busNetwork, roadNetwork, pathBuilder, resources);
+			for (final var itineraryNode : getElementsFromPath(itinerariesNode, NODE_BUSITINERARY)) {
+				final var itinerary = readBusItinerary(itineraryNode, busNetwork, roadNetwork, pathBuilder, resources);
 				if (itinerary != null) {
 					line.addBusItinerary(itinerary);
 				}
@@ -486,9 +479,9 @@ public final class XMLBusNetworkUtil {
 		}
 
 		readGISElementAttributes(xmlNode, line, pathBuilder, resources);
-		final Integer color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
+		final var color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
 		if (color != null) {
-			line.setColor(color);
+			line.setColor(color.intValue());
 		}
 
 		return line;
@@ -496,13 +489,13 @@ public final class XMLBusNetworkUtil {
 
 	private static void readBusHub(Element xmlNode, BusNetwork busNetwork, PathBuilder pathBuilder,
 			XMLResources resources) throws IOException {
-		final List<BusStop> stops = new ArrayList<>();
-		for (final Node stopNode : getNodesFromPath(xmlNode, NODE_BUSSTOP)) {
-			final UUID id = getAttributeUUIDWithDefault(stopNode, null, ATTR_ID);
+		final var stops = new ArrayList<BusStop>();
+		for (final var stopNode : getNodesFromPath(xmlNode, NODE_BUSSTOP)) {
+			final var id = getAttributeUUIDWithDefault(stopNode, null, ATTR_ID);
 			if (id == null) {
 				throw new IOException("no UUID for bus stop in bus hub"); //$NON-NLS-1$
 			}
-			final BusStop stop = busNetwork.getBusStop(id);
+			final var stop = busNetwork.getBusStop(id);
 			if (stop == null) {
 				throw new IOException("bus stop not found: " + id.toString()); //$NON-NLS-1$
 			}
@@ -510,9 +503,9 @@ public final class XMLBusNetworkUtil {
 		}
 
 		if (!stops.isEmpty()) {
-			final BusStop[] array = new BusStop[stops.size()];
+			final var array = new BusStop[stops.size()];
 			stops.toArray(array);
-			final String name = getAttributeValueWithDefault(xmlNode, null, ATTR_NAME);
+			final var name = getAttributeValueWithDefault(xmlNode, null, ATTR_NAME);
 			final BusHub hub;
 			if (name != null && !"".equals(name)) { //$NON-NLS-1$
 				hub = busNetwork.addBusHub(name, array);
@@ -520,36 +513,36 @@ public final class XMLBusNetworkUtil {
 				hub = busNetwork.addBusHub(array);
 			}
 			assert hub != null;
-			final UUID id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
+			final var id = getAttributeUUIDWithDefault(xmlNode, null, ATTR_ID);
 			if (id != null) {
 				hub.setUUID(id);
 			}
 
 			readGISElementAttributes(xmlNode, hub, pathBuilder, resources);
-			final Integer color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
+			final var color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
 			if (color != null) {
-				hub.setColor(color);
+				hub.setColor(color.intValue());
 			}
 		}
 	}
 
 	private static BusStop readBusStop(Element xmlNode, PathBuilder pathBuilder, XMLResources resources) throws IOException {
-		final UUID id = getAttributeUUID(xmlNode, ATTR_ID);
+		final var id = getAttributeUUID(xmlNode, ATTR_ID);
 
-		final String name = getAttributeValueWithDefault(xmlNode, null, ATTR_NAME);
-		final BusStop stop = new BusStop(id, name);
-		final double x = getAttributeDoubleWithDefault(xmlNode, Double.NaN, ATTR_X);
-		if (!Double.isNaN(x)) {
-			final double y = getAttributeDoubleWithDefault(xmlNode, Double.NaN, ATTR_Y);
-			if (!Double.isNaN(y)) {
-				stop.setPosition(new GeoLocationPoint(x, y));
+		final var name = getAttributeValueWithDefault(xmlNode, null, ATTR_NAME);
+		final var stop = new BusStop(id, name);
+		final var x = getAttributeDoubleWithDefault(xmlNode, Double.valueOf(Double.NaN), ATTR_X);
+		if (!Double.isNaN(x.doubleValue())) {
+			final var y = getAttributeDoubleWithDefault(xmlNode, Double.valueOf(Double.NaN), ATTR_Y);
+			if (!Double.isNaN(y.doubleValue())) {
+				stop.setPosition(new GeoLocationPoint(x.doubleValue(), y.doubleValue()));
 			}
 		}
 
 		readGISElementAttributes(xmlNode, stop, pathBuilder, resources);
-		final Integer color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
+		final var color = getAttributeColorWithDefault(xmlNode, null, ATTR_COLOR);
 		if (color != null) {
-			stop.setColor(color);
+			stop.setColor(color.intValue());
 		}
 
 		return stop;

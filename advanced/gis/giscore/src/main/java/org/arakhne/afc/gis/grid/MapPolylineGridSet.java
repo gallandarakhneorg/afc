@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.gis.grid;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.GISPolylineSet;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
@@ -29,6 +27,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.util.OutputParameter;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a grid that contains map polylines
@@ -74,9 +73,7 @@ public class MapPolylineGridSet<P extends MapPolyline> extends MapElementGridSet
 			OutputParameter<P> firstNeighbour,
 			OutputParameter<P> secondNeighbour) {
 		if (add(polyline)) {
-			Point2d point;
-
-			point = polyline.getPointAt(0);
+			var point = polyline.getPointAt(0);
 			if (point != null) {
 				firstNeighbour.set(getNearestEnd(polyline, point, precision));
 			}
@@ -102,13 +99,12 @@ public class MapPolylineGridSet<P extends MapPolyline> extends MapElementGridSet
 		final AroundCellIterator<P> iterator = this.grid.getGridCellsAround(
 				position,
 				maximalDistance).aroundIterator();
-		GridCell<P> cell;
-		double maxDistance = maximalDistance;
+		var maxDistance = maximalDistance;
 		P nearest = null;
-		int level = 1;
-		boolean foundInLevel = false;
+		var level = 1;
+		var foundInLevel = false;
 		while (iterator.hasNext()) {
-			cell = iterator.next();
+			final var cell = iterator.next();
 			if (iterator.getLevel() > level) {
 				if (!foundInLevel && nearest != null) {
 					return nearest;
@@ -116,10 +112,10 @@ public class MapPolylineGridSet<P extends MapPolyline> extends MapElementGridSet
 				level = iterator.getLevel();
 				foundInLevel = false;
 			}
-			double dist = cell.getBounds().getDistance(position);
+			var dist = cell.getBounds().getDistance(position);
 			if (dist <= maxDistance) {
 				foundInLevel = true;
-				for (final P element : cell) {
+				for (final var element : cell) {
 					if (exception == null || !exception.equals(element)) {
 						dist = element.distanceToEnd(position);
 						if (dist <= maxDistance) {

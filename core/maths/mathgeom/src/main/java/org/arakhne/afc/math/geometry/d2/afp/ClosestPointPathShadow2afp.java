@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ class ClosestPointPathShadow2afp {
                 iterator,
                 x0, y0, x1, y1);
 
-        // Test if the shape is intesecting the shadow shape.
+        // Test if the shape is intersecting the shadow shape.
         if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
             // The given line is intersecting the path shape
             return GeomConstants.SHAPE_INTERSECTS;
@@ -122,7 +122,7 @@ class ClosestPointPathShadow2afp {
 
         // There is no intersection with the shadow path's shape.
         // Compute the crossings with the minimum/maximum y borders.
-        int inc = 0;
+        var inc = 0;
         if (this.hasX4ymin) {
             ++inc;
         }
@@ -141,6 +141,7 @@ class ClosestPointPathShadow2afp {
         return crossings + numCrosses;
     }
 
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     private void discretizePathIterator(
             PathIterator2afp<?> pi,
             double x1, double y1, double x2, double y2) {
@@ -155,10 +156,10 @@ class ClosestPointPathShadow2afp {
         }
 
         Path2afp<?, ?, ?, ?, ?, ?> localPath;
-        double movx = element.getToX();
-        double movy = element.getToY();
-        double curx = movx;
-        double cury = movy;
+        var movx = element.getToX();
+        var movy = element.getToY();
+        var curx = movx;
+        var cury = movy;
         double endx;
         double endy;
         double distance;
@@ -315,14 +316,15 @@ class ClosestPointPathShadow2afp {
      * @param sx1 x coordinate of the second point of the segment.
      * @param sy1 y coordinate of the second point of the segment.
      */
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     private void crossSegmentTwoShadowLines(
             double shadowX0, double shadowY0,
             double shadowX1, double shadowY1,
             double sx0, double sy0,
             double sx1, double sy1) {
         // Update the global bounds of the shadow.
-        final double shadowYmin = Math.min(shadowY0, shadowY1);
-        final double shadowYmax = Math.max(shadowY0, shadowY1);
+        final var shadowYmin = Math.min(shadowY0, shadowY1);
+        final var shadowYmax = Math.max(shadowY0, shadowY1);
 
         if (shadowYmin > this.boundingMinY && shadowYmax < this.boundingMaxY) {
             // Shadow is not contributing to the crossing computation.
@@ -338,8 +340,8 @@ class ClosestPointPathShadow2afp {
             return;
         }
 
-        final double shadowXmin = Math.min(shadowX0, shadowX1);
-        final double shadowXmax = Math.max(shadowX0, shadowX1);
+        final var shadowXmin = Math.min(shadowX0, shadowX1);
+        final var shadowXmax = Math.max(shadowX0, shadowX1);
 
         if (sx0 < shadowXmin && sx1 < shadowXmin) {
             // The segment is entirely at the left of the shadow.
@@ -347,26 +349,26 @@ class ClosestPointPathShadow2afp {
         }
         if (sx0 >= shadowXmax && sx1 >= shadowXmax) {
             // The line is entirely at the right of the shadow
-            final double alpha = (sx1 - sx0) / (sy1 - sy0);
+            final var alpha = (sx1 - sx0) / (sy1 - sy0);
             if (sy0 < sy1) {
                 if (sy0 <= shadowYmin) {
-                    final double xintercept = sx0 + (shadowYmin - sy0) * alpha;
+                    final var xintercept = sx0 + (shadowYmin - sy0) * alpha;
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     ++this.crossings;
                 }
                 if (sy1 >= shadowYmax) {
-                    final double xintercept = sx0 + (shadowYmax - sy0) * alpha;
+                    final var xintercept = sx0 + (shadowYmax - sy0) * alpha;
                     setCrossingCoordinateForYMax(xintercept, shadowYmax);
                     ++this.crossings;
                 }
             } else {
                 if (sy1 <= shadowYmin) {
-                    final double xintercept = sx0 + (shadowYmin - sy0) * alpha;
+                    final var xintercept = sx0 + (shadowYmin - sy0) * alpha;
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     --this.crossings;
                 }
                 if (sy0 >= shadowYmax) {
-                    final double xintercept = sx0 + (shadowYmax - sy0) * alpha;
+                    final var xintercept = sx0 + (shadowYmax - sy0) * alpha;
                     setCrossingCoordinateForYMax(xintercept, shadowYmax);
                     --this.crossings;
                 }
@@ -444,7 +446,7 @@ class ClosestPointPathShadow2afp {
             return;
         }
         // Compute the intersection point between the segment and the shadow line
-        final double xintercept = sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0);
+        final var xintercept = sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0);
         if (shadowx > xintercept) {
             // The intersection point is on the left of the shadow line.
             return;

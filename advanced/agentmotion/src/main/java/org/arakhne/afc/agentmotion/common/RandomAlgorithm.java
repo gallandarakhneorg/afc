@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ package org.arakhne.afc.agentmotion.common;
 import java.io.Serializable;
 import java.util.Random;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.agentmotion.AgentMotion;
 import org.arakhne.afc.agentmotion.FacingMotionAlgorithm;
 import org.arakhne.afc.agentmotion.RandomMotionAlgorithm;
@@ -33,6 +31,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Agent is changing randomly its position and orientation.
  *
@@ -96,7 +95,7 @@ public class RandomAlgorithm implements RandomMotionAlgorithm, Serializable, Clo
 	@Override
 	public RandomAlgorithm clone() {
 		try {
-			final RandomAlgorithm clone = (RandomAlgorithm) super.clone();
+			final var clone = (RandomAlgorithm) super.clone();
 			clone.random = new Random();
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -111,7 +110,7 @@ public class RandomAlgorithm implements RandomMotionAlgorithm, Serializable, Clo
 			return true;
 		}
 		if (obj != null && obj.getClass() == getClass()) {
-			final RandomAlgorithm algo = (RandomAlgorithm) obj;
+			final var algo = (RandomAlgorithm) obj;
 			return algo.wheelDistance == this.wheelDistance
 					&& algo.wheelRadius == this.wheelRadius
 					&& algo.maxWheelRotation == this.maxWheelRotation
@@ -124,13 +123,13 @@ public class RandomAlgorithm implements RandomMotionAlgorithm, Serializable, Clo
 	@Pure
 	@Override
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(this.wheelDistance);
 		bits = 31 * bits + Double.hashCode(this.wheelRadius);
 		bits = 31 * bits + Double.hashCode(this.maxWheelRotation);
 		bits = 31 * bits + this.facing.hashCode();
 		bits = 31 * bits + this.seeking.hashCode();
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Override
@@ -149,16 +148,16 @@ public class RandomAlgorithm implements RandomMotionAlgorithm, Serializable, Clo
 		this.rotation += (this.random.nextDouble() * 2. - 1.) * this.maxWheelRotation;
 
 		// Finally calculate the wander force
-		final Point2d circleCenterPosition = new Point2d(
+		final var circleCenterPosition = new Point2d(
 				position.getX() + wheelCenter.getX(),
 				position.getY() + wheelCenter.getY());
-		final Point2d faceTarget = new Point2d(
+		final var faceTarget = new Point2d(
 				circleCenterPosition.getX() + displacement.getX(),
 				circleCenterPosition.getY() + displacement.getY());
 
 		// Delegate
-		final double angularMotion = this.facing.calculate(position, orientation, angularSpeed, maxAngular, faceTarget);
-		final Vector2D<?, ?> linearMotion = this.seeking.calculate(position, linearSpeed, maxLinear, circleCenterPosition);
+		final var angularMotion = this.facing.calculate(position, orientation, angularSpeed, maxAngular, faceTarget);
+		final var linearMotion = this.seeking.calculate(position, linearSpeed, maxLinear, circleCenterPosition);
 
 		return new AgentMotion(linearMotion, angularMotion);
 	}

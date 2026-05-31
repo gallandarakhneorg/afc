@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,8 +50,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>,
-		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+public abstract class AbstractPath3aiTest<T extends Path3ai<T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
 
 	@Override
 	protected final T createShape() {
@@ -110,23 +110,6 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equals(createPath().getPathIterator()));
-		assertFalse(this.shape.equals(createAlignedBox(5, 8, 0, 10, 6, 0).getPathIterator()));
-		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		Path3ai path = createPath();
-		path.moveTo(0, 0, 0);
-		path.lineTo(2, 2, 0);
-		path.quadTo(3, 0, 0, 4, 3, 0);
-		path.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
-		path.closePath();
-		assertTrue(this.shape.equals(path.getPathIterator()));
-	}
-
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
 	public void equalsToShape(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equalsToShape(null));
@@ -139,24 +122,6 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 		path.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
 		path.closePath();
 		assertTrue(this.shape.equalsToShape(path));
-	}
-
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public void equalsToPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
-		assertFalse(this.shape.equalsToPathIterator(createPath().getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createAlignedBox(5, 8, 0, 10, 6, 0).getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		Path3ai path = createPath();
-		path.moveTo(0, 0, 0);
-		path.lineTo(2, 2, 0);
-		path.quadTo(3, 0, 0, 4, 3, 0);
-		path.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
-		path.closePath();
-		assertTrue(this.shape.equalsToPathIterator(path.getPathIterator()));
 	}
 
 	@Override
@@ -745,7 +710,8 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 		assertNoElement(pi);
 	}
 
-	@Override
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
 	public void getPathIterator(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		PathIterator3ai pi = this.shape.getPathIterator();
@@ -757,7 +723,8 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 		assertNoElement(pi);
 	}
 
-	@Override
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
 	public void getPathIteratorTransform3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Transform3D tr;
@@ -832,27 +799,6 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Disabled
-	public void createTransformedShape_translation(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr = new Transform3D();
-		tr.makeTranslationMatrix(3, 4, 0);
-		
-		Shape3ai clone = this.shape.createTransformedShape(tr);
-		
-		assertTrue(clone instanceof Path3ai);
-
-		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 3, 4, 0);
-		assertElement(pi, PathElementType.LINE_TO, 5, 6, 0);
-		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 0, 7, 7, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 8, 3, 0, 9, 9, 0, 10, -1, 0);
-		assertElement(pi, PathElementType.CLOSE, 3, 4, 0);
-		assertNoElement(pi);
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public void transformTransform3D_rotation(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Transform3D tr2 = new Transform3D();
@@ -860,25 +806,6 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 		
 		Path3ai clone = this.shape.clone();
 		clone.transform(tr2);
-
-		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, -2, 0);
-		assertElement(pi, PathElementType.QUAD_TO, 0, -3, 0, 3, -4, 0);
-		assertElement(pi, PathElementType.CURVE_TO, -1, -5, 0, 5, -6, 0, -5, -7, 0);
-		assertElement(pi, PathElementType.CLOSE, 0, 0, 0);
-		assertNoElement(pi);
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public void createTransformedShape_rotation(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr2 = new Transform3D();
-		tr2.makeRotationMatrix(newAxisAngleZ(-MathConstants.DEMI_PI));
-		
-		Path3ai clone = (Path3ai) this.shape.createTransformedShape(tr2);
 
 		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
@@ -903,27 +830,6 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 
 		Path3ai clone = this.shape.clone();
 		clone.transform(tr3);
-
-		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 3, 4, 0);
-		assertElement(pi, PathElementType.LINE_TO, 5, 2, 0);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 1, 0, 6, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 2, -1, 0, 8, -2, 0, -2, -3, 0);
-		assertElement(pi, PathElementType.CLOSE, 3, 4, 0);
-		assertNoElement(pi);
-	}
-
-	@Override
-	public void createTransformedShape(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr = new Transform3D();
-		tr.makeTranslationMatrix(3, 4, 0);
-		Transform3D tr2 = new Transform3D();
-		tr2.makeRotationMatrix(newAxisAngleZ(-MathConstants.DEMI_PI));
-		Transform3D tr3 = new Transform3D();
-		tr3.mul(tr, tr2);
-
-		Path3ai clone = (Path3ai) this.shape.createTransformedShape(tr3);
 
 		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4, 0);
@@ -1363,7 +1269,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@EnumSource(CoordinateSystem3D.class)
 	public void moveToIntInt(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145, 0);
 
 		PathIterator3ai<?> pi = tmpShape.getPathIterator();
@@ -1383,7 +1289,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@EnumSource(CoordinateSystem3D.class)
 	public void moveToPoint3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(createPoint(15, 145, 0));
 
 		PathIterator3ai<?> pi = tmpShape.getPathIterator();
@@ -1404,7 +1310,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	public void lineToIntInt_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.lineTo(15, 145, 0);
 		});
 	}
@@ -1414,7 +1320,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@Disabled
 	public void lineToIntInt_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145, 0);
 		tmpShape.lineTo(189, -45, 0);
 
@@ -1440,7 +1346,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	public void lineToPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.lineTo(createPoint(15, 145, 0));
 		});
 	}
@@ -1450,7 +1356,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@Disabled
 	public void lineToPoint3D_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145, 0);
 		tmpShape.lineTo(createPoint(189, -45, 0));
 
@@ -1476,7 +1382,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	public void quadToIntIntIntInt_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.quadTo(15, 145, 0, 50, 20, 0);
 		});
 	}
@@ -1486,7 +1392,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@Disabled
 	public void quadToIntIntIntInt_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6, 0);
 		tmpShape.quadTo(15, 145, 0, 50, 20, 0);
 
@@ -1512,7 +1418,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	public void quadToPoint3DPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.quadTo(createPoint(15, 145, 0), createPoint(50, 20, 0));
 		});
 	}
@@ -1522,7 +1428,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@Disabled
 	public void quadToPoint3DPoint3D_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6, 0);
 		tmpShape.quadTo(createPoint(15, 145, 0), createPoint(50, 20, 0));
 
@@ -1548,7 +1454,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	public void curveToIntIntIntIntIntInt_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.curveTo(15, 145, 0, 50, 20, 0, 0, 0, 0);
 		});
 	}
@@ -1558,7 +1464,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@Disabled
 	public void curveToIntIntIntIntIntInt_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6, 0);
 		tmpShape.curveTo(15, 145, 0, 50, 20, 0, 0, 0, 0);
 
@@ -1584,7 +1490,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	public void curveToPoint3DPoint3DPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.curveTo(createPoint(15, 145, 0), createPoint(50, 20, 0), createPoint(0, 0, 0));
 		});
 	}
@@ -1594,7 +1500,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 	@Disabled
 	public void curveToPoint3DPoint3DPoint3Dt_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6, 0);
 		tmpShape.curveTo(createPoint(15, 145, 0), createPoint(50, 20, 0), createPoint(0, 0, 0));
 
@@ -1831,27 +1737,6 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>
 		assertElement(pi, PathElementType.QUAD_TO, 0, -4, 0, 1, -1, 0);
 		assertElement(pi, PathElementType.CURVE_TO, 2, -5, 0, 3, 1, 0, 4, -9, 0);
 		assertElement(pi, PathElementType.CLOSE, -3, -4, 0);
-		assertNoElement(pi);
-	}
-
-	@Override
-	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr = new Transform3D();
-		tr.makeTranslationMatrix(3, 4, 0);
-		Transform3D tr2 = new Transform3D();
-		tr2.makeRotationMatrix(newAxisAngleZ(-MathConstants.DEMI_PI));
-		Transform3D tr3 = new Transform3D();
-		tr3.mul(tr, tr2);
-
-		Path3ai clone = (Path3ai) this.shape.operator_multiply(tr3);
-
-		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 3, 4, 0);
-		assertElement(pi, PathElementType.LINE_TO, 5, 2, 0);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 1, 0, 6, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 2, -1, 0, 8, -2, 0, -2, -3, 0);
-		assertElement(pi, PathElementType.CLOSE, 3, 4, 0);
 		assertNoElement(pi);
 	}
 

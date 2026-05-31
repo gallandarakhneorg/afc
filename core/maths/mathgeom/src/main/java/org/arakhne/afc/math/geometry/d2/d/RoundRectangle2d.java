@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A round rectangle with 2 double precision floating-point numbers.
  *
@@ -89,11 +88,12 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = super.hashCode();
+		long bits = super.hashCode();
 		bits = 31 * bits + Double.hashCode(this.arcWidth);
 		bits = 31 * bits + Double.hashCode(this.arcHeight);
-        return bits ^ (bits >> 31);
+        return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
@@ -137,7 +137,7 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 	/** Ensure that the size of the arc width is valid, i.e. not too big or too small.
 	 */
 	protected void ensureValidArcWidth() {
-		final double halfWidth = getWidth() / 2;
+		final var halfWidth = getWidth() / 2;
 		if (this.arcWidth > halfWidth) {
 			this.arcWidth = halfWidth;
 		}
@@ -146,7 +146,7 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 	/** Ensure that the size of the arc height is valid, i.e. not too big or too small.
 	 */
 	protected void ensureValidArcHeight() {
-		final double halfHeight = getHeight() / 2;
+		final var halfHeight = getHeight() / 2;
 		if (this.arcHeight > halfHeight) {
 			this.arcHeight = halfHeight;
 		}

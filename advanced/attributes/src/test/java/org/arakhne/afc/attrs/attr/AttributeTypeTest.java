@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,8 +123,8 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(AttributeType.POLYLINE, AttributeType.fromValue(new Point2D[0]));
 		assertEquals(AttributeType.POLYLINE3D, AttributeType.fromValue(new Point3D[0]));
 		assertEquals(AttributeType.UUID, AttributeType.fromValue(UUID.randomUUID()));
-		assertEquals(AttributeType.URL, AttributeType.fromValue(new URL("http://set.utbm.fr")));  //$NON-NLS-1$
-		assertEquals(AttributeType.URI, AttributeType.fromValue(new URI("http://set.utbm.fr")));  //$NON-NLS-1$
+		assertEquals(AttributeType.URL, AttributeType.fromValue(new URL("http://www.google.com")));  //$NON-NLS-1$
+		assertEquals(AttributeType.URI, AttributeType.fromValue(new URI("http://www.google.com")));  //$NON-NLS-1$
 		assertEquals(AttributeType.INET_ADDRESS, AttributeType.fromValue(InetAddress.getLocalHost()));
 		AttributeType randomType = randomEnum(AttributeType.class);
 		assertEquals(AttributeType.ENUMERATION, AttributeType.fromValue(randomType));
@@ -263,8 +263,8 @@ public class AttributeTypeTest extends AbstractTestCase {
 		Point3D[] tabpt3d = new Point3D[0];
 		int[] tabint = new int[0];
 		Object obj = Locale.getDefault();
-		URL url = new URL("http://set.utbm.fr");  //$NON-NLS-1$
-		URI uri = new URI("http://set.utbm.fr");  //$NON-NLS-1$
+		URL url = new URI("http://www.google.com").toURL();  //$NON-NLS-1$
+		URI uri = new URI("http://www.google.com");  //$NON-NLS-1$
 		InetAddress ipAddress = InetAddress.getLocalHost();
 		InetAddress worldAddress = InetAddress.getByName(vStrB.toString());
 		String vIpStr = ipAddress.toString();
@@ -660,7 +660,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,obj);
 		assertSame(url, type.cast(url));
 		assertEquals(uri.toURL(), type.cast(uri));
-		assertEquals(new URL(AttributeConstants.DEFAULT_SCHEME.name(), ipAddress.getHostAddress(), ""), type.cast(ipAddress));  //$NON-NLS-1$
+		assertEquals(new URI(AttributeConstants.DEFAULT_SCHEME.name(), ipAddress.getHostAddress(), "", "").toURL(), type.cast(ipAddress));  //$NON-NLS-1$
 		assertCastException(type,enumeration);
 
 		// INET_ADDRESS
@@ -687,8 +687,8 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,tabpt3d);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
-		assertEquals(InetAddress.getByName("set.utbm.fr"), type.cast(url));  //$NON-NLS-1$
-		assertEquals(InetAddress.getByName("set.utbm.fr"), type.cast(uri));  //$NON-NLS-1$
+		assertEquals(InetAddress.getByName("www.google.com"), type.cast(url));  //$NON-NLS-1$
+		assertEquals(InetAddress.getByName("www.google.com"), type.cast(uri));  //$NON-NLS-1$
 		assertSame(ipAddress, type.cast(ipAddress));
 		assertCastException(type,enumeration);
 

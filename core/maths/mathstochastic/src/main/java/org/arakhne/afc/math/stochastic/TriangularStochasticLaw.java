@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,9 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * Law that representes a triangular density.
@@ -85,21 +84,21 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	 * @param maxX1 is the upper bound where {@code f(maxX) = 0}
 	 */
 	public TriangularStochasticLaw(double minX1, double mode, double maxX1) {
-		double i = minX1;
-		double a = maxX1;
-		double mod = mode;
+		var i = minX1;
+		var a = maxX1;
+		var mod = mode;
 		if (i > a) {
-			final double t = a;
+			final var t = a;
 			a = i;
 			i = t;
 		}
 		if (i > mod) {
-			final double t = mod;
+			final var t = mod;
 			mod = i;
 			i = t;
 		}
 		if (mod > a) {
-			final double t = a;
+			final var t = a;
 			a = mod;
 			mod = t;
 		}
@@ -133,19 +132,19 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double f(double x)  throws MathException {
-		if ((x < this.minX) || (x > this.maxX)) {
+		if (x < this.minX || x > this.maxX) {
 			throw new OutsideDomainException(x);
 		}
 
-		final double denom = this.maxX - this.minX;
+		final var denom = this.maxX - this.minX;
 
 		if (x <= this.mode) {
-			final double xm = 2. * (x - this.minX);
+			final var xm = 2. * (x - this.minX);
 			return xm / (denom * (this.mode - this.minX));
 		}
 
-		final double xm = 2. * (this.maxX - x);
-		return 1.f - (xm / (denom * (this.maxX - this.mode)));
+		final var xm = 2. * (this.maxX - x);
+		return 1. - (xm / (denom * (this.maxX - this.mode)));
 
 	}
 
@@ -164,7 +163,7 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
-		if ((u < 0) || (u > 1)) {
+		if (u < 0 || u > 1) {
 			throw new OutsideDomainException(u);
 		}
 
@@ -179,9 +178,9 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	@Override
 	public void toJson(JsonBuffer buffer) {
 		buffer.add(NAME_NAME, getLawName());
-		buffer.add(MINX_NAME, this.minX);
-		buffer.add(MAXX_NAME, this.maxX);
-		buffer.add(MODE_NAME, this.mode);
+		buffer.add(MINX_NAME, Double.valueOf(this.minX));
+		buffer.add(MAXX_NAME, Double.valueOf(this.maxX));
+		buffer.add(MODE_NAME, Double.valueOf(this.mode));
 	}
 
 }

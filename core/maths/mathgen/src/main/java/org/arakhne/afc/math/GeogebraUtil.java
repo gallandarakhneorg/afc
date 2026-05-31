@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,13 +82,13 @@ public final class GeogebraUtil {
 	public static String toMatrixDefinition(int size, double... values) {
 		assert values.length == size * size;
 		final StringBuilder value = new StringBuilder(GEOGEBRA_START_BRACES);
-		int k = 0;
-		for (int i = 0; i < size; ++i) {
+		var k = 0;
+		for (var i = 0; i < size; ++i) {
 			if (i > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
 			value.append(GEOGEBRA_START_BRACES);
-			for (int j = 0; j < size; ++j, ++k) {
+			for (var j = 0; j < size; ++j, ++k) {
 				if (j > 0) {
 					value.append(GEOGEBRA_SEP);
 				}
@@ -108,13 +108,12 @@ public final class GeogebraUtil {
 	 */
 	public static String toTupleDefinition(int size, double... values) {
 		assert values.length == size;
-		final StringBuilder value = new StringBuilder(GEOGEBRA_START_PARENTHS);
-		int k = 0;
-		for (int i = 0; i < size; ++i) {
+		final var value = new StringBuilder(GEOGEBRA_START_PARENTHS);
+		for (var i = 0; i < size; ++i) {
 			if (i > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
-			value.append(values[k]);
+			value.append(values[i]);
 		}
 		value.append(GEOGEBRA_END_PARENTHS);
 		return value.toString();
@@ -128,15 +127,15 @@ public final class GeogebraUtil {
 	 */
 	public static String toPolygonDefinition(int size, double... values) {
 		assert values.length >= size * 2;
-		final StringBuilder value = new StringBuilder(GEOGEBRA_POLYGON);
+		final var value = new StringBuilder(GEOGEBRA_POLYGON);
 		value.append(GEOGEBRA_START_PARENTHS);
-		int k = 0;
-		for (int i = 0; i < values.length; i += size) {
+		var k = 0;
+		for (var i = 0; i < values.length; i += size) {
 			if (i > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
 			value.append(GEOGEBRA_START_PARENTHS);
-			for (int j = 0; j < size; ++j, ++k) {
+			for (var j = 0; j < size; ++j, ++k) {
 				if (j > 0) {
 					value.append(GEOGEBRA_SEP);
 				}
@@ -156,15 +155,15 @@ public final class GeogebraUtil {
 	 */
 	public static String toSegmentDefinition(int size, double... values) {
 		assert values.length >= size * 2;
-		final StringBuilder value = new StringBuilder(GEOGEBRA_SEGMENT);
+		final var value = new StringBuilder(GEOGEBRA_SEGMENT);
 		value.append(GEOGEBRA_START_PARENTHS);
-		int k = 0;
-		for (int i = 0; i < values.length; i += size) {
+		var k = 0;
+		for (var i = 0; i < values.length; i += size) {
 			if (i > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
 			value.append(GEOGEBRA_START_PARENTHS);
-			for (int j = 0; j < size; ++j, ++k) {
+			for (var j = 0; j < size; ++j, ++k) {
 				if (j > 0) {
 					value.append(GEOGEBRA_SEP);
 				}
@@ -179,16 +178,17 @@ public final class GeogebraUtil {
 	/** Replies the ellipse representation.
 	 *
 	 * @param size the number of components per point.
-	 * @param values the values of the components. It must contains 2 points and the maximal radius of the ellipse, i.e., {@code size}*2+1 components.
+	 * @param values the values of the components. It must contains 2 points and the maximal
+	 *     radius of the ellipse, i.e., {@code size}*2+1 components.
 	 * @return the Geogebra representation of the ellipse.
 	 */
 	public static String toEllipseDefinition(int size, double... values) {
 		assert values.length >= size * 2 + 1;
-		final StringBuilder value = new StringBuilder(GEOGEBRA_ELLIPSE);
+		final var value = new StringBuilder(GEOGEBRA_ELLIPSE);
 		// Point 1
 		value.append(GEOGEBRA_START_PARENTHS).append(GEOGEBRA_START_PARENTHS);
-		int k = 0;
-		for (int i = 0; i < size; ++i, ++k) {
+		var k = 0;
+		for (var i = 0; i < size; ++i, ++k) {
 			if (i > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
@@ -196,7 +196,7 @@ public final class GeogebraUtil {
 		}
 		// Point 2
 		value.append(GEOGEBRA_END_PARENTHS).append(GEOGEBRA_SEP).append(GEOGEBRA_START_PARENTHS);
-		for (int i = 0; i < size; ++i, ++k) {
+		for (var i = 0; i < size; ++i, ++k) {
 			if (i > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
@@ -215,10 +215,10 @@ public final class GeogebraUtil {
 	 */
 	public static String toCircleDefinition(int size, double... values) {
 		assert values.length >= size + 1;
-		final StringBuilder value = new StringBuilder(size <= 2 ? GEOGEBRA_CIRCLE : GEOGEBRA_SPHERE);
+		final var value = new StringBuilder(size <= 2 ? GEOGEBRA_CIRCLE : GEOGEBRA_SPHERE);
 		value.append(GEOGEBRA_START_PARENTHS).append(GEOGEBRA_START_PARENTHS);
-		int k = 0;
-		for (int i = 0; i < size; ++i, ++k) {
+		var k = 0;
+		for (var i = 0; i < size; ++i, ++k) {
 			if (i > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
@@ -237,17 +237,17 @@ public final class GeogebraUtil {
 	 */
 	public static String toPrismDefinition(int size, double... values) {
 		assert values.length >= size * 3;
-		final StringBuilder value = new StringBuilder(GEOGEBRA_PRISM);
+		final var value = new StringBuilder(GEOGEBRA_PRISM);
 		value.append(GEOGEBRA_START_PARENTHS);
 		// Polygon
 		value.append(GEOGEBRA_POLYGON).append(GEOGEBRA_START_PARENTHS);
-		int k = 0;
-		for (int i = 0; i < values.length - size; i += size) {
+		var k = 0;
+		for (var i = 0; i < values.length - size; i += size) {
 			if (i > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
 			value.append(GEOGEBRA_START_PARENTHS);
-			for (int j = 0; j < size; ++j, ++k) {
+			for (var j = 0; j < size; ++j, ++k) {
 				if (j > 0) {
 					value.append(GEOGEBRA_SEP);
 				}
@@ -257,7 +257,7 @@ public final class GeogebraUtil {
 		}
 		value.append(GEOGEBRA_END_PARENTHS).append(GEOGEBRA_SEP).append(GEOGEBRA_START_PARENTHS);
 		// Extrusion point
-		for (int j = 0; j < size; ++j, ++k) {
+		for (var j = 0; j < size; ++j, ++k) {
 			if (j > 0) {
 				value.append(GEOGEBRA_SEP);
 			}
@@ -278,7 +278,7 @@ public final class GeogebraUtil {
 	 * @return the Geogebra representation of the plane.
 	 */
 	public static String toPlaneDefinition(double px,  double py, double pz, double vx, double vy, double vz) {
-		final StringBuilder value = new StringBuilder(GEOGEBRA_START_PARENTHS);
+		final var value = new StringBuilder(GEOGEBRA_START_PARENTHS);
 		value.append(vx).append(GEOGEBRA_SEP);
 		value.append(vy).append(GEOGEBRA_SEP);
 		value.append(vz).append(GEOGEBRA_END_PARENTHS).append(GEOGEBRA_START_PARENTHS);
@@ -302,8 +302,9 @@ public final class GeogebraUtil {
 	 * @param d the d component of the equation plane.
 	 * @return the Geogebra representation of the plane.
 	 */
+	@SuppressWarnings("checkstyle:parametername")
 	public static String toPlaneDefinition(double a,  double b, double c, double d) {
-		final StringBuilder value = new StringBuilder();
+		final var value = new StringBuilder();
 		value.append(a).append(GEOGEBRA_MUL).append(GEOGEBRA_X);
 		if (b < 0.) {
 			value.append(GEOGEBRA_MINUS).append(Math.abs(b));

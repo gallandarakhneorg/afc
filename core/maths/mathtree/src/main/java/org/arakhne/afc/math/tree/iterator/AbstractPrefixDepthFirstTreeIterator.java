@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,8 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.IterableNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class is an prefixed iterator on a tree.
  * It treats the parent node before going inside the child nodes.
@@ -80,8 +79,7 @@ public abstract class AbstractPrefixDepthFirstTreeIterator<P extends IterableNod
 
 	private void startIterator() {
 		final P root = this.availableNodes.isEmpty() ? null : this.availableNodes.pop();
-		if ((root != null)
-				&& (isTraversableParent(root))) {
+		if (root != null && isTraversableParent(root)) {
 			this.availableNodes.push(root);
 		}
 		this.isStarted = true;
@@ -106,15 +104,15 @@ public abstract class AbstractPrefixDepthFirstTreeIterator<P extends IterableNod
 			throw new NoSuchElementException();
 		}
 
-		final P current = this.availableNodes.pop();
+		final var current = this.availableNodes.pop();
 		if (current == null) {
 			throw new ConcurrentModificationException();
 		}
 
-		for (int i = current.getChildCount() - 1; i >= 0; --i) {
-			final C child = current.getChildAt(i);
+		for (var i = current.getChildCount() - 1; i >= 0; --i) {
+			final var child = current.getChildAt(i);
 			if (child != null) {
-				final P cn = toTraversableChild(current, child);
+				final var cn = toTraversableChild(current, child);
 				if (cn != null) {
 					this.availableNodes.push(cn);
 				}
@@ -127,7 +125,7 @@ public abstract class AbstractPrefixDepthFirstTreeIterator<P extends IterableNod
 
 	@Override
 	public void remove() {
-		final P lr = this.lastReplied;
+		final var lr = this.lastReplied;
 		this.lastReplied = null;
 		if (lr == null) {
 			throw new NoSuchElementException();

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
  *
@@ -46,7 +45,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiShape3d<T>>
-        implements MultiShape3afp<Shape3d<?>, MultiShape3d<T>, T, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
+        implements MultiShape3afp<MultiShape3d<T>, T, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
@@ -76,7 +75,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 	 */
 	public MultiShape3d(Iterable<? extends T> shapes) {
 		assert shapes != null : AssertMessages.notNullParameter();
-		for (final T element : shapes) {
+		for (final var element : shapes) {
 			add(element);
 		}
 	}
@@ -85,9 +84,9 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 	@Override
 	@Pure
 	public MultiShape3d<T> clone() {
-		final MultiShape3d<T> clone = super.clone();
-		final List<T> clonedList = new ArrayList<>();
-		for (final T shape : this.elements) {
+		final var clone = super.clone();
+		final var clonedList = new ArrayList<T>();
+		for (final var shape : this.elements) {
 			clonedList.add((T) shape.clone());
 		}
 		clone.elements = clonedList;
@@ -99,6 +98,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 
 	@Override
 	@Pure
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		return this.elements.hashCode();
 	}
@@ -146,7 +146,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 	@Override
 	public void translate(double dx, double dy, double dz) {
 		if (dx != 0 || dy != 0 || dz != 0) {
-			final AlignedBox3d box = this.bounds;
+			final var box = this.bounds;
 			MultiShape3afp.super.translate(dx, dy, dz);
 			if (box != null) {
 				box.translate(dx, dy, dz);
@@ -178,16 +178,16 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 		public void add(int index, T element) {
 			assert element != null;
 			this.delegate.add(index, element);
-			if (element instanceof AbstractShape3d<?>) {
-				((AbstractShape3d<?>) element).addShapeGeometryChangeListener(this);
+			if (element instanceof AbstractShape3d shp) {
+				shp.addShapeGeometryChangeListener(this);
 			}
 		}
 
 		@Override
 		public T remove(int index) {
-			final T element = this.delegate.remove(index);
-			if (element instanceof AbstractShape3d<?>) {
-				((AbstractShape3d<?>) element).removeShapeGeometryChangeListener(this);
+			final var element = this.delegate.remove(index);
+			if (element instanceof AbstractShape3d shp) {
+				shp.removeShapeGeometryChangeListener(this);
 			}
 			return element;
 		}
@@ -195,12 +195,12 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 		@Override
 		public T set(int index, T element) {
 			assert element != null;
-			final T oldElement = this.delegate.set(index, element);
-			if (oldElement instanceof AbstractShape3d<?>) {
-				((AbstractShape3d<?>) oldElement).removeShapeGeometryChangeListener(this);
+			final var oldElement = this.delegate.set(index, element);
+			if (oldElement instanceof AbstractShape3d shp) {
+				shp.removeShapeGeometryChangeListener(this);
 			}
-			if (element instanceof AbstractShape3d<?>) {
-				((AbstractShape3d<?>) element).addShapeGeometryChangeListener(this);
+			if (element instanceof AbstractShape3d shp) {
+				shp.addShapeGeometryChangeListener(this);
 			}
 			return oldElement;
 		}
@@ -221,15 +221,9 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends T> c) {
+		public boolean addAll(Collection<? extends T> collection) {
 			// TODO Auto-generated method stub
 			return false;
-		}
-
-		@Override
-		public void planeGeometryChange(AbstractPlane3d<?> shape) {
-			// TODO Auto-generated method stub
-			
 		}
 
 	}

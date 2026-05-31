@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d3.ai;
 import org.arakhne.afc.math.geometry.d3.AbstractGeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
-import org.arakhne.afc.math.geometry.d3.Quaternion.QuaternionComponents;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 /** Factory of immutable geometrical primitives.
@@ -34,7 +33,8 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-final class InnerComputationGeomFactory extends AbstractGeomFactory3D<InnerComputationVector3ai, InnerComputationPoint3ai, InnerComputationQuaternionai> {
+final class InnerComputationGeomFactory
+		extends AbstractGeomFactory3D<InnerComputationVector3ai, InnerComputationPoint3ai, InnerComputationQuaternionai> {
 
 	/** Singleton of the factory.
 	 */
@@ -46,8 +46,8 @@ final class InnerComputationGeomFactory extends AbstractGeomFactory3D<InnerCompu
 
 	@Override
 	public InnerComputationPoint3ai convertToPoint(Point3D<?, ?, ?> pt) {
-		if (pt instanceof InnerComputationPoint3ai) {
-			return (InnerComputationPoint3ai) pt;
+		if (pt instanceof InnerComputationPoint3ai pt0) {
+			return pt0;
 		}
 		final int x;
 		final int y;
@@ -100,8 +100,8 @@ final class InnerComputationGeomFactory extends AbstractGeomFactory3D<InnerCompu
 
 	@Override
 	public InnerComputationVector3ai convertToVector(Vector3D<?, ?, ?> v) {
-		if (v instanceof InnerComputationVector3ai) {
-			return (InnerComputationVector3ai) v;
+		if (v instanceof InnerComputationVector3ai v0) {
+			return v0;
 		}
 		final int x;
 		final int y;
@@ -160,13 +160,13 @@ final class InnerComputationGeomFactory extends AbstractGeomFactory3D<InnerCompu
 
 	@Override
 	public InnerComputationQuaternionai newQuaternionFromAxisAngle(double x, double y, double z, double angle) {
-		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
+		final var comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
 		return new InnerComputationQuaternionai(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
 	@Override
 	public InnerComputationQuaternionai newQuaternionFromAxisAngle(int x, int y, int z, int angle) {
-		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
+		final var comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
 		return new InnerComputationQuaternionai(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 

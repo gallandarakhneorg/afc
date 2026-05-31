@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,6 @@ import javafx.css.StyleableProperty;
 import javafx.css.converter.BooleanConverter;
 import javafx.css.converter.EnumConverter;
 import javafx.css.converter.SizeConverter;
-import javafx.event.EventDispatchChain;
 import javafx.event.EventDispatcher;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -64,13 +63,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.util.InformedIterable;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Panel that is displaying the document elements and supporting zooming.
@@ -220,13 +218,13 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		setBottom(bottomGroup);
 		// Bind the scroll bars properties
 		this.vbar.minProperty().bind(Bindings.createDoubleBinding(
-			() -> getDocumentBounds().getMinY(),
+			() -> Double.valueOf(getDocumentBounds().getMinY()),
 			documentBoundsProperty()));
 		this.vbar.maxProperty().bind(Bindings.createDoubleBinding(
-			() -> getDocumentBounds().getMaxY(),
+			() -> Double.valueOf(getDocumentBounds().getMaxY()),
 			documentBoundsProperty()));
 		this.vbar.visibleAmountProperty().bind(Bindings.createDoubleBinding(
-			() -> getViewportBounds().getHeight(),
+			() -> Double.valueOf(getViewportBounds().getHeight()),
 			viewportBoundsProperty()));
 		this.vbar.valueProperty().bindBidirectional(viewportCenterYProperty());
 		if (isInvertedAxisY()) {
@@ -244,13 +242,13 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		});
 		//
 		this.hbar.minProperty().bind(Bindings.createDoubleBinding(
-			() -> getDocumentBounds().getMinX(),
+			() -> Double.valueOf(getDocumentBounds().getMinX()),
 			documentBoundsProperty()));
 		this.hbar.maxProperty().bind(Bindings.createDoubleBinding(
-			() -> getDocumentBounds().getMaxX(),
+			() -> Double.valueOf(getDocumentBounds().getMaxX()),
 			documentBoundsProperty()));
 		this.hbar.visibleAmountProperty().bind(Bindings.createDoubleBinding(
-			() -> getViewportBounds().getWidth(),
+			() -> Double.valueOf(getViewportBounds().getWidth()),
 			viewportBoundsProperty()));
 		this.hbar.valueProperty().bindBidirectional(viewportCenterXProperty());
 		if (isInvertedAxisX()) {
@@ -274,20 +272,20 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		// block the event from being passed down to children
 		final EventDispatcher blockEventDispatcher = (event, tail) -> event;
 		// block ScrollEvent from being passed down to scrollbar's skin
-		final EventDispatcher oldHsbEventDispatcher = this.hbar.getEventDispatcher();
+		final var oldHsbEventDispatcher = this.hbar.getEventDispatcher();
 		this.hbar.setEventDispatcher((event, tail) -> {
 			if (event.getEventType() == ScrollEvent.SCROLL && !((ScrollEvent) event).isDirect()) {
-				EventDispatchChain tail0 = tail.prepend(blockEventDispatcher);
+				var tail0 = tail.prepend(blockEventDispatcher);
 				tail0 = tail0.prepend(oldHsbEventDispatcher);
 				return tail0.dispatchEvent(event);
 			}
 			return oldHsbEventDispatcher.dispatchEvent(event, tail);
 		});
 		// block ScrollEvent from being passed down to scrollbar's skin
-		final EventDispatcher oldVsbEventDispatcher = this.vbar.getEventDispatcher();
+		final var oldVsbEventDispatcher = this.vbar.getEventDispatcher();
 		this.vbar.setEventDispatcher((event, tail) -> {
 			if (event.getEventType() == ScrollEvent.SCROLL && !((ScrollEvent) event).isDirect()) {
-				EventDispatchChain tail0 = tail.prepend(blockEventDispatcher);
+				var tail0 = tail.prepend(blockEventDispatcher);
 				tail0 = tail0.prepend(oldVsbEventDispatcher);
 				return tail0.dispatchEvent(event);
 			}
@@ -328,7 +326,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 			@Override
 			public void onDrawingEnd() {
 				getCorner().setColor(null);
-				final long duration = System.currentTimeMillis() - this.time;
+				final var duration = System.currentTimeMillis() - this.time;
 				getLogger().fine("Rendering duration: " + Duration.millis(duration).toString()); //$NON-NLS-1$
 			}
 		});
@@ -344,7 +342,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 			if (isPannable() && e.getButton() == getPanButton() && !e.isPopupTrigger()) {
 				this.dragDetected = true;
 				if (this.savedCursor == null) {
-					final ZoomableCanvas<T> canvas0 = getDocumentCanvas();
+					final var canvas0 = getDocumentCanvas();
 					this.savedCursor = canvas0.getCursor();
 					if (this.savedCursor == null) {
 						this.savedCursor = Cursor.DEFAULT;
@@ -368,7 +366,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 				if (!this.dragDetected) {
 					this.dragDetected = true;
 					if (this.savedCursor == null) {
-						final ZoomableCanvas<T> canvas0 = getDocumentCanvas();
+						final var canvas0 = getDocumentCanvas();
 						this.savedCursor = canvas0.getCursor();
 						if (this.savedCursor == null) {
 							this.savedCursor = Cursor.DEFAULT;
@@ -377,31 +375,31 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 						requestLayout();
 					}
 				}
-				final double sensitivity = getPanSensitivity(e.isShiftDown(), e.isControlDown());
+				final var sensitivity = getPanSensitivity(e.isShiftDown(), e.isControlDown());
 				// we only drag if not all of the content is visible.
 				if (this.hbar.getVisibleAmount() > 0. && this.hbar.getVisibleAmount() < this.hbar.getMax()) {
-					double deltaX = this.pressX - e.getX();
+					var deltaX = this.pressX - e.getX();
 					if (isInvertedAxisX()) {
 						deltaX = -deltaX;
 					}
 					if (Math.abs(deltaX) > PAN_THRESHOLD) {
-						final double delta = getDocumentCanvas().getDocumentGraphicsContext2D()
+						final var delta = getDocumentCanvas().getDocumentGraphicsContext2D()
 								.fx2docSize(deltaX) * sensitivity;
-						double newHVal = this.hbarValue + delta;
+						var newHVal = this.hbarValue + delta;
 						newHVal = MathUtil.clamp(this.hbar.getMin(), newHVal, this.hbar.getMax());
 						this.hbar.setValue(newHVal);
 					}
 				}
 				// we only drag if not all of the content is visible.
 				if (this.vbar.getVisibleAmount() > 0. && this.vbar.getVisibleAmount() < this.vbar.getMax()) {
-					double deltaY = this.pressY - e.getY();
+					var deltaY = this.pressY - e.getY();
 					if (isInvertedAxisY()) {
 						deltaY = -deltaY;
 					}
 					if (Math.abs(deltaY) >= PAN_THRESHOLD) {
-						final double delta = getDocumentCanvas().getDocumentGraphicsContext2D()
+						final var delta = getDocumentCanvas().getDocumentGraphicsContext2D()
 								.fx2docSize(deltaY) * sensitivity;
-						double newVVal = this.vbarValue + delta;
+						var newVVal = this.vbarValue + delta;
 						newVVal = MathUtil.clamp(this.vbar.getMin(), newVVal, this.vbar.getMax());
 						this.vbar.setValue(newVVal);
 					}
@@ -416,7 +414,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	protected void setupMousing() {
-		final ZoomableCanvas<T> canvas = getDocumentCanvas();
+		final var canvas = getDocumentCanvas();
 		canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 			this.pressX = e.getX();
 			this.pressY = e.getY();
@@ -429,7 +427,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
 			if (this.dragDetected) {
 				this.dragDetected = false;
-				final Cursor scurs = this.savedCursor;
+				final var scurs = this.savedCursor;
 				this.savedCursor = null;
 				if (scurs != null) {
 					getDocumentCanvas().setCursor(scurs);
@@ -441,7 +439,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		addEventHandler(DragEvent.DRAG_DONE, event -> {
 			if (this.dragDetected) {
 				this.dragDetected = false;
-				final Cursor scurs = this.savedCursor;
+				final var scurs = this.savedCursor;
 				this.savedCursor = null;
 				if (scurs != null) {
 					getDocumentCanvas().setCursor(scurs);
@@ -537,7 +535,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 	 * @param isVeryLarge indicates if the move is a very large move.
 	 */
 	public void moveLeft(boolean isUnit, boolean isLarge, boolean isVeryLarge) {
-		double inc = isUnit ? this.hbar.getUnitIncrement()
+		var inc = isUnit ? this.hbar.getUnitIncrement()
 				: (isLarge ? LARGE_MOVE_FACTOR
 						: (isVeryLarge ? VERY_LARGE_MOVE_FACTOR : STANDARD_MOVE_FACTOR)) * this.hbar.getBlockIncrement();
 		if (!isInvertedAxisX()) {
@@ -554,7 +552,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 	 * @param isVeryLarge indicates if the move is a very large move.
 	 */
 	public void moveRight(boolean isUnit, boolean isLarge, boolean isVeryLarge) {
-		double inc = isUnit ? this.hbar.getUnitIncrement()
+		var inc = isUnit ? this.hbar.getUnitIncrement()
 				: (isLarge ? LARGE_MOVE_FACTOR
 						: (isVeryLarge ? VERY_LARGE_MOVE_FACTOR : STANDARD_MOVE_FACTOR)) * this.hbar.getBlockIncrement();
 		if (isInvertedAxisX()) {
@@ -571,7 +569,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 	 * @param isVeryLarge indicates if the move is a very large move.
 	 */
 	public void moveUp(boolean isUnit, boolean isLarge, boolean isVeryLarge) {
-		double inc = isUnit ? this.vbar.getUnitIncrement()
+		var inc = isUnit ? this.vbar.getUnitIncrement()
 				: (isLarge ? LARGE_MOVE_FACTOR
 						: (isVeryLarge ? VERY_LARGE_MOVE_FACTOR : STANDARD_MOVE_FACTOR)) * this.vbar.getBlockIncrement();
 		if (!isInvertedAxisY()) {
@@ -588,7 +586,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 	 * @param isVeryLarge indicates if the move is a very large move.
 	 */
 	public void moveDown(boolean isUnit, boolean isLarge, boolean isVeryLarge) {
-		double inc = isUnit ? this.vbar.getUnitIncrement()
+		var inc = isUnit ? this.vbar.getUnitIncrement()
 				: (isLarge ? LARGE_MOVE_FACTOR
 						: (isVeryLarge ? VERY_LARGE_MOVE_FACTOR : STANDARD_MOVE_FACTOR)) * this.vbar.getBlockIncrement();
 		if (isInvertedAxisY()) {
@@ -606,7 +604,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 			this.logger = new SimpleObjectProperty<>(this, LOGGER_PROPERTY, Logger.getLogger(getClass().getName())) {
 				@Override
 				protected void invalidated() {
-					final Logger log = get();
+					final var log = get();
 					if (log == null) {
 						set(Logger.getLogger(getClass().getName()));
 					}
@@ -700,7 +698,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 			this.panButton = new StyleableObjectProperty<>(DEFAULT_PAN_BUTTON) {
 				@Override
 				protected void invalidated() {
-					final MouseButton button = get();
+					final var button = get();
 					if (button == null) {
 						set(DEFAULT_PAN_BUTTON);
 					}
@@ -1186,12 +1184,14 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 	 * @since 15.0
 	 * @treatAsPrivate
 	 */
-	private static class StyleableProperties {
+	private static final class StyleableProperties {
 
 		/** Pannable pseudo class state.
 		 */
 		public static final PseudoClass PANNABLE_PSEUDOCLASS_STATE = PseudoClass.getPseudoClass("pannable"); //$NON-NLS-1$
 
+		/** CSS states.
+		 */
 		public static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
 
 		/** Pannable CSS metadata.
@@ -1235,7 +1235,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		 */
 		public static final CssMetaData<ZoomablePane<?>, Number> PAN_SENSITIVITY = new CssMetaData<>(
 				"-afc-panbutton", //$NON-NLS-1$
-				SizeConverter.getInstance(), DEFAULT_PAN_SENSITIVITY) {
+				SizeConverter.getInstance(), Double.valueOf(DEFAULT_PAN_SENSITIVITY)) {
 
 			@Override
 			public boolean isSettable(ZoomablePane<?> pane) {
@@ -1250,7 +1250,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		};
 
 		static {
-			final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
+			final var styleables = new ArrayList<>(Control.getClassCssMetaData());
 			styleables.add(PANNABLE);
 			styleables.add(PAN_BUTTON);
 			styleables.add(PAN_SENSITIVITY);

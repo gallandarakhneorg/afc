@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,8 @@
 package org.arakhne.afc.gis.tree;
 
 import java.lang.reflect.Array;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.mapelement.MapElementConstants;
@@ -37,6 +34,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.tree.iterator.PrefixDataDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.node.IcosepQuadTreeNode.IcosepQuadTreeZone;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Utilities for GISTreeSet.
@@ -185,12 +183,12 @@ public final class GISTreeSetUtil {
 		if (element == null) {
 			return false;
 		}
-		final GeoLocation location = element.getGeoLocation();
+		final var location = element.getGeoLocation();
 		if (location == null) {
 			return false;
 		}
 
-		N insNode = insertionNode;
+		var insNode = insertionNode;
 
 		if (insNode == null) {
 			insNode = tree.getTree().getRoot();
@@ -214,7 +212,7 @@ public final class GISTreeSetUtil {
 
 		// Go through the tree to retreive the leaf where to put the element
 
-		final boolean isRearrangable = enableRearrange && tree.worldBounds == null;
+		final var isRearrangable = enableRearrange && tree.worldBounds == null;
 
 		while (insNode != null) {
 			if (insNode.isLeaf()) {
@@ -229,18 +227,17 @@ public final class GISTreeSetUtil {
 						rearrangeTree(tree, insNode, union(insNode, location.toBounds2D()), builder);
 					} else {
 						// Split the node
-						int classification;
-						final int count = insNode.getChildCount();
+						final var count = insNode.getChildCount();
 
 						// Prepare the list of elements for each child
-						GeoLocation dataLocation;
-						final List<P>[] collections = (List<P>[]) Array.newInstance(List.class, count);
+						final var collections = (List<P>[]) Array.newInstance(List.class, count);
 
-						int subBranchCount = 0;
+						var subBranchCount = 0;
 
 						// compute the positions of the data
+						int classification;
 						for (final P data : insNode.getAllUserData()) {
-							dataLocation = data.getGeoLocation();
+							final var dataLocation = data.getGeoLocation();
 							classification = GISTreeSetUtil.classifies(insNode, dataLocation);
 							if (collections[classification] == null) {
 								collections[classification] = new LinkedList<>();
@@ -258,9 +255,9 @@ public final class GISTreeSetUtil {
 
 						// save the data into the children
 						if (subBranchCount > 1) {
-							for (int region = 0; region < count; ++region) {
+							for (var region = 0; region < count; ++region) {
 								if (collections[region] != null) {
-									final N newNode = createNode(insNode,
+									final var newNode = createNode(insNode,
 											IcosepQuadTreeZone.values()[region], builder);
 									assert newNode != null;
 									if (!newNode.addUserData(collections[region])) {
@@ -291,10 +288,10 @@ public final class GISTreeSetUtil {
 				}
 			} else {
 				// The node is not a leaf. Insert the element inside one of the subtrees
-				final int region = classifies(insNode, location);
-				final N child = insNode.getChildAt(region);
+				final var region = classifies(insNode, location);
+				final var child = insNode.getChildAt(region);
 				if (child == null) {
-					final N newNode = createNode(insNode, IcosepQuadTreeZone.values()[region], builder);
+					final var newNode = createNode(insNode, IcosepQuadTreeZone.values()[region], builder);
 					insNode.setChildAt(region, newNode);
 					insNode = newNode;
 				} else {
@@ -312,7 +309,7 @@ public final class GISTreeSetUtil {
 	@Pure
 	private static boolean isOutsideNodeBuildingBounds(AbstractGISTreeSetNode<?, ?> node,
 			Rectangle2afp<?, ?, ?, ?, ?, ?> location) {
-		final Rectangle2d b2 = getNormalizedNodeBuildingBounds(node, location);
+		final var b2 = getNormalizedNodeBuildingBounds(node, location);
 		if (b2 == null) {
 			return false;
 		}
@@ -330,22 +327,22 @@ public final class GISTreeSetUtil {
 	 * @param reference the reference shape.
 	 */
 	public static void normalize(Rectangle2d rect, Rectangle2afp<?, ?, ?, ?, ?, ?> reference) {
-		double x1 = rect.getMinX();
+		var x1 = rect.getMinX();
 		if (reference.getMinX() < x1
 				&& MathUtil.isEpsilonEqual(reference.getMinX(), x1, MapElementConstants.POINT_FUSION_DISTANCE)) {
 			x1 = reference.getMinX();
 		}
-		double y1 = rect.getMinY();
+		var y1 = rect.getMinY();
 		if (reference.getMinY() < y1
 				&& MathUtil.isEpsilonEqual(reference.getMinY(), y1, MapElementConstants.POINT_FUSION_DISTANCE)) {
 			y1 = reference.getMinY();
 		}
-		double x2 = rect.getMaxX();
+		var x2 = rect.getMaxX();
 		if (reference.getMaxX() > x2
 				&& MathUtil.isEpsilonEqual(reference.getMaxX(), x2, MapElementConstants.POINT_FUSION_DISTANCE)) {
 			x2 = reference.getMaxX();
 		}
-		double y2 = rect.getMaxY();
+		var y2 = rect.getMaxY();
 		if (reference.getMaxY() > y2
 				&& MathUtil.isEpsilonEqual(reference.getMaxY(), y2, MapElementConstants.POINT_FUSION_DISTANCE)) {
 			y2 = reference.getMaxY();
@@ -356,7 +353,7 @@ public final class GISTreeSetUtil {
 	/** Compute the union of the building bounds of the given node and the given geolocation.
 	 */
 	private static Rectangle2d union(AbstractGISTreeSetNode<?, ?> node, Rectangle2afp<?, ?, ?, ?, ?, ?> shape) {
-		final Rectangle2d b = getNodeBuildingBounds(node);
+		final var b = getNodeBuildingBounds(node);
 		b.setUnion(shape);
 		normalize(b, shape);
 		return b;
@@ -373,7 +370,7 @@ public final class GISTreeSetUtil {
 	@Pure
 	public static Rectangle2d getNormalizedNodeBuildingBounds(AbstractGISTreeSetNode<?, ?> node,
 			Rectangle2afp<?, ?, ?, ?, ?, ?> reference) {
-		final Rectangle2d b = getNodeBuildingBounds(node);
+		final var b = getNodeBuildingBounds(node);
 		assert b != null;
 		normalize(b, reference);
 		return b;
@@ -384,13 +381,14 @@ public final class GISTreeSetUtil {
 	 *
 	 * @param node is the node for which the bounds must be extracted and reploed.
 	 * @return the not-normalized rectangle.
+	 * @throws IllegalStateException invalid zone.
 	 */
 	@Pure
 	public static Rectangle2d getNodeBuildingBounds(AbstractGISTreeSetNode<?, ?> node) {
 		assert node != null;
-		final double w = node.nodeWidth / 2.;
-		final double h = node.nodeHeight / 2.;
-		final IcosepQuadTreeZone zone = node.getZone();
+		final var w = node.nodeWidth / 2.;
+		final var h = node.nodeHeight / 2.;
+		final var zone = node.getZone();
 		final double lx;
 		final double ly;
 		if (zone == null) {
@@ -436,7 +434,7 @@ public final class GISTreeSetUtil {
 	private static <P extends GISPrimitive, N extends AbstractGISTreeSetNode<P, N>>
 		N createNode(N parent, IcosepQuadTreeZone region, GISTreeSetNodeFactory<P, N> builder) {
 
-		Rectangle2d area = parent.getAreaBounds();
+		var area = parent.getAreaBounds();
 
 		if (region == IcosepQuadTreeZone.ICOSEP) {
 			return builder.newNode(
@@ -457,10 +455,10 @@ public final class GISTreeSetUtil {
 					area.getHeight());
 		}
 
-		final Point2d childCutPlane = computeCutPoint(region, parent);
+		final var childCutPlane = computeCutPoint(region, parent);
 		assert childCutPlane != null;
-		final double w = area.getWidth() / 4.;
-		final double h = area.getHeight() / 4.;
+		final var w = area.getWidth() / 4.;
+		final var h = area.getHeight() / 4.;
 		return builder.newNode(region,
 				childCutPlane.getX() - w, childCutPlane.getY() - h, 2. * w, 2. * h);
 	}
@@ -476,8 +474,8 @@ public final class GISTreeSetUtil {
 		if (area == null || area.isEmpty()) {
 			return area;
 		}
-		final double demiWidth = area.getWidth() / 2.;
-		final double demiHeight = area.getHeight() / 2.;
+		final var demiWidth = area.getWidth() / 2.;
+		final var demiHeight = area.getHeight() / 2.;
 		switch (region) {
 		case ICOSEP:
 			return area;
@@ -512,8 +510,8 @@ public final class GISTreeSetUtil {
 	 */
 	private static <P extends GISPrimitive, N extends AbstractGISTreeSetNode<P, N>>
 		Point2d computeCutPoint(IcosepQuadTreeZone region, N parent) {
-		final double w = parent.nodeWidth / 4.;
-		final double h = parent.nodeHeight / 4.;
+		final var w = parent.nodeWidth / 4.;
+		final var h = parent.nodeHeight / 4.;
 		final double x;
 		final double y;
 		switch (region) {
@@ -546,7 +544,7 @@ public final class GISTreeSetUtil {
 		N rearrangeTree(AbstractGISTreeSet<P, N> tree, N node, Rectangle2afp<?, ?, ?, ?, ?, ?> desiredBounds,
 				GISTreeSetNodeFactory<P, N> builder) {
 		// Search for the node that completely contains the desired area
-		N topNode = node.getParentNode();
+		var topNode = node.getParentNode();
 		while (topNode != null && isOutsideNodeBuildingBounds(topNode, desiredBounds)) {
 			topNode = topNode.getParentNode();
 		}
@@ -564,9 +562,9 @@ public final class GISTreeSetUtil {
 		}
 
 		// Build a new subtree
-		final N parent = topNode.getParentNode();
-		final Iterator<P> dataIterator = new PrefixDataDepthFirstTreeIterator<>(topNode);
-		final N newTopNode = builder.newNode(
+		final var parent = topNode.getParentNode();
+		final var dataIterator = new PrefixDataDepthFirstTreeIterator<>(topNode);
+		final var newTopNode = builder.newNode(
 				topNode.getZone(),
 				dr.getMinX(), dr.getMinY(), dr.getWidth(), dr.getHeight());
 		while (dataIterator.hasNext()) {

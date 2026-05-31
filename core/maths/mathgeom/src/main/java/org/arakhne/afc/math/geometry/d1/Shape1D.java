@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,13 @@ package org.arakhne.afc.math.geometry.d1;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.vmutil.annotations.ScalaOperator;
+import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 1D shape.
  *
@@ -50,6 +52,14 @@ public interface Shape1D<
 		S extends Segment1D<?, ?>,
 		B extends Shape1D<?, ?, P, V, S, B>>
 		extends Cloneable, Serializable, JsonableObject {
+
+	/** Replies the type of this shape 1D.
+	 *
+	 * @return the type.
+	 * @since 18.0
+	 */
+	@Pure
+	Shape1DType getType();
 
 	/** Replies the geometry factory associated to this point.
 	 *
@@ -77,7 +87,7 @@ public interface Shape1D<
 	 * subclasses for details.
 	 *
 	 * @return {@code true} if the shape is empty;
-	 * {@code false} otherwise.
+	 *     {@code false} otherwise.
 	 */
 	@Pure
 	boolean isEmpty();
@@ -119,7 +129,7 @@ public interface Shape1D<
 	 *
 	 * @param shape the shape to compare to.
 	 * @return {@code true} if the given shape is inside this shape;
-	 * {@code false} otherwise.
+	 *     {@code false} otherwise.
 	 */
 	@Pure
 	@Unefficient
@@ -249,7 +259,7 @@ public interface Shape1D<
 	 *
 	 * @param shape the shape to compare to.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	@Unefficient
@@ -264,6 +274,8 @@ public interface Shape1D<
 	 * @param v the vector
 	 * @see #translate(Vector1D)
 	 */
+	@XtextOperator("+=")
+	@Inline("translate($1)")
 	default void operator_add(Vector1D<?, ?, ?> v) {
 		translate(v);
 	}
@@ -279,10 +291,27 @@ public interface Shape1D<
 	 * @see #translate(Vector1D)
 	 */
 	@Pure
+	@XtextOperator("+")
 	default IT operator_plus(Vector1D<?, ?, ?> v) {
-		final IT clone = clone();
+		final var clone = clone();
 		clone.translate(v);
 		return clone;
+	}
+
+	/** Create a new shape by translating this shape of the given vector: {@code this + v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param v the vector
+	 * @return the transformed shape.
+	 * @see #translate(Vector1D)
+	 */
+	@Pure
+	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
+	default IT $plus(Vector1D<?, ?, ?> v) {
+		return operator_plus(v);
 	}
 
 	/** Translate this shape by substracting the given vector: {@code this -= v}
@@ -294,8 +323,9 @@ public interface Shape1D<
 	 * @param v the vector
 	 * @see #translate(Vector1D)
 	 */
+	@XtextOperator("-=")
 	default void operator_remove(Vector1D<?, ?, ?> v) {
-		final Vector1D<?, ?, ?> negate = getGeomFactory().newVector(v.getSegment());
+		final var negate = getGeomFactory().newVector(v.getSegment());
 		negate.negate(v);
 		translate(negate);
 	}
@@ -311,12 +341,29 @@ public interface Shape1D<
 	 * @see #translate(Vector1D)
 	 */
 	@Pure
+	@XtextOperator("-")
 	default IT operator_minus(Vector1D<?, ?, ?> v) {
-		final IT clone = clone();
-		final Vector1D<?, ?, ?> negate = getGeomFactory().newVector(v.getSegment());
+		final var clone = clone();
+		final var negate = getGeomFactory().newVector(v.getSegment());
 		negate.negate(v);
 		clone.translate(negate);
 		return clone;
+	}
+
+	/** Create a new shape by translating this shape of the given vector: {@code this - v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param v the vector
+	 * @return the transformed shape.
+	 * @see #translate(Vector1D)
+	 */
+	@Pure
+	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
+	default IT $minus(Vector1D<?, ?, ?> v) {
+		return operator_minus(v);
 	}
 
 	/** Replies if the given point is inside the shape: {@code this && b}
@@ -329,6 +376,8 @@ public interface Shape1D<
 	 * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
 	 */
 	@Pure
+	@XtextOperator("&&")
+	@Inline("contains($1)")
 	default boolean operator_and(Point1D<?, ?, ?> point) {
 		return contains(point);
 	}
@@ -336,7 +385,7 @@ public interface Shape1D<
 	/** Replies if the given shape has an intersection with this shape: {@code this && b}
 	 *
 	 * <p>You must use the intersection functions with a specific parameter type in place of
-	 * this general function. Indeed, the implementation of this function is unefficient due
+	 * this general function. Indeed, the implementation of this function is inefficient due
 	 * to the tests against the types of the given shape, and the cast operators.
 	 *
 	 * <p>This function is an implementation of the operator for
@@ -349,7 +398,45 @@ public interface Shape1D<
 	 */
 	@Pure
 	@Unefficient
+	@XtextOperator("&&")
+	@Inline("intersects($1)")
 	default boolean operator_and(Shape1D<?, ?, ?, ?, ?, ?> shape) {
+		return intersects(shape);
+	}
+
+	/** Replies if the given point is inside the shape: {@code this && b}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param point the point to test.
+	 * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("contains($1)")
+	default boolean $amp$amp(Point1D<?, ?, ?> point) {
+		return contains(point);
+	}
+
+	/** Replies if the given shape has an intersection with this shape: {@code this && b}
+	 *
+	 * <p>You must use the intersection functions with a specific parameter type in place of
+	 * this general function. Indeed, the implementation of this function is inefficient due
+	 * to the tests against the types of the given shape, and the cast operators.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param shape the shape to test.
+	 * @return {@code true} if the shapes are intersecting. Otherwise, {@code false}.
+	 * @see #intersects(Shape1D)
+	 */
+	@Pure
+	@Unefficient
+	@ScalaOperator("&&")
+	@Inline("intersects($1)")
+	default boolean $amp$amp(Shape1D<?, ?, ?, ?, ?, ?> shape) {
 		return intersects(shape);
 	}
 
@@ -364,6 +451,8 @@ public interface Shape1D<
 	 * @see #getDistance(Point1D)
 	 */
 	@Pure
+	@XtextOperator("..")
+	@Inline("getDistance($1)")
 	default double operator_upTo(Point1D<?, ?, ?> pt) {
 		return getDistance(pt);
 	}

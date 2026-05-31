@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,11 @@ package org.arakhne.afc.gis.location;
 
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.coordinate.GISCoordinates;
 import org.arakhne.afc.gis.coordinate.GeodesicPosition;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Describes a geo-localized feature.
  *
@@ -65,7 +64,7 @@ public final class GeoLocationArea extends AbstractGeoLocation {
 	 */
 	public GeoLocationArea(Shape2d<?> area) {
 		assert area != null;
-		final Rectangle2d box = area.toBoundingBox();
+		final var box = area.toBoundingBox();
 		this.x1 = GeoLocationUtil.castDistance(box.getMinX());
 		this.y1 = GeoLocationUtil.castDistance(box.getMinY());
 		this.x2 = GeoLocationUtil.castDistance(box.getMaxX());
@@ -84,7 +83,7 @@ public final class GeoLocationArea extends AbstractGeoLocation {
 	@Override
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		return Objects.hash(this.x1, this.y1, this.x2, this.y2);
+		return Objects.hash(Float.valueOf(this.x1), Float.valueOf(this.y1), Float.valueOf(this.x2), Float.valueOf(this.y2));
 	}
 
 	/** Replies the x coordinate of the lower-left corner.
@@ -162,7 +161,7 @@ public final class GeoLocationArea extends AbstractGeoLocation {
 	@Pure
 	@Override
 	public Rectangle2d toBounds2D() {
-		final Rectangle2d r = new Rectangle2d();
+		final var r = new Rectangle2d();
 		r.setFromCorners(this.x1, this.y1, this.x2, this.y2);
 		return r;
 	}

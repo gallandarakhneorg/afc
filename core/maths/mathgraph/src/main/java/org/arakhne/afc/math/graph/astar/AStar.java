@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.graph.GraphPath;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
@@ -37,6 +35,7 @@ import org.arakhne.afc.math.graph.GraphSegment;
 import org.arakhne.afc.util.ListUtil;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class provides an implementation of the
  * famous A* algorithm.
@@ -109,7 +108,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	private void fireAlgorithmStart(AStarNode<ST, PT> startPoint, PT endPoint) {
 		if (this.listeners != null) {
-			for (final AStarListener<ST, PT> listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.algorithmStarted(startPoint, endPoint);
 			}
 		}
@@ -117,7 +116,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	private void fireNodeOpened(AStarNode<ST, PT> node, List<AStarNode<ST, PT>> openList) {
 		if (this.listeners != null) {
-			for (final AStarListener<ST, PT> listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.nodeOpened(node, openList);
 			}
 		}
@@ -125,7 +124,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	private void fireNodeConsumed(AStarNode<ST, PT> node, List<AStarNode<ST, PT>> openList) {
 		if (this.listeners != null) {
-			for (final AStarListener<ST, PT> listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.nodeConsumed(node, openList);
 			}
 		}
@@ -133,7 +132,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	private void fireNodeReopened(AStarNode<ST, PT> node, List<AStarNode<ST, PT>> openList) {
 		if (this.listeners != null) {
-			for (final AStarListener<ST, PT> listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.nodeReopened(node, openList);
 			}
 		}
@@ -141,7 +140,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	private void fireNodeClosed(AStarNode<ST, PT> node, List<AStarNode<ST, PT>> closeList) {
 		if (this.listeners != null) {
-			for (final AStarListener<ST, PT> listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.nodeClosed(node, closeList);
 			}
 		}
@@ -149,7 +148,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	private void fireAlgorithmEnd(List<AStarNode<ST, PT>> closeList) {
 		if (this.listeners != null) {
-			for (final AStarListener<ST, PT> listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.algorithmEnded(closeList);
 			}
 		}
@@ -182,7 +181,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @see #setPathType(Class)
 	 */
 	public AStarPathFactory<GP, ST, PT> setPathFactory(AStarPathFactory<GP, ST, PT> factory) {
-		final AStarPathFactory<GP, ST, PT> old = this.pathFactory;
+		final var old = this.pathFactory;
 		this.pathFactory = factory;
 		return old;
 	}
@@ -194,7 +193,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @see #setPathFactory(AStarPathFactory)
 	 */
 	public AStarPathFactory<GP, ST, PT> setPathType(Class<? extends GP> type) {
-		final AStarPathFactory<GP, ST, PT> old = this.pathFactory;
+		final var old = this.pathFactory;
 		this.pathFactory = new AStarReflectionPathFactory<>(type);
 		return old;
 	}
@@ -214,7 +213,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @return the old heurisstic.
 	 */
 	public AStarHeuristic<? super PT> setEvaluationHeuristic(AStarHeuristic<? super PT> heuristic) {
-		final AStarHeuristic<? super PT> old = this.heuristic;
+		final var old = this.heuristic;
 		this.heuristic = heuristic;
 		return old;
 	}
@@ -234,7 +233,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @return the old replacer
 	 */
 	public AStarSegmentReplacer<ST> setSegmentReplacer(AStarSegmentReplacer<ST> replacer) {
-		final AStarSegmentReplacer<ST> old = this.segmentReplacer;
+		final var old = this.segmentReplacer;
 		this.segmentReplacer = replacer;
 		return old;
 	}
@@ -254,7 +253,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @return the old tool.
 	 */
 	public AStarSegmentOrientation<ST, PT> setSegmentOrientationTool(AStarSegmentOrientation<ST, PT> tool) {
-		final AStarSegmentOrientation<ST, PT> old = this.segmentOrientation;
+		final var old = this.segmentOrientation;
 		this.segmentOrientation = tool;
 		return old;
 	}
@@ -296,6 +295,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @param p1 the first point.
 	 * @param p2 the second point.
 	 * @return the evaluated distance between {@code p1} and {@code p2}.
+	 * @throws IllegalStateException if no heuristic is defined.
 	 */
 	@Pure
 	protected double estimate(PT p1, PT p2) {
@@ -363,6 +363,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @param startPoint is the first point in the path.
 	 * @param segment is the first connection to follow.
 	 * @return the path instance.
+	 * @throws IllegalStateException if the path cannot be created.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Pure
@@ -386,6 +387,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @param segment is the segment to add.
 	 * @return {@code true} if the segment was added;
 	 *     otherwise {@code false}.
+	 * @throws IllegalStateException if the path cannot be created.
 	 */
 	protected boolean addToPath(GP path, ST segment) {
 		if (this.pathFactory != null) {
@@ -430,12 +432,10 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @return the found path, or {@code null} if none found.
 	 */
 	protected GP solve(AStarNode<ST, PT> startPoint, PT endPoint) {
-		final List<AStarNode<ST, PT>> closeList;
-
 		fireAlgorithmStart(startPoint, endPoint);
 
 		// Run A*
-		closeList = findPath(startPoint, endPoint);
+		final var closeList = findPath(startPoint, endPoint);
 		if (closeList == null || closeList.isEmpty()) {
 			return null;
 		}
@@ -458,11 +458,11 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	private AStarNode<ST, PT> node(PT node, double cost, double estimatedCost, ST arrival) {
 		final AStarNode<ST, PT> aNode;
 
-		if (node instanceof AStarNode<?, ?>) {
-			aNode = (AStarNode<ST, PT>) node;
-			aNode.setArrivalConnection(arrival);
-			aNode.setCost(cost);
-			aNode.setEstimatedCost(estimatedCost);
+		if (node instanceof AStarNode aNode0) {
+			aNode0.setArrivalConnection(arrival);
+			aNode0.setCost(cost);
+			aNode0.setEstimatedCost(estimatedCost);
+			aNode = aNode0;
 		} else {
 			aNode = newAStarNode(node, cost, estimatedCost, arrival);
 		}
@@ -493,55 +493,47 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	@Pure
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	List<AStarNode<ST, PT>> findPath(AStarNode<ST, PT> startPoint, PT endPoint) {
-		final CloseComparator<ST, PT> cComparator = new CloseComparator<>();
-		final OpenComparator<ST, PT> oComparatorWithoutRef = new OpenComparator<>();
-		final List<AStarNode<ST, PT>> openList = new ArrayList<>();
-		final List<AStarNode<ST, PT>> closeList = new ArrayList<>();
+		final var cComparator = new CloseComparator<ST, PT>();
+		final var oComparatorWithoutRef = new OpenComparator<ST, PT>();
+		final var openList = new ArrayList<AStarNode<ST, PT>>();
+		final var closeList = new ArrayList<AStarNode<ST, PT>>();
 
 		openList.add(startPoint);
 		fireNodeOpened(startPoint, openList);
 
-		int idx;
-		AStarNode<ST, PT> candidate;
-		AStarNode<ST, PT> ocandidate;
-		AStarNode<ST, PT> reachableCandidate;
 		AStarNode<ST, PT> reachedCandidate;
-		PT reachableNode;
-		PT node;
-		double gCost;
-		double h1;
-		boolean foundTarget = false;
+		var foundTarget = false;
 
 		while (!foundTarget && !openList.isEmpty()) {
 
-			ocandidate = openList.remove(0);
+			final var ocandidate = openList.remove(0);
 			fireNodeConsumed(ocandidate, openList);
 
-			candidate = translateCandidate(endPoint, ocandidate);
+			final var candidate = translateCandidate(endPoint, ocandidate);
 			foundTarget = candidate == null;
 
 			if (!foundTarget) {
 				assert candidate != null;
-				node = candidate.getGraphPoint();
+				final var node = candidate.getGraphPoint();
 				// Update the nodes that are reachable from the current candidate.
-				for (final ST segment : candidate.getGraphSegments()) {
-					reachableNode = segment.getOtherSidePoint(node);
+				for (final var segment : candidate.getGraphSegments()) {
+					final var reachableNode = segment.getOtherSidePoint(node);
 					if (reachableNode != null && !reachableNode.equals(node)) {
-						gCost = candidate.getCost()
+						final var gCost = candidate.getCost()
 								+ computeCostFor(node)
 								+ computeCostFor(segment);
-						h1 = estimate(reachableNode, endPoint);
-						reachableCandidate = newAStarNode(reachableNode, gCost, h1, segment);
+						final var h1 = estimate(reachableNode, endPoint);
+						final var reachableCandidate = newAStarNode(reachableNode, gCost, h1, segment);
 
 						// Reopen node if better cost
-						idx = (isClosedNodeReopeningEnabled())
+						var idx = isClosedNodeReopeningEnabled()
 								? ListUtil.indexOf(closeList, cComparator, reachableCandidate)
 										: -1;
 						if (idx >= 0) {
 							reachedCandidate = closeList.get(idx);
 							if (gCost < reachedCandidate.getCost()) {
 								closeList.remove(idx);
-								final AStarNode<ST, PT> nn = node(
+								final var nn = node(
 										reachableNode,
 										gCost,
 										h1,
@@ -560,7 +552,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 								reachedCandidate = openList.get(idx);
 								if ((gCost + h1) < reachedCandidate.getPathCost()) {
 									openList.remove(idx);
-									final AStarNode<ST, PT> nn = node(
+									final var nn = node(
 											reachableNode,
 											gCost,
 											h1,
@@ -573,7 +565,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 								}
 							} else {
 								// Node was neither treated nor seen, add it
-								final AStarNode<ST, PT> nn = node(
+								final var nn = node(
 										reachableNode,
 										gCost,
 										h1,
@@ -590,7 +582,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 			}
 
 			// Refresh the close list
-			idx = ListUtil.add(closeList, cComparator, ocandidate, false, true);
+			final var idx = ListUtil.add(closeList, cComparator, ocandidate, false, true);
 			fireNodeClosed(ocandidate, closeList);
 			assert idx >= 0;
 		}
@@ -607,20 +599,16 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 */
 	@Pure
 	GP createPath(AStarNode<ST, PT> startPoint, PT endPoint, List<AStarNode<ST, PT>> closeList) {
-		int idx;
-		ST segment;
-		PT point;
-		AStarNode<ST, PT> node;
 		GP path = null;
-		final CloseComparator<ST, PT> cComparator = new CloseComparator<>();
+		final var cComparator = new CloseComparator<ST, PT>();
 
-		node = newAStarNode(endPoint, Double.NaN, Double.NaN, null);
-		idx = ListUtil.indexOf(closeList, cComparator, node);
+		var node = newAStarNode(endPoint, Double.NaN, Double.NaN, null);
+		var idx = ListUtil.indexOf(closeList, cComparator, node);
 
 		if (idx >= 0) {
 			node = closeList.remove(idx);
-			point = node.getGraphPoint();
-			segment = node.getArrivalConnection();
+			var point = node.getGraphPoint();
+			var segment = node.getArrivalConnection();
 			if (point != null && segment != null) {
 				final LinkedList<ST> pathSegments = new LinkedList<>();
 				pathSegments.add(segment);
@@ -647,7 +635,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 				// isConnectedSegment replies false when tested
 				// with an arrival segment and cannot
 				// enable to go backward along the path.
-				final Iterator<ST> iterator = pathSegments.descendingIterator();
+				final var iterator = pathSegments.descendingIterator();
 				if (iterator.hasNext()) {
 					segment = iterator.next();
 					if (startPoint.getGraphPoint().isConnectedSegment(segment)) {
@@ -745,10 +733,10 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 			if (this == obj) {
 				return true;
 			}
-			if (obj instanceof AStarNode<?, ?>) {
-				return this.entryPoint.equals(((AStarNode<?, ?>) obj).getGraphPoint());
+			if (obj instanceof AStarNode aNode) {
+				return this.entryPoint.equals(aNode.getGraphPoint());
 			}
-			if (obj instanceof GraphPoint<?, ?>) {
+			if (obj instanceof GraphPoint) {
 				return this.entryPoint.equals(obj);
 			}
 			return super.equals(obj);
@@ -811,7 +799,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		@Pure
 		@Override
 		public Iterable<ST> getGraphSegments() {
-			final AStarSegmentOrientation<ST, PT> tool = getSegmentOrientationTool();
+			final var tool = getSegmentOrientationTool();
 			if (tool != null) {
 				return new OrientedConnectionCollection(this.segment, this.entryPoint.getConnections());
 			}
@@ -851,7 +839,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 			if (o2 == null) {
 				return Integer.MAX_VALUE;
 			}
-			final int cmp = Double.compare(o1.getPathCost(), o2.getPathCost());
+			final var cmp = Double.compare(o1.getPathCost(), o2.getPathCost());
 			if (cmp != 0) {
 				return cmp;
 			}
@@ -954,12 +942,11 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		}
 
 		private void searchNext() {
-			final AStarSegmentOrientation<ST, PT> orientation = getSegmentOrientationTool();
+			final var orientation = getSegmentOrientationTool();
 			assert orientation != null;
 			this.next = null;
-			GraphPointConnection<PT, ST> connection;
 			while (this.next == null && this.iterator.hasNext()) {
-				connection = this.iterator.next();
+				final var connection = this.iterator.next();
 				if (orientation.isTraversable(this.entry, connection)) {
 					this.next = connection.getGraphSegment();
 				}
@@ -1010,7 +997,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		@Override
 		public GP newPath(PT startPoint, ST segment) {
 			try {
-				final GP path = this.type.getDeclaredConstructor().newInstance();
+				final var path = this.type.getDeclaredConstructor().newInstance();
 				path.add(segment, startPoint);
 				path.setFirstSegmentReversable(false);
 				return path;

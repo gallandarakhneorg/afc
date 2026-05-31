@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,15 +22,13 @@ package org.arakhne.afc.io.dbase;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.vmutil.Resources;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to store a field of a DBF file.
@@ -69,11 +67,11 @@ public class DBaseFileField {
 
 	static {
 		try {
-			final String resourceName = DBaseFileField.class.getCanonicalName().replace('.', '/')
+			final var resourceName = DBaseFileField.class.getCanonicalName().replace('.', '/')
 					+ "_unsetValues.txt"; //$NON-NLS-1$
-			final URL url = Resources.getResource(resourceName);
-			final BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-			String line = reader.readLine();
+			final var url = Resources.getResource(resourceName);
+			final var reader = new BufferedReader(new InputStreamReader(url.openStream()));
+			var line = reader.readLine();
 			while (line != null) {
 				line = line.trim();
 				if (!"".equals(line)) { //$NON-NLS-1$
@@ -174,8 +172,8 @@ public class DBaseFileField {
 	@Pure
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof DBaseFileField) {
-			return this.name.equals(((DBaseFileField) obj).getName());
+		if (obj instanceof DBaseFileField field) {
+			return this.name.equals(field.getName());
 		}
 		if (obj instanceof CharSequence) {
 			return this.name.equals(obj);
@@ -187,10 +185,9 @@ public class DBaseFileField {
 	@Override
 	@SuppressWarnings("checkstyle:magicnumber")
 	public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (this.name != null ? this.name.hashCode() : 0);
-        return result;
+        var result = 1L;
+        result = 31 * result + (this.name != null ? this.name.hashCode() : 0);
+        return (int) result;
 	}
 
 	/** Replies the name of the field.
@@ -262,7 +259,7 @@ public class DBaseFileField {
 		case FLOATING_NUMBER:
 		case NUMBER:
 			if (decimalPointPosition > this.decimal) {
-				final int intPart = this.length - this.decimal;
+				final var intPart = this.length - this.decimal;
 				this.decimal = decimalPointPosition;
 				this.length = intPart + this.decimal;
 			}

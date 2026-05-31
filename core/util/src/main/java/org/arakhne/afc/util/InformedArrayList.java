@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,7 +117,7 @@ public class InformedArrayList<E> extends ArrayList<E> implements InformedIterab
 	@SuppressWarnings("unchecked")
 	protected static <E> Class<? extends E> extractClassFrom(Collection<? extends E> collection) {
 		Class<? extends E> clazz = null;
-		for (final E elt : collection) {
+		for (final var elt : collection) {
 			clazz = (Class<? extends E>) ReflectionUtil.getCommonType(clazz, elt.getClass());
 		}
 		return clazz == null ? (Class<E>) Object.class : clazz;
@@ -154,7 +154,7 @@ public class InformedArrayList<E> extends ArrayList<E> implements InformedIterab
 	 */
 	@SuppressWarnings("unchecked")
 	protected final void updateComponentType(E newElement) {
-		final Class<? extends E> lclazz = (Class<? extends E>) newElement.getClass();
+		final var lclazz = (Class<? extends E>) newElement.getClass();
 		this.clazz = (Class<? extends E>) ReflectionUtil.getCommonType(this.clazz, lclazz);
 	}
 
@@ -165,7 +165,7 @@ public class InformedArrayList<E> extends ArrayList<E> implements InformedIterab
 	 */
 	@SuppressWarnings("unchecked")
 	protected final void updateComponentType(Collection<? extends E> newElements) {
-		final Class<? extends E> lclazz = extractClassFrom(newElements);
+		final var lclazz = extractClassFrom(newElements);
 		this.clazz = (Class<? extends E>) ReflectionUtil.getCommonType(this.clazz, lclazz);
 	}
 
@@ -263,7 +263,7 @@ public class InformedArrayList<E> extends ArrayList<E> implements InformedIterab
 	@SuppressWarnings("unchecked")
 	@Override
 	public E set(int index, E element) {
-		final E elt = super.set(index, element);
+		final var elt = super.set(index, element);
 		if (element != null) {
 			if (size() == 1) {
 				this.clazz = (Class<? extends E>) element.getClass();

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,9 +116,9 @@ public class DefaultProgression implements Progression {
 
 	@Override
 	public void end() {
-		final int v = getValue();
-		final int m = getMaximum();
-		final String comment = getComment();
+		final var v = getValue();
+		final var m = getMaximum();
+		final var comment = getComment();
 		if (v < m || comment != null) {
 			setValue(m, null);
 		}
@@ -169,8 +169,8 @@ public class DefaultProgression implements Progression {
 	 */
 	protected void fireStateChange() {
 		if (this.listeners != null) {
-			final ProgressionEvent event = new ProgressionEvent(this, isRootModel());
-			for (final ProgressionListener listener : this.listeners.getListeners(ProgressionListener.class)) {
+			final var event = new ProgressionEvent(this, isRootModel());
+			for (final var listener : this.listeners.getListeners(ProgressionListener.class)) {
 				listener.onProgressionStateChanged(event);
 			}
 		}
@@ -180,8 +180,8 @@ public class DefaultProgression implements Progression {
 	 */
 	protected void fireValueChange() {
 		if (this.listeners != null) {
-			final ProgressionEvent event = new ProgressionEvent(this, isRootModel());
-			for (final ProgressionListener listener : this.listeners.getListeners(ProgressionListener.class)) {
+			final var event = new ProgressionEvent(this, isRootModel());
+			for (final var listener : this.listeners.getListeners(ProgressionListener.class)) {
 				listener.onProgressionValueChanged(event);
 			}
 		}
@@ -200,7 +200,7 @@ public class DefaultProgression implements Progression {
 	@Override
 	@SuppressWarnings("checkstyle:magicnumber")
 	public double getPercent() {
-		final int extent = this.max - this.min;
+		final var extent = this.max - this.min;
 		if (extent == 0.) {
 			return 0.;
 		}
@@ -209,7 +209,7 @@ public class DefaultProgression implements Progression {
 
 	@Override
 	public double getProgressionFactor() {
-		final int extent = this.max - this.min;
+		final var extent = this.max - this.min;
 		if (extent == 0.) {
 			return 0.;
 		}
@@ -268,7 +268,7 @@ public class DefaultProgression implements Progression {
 	}
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-			"checkstyle:parameternumber", "checkstyle:booleanexpressioncomplexity"})
+		"checkstyle:parameternumber", "checkstyle:booleanexpressioncomplexity"})
 	private void setProperties(double value, int min, int max, boolean adjusting,
 			String comment, boolean writeLocalComment,
 			boolean forceDeterminate, boolean forceValue,
@@ -277,20 +277,20 @@ public class DefaultProgression implements Progression {
 			this.child.disconnect();
 		}
 
-		String uptComment = comment;
+		var uptComment = comment;
 		if (uptComment != null && "".equals(uptComment)) { //$NON-NLS-1$
 			uptComment = null;
 		}
 
-		int theMin = min;
-		int theMax = max;
+		var theMin = min;
+		var theMax = max;
 		if (theMin > max) {
-			final int tmp = theMin;
+			final var tmp = theMin;
 			theMin = theMax;
 			theMax = tmp;
 		}
 
-		double theValue = value;
+		var theValue = value;
 		if (theValue < theMin) {
 			theValue = theMin;
 		}
@@ -298,12 +298,12 @@ public class DefaultProgression implements Progression {
 			theValue = theMax;
 		}
 
-		final boolean changed = (forceValue && (theValue != this.current))
-				|| ((!forceValue) && (theValue > this.current))
-				|| (theMin != this.min)
-				|| (theMax != this.max)
-				|| (adjusting != this.isAdjusting)
-				|| (uptComment != this.comment && (uptComment == null || !uptComment.equals(this.comment)));
+		final var changed = forceValue && theValue != this.current
+				|| !forceValue && theValue > this.current
+				|| theMin != this.min
+				|| theMax != this.max
+				|| adjusting != this.isAdjusting
+				|| uptComment != this.comment && (uptComment == null || !uptComment.equals(this.comment));
 
 		if (changed && !adjusting) {
 			this.current = theValue;
@@ -398,7 +398,7 @@ public class DefaultProgression implements Progression {
 	void disconnectSubTask(SubProgressionModel subTask, double value, boolean overwriteComment) {
 		if (this.child == subTask) {
 			if (overwriteComment) {
-				final String cmt = subTask.getComment();
+				final var cmt = subTask.getComment();
 				if (cmt != null) {
 					this.comment = cmt;
 				}
@@ -411,7 +411,7 @@ public class DefaultProgression implements Progression {
 	@Override
 	public String getComment() {
 		if (this.child != null) {
-			final String childComment = this.child.getComment();
+			final var childComment = this.child.getComment();
 			if (childComment != null) {
 				return childComment;
 			}

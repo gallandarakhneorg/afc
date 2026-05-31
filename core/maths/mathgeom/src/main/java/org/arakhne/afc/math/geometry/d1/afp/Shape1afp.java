@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,13 @@
 
 package org.arakhne.afc.math.geometry.d1.afp;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.Shape1D;
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with 2D floating coordinates.
  *
@@ -67,8 +66,15 @@ public interface Shape1afp<
 		if (isEmpty()) {
 			return false;
 		}
-		if (shape instanceof Rectangle1afp) {
+		final var type = shape.getType();
+		assert type != null;
+		assert type.getPreferredContinuousShapeType() != null;
+		assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
+		case RECTANGLE:
 			return contains((Rectangle1afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
 		}
 		return false;
 	}
@@ -111,8 +117,15 @@ public interface Shape1afp<
 	@Unefficient
 	@Override
 	default boolean intersects(Shape1D<?, ?, ?, ?, ?, ?> shape) {
-		if (shape instanceof Rectangle1afp) {
+		final var type = shape.getType();
+		assert type != null;
+		assert type.getPreferredContinuousShapeType() != null;
+		assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
+		case RECTANGLE:
 			return intersects((Rectangle1afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
 		}
 		return false;
 	}
@@ -121,7 +134,7 @@ public interface Shape1afp<
 	 *
 	 * @param rectangle the rectangle.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Rectangle1afp<?, ?, ?, ?, ?, ?> rectangle);
@@ -130,8 +143,15 @@ public interface Shape1afp<
 	@Unefficient
 	@Override
 	default double getDistanceSquared(Shape1D<?, ?, ?, ?, ?, ?> shape) {
-		if (shape instanceof Rectangle1afp) {
+		final var type = shape.getType();
+		assert type != null;
+		assert type.getPreferredContinuousShapeType() != null;
+		assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
+		case RECTANGLE:
 			return getDistanceSquared((Rectangle1afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
 		}
 		throw new IllegalArgumentException();
 	}
@@ -151,8 +171,15 @@ public interface Shape1afp<
 	@Unefficient
 	@Override
 	default P getClosestPointTo(Shape1D<?, ?, ?, ?, ?, ?> shape) {
-		if (shape instanceof Rectangle1afp) {
+		final var type = shape.getType();
+		assert type != null;
+		assert type.getPreferredContinuousShapeType() != null;
+		assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
+		case RECTANGLE:
 			return getClosestPointTo((Rectangle1afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
 		}
 		throw new IllegalArgumentException();
 	}
@@ -177,7 +204,7 @@ public interface Shape1afp<
 
 	@Override
 	default B toBoundingBox() {
-		final B box = getGeomFactory().newBox(getSegment());
+		final var box = getGeomFactory().newBox(getSegment());
 		toBoundingBox(box);
 		return box;
 	}

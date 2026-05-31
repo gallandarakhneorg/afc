@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -826,8 +826,8 @@ public enum CountryCode {
 	 */
 	@Pure
 	public static CountryCode fromLocale(Locale locale) {
-		final String c = locale.getCountry();
-		for (final CountryCode cc : CountryCode.values()) {
+		final var c = locale.getCountry();
+		for (final var cc : CountryCode.values()) {
 			if (cc.code.equalsIgnoreCase(c)) {
 				return cc;
 			}
@@ -841,7 +841,7 @@ public enum CountryCode {
 	 */
 	@Pure
 	public Locale getLocale() {
-		return new Locale(this.code, this.code);
+		return Locale.of(this.code, this.code);
 	}
 
 	/** Replies the display name of the country.
@@ -870,7 +870,7 @@ public enum CountryCode {
 	 */
 	public static CountryCode valueOfCaseInsensitive(String name) {
 		if (name != null && !name.isEmpty()) {
-			for (final CountryCode code : CountryCode.values()) {
+			for (final var code : CountryCode.values()) {
 				if (name.equalsIgnoreCase(code.name())) {
 					return code;
 				}

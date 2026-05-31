@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.gis.road.layer;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.road.primitive.RoadType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Constants for the road network layer API.
@@ -104,27 +103,27 @@ public final class RoadNetworkLayerConstants {
 	 */
 	@Pure
 	public static int getPreferredRoadBorderSize() {
-		return getPreferredRoadBorderSize(true);
+		return getPreferredRoadBorderSize(true).intValue();
 	}
 
 	/** Replies the preferred size of the roazd borders (in pixels).
 	 *
 	 * @param useSystemValue indicates if the {@code null} value
 	 *     must be replaced by the default system value:
-	 * {@link #DEFAULT_BORDER_SIZE}.
+	 *     {@link #DEFAULT_BORDER_SIZE}.
 	 * @return size of the road borders.
 	 */
 	@Pure
 	public static Integer getPreferredRoadBorderSize(boolean useSystemValue) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
-			final int size = prefs.getInt("ROAD_BORDER_SIZE", -1); //$NON-NLS-1$
+			final var size = prefs.getInt("ROAD_BORDER_SIZE", -1); //$NON-NLS-1$
 			if (size >= 0) {
-				return size;
+				return Integer.valueOf(size);
 			}
 		}
 		if (useSystemValue) {
-			return DEFAULT_BORDER_SIZE;
+			return Integer.valueOf(DEFAULT_BORDER_SIZE);
 		}
 		return null;
 	}
@@ -134,7 +133,7 @@ public final class RoadNetworkLayerConstants {
 	 * @param size is the preferred size of the roazd borders (in pixels).
 	 */
 	public static void setPreferredRoadBorderSize(Integer size) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
 			if (size == null || size.intValue() == DEFAULT_BORDER_SIZE) {
 				prefs.remove("ROAD_BORDER_SIZE"); //$NON-NLS-1$
@@ -164,18 +163,18 @@ public final class RoadNetworkLayerConstants {
 	 * @param roadType is the type of road for which the color should be replied.
 	 * @param useSystemValue indicates if the {@code null} value
 	 *     must be replaced by the default system value in
-	 * {@link #DEFAULT_ROAD_COLORS} (if {@code true}).
+	 *     {@link #DEFAULT_ROAD_COLORS} (if {@code true}).
 	 * @return the color of the inner parts of the roads.
 	 */
 	@Pure
 	public static int  getPreferredRoadColor(RoadType roadType, boolean useSystemValue) {
-		final RoadType rt = roadType == null ? RoadType.OTHER : roadType;
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var rt = roadType == null ? RoadType.OTHER : roadType;
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
-			final String str = prefs.get("ROAD_COLOR_" + rt.name().toUpperCase(), null); //$NON-NLS-1$
+			final var str = prefs.get("ROAD_COLOR_" + rt.name().toUpperCase(), null); //$NON-NLS-1$
 			if (str != null) {
 				try {
-					return Integer.valueOf(str);
+					return Integer.parseInt(str);
 				} catch (Throwable exception) {
 					//
 				}
@@ -193,8 +192,8 @@ public final class RoadNetworkLayerConstants {
 	 * @param color is the color or {@code null} to restore the default value.
 	 */
 	public static void setPreferredRoadColor(RoadType roadType, Integer color) {
-		final RoadType rt = roadType == null ? RoadType.OTHER : roadType;
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var rt = roadType == null ? RoadType.OTHER : roadType;
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
 			if (color == null || color.intValue() == DEFAULT_ROAD_COLORS[rt.ordinal() * 2]) {
 				prefs.remove("ROAD_COLOR_" + rt.name().toUpperCase()); //$NON-NLS-1$
@@ -224,18 +223,18 @@ public final class RoadNetworkLayerConstants {
 	 * @param roadType is the type of road for which the color should be replied.
 	 * @param useSystemValue indicates if the {@code null} value
 	 *     must be replaced by the default system value in
-	 * {@link #DEFAULT_ROAD_COLORS} (if {@code true}).
+	 *     {@link #DEFAULT_ROAD_COLORS} (if {@code true}).
 	 * @return the color of the inner parts of the roads.
 	 */
 	@Pure
 	public static int getPreferredBorderColor(RoadType roadType, boolean useSystemValue) {
-		final RoadType rt = roadType == null ? RoadType.OTHER : roadType;
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var rt = roadType == null ? RoadType.OTHER : roadType;
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
-			final String str = prefs.get("BORDER_COLOR_" + rt.name().toUpperCase(), null); //$NON-NLS-1$
+			final var str = prefs.get("BORDER_COLOR_" + rt.name().toUpperCase(), null); //$NON-NLS-1$
 			if (str != null) {
 				try {
-					return Integer.valueOf(str);
+					return Integer.parseInt(str);
 				} catch (Throwable exception) {
 					//
 				}
@@ -253,8 +252,8 @@ public final class RoadNetworkLayerConstants {
 	 * @param color is the color or {@code null} to restore the default value.
 	 */
 	public static void setPreferredBorderColor(RoadType roadType, Integer color) {
-		final RoadType rt = roadType == null ? RoadType.OTHER : roadType;
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var rt = roadType == null ? RoadType.OTHER : roadType;
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
 			if (color == null || color.intValue() == DEFAULT_ROAD_COLORS[rt.ordinal() * 2 + 1]) {
 				prefs.remove("BORDER_COLOR_" + rt.name().toUpperCase()); //$NON-NLS-1$
@@ -277,7 +276,7 @@ public final class RoadNetworkLayerConstants {
 	 */
 	@Pure
 	public static boolean getPreferredRoadInternDrawing() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
 			return prefs.getBoolean("ROAD_INTERN_DRAWING", DEFAULT_ROAD_INTERN_DRAWING); //$NON-NLS-1$
 		}
@@ -293,12 +292,12 @@ public final class RoadNetworkLayerConstants {
 	 *     the default value given by {@link #DEFAULT_ROAD_INTERN_DRAWING}.
 	 */
 	public static void setPreferredRoadInternDrawing(Boolean draw) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
 			if (draw == null) {
 				prefs.remove("ROAD_INTERN_DRAWING"); //$NON-NLS-1$
 			} else {
-				prefs.putBoolean("ROAD_INTERN_DRAWING", draw); //$NON-NLS-1$
+				prefs.putBoolean("ROAD_INTERN_DRAWING", draw.booleanValue()); //$NON-NLS-1$
 			}
 			try {
 				prefs.flush();
@@ -315,12 +314,12 @@ public final class RoadNetworkLayerConstants {
 	 */
 	@Pure
 	public static int getPreferredRoadInternColor() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
 			final String color = prefs.get("ROAD_INTERN_COLOR", null); //$NON-NLS-1$
 			if (color != null) {
 				try {
-					return Integer.valueOf(color);
+					return Integer.parseInt(color);
 				} catch (Throwable exception) {
 					//
 				}
@@ -335,7 +334,7 @@ public final class RoadNetworkLayerConstants {
 	 * @param color is the color of the internal data structures, never {@code null}.
 	 */
 	public static void setPreferredRoadInternColor(Integer color) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);
 		if (prefs != null) {
 			if (color == null) {
 				prefs.remove("ROAD_INTERN_COLOR"); //$NON-NLS-1$

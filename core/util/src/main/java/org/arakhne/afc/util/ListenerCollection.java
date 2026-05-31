@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,8 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.EventListener;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A collection of listeners.
@@ -109,11 +108,11 @@ public class ListenerCollection<L extends EventListener> {
 	@SuppressWarnings("unchecked")
 	@Pure
 	public <T extends EventListener> T[] getListeners(Class<T> type) {
-		final Object[] l = this.listeners;
-		final int n = getListenerCount(l, type);
-		final T[] result = (T[]) Array.newInstance(type, n);
-		int j = 0;
-		for (int i = l.length - 2; i >= 0; i -= 2) {
+		final var l = this.listeners;
+		final var n = getListenerCount(l, type);
+		final var result = (T[]) Array.newInstance(type, n);
+		var j = 0;
+		for (var i = l.length - 2; i >= 0; i -= 2) {
 			if (l[i] == type) {
 				result[j++] = type.cast(l[i + 1]);
 			}
@@ -145,8 +144,8 @@ public class ListenerCollection<L extends EventListener> {
 	}
 
 	private static int getListenerCount(Object[] list, Class<?> type) {
-		int count = 0;
-		for (int i = 0; i < list.length; i += 2) {
+		var count = 0;
+		for (var i = 0; i < list.length; i += 2) {
 			if (type == (Class<?>) list[i]) {
 				++count;
 			}
@@ -169,8 +168,8 @@ public class ListenerCollection<L extends EventListener> {
 			this.listeners = new Object[] {type, listener};
 		} else {
 			// Otherwise copy the array and add the new listener
-			final int i = this.listeners.length;
-			final Object[] tmp = new Object[i + 2];
+			final var i = this.listeners.length;
+			final var tmp = new Object[i + 2];
 			System.arraycopy(this.listeners, 0, tmp, 0, i);
 
 			tmp[i] = type;
@@ -190,9 +189,9 @@ public class ListenerCollection<L extends EventListener> {
 	public synchronized <T extends EventListener> void remove(Class<T> type, T listener) {
 		assert listener != null;
 		// Is l on the list?
-		int index = -1;
-		for (int i = this.listeners.length - 2; i >= 0; i -= 2) {
-			if ((this.listeners[i] == type) && (this.listeners[i + 1].equals(listener))) {
+		var index = -1;
+		for (var i = this.listeners.length - 2; i >= 0; i -= 2) {
+			if (this.listeners[i] == type && this.listeners[i + 1].equals(listener)) {
 				index = i;
 				break;
 			}
@@ -200,7 +199,7 @@ public class ListenerCollection<L extends EventListener> {
 
 		// If so,  remove it
 		if (index != -1) {
-			final Object[] tmp = new Object[this.listeners.length - 2];
+			final var tmp = new Object[this.listeners.length - 2];
 			// Copy the list up to index
 			System.arraycopy(this.listeners, 0, tmp, 0, index);
 			// Copy from two past the index, up to
@@ -221,14 +220,14 @@ public class ListenerCollection<L extends EventListener> {
 	 * @throws IOException when something wrong occurs.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
-		final Object[] lList = this.listeners;
+		final var lList = this.listeners;
 		stream.defaultWriteObject();
 
 		// Save the non-null event listeners:
-		for (int i = 0; i < lList.length; i += 2) {
-			final Class<?> t = (Class<?>) lList[i];
-			final EventListener l = (EventListener) lList[i + 1];
-			if ((l != null) && (l instanceof Serializable)) {
+		for (var i = 0; i < lList.length; i += 2) {
+			final var t = (Class<?>) lList[i];
+			final var l = (EventListener) lList[i + 1];
+			if (l != null && l instanceof Serializable) {
 				stream.writeObject(t.getName());
 				stream.writeObject(l);
 			}
@@ -244,8 +243,8 @@ public class ListenerCollection<L extends EventListener> {
 		Object listenerTypeOrNull;
 
 		while (null != (listenerTypeOrNull = stream.readObject())) {
-			final ClassLoader cl = Thread.currentThread().getContextClassLoader();
-			final EventListener l = (EventListener) stream.readObject();
+			final var cl = Thread.currentThread().getContextClassLoader();
+			final var l = (EventListener) stream.readObject();
 			add((Class<EventListener>) Class.forName((String) listenerTypeOrNull, true, cl), l);
 		}
 	}

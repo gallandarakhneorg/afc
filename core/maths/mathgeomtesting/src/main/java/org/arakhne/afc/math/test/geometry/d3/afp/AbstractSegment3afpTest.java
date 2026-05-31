@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.test.geometry.d3.afp;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -51,98 +51,98 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
 public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, ?, ?, B>,
-			B extends AlignedBox3afp<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
+			B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
 
 	@Override
 	protected final T createShape() {
 		return (T) createSegment(0, 0, 0, 1, 1, 1);
 	}
 
-	@DisplayName("calculatesClosestPointToPoint(double,double,double,double,double,double,double,double,double,Point3D)")
+	@DisplayName("findsClosestPointToPoint(double,double,double,double,double,double,double,double,double,Point3D)")
 	@Test
-	public void staticCalculatesClosestPointTo() {
+	public void staticFindsClosestPointToPoint() {
 		Point3D result;
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesClosestPointToPoint(0, 0, 0, 1, 1, 1, 0, 0, 0, result);
+		Segment3afp.findsClosestPointToPoint(0, 0, 0, 1, 1, 1, 0, 0, 0, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(0, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesClosestPointToPoint(0, 0, 0, 1, 1, 1, .75, .75, .75, result);
+		Segment3afp.findsClosestPointToPoint(0, 0, 0, 1, 1, 1, .75, .75, .75, result);
 		assertEpsilonEquals(.75, result.getX());
 		assertEpsilonEquals(.75, result.getY());
 		assertEpsilonEquals(.75, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesClosestPointToPoint(0, 0, 0, 1, 1, 1, -10, -50, 0, result);
+		Segment3afp.findsClosestPointToPoint(0, 0, 0, 1, 1, 1, -10, -50, 0, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(0, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesClosestPointToPoint(0, 0, 0, 1, 1, 1, 200, -50, 0, result);
+		Segment3afp.findsClosestPointToPoint(0, 0, 0, 1, 1, 1, 200, -50, 0, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 		assertEpsilonEquals(1, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesClosestPointToPoint(0, 0, 0, 1, 1, 1, 0, 1, 0, result);
+		Segment3afp.findsClosestPointToPoint(0, 0, 0, 1, 1, 1, 0, 1, 0, result);
 		assertEpsilonEquals(.3333333333, result.getX());
 		assertEpsilonEquals(.3333333333, result.getY());
 		assertEpsilonEquals(.3333333333, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesClosestPointToPoint(0, 0, 5, 1, -2, 1, 0, 1, 0, result);
+		Segment3afp.findsClosestPointToPoint(0, 0, 5, 1, -2, 1, 0, 1, 0, result);
 		assertEpsilonEquals(0.857142857142, result.getX());
 		assertEpsilonEquals(-1.7142857142857142, result.getY());
 		assertEpsilonEquals(1.5714285714285716, result.getZ());
 	}
 
-	@DisplayName("calculatesFarthestPointTo(double,double,double,double,double,double,double,double,double,Point3D)")
+	@DisplayName("findsFarthestPointToPoint(double,double,double,double,double,double,double,double,double,Point3D)")
 	@Test
-	public void calculatesFarthestPointTo() {
+	public void staticFindsFarthestPointToPoint() {
 		Point3D p;
 
 		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesFarthestPointTo(0, 0, 0, 1, 1, 0, 0, 0, 0, p);
+		Segment3afp.calculatesFarthestPointToPoint(0, 0, 0, 1, 1, 0, 0, 0, 0, p);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(1, p.getY());
 		assertEpsilonEquals(0, p.getZ());
 
 		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesFarthestPointTo(0, 0, 0, 1, 1, 0, .5, .5, 0, p);
+		Segment3afp.calculatesFarthestPointToPoint(0, 0, 0, 1, 1, 0, .5, .5, 0, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 		assertEpsilonEquals(0, p.getZ());
 
 		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesFarthestPointTo(0, 0, 0, 1, 1, 0, 1, 1, 0, p);
+		Segment3afp.calculatesFarthestPointToPoint(0, 0, 0, 1, 1, 0, 1, 1, 0, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 		assertEpsilonEquals(0, p.getZ());
 
 		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesFarthestPointTo(0, 0, 0, 1, 1, 0, 2, 2, 0, p);
+		Segment3afp.calculatesFarthestPointToPoint(0, 0, 0, 1, 1, 0, 2, 2, 0, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 		assertEpsilonEquals(0, p.getZ());
 
 		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesFarthestPointTo(0, 0, 0, 1, 1, 0, -2, 2, 0, p);
+		Segment3afp.calculatesFarthestPointToPoint(0, 0, 0, 1, 1, 0, -2, 2, 0, p);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(1, p.getY());
 		assertEpsilonEquals(0, p.getZ());
 
 		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesFarthestPointTo(0, 0, 0, 1, 1, 0, 0.1, 1.2, 0, p);
+		Segment3afp.calculatesFarthestPointToPoint(0, 0, 0, 1, 1, 0, 0.1, 1.2, 0, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 		assertEpsilonEquals(0, p.getZ());
 
 		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.calculatesFarthestPointTo(0, 0, 0, 1, 1, 0, 10.1, -.2, 0, p);
+		Segment3afp.calculatesFarthestPointToPoint(0, 0, 0, 1, 1, 0, 10.1, -.2, 0, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 		assertEpsilonEquals(0, p.getZ());
@@ -1099,33 +1099,6 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 		assertTrue(this.shape.equals(createSegment(0, 0, 0, 1, 1, 1)));
 	}
 
-	@DisplayName("equals(Object) with path iterator")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equals(createSegment(0, 0, 0, 5, 0, 0).getPathIterator()));
-		assertFalse(this.shape.equals(createSegment(0, 0, 0, 2, 2, 0).getPathIterator()));
-		assertFalse(this.shape.equals(createSphere(5, 8, 0, 6).getPathIterator()));
-		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		assertTrue(this.shape.equals(createSegment(0, 0, 0, 1, 1, 1).getPathIterator()));
-	}
-
-	@DisplayName("equalsTo(PathIterator3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void equalsToPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equalsToPathIterator((PathIterator3afp) null));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 5, 0, 0).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 2, 2, 0).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createAlignedBox(5, 8, 0, 6, 14, 2).getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 1, 1, 1).getPathIterator()));
-	}
-
 	@DisplayName("equalsToShape(Shape3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
@@ -1479,6 +1452,158 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 		assertEpsilonEquals(1, s.getZ2());
 	}
 
+	@DisplayName("createTransformedShape(Transform3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void createTransformedShapeTransform3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		Segment3afp s;
+		Transform3D tr;
+
+		tr = new Transform3D();    	
+		s = (Segment3afp) this.shape.createTransformedShape(tr);
+		assertNotSame(this.shape, s);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(0, this.shape.getZ1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+		assertEpsilonEquals(1, this.shape.getZ2());
+		assertEpsilonEquals(0, s.getX1());
+		assertEpsilonEquals(0, s.getY1());
+		assertEpsilonEquals(0, s.getZ1());
+		assertEpsilonEquals(1, s.getX2());
+		assertEpsilonEquals(1, s.getY2());
+		assertEpsilonEquals(1, s.getZ2());
+
+		tr = new Transform3D();
+		tr.makeTranslationMatrix(3.4, 4.5, 1.3);
+		s = (Segment3afp) this.shape.createTransformedShape(tr);
+		assertNotSame(this.shape, s);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(0, this.shape.getZ1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+		assertEpsilonEquals(1, this.shape.getZ2());
+		assertEpsilonEquals(3.4, s.getX1());
+		assertEpsilonEquals(4.5, s.getY1());
+		assertEpsilonEquals(1.3, s.getZ1());
+		assertEpsilonEquals(4.4, s.getX2());
+		assertEpsilonEquals(5.5, s.getY2());
+		assertEpsilonEquals(2.3, s.getZ2());
+
+		tr = new Transform3D();
+		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.PI));
+		s = (Segment3afp) this.shape.createTransformedShape(tr);
+		assertNotSame(this.shape, s);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(0, this.shape.getZ1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+		assertEpsilonEquals(1, this.shape.getZ2());
+		assertEpsilonEquals(0, s.getX1());
+		assertEpsilonEquals(0, s.getY1());
+		assertEpsilonEquals(0, s.getZ1());
+		assertEpsilonEquals(-1, s.getX2());
+		assertEpsilonEquals(-1, s.getY2());
+		assertEpsilonEquals(1, s.getZ2());
+
+		tr = new Transform3D();
+		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
+		s = (Segment3afp) this.shape.createTransformedShape(tr);
+		assertNotSame(this.shape, s);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(0, this.shape.getZ1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+		assertEpsilonEquals(1, this.shape.getZ2());
+		assertEpsilonEquals(0, s.getX1());
+		assertEpsilonEquals(0, s.getY1());
+		assertEpsilonEquals(0, s.getZ1());
+		assertEpsilonEquals(0, s.getX2());
+		assertEpsilonEquals(1.41421356, s.getY2());
+		assertEpsilonEquals(1, s.getZ2());
+	}
+
+	@DisplayName("s * Transform3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		Segment3afp s;
+		Transform3D tr;
+
+		tr = new Transform3D();    	
+		s = (Segment3afp) this.shape.operator_multiply(tr);
+		assertNotSame(this.shape, s);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(0, this.shape.getZ1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+		assertEpsilonEquals(1, this.shape.getZ2());
+		assertEpsilonEquals(0, s.getX1());
+		assertEpsilonEquals(0, s.getY1());
+		assertEpsilonEquals(0, s.getZ1());
+		assertEpsilonEquals(1, s.getX2());
+		assertEpsilonEquals(1, s.getY2());
+		assertEpsilonEquals(1, s.getZ2());
+
+		tr = new Transform3D();
+		tr.makeTranslationMatrix(3.4, 4.5, 1.3);
+		s = (Segment3afp) this.shape.operator_multiply(tr);
+		assertNotSame(this.shape, s);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(0, this.shape.getZ1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+		assertEpsilonEquals(1, this.shape.getZ2());
+		assertEpsilonEquals(3.4, s.getX1());
+		assertEpsilonEquals(4.5, s.getY1());
+		assertEpsilonEquals(1.3, s.getZ1());
+		assertEpsilonEquals(4.4, s.getX2());
+		assertEpsilonEquals(5.5, s.getY2());
+		assertEpsilonEquals(2.3, s.getZ2());
+
+		tr = new Transform3D();
+		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.PI));
+		s = (Segment3afp) this.shape.operator_multiply(tr);
+		assertNotSame(this.shape, s);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(0, this.shape.getZ1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+		assertEpsilonEquals(1, this.shape.getZ2());
+		assertEpsilonEquals(0, s.getX1());
+		assertEpsilonEquals(0, s.getY1());
+		assertEpsilonEquals(0, s.getZ1());
+		assertEpsilonEquals(-1, s.getX2());
+		assertEpsilonEquals(-1, s.getY2());
+		assertEpsilonEquals(1, s.getZ2());
+
+		tr = new Transform3D();
+		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
+		s = (Segment3afp) this.shape.operator_multiply(tr);
+		assertNotSame(this.shape, s);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(0, this.shape.getZ1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+		assertEpsilonEquals(1, this.shape.getZ2());
+		assertEpsilonEquals(0, s.getX1());
+		assertEpsilonEquals(0, s.getY1());
+		assertEpsilonEquals(0, s.getZ1());
+		assertEpsilonEquals(0, s.getX2());
+		assertEpsilonEquals(1.41421356, s.getY2());
+		assertEpsilonEquals(1, s.getZ2());
+	}
+
 	@DisplayName("contains(double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
@@ -1667,97 +1792,6 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 		assertEpsilonEquals(789.123, this.shape.getX2());
 		assertEpsilonEquals(159.753, this.shape.getY2());
 		assertEpsilonEquals(145.36, this.shape.getZ2());
-	}
-
-	@DisplayName("getPathIterator")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void getPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		PathIterator3afp pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 1, 1, 1);
-		assertNoElement(pi);
-	}
-
-	@DisplayName("getPathIterator(Transform3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void getPathIteratorTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		PathIterator3afp pi;
-
-		tr = new Transform3D();
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 1, 1, 1);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4, 4.5, 1.3);
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 3.4, 4.5, 1.3);
-		assertElement(pi, PathElementType.LINE_TO, 4.4, 5.5, 2.3);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 0, 1.414213562, 1);
-		assertNoElement(pi);
-	}
-
-	@DisplayName("createTransformedShape(Transform3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void createTransformedShape(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Segment3afp s;
-		Transform3D tr;
-
-		tr = new Transform3D();    	
-		s = (Segment3afp) this.shape.createTransformedShape(tr);
-		assertEpsilonEquals(0, s.getX1());
-		assertEpsilonEquals(0, s.getY1());
-		assertEpsilonEquals(0, s.getZ1());
-		assertEpsilonEquals(1, s.getX2());
-		assertEpsilonEquals(1, s.getY2());
-		assertEpsilonEquals(1, s.getZ2());
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4, 4.5, 1.3);
-		s = (Segment3afp) this.shape.createTransformedShape(tr);
-		assertEpsilonEquals(3.4, s.getX1());
-		assertEpsilonEquals(4.5, s.getY1());
-		assertEpsilonEquals(1.3, s.getZ1());
-		assertEpsilonEquals(4.4, s.getX2());
-		assertEpsilonEquals(5.5, s.getY2());
-		assertEpsilonEquals(2.3, s.getZ2());
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.PI));
-		s = (Segment3afp) this.shape.createTransformedShape(tr);
-		assertEpsilonEquals(0, s.getX1());
-		assertEpsilonEquals(0, s.getY1());
-		assertEpsilonEquals(0, s.getZ1());
-		assertEpsilonEquals(-1, s.getX2());
-		assertEpsilonEquals(-1, s.getY2());
-		assertEpsilonEquals(1, s.getZ2());
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
-		s = (Segment3afp) this.shape.createTransformedShape(tr);
-		assertEpsilonEquals(0, s.getX1());
-		assertEpsilonEquals(0, s.getY1());
-		assertEpsilonEquals(0, s.getZ1());
-		assertEpsilonEquals(0, s.getX2());
-		assertEpsilonEquals(1.41421356, s.getY2());
-		assertEpsilonEquals(1, s.getZ2());
 	}
 
 	@DisplayName("translate(double,double,double)")
@@ -2042,7 +2076,7 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 	@EnumSource(CoordinateSystem3D.class)
 	public void intersectsPathIterator3afp(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp<?, ?, ?, ?, ?, ?, B> p;
+		Path3afp<?, ?, ?, ?, ?, B> p;
 
 		p = createPath();
 		p.moveTo(-2, -2, 0);
@@ -2162,55 +2196,6 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 		assertEpsilonEquals(-2.4, shape.getX2());
 		assertEpsilonEquals(-3.5, shape.getY2());
 		assertEpsilonEquals(-.3, shape.getZ2());
-	}
-
-	@DisplayName("s * Transform3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Segment3afp s;
-		Transform3D tr;
-
-		tr = new Transform3D();    	
-		s = (Segment3afp) this.shape.operator_multiply(tr);
-		assertEpsilonEquals(0, s.getX1());
-		assertEpsilonEquals(0, s.getY1());
-		assertEpsilonEquals(0, s.getZ1());
-		assertEpsilonEquals(1, s.getX2());
-		assertEpsilonEquals(1, s.getY2());
-		assertEpsilonEquals(1, s.getZ2());
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4, 4.5, 1.3);
-		s = (Segment3afp) this.shape.operator_multiply(tr);
-		assertEpsilonEquals(3.4, s.getX1());
-		assertEpsilonEquals(4.5, s.getY1());
-		assertEpsilonEquals(1.3, s.getZ1());
-		assertEpsilonEquals(4.4, s.getX2());
-		assertEpsilonEquals(5.5, s.getY2());
-		assertEpsilonEquals(2.3, s.getZ2());
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.PI));
-		s = (Segment3afp) this.shape.operator_multiply(tr);
-		assertEpsilonEquals(0, s.getX1());
-		assertEpsilonEquals(0, s.getY1());
-		assertEpsilonEquals(0, s.getZ1());
-		assertEpsilonEquals(-1, s.getX2());
-		assertEpsilonEquals(-1, s.getY2());
-		assertEpsilonEquals(1, s.getZ2());
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
-		s = (Segment3afp) this.shape.operator_multiply(tr);
-		assertEpsilonEquals(0, s.getX1());
-		assertEpsilonEquals(0, s.getY1());
-		assertEpsilonEquals(0, s.getZ1());
-		assertEpsilonEquals(0, s.getX2());
-		assertEpsilonEquals(1.41421356, s.getY2());
-		assertEpsilonEquals(1, s.getZ2());
 	}
 
 	@DisplayName("s && Point3D")
@@ -2434,7 +2419,7 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 	@DisplayName("calcultesDistanceSquaredSegmentSegment(double,double,double,double,double,double,double,double,double,double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void calcultesDistanceSquaredSegmentSegmentDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble(CoordinateSystem3D cs) {
+	public void staticCalcultesDistanceSquaredSegmentSegmentDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 
 		assertEpsilonEquals(25., Segment3afp.calculatesDistanceSquaredSegmentSegment(
@@ -2466,7 +2451,7 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 	@DisplayName("calcultesDistanceSegmentSegment(double,double,double,double,double,double,double,double,double,double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void calcultesDistanceSegmentSegmentDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble(CoordinateSystem3D cs) {
+	public void staticCalcultesDistanceSegmentSegmentDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 

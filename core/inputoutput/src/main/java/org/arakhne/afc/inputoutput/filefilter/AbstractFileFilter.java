@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,9 @@ package org.arakhne.afc.inputoutput.filefilter;
 
 import java.io.File;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Abstract implementation of a file filter that may be
  * used in all the standard Java tools.
@@ -55,15 +54,15 @@ public abstract class AbstractFileFilter implements FileFilter {
 		this.acceptDirectories = acceptDirectories;
 		this.extensions = extensions;
 
-		final StringBuilder b = new StringBuilder();
-		for (int i = 0; i < this.extensions.length; ++i) {
+		final var b = new StringBuilder();
+		for (var i = 0; i < this.extensions.length; ++i) {
 			final String ext;
 			if (this.extensions[i].startsWith(FileSystem.EXTENSION_SEPARATOR)) {
 				ext = this.extensions[i].substring(1);
 			} else {
 				ext = this.extensions[i];
 			}
-			final String name = Locale.getString("EXTENSION_FORMAT", ext); //$NON-NLS-1$
+			final var name = Locale.getString("EXTENSION_FORMAT", ext); //$NON-NLS-1$
 			if (i > 0) {
 				b.append(Locale.getString("EXTENSION_APPEND", this.extensions[i])); //$NON-NLS-1$
 			} else {
@@ -79,7 +78,7 @@ public abstract class AbstractFileFilter implements FileFilter {
 		if (file.isDirectory()) {
 			return this.acceptDirectories;
 		}
-		for (final String ext : this.extensions) {
+		for (final var ext : this.extensions) {
 			if (FileSystem.hasExtension(file, ext)) {
 				return true;
 			}

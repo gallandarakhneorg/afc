@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import static org.arakhne.afc.math.MathConstants.JACOBI_MAX_SWEEPS;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.GnuOctaveUtil;
 import org.arakhne.afc.math.MathUtil;
@@ -38,6 +37,7 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Is represented internally as a 2x2 floating point matrix. The mathematical
@@ -48,6 +48,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber"})
 public class Matrix2d implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -181335987517755500L;
@@ -173,10 +174,13 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the column number to be modified (zero indexed)
 	 * @param value
 	 *            the new value
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void setElement(int row, int column, double value) {
-		assert row >= 0 && row < 2 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 1);
-		assert column >= 0 && column < 2 : AssertMessages.outsideRangeInclusiveParameter(1, column, 0, 1);
+		assert row >= 0 && row < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(1));
+		assert column >= 0 && column < 2
+				: AssertMessages.outsideRangeInclusiveParameter(1, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(1));
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -219,11 +223,14 @@ public class Matrix2d implements Serializable, Cloneable {
 	 * @param column
 	 *            the column number to be retrieved (zero indexed)
 	 * @return the value at the indexed element.
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	@Pure
 	public final double getElement(int row, int column) {
-		assert row >= 0 && row < 2 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 1);
-		assert column >= 0 && column < 2 : AssertMessages.outsideRangeInclusiveParameter(1, column, 0, 1);
+		assert row >= 0 && row < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(1));
+		assert column >= 0 && column < 2
+				: AssertMessages.outsideRangeInclusiveParameter(1, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(1));
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -260,9 +267,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the matrix row
 	 * @param vector
 	 *            the vector into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void getRow(int row, Tuple2D<?> vector) {
-		assert row >= 0 && row < 2 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 1);
+		assert row >= 0 && row < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(1));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		if (row == 0) {
 			vector.set(this.m00, this.m01);
@@ -281,9 +290,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the matrix row
 	 * @param vector
 	 *            the array into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void getRow(int row, double[] vector) {
-		assert row >= 0 && row < 2 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 1);
+		assert row >= 0 && row < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(1));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		assert vector.length >= 2 : AssertMessages.tooSmallArrayParameter(1, vector.length, 2);
 		if (row == 0) {
@@ -306,9 +317,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the matrix column
 	 * @param vector
 	 *            the vector into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void getColumn(int column, Tuple2D<?> vector) {
-		assert column >= 0 && column < 2 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 1);
+		assert column >= 0 && column < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(1));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		if (column == 0) {
 			vector.set(this.m00, this.m10);
@@ -327,9 +340,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the matrix column
 	 * @param vector
 	 *            the array into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void getColumn(int column, double[] vector) {
-		assert column >= 0 && column < 2 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 1);
+		assert column >= 0 && column < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(1));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		assert vector.length >= 2 : AssertMessages.tooSmallArrayParameter(1, vector.length, 2);
 		if (column == 0) {
@@ -352,9 +367,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the first column element
 	 * @param y
 	 *            the second column element
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void setRow(int row, double x, double y) {
-		assert row >= 0 && row < 2 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 1);
+		assert row >= 0 && row < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(1));
 		switch (row) {
 		case 0:
 			this.m00 = x;
@@ -379,9 +396,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the row number to be modified (zero indexed)
 	 * @param vector
 	 *            the replacement row
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void setRow(int row, Tuple2D<?> vector) {
-		assert row >= 0 && row < 2 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 1);
+		assert row >= 0 && row < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(1));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		switch (row) {
 		case 0:
@@ -407,9 +426,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the row number to be modified (zero indexed)
 	 * @param vector
 	 *            the replacement row
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void setRow(int row, double[] vector) {
-		assert row >= 0 && row < 2 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 1);
+		assert row >= 0 && row < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(1));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		assert vector.length >= 2 : AssertMessages.tooSmallArrayParameter(1, vector.length, 2);
 		switch (row) {
@@ -438,9 +459,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the first row element
 	 * @param y
 	 *            the second row element
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void setColumn(int column, double x, double y) {
-		assert column >= 0 && column < 2 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 1);
+		assert column >= 0 && column < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(1));
 		switch (column) {
 		case 0:
 			this.m00 = x;
@@ -465,9 +488,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the column number to be modified (zero indexed)
 	 * @param vector
 	 *            the replacement column
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void setColumn(int column, Tuple2D<?> vector) {
-		assert column >= 0 && column < 2 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 1);
+		assert column >= 0 && column < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(1));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		switch (column) {
 		case 0:
@@ -493,9 +518,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the column number to be modified (zero indexed)
 	 * @param vector
 	 *            the replacement column
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public final void setColumn(int column, double[] vector) {
-		assert column >= 0 && column < 2 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 1);
+		assert column >= 0 && column < 2
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(1));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		assert vector.length >= 2 : AssertMessages.tooSmallArrayParameter(1, vector.length, 2);
 		switch (column) {
@@ -631,7 +658,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 * Sets the value of this matrix to its transpose.
 	 */
 	public final void transpose() {
-		final double temp = this.m10;
+		final var temp = this.m10;
 		this.m10 = this.m01;
 		this.m01 = temp;
 	}
@@ -651,7 +678,7 @@ public class Matrix2d implements Serializable, Cloneable {
 			this.m10 = matrix.m01;
 			this.m11 = matrix.m11;
 
-			this.isIdentity = matrix.isIdentity();
+			this.isIdentity = Boolean.valueOf(matrix.isIdentity());
 		} else {
 			transpose();
 		}
@@ -671,7 +698,7 @@ public class Matrix2d implements Serializable, Cloneable {
 		this.m10 = matrix.m10;
 		this.m11 = matrix.m11;
 
-		this.isIdentity = matrix.isIdentity();
+		this.isIdentity = Boolean.valueOf(matrix.isIdentity());
 	}
 
 	/**
@@ -772,11 +799,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	public final void mul(Matrix2d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
 
-		final double m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10;
-		final double m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11;
+		final var m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10;
+		final var m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11;
 
-		final double m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10;
-		final double m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11;
+		final var m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10;
+		final var m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11;
 
 		this.m00 = m00;
 		this.m01 = m01;
@@ -820,11 +847,11 @@ public class Matrix2d implements Serializable, Cloneable {
 			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
 			this.m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
-			final double m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
+			final var m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
 
-			final double m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
-			final double m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
+			final var m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			final var m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -854,11 +881,11 @@ public class Matrix2d implements Serializable, Cloneable {
 			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
 			this.m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
-			final double m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
+			final var m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
 
-			final double m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
-			final double m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
+			final var m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			final var m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -888,11 +915,11 @@ public class Matrix2d implements Serializable, Cloneable {
 			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
 			this.m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
-			final double m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
+			final var m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
 
-			final double m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
-			final double m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
+			final var m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			final var m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -922,11 +949,11 @@ public class Matrix2d implements Serializable, Cloneable {
 			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
 			this.m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
-			final double m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
+			final var m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
 
-			final double m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
-			final double m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
+			final var m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			final var m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -941,7 +968,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 * Perform cross product normalization of this matrix.
 	 */
 	public final void normalizeCP() {
-		double mag = 1.0 / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10);
+		var mag = 1.0 / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10);
 		this.m00 = this.m00 * mag;
 		this.m10 = this.m10 * mag;
 
@@ -961,7 +988,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 */
 	public final void normalizeCP(Matrix2d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
-		double mag = 1.0 / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10);
+		var mag = 1.0 / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10);
 		this.m00 = matrix.m00 * mag;
 		this.m10 = matrix.m10 * mag;
 
@@ -1007,7 +1034,7 @@ public class Matrix2d implements Serializable, Cloneable {
 			return true;
 		}
 		if (getClass().isInstance(object)) {
-			final Matrix2d m2 = (Matrix2d) object;
+			final var m2 = (Matrix2d) object;
 			return this.m00 == m2.m00 && this.m01 == m2.m01
 					&& this.m10 == m2.m10
 					&& this.m11 == m2.m11;
@@ -1027,7 +1054,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1L;
+		var bits = 1L;
 		bits = 31L * bits + Double.hashCode(this.m00);
 		bits = 31L * bits + Double.hashCode(this.m01);
 		bits = 31L * bits + Double.hashCode(this.m10);
@@ -1239,10 +1266,10 @@ public class Matrix2d implements Serializable, Cloneable {
 		setZero();
 
 		// Compute the mean m
-		double mx = 0;
-		double my = 0;
-		int count = 0;
-		for (final Tuple2D<?> p : tuples) {
+		var mx = 0.;
+		var my = 0.;
+		var count = 0;
+		for (final var p : tuples) {
 			mx += p.getX();
 			my += p.getY();
 			++count;
@@ -1252,14 +1279,14 @@ public class Matrix2d implements Serializable, Cloneable {
 			return false;
 		}
 
-		final double scale = 1. / count;
+		final var scale = 1. / count;
 		mx *= scale;
 		my *= scale;
 
 		// Compute the covariance term [Gottshalk2000]
 		// c_ij = sum(p'_i * p'_j) / n
 		// c_ij = sum((p_i - m_i) * (p_j - m_j)) / n
-		for (final Tuple2D<?> p : tuples) {
+		for (final var p : tuples) {
 			this.m00 += (p.getX() - mx) * (p.getX() - mx);
 			this.m01 += (p.getX() - mx) * (p.getY() - my);
 			//cov.m10 += (p.getY() - my) * (p.getX() - mx); // same as m01
@@ -1281,7 +1308,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	/** Replies if the matrix is symmetric.
 	 *
 	 * @return {@code true} if the matrix is symmetric, otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	public boolean isSymmetric() {
@@ -1301,15 +1328,15 @@ public class Matrix2d implements Serializable, Cloneable {
 		assert eigenVectors != null : AssertMessages.notNullParameter();
 
 		// Copy values up to the diagonal
-		double m11 = getM00();
-		double m12 = getM01();
-		double m22 = getM11();
+		var m11 = getM00();
+		var m12 = getM01();
+		var m22 = getM11();
 
 		eigenVectors.setIdentity();
 
-		boolean sweepsConsumed = true;
+		var sweepsConsumed = true;
 
-		for (int a = 0; a < JACOBI_MAX_SWEEPS; ++a) {
+		for (var a = 0; a < JACOBI_MAX_SWEEPS; ++a) {
 
 			// Exit loop if off-diagonal entries are small enough
 			if (Math.abs(m12) < JACOBI_EPSILON) {
@@ -1319,9 +1346,9 @@ public class Matrix2d implements Serializable, Cloneable {
 
 			// Annihilate (1, 2) entry
 			if (m12 != 0.) {
-				final double u = (m22 - m11) * .5 / m12;
-				final double u2 = u * u;
-				final double u2p1 = u2 + 1.;
+				final var u = (m22 - m11) * .5 / m12;
+				final var u2 = u * u;
+				final var u2p1 = u2 + 1.;
 
 				final double t;
 				if (u2p1 != u2) {
@@ -1330,16 +1357,16 @@ public class Matrix2d implements Serializable, Cloneable {
 					t = .5 / u;
 				}
 
-				final double c = 1. / Math.sqrt(t * t + 1);
-				final double s = c * t;
+				final var c = 1. / Math.sqrt(t * t + 1);
+				final var s = c * t;
 
 				m11 -= t * m12;
 				m22 += t * m12;
 				m12 = 0.;
 
 				for (int i = 0; i < 2; ++i) {
-					final double ri0 = eigenVectors.getElement(i, 0);
-					final double ri1 = eigenVectors.getElement(i, 1);
+					final var ri0 = eigenVectors.getElement(i, 0);
+					final var ri1 = eigenVectors.getElement(i, 1);
 					eigenVectors.setElement(i, 0, c * ri0 - s * ri1);
 					eigenVectors.setElement(i, 1, s * ri0 + c * ri1);
 				}
@@ -1363,10 +1390,10 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	public boolean isIdentity() {
 		if (this.isIdentity == null) {
-			this.isIdentity = MathUtil.isEpsilonEqual(this.m00, 1.)
+			this.isIdentity = Boolean.valueOf(MathUtil.isEpsilonEqual(this.m00, 1.)
 					&& MathUtil.isEpsilonZero(this.m01)
 					&& MathUtil.isEpsilonZero(this.m10)
-					&& MathUtil.isEpsilonEqual(this.m11, 1.);
+					&& MathUtil.isEpsilonEqual(this.m11, 1.));
 		}
 		return this.isIdentity.booleanValue();
 	}
@@ -1440,7 +1467,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("+")
 	public Matrix2d operator_plus(Matrix2d matrix) {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.add(this, matrix);
 		return result;
 	}
@@ -1461,7 +1488,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("+")
 	public Matrix2d operator_plus(double scalar) {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.add(scalar, this);
 		return result;
 	}
@@ -1479,7 +1506,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("-")
 	public Matrix2d operator_minus(Matrix2d matrix) {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.sub(this, matrix);
 		return result;
 	}
@@ -1500,7 +1527,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("-")
 	public Matrix2d operator_minus(double scalar) {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.add(-scalar, this);
 		return result;
 	}
@@ -1517,7 +1544,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("(-)")
 	public Matrix2d operator_minus() {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.negate(this);
 		return result;
 	}
@@ -1535,7 +1562,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("*")
 	public Matrix2d operator_multiply(Matrix2d matrix) {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.mul(this, matrix);
 		return result;
 	}
@@ -1556,7 +1583,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("*")
 	public Matrix2d operator_multiply(double scalar) {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.mul(scalar, this);
 		return result;
 	}
@@ -1577,7 +1604,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("/")
 	public Matrix2d operator_divide(double scalar) {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.mul(1. / scalar, this);
 		return result;
 	}
@@ -1619,7 +1646,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 */
 	@XtextOperator("!")
 	public Matrix2d operator_not() {
-		final Matrix2d result = new Matrix2d();
+		final var result = new Matrix2d();
 		result.transpose(this);
 		return result;
 	}

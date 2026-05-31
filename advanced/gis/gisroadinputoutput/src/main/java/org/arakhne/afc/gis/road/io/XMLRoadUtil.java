@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.common.collect.Iterators;
-import org.w3c.dom.Element;
-
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
@@ -54,6 +52,7 @@ import org.arakhne.afc.inputoutput.xml.XMLBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLResources;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.w3c.dom.Element;
 
 /**
  * This class provides tools to create an XML representation of roads
@@ -113,8 +112,8 @@ public final class XMLRoadUtil {
 	 * @throws IOException in case of error.
 	 */
 	public static Element writeRoadSegment(RoadSegment primitive, XMLBuilder builder, XMLResources resources) throws IOException {
-		if (primitive instanceof RoadPolyline) {
-			return writeRoadPolyline((RoadPolyline) primitive, builder, resources);
+		if (primitive instanceof RoadPolyline polyline) {
+			return writeRoadPolyline(polyline, builder, resources);
 		}
 		throw new IOException("unsupported type of primitive: " + primitive); //$NON-NLS-1$
 	}
@@ -149,12 +148,12 @@ public final class XMLRoadUtil {
 	public static void writeRoadNetwork(Element xmlNode, RoadNetwork primitive, URL geometryURL,
 			MapMetricProjection mapProjection, URL attributeURL, XMLBuilder builder,
 			PathBuilder pathBuilder, XMLResources resources) throws IOException {
-		final ContainerWrapper w = new ContainerWrapper(primitive);
+		final var w = new ContainerWrapper(primitive);
 		w.setElementGeometrySource(geometryURL, mapProjection);
 		w.setElementAttributeSourceURL(attributeURL);
 		writeGISElementContainer(xmlNode,
 				w, NODE_ROAD, builder, pathBuilder, resources);
-		final Rectangle2d bounds = primitive.getBoundingBox();
+		final var bounds = primitive.getBoundingBox();
 		if (bounds != null) {
 			xmlNode.setAttribute(ATTR_X, Double.toString(bounds.getMinX()));
 			xmlNode.setAttribute(ATTR_Y, Double.toString(bounds.getMinY()));
@@ -173,14 +172,13 @@ public final class XMLRoadUtil {
 	 */
 	public static void readRoadNetwork(Element xmlNode, RoadNetwork primitive, PathBuilder pathBuilder,
 			XMLResources resources) throws IOException {
-		final ContainerWrapper w = new ContainerWrapper(primitive);
+		final var w = new ContainerWrapper(primitive);
 		readGISElementContainer(xmlNode,
 				w, NODE_ROAD, pathBuilder, resources);
-		URL u;
 
 		// Force the primitive to have the pointer to the Shape and dBase files
 
-		u = w.getElementGeometrySourceURL();
+		var u = w.getElementGeometrySourceURL();
 		if (u != null) {
 			primitive.setAttribute(MapElementLayer.ATTR_ELEMENT_GEOMETRY_URL, u);
 		} else {
@@ -194,7 +192,7 @@ public final class XMLRoadUtil {
 			primitive.removeAttribute(MapElementLayer.ATTR_ELEMENT_ATTRIBUTES_URL);
 		}
 
-		final MapMetricProjection projection = w.getElementGeometrySourceProjection();
+		final var projection = w.getElementGeometrySourceProjection();
 		if (projection != null) {
 			primitive.setAttribute(MapElementLayer.ATTR_ELEMENT_GEOMETRY_PROJECTION, projection);
 		} else {
@@ -212,17 +210,17 @@ public final class XMLRoadUtil {
 	 */
 	public static StandardRoadNetwork readRoadNetwork(Element xmlNode, PathBuilder pathBuilder,
 			XMLResources resources) throws IOException {
-		final double x = getAttributeDoubleWithDefault(xmlNode, Double.NaN, ATTR_X);
-		final double y = getAttributeDoubleWithDefault(xmlNode, Double.NaN, ATTR_Y);
-		final double width = getAttributeDoubleWithDefault(xmlNode, Double.NaN, ATTR_WIDTH);
-		final double height = getAttributeDoubleWithDefault(xmlNode, Double.NaN, ATTR_HEIGHT);
+		final var x = getAttributeDoubleWithDefault(xmlNode, Double.valueOf(Double.NaN), ATTR_X).doubleValue();
+		final var y = getAttributeDoubleWithDefault(xmlNode, Double.valueOf(Double.NaN), ATTR_Y).doubleValue();
+		final var width = getAttributeDoubleWithDefault(xmlNode, Double.valueOf(Double.NaN), ATTR_WIDTH).doubleValue();
+		final var height = getAttributeDoubleWithDefault(xmlNode, Double.valueOf(Double.NaN), ATTR_HEIGHT).doubleValue();
 
 		if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(width) || Double.isNaN(height)) {
 			throw new IOException("invalid road network bounds"); //$NON-NLS-1$
 		}
 
-		final Rectangle2d bounds = new Rectangle2d(x, y, width, height);
-		final StandardRoadNetwork roadNetwork = new StandardRoadNetwork(bounds);
+		final var bounds = new Rectangle2d(x, y, width, height);
+		final var roadNetwork = new StandardRoadNetwork(bounds);
 
 		readRoadNetwork(xmlNode, roadNetwork, pathBuilder, resources);
 
@@ -267,8 +265,8 @@ public final class XMLRoadUtil {
 
 		@Override
 		public boolean addMapElements(Collection<? extends RoadPolyline> elements) {
-			boolean changed = false;
-			for (final RoadSegment s : elements) {
+			var changed = false;
+			for (final var s : elements) {
 				try {
 					this.container.addRoadSegment(s);
 					changed = true;
@@ -327,8 +325,8 @@ public final class XMLRoadUtil {
 
 		@Override
 		public boolean removeMapElement(MapElement element) {
-			if (element instanceof RoadSegment) {
-				return this.container.removeRoadSegment((RoadSegment) element);
+			if (element instanceof RoadSegment segment) {
+				return this.container.removeRoadSegment(segment);
 			}
 			return false;
 		}

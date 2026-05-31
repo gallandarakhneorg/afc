@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -44,8 +43,6 @@ import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.Vector;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
@@ -62,6 +59,7 @@ import org.arakhne.afc.inputoutput.stream.LittleEndianDataInputStream;
 import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -202,8 +200,8 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * @param inputStream is the stream to read.
 	 */
 	public DBaseFileReader(InputStream inputStream) {
-		this.stream = (inputStream instanceof LittleEndianDataInputStream)
-				? (LittleEndianDataInputStream) inputStream : new LittleEndianDataInputStream(inputStream);
+		this.stream = (inputStream instanceof LittleEndianDataInputStream stream)
+				? stream : new LittleEndianDataInputStream(inputStream);
 	}
 
 	/** Constructor.
@@ -236,12 +234,12 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	}
 
 	private static String columnize(String string, int length) {
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append(string);
-		for (int i = string.length(); i < length; ++i) {
+		for (var i = string.length(); i < length; ++i) {
 			b.append(" "); //$NON-NLS-1$
 		}
-		String ss = b.toString();
+		var ss = b.toString();
 		if (ss.length() > length) {
 			ss = ss.substring(0, length);
 		}
@@ -257,47 +255,48 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 */
 	@SuppressWarnings({"checkstyle:regexp", "checkstyle:magicnumber"})
 	public static void main(String[] args) throws IOException {
-		for (final String filename : args) {
-			final File file = new File(filename);
-			try (DBaseFileReader reader = new DBaseFileReader(file)) {
+		for (final var filename : args) {
+			final var file = new File(filename);
+			try (var reader = new DBaseFileReader(file)) {
 				reader.readDBFHeader();
-				final List<DBaseFileField> fields = reader.readDBFFields();
+				final var fields = reader.readDBFFields();
 
-				System.out.println(Locale.getString(DBaseFileReader.class, "FILE_VERSION", reader.getDBFVersion())); //$NON-NLS-1$
+				System.out.println(Locale.getString(DBaseFileReader.class,
+						"FILE_VERSION", Integer.valueOf(reader.getDBFVersion()))); //$NON-NLS-1$
 				System.out.println(Locale.getString(DBaseFileReader.class, "LAST_UPDATE", //$NON-NLS-1$
 						reader.getDBFLastUpdateDate()));
 				System.out.println(Locale.getString(DBaseFileReader.class, "CHARSET", reader.getDBFLanguage())); //$NON-NLS-1$
 				System.out.println(Locale.getString(DBaseFileReader.class, "FIELD_COUNT", //$NON-NLS-1$
-						reader.getDBFFieldCount()));
+						Integer.valueOf(reader.getDBFFieldCount())));
 				System.out.println(Locale.getString(DBaseFileReader.class, "RECORD_COUNT", //$NON-NLS-1$
-						reader.getDBFRecordCount()));
+						Integer.valueOf(reader.getDBFRecordCount())));
 				System.out.println(Locale.getString(DBaseFileReader.class, "RECORD_LENGTH", //$NON-NLS-1$
-						reader.getDBFRecordSize()));
+						Integer.valueOf(reader.getDBFRecordSize())));
 				System.out.println(Locale.getString(DBaseFileReader.class, "HEADER_LENGTH", //$NON-NLS-1$
-						reader.getDBFHeaderSize()));
+						Integer.valueOf(reader.getDBFHeaderSize())));
 
 				System.out.println("------------------------------------------"); //$NON-NLS-1$
 				System.out.println(Locale.getString(DBaseFileReader.class, "FIELD_HEADER")); //$NON-NLS-1$
 
-				for (final DBaseFileField field : fields) {
+				for (final var field : fields) {
 					System.out.println(Locale.getString(DBaseFileReader.class, "FIELD", //$NON-NLS-1$
 							columnize(field.getName(), 10),
-							(char) field.getType().toByte(),
-							field.getLength(),
-							field.getDecimalPointPosition()));
+							Character.valueOf((char) field.getType().toByte()),
+							Integer.valueOf(field.getLength()),
+							Integer.valueOf(field.getDecimalPointPosition())));
 				}
 
 				System.out.println("=========================================="); //$NON-NLS-1$
 
-				boolean first = true;
+				var first = true;
 
-				for (final AttributeProvider attrs : reader) {
+				for (final var attrs : reader) {
 					if (first) {
 						first = false;
 					} else {
 						System.out.println("------------------------------------------"); //$NON-NLS-1$
 					}
-					for (final Attribute attr : attrs.attributes()) {
+					for (final var attr : attrs.attributes()) {
 						try {
 							System.out.println(Locale.getString(DBaseFileReader.class, "RECORD_VALUE", //$NON-NLS-1$
 									columnize(attr.getName(), 10),
@@ -344,7 +343,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * @see #OPTION_DECODE_STRING
 	 */
 	public void removeOption(int option) {
-		this.options = this.options & (~option);
+		this.options = this.options & ~option;
 	}
 
 	/** Set or unset the specified option.
@@ -493,7 +492,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		// Bytes       Size   Content
 		//-----------------------------------------------------------
 		//  1-3     3 bytes   Date of last update: YMD
-		final Calendar cal = new GregorianCalendar();
+		final var cal = new GregorianCalendar();
 		cal.set(Calendar.YEAR, this.stream.readByte() + 1900);
 		cal.set(Calendar.MONTH, this.stream.readByte() - 1);
 		cal.set(Calendar.DAY_OF_MONTH, this.stream.readByte());
@@ -548,7 +547,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		//-----------------------------------------------------------
 		//    29     1 byte    Language driver ID
 		//                     See {@link DBaseCodePage} for details.
-		final byte b = this.stream.readByte();
+		final var b = this.stream.readByte();
 		this.codePage = DBaseCodePage.fromLanguageCode(b);
 
 		//-----------------------------------------------------------
@@ -597,7 +596,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	public String getDBFFieldName(int index) {
 		if (this.fieldCount != -1) {
 			try {
-				final DBaseFileField field = this.fields.get(index);
+				final var field = this.fields.get(index);
 				if (field != null) {
 					return field.getName();
 				}
@@ -620,8 +619,8 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		assert name != null;
 		if (this.fieldCount != -1) {
 			try {
-				int i = 0;
-				for (final DBaseFileField field : this.fields) {
+				var i = 0;
+				for (final var field : this.fields) {
 					if (field != null && name.equals(field.getName())) {
 						return i;
 					}
@@ -645,7 +644,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	public DBaseFieldType getDBFFieldType(int index) {
 		if (this.fieldCount != -1) {
 			try {
-				final DBaseFileField field = this.fields.get(index);
+				final var field = this.fields.get(index);
 				if (field != null) {
 					return field.getType();
 				}
@@ -671,6 +670,10 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * @return all the columns
 	 * @throws IOException if the stream cannot be read.
 	 * @throws EOFException if unexpected end-of-file.
+	 * @throws EOFDBaseFileException if unexpected end-of-file.
+	 * @throws MustCallReadHeaderFunctionException when the header must be read prior to the call to this function.
+	 * @throws InvalidRecordSizeException if the size of the record is invalid.
+	 * @throws InvalidDBaseFieldTerminationException invalid termination byte.
 	 * @see #getDBFFields()
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:magicnumber"})
@@ -693,12 +696,12 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		//  m+1     1 byte    terminator character 0x0D
 
 		// A field contains at least the "removal flag" byte
-		int byteSize = 1;
-		final ArrayList<DBaseFileField> array = new ArrayList<>();
-		final Charset charSet = (this.codePage == null) ? null : this.codePage.getChatset();
+		var byteSize = 1;
+		final var array = new ArrayList<DBaseFileField>();
+		final var charSet = (this.codePage == null) ? null : this.codePage.getChatset();
 		String columnName;
 
-		for (int idxFields = 0; idxFields < this.fieldCount; ++idxFields) {
+		for (var idxFields = 0; idxFields < this.fieldCount; ++idxFields) {
 
 			// Read the field header
 			//
@@ -715,21 +718,21 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 			// 21-22    2 bytes   Reserved for dBASE III+ on a Lan
 			//    23    1 byte    SET FIELDS flag
 			// 24-31    7 bytes   Reserved
-			final byte[] header = new byte[32];
+			final var header = new byte[32];
 			this.stream.readFully(header);
 
 			// Update the offset of the first record with the end-of-header character
 			this.firstRecordOffset += header.length;
 
 			// Read the name of the field until 0x00
-			int nbChars = 0;
-			for (int i = 0; i <= 10; ++i) {
+			var nbChars = 0;
+			for (var i = 0; i <= 10; ++i) {
 				if (header[i] == 0) {
 					break;
 				}
 				++nbChars;
 			}
-			final byte[] bName = new byte[nbChars];
+			final var bName = new byte[nbChars];
 			System.arraycopy(header, 0, bName, 0, nbChars);
 			if (charSet != null) {
 				columnName = new String(bName, charSet);
@@ -738,9 +741,9 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 			}
 
 			// Read the type
-			final DBaseFieldType dbftype = DBaseFieldType.fromByte(header[11]);
+			final var dbftype = DBaseFieldType.fromByte(header[11]);
 
-			final DBaseFileField field = new DBaseFileField(
+			final var field = new DBaseFileField(
 					columnName,
 					dbftype,
 					// convert unsigned byte into int
@@ -758,7 +761,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		}
 
 		// Read the terminator character 0x0D
-		final byte bt = this.stream.readByte();
+		final var bt = this.stream.readByte();
 		if (bt != 0x0D) {
 			throw new InvalidDBaseFieldTerminationException(bt);
 		}
@@ -796,7 +799,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 			// Update the readingPosition attribute AFTER the call to the
 			// reading function to avoid invalid usage of its value
 			// by this function.
-			final DBaseFileRecord record = readDBFRecord(this.readingPosition);
+			final var record = readDBFRecord(this.readingPosition);
 			++this.readingPosition;
 			return record;
 		} catch (EOFException e) {
@@ -814,6 +817,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * @throws IOException in case of error.
 	 * @throws MustCallReadHeaderFunctionException you must call a {@code readHeader()} function
 	 *      prior to this function.
+	 * @throws EOFException if the end-of-file is reached.
 	 */
 	public void skip(int skipAmount) throws IOException {
 		if (this.recordCount == -1) {
@@ -826,7 +830,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 			this.readingPosition += skipAmount;
 			//this.stream.reset();
 			//this.stream.skipBytes(this.recordSize * this.readingPosition);
-			final long skippedAmount = this.stream.skipBytes(this.recordSize * skipAmount);
+			final var skippedAmount = this.stream.skipBytes(this.recordSize * skipAmount);
 			// use skipBytes because it force to skip the specified amount, instead of skip()
 			assert skippedAmount == this.recordSize * skipAmount;
 		}
@@ -842,6 +846,9 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * @param recordIndex is the index of record to reply at the next read.
 	 * @throws IOException in case of error.
 	 * @throws UnsupportedSeekOperationException seeking operation is not supported.
+	 * @throws MustCallReadHeaderFunctionException you must call a {@code readHeader()}
+	 *     function prior to the call to this function.
+	 * @throws EOFException if the end-of-file is reached.
 	 */
 	public void seek(int recordIndex) throws IOException {
 		if (!this.stream.markSupported()) {
@@ -850,7 +857,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		if (this.recordCount == -1) {
 			throw new MustCallReadHeaderFunctionException();
 		}
-		int ri = recordIndex;
+		var ri = recordIndex;
 		if (ri < 0) {
 			ri = 0;
 		}
@@ -879,7 +886,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * @see #readNextDBFRecord()
 	 */
 	public AttributeProvider readNextAttributeProvider() throws IOException {
-		final DBaseFileRecord record = readNextDBFRecord();
+		final var record = readNextDBFRecord();
 		if (record == null) {
 			return null;
 		}
@@ -897,6 +904,8 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 *
 	 * @return all the records
 	 * @throws IOException in case of error.
+	 * @throws MustCallReadHeaderFunctionException you must call a {@code readHeader()}
+	 *     function prior to the call to this function.
 	 * @throws EOFDBaseFileException if there is no more record to be read.
 	 */
 	public List<DBaseFileRecord> readRestOfDBFRecords() throws IOException {
@@ -907,10 +916,10 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 			throw new MustCallReadHeaderFunctionException();
 		}
 
-		final Vector<DBaseFileRecord> records = new Vector<>();
+		final var records = new Vector<DBaseFileRecord>();
 		try {
 			while (this.readingPosition < this.recordCount) {
-				final DBaseFileRecord record = readNextDBFRecord();
+				final var record = readNextDBFRecord();
 				if (record != null) {
 					records.add(record);
 				}
@@ -950,14 +959,14 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		//                    the bytes 10..11 of the dBASE header
 
 		// Compute the offset
-		final long offset = this.readingPosition * this.recordSize + this.firstRecordOffset;
+		final var offset = this.readingPosition * this.recordSize + this.firstRecordOffset;
 
 		// Read the record
-		final byte[] rawData = new byte[this.recordSize];
+		final var rawData = new byte[this.recordSize];
 		this.stream.readFully(rawData);
 
 		// Read the deleted flag
-		final int deletedFlag = rawData[0] & 0xFF;
+		final var deletedFlag = rawData[0] & 0xFF;
 		if (deletedFlag == 0x1A) {
 			// END-OF-FILE character
 			throw new EOFException();
@@ -969,12 +978,12 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 			return null;
 		}
 
-		int rawOffset = 1;
+		var rawOffset = 1;
 
-		final DBaseFileRecord record = new DBaseFileRecord(recordNumber, offset);
-		for (int i = 0; i < this.fieldCount; ++i) {
+		final var record = new DBaseFileRecord(recordNumber, offset);
+		for (var i = 0; i < this.fieldCount; ++i) {
 
-			final DBaseFileField field = this.fields.get(i);
+			final var field = this.fields.get(i);
 			if (field != null) {
 
 				Object value = null;
@@ -984,7 +993,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 				//
 				// Read a list of characters
 				case STRING:
-					final OutputParameter<String> strvalue = new OutputParameter<>();
+					final var strvalue = new OutputParameter<String>();
 					rawOffset += readStringRecordValue(
 							field,
 							recordNumber, i + 1,
@@ -995,7 +1004,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 				//
 				// Read a date
 				case DATE:
-					final OutputParameter<Date> datevalue = new OutputParameter<>();
+					final var datevalue = new OutputParameter<Date>();
 					rawOffset += readDateRecordValue(field, recordNumber, i + 1, rawData, rawOffset, datevalue);
 					value = datevalue.get();
 					break;
@@ -1003,35 +1012,35 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 				// Read a number
 				case NUMBER:
 				case FLOATING_NUMBER:
-					final OutputParameter<Double> dblvalue = new OutputParameter<>();
+					final var dblvalue = new OutputParameter<Double>();
 					rawOffset += readNumberRecordValue(field, recordNumber, i + 1, rawData, rawOffset, dblvalue);
 					value = dblvalue.get();
 					break;
 				//
 				// Read a boolean
 				case BOOLEAN:
-					final OutputParameter<Boolean> boolvalue = new OutputParameter<>();
+					final var boolvalue = new OutputParameter<Boolean>();
 					rawOffset += readBooleanRecordValue(field, recordNumber, i + 1, rawData, rawOffset, boolvalue);
 					value = boolvalue.get();
 					break;
 				//
 				// Read a 2 byte integer
 				case INTEGER_2BYTES:
-					final OutputParameter<Integer> intvalue = new OutputParameter<>();
+					final var intvalue = new OutputParameter<Integer>();
 					rawOffset += read2ByteIntegerRecordValue(field, recordNumber, i + 1, rawData, rawOffset, intvalue);
 					value = intvalue.get();
 					break;
 				//
 				// Read a 4 byte integer
 				case INTEGER_4BYTES:
-					final OutputParameter<Long> longvalue = new OutputParameter<>();
+					final var longvalue = new OutputParameter<Long>();
 					rawOffset += read4ByteIntegerRecordValue(field, recordNumber, i + 1, rawData, rawOffset, longvalue);
 					value = longvalue.get();
 					break;
 				//
 				// Read a 8 byte double
 				case DOUBLE:
-					final OutputParameter<Double> dblvalue2 = new OutputParameter<>();
+					final var dblvalue2 = new OutputParameter<Double>();
 					rawOffset += read8ByteDoubleRecordValue(field, recordNumber, i + 1, rawData, rawOffset, dblvalue2);
 					value = dblvalue2.get();
 					break;
@@ -1064,7 +1073,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 */
 	private int readStringRecordValue(DBaseFileField field, int nrecord, int nfield, byte[] rawData,
 			int rawOffset, OutputParameter<String> value) throws IOException {
-		final byte[] recordData = new byte[field.getLength()];
+		final var recordData = new byte[field.getLength()];
 		System.arraycopy(rawData, rawOffset, recordData, 0, recordData.length);
 
 		String data;
@@ -1096,14 +1105,14 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static int readDateRecordValue(DBaseFileField field, int nrecord, int nfield, byte[] rawData,
 			int rawOffset, OutputParameter<Date> value) throws IOException {
-		final GregorianCalendar cal = new GregorianCalendar();
-		final int year = ((rawData[rawOffset] & 0xFF) - '0') * 1000
+		final var cal = new GregorianCalendar();
+		final var year = ((rawData[rawOffset] & 0xFF) - '0') * 1000
 				+ ((rawData[rawOffset + 1] & 0xFF) - '0') * 100
 				+ ((rawData[rawOffset + 2] & 0xFF) - '0') * 10
 				+ ((rawData[rawOffset + 3] & 0xFF) - '0');
-		final int month = ((rawData[rawOffset + 4] & 0xFF) - '0') * 10
+		final var month = ((rawData[rawOffset + 4] & 0xFF) - '0') * 10
 				+ ((rawData[rawOffset + 5] & 0xFF) - '0');
-		final int day = ((rawData[rawOffset + 6] & 0xFF) - '0') * 10
+		final var day = ((rawData[rawOffset + 6] & 0xFF) - '0') * 10
 				+ ((rawData[rawOffset + 7] & 0xFF) - '0');
 		cal.set(Calendar.YEAR, year);
 		cal.set(Calendar.MONTH, month);
@@ -1131,9 +1140,9 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 */
 	private static int readNumberRecordValue(DBaseFileField field, int nrecord, int nfield, byte[] rawData,
 			int rawOffset, OutputParameter<Double> value) throws IOException {
-		final String buffer = new String(rawData, rawOffset, field.getLength());
+		final var buffer = new String(rawData, rawOffset, field.getLength());
 		try {
-			final String b = buffer.trim();
+			final var b = buffer.trim();
 			if (b != null && b.length() > 0) {
 				value.set(Double.valueOf(b));
 				return field.getLength();
@@ -1158,15 +1167,15 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static int readBooleanRecordValue(DBaseFileField field, int nrecord, int nfield, byte[] rawData,
 			int rawOffset, OutputParameter<Boolean> value) throws IOException {
-		final int byteCode = rawData[rawOffset] & 0xFF;
+		final var byteCode = rawData[rawOffset] & 0xFF;
 
 		if (TRUE_CHARS.indexOf(byteCode) != -1) {
-			value.set(true);
+			value.set(Boolean.TRUE);
 			return 1;
 		}
 
 		if (FALSE_CHARS.indexOf(byteCode) != -1) {
-			value.set(false);
+			value.set(Boolean.FALSE);
 			return 1;
 		}
 
@@ -1186,7 +1195,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 */
 	private static int read2ByteIntegerRecordValue(DBaseFileField field, int nrecord, int nfield,
 			byte[] rawData, int rawOffset, OutputParameter<Integer> value) throws IOException {
-		final short rawNumber = EndianNumbers.toLEShort(rawData[rawOffset], rawData[rawOffset + 1]);
+		final var rawNumber = EndianNumbers.toLEShort(rawData[rawOffset], rawData[rawOffset + 1]);
 		try {
 			value.set(Integer.valueOf(rawNumber));
 			return 2;
@@ -1209,7 +1218,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static int read4ByteIntegerRecordValue(DBaseFileField field, int nrecord, int nfield,
 			byte[] rawData, int rawOffset, OutputParameter<Long> value) throws IOException {
-		final int rawNumber = EndianNumbers.toLEInt(
+		final var rawNumber = EndianNumbers.toLEInt(
 				rawData[rawOffset], rawData[rawOffset + 1],
 				rawData[rawOffset + 2], rawData[rawOffset + 3]);
 		try {
@@ -1234,7 +1243,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static int read8ByteDoubleRecordValue(DBaseFileField field, int nrecord, int nfield,
 			byte[] rawData, int rawOffset, OutputParameter<Double> value) throws IOException {
-		final double rawNumber = EndianNumbers.toLEDouble(
+		final var rawNumber = EndianNumbers.toLEDouble(
 				rawData[rawOffset], rawData[rawOffset + 1],
 				rawData[rawOffset + 2], rawData[rawOffset + 3],
 				rawData[rawOffset + 4], rawData[rawOffset + 5],
@@ -1321,7 +1330,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 				throw new NoSuchElementException();
 			}
 
-			final AttributeProvider toReply = this.nextRecord;
+			final var toReply = this.nextRecord;
 
 			try {
 				this.nextRecord = DBaseFileReader.this.readNextAttributeProvider();
@@ -1374,7 +1383,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		 */
 		private int getColumnIndex(String name) {
 			try {
-				for (int idx = 0; idx < DBaseFileReader.this.getDBFFieldCount(); ++idx) {
+				for (var idx = 0; idx < DBaseFileReader.this.getDBFFieldCount(); ++idx) {
 					if (name.equals(DBaseFileReader.this.getDBFFieldName(idx))) {
 						return idx;
 					}
@@ -1388,7 +1397,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		/** Replies the best attribute type that corresponds to the dBASE column.
 		 */
 		private AttributeType getAttributeType(int columnIndex) {
-			final DBaseFieldType dbfType = DBaseFileReader.this.getDBFFieldType(columnIndex);
+			final var dbfType = DBaseFileReader.this.getDBFFieldType(columnIndex);
 			if (dbfType == null) {
 				return null;
 			}
@@ -1397,8 +1406,8 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public Collection<String> getAllAttributeNames() {
-			final ArrayList<String> fieldNames = new ArrayList<>();
-			for (final DBaseFileField field : DBaseFileReader.this.getDBFFields()) {
+			final var fieldNames = new ArrayList<String>();
+			for (final var field : DBaseFileReader.this.getDBFFields()) {
 				fieldNames.add(field.getName());
 			}
 			return fieldNames;
@@ -1406,11 +1415,10 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public Collection<Attribute> getAllAttributes() {
-			final ArrayList<Attribute> attributes = new ArrayList<>();
-			Attribute attr;
-			int idx = 0;
-			for (final Object value : this.record) {
-				attr = new AttributeImpl(DBaseFileReader.this.getDBFFieldName(idx));
+			final var attributes = new ArrayList<Attribute>();
+			var idx = 0;
+			for (final var value : this.record) {
+				final var attr = new AttributeImpl(DBaseFileReader.this.getDBFFieldName(idx));
 				attr.castAndSet(getAttributeType(idx), value);
 				attributes.add(attr);
 				++idx;
@@ -1420,17 +1428,14 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
-			final Map<AttributeType, Collection<Attribute>> attributes = new TreeMap<>();
-			Attribute attr;
-			Collection<Attribute> list;
-			AttributeType type;
-			int idx = 0;
-			for (final Object value : this.record) {
-				attr = new AttributeImpl(DBaseFileReader.this.getDBFFieldName(idx));
+			final var attributes = new TreeMap<AttributeType, Collection<Attribute>>();
+			var idx = 0;
+			for (final var value : this.record) {
+				final var attr = new AttributeImpl(DBaseFileReader.this.getDBFFieldName(idx));
 				attr.castAndSet(getAttributeType(idx), value);
 
-				type = attr.getType();
-				list = attributes.get(type);
+				final var type = attr.getType();
+				var list = attributes.get(type);
 				if (list == null) {
 					list = new ArrayList<>();
 					attributes.put(type, list);
@@ -1444,9 +1449,9 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public AttributeValue getAttribute(String name) {
-			final int index = getColumnIndex(name);
+			final var index = getColumnIndex(name);
 			if (index != -1) {
-				final AttributeValue attr = new AttributeValueImpl();
+				final var attr = new AttributeValueImpl();
 				attr.castAndSet(getAttributeType(index), this.record.getFieldValue(index));
 				return attr;
 			}
@@ -1455,9 +1460,9 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public AttributeValue getAttribute(String name, AttributeValue default_value) {
-			final int index = getColumnIndex(name);
+			final var index = getColumnIndex(name);
 			if (index != -1) {
-				final AttributeValue attr = new AttributeValueImpl();
+				final var attr = new AttributeValueImpl();
 				attr.castAndSet(getAttributeType(index), this.record.getFieldValue(index));
 				return attr;
 			}
@@ -1467,7 +1472,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public boolean getAttribute(String name, boolean defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getBoolean();
 				}
@@ -1480,7 +1485,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public double getAttribute(String name, double defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getReal();
 				}
@@ -1493,7 +1498,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public float getAttribute(String name, float defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return (float) v.getReal();
 				}
@@ -1506,7 +1511,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public int getAttribute(String name, int defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return (int) v.getInteger();
 				}
@@ -1519,7 +1524,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public long getAttribute(String name, long defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getInteger();
 				}
@@ -1532,7 +1537,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public String getAttribute(String name, String defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getString();
 				}
@@ -1545,7 +1550,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public UUID getAttribute(String name, UUID defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getUUID();
 				}
@@ -1558,7 +1563,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public URL getAttribute(String name, URL defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getURL();
 				}
@@ -1571,7 +1576,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public URI getAttribute(String name, URI defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getURI();
 				}
@@ -1584,7 +1589,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public Date getAttribute(String name, Date defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getDate();
 				}
@@ -1597,7 +1602,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public InetAddress getAttribute(String name, InetAddress defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getInetAddress();
 				}
@@ -1610,7 +1615,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public InetAddress getAttribute(String name, InetSocketAddress defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getInetAddress();
 				}
@@ -1624,7 +1629,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public <T extends Enum<T>> T getAttribute(String name, T defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return (T) v.getEnumeration(defaultValue.getClass());
 				}
@@ -1637,7 +1642,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		@Override
 		public Class<?> getAttribute(String name, Class<?> defaultValue) {
 			try {
-				final AttributeValue v = getAttribute(name);
+				final var v = getAttribute(name);
 				if (v != null) {
 					return v.getJavaClass();
 				}
@@ -1649,9 +1654,9 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public Attribute getAttributeObject(String name) {
-			final int index = getColumnIndex(name);
+			final var index = getColumnIndex(name);
 			if (index != -1) {
-				final Attribute attr = new AttributeImpl(name);
+				final var attr = new AttributeImpl(name);
 				attr.castAndSet(getAttributeType(index), this.record.getFieldValue(index));
 				return attr;
 			}
@@ -1660,7 +1665,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public boolean getAttributeAsBool(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getBoolean();
 			}
@@ -1669,7 +1674,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public double getAttributeAsDouble(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getReal();
 			}
@@ -1678,7 +1683,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public float getAttributeAsFloat(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return (float) v.getReal();
 			}
@@ -1687,7 +1692,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public int getAttributeAsInt(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return (int) v.getInteger();
 			}
@@ -1696,7 +1701,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public long getAttributeAsLong(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getInteger();
 			}
@@ -1705,7 +1710,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public String getAttributeAsString(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getString();
 			}
@@ -1714,7 +1719,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public UUID getAttributeAsUUID(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getUUID();
 			}
@@ -1723,7 +1728,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public URL getAttributeAsURL(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getURL();
 			}
@@ -1732,7 +1737,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public URI getAttributeAsURI(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getURI();
 			}
@@ -1741,7 +1746,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public Date getAttributeAsDate(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getDate();
 			}
@@ -1750,7 +1755,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public InetAddress getAttributeAsInetAddress(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getInetAddress();
 			}
@@ -1759,7 +1764,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public Enum<?> getAttributeAsEnumeration(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getEnumeration();
 			}
@@ -1768,7 +1773,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public <T extends Enum<T>> T getAttributeAsEnumeration(String name, Class<T> type) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getEnumeration(type);
 			}
@@ -1777,7 +1782,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public Class<?> getAttributeAsJavaClass(String name) throws AttributeException {
-			final AttributeValue v = getAttribute(name);
+			final var v = getAttribute(name);
 			if (v != null) {
 				return v.getJavaClass();
 			}
@@ -1811,7 +1816,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public void toMap(Map<String, Object> mapToFill) {
-			for (final Attribute attr : attributes()) {
+			for (final var attr : attributes()) {
 				try {
 					mapToFill.put(attr.getName(), attr.getValue());
 				} catch (Exception e) {
@@ -1822,7 +1827,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		@Override
 		public void toJson(JsonBuffer buffer) {
-			for (final Attribute attr : attributes()) {
+			for (final var attr : attributes()) {
 				attr.toJson(buffer);
 			}
 		}

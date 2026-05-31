@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.math.physics;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -74,9 +73,9 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double maxAcceleration,
 			double dt) {
 		assert minSpeed >= 0.;
-		final double acc = MathUtil.clamp(acceleration, minAcceleration, maxAcceleration);
-		int sign = MathUtil.signNoZero(velocity);
-		double velocityNorm = Math.abs(velocity) + .5f * acc * dt;
+		final var acc = MathUtil.clamp(acceleration, minAcceleration, maxAcceleration);
+		var sign = MathUtil.signNoZero(velocity);
+		var velocityNorm = Math.abs(velocity) + .5f * acc * dt;
 		if (velocityNorm < 0) {
 			sign = -sign;
 		}
@@ -105,7 +104,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		assert acceleration != null;
 		assert minSpeed >= 0.;
 
-		double olength = acceleration.getLength();
+		var olength = acceleration.getLength();
 		double vx;
 		double vy;
 		double a;
@@ -159,7 +158,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		assert acceleration != null;
 		assert minSpeed >= 0.;
 
-		double olength = acceleration.getLength();
+		var olength = acceleration.getLength();
 		double vx;
 		double vy;
 		double a;
@@ -214,7 +213,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		assert acceleration != null;
 		assert minSpeed >= 0.;
 
-		double olength = acceleration.getLength();
+		var olength = acceleration.getLength();
 		double vx;
 		double vy;
 		double a;
@@ -288,7 +287,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		assert acceleration != null;
 		assert minSpeed >= 0.;
 
-		double olength = acceleration.getLength();
+		var olength = acceleration.getLength();
 		double vx;
 		double vy;
 		double vz;
@@ -366,9 +365,9 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double dt,
 			Vector2D<?, ?> result) {
 		assert minSpeed >= 0.;
-		final double length = velocity.getLength();
+		final var length = velocity.getLength();
 		if (length != 0.) {
-			final double acc = dt * MathUtil.clamp(length, minSpeed, maxSpeed) / length;
+			final var acc = dt * MathUtil.clamp(length, minSpeed, maxSpeed) / length;
 			result.set(velocity.getX() * acc, velocity.getY() * acc);
 		} else {
 			result.set(0., 0.);
@@ -384,9 +383,9 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double dt,
 			Vector1D<?, ?, ?> result) {
 		assert minSpeed >= 0.;
-		final double length = velocity.getLength();
+		final var length = velocity.getLength();
 		if (length != 0.) {
-			final double acc = dt * MathUtil.clamp(length, minSpeed, maxSpeed) / length;
+			final var acc = dt * MathUtil.clamp(length, minSpeed, maxSpeed) / length;
 			result.set(velocity.getX() * acc, velocity.getY() * acc);
 		} else {
 			result.set(0., 0.);
@@ -402,9 +401,9 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double dt,
 			Vector2D<?, ?> result) {
 		assert minSpeed >= 0.;
-		final double length = velocity.getLength();
+		final var length = velocity.getLength();
 		if (length != 0.) {
-			final double a = dt * MathUtil.clamp(length, minSpeed, maxSpeed) / length;
+			final var a = dt * MathUtil.clamp(length, minSpeed, maxSpeed) / length;
 			result.set(velocity.getX() * a, velocity.getY() * a);
 		} else {
 			result.set(0., 0.);
@@ -435,9 +434,9 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double dt,
 			Vector3D<?, ?, ?> result) {
 		assert minSpeed >= 0.;
-		final double l = velocity.getLength();
+		final var l = velocity.getLength();
 		if (l != 0.) {
-			final double a = dt * MathUtil.clamp(l, minSpeed, maxSpeed) / l;
+			final var a = dt * MathUtil.clamp(l, minSpeed, maxSpeed) / l;
 			result.set(velocity.getX() * a, velocity.getY() * a, velocity.getZ() * a);
 		} else {
 			result.set(0., 0., 0.);

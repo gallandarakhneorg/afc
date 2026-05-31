@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ package org.arakhne.afc.inputoutput.filefilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -93,11 +92,11 @@ public class MultiFileFilter implements FileFilter {
 	@Pure
 	@Override
 	public String[] getExtensions() {
-		final List<String> extensions = new ArrayList<>();
-		for (final FileFilter ff : this.filters) {
+		final var extensions = new ArrayList<String>();
+		for (final var ff : this.filters) {
 			extensions.addAll(Arrays.asList(ff.getExtensions()));
 		}
-		final String[] tab = new String[extensions.size()];
+		final var tab = new String[extensions.size()];
 		extensions.toArray(tab);
 		return tab;
 	}

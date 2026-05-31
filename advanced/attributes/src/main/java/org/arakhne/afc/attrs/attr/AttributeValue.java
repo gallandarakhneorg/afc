@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class contains a metadata value.
@@ -98,7 +97,7 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 *
 	 * @param type is the new type of this attribute
 	 * @return {@code true} if the cast was sucessfully done,
-	 *         otherwhise, if the value was lost because of the
+	 *         otherwise, if the value was lost because of the
 	 *         cast operation.
 	 */
 	boolean cast(AttributeType type);
@@ -308,14 +307,14 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
 	@Pure
-	Point3D<?, ?> getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Point3D<?, ?, ?> getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
 	 *
 	 * @param pt the point.
 	 */
-	void setPoint3D(Point3D<?, ?> pt);
+	void setPoint3D(Point3D<?, ?, ?> pt);
 
 	/**
 	 * Set the value of this metadata.
@@ -416,35 +415,35 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
 	@Pure
-	Point3D<?, ?>[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Point3D<?, ?, ?>[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
 	 *
 	 * @param pts the points.
 	 */
-	void setPolyline3D(Point3D<?, ?>... pts);
+	void setPolyline3D(Point3D<?, ?, ?>... pts);
 
 	/**
 	 * Set the value of this metadata.
 	 *
 	 * @param pts the points.
 	 */
-	void setPolyline3D(Collection<? extends Point3D<?, ?>> pts);
+	void setPolyline3D(Collection<? extends Point3D<?, ?, ?>> pts);
 
 	/**
 	 * Add a point to the end of the polyline.
 	 *
 	 * @param pts the points
 	 */
-	void addToPolyline3D(Point3D<?, ?>... pts);
+	void addToPolyline3D(Point3D<?, ?, ?>... pts);
 
 	/**
 	 * Add a point to the end of the polyline.
 	 *
 	 * @param pts the points.
 	 */
-	void addToPolyline3D(Collection<? extends Point3D<?, ?>> pts);
+	void addToPolyline3D(Collection<? extends Point3D<?, ?, ?>> pts);
 
 	/**
 	 * Replies the value of this metadata.
@@ -577,10 +576,10 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 
 	/** Force this attribute to put its value into a storage system.
 	 *
-	 * <p>By default, this function does nothing. It is dependant of the application
+	 * <p>By default, this function does nothing. It is dependent of the application
 	 * implementation.
 	 *
-	 * @return {@code true} if the value was written, otherwhise {@code false}
+	 * @return {@code true} if the value was written, otherwise {@code false}
 	 */
 	boolean flush();
 
@@ -590,7 +589,7 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * <p>Caution: even if isAssignableFrom is replying {@code true},
 	 * the {@link AttributeValue#cast(AttributeType)} and
 	 * {@link AttributeValue#castAndSet(AttributeType, Object)} may fail
-	 * if the target type does not support a specifical value of the
+	 * if the target type does not support a specific value of the
 	 * source type. The isAssignableFrom function replies {@code true}
 	 * if a least one value of the source type is assignable to a value
 	 * of the target type.
@@ -598,9 +597,9 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * <p>This function is equivalent to:
 	 * {@code this.getType().isAssignableFrom(type)}
 	 *
-	 * @param type th etype.
+	 * @param type the type.
 	 * @return {@code true} if a value of the given
-	 * {@code type} may be cast to a value of the same type as this;
+	 *     {@code type} may be cast to a value of the same type as this;
 	 *     otherwise {@code false}.
 	 * @since 4.0
 	 */
@@ -613,7 +612,7 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * <p>Caution: even if isAssignableFrom is replying {@code true},
 	 * the {@link AttributeValue#cast(AttributeType)} and
 	 * {@link AttributeValue#castAndSet(AttributeType, Object)} may fail
-	 * if the target type does not support a specifical value of the
+	 * if the target type does not support a specific value of the
 	 * source type. The isAssignableFrom function replies {@code true}
 	 * if a least one value of the source type is assignable to a value
 	 * of the target type.

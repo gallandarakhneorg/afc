@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,6 @@ import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -60,6 +58,7 @@ import org.arakhne.afc.io.shape.ShapeMultiPatchType;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Writer of GIS elements in a ESRi shapefile.
  *
@@ -363,9 +362,9 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 
 	@Override
 	protected AttributeProvider[] getAttributeProviders(Collection<? extends MapElement> elements) throws IOException {
-		final AttributeProvider[] containers = new AttributeProvider[elements.size()];
-		int idx = 0;
-		for (final MapElement elt : elements) {
+		final var containers = new AttributeProvider[elements.size()];
+		var idx = 0;
+		for (final var elt : elements) {
 			containers[idx] = new AttributeProviderWrapper(elt.getAttributeProvider(), elt);
 			++idx;
 		}
@@ -380,8 +379,7 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		}
 		final ShapeElementType type = getElementType();
 		if (type.isElementCollectionType()) {
-			if (element instanceof MapComposedElement) {
-				final MapComposedElement elt = (MapComposedElement) element;
+			if (element instanceof MapComposedElement elt) {
 				return elt.getGroupCount();
 			}
 			throw new ShapeFileException(Locale.getString(
@@ -414,11 +412,10 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 			throw new ShapeFileException(Locale.getString(
 					GISShapeFileWriter.class, "INVALID_NULL_VALUE")); //$NON-NLS-1$
 		}
-		final ShapeElementType type = getElementType();
+		final var type = getElementType();
 		if (type.isElementCollectionType()) {
-			if (element instanceof MapComposedElement) {
-				final MapComposedElement elt = (MapComposedElement) element;
-				final Point2d p = elt.getPointAt(groupIndex, pointIndex);
+			if (element instanceof MapComposedElement elt) {
+				final var p = elt.getPointAt(groupIndex, pointIndex);
 				if (p != null) {
 					return doProjection(p);
 				}
@@ -427,9 +424,8 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 					GISShapeFileWriter.class, "INVALID_SHAPE_TYPE", //$NON-NLS-1$
 					MapComposedElement.class.getName(), element.getClass().getName()));
 		} else if (type.isPonctualElementType()) {
-			if (element instanceof MapPonctualElement) {
-				final MapPonctualElement elt = (MapPonctualElement) element;
-				final Point2d p = elt.getPoint();
+			if (element instanceof MapPonctualElement elt) {
+				final var p = elt.getPoint();
 				if (p != null) {
 					return doProjection(p);
 				}
@@ -452,8 +448,7 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		}
 		final ShapeElementType type = getElementType();
 		if (type.isElementCollectionType()) {
-			if (element instanceof MapComposedElement) {
-				final MapComposedElement elt = (MapComposedElement) element;
+			if (element instanceof MapComposedElement elt) {
 				return elt.getPointCountInGroup(groupIndex);
 			}
 			throw new ShapeFileException(Locale.getString(
@@ -483,7 +478,7 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 	private ESRIPoint doProjection(Point2d proj) {
 		assert this.mapProjection != null;
 		assert proj != null;
-		final MapMetricProjection def = MapMetricProjection.getDefault();
+		final var def = MapMetricProjection.getDefault();
 		if (this.mapProjection != def) {
 			return new ESRIPoint(def.convertTo(this.mapProjection, proj));
 		}
@@ -552,7 +547,7 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		@Override
 		@Pure
 		public Collection<String> getAllAttributeNames() {
-			Collection<String> names = this.wrappedContainer.getAllAttributeNames();
+			var names = this.wrappedContainer.getAllAttributeNames();
 			if (this.addedId) {
 				names = new ArrayList<>(names);
 				names.add(ID_ATTR);
@@ -566,7 +561,7 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		@Override
 		@Pure
 		public Collection<Attribute> getAllAttributes() {
-			final Collection<Attribute> attrs = this.wrappedContainer.getAllAttributes();
+			final var attrs = this.wrappedContainer.getAllAttributes();
 			if (this.addedId) {
 				attrs.add(new AttributeImpl(ID_ATTR, this.element.getUUID()));
 			} else if (this.addedUuid) {
@@ -578,16 +573,16 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		@Override
 		@Pure
 		public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
-			final Map<AttributeType, Collection<Attribute>> attrs = this.wrappedContainer.getAllAttributesByType();
+			final var attrs = this.wrappedContainer.getAllAttributesByType();
 			if (this.addedId) {
-				Collection<Attribute> attrList = attrs.get(AttributeType.UUID);
+				var attrList = attrs.get(AttributeType.UUID);
 				if (attrList == null) {
 					attrList = new ArrayList<>();
 					attrs.put(AttributeType.UUID, attrList);
 				}
 				attrList.add(new AttributeImpl(ID_ATTR, this.element.getUUID()));
 			} else if (this.addedUuid) {
-				Collection<Attribute> attrList = attrs.get(AttributeType.UUID);
+				var attrList = attrs.get(AttributeType.UUID);
 				if (attrList == null) {
 					attrList = new ArrayList<>();
 					attrs.put(AttributeType.UUID, attrList);
@@ -600,8 +595,8 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		@Override
 		@Pure
 		public AttributeValue getAttribute(String name) {
-			if ((this.addedId && ID_ATTR.equalsIgnoreCase(name))
-					|| (this.addedUuid && UUID_ATTR.equalsIgnoreCase(name))) {
+			if (this.addedId && ID_ATTR.equalsIgnoreCase(name)
+					|| this.addedUuid && UUID_ATTR.equalsIgnoreCase(name)) {
 				return new AttributeValueImpl(this.element.getUUID());
 			}
 			return this.wrappedContainer.getAttribute(name);
@@ -610,8 +605,8 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		@Override
 		@Pure
 		public AttributeValue getAttribute(String name, AttributeValue defaultValue) {
-			if ((this.addedId && ID_ATTR.equalsIgnoreCase(name))
-					|| (this.addedUuid && UUID_ATTR.equalsIgnoreCase(name))) {
+			if (this.addedId && ID_ATTR.equalsIgnoreCase(name)
+					|| this.addedUuid && UUID_ATTR.equalsIgnoreCase(name)) {
 				return new AttributeValueImpl(this.element.getUUID());
 			}
 			return this.wrappedContainer.getAttribute(name, defaultValue);
@@ -628,8 +623,8 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		@Override
 		@Pure
 		public Attribute getAttributeObject(String name) {
-			if ((this.addedId && ID_ATTR.equalsIgnoreCase(name))
-					|| (this.addedUuid && UUID_ATTR.equalsIgnoreCase(name))) {
+			if (this.addedId && ID_ATTR.equalsIgnoreCase(name)
+					|| this.addedUuid && UUID_ATTR.equalsIgnoreCase(name)) {
 				return new AttributeImpl(name, this.element.getUUID());
 			}
 			return this.wrappedContainer.getAttributeObject(name);
@@ -638,8 +633,8 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		@Override
 		@Pure
 		public boolean hasAttribute(String name) {
-			if ((this.addedId && ID_ATTR.equalsIgnoreCase(name))
-					|| (this.addedUuid && UUID_ATTR.equalsIgnoreCase(name))) {
+			if (this.addedId && ID_ATTR.equalsIgnoreCase(name)
+					|| this.addedUuid && UUID_ATTR.equalsIgnoreCase(name)) {
 				return true;
 			}
 			return this.wrappedContainer.hasAttribute(name);

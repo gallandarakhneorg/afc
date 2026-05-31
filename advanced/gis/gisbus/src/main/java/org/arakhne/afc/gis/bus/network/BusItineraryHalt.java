@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.location.GeoLocationNowhere;
 import org.arakhne.afc.gis.location.GeoLocationPoint;
-import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
@@ -42,6 +39,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bus halt is where a bus is able to halt its course.
@@ -170,7 +168,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 			buffer.add("road", getRoadSegment().getUUID()); //$NON-NLS-1$
 		}
 		if (getPosition1D() != null) {
-			buffer.add("position", getPosition1D().getCurvilineCoordinate()); //$NON-NLS-1$
+			buffer.add("position", Double.valueOf(getPosition1D().getCurvilineCoordinate())); //$NON-NLS-1$
 		}
 		buffer.add("type", getType()); //$NON-NLS-1$
 	}
@@ -186,7 +184,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 		if (busItinerary == null) {
 			return null;
 		}
-		int nb = busItinerary.size();
+		var nb = busItinerary.size();
 		String name;
 		do {
 			++nb;
@@ -234,7 +232,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 
 	@Override
 	protected void checkPrimitiveValidity() {
-		final BusItinerary itinerary = getContainer();
+		final var itinerary = getContainer();
 		BusPrimitiveInvalidity invalidityReason = null;
 		if (itinerary == null) {
 			invalidityReason = new BusPrimitiveInvalidity(
@@ -242,7 +240,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 					null);
 		} else {
 			assert itinerary != null;
-			final BusStop stop = getBusStop();
+			final var stop = getBusStop();
 			if (stop == null) {
 				invalidityReason = new BusPrimitiveInvalidity(
 						BusPrimitiveInvalidityType.NO_STOP_IN_HALT,
@@ -261,7 +259,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 						Double.toString(this.curvilineDistance));
 			} else {
 				assert stop != null;
-				final BusNetwork bn = stop.getBusNetwork();
+				final var bn = stop.getBusNetwork();
 				if (bn == null || bn != getBusNetwork()) {
 					invalidityReason = new BusPrimitiveInvalidity(
 							BusPrimitiveInvalidityType.NOT_IN_SAME_NETWORK,
@@ -286,7 +284,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Override
 	@Pure
 	public BusNetwork getBusNetwork() {
-		final BusItinerary itinerary = getContainer();
+		final var itinerary = getContainer();
 		if (itinerary != null) {
 			return itinerary.getBusNetwork();
 		}
@@ -313,9 +311,9 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 *     otherwise {@code false}.
 	 */
 	public boolean setBusStop(BusStop busStop) {
-		final BusStop old = getBusStop();
-		if ((busStop == null && old != null)
-			|| (busStop != null && !busStop.equals(old))) {
+		final var old = getBusStop();
+		if (busStop == null && old != null
+			|| busStop != null && !busStop.equals(old)) {
 			if (old != null) {
 				old.removeBusHalt(this);
 			}
@@ -362,9 +360,9 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public Point2d getPosition2D() {
-		final Point1d p1d5 = getPosition1D();
+		final var p1d5 = getPosition1D();
 		if (p1d5 != null) {
-			final Point2d pos = new Point2d();
+			final var pos = new Point2d();
 			p1d5.getSegment().projectsOnPlane(
 					p1d5.getCurvilineCoordinate(),
 					p1d5.getLateralDistance(),
@@ -387,19 +385,19 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Pure
 	public Point1d getPosition1D() {
 		if (this.bufferPosition1D == null) {
-			final RoadSegment segment = getRoadSegment();
+			final var segment = getRoadSegment();
 			if (segment != null && !Double.isNaN(this.curvilineDistance)) {
-				final RoadNetwork network = segment.getRoadNetwork();
+				final var network = segment.getRoadNetwork();
 				assert network != null;
 
-				double lateral = segment.getRoadBorderDistance();
+				var lateral = segment.getRoadBorderDistance();
 				if (lateral < 0.) {
 					lateral -= DISTANCE_BETWEEN_HALT_AND_ROAD_BORDER;
 				} else {
 					lateral += DISTANCE_BETWEEN_HALT_AND_ROAD_BORDER;
 				}
 
-				final boolean isSegmentDirection = getRoadSegmentDirection().isSegmentDirection();
+				final var isSegmentDirection = getRoadSegmentDirection().isSegmentDirection();
 				if (!isSegmentDirection) {
 					lateral = -lateral;
 				}
@@ -417,7 +415,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public RoadSegment getRoadSegment() {
-		final BusItinerary itinerary = getContainer();
+		final var itinerary = getContainer();
 		if (itinerary != null && this.roadSegmentIndex >= 0 && this.roadSegmentIndex < itinerary.getRoadSegmentCount()) {
 			return itinerary.getRoadSegmentAt(this.roadSegmentIndex);
 		}
@@ -479,7 +477,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public Direction1D getRoadSegmentDirection() {
-		final BusItinerary itinerary = getContainer();
+		final var itinerary = getContainer();
 		if (itinerary != null && this.roadSegmentIndex >= 0 && this.roadSegmentIndex < itinerary.getRoadSegmentCount()) {
 			return itinerary.getRoadSegmentDirection(this.roadSegmentIndex);
 		}
@@ -523,7 +521,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Override
 	@Pure
 	public int indexInParent() {
-		final BusItinerary itinerary = getContainer();
+		final var itinerary = getContainer();
 		if (itinerary == null) {
 			return -1;
 		}
@@ -539,7 +537,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public boolean isStartingBusHalt() {
-		final BusItinerary itinerary = getContainer();
+		final var itinerary = getContainer();
 		if (itinerary != null && itinerary.isValidPrimitive()) {
 			try {
 				return itinerary.getBusHaltAt(0) == this;
@@ -559,9 +557,9 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public boolean isEndingBusHalt() {
-		final BusItinerary itinerary = getContainer();
+		final var itinerary = getContainer();
 		if (itinerary != null && itinerary.isValidPrimitive()) {
-			final int count = itinerary.getValidBusHaltCount();
+			final var count = itinerary.getValidBusHaltCount();
 			if (count > 0) {
 				try {
 					return itinerary.getBusHaltAt(count - 1) == this;
@@ -584,7 +582,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public boolean insideBusHub() {
-		final BusStop busStop = getBusStop();
+		final var busStop = getBusStop();
 		if (busStop != null) {
 			return busStop.insideBusHub();
 		}
@@ -598,7 +596,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public Iterable<BusHub> busHubs() {
-		final BusStop busStop = getBusStop();
+		final var busStop = getBusStop();
 		if (busStop != null) {
 			return busStop.busHubs();
 		}
@@ -612,7 +610,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public Iterator<BusHub> busHubIterator() {
-		final BusStop busStop = getBusStop();
+		final var busStop = getBusStop();
 		if (busStop != null) {
 			return busStop.busHubIterator();
 		}
@@ -626,7 +624,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		final GeoLocationPoint p = getGeoPosition();
+		final var p = getGeoPosition();
 		if (p == null) {
 			return null;
 		}
@@ -641,7 +639,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Override
 	@Pure
 	public final GeoLocation getGeoLocation() {
-		final GeoLocationPoint pt = getGeoPosition();
+		final var pt = getGeoPosition();
 		if (pt == null) {
 			return new GeoLocationNowhere(getUUID());
 		}
@@ -654,7 +652,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public GeoLocationPoint getGeoPosition() {
-		final Point2d p = getPosition2D();
+		final var p = getPosition2D();
 		if (p != null) {
 			return new GeoLocationPoint(p.getX(), p.getY());
 		}
@@ -672,11 +670,11 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public double distanceToBusStop() {
-		final Point2d  p1 = getPosition2D();
+		final var  p1 = getPosition2D();
 		if (p1 != null) {
-			final BusStop stop = getBusStop();
+			final var stop = getBusStop();
 			if (stop != null) {
-				final Point2d p2 = stop.getPosition2D();
+				final var p2 = stop.getPosition2D();
 				if (p2 != null) {
 					return p1.getDistance(p2);
 				}
@@ -693,7 +691,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 */
 	@Pure
 	public double distance(double x, double y) {
-		final GeoLocationPoint p = getGeoPosition();
+		final var p = getGeoPosition();
 		if (p != null) {
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), x, y);
 		}
@@ -708,7 +706,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Pure
 	public double distance(Point2D<?, ?> point) {
 		assert point != null;
-		final GeoLocationPoint p = getGeoPosition();
+		final var p = getGeoPosition();
 		if (p != null) {
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), point.getX(), point.getY());
 		}
@@ -723,8 +721,8 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Pure
 	public double distance(BusItineraryHalt halt) {
 		assert halt != null;
-		final GeoLocationPoint p = getGeoPosition();
-		final GeoLocationPoint p2 = halt.getGeoPosition();
+		final var p = getGeoPosition();
+		final var p2 = halt.getGeoPosition();
 		if (p != null && p2 != null) {
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), p2.getX(), p2.getY());
 		}
@@ -739,8 +737,8 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Pure
 	public double distance(BusStop busStop) {
 		assert busStop != null;
-		final GeoLocationPoint p = getGeoPosition();
-		final GeoLocationPoint p2 = busStop.getGeoPosition();
+		final var p = getGeoPosition();
+		final var p2 = busStop.getGeoPosition();
 		if (p != null && p2 != null) {
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), p2.getX(), p2.getY());
 		}
@@ -755,7 +753,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	@Pure
 	public double distance(GeoLocationPoint point) {
 		assert point != null;
-		final GeoLocationPoint p = getGeoPosition();
+		final var p = getGeoPosition();
 		if (p != null) {
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), point.getX(), point.getY());
 		}

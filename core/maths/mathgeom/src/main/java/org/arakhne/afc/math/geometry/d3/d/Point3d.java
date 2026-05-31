@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -30,6 +28,7 @@ import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Point with 3 double precision floating-point numbers.
  *
@@ -116,8 +115,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	 * @since 14.0
 	 */
 	public static Point3d convert(Tuple3D<?> tuple) {
-		if (tuple instanceof Point3d) {
-			return (Point3d) tuple;
+		if (tuple instanceof Point3d pts) {
+			return pts;
 		}
 		return new Point3d(tuple.getX(), tuple.getY(), tuple.getZ());
 	}
@@ -131,9 +130,9 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	@Override
 	public double getDistanceSquared(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final double dx = this.x - pt.getX();
-		final double dy = this.y - pt.getY();
-		final double dz = this.z - pt.getZ();
+		final var dx = this.x - pt.getX();
+		final var dy = this.y - pt.getY();
+		final var dz = this.z - pt.getZ();
         return dx * dx + dy * dy + dz * dz;
 	}
 
@@ -141,9 +140,9 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	@Override
 	public double getDistance(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final double dx = this.x - pt.getX();
-		final double dy = this.y - pt.getY();
-		final double dz = this.z - pt.getZ();
+		final var dx = this.x - pt.getX();
+		final var dy = this.y - pt.getY();
+		final var dz = this.z - pt.getZ();
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
@@ -281,6 +280,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 			}
 
 			@Override
+			@SuppressWarnings("checkstyle:superclone")
 			public Point3d clone() {
 				return Point3d.this.getGeomFactory().newPoint(Point3d.this.getX(), Point3d.this.getY(), Point3d.this.getZ());
 			}

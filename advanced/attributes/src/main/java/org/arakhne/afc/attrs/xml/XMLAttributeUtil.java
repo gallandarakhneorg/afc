@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,7 @@
 package org.arakhne.afc.attrs.xml;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Date;
 
-import org.w3c.dom.Element;
-
-import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeType;
@@ -37,6 +32,7 @@ import org.arakhne.afc.inputoutput.xml.DateFormatException;
 import org.arakhne.afc.inputoutput.xml.XMLBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLResources;
 import org.arakhne.afc.inputoutput.xml.XMLUtil;
+import org.w3c.dom.Element;
 
 /**
  * This class provides XML utilities related to attributes.
@@ -83,17 +79,17 @@ public final class XMLAttributeUtil {
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static void writeAttributeContainer(Element element, AttributeProvider container, XMLBuilder builder,
 			XMLResources resources, boolean writeStandardAttribute) {
-		final Element attrsNode = builder.createElement(NODE_ATTRIBUTES);
-		for (final Attribute attr : container.attributes()) {
-			final AttributeType attrType = attr.getType();
+		final var attrsNode = builder.createElement(NODE_ATTRIBUTES);
+		for (final var attr : container.attributes()) {
+			final var attrType = attr.getType();
 			if (attr.isAssigned()) {
 				try {
-					final String name = attr.getName();
+					final var name = attr.getName();
 					if (writeStandardAttribute
-						|| (!XMLUtil.ATTR_ID.equalsIgnoreCase(name)
+						|| !XMLUtil.ATTR_ID.equalsIgnoreCase(name)
 								&& !XMLUtil.ATTR_NAME.equalsIgnoreCase(name)
 								&& !XMLUtil.ATTR_COLOR.equalsIgnoreCase(name)
-								&& !ATTR_GEOID.equalsIgnoreCase(name))) {
+								&& !ATTR_GEOID.equalsIgnoreCase(name)) {
 						final Element attrNode;
 						switch (attrType) {
 						case DATE:
@@ -110,7 +106,7 @@ public final class XMLAttributeUtil {
 							break;
 							//$CASES-OMITTED$
 						default:
-							final String value = attr.getString();
+							final var value = attr.getString();
 							if (value != null && !"".equals(value)) { //$NON-NLS-1$
 								attrNode = builder.createElement(NODE_ATTRIBUTE);
 								attrNode.setAttribute(XMLUtil.ATTR_NAME, attr.getName());
@@ -148,15 +144,15 @@ public final class XMLAttributeUtil {
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
 	public static void readAttributeContainer(Element element, AttributeCollection container,
 			PathBuilder pathBuilder, XMLResources resources, boolean readStandardAttribute) throws IOException {
-		for (final Element attrNode : XMLUtil.getElementsFromPath(element, NODE_ATTRIBUTES, NODE_ATTRIBUTE)) {
-			final String name = XMLUtil.getAttributeValue(attrNode, XMLUtil.ATTR_NAME);
+		for (final var attrNode : XMLUtil.getElementsFromPath(element, NODE_ATTRIBUTES, NODE_ATTRIBUTE)) {
+			final var name = XMLUtil.getAttributeValue(attrNode, XMLUtil.ATTR_NAME);
 			if (name != null && (readStandardAttribute
-					|| (!"".equals(name) //$NON-NLS-1$
+					|| !"".equals(name) //$NON-NLS-1$
 							&& !XMLUtil.ATTR_ID.equalsIgnoreCase(name)
 							&& !XMLUtil.ATTR_NAME.equalsIgnoreCase(name)
 							&& !XMLUtil.ATTR_COLOR.equalsIgnoreCase(name)
-							&& !ATTR_GEOID.equalsIgnoreCase(name)))) {
-				final String type = XMLUtil.getAttributeValue(attrNode, ATTR_TYPE);
+							&& !ATTR_GEOID.equalsIgnoreCase(name))) {
+				final var type = XMLUtil.getAttributeValue(attrNode, ATTR_TYPE);
 				if (type != null && !"".equals(type)) { //$NON-NLS-1$
 					AttributeType attrType;
 					try {
@@ -171,8 +167,8 @@ public final class XMLAttributeUtil {
 							value = XMLUtil.getAttributeValue(attrNode, ATTR_VALUE);
 							if (value != null && !"".equals(value)) { //$NON-NLS-1$
 								try {
-									final Date d = XMLUtil.parseDate(value);
-									final AttributeImpl attr = new AttributeImpl(name, d);
+									final var d = XMLUtil.parseDate(value);
+									final var attr = new AttributeImpl(name, d);
 									container.setAttribute(attr);
 								} catch (DateFormatException e) {
 									throw new IOException(e);
@@ -185,10 +181,10 @@ public final class XMLAttributeUtil {
 							value = XMLUtil.getAttributeValue(attrNode, ATTR_VALUE);
 							if (value != null && !"".equals(value)) { //$NON-NLS-1$
 								try {
-									final long id = XMLResources.getNumericalIdentifier(value);
-									final URL url = resources.getResourceURL(id);
+									final var id = XMLResources.getNumericalIdentifier(value);
+									final var url = resources.getResourceURL(id);
 									if (url != null) {
-										final AttributeImpl attr = new AttributeImpl(name, url);
+										final var attr = new AttributeImpl(name, url);
 										container.setAttribute(attr);
 									}
 								} catch (IllegalArgumentException e) {
@@ -202,7 +198,7 @@ public final class XMLAttributeUtil {
 						default:
 							value = XMLUtil.getAttributeValue(attrNode, ATTR_VALUE);
 							if (value != null && !"".equals(value)) { //$NON-NLS-1$
-								final AttributeImpl attr = new AttributeImpl(name, value);
+								final var attr = new AttributeImpl(name, value);
 								attr.cast(attrType);
 								try {
 									container.setAttribute(attr);

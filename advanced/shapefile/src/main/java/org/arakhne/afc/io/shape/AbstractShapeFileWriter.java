@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import java.net.URL;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
@@ -225,7 +224,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 	}
 
 	private int writePoint(int recordIndex, E element, ShapeElementType type) throws IOException {
-		final ESRIPoint pts = getPointAt(element, 0, 0, type.hasM(), type.hasZ());
+		final var pts = getPointAt(element, 0, 0, type.hasM(), type.hasZ());
 
 		// record index starts at 1
 		writeBEInt(recordIndex + 1);
@@ -265,21 +264,21 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private int writeMultiPoint(int recordIndex, E element, ShapeElementType type) throws IOException {
-		final int count = getPointCountFor(element, 0);
+		final var count = getPointCountFor(element, 0);
 
-		final boolean hasZ = type.hasZ();
-		final boolean hasM = type.hasM();
+		final var hasZ = type.hasZ();
+		final var hasM = type.hasM();
 
-		final ESRIPoint[] points = new ESRIPoint[count];
-		double minx = Double.NaN;
-		double miny = Double.NaN;
-		double maxx = Double.NaN;
-		double maxy = Double.NaN;
-		double minz = Double.NaN;
-		double maxz = Double.NaN;
-		double minm = Double.NaN;
-		double maxm = Double.NaN;
-		for (int i = 0; i < count; ++i) {
+		final var points = new ESRIPoint[count];
+		var minx = Double.NaN;
+		var miny = Double.NaN;
+		var maxx = Double.NaN;
+		var maxy = Double.NaN;
+		var minz = Double.NaN;
+		var maxz = Double.NaN;
+		var minm = Double.NaN;
+		var maxm = Double.NaN;
+		for (var i = 0; i < count; ++i) {
 			points[i] = getPointAt(element, 0, i, hasM, hasZ);
 			if (points[i] != null) {
 				if (i == 0) {
@@ -323,7 +322,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		// record index starts at 1
 		writeBEInt(recordIndex + 1);
 
-		int recordLength =
+		var recordLength =
 				// Content type
 				4
 				// Box
@@ -355,7 +354,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		writeLEDouble(toESRI_x(maxy));
 		writeLEInt(count);
 
-		for (int i = 0; i < count; ++i) {
+		for (var i = 0; i < count; ++i) {
 			writeLEDouble(toESRI_x(points[i].getX()));
 			writeLEDouble(toESRI_y(points[i].getY()));
 		}
@@ -363,7 +362,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		if (hasZ) {
 			writeLEDouble(toESRI_z(minz));
 			writeLEDouble(toESRI_z(maxz));
-			for (int i = 0; i < count; ++i) {
+			for (var i = 0; i < count; ++i) {
 				writeLEDouble(toESRI_z(points[i].getZ()));
 			}
 		}
@@ -371,7 +370,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		if (hasM) {
 			writeLEDouble(toESRI_m(minm));
 			writeLEDouble(toESRI_m(maxm));
-			for (int i = 0; i < count; ++i) {
+			for (var i = 0; i < count; ++i) {
 				writeLEDouble(toESRI_m(points[i].getM()));
 			}
 		}
@@ -382,34 +381,31 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private int writePolyElement(int recordIndex, E element, ShapeElementType type) throws IOException {
-		final int grpCount = getGroupCountFor(element);
-		int ptsCount;
-		ESRIPoint pts;
+		final var grpCount = getGroupCountFor(element);
+		final var hasZ = type.hasZ();
+		final var hasM = type.hasM();
 
-		final boolean hasZ = type.hasZ();
-		final boolean hasM = type.hasM();
+		final var parts = new int[grpCount];
+		final var points = new ArrayList<ESRIPoint>();
 
-		final int[] parts = new int[grpCount];
-		final List<ESRIPoint> points = new ArrayList<>();
-
-		double minx = Double.NaN;
-		double miny = Double.NaN;
-		double maxx = Double.NaN;
-		double maxy = Double.NaN;
-		double minz = Double.NaN;
-		double maxz = Double.NaN;
-		double minm = Double.NaN;
-		double maxm = Double.NaN;
+		var minx = Double.NaN;
+		var miny = Double.NaN;
+		var maxx = Double.NaN;
+		var maxy = Double.NaN;
+		var minz = Double.NaN;
+		var maxz = Double.NaN;
+		var minm = Double.NaN;
+		var maxm = Double.NaN;
 
 		parts[0] = 0;
 
-		for (int i = 0; i < grpCount; ++i) {
-			ptsCount = getPointCountFor(element, i);
+		for (var i = 0; i < grpCount; ++i) {
+			final var ptsCount = getPointCountFor(element, i);
 			if (i < grpCount - 1) {
 				parts[i + 1] = parts[i] + ptsCount;
 			}
-			for (int j = 0; j < ptsCount; ++j) {
-				pts = getPointAt(element, i, j, hasM, hasZ);
+			for (var j = 0; j < ptsCount; ++j) {
+				final var pts = getPointAt(element, i, j, hasM, hasZ);
 				if (pts != null) {
 					points.add(pts);
 					if (j == 0 && i == 0) {
@@ -454,7 +450,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		// record index starts at 1
 		writeBEInt(recordIndex + 1);
 
-		int recordLength =
+		var recordLength =
 				// Content type
 				4
 				// Box
@@ -491,11 +487,11 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		writeLEInt(grpCount);
 		writeLEInt(points.size());
 
-		for (int i = 0; i < grpCount; ++i) {
+		for (var i = 0; i < grpCount; ++i) {
 			writeLEInt(parts[i]);
 		}
 
-		for (final ESRIPoint p : points) {
+		for (final var p : points) {
 			writeLEDouble(toESRI_x(p.getX()));
 			writeLEDouble(toESRI_y(p.getY()));
 		}
@@ -503,7 +499,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		if (hasZ) {
 			writeLEDouble(toESRI_z(minz));
 			writeLEDouble(toESRI_z(maxz));
-			for (final ESRIPoint p : points) {
+			for (final var p : points) {
 				writeLEDouble(toESRI_z(p.getZ()));
 			}
 		}
@@ -511,7 +507,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		if (hasM) {
 			writeLEDouble(toESRI_m(minm));
 			writeLEDouble(toESRI_m(maxm));
-			for (final ESRIPoint p : points) {
+			for (final var p : points) {
 				writeLEDouble(toESRI_m(p.getM()));
 			}
 		}
@@ -522,33 +518,30 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private int writeMultiPatch(int recordIndex, E element) throws IOException {
-		final int grpCount = getGroupCountFor(element);
-		int ptsCount;
-		ESRIPoint pts;
+		final var grpCount = getGroupCountFor(element);
+		final var parts = new int[grpCount];
+		final var partTypes = new ShapeMultiPatchType[grpCount];
+		final var points = new ArrayList<ESRIPoint>();
 
-		final int[] parts = new int[grpCount];
-		final ShapeMultiPatchType[] partTypes = new ShapeMultiPatchType[grpCount];
-		final List<ESRIPoint> points = new ArrayList<>();
-
-		double minx = Double.NaN;
-		double miny = Double.NaN;
-		double maxx = Double.NaN;
-		double maxy = Double.NaN;
-		double minz = Double.NaN;
-		double maxz = Double.NaN;
-		double minm = Double.NaN;
-		double maxm = Double.NaN;
+		var minx = Double.NaN;
+		var miny = Double.NaN;
+		var maxx = Double.NaN;
+		var maxy = Double.NaN;
+		var minz = Double.NaN;
+		var maxz = Double.NaN;
+		var minm = Double.NaN;
+		var maxm = Double.NaN;
 
 		parts[0] = 0;
 
-		for (int i = 0; i < grpCount; ++i) {
+		for (var i = 0; i < grpCount; ++i) {
 			partTypes[i] = getGroupTypeFor(element, i);
-			ptsCount = getPointCountFor(element, i);
+			final var ptsCount = getPointCountFor(element, i);
 			if (i < grpCount - 1) {
 				parts[i + 1] = parts[i] + ptsCount;
 			}
-			for (int j = 0; j < ptsCount; ++j) {
-				pts = getPointAt(element, i, j, true, true);
+			for (var j = 0; j < ptsCount; ++j) {
+				final var pts = getPointAt(element, i, j, true, true);
 				if (pts != null) {
 					points.add(pts);
 					if (j == 0 && i == 0) {
@@ -593,7 +586,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		// record index starts at 1
 		writeBEInt(recordIndex + 1);
 
-		final int recordLength =
+		final var recordLength =
 				// Content type
 				4
 				// Box
@@ -627,28 +620,28 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		writeLEInt(grpCount);
 		writeLEInt(points.size());
 
-		for (int i = 0; i < grpCount; ++i) {
+		for (var i = 0; i < grpCount; ++i) {
 			writeLEInt(parts[i]);
 		}
 
-		for (int i = 0; i < grpCount; ++i) {
+		for (var i = 0; i < grpCount; ++i) {
 			writeLEInt(partTypes[i].partType);
 		}
 
-		for (final ESRIPoint p : points) {
+		for (final var p : points) {
 			writeLEDouble(toESRI_x(p.getX()));
 			writeLEDouble(toESRI_y(p.getY()));
 		}
 
 		writeLEDouble(toESRI_z(minz));
 		writeLEDouble(toESRI_z(maxz));
-		for (final ESRIPoint p : points) {
+		for (final var p : points) {
 			writeLEDouble(toESRI_z(p.getZ()));
 		}
 
 		writeLEDouble(toESRI_m(minm));
 		writeLEDouble(toESRI_m(maxm));
-		for (final ESRIPoint p : points) {
+		for (final var p : points) {
 			writeLEDouble(toESRI_m(p.getM()));
 		}
 
@@ -718,7 +711,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected void writeElement(int recordIndex, E element, ShapeElementType type) throws IOException {
-		int recordLength = 0;
+		var recordLength = 0;
 		switch (type) {
 		case NULL:
 			recordLength = writeNullShape(recordIndex);

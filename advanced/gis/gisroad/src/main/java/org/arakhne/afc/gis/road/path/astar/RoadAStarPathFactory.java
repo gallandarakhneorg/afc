@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,12 @@
 
 package org.arakhne.afc.gis.road.path.astar;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.road.path.RoadPath;
 import org.arakhne.afc.gis.road.path.astar.RoadAStar.VirtualSegment;
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.math.graph.astar.AStarPathFactory;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is the factory used to create a road path
@@ -45,8 +44,8 @@ public class RoadAStarPathFactory implements AStarPathFactory<RoadPath, RoadSegm
 	public RoadPath newPath(RoadConnection startPoint, RoadSegment segment) {
 		assert startPoint != null;
 		assert segment != null;
-		if (segment instanceof VirtualSegment) {
-			final RoadSegment s = ((VirtualSegment) segment).getVirtualizedSegment();
+		if (segment instanceof VirtualSegment vseg) {
+			final var s = vseg.getVirtualizedSegment();
 			return new RoadPath(s);
 		}
 		return new RoadPath(segment, startPoint);
@@ -56,9 +55,9 @@ public class RoadAStarPathFactory implements AStarPathFactory<RoadPath, RoadSegm
 	public boolean addToPath(RoadPath path, RoadSegment segment) {
 		assert path != null;
 		assert segment != null;
-		RoadSegment seg = segment;
-		if (segment instanceof VirtualSegment) {
-			seg = ((VirtualSegment) segment).getVirtualizedSegment();
+		var seg = segment;
+		if (segment instanceof VirtualSegment vseg) {
+			seg = vseg.getVirtualizedSegment();
 			if (seg.equals(path.getLastSegment())) {
 				return false;
 			}

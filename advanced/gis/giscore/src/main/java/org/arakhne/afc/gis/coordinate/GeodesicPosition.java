@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,10 @@ package org.arakhne.afc.gis.coordinate;
 import java.io.Serializable;
 import java.util.prefs.Preferences;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Describes a GPS position in the geographic WGS84 standard.
  *
@@ -170,7 +169,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	@SuppressWarnings("checkstyle:localvariablename")
 	@Pure
 	public int getLatitudeMinute() {
-		double p = Math.abs(this.phi);
+		var p = Math.abs(this.phi);
 		p = p - (int) p;
 		return (int) (p * 60.);
 	}
@@ -182,7 +181,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	@SuppressWarnings("checkstyle:localvariablename")
 	@Pure
 	public double getLatitudeSecond() {
-		double p = Math.abs(this.phi);
+		var p = Math.abs(this.phi);
 		p = (p - (int) p) * 60.;
 		p = p - (int) p;
 		return p * 60.;
@@ -222,7 +221,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	@SuppressWarnings("checkstyle:localvariablename")
 	@Pure
 	public int getLongitudeMinute() {
-		double l = Math.abs(this.lambda);
+		var l = Math.abs(this.lambda);
 		l = l - (int) l;
 		return (int) (l * 60.);
 	}
@@ -234,7 +233,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	@SuppressWarnings("checkstyle:localvariablename")
 	@Pure
 	public double getLongitudeSecond() {
-		double p = Math.abs(this.lambda);
+		var p = Math.abs(this.lambda);
 		p = (p - (int) p) * 60.;
 		p = p - (int) p;
 		return p * 60.;
@@ -275,9 +274,9 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	@SuppressWarnings("checkstyle:localvariablename")
 	@Pure
 	public static String toDMSString(double lambda, double phi, boolean useSymbolicDirection) {
-		final StringBuilder b = new StringBuilder();
-		final SexagesimalLatitudeAxis latitudeAxis = (phi < 0.) ? SexagesimalLatitudeAxis.SOUTH : SexagesimalLatitudeAxis.NORTH;
-		final SexagesimalLongitudeAxis longitudeAxis = (lambda < 0.) ? SexagesimalLongitudeAxis.WEST
+		final var b = new StringBuilder();
+		final var latitudeAxis = (phi < 0.) ? SexagesimalLatitudeAxis.SOUTH : SexagesimalLatitudeAxis.NORTH;
+		final var longitudeAxis = (lambda < 0.) ? SexagesimalLongitudeAxis.WEST
 				: SexagesimalLongitudeAxis.EAST;
 		toDMSString(b, phi, useSymbolicDirection ? Locale.getString(latitudeAxis.name()) : EMPTY_STRING);
 		b.append(" "); //$NON-NLS-1$
@@ -287,11 +286,11 @@ public class GeodesicPosition implements Cloneable, Serializable {
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:parametername", "checkstyle:localvariablename"})
 	private static void toDMSString(StringBuilder b, double value, String direction) {
-		final double v = Math.abs(value);
-		int deg = (int) v;
-		final double d = (v - deg) * 60.;
-		int min = (int) d;
-		double sec = (d - min) * 60.;
+		final var v = Math.abs(value);
+		var deg = (int) v;
+		final var d = (v - deg) * 60.;
+		var min = (int) d;
+		var sec = (d - min) * 60.;
 
 		if (deg < 0) {
 			deg = 0;
@@ -310,29 +309,30 @@ public class GeodesicPosition implements Cloneable, Serializable {
 			}
 			if (min > 0) {
 				if (sec > 0) {
-					s = Locale.getString("DMS_DEG_MIN_SEC", deg, min, sec, direction); //$NON-NLS-1$
+					s = Locale.getString("DMS_DEG_MIN_SEC", Integer.valueOf(deg), //$NON-NLS-1$
+							Integer.valueOf(min), Double.valueOf(sec), direction);
 				} else {
-					s = Locale.getString("DMS_DEG_MIN", deg, min, direction); //$NON-NLS-1$
+					s = Locale.getString("DMS_DEG_MIN", Integer.valueOf(deg), Integer.valueOf(min), direction); //$NON-NLS-1$
 				}
 			} else if (sec > 0) {
-				s = Locale.getString("DMS_DEG_SEC", deg, sec, direction); //$NON-NLS-1$
+				s = Locale.getString("DMS_DEG_SEC", Integer.valueOf(deg), Double.valueOf(sec), direction); //$NON-NLS-1$
 			} else {
-				s = Locale.getString("DMS_DEG", deg, direction); //$NON-NLS-1$
+				s = Locale.getString("DMS_DEG", Integer.valueOf(deg), direction); //$NON-NLS-1$
 			}
 		} else if (min > 0) {
 			if (direction == EMPTY_STRING && value < 0.) {
 				min = -min;
 			}
 			if (sec > 0) {
-				s = Locale.getString("DMS_MIN_SEC", min, sec, direction); //$NON-NLS-1$
+				s = Locale.getString("DMS_MIN_SEC", Integer.valueOf(min), Double.valueOf(sec), direction); //$NON-NLS-1$
 			} else {
-				s = Locale.getString("DMS_MIN", min, direction); //$NON-NLS-1$
+				s = Locale.getString("DMS_MIN", Integer.valueOf(min), direction); //$NON-NLS-1$
 			}
 		} else {
 			if (direction == EMPTY_STRING && value < 0.) {
 				sec = -sec;
 			}
-			s = Locale.getString("DMS_SEC", sec, direction); //$NON-NLS-1$
+			s = Locale.getString("DMS_SEC", Double.valueOf(sec), direction); //$NON-NLS-1$
 		}
 
 		b.append(s);
@@ -351,20 +351,20 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	 */
 	@Pure
 	public static String toDecimalDegreeString(double lambda, double phi, boolean useSymbolicDirection) {
-		final StringBuilder b = new StringBuilder();
-		final SexagesimalLatitudeAxis latitudeAxis = (phi < 0.) ? SexagesimalLatitudeAxis.SOUTH : SexagesimalLatitudeAxis.NORTH;
-		final SexagesimalLongitudeAxis longitudeAxis = (lambda < 0.) ? SexagesimalLongitudeAxis.WEST
+		final var b = new StringBuilder();
+		final var latitudeAxis = (phi < 0.) ? SexagesimalLatitudeAxis.SOUTH : SexagesimalLatitudeAxis.NORTH;
+		final var longitudeAxis = (lambda < 0.) ? SexagesimalLongitudeAxis.WEST
 				: SexagesimalLongitudeAxis.EAST;
 		if (useSymbolicDirection) {
-			b.append(Locale.getString("D_DEG", Math.abs(phi), Locale.getString(latitudeAxis.name()))); //$NON-NLS-1$
+			b.append(Locale.getString("D_DEG", Double.valueOf(Math.abs(phi)), Locale.getString(latitudeAxis.name()))); //$NON-NLS-1$
 		} else {
-			b.append(Locale.getString("D_DEG", phi, EMPTY_STRING)); //$NON-NLS-1$
+			b.append(Locale.getString("D_DEG", Double.valueOf(phi), EMPTY_STRING)); //$NON-NLS-1$
 		}
 		b.append(" "); //$NON-NLS-1$
 		if (useSymbolicDirection) {
-			b.append(Locale.getString("D_DEG", Math.abs(lambda), Locale.getString(longitudeAxis.name()))); //$NON-NLS-1$
+			b.append(Locale.getString("D_DEG", Double.valueOf(Math.abs(lambda)), Locale.getString(longitudeAxis.name()))); //$NON-NLS-1$
 		} else {
-			b.append(Locale.getString("D_DEG", lambda, EMPTY_STRING)); //$NON-NLS-1$
+			b.append(Locale.getString("D_DEG", Double.valueOf(lambda), EMPTY_STRING)); //$NON-NLS-1$
 		}
 		return b.toString();
 	}
@@ -383,9 +383,9 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	 */
 	@Pure
 	public static String toDecimalDegreeMinuteString(double lambda, double phi, boolean useSymbolicDirection) {
-		final StringBuilder b = new StringBuilder();
-		final SexagesimalLatitudeAxis latitudeAxis = (phi < 0.) ? SexagesimalLatitudeAxis.SOUTH : SexagesimalLatitudeAxis.NORTH;
-		final SexagesimalLongitudeAxis longitudeAxis = lambda < 0. ? SexagesimalLongitudeAxis.WEST
+		final var b = new StringBuilder();
+		final var latitudeAxis = (phi < 0.) ? SexagesimalLatitudeAxis.SOUTH : SexagesimalLatitudeAxis.NORTH;
+		final var longitudeAxis = lambda < 0. ? SexagesimalLongitudeAxis.WEST
 				: SexagesimalLongitudeAxis.EAST;
 		toDMString(b, phi, useSymbolicDirection ? Locale.getString(latitudeAxis.name()) : EMPTY_STRING);
 		b.append(" "); //$NON-NLS-1$
@@ -395,9 +395,9 @@ public class GeodesicPosition implements Cloneable, Serializable {
 
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:localvariablename", "checkstyle:magicnumber"})
 	private static void toDMString(StringBuilder b, double value, String direction) {
-		final double v = Math.abs(value);
-		int deg = (int) v;
-		final double min = (v - deg) * 60.;
+		final var v = Math.abs(value);
+		var deg = (int) v;
+		final var min = (v - deg) * 60.;
 
 		if (deg < 0) {
 			deg = 0;
@@ -408,9 +408,9 @@ public class GeodesicPosition implements Cloneable, Serializable {
 
 		final String s;
 		if (min > 0) {
-			s = Locale.getString("DM_DEG_MIN", deg, min, direction); //$NON-NLS-1$
+			s = Locale.getString("DM_DEG_MIN", Integer.valueOf(deg), Double.valueOf(min), direction); //$NON-NLS-1$
 		} else {
-			s = Locale.getString("DM_DEG", deg, direction); //$NON-NLS-1$
+			s = Locale.getString("DM_DEG", Integer.valueOf(deg), direction); //$NON-NLS-1$
 		}
 
 		b.append(s);
@@ -428,7 +428,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	 */
 	public static void setPreferredStringRepresentation(GeodesicPositionStringRepresentation representation,
 			boolean useSymbolicDirection) {
-		final Preferences prefs = Preferences.userNodeForPackage(GeodesicPosition.class);
+		final var prefs = Preferences.userNodeForPackage(GeodesicPosition.class);
 		if (prefs != null) {
 			if (representation == null) {
 				prefs.remove("STRING_REPRESENTATION"); //$NON-NLS-1$
@@ -469,9 +469,9 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	 */
 	@Pure
 	public static GeodesicPositionStringRepresentation getPreferredStringRepresentation(boolean allowNullValue) {
-		final Preferences prefs = Preferences.userNodeForPackage(GeodesicPosition.class);
+		final var prefs = Preferences.userNodeForPackage(GeodesicPosition.class);
 		if (prefs != null) {
-			final String v = prefs.get("STRING_REPRESENTATION", null); //$NON-NLS-1$
+			final var v = prefs.get("STRING_REPRESENTATION", null); //$NON-NLS-1$
 			if (v != null && !"".equals(v)) { //$NON-NLS-1$
 				try {
 					GeodesicPositionStringRepresentation rep;
@@ -501,14 +501,14 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	 * of a geodesic position.
 	 *
 	 * @return {@code true} if the direction symbol should be output,
-	 * {@code false} if the signs of the coordinates indicate the directions.
+	 *     {@code false} if the signs of the coordinates indicate the directions.
 	 * @see #setPreferredStringRepresentation(GeodesicPositionStringRepresentation, boolean)
 	 * @see #getPreferredStringRepresentation()
 	 * @see #toString()
 	 */
 	@Pure
 	public static boolean getDirectionSymbolInPreferredStringRepresentation() {
-		final Preferences prefs = Preferences.userNodeForPackage(GeodesicPosition.class);
+		final var prefs = Preferences.userNodeForPackage(GeodesicPosition.class);
 		if (prefs != null) {
 			return prefs.getBoolean("SYMBOL_IN_STRING_REPRESENTATION", DEFAULT_SYMBOL_IN_STRING_REPRESENTATION); //$NON-NLS-1$
 		}
@@ -528,7 +528,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	@Pure
 	@Override
 	public String toString() {
-		final boolean useDirectionSymbol = getDirectionSymbolInPreferredStringRepresentation();
+		final var useDirectionSymbol = getDirectionSymbolInPreferredStringRepresentation();
 		switch (getPreferredStringRepresentation()) {
 		case DEGREE_MINUTE_SECOND:
 			return toDMSString(this.lambda, this.phi, useDirectionSymbol);
@@ -544,12 +544,10 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	@Pure
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof GeodesicPosition) {
-			final GeodesicPosition p = (GeodesicPosition) obj;
+		if (obj instanceof GeodesicPosition p) {
 			return this.lambda == p.lambda && this.phi == p.phi;
 		}
-		if (obj instanceof Tuple2D<?>) {
-			final Tuple2D<?> p = (Tuple2D<?>) obj;
+		if (obj instanceof Tuple2D p) {
 			return this.lambda == p.getX() && this.phi == p.getY();
 		}
 		return false;
@@ -558,7 +556,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	@Pure
 	@Override
 	public int hashCode() {
-		int hvalue = Double.valueOf(this.lambda).hashCode();
+		var hvalue = Double.valueOf(this.lambda).hashCode();
 		hvalue = hvalue * 31 + Double.valueOf(this.phi).hashCode();
 		return hvalue;
 	}

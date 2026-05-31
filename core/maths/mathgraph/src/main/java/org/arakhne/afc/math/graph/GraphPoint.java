@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,7 +128,7 @@ public interface GraphPoint<PT extends GraphPoint<PT, ST>, ST extends GraphSegme
 	 * a point connected to only one segment.
 	 *
 	 * @return {@code true} if zero or one segment was connected
-	 *     to this point, otherwhise {@code false}
+	 *     to this point, otherwise {@code false}
 	 */
 	@Pure
 	boolean isFinalConnectionPoint();
@@ -150,7 +150,7 @@ public interface GraphPoint<PT extends GraphPoint<PT, ST>, ST extends GraphSegme
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	public interface GraphPointConnection<PT extends GraphPoint<PT, ST>, ST extends GraphSegment<ST, PT>> {
+	interface GraphPointConnection<PT extends GraphPoint<PT, ST>, ST extends GraphSegment<ST, PT>> {
 
 		/** Replies the connected segment.
 		 *

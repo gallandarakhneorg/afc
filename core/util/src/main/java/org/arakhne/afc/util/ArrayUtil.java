@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,15 +26,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.sizediterator.ArraySizedIterator;
 import org.arakhne.afc.sizediterator.SizedIterator;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Some utilities functions for arrays.
@@ -57,9 +55,8 @@ public final class ArrayUtil {
 	 * @param tab the array.
 	 */
 	public static <T> void reverse(T[] tab) {
-		T tmp;
-		for (int i = 0; i < tab.length / 2; ++i) {
-			tmp = tab[i];
+		for (var i = 0; i < tab.length / 2; ++i) {
+			final var tmp = tab[i];
 			tab[i] = tab[tab.length - i - 1];
 			tab[tab.length - i - 1] = tmp;
 		}
@@ -74,9 +71,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] toArray(Collection<? extends T> collection, Class<T> clazz) {
-		final int size = (collection == null) ? 0 : collection.size();
-		final T[] tab = newInstance(clazz, size);
-		if ((collection != null) && (size > 0)) {
+		final var size = (collection == null) ? 0 : collection.size();
+		final var tab = newInstance(clazz, size);
+		if (collection != null && size > 0) {
 			collection.toArray(tab);
 		}
 		return tab;
@@ -92,7 +89,7 @@ public final class ArrayUtil {
 	 * @return the array.
 	 */
 	public static <T> T[] toArrayAndClear(Collection<? extends T> collection, Class<T> clazz) {
-		final T[] tab = toArray(collection, clazz);
+		final var tab = toArray(collection, clazz);
 		collection.clear();
 		return tab;
 	}
@@ -108,15 +105,15 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] merge(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {
-		int length = 0;
-		for (final T[] tab : arrays) {
+		var length = 0;
+		for (final var tab : arrays) {
 			if (tab != null) {
 				length += tab.length;
 			}
 		}
-		final T[] result = newInstance(clazz, length);
-		int i = 0;
-		for (final T[] tab : arrays) {
+		final var result = newInstance(clazz, length);
+		var i = 0;
+		for (final var tab : arrays) {
 			if (tab != null) {
 				System.arraycopy(tab, 0, result, i, tab.length);
 				i += tab.length;
@@ -136,7 +133,7 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] merge(Class<T> clazz, @SuppressWarnings("unchecked") T... elements) {
-		final T[] result = newInstance(clazz, elements.length);
+		final var result = newInstance(clazz, elements.length);
 		System.arraycopy(elements, 0, result, 0, elements.length);
 		return result;
 	}
@@ -153,7 +150,7 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] merge(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... elements) {
-		final T[] result = newInstance(clazz, source.length + elements.length);
+		final var result = newInstance(clazz, source.length + elements.length);
 		System.arraycopy(source, 0, result, 0, source.length);
 		System.arraycopy(elements, 0, result, source.length, elements.length);
 		return result;
@@ -170,21 +167,21 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] mergeWithoutNull(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {
-		int length = 0;
-		for (final T[] tab : arrays) {
+		var length = 0;
+		for (final var tab : arrays) {
 			if (tab != null) {
-				for (final T t : tab) {
+				for (final var t : tab) {
 					if (t != null) {
 						++length;
 					}
 				}
 			}
 		}
-		final T[] result = newInstance(clazz, length);
-		int i = 0;
-		for (final T[] tab : arrays) {
+		final var result = newInstance(clazz, length);
+		var i = 0;
+		for (final var tab : arrays) {
 			if (tab != null) {
-				for (final T t : tab) {
+				for (final var t : tab) {
 					if (t != null) {
 						result[i] = t;
 						++i;
@@ -206,15 +203,15 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] mergeWithoutNull(Class<T> clazz, @SuppressWarnings("unchecked") T... elements) {
-		int nbNotNull = 0;
-		for (final T t : elements) {
+		var nbNotNull = 0;
+		for (final var t : elements) {
 			if (t != null) {
 				++nbNotNull;
 			}
 		}
-		final T[] result = newInstance(clazz, nbNotNull);
-		int i = 0;
-		for (final T t : elements) {
+		final var result = newInstance(clazz, nbNotNull);
+		var i = 0;
+		for (final var t : elements) {
 			if (t != null) {
 				result[i++] = t;
 			}
@@ -234,25 +231,25 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] mergeWithoutNull(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... elements) {
-		int nbNotNull = 0;
-		for (final T t : source) {
+		var nbNotNull = 0;
+		for (final var t : source) {
 			if (t != null) {
 				++nbNotNull;
 			}
 		}
-		for (final T t : elements) {
+		for (final var t : elements) {
 			if (t != null) {
 				++nbNotNull;
 			}
 		}
-		final T[] result = newInstance(clazz, nbNotNull);
-		int i = 0;
-		for (final T t : source) {
+		final var result = newInstance(clazz, nbNotNull);
+		var i = 0;
+		for (final var t : source) {
 			if (t != null) {
 				result[i++] = t;
 			}
 		}
-		for (final T t : elements) {
+		for (final var t : elements) {
 			if (t != null) {
 				result[i++] = t;
 			}
@@ -270,9 +267,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] removeElements(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... toRemove) {
-		final List<T> list = new ArrayList<>();
+		final var list = new ArrayList<T>();
 		list.addAll(Arrays.asList(source));
-		for (final T t : toRemove) {
+		for (final var t : toRemove) {
 			list.remove(t);
 		}
 		return toArrayAndClear(list, clazz);
@@ -290,11 +287,11 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <I, T> T[] castArray(I[] originalArray, Class<T> clazz) {
-		final int size = (originalArray == null) ? 0 : originalArray.length;
-		final T[] result = newInstance(clazz, size);
-		if ((originalArray != null) && (size > 0)) {
-			int index = 0;
-			for (final I to : originalArray) {
+		final var size = (originalArray == null) ? 0 : originalArray.length;
+		final var result = newInstance(clazz, size);
+		if (originalArray != null && size > 0) {
+			var index = 0;
+			for (final var to : originalArray) {
 				result[index] = (clazz.isInstance(to)) ? clazz.cast(to) : null;
 				++index;
 			}
@@ -314,11 +311,11 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <I, O> O[] castArray(Collection<I> originalArray, Class<O> clazz) {
-		final int size = (originalArray == null) ? 0 : originalArray.size();
-		final O[] result = newInstance(clazz, size);
-		if ((originalArray != null) && (size > 0)) {
-			int index = 0;
-			for (final I to : originalArray) {
+		final var size = (originalArray == null) ? 0 : originalArray.size();
+		final var result = newInstance(clazz, size);
+		if (originalArray != null && size > 0) {
+			var index = 0;
+			for (final var to : originalArray) {
 				result[index] = (clazz.isInstance(to)) ? clazz.cast(to) : null;
 				++index;
 			}
@@ -340,10 +337,10 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> T[] restrictArray(T[] originalArray, Class<T> clazz, Filter<T> comparator) {
-		final int size = (originalArray == null) ? 0 : originalArray.length;
-		final List<T> result = new ArrayList<>();
-		if ((originalArray != null) && (size > 0)) {
-			for (final T to : originalArray) {
+		final var size = (originalArray == null) ? 0 : originalArray.length;
+		final var result = new ArrayList<T>();
+		if (originalArray != null && size > 0) {
+			for (final var to : originalArray) {
 				if (comparator.filter(to)) {
 					result.add(to);
 				}
@@ -364,10 +361,10 @@ public final class ArrayUtil {
 	@SuppressWarnings("unchecked")
 	@Pure
 	public static <I, O> O[] castRestrictedArray(I[] originalArray, Class<O> clazz) {
-		final int size = (originalArray == null) ? 0 : originalArray.length;
-		final List<O> result = new ArrayList<>();
-		if ((originalArray != null) && (size > 0)) {
-			for (final I to : originalArray) {
+		final var size = (originalArray == null) ? 0 : originalArray.length;
+		final var result = new ArrayList<O>();
+		if (originalArray != null && size > 0) {
+			for (final var to : originalArray) {
 				if (clazz.isInstance(to)) {
 					result.add((O) to);
 				}
@@ -388,10 +385,10 @@ public final class ArrayUtil {
 	@SuppressWarnings("unchecked")
 	@Pure
 	public static <I, O> O[] castRestrictedArray(Collection<I> originalArray, Class<O> clazz) {
-		final int size = (originalArray == null) ? 0 : originalArray.size();
-		final ArrayList<O> result = new ArrayList<>();
-		if ((originalArray != null) && (size > 0)) {
-			for (final I to : originalArray) {
+		final var size = (originalArray == null) ? 0 : originalArray.size();
+		final var result = new ArrayList<O>();
+		if (originalArray != null && size > 0) {
+			for (final var to : originalArray) {
 				if (clazz.isInstance(to)) {
 					result.add((O) to);
 				}
@@ -412,7 +409,7 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> boolean containsObject(T elt, T[] array) {
-		for (final T t : array) {
+		for (final var t : array) {
 			if (t == elt) {
 				return true;
 			}
@@ -432,10 +429,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> boolean containsAllObjects(T[] elts, T[] array) {
-		boolean found;
-		for (final T elt : elts) {
-			found = false;
-			for (final T t : array) {
+		for (final var elt : elts) {
+			var found = false;
+			for (final var t : array) {
 				if (t == elt) {
 					found = true;
 					break;
@@ -459,8 +455,8 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> boolean contains(T elt, @SuppressWarnings("unchecked") T... array) {
-		for (final T t : array) {
-			if ((t == elt) || ((t != null) && (t.equals(elt)))) {
+		for (final var t : array) {
+			if (t == elt || t != null && t.equals(elt)) {
 				return true;
 			}
 		}
@@ -486,15 +482,12 @@ public final class ArrayUtil {
 		assert elt != null;
 		assert array != null;
 
-		int first = 0;
-		int last = array.length - 1;
-		int center;
-		int cmp;
-		T indata;
+		var first = 0;
+		var last = array.length - 1;
 		while (last >= first) {
-			center = (first + last) / 2;
-			indata = array[center];
-			cmp = comparator.compare(elt, indata);
+			final var center = (first + last) / 2;
+			final var indata = array[center];
+			final var cmp = comparator.compare(elt, indata);
 			if (cmp == 0) {
 				return true;
 			} else if (cmp < 0) {
@@ -517,11 +510,10 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> boolean containsAll(T[] elts, T[] array) {
-		boolean found;
-		for (final T elt : elts) {
-			found = false;
-			for (final T t : array) {
-				if ((t == elt) || ((t != null) && (t.equals(elt)))) {
+		for (final var elt : elts) {
+			var found = false;
+			for (final var t : array) {
+				if (t == elt || t != null && t.equals(elt)) {
 					found = true;
 					break;
 				}
@@ -544,9 +536,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> boolean intersects(T[] elts, T[] array) {
-		for (final T t : array) {
-			for (final T elt : elts) {
-				if ((elt == t) || ((t != null) && (t.equals(elt)))) {
+		for (final var t : array) {
+			for (final var elt : elts) {
+				if (elt == t || t != null && t.equals(elt)) {
 					return true;
 				}
 			}
@@ -591,11 +583,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static <T> void shuffle(T[] array, Random rnd) {
-		int ir;
-		T tmp;
-		for (int i = array.length; i > 1; --i) {
-			ir = rnd.nextInt(i);
-			tmp = array[i - 1];
+		for (var i = array.length; i > 1; --i) {
+			final var ir = rnd.nextInt(i);
+			final var tmp = array[i - 1];
 			array[i - 1] = array[ir];
 			array[ir] = tmp;
 		}
@@ -619,11 +609,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static void shuffle(boolean[] array, Random rnd) {
-		int ir;
-		boolean tmp;
-		for (int i = array.length; i > 1; --i) {
-			ir = rnd.nextInt(i);
-			tmp = array[i - 1];
+		for (var i = array.length; i > 1; --i) {
+			final var ir = rnd.nextInt(i);
+			final var tmp = array[i - 1];
 			array[i - 1] = array[ir];
 			array[ir] = tmp;
 		}
@@ -647,11 +635,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static void shuffle(byte[] array, Random rnd) {
-		int ir;
-		byte tmp;
-		for (int i = array.length; i > 1; --i) {
-			ir = rnd.nextInt(i);
-			tmp = array[i - 1];
+		for (var i = array.length; i > 1; --i) {
+			final var ir = rnd.nextInt(i);
+			final var tmp = array[i - 1];
 			array[i - 1] = array[ir];
 			array[ir] = tmp;
 		}
@@ -675,11 +661,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static void shuffle(char[] array, Random rnd) {
-		int ir;
-		char tmp;
-		for (int i = array.length; i > 1; --i) {
-			ir = rnd.nextInt(i);
-			tmp = array[i - 1];
+		for (var i = array.length; i > 1; --i) {
+			final var ir = rnd.nextInt(i);
+			final var tmp = array[i - 1];
 			array[i - 1] = array[ir];
 			array[ir] = tmp;
 		}
@@ -703,11 +687,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static void shuffle(int[] array, Random rnd) {
-		int ir;
-		int tmp;
-		for (int i = array.length; i > 1; --i) {
-			ir = rnd.nextInt(i);
-			tmp = array[i - 1];
+		for (var i = array.length; i > 1; --i) {
+			final var ir = rnd.nextInt(i);
+			final var tmp = array[i - 1];
 			array[i - 1] = array[ir];
 			array[ir] = tmp;
 		}
@@ -731,11 +713,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static void shuffle(long[] array, Random rnd) {
-		int ir;
-		long tmp;
-		for (int i = array.length; i > 1; --i) {
-			ir = rnd.nextInt(i);
-			tmp = array[i - 1];
+		for (var i = array.length; i > 1; --i) {
+			final var ir = rnd.nextInt(i);
+			final var tmp = array[i - 1];
 			array[i - 1] = array[ir];
 			array[ir] = tmp;
 		}
@@ -759,11 +739,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static void shuffle(float[] array, Random rnd) {
-		int ir;
-		float tmp;
-		for (int i = array.length; i > 1; --i) {
-			ir = rnd.nextInt(i);
-			tmp = array[i - 1];
+		for (var i = array.length; i > 1; --i) {
+			final var ir = rnd.nextInt(i);
+			final var tmp = array[i - 1];
 			array[i - 1] = array[ir];
 			array[ir] = tmp;
 		}
@@ -787,11 +765,9 @@ public final class ArrayUtil {
 	 */
 	@Pure
 	public static void shuffle(double[] array, Random rnd) {
-		int ir;
-		double tmp;
-		for (int i = array.length; i > 1; --i) {
-			ir = rnd.nextInt(i);
-			tmp = array[i - 1];
+		for (var i = array.length; i > 1; --i) {
+			final var ir = rnd.nextInt(i);
+			final var tmp = array[i - 1];
 			array[i - 1] = array[ir];
 			array[ir] = tmp;
 		}
@@ -811,32 +787,32 @@ public final class ArrayUtil {
 		if (obj == null) {
 			return null;
 		}
-		if (obj instanceof boolean[]) {
-			return Arrays.toString((boolean[]) obj);
+		if (obj instanceof boolean[] arg0) {
+			return Arrays.toString(arg0);
 		}
-		if (obj instanceof byte[]) {
-			return Arrays.toString((byte[]) obj);
+		if (obj instanceof byte[] arg0) {
+			return Arrays.toString(arg0);
 		}
-		if (obj instanceof char[]) {
-			return Arrays.toString((char[]) obj);
+		if (obj instanceof char[] arg0) {
+			return Arrays.toString(arg0);
 		}
-		if (obj instanceof short[]) {
-			return Arrays.toString((short[]) obj);
+		if (obj instanceof short[] arg0) {
+			return Arrays.toString(arg0);
 		}
-		if (obj instanceof int[]) {
-			return Arrays.toString((int[]) obj);
+		if (obj instanceof int[] arg0) {
+			return Arrays.toString(arg0);
 		}
-		if (obj instanceof long[]) {
-			return Arrays.toString((long[]) obj);
+		if (obj instanceof long[] arg0) {
+			return Arrays.toString(arg0);
 		}
-		if (obj instanceof float[]) {
-			return Arrays.toString((float[]) obj);
+		if (obj instanceof float[] arg0) {
+			return Arrays.toString(arg0);
 		}
-		if (obj instanceof double[]) {
-			return Arrays.toString((double[]) obj);
+		if (obj instanceof double[] arg0) {
+			return Arrays.toString(arg0);
 		}
-		if (obj instanceof Object[]) {
-			return Arrays.toString((Object[]) obj);
+		if (obj instanceof Object[] arg0) {
+			return Arrays.toString(arg0);
 		}
 		return obj.toString();
 	}
@@ -1093,7 +1069,7 @@ public final class ArrayUtil {
 		@Override
 		public Boolean next() {
 			if (this.array != null && this.idx >= 0 && this.idx < this.array.length) {
-				final Boolean b = Boolean.valueOf(this.array[this.idx]);
+				final var b = Boolean.valueOf(this.array[this.idx]);
 				++this.idx;
 				return b;
 			}
@@ -1146,7 +1122,7 @@ public final class ArrayUtil {
 		@Override
 		public Character next() {
 			if (this.array != null && this.idx >= 0 && this.idx < this.array.length) {
-				final Character c = Character.valueOf(this.array[this.idx]);
+				final var c = Character.valueOf(this.array[this.idx]);
 				++this.idx;
 				return c;
 			}
@@ -1199,7 +1175,7 @@ public final class ArrayUtil {
 		@Override
 		public Byte next() {
 			if (this.array != null && this.idx >= 0 && this.idx < this.array.length) {
-				final Byte b = Byte.valueOf(this.array[this.idx]);
+				final var b = Byte.valueOf(this.array[this.idx]);
 				++this.idx;
 				return b;
 			}
@@ -1252,7 +1228,7 @@ public final class ArrayUtil {
 		@Override
 		public Short next() {
 			if (this.array != null && this.idx >= 0 && this.idx < this.array.length) {
-				final Short s = Short.valueOf(this.array[this.idx]);
+				final var s = Short.valueOf(this.array[this.idx]);
 				++this.idx;
 				return s;
 			}
@@ -1305,7 +1281,7 @@ public final class ArrayUtil {
 		@Override
 		public Integer next() {
 			if (this.array != null && this.idx >= 0 && this.idx < this.array.length) {
-				final Integer f = Integer.valueOf(this.array[this.idx]);
+				final var f = Integer.valueOf(this.array[this.idx]);
 				++this.idx;
 				return f;
 			}
@@ -1358,7 +1334,7 @@ public final class ArrayUtil {
 		@Override
 		public Long next() {
 			if (this.array != null && this.idx >= 0 && this.idx < this.array.length) {
-				final Long l = Long.valueOf(this.array[this.idx]);
+				final var l = Long.valueOf(this.array[this.idx]);
 				++this.idx;
 				return l;
 			}
@@ -1411,7 +1387,7 @@ public final class ArrayUtil {
 		@Override
 		public Float next() {
 			if (this.array != null && this.idx >= 0 && this.idx < this.array.length) {
-				final Float f = Float.valueOf(this.array[this.idx]);
+				final var f = Float.valueOf(this.array[this.idx]);
 				++this.idx;
 				return f;
 			}
@@ -1464,7 +1440,7 @@ public final class ArrayUtil {
 		@Override
 		public Double next() {
 			if (this.array != null && this.idx >= 0 && this.idx < this.array.length) {
-				final Double d = Double.valueOf(this.array[this.idx]);
+				final var d = Double.valueOf(this.array[this.idx]);
 				++this.idx;
 				return d;
 			}

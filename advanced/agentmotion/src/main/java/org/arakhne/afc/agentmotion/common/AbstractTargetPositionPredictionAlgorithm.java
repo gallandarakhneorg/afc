@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,11 @@ package org.arakhne.afc.agentmotion.common;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Algorithm that is providing a simple target position prediction.
  *
@@ -61,7 +60,7 @@ public abstract class AbstractTargetPositionPredictionAlgorithm implements Seria
 			return true;
 		}
 		if (obj != null && obj.getClass() == getClass()) {
-			final AbstractTargetPositionPredictionAlgorithm algo = (AbstractTargetPositionPredictionAlgorithm) obj;
+			final var algo = (AbstractTargetPositionPredictionAlgorithm) obj;
 			return algo.predictionDuration == this.predictionDuration;
 		}
 		return false;

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,6 +150,7 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D<? su
      * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
      * @return the path element.
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     E newArcPathElement(int startX, int startY, int targetX, int targetY,
             int radiusX, int radiusY, double xAxisRotation,
             boolean largeArcFlag, boolean sweepFlag);
@@ -162,8 +163,8 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D<? su
      * @return the iterator.
      */
     default PathIterator2ai<?> convert(PathIterator2D<?> iterator) {
-        if (iterator instanceof PathIterator2ai) {
-            return (PathIterator2ai<?>) iterator;
+        if (iterator instanceof PathIterator2ai it) {
+            return it;
         }
         assert iterator instanceof PathIterator2afp;
         return new PathIteratorWrapper(this, (PathIterator2afp<?>) iterator);

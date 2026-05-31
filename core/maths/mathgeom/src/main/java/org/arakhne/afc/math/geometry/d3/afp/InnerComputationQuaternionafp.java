@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 18.0
  */
-public class InnerComputationQuaternionafp implements Quaternion<InnerComputationPoint3afp, InnerComputationVector3afp, InnerComputationQuaternionafp> {
+public class InnerComputationQuaternionafp
+	implements Quaternion<InnerComputationPoint3afp, InnerComputationVector3afp, InnerComputationQuaternionafp> {
 
 	private static final long serialVersionUID = 5532810772531503141L;
 
@@ -72,7 +73,7 @@ public class InnerComputationQuaternionafp implements Quaternion<InnerComputatio
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
         return objectDescription.toString();
 	}
@@ -172,7 +173,7 @@ public class InnerComputationQuaternionafp implements Quaternion<InnerComputatio
 	}
 
 	@Override
-	public void conjugate(Quaternion<?, ?, ?> q) {
+	public void conjugate(Quaternion<?, ?, ?> quaternion) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -187,12 +188,12 @@ public class InnerComputationQuaternionafp implements Quaternion<InnerComputatio
 	}
 
 	@Override
-	public void inverse(Quaternion<?, ?, ?> q) {
-		final double x = q.getX();
-		final double y = q.getY();
-		final double z = q.getZ();
-		final double w = q.getW();
-		final double norm = 1. / (w * w + x * x + y * y + z * z);
+	public void inverse(Quaternion<?, ?, ?> quaternion) {
+		final var x = quaternion.getX();
+		final var y = quaternion.getY();
+		final var z = quaternion.getZ();
+		final var w = quaternion.getW();
+		final var norm = 1. / (w * w + x * x + y * y + z * z);
 		this.w =  norm * w;
 		this.x = -norm * x;
 		this.y = -norm * y;
@@ -200,7 +201,7 @@ public class InnerComputationQuaternionafp implements Quaternion<InnerComputatio
 	}
 
 	@Override
-	public void normalize(Quaternion<?, ?, ?> q) {
+	public void normalize(Quaternion<?, ?, ?> quaternion) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -213,7 +214,7 @@ public class InnerComputationQuaternionafp implements Quaternion<InnerComputatio
 	}
 
 	@Override
-	public void interpolate(Quaternion<?, ?, ?> q, double alpha) {
+	public void interpolate(Quaternion<?, ?, ?> quaternion, double alpha) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1296,6 +1296,52 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	@Test
 	public void iddle() {
 		//
+	}
+
+	/** Test if the actual value is between the given range values, inclusive.
+	 * 
+	 * @param min the minimum value.
+	 * @param max the maximum value.
+	 * @param actual the actual value.
+	 * @since 18.0
+	 */
+	public void assertEpsilonInRange(double min, double max, double actual) {
+		assertEpsilonInRange(min, max, actual, () -> null);
+	}
+
+	/** Test if the actual value is between the given range values, inclusive.
+	 * 
+	 * @param min the minimum value.
+	 * @param max the maximum value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonInRange(double min, double max, double actual, String message) {
+		assertEpsilonInRange(min, max, actual, () -> message);
+	}
+
+	/** Test if the actual value is between the given range values, inclusive.
+	 * 
+	 * @param min the minimum value.
+	 * @param max the maximum value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonInRange(double min, double max, double actual, Supplier<String> message) {
+		if (actual < min && !isEpsilonEquals(min, actual)) {
+			failCompare(
+					formatFailMessage(message, "the value must be greater or equal to " + min, min, actual),  //$NON-NLS-1$
+					Double.toString(min),
+					Double.toString(actual));
+		}
+		if (actual > max && !isEpsilonEquals(max, actual)) {
+			failCompare(
+					formatFailMessage(message, "the value must be lower or equal to " + max, max, actual),  //$NON-NLS-1$
+					Double.toString(max),
+					Double.toString(actual));
+		}
 	}
 
 }

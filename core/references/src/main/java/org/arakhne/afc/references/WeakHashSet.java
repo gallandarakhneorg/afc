@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public class WeakHashSet<E> extends AbstractReferencedSet<E, WeakReference<E>> {
 	 * Constructs an empty <tt>HashSet</tt>.
 	 */
 	public WeakHashSet() {
-		super(new HashSet<WeakReference<E>>(), WeakReference.class);
+		super(new HashSet<>(), WeakReference.class);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class WeakHashSet<E> extends AbstractReferencedSet<E, WeakReference<E>> {
 	 *             than zero
 	 */
 	public WeakHashSet(int initialCapacity) {
-		super(new HashSet<WeakReference<E>>(initialCapacity), WeakReference.class);
+		super(new HashSet<>(initialCapacity), WeakReference.class);
 	}
 
 	/**
@@ -90,10 +90,10 @@ public class WeakHashSet<E> extends AbstractReferencedSet<E, WeakReference<E>> {
 	 * @param      initialCapacity   the initial capacity of the hash map
 	 * @param      loadFactor        the load factor of the hash map
 	 * @throws     IllegalArgumentException if the initial capacity is less
-	 *             than zero, or if the load factor is nonpositive
+	 *             than zero, or if the load factor is non-positive
 	 */
 	public WeakHashSet(int initialCapacity, float loadFactor) {
-		super(new HashSet<WeakReference<E>>(initialCapacity, loadFactor), WeakReference.class);
+		super(new HashSet<>(initialCapacity, loadFactor), WeakReference.class);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class WeakHashSet<E> extends AbstractReferencedSet<E, WeakReference<E>> {
 	 * @throws NullPointerException if the specified collection is null
 	 */
 	public WeakHashSet(Collection<? extends E> collection) {
-		super(new HashSet<WeakReference<E>>(), WeakReference.class);
+		super(new HashSet<>(), WeakReference.class);
 		addAll(collection);
 	}
 

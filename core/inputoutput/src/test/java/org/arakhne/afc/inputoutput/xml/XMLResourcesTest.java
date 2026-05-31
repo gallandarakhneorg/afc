@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.inputoutput.mime.MimeName;
@@ -62,28 +63,34 @@ public class XMLResourcesTest extends AbstractTestCase {
 		this.path = null;
 		this.xml = null;
 	}
-	
+
+	private URL newURL(String url) throws Exception {
+		return new URL(url);
+	}
+
 	protected void fillResources() throws Exception {
 		this.xml.add(1, this.data, MimeName.MIME_PDF.getMimeConstant());
 		this.xml.add(2, new File("a.txt"), MimeName.MIME_PLAIN_TEXT.getMimeConstant()); //$NON-NLS-1$
-		this.xml.add(3, new URL("file:b.txt"), MimeName.MIME_PLAIN_TEXT.getMimeConstant()); //$NON-NLS-1$
+		this.xml.add(3, newURL("file:b.txt"), MimeName.MIME_PLAIN_TEXT.getMimeConstant()); //$NON-NLS-1$
 		this.xml.add(4, new File("a.jpg"), MimeName.MIME_JPG.getMimeConstant()); //$NON-NLS-1$
 	}
 	
 	@Test
+	@DisplayName("compare(Object, Object)")
 	public void compareObjectObject() throws Exception {
 		assertZero(this.xml.compare(null, null));
 		assertStrictlyPositive(this.xml.compare(new Object(), null));
 		assertStrictlyNegative(this.xml.compare(null, new Object()));
 		assertZero(this.xml.compare(new File("a"), new File("a"))); //$NON-NLS-1$ //$NON-NLS-2$
 		assertStrictlyNegative(this.xml.compare(new File("a"), new File("b"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertZero(this.xml.compare(new URL("file:a"), new URL("file:a"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertStrictlyNegative(this.xml.compare(new URL("file:a"), new URL("file:b"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertZero(this.xml.compare(new File("a"), new URL("file:a"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertStrictlyNegative(this.xml.compare(new File("a"), new URL("file:b"))); //$NON-NLS-1$ //$NON-NLS-2$
+		assertZero(this.xml.compare(newURL("file:a"), newURL("file:a"))); //$NON-NLS-1$ //$NON-NLS-2$
+		assertStrictlyNegative(this.xml.compare(newURL("file:a"), newURL("file:b"))); //$NON-NLS-1$ //$NON-NLS-2$
+		assertZero(this.xml.compare(new File("a"), newURL("file:a"))); //$NON-NLS-1$ //$NON-NLS-2$
+		assertStrictlyNegative(this.xml.compare(new File("a"), newURL("file:b"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test
+	@DisplayName("getStringIdentifier")
 	public void getStringIdentifier() {
 		assertEquals(XMLResources.IDENTIFIER_PREFIX + "0", XMLResources.getStringIdentifier(0)); //$NON-NLS-1$
 		assertEquals(XMLResources.IDENTIFIER_PREFIX + "351", XMLResources.getStringIdentifier(351)); //$NON-NLS-1$
@@ -91,6 +98,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("getNumericalIdentifier")
 	public void getNumericalIdentifier() {
 		assertEquals(0, XMLResources.getNumericalIdentifier(XMLResources.IDENTIFIER_PREFIX + "0")); //$NON-NLS-1$
 		assertEquals(351, XMLResources.getNumericalIdentifier(XMLResources.IDENTIFIER_PREFIX + "351")); //$NON-NLS-1$
@@ -98,6 +106,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("isStringIdentifier")
 	public void isStringIdentifier() {
 		assertTrue(XMLResources.isStringIdentifier(XMLResources.IDENTIFIER_PREFIX + "0")); //$NON-NLS-1$
 		assertTrue(XMLResources.isStringIdentifier(XMLResources.IDENTIFIER_PREFIX + "351")); //$NON-NLS-1$
@@ -109,14 +118,16 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("getIdentifier(URL)")
 	public void getIdentifierURL() throws Exception {
-		assertEquals(-1, this.xml.getIdentifier(new URL("file:x"))); //$NON-NLS-1$
-		assertEquals(2, this.xml.getIdentifier(new URL("file:a.txt"))); //$NON-NLS-1$
-		assertEquals(3, this.xml.getIdentifier(new URL("file:b.txt"))); //$NON-NLS-1$
-		assertEquals(4, this.xml.getIdentifier(new URL("file:a.jpg"))); //$NON-NLS-1$
+		assertEquals(-1, this.xml.getIdentifier(newURL("file:x"))); //$NON-NLS-1$
+		assertEquals(2, this.xml.getIdentifier(newURL("file:a.txt"))); //$NON-NLS-1$
+		assertEquals(3, this.xml.getIdentifier(newURL("file:b.txt"))); //$NON-NLS-1$
+		assertEquals(4, this.xml.getIdentifier(newURL("file:a.jpg"))); //$NON-NLS-1$
 	}
 
 	@Test
+	@DisplayName("getIdentifier(File)")
 	public void getIdentifierFile() {
 		assertEquals(-1, this.xml.getIdentifier(new File("x"))); //$NON-NLS-1$
 		assertEquals(2, this.xml.getIdentifier(new File("a.txt"))); //$NON-NLS-1$
@@ -125,6 +136,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("getIdentifier(byte[])")
 	public void getIdentifierByteAray() {
 		assertEquals(-1, this.xml.getIdentifier(new byte[0]));
 		assertEquals(-1, this.xml.getIdentifier(new byte[] { 1, 2, 3 }));
@@ -132,13 +144,15 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("getResourceURL")
 	public void getResourceURL() throws Exception {
 		assertEquals(this.path.makeAbsolute(new File("a.txt")), this.xml.getResourceURL(2)); //$NON-NLS-1$
-		assertEquals(this.path.makeAbsolute(new URL("file:b.txt")), this.xml.getResourceURL(3)); //$NON-NLS-1$
-		assertEquals(this.path.makeAbsolute(new URL("file:a.jpg")), this.xml.getResourceURL(4)); //$NON-NLS-1$
+		assertEquals(this.path.makeAbsolute(newURL("file:b.txt")), this.xml.getResourceURL(3)); //$NON-NLS-1$
+		assertEquals(this.path.makeAbsolute(newURL("file:a.jpg")), this.xml.getResourceURL(4)); //$NON-NLS-1$
 	}
 
 	@Test
+	@DisplayName("getResource")
 	public void getResource() throws Exception {
 		XMLResources.Entry e;
 		e = this.xml.getResource(1);
@@ -160,7 +174,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 		e = this.xml.getResource(3);
 		assertNotNull(e);
 		assertTrue(e.isURL());
-		assertEquals(new URL("file:b.txt"), e.getURL()); //$NON-NLS-1$
+		assertEquals(newURL("file:b.txt"), e.getURL()); //$NON-NLS-1$
 		assertNull(e.getFile());
 		assertNull(e.getEmbeddedData());
 		assertEquals(MimeName.MIME_PLAIN_TEXT.getMimeConstant(), e.getMimeType());
@@ -175,6 +189,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("computeNextIdentifier")
 	public void computeNextIdentifier() {
 		assertEquals(0, this.xml.computeNextIdentifier());
 		assertEquals(5, this.xml.computeNextIdentifier());
@@ -183,6 +198,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("getPairs")
 	public void getPairs() throws Exception {
 		Map<Long, XMLResources.Entry> pairs = this.xml.getPairs();
 		assertEquals(4, pairs.size());
@@ -208,7 +224,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 		e = pairs.get(3l);
 		assertNotNull(e);
 		assertTrue(e.isURL());
-		assertEquals(new URL("file:b.txt"), e.getURL()); //$NON-NLS-1$
+		assertEquals(newURL("file:b.txt"), e.getURL()); //$NON-NLS-1$
 		assertNull(e.getFile());
 		assertNull(e.getEmbeddedData());
 		assertEquals(MimeName.MIME_PLAIN_TEXT.getMimeConstant(), e.getMimeType());
@@ -224,50 +240,54 @@ public class XMLResourcesTest extends AbstractTestCase {
 
 
 	@Test
+	@DisplayName("add(Long, URL, String)")
 	public void addLongURLString() throws Exception {
-		String k = this.xml.add(5, new URL("http://www.arakhne.org"), MimeName.MIME_3DS.getMimeConstant()); //$NON-NLS-1$
+		String k = this.xml.add(5, newURL("http://www.arakhne.org"), MimeName.MIME_3DS.getMimeConstant()); //$NON-NLS-1$
 		assertEquals(XMLResources.IDENTIFIER_PREFIX + "5", k); //$NON-NLS-1$
 		XMLResources.Entry e = this.xml.getResource(5);
 		assertNotNull(e);
 		assertTrue(e.isURL());
-		assertEquals(new URL("http://www.arakhne.org"), e.getURL()); //$NON-NLS-1$
+		assertEquals(newURL("http://www.arakhne.org"), e.getURL()); //$NON-NLS-1$
 		assertNull(e.getFile());
 		assertNull(e.getEmbeddedData());
 		assertEquals(MimeName.MIME_3DS.getMimeConstant(), e.getMimeType());
 	}
 
 	@Test
+	@DisplayName("add(URL)")
 	public void addURL() throws Exception {
-		String k = this.xml.add(new URL("http://www.arakhne.org")); //$NON-NLS-1$
+		String k = this.xml.add(newURL("http://www.arakhne.org")); //$NON-NLS-1$
 		assertEquals(XMLResources.IDENTIFIER_PREFIX + "0", k); //$NON-NLS-1$
 		XMLResources.Entry e = this.xml.getResource(0);
 		assertNotNull(e);
 		assertTrue(e.isURL());
-		assertEquals(new URL("http://www.arakhne.org"), e.getURL()); //$NON-NLS-1$
+		assertEquals(newURL("http://www.arakhne.org"), e.getURL()); //$NON-NLS-1$
 		assertNull(e.getFile());
 		assertNull(e.getEmbeddedData());
-		// If internet connection is up, is should be HTML mime type.
+		// If Internet connection is up, is should be HTML mime type.
 		// Otherwise it should be Octet-stream.
 		String type = e.getMimeType();
-		assertTrue(
-			type.equals(MimeName.MIME_HTML.getMimeConstant())
-			|| type.equals(MimeName.MIME_OCTET_STREAM.getMimeConstant()));
+		var t0 = type.startsWith(MimeName.MIME_HTML.getMimeConstant());
+		var t1 = type.startsWith(MimeName.MIME_OCTET_STREAM.getMimeConstant());
+		assertTrue(t0 || t1, "expecting " + MimeName.MIME_HTML.getMimeConstant() + " or " + MimeName.MIME_OCTET_STREAM.getMimeConstant() + "; Actual: " + type);
 	}
 
 	@Test
+	@DisplayName("add(URL, String)")
 	public void addURLString() throws Exception {
-		String k = this.xml.add(new URL("http://www.arakhne.org"), MimeName.MIME_3DS.getMimeConstant()); //$NON-NLS-1$
+		String k = this.xml.add(newURL("http://www.arakhne.org"), MimeName.MIME_3DS.getMimeConstant()); //$NON-NLS-1$
 		assertEquals(XMLResources.IDENTIFIER_PREFIX + "0", k); //$NON-NLS-1$
 		XMLResources.Entry e = this.xml.getResource(0);
 		assertNotNull(e);
 		assertTrue(e.isURL());
-		assertEquals(new URL("http://www.arakhne.org"), e.getURL()); //$NON-NLS-1$
+		assertEquals(newURL("http://www.arakhne.org"), e.getURL()); //$NON-NLS-1$
 		assertNull(e.getFile());
 		assertNull(e.getEmbeddedData());
 		assertEquals(MimeName.MIME_3DS.getMimeConstant(), e.getMimeType());
 	}
 
 	@Test
+	@DisplayName("add(Long, File, String)")
 	public void addLongFileString() {
 		String k = this.xml.add(5, new File("xxx.3ds"), MimeName.MIME_3DS.getMimeConstant()); //$NON-NLS-1$
 		assertEquals(XMLResources.IDENTIFIER_PREFIX + "5", k); //$NON-NLS-1$
@@ -281,6 +301,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("add(File)")
 	public void addFile() throws Exception {
 		String k = this.xml.add(new File("xxx.3ds")); //$NON-NLS-1$
 		assertEquals(XMLResources.IDENTIFIER_PREFIX + "0", k); //$NON-NLS-1$
@@ -294,6 +315,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("add(File, String)")
 	public void addFileString() throws Exception {
 		String k = this.xml.add(new File("xxx.3ds"), MimeName.MIME_3DS.getMimeConstant()); //$NON-NLS-1$
 		assertEquals(XMLResources.IDENTIFIER_PREFIX + "0", k); //$NON-NLS-1$
@@ -307,6 +329,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("add(Long, byte[], String)")
 	public void addLongByteArrayString() {
 		byte[] dt = new byte[] {1, 2, 3};
 		String k = this.xml.add(5, dt, MimeName.MIME_AVI.getMimeConstant());
@@ -321,6 +344,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("add(byte[])")
 	public void addByteArray() throws Exception {
 		byte[] dt = new byte[] {1, 2, 3};
 		String k = this.xml.add(dt);
@@ -335,6 +359,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("add(byte[], String)")
 	public void addByteArrayString() throws Exception {
 		byte[] dt = new byte[] {1, 2, 3};
 		String k = this.xml.add(dt, MimeName.MIME_AVI.getMimeConstant());
@@ -349,6 +374,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("remove(Long)")
 	public void removeLong() {
 		this.xml.remove(3l);
 		
@@ -379,8 +405,9 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("remove(URL)")
 	public void removeURL() throws Exception {
-		this.xml.remove(new URL("file:b.txt")); //$NON-NLS-1$
+		this.xml.remove(newURL("file:b.txt")); //$NON-NLS-1$
 
 		XMLResources.Entry e;
 		e = this.xml.getResource(1);
@@ -409,6 +436,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("remove(File)")
 	public void removeFile() throws Exception {
 		this.xml.remove(new File("a.txt")); //$NON-NLS-1$
 
@@ -424,7 +452,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 		e = this.xml.getResource(3);
 		assertNotNull(e);
 		assertTrue(e.isURL());
-		assertEquals(new URL("file:b.txt"), e.getURL()); //$NON-NLS-1$
+		assertEquals(newURL("file:b.txt"), e.getURL()); //$NON-NLS-1$
 		assertNull(e.getFile());
 		assertNull(e.getEmbeddedData());
 		assertEquals(MimeName.MIME_PLAIN_TEXT.getMimeConstant(), e.getMimeType());
@@ -439,6 +467,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("remove(byte[])")
 	public void removeByteArray() throws Exception {
 		this.xml.remove(this.data);
 
@@ -454,7 +483,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 		e = this.xml.getResource(3);
 		assertNotNull(e);
 		assertTrue(e.isURL());
-		assertEquals(new URL("file:b.txt"), e.getURL()); //$NON-NLS-1$
+		assertEquals(newURL("file:b.txt"), e.getURL()); //$NON-NLS-1$
 		assertNull(e.getFile());
 		assertNull(e.getEmbeddedData());
 		assertEquals(MimeName.MIME_PLAIN_TEXT.getMimeConstant(), e.getMimeType());
@@ -469,6 +498,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	}
 
 	@Test
+	@DisplayName("clear")
 	public void clear() {
 		this.xml.clear();
 		assertNull(this.xml.getResource(0));

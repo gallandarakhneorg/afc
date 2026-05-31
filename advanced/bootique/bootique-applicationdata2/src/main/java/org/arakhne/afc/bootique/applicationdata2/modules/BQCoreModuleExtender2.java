@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package org.arakhne.afc.bootique.applicationdata2.modules;
 
 import io.bootique.BQCoreModuleExtender;
 import io.bootique.di.Binder;
-
 import org.arakhne.afc.bootique.applicationdata2.annotations.ApplicationDescription2;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 
@@ -35,7 +34,9 @@ import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationN
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 18.0
+ * @deprecated since 18.0
  */
+@Deprecated(since = "18.0")
 public final class BQCoreModuleExtender2 extends BQCoreModuleExtender {
 
 	/** Constructor.

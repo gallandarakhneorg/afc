@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ class WeakGISTreeSetNode<P extends GISPrimitive> extends AbstractGISTreeSetNode<
 	 * @param boundsHeight is the bounds of the scene.
 	 */
 	WeakGISTreeSetNode(IcosepQuadTreeZone zone, double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
-		super(zone, new WeakArrayList<P>(), boundsX, boundsY, boundsWidth, boundsHeight);
+		super(zone, new WeakArrayList<>(), boundsX, boundsY, boundsWidth, boundsHeight);
 		addTreeNodeListener(this);
 	}
 
@@ -66,7 +66,7 @@ class WeakGISTreeSetNode<P extends GISPrimitive> extends AbstractGISTreeSetNode<
 	 */
 	private WeakGISTreeSetNode(IcosepQuadTreeZone zone, WeakArrayList<P> elements, double boundsX,
 			double boundsY, double boundsWidth, double boundsHeight) {
-		super(zone, new WeakArrayList<P>(), boundsX, boundsY, boundsWidth, boundsHeight);
+		super(zone, new WeakArrayList<>(), boundsX, boundsY, boundsWidth, boundsHeight);
 		elements.addReferenceListener(this);
 		addTreeNodeListener(this);
 	}
@@ -94,7 +94,7 @@ class WeakGISTreeSetNode<P extends GISPrimitive> extends AbstractGISTreeSetNode<
 
 	@Override
 	public void treeNodeParentChanged(TreeNodeParentChangedEvent event) {
-		final WeakArrayList<P> userData = (WeakArrayList<P>) getInternalDataStructureForUserData();
+		final var userData = (WeakArrayList<P>) getInternalDataStructureForUserData();
 		if (userData != null) {
 			if (event.getNewParent() == null) {
 				userData.removeReferenceListener(this);

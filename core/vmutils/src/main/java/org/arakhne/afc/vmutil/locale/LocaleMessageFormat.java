@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
-import java.text.Format;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -67,6 +66,7 @@ public class LocaleMessageFormat extends MessageFormat {
 	 */
 	public LocaleMessageFormat(String pattern) {
 		super(pattern);
+		updateFormatsToSupportRaw(pattern);
 	}
 
 	/** Construct a message format with the given pattern and locale.
@@ -77,6 +77,7 @@ public class LocaleMessageFormat extends MessageFormat {
 	 */
 	public LocaleMessageFormat(String pattern, Locale locale) {
 		super(pattern, locale);
+		updateFormatsToSupportRaw(pattern);
 	}
 
 	/**
@@ -97,18 +98,16 @@ public class LocaleMessageFormat extends MessageFormat {
 	 */
 	@Pure
 	public static String format(String pattern, Object... arguments) {
-		final LocaleMessageFormat temp = new LocaleMessageFormat(pattern);
+		final var temp = new LocaleMessageFormat(pattern);
 		return temp.format(arguments);
 	}
 
-	@Override
-	public void applyPattern(String pattern) {
-		super.applyPattern(pattern);
-		final Format[] formats = getFormats();
-		boolean changed = false;
-		for (int i = 0; i < formats.length; ++i) {
+	private void updateFormatsToSupportRaw(String pattern) {
+		final var formats = getFormats();
+		var changed = false;
+		for (var i = 0; i < formats.length; ++i) {
 			try {
-				final DecimalFormat df = (DecimalFormat) formats[i];
+				final var df = (DecimalFormat) formats[i];
 				if (df != null && RAW_FORMAT_STYLE.equalsIgnoreCase(df.getPositivePrefix())) {
 					formats[i] = new RawNumberFormat(
 							pattern,
@@ -127,6 +126,12 @@ public class LocaleMessageFormat extends MessageFormat {
 		if (changed) {
 			setFormats(formats);
 		}
+	}
+
+	@Override
+	public void applyPattern(String pattern) {
+		super.applyPattern(pattern);
+		updateFormatsToSupportRaw(pattern);
 	}
 
 	/** Format for generated a raw number.
@@ -164,9 +169,9 @@ public class LocaleMessageFormat extends MessageFormat {
 				int minFrac, int maxFrac, RoundingMode roundingMode) {
 			super();
 			this.roundingMode = roundingMode;
-			this.isUnformatted = (groupSize == 0) && (minInt == 0)
-					&& (maxInt == Integer.MAX_VALUE) && (minFrac == 0)
-					&& (maxFrac == 0);
+			this.isUnformatted = groupSize == 0 && minInt == 0
+					&& maxInt == Integer.MAX_VALUE && minFrac == 0
+					&& maxFrac == 0;
 			setMinimumIntegerDigits(minInt);
 			setMaximumIntegerDigits(maxInt);
 			setMinimumFractionDigits(minFrac);
@@ -273,15 +278,15 @@ public class LocaleMessageFormat extends MessageFormat {
 		private void formatDecimal(BigDecimal number, StringBuffer toAppendTo) {
 			assert !this.isUnformatted;
 
-			final boolean negative = number.compareTo(BigDecimal.ZERO) < 0;
-			final int minInt = getMinimumIntegerDigits();
-			final int minFrac = getMinimumFractionDigits();
-			final int maxFrac = getMaximumFractionDigits();
+			final var negative = number.compareTo(BigDecimal.ZERO) < 0;
+			final var minInt = getMinimumIntegerDigits();
+			final var minFrac = getMinimumFractionDigits();
+			final var maxFrac = getMaximumFractionDigits();
 
-			final BigDecimal n = number.setScale(maxFrac, this.roundingMode);
+			final var n = number.setScale(maxFrac, this.roundingMode);
 
-			final String rawString = n.abs().toPlainString();
-			final int decimalPos = rawString.indexOf(RAW_DECIMAL_SEPARATOR);
+			final var rawString = n.abs().toPlainString();
+			final var decimalPos = rawString.indexOf(RAW_DECIMAL_SEPARATOR);
 			final String integer;
 			final String decimal;
 			if (decimalPos < 0) {
@@ -296,7 +301,7 @@ public class LocaleMessageFormat extends MessageFormat {
 				toAppendTo.append(RAW_NEGATIVE_SIGN);
 			}
 
-			int c = minInt - integer.length();
+			var c = minInt - integer.length();
 			while (c > 0) {
 				toAppendTo.append(RAW_ZERO_DIGIT);
 				--c;
@@ -304,7 +309,7 @@ public class LocaleMessageFormat extends MessageFormat {
 
 			toAppendTo.append(integer);
 
-			if (minFrac > 0 || (maxFrac > 0 && decimal.length() > 0)) {
+			if (minFrac > 0 || maxFrac > 0 && decimal.length() > 0) {
 				toAppendTo.append(RAW_DECIMAL_SEPARATOR);
 				toAppendTo.append(decimal);
 

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,12 @@ package org.arakhne.afc.math.geometry.d2;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.GnuOctaveUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D tuple.
  *
@@ -122,9 +122,9 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(int min, int max) {
-		assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
-		final double x = MathUtil.clamp(getX(), min, max);
-		final double y = MathUtil.clamp(getY(), min, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
+		final var x = MathUtil.clamp(getX(), min, max);
+		final var y = MathUtil.clamp(getY(), min, max);
 		set(x, y);
 	}
 
@@ -134,9 +134,9 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(double min, double max) {
-		assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
-		final double x = MathUtil.clamp(getX(), min, max);
-		final double y = MathUtil.clamp(getY(), min, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
+		final var x = MathUtil.clamp(getX(), min, max);
+		final var y = MathUtil.clamp(getY(), min, max);
 		set(x, y);
 	}
 
@@ -149,10 +149,10 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clamp(int min, int max, Tuple2D<?> tuple) {
-		assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
 		assert tuple != null : AssertMessages.notNullParameter(2);
-		final double x = MathUtil.clamp(tuple.getX(), min, max);
-		final double y = MathUtil.clamp(tuple.getY(), min, max);
+		final var x = MathUtil.clamp(tuple.getX(), min, max);
+		final var y = MathUtil.clamp(tuple.getY(), min, max);
 		set(x, y);
 	}
 
@@ -164,10 +164,10 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clamp(double min, double max, Tuple2D<?> tuple) {
-		assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
 		assert tuple != null : AssertMessages.notNullParameter(2);
-		final double x = MathUtil.clamp(tuple.getX(), min, max);
-		final double y = MathUtil.clamp(tuple.getY(), min, max);
+		final var x = MathUtil.clamp(tuple.getX(), min, max);
+		final var y = MathUtil.clamp(tuple.getY(), min, max);
 		set(x, y);
 	}
 
@@ -176,8 +176,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param min   the lowest value in this tuple after clamping
 	 */
 	default void clampMin(int min) {
-		double x = getX();
-		double y = getY();
+		var x = getX();
+		var y = getY();
 		if (x < min) {
 			x = min;
 		}
@@ -192,8 +192,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param min   the lowest value in this tuple after clamping
 	 */
 	default void clampMin(double min) {
-		double x = getX();
-		double y = getY();
+		var x = getX();
+		var y = getY();
 		if (x < min) {
 			x = min;
 		}
@@ -211,8 +211,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 */
 	default void clampMin(int min, Tuple2D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter(1);
-		double x = tuple.getX();
-		double y = tuple.getY();
+		var x = tuple.getX();
+		var y = tuple.getY();
 		if (x < min) {
 			x = min;
 		}
@@ -230,8 +230,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 */
 	default void clampMin(double min, Tuple2D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter(1);
-		double x = tuple.getX();
-		double y = tuple.getY();
+		var x = tuple.getX();
+		var y = tuple.getY();
 		if (x < min) {
 			x = min;
 		}
@@ -246,8 +246,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param max   the highest value in the tuple after clamping
 	 */
 	default void clampMax(int max) {
-		double x = getX();
-		double y = getY();
+		var x = getX();
+		var y = getY();
 		if (x > max) {
 			x = max;
 		}
@@ -262,8 +262,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param max   the highest value in the tuple after clamping
 	 */
 	default void clampMax(double max) {
-		double x = getX();
-		double y = getY();
+		var x = getX();
+		var y = getY();
 		if (x > max) {
 			x = max;
 		}
@@ -281,8 +281,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 */
 	default void clampMax(int max, Tuple2D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter(1);
-		double x = tuple.getX();
-		double y = tuple.getY();
+		var x = tuple.getX();
+		var y = tuple.getY();
 		if (x > max) {
 			x = max;
 		}
@@ -300,8 +300,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 */
 	default void clampMax(double max, Tuple2D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter(1);
-		double x = tuple.getX();
-		double y = tuple.getY();
+		var x = tuple.getX();
+		var y = tuple.getY();
 		if (x > max) {
 			x = max;
 		}
@@ -515,8 +515,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 
 	/**
 	 * Sets the value of this tuple to the difference of itself and x and y.
-	 * @param x x coordinate to substract.
-	 * @param y y coordinate to substract.
+	 * @param x x coordinate to subtract.
+	 * @param y y coordinate to subtract.
 	 */
 	default void sub(int x, int y) {
 		set(getX() - x, getY() - y);
@@ -524,8 +524,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 
 	/**
 	 * Sets the value of this tuple to the difference of itself and x and y.
-	 * @param x x coordinate to substract.
-	 * @param y y coordinate to substract.
+	 * @param x x coordinate to subtract.
+	 * @param y y coordinate to subtract.
 	 */
 	default void sub(double x, double y) {
 		set(getX() - x, getY() - y);
@@ -533,7 +533,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 
 	/**
 	 * Sets the x value of this tuple to the difference of itself and x.
-	 * @param x x coordinate to substract.
+	 * @param x x coordinate to subtract.
 	 */
 	default void subX(int x) {
 		setX(getX() - x);
@@ -541,7 +541,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 
 	/**
 	 * Sets the x value of this tuple to the difference of itself and x.
-	 * @param x x coordinate to substract.
+	 * @param x x coordinate to subtract.
 	 */
 	default void subX(double x) {
 		setX(getX() - x);
@@ -549,7 +549,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 
 	/**
 	 * Sets the y value of this tuple to the difference of itself and y.
-	 * @param y y coordinate to substract.
+	 * @param y y coordinate to subtract.
 	 */
 	default void subY(int y) {
 		setY(getY() - y);
@@ -557,7 +557,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 
 	/**
 	 * Sets the y value of this tuple to the difference of itself and y.
-	 * @param y y coordinate to substract.
+	 * @param y y coordinate to subtract.
 	 */
 	default void subY(double y) {
 		setY(getY() - y);
@@ -573,7 +573,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	default void interpolate(Tuple2D<?> tuple1, Tuple2D<?> tuple2, double alpha) {
 		assert tuple1 != null : AssertMessages.notNullParameter(0);
 		assert tuple2 != null : AssertMessages.notNullParameter(1);
-		assert alpha >= 0. && alpha <= 1. : AssertMessages.outsideRangeInclusiveParameter(1, alpha, 0, 1);
+		assert alpha >= 0. && alpha <= 1.
+				: AssertMessages.outsideRangeInclusiveParameter(1, Double.valueOf(alpha), Double.valueOf(0), Double.valueOf(1));
 		set((1. - alpha) * tuple1.getX() + alpha * tuple2.getX(),
 				(1. - alpha) * tuple1.getY() + alpha * tuple2.getY());
 	}
@@ -586,7 +587,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 */
 	default void interpolate(Tuple2D<?> tuple, double alpha) {
 		assert tuple != null : AssertMessages.notNullParameter(0);
-		assert alpha >= 0. && alpha <= 1. : AssertMessages.outsideRangeInclusiveParameter(1, alpha, 0, 1);
+		assert alpha >= 0. && alpha <= 1.
+				: AssertMessages.outsideRangeInclusiveParameter(1, Double.valueOf(alpha), Double.valueOf(0), Double.valueOf(1));
 		set((1. - alpha) * getX() + alpha * tuple.getX(),
 				(1. - alpha) * getY() + alpha * tuple.getY());
 	}
@@ -629,8 +631,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	@Pure
 	default boolean epsilonEquals(Tuple2D<?> tuple, double epsilon) {
 		assert tuple != null : AssertMessages.notNullParameter(0);
-		final double dx = getX() - tuple.getX();
-		final double dy = getY() - tuple.getY();
+		final var dx = getX() - tuple.getX();
+		final var dy = getY() - tuple.getY();
 		return (dx * dx + dy * dy) <= (epsilon * epsilon);
 	}
 

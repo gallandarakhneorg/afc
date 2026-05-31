@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,13 +53,13 @@ public final class GnuOctaveUtil {
 	@Pure
 	public static String toMatrixDefinition(int size, double... values) {
 		assert values.length == size * size;
-		final StringBuilder value = new StringBuilder(OCTAVE_START);
-		int k = 0;
-		for (int i = 0; i < size; ++i) {
+		final var value = new StringBuilder(OCTAVE_START);
+		var k = 0;
+		for (var i = 0; i < size; ++i) {
 			if (i > 0) {
 				value.append(OCTAVE_NL);
 			}
-			for (int j = 0; j < size; ++j, ++k) {
+			for (var j = 0; j < size; ++j, ++k) {
 				if (j > 0) {
 					value.append(OCTAVE_SEP);
 				}
@@ -78,13 +78,12 @@ public final class GnuOctaveUtil {
 	 */
 	public static String toTupleDefinition(int size, double... values) {
 		assert values.length == size;
-		final StringBuilder value = new StringBuilder(OCTAVE_START);
-		int k = 0;
-		for (int i = 0; i < size; ++i) {
+		final var value = new StringBuilder(OCTAVE_START);
+		for (var i = 0; i < size; ++i) {
 			if (i > 0) {
 				value.append(OCTAVE_SEP);
 			}
-			value.append(values[k]);
+			value.append(values[i]);
 		}
 		value.append(OCTAVE_END);
 		return value.toString();
@@ -100,7 +99,7 @@ public final class GnuOctaveUtil {
 	 * @since 18.0
 	 */
 	public static String toQuaternionDefinition(double x, double y, double z, double w) {
-		final StringBuilder output = new StringBuilder();
+		final var output = new StringBuilder();
 		output.append(w);
 		if (x < 0.) {
 			output.append(" - ").append(Math.abs(x)); //$NON-NLS-1$

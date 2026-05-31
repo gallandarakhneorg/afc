@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +26,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.iterator.BreadthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DataBreadthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DataDepthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DepthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This is the generic implementation of a
  * forest of trees.
@@ -86,8 +85,8 @@ public abstract class AbstractForest<D> implements Forest<D> {
 			return 0;
 		}
 		int height;
-		int min = Integer.MAX_VALUE;
-		for (final Tree<D, ?> tree : this.trees) {
+		var min = Integer.MAX_VALUE;
+		for (final var tree : this.trees) {
 			height = tree.getMinHeight();
 			if (height < min) {
 				min = height;
@@ -103,8 +102,8 @@ public abstract class AbstractForest<D> implements Forest<D> {
 			return 0;
 		}
 		int height;
-		int max = 0;
-		for (final Tree<D, ?> tree : this.trees) {
+		var max = 0;
+		for (final var tree : this.trees) {
 			height = tree.getMaxHeight();
 			if (height > max) {
 				max = height;
@@ -116,11 +115,11 @@ public abstract class AbstractForest<D> implements Forest<D> {
 	@Override
 	@Pure
 	public final int[] getHeights() {
-		int[] array = new int[0];
-		for (final Tree<D, ?> tree : this.trees) {
-			final int[] a = tree.getHeights();
+		var array = new int[0];
+		for (final var tree : this.trees) {
+			final var a = tree.getHeights();
 			if (a != null && a.length > 0) {
-				final int[] b = new int[array.length + a.length];
+				final var b = new int[array.length + a.length];
 				System.arraycopy(array, 0, b, 0, array.length);
 				System.arraycopy(a, 0, b, array.length, a.length);
 				array = b;
@@ -200,8 +199,8 @@ public abstract class AbstractForest<D> implements Forest<D> {
 		if (newTrees.isEmpty()) {
 			return false;
 		}
-		boolean allAdded = true;
-		for (final Tree<D, ?> tree : newTrees) {
+		var allAdded = true;
+		for (final var tree : newTrees) {
 			if (!add(tree)) {
 				allAdded = false;
 			}
@@ -211,7 +210,7 @@ public abstract class AbstractForest<D> implements Forest<D> {
 
 	@Override
 	public void clear() {
-		for (final Tree<D, ?> tree : this.trees) {
+		for (final var tree : this.trees) {
 			fireTreeRemoval(tree);
 		}
 		this.trees.clear();
@@ -235,7 +234,7 @@ public abstract class AbstractForest<D> implements Forest<D> {
 		if (this.trees.isEmpty()) {
 			return true;
 		}
-		for (final Tree<D, ?> tree : this.trees) {
+		for (final var tree : this.trees) {
 			if (!tree.isEmpty()) {
 				return false;
 			}
@@ -272,8 +271,8 @@ public abstract class AbstractForest<D> implements Forest<D> {
 		if (tree.isEmpty()) {
 			return false;
 		}
-		boolean allRemoved = true;
-		for (final Object o : tree) {
+		var allRemoved = true;
+		for (final var o : tree) {
 			if (!remove(o)) {
 				allRemoved = false;
 			}
@@ -284,15 +283,15 @@ public abstract class AbstractForest<D> implements Forest<D> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean retainAll(Collection<?> tree) {
-		final List<Tree<D, ?>> retained = new LinkedList<>();
-		boolean changed = false;
-		for (final Object o : tree) {
+		final var retained = new LinkedList<Tree<D, ?>>();
+		var changed = false;
+		for (final var o : tree) {
 			if (this.trees.remove(o)) {
 				retained.add((Tree<D, ?>) o);
 				changed = true;
 			}
 		}
-		for (final Tree<D, ?> t : this.trees) {
+		for (final var t : this.trees) {
 			fireTreeRemoval(t);
 			changed = true;
 		}
@@ -348,10 +347,10 @@ public abstract class AbstractForest<D> implements Forest<D> {
 	 */
 	protected synchronized void fireTreeAddition(Tree<D, ?> tree) {
 		if (this.listeners != null) {
-			final ForestListener[] list = new ForestListener[this.listeners.size()];
+			final var list = new ForestListener[this.listeners.size()];
 			this.listeners.toArray(list);
-			final ForestEvent event = new ForestEvent(this, null, tree);
-			for (final ForestListener listener : list) {
+			final var event = new ForestEvent(this, null, tree);
+			for (final var listener : list) {
 				listener.forestChanged(event);
 			}
 		}
@@ -363,10 +362,10 @@ public abstract class AbstractForest<D> implements Forest<D> {
 	 */
 	protected synchronized void fireTreeRemoval(Tree<D, ?> tree) {
 		if (this.listeners != null) {
-			final ForestListener[] list = new ForestListener[this.listeners.size()];
+			final var list = new ForestListener[this.listeners.size()];
 			this.listeners.toArray(list);
-			final ForestEvent event = new ForestEvent(this, tree, null);
-			for (final ForestListener listener : list) {
+			final var event = new ForestEvent(this, tree, null);
+			for (final var listener : list) {
 				listener.forestChanged(event);
 			}
 		}
@@ -401,7 +400,7 @@ public abstract class AbstractForest<D> implements Forest<D> {
 
 		@Override
 		public Tree<D, ?> next() {
-			final Tree<D, ?> t = this.iterator.next();
+			final var t = this.iterator.next();
 			this.lastReplied = t;
 			return t;
 		}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,9 @@ package org.arakhne.afc.vmutil.asserts;
 
 import java.util.Arrays;
 
+import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * Provides standard error messages for assertions.
@@ -113,7 +112,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String invalidValue(int parameterIndex) {
-		return msg("A14"); //$NON-NLS-1$
+		return msg("A14", Integer.valueOf(parameterIndex)); //$NON-NLS-1$
 	}
 
 	/** Parameter A must be lower than or equal to the given value.
@@ -125,7 +124,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String lowerEqualParameter(int aindex, Object avalue, Object value) {
-		return msg("A11", aindex, avalue, value); //$NON-NLS-1$
+		return msg("A11", Integer.valueOf(aindex), avalue, value); //$NON-NLS-1$
 	}
 
 	/** Parameter A must be lower than or equal to Parameter B.
@@ -138,7 +137,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String lowerEqualParameters(int aindex, Object avalue, int bindex, Object bvalue) {
-		return msg("A3", aindex, avalue, bindex, bvalue); //$NON-NLS-1$
+		return msg("A3", Integer.valueOf(aindex), avalue, Integer.valueOf(bindex), bvalue); //$NON-NLS-1$
 	}
 
 	private static String msg(String id, Object... parameters) {
@@ -163,7 +162,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String negativeOrZeroParameter(int parameterIndex) {
-		return msg("A7", parameterIndex); //$NON-NLS-1$
+		return msg("A7", Integer.valueOf(parameterIndex)); //$NON-NLS-1$
 	}
 
 	/** First parameter must be normalized.
@@ -183,7 +182,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String normalizedParameter(int parameterIndex) {
-		return msg("A8", parameterIndex); //$NON-NLS-1$
+		return msg("A8", Integer.valueOf(parameterIndex)); //$NON-NLS-1$
 	}
 
 	/** Parameters must be normalized together.
@@ -213,7 +212,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String notNullParameter(int parameterIndex) {
-		return msg("A4", parameterIndex); //$NON-NLS-1$
+		return msg("A4", Integer.valueOf(parameterIndex)); //$NON-NLS-1$
 	}
 
 	/** One of the parameters must be not null.
@@ -237,7 +236,7 @@ public final class AssertMessages {
 	@Pure
 	public static String outsideRangeInclusiveParameter(int parameterIndex, Object currentValue,
 			Object minValue, Object maxValue) {
-		return msg("A6", parameterIndex, currentValue, minValue, maxValue); //$NON-NLS-1$
+		return msg("A6", Integer.valueOf(parameterIndex), currentValue, minValue, maxValue); //$NON-NLS-1$
 	}
 
 	/** First parameter value is outside range.
@@ -271,7 +270,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String positiveOrZeroParameter(int parameterIndex) {
-		return msg("A1", parameterIndex); //$NON-NLS-1$
+		return msg("A1", Integer.valueOf(parameterIndex)); //$NON-NLS-1$
 	}
 
 	/** Positive parameter.
@@ -291,7 +290,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String positiveStrictlyParameter(int parameterIndex) {
-		return msg("A16", parameterIndex); //$NON-NLS-1$
+		return msg("A16", Integer.valueOf(parameterIndex)); //$NON-NLS-1$
 	}
 
 	/** Size of the first array parameter is too small.
@@ -315,7 +314,7 @@ public final class AssertMessages {
 	 */
 	@Pure
 	public static String tooSmallArrayParameter(int parameterIndex, int currentSize, int expectedSize) {
-		return msg("A5", parameterIndex, currentSize, expectedSize); //$NON-NLS-1$
+		return msg("A5", Integer.valueOf(parameterIndex), Integer.valueOf(currentSize), Integer.valueOf(expectedSize)); //$NON-NLS-1$
 	}
 
 	/** Unsupported primitive type.

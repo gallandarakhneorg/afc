@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,13 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.util.InformedIterable;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** View of document elements that provides a basic UI to show them.
  *
@@ -359,8 +358,8 @@ public interface ZoomableViewer<T extends InformedIterable<?> & BoundedElement2a
 	 *     zoom if this parameter is true.
 	 */
 	default void setScaleValueToFit(boolean minimizeOnly) {
-		final double scale = getScaleValueToFit(minimizeOnly);
-		final Rectangle2afp<?, ?, ?, ?, ?, ?> document = getDocumentBounds();
+		final var scale = getScaleValueToFit(minimizeOnly);
+		final var document = getDocumentBounds();
 		setScaleValue(scale, document.getCenterX(), document.getCenterY());
 	}
 
@@ -375,7 +374,7 @@ public interface ZoomableViewer<T extends InformedIterable<?> & BoundedElement2a
 	 * @since 16.0
 	 */
 	default void resetViewportCenter() {
-		final Point2D<?, ?> center = getDocumentBounds().getCenter();
+		final var center = getDocumentBounds().getCenter();
 		if (center != null) {
 			setViewportCenter(center.getX(), center.getY());
 		}
@@ -393,8 +392,8 @@ public interface ZoomableViewer<T extends InformedIterable<?> & BoundedElement2a
 	 * @param centerY the y coordinate on the point to zoom in.
 	 */
 	default void zoomOut(double centerX, double centerY) {
-		double newValue = getScaleValue() / getScaleChange();
-		final double min = getMinScaleValue();
+		var newValue = getScaleValue() / getScaleChange();
+		final var min = getMinScaleValue();
 		if (newValue < min) {
 			newValue = min;
 		}
@@ -413,8 +412,8 @@ public interface ZoomableViewer<T extends InformedIterable<?> & BoundedElement2a
 	 * @param centerY the y coordinate on the point to zoom in.
 	 */
 	default void zoomIn(double centerX, double centerY) {
-		double newValue = getScaleValue() * getScaleChange();
-		final double max = getMaxScaleValue();
+		var newValue = getScaleValue() * getScaleChange();
+		final var max = getMaxScaleValue();
 		if (newValue > max) {
 			newValue = max;
 		}
@@ -613,11 +612,11 @@ public interface ZoomableViewer<T extends InformedIterable<?> & BoundedElement2a
 	 */
 	@Pure
 	default Rectangle2d toDocumentRect(double x, double y, double width, double height) {
-		final double x1 = toDocumentPositionX(x);
-		final double x2 = toDocumentPositionX(x + width);
-		final double y1 = toDocumentPositionY(y);
-		final double y2 = toDocumentPositionY(y + height);
-		final Rectangle2d rect = new Rectangle2d();
+		final var x1 = toDocumentPositionX(x);
+		final var x2 = toDocumentPositionX(x + width);
+		final var y1 = toDocumentPositionY(y);
+		final var y2 = toDocumentPositionY(y + height);
+		final var rect = new Rectangle2d();
 		rect.setFromCorners(x1, y1, x2, y2);
 		return rect;
 	}
@@ -704,11 +703,11 @@ public interface ZoomableViewer<T extends InformedIterable<?> & BoundedElement2a
 	 */
 	@Pure
 	default Rectangle2d toScreenRect(double x, double y, double width, double height) {
-		final double x1 = toScreenPositionX(x);
-		final double x2 = toScreenPositionX(x + width);
-		final double y1 = toScreenPositionY(y);
-		final double y2 = toScreenPositionY(y + height);
-		final Rectangle2d rect = new Rectangle2d();
+		final var x1 = toScreenPositionX(x);
+		final var x2 = toScreenPositionX(x + width);
+		final var y1 = toScreenPositionY(y);
+		final var y2 = toScreenPositionY(y + height);
+		final var rect = new Rectangle2d();
 		rect.setFromCorners(x1, y1, x2, y2);
 		return rect;
 	}

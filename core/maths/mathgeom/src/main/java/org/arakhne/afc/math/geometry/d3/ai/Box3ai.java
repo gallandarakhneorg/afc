@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a rectangular shape on a plane.
+/** Functional interface that represented a rectangular shape on a plane.
  *
- * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
@@ -43,15 +41,15 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Box3ai<
-		ST extends Shape3ai<?, ?, IE, P, V, Q, B>,
-		IT extends Box3ai<?, ?, IE, P, V, Q, B>,
+		IT extends Box3ai<?, IE, P, V, Q, B>,
 		IE extends PathElement3ai,
 		P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		B extends AlignedBox3ai<?, ?, IE, P, V, Q, B>>
-		extends Shape3ai<ST, IT, IE, P, V, Q, B> {
+		B extends AlignedBox3ai<?, IE, P, V, Q, B>>
+		extends Shape3ai<IT, IE, P, V, Q, B> {
 
 	@Override
 	default void toBoundingBox(B box) {
@@ -154,9 +152,9 @@ public interface Box3ai<
      * @param cornerZ the Z coordinate of the specified corner point
      */
 	default void setFromCenter(int centerX, int centerY, int centerZ, int cornerX, int cornerY, int cornerZ) {
-		final int demiWidth = Math.abs(centerX - cornerX);
-		final int demiHeight = Math.abs(centerY - cornerY);
-		final int demiDepth = Math.abs(centerZ - cornerZ);
+		final var demiWidth = Math.abs(centerX - cornerX);
+		final var demiHeight = Math.abs(centerY - cornerY);
+		final var demiDepth = Math.abs(centerZ - cornerZ);
         setFromCorners(centerX - demiWidth, centerY - demiHeight, centerZ - demiDepth, centerX + demiWidth, centerY + demiHeight,
                 centerZ + demiDepth);
 	}

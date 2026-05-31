@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, B>,
-		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
+public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
 	
 	/** Is the rectangular shape to test.
 	 */
@@ -79,7 +79,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, 
 	 */
 	protected abstract T createShape();
 	
-	public final Segment3ai<?, ?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
+	public final Segment3ai<?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
 		return this.factory.createSegment(x1, y1, z1, x2, y2, z2);
 	}
 	
@@ -87,7 +87,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, 
 		return this.factory.createAlignedBox(x, y, z, width, height, depth);
 	}
 
-	public final Sphere3ai<?, ?, ?, ?, ?, ?, B> createSphere(int x, int y, int z, int radius) {
+	public final Sphere3ai<?, ?, ?, ?, ?, B> createSphere(int x, int y, int z, int radius) {
 		return this.factory.createSphere(x, y, z, radius);
 	}
 	
@@ -99,15 +99,15 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, 
 		return this.factory.createVector(x, y, z);
 	}
 
-	public final Path3ai<?, ?, ?, ?, ?, ?, B> createPath() {
+	public final Path3ai<?, ?, ?, ?, ?, B> createPath() {
 		return this.factory.createPath(null);
 	}
 	
-	public final Path3ai<?, ?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
+	public final Path3ai<?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
 		return this.factory.createPath(rule);
 	}
 	
-	public final MultiShape3ai<?, ?, ?, ?, ?, ?, ?, B> createMultiShape() {
+	public final MultiShape3ai<?, ?, ?, ?, ?, ?, B> createMultiShape() {
 		return this.factory.createMultiShape();
 	}
 
@@ -198,16 +198,6 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, 
 	@EnumSource(CoordinateSystem3D.class)
 	public abstract void equalsObject(CoordinateSystem3D cs);
 
-	@DisplayName("equals(Object) with path iterator")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void equalsObject_withPathIterator(CoordinateSystem3D cs);
-
-	@DisplayName("equalsToPathIterator")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void equalsToPathIterator(CoordinateSystem3D cs);
-
 	@DisplayName("equalsToShape")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
@@ -262,21 +252,6 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public abstract void setIT(CoordinateSystem3D cs);
-
-	@DisplayName("getPathIterator")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void getPathIterator(CoordinateSystem3D cs);
-
-	@DisplayName("getPathIterator(Transform3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void getPathIteratorTransform3D(CoordinateSystem3D cs);
-
-	@DisplayName("createTransformedShape")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void createTransformedShape(CoordinateSystem3D cs);
 
 	@DisplayName("translate(Vector3D)")
 	@ParameterizedTest(name = "{index} => {0}")
@@ -360,10 +335,6 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, 
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public abstract void operator_multiplyTransform3D(CoordinateSystem3D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
 	public abstract void operator_andPoint3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
@@ -373,61 +344,5 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public abstract void operator_upToPoint3D(CoordinateSystem3D cs);
-
-	/** Generate a bitmap containing the given Shape2D.
-	 *
-	 * @param shape.
-	 * @return the filename
-	 * @throws IOException Input/output exception
-	 */
-	public static File generateTestPicture(Shape3ai<?, ?, ?, ?, ?, ?, ?> shape) throws IOException {
-		File filename = File.createTempFile("testShape", ".png"); //$NON-NLS-1$ //$NON-NLS-2$
-		AlignedBox3ai box = shape.toBoundingBox();
-		PathIterator3ai<?> iterator = shape.getPathIterator();
-		Path2D path = new Path2D.Double(
-				iterator.getWindingRule() == PathWindingRule.NON_ZERO ? Path2D.WIND_NON_ZERO : Path2D.WIND_EVEN_ODD);
-		while (iterator.hasNext()) {
-			PathElement3ai element = iterator.next();
-			int tox = (element.getToX() - box.getMinX()) * 2;
-			int toy = (box.getMaxY() - (element.getToY() - box.getMinY())) * 2;
-			switch (element.getType()) {
-			case LINE_TO:
-				path.lineTo(tox, toy);
-				break;
-			case MOVE_TO:
-				path.moveTo(tox, toy);
-				break;
-			case CLOSE:
-				path.closePath();
-				break;
-			case CURVE_TO:
-				path.curveTo(
-						(element.getCtrlX1() - box.getMinX()) * 2,
-						(box.getMaxY() - (element.getCtrlY1() - box.getMinY())) * 2,
-						(element.getCtrlX2() - box.getMinX()) * 2,
-						(box.getMaxY() - (element.getCtrlY2() - box.getMinY())) * 2,
-						tox, toy);
-				break;
-			case ARC_TO:
-				throw new IllegalStateException();
-			case QUAD_TO:
-				path.quadTo(
-						(element.getCtrlX1() - box.getMinX()) * 2,
-						(box.getMaxY() - (element.getCtrlY1() - box.getMinY())) * 2,
-						tox, toy);
-				break;
-			default:
-			}
-		}
-		BufferedImage image = new BufferedImage(
-				box.getWidth() * 2,
-				box.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = (Graphics2D) image.getGraphics();
-		g2d.setColor(Color.BLACK);
-		g2d.draw(path);
-		ImageIO.write(image, "png", filename); //$NON-NLS-1$
-		return filename;
-	}	
 
 }

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent;
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.maplayer.MapLayerHierarchyEvent.Type;
@@ -39,6 +36,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.util.InformedArrayList;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is a container of layers.
@@ -174,11 +172,11 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	@Override
 	@Pure
 	public MultiMapLayer<L> clone() {
-		final MultiMapLayer<L> clone = (MultiMapLayer<L>) super.clone();
+		final var clone = (MultiMapLayer<L>) super.clone();
 
 		clone.subLayers = new InformedArrayList<>();
 
-		for (final L subLayer : this.subLayers) {
+		for (final var subLayer : this.subLayers) {
 			clone.subLayers.add((L) subLayer.clone());
 		}
 
@@ -201,10 +199,10 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 
 	@Override
 	protected Rectangle2d calcBounds() {
-		final Rectangle2d r = new Rectangle2d();
-		boolean first = true;
-		for (final  MapLayer sublayer : this.subLayers) {
-			final Rectangle2d subBounds = sublayer.getBoundingBox();
+		final var r = new Rectangle2d();
+		var first = true;
+		for (final  var sublayer : this.subLayers) {
+			final var subBounds = sublayer.getBoundingBox();
 			if (subBounds != null && !subBounds.isEmpty()) {
 				if (first) {
 					first = false;
@@ -229,13 +227,13 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	 * @return the visible bounds or {@code null} if no layer.
 	 */
 	protected Rectangle2d calcVisibleBounds() {
-		final Rectangle2d r = new Rectangle2d();
-		boolean first = true;
-		Rectangle2d subBounds;
-		for (final MapLayer sublayer : this.subLayers) {
+		final var r = new Rectangle2d();
+		var first = true;
+		for (final var sublayer : this.subLayers) {
 			if (sublayer.isVisible()) {
-				if (sublayer instanceof GISLayerContainer<?>)  {
-					subBounds = ((GISLayerContainer<?>) sublayer).getVisibleBoundingBox();
+				final Rectangle2d subBounds;
+				if (sublayer instanceof GISLayerContainer<?> cont)  {
+					subBounds = cont.getVisibleBoundingBox();
 				} else {
 					subBounds = sublayer.getBoundingBox();
 				}
@@ -323,7 +321,7 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 
 	@Override
 	public boolean removeMapLayer(MapLayer layer) {
-		final int index = this.subLayers.indexOf(layer);
+		final var index = this.subLayers.indexOf(layer);
 		if (index >= 0 && index < this.subLayers.size()) {
 			this.subLayers.remove(index);
 			layer.setContainer(null);
@@ -336,7 +334,7 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 
 	@Override
 	public L removeMapLayerAt(int index) {
-		final L removed = this.subLayers.remove(index);
+		final var removed = this.subLayers.remove(index);
 		if (removed != null) {
 			removed.setContainer(null);
 			resetBoundingBox();
@@ -353,8 +351,8 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	@Override
 	public boolean moveLayerUp(int index) {
 		if (index > 0 && index < this.subLayers.size()) {
-			final L layer1 = this.subLayers.get(index);
-			final L layer2 = this.subLayers.get(index - 1);
+			final var layer1 = this.subLayers.get(index);
+			final var layer2 = this.subLayers.get(index - 1);
 			this.subLayers.set(index, layer2);
 			this.subLayers.set(index - 1, layer1);
 			fireLayerMovedUpEvent(layer1, index - 1);
@@ -371,8 +369,8 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	@Override
 	public boolean moveLayerDown(int index) {
 		if (index >= 0 && index < (this.subLayers.size() - 1)) {
-			final L layer1 = this.subLayers.get(index);
-			final L layer2 = this.subLayers.get(index + 1);
+			final var layer1 = this.subLayers.get(index);
+			final var layer2 = this.subLayers.get(index + 1);
 			this.subLayers.set(index, layer2);
 			this.subLayers.set(index + 1, layer1);
 			fireLayerMovedDownEvent(layer1, index + 1);
@@ -395,10 +393,10 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 
 	@Override
 	public void clear() {
-		final InformedArrayList<L> oldSubLayers = this.subLayers;
+		final var oldSubLayers = this.subLayers;
 		assert oldSubLayers != null;
 		this.subLayers = new InformedArrayList<>();
-		for (final L sublayer : oldSubLayers) {
+		for (final var sublayer : oldSubLayers) {
 			sublayer.setContainer(null);
 		}
 		resetBoundingBox();
@@ -450,8 +448,8 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	@Override
 	public void onAttributeChangeEvent(AttributeChangeEvent event) {
 		if (ATTR_VISIBLE.equals(event.getName())) {
-			final AttributeValue aValue = event.getValue();
-			final boolean isSpecial = aValue instanceof SpecialAttributeValue;
+			final var aValue = event.getValue();
+			final var isSpecial = aValue instanceof SpecialAttributeValue;
 			if (!isSpecial) {
 				boolean cvalue;
 				try {
@@ -459,7 +457,7 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 				} catch (Exception exception) {
 					cvalue = isVisible();
 				}
-				for (final L sublayer : this.subLayers) {
+				for (final var sublayer : this.subLayers) {
 					sublayer.setVisible(cvalue);
 				}
 			}
@@ -522,9 +520,9 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	@Override
 	@Pure
 	public GISTreeBrowsable<?> getParent() {
-		final GISLayerContainer<?> c = getContainer();
-		if (c instanceof GISTreeBrowsable<?>) {
-			return (GISTreeBrowsable<?>) c;
+		final var c = getContainer();
+		if (c instanceof GISTreeBrowsable brw) {
+			return brw;
 		}
 		return null;
 	}
@@ -576,7 +574,7 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 				throw new NoSuchElementException();
 			}
 
-			final L toReply = MultiMapLayer.this.getMapLayerAt(this.index);
+			final var toReply = MultiMapLayer.this.getMapLayerAt(this.index);
 			if (toReply == null) {
 				throw new ConcurrentModificationException();
 			}

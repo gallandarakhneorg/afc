@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,14 +71,13 @@ public class BusPrimitiveInvalidity implements Cloneable, Serializable {
 	@Override
 	@Pure
 	public boolean equals(Object obj) {
-		if (obj instanceof BusPrimitiveInvalidityType) {
-			return this.type == (BusPrimitiveInvalidityType) obj;
-		} else if (obj instanceof BusPrimitiveInvalidity) {
-			final BusPrimitiveInvalidity reason = (BusPrimitiveInvalidity) obj;
+		if (obj instanceof BusPrimitiveInvalidityType type) {
+			return this.type == type;
+		} else if (obj instanceof BusPrimitiveInvalidity reason) {
 			return this.type == reason.type
 					&& (this.additionalInformation == reason.additionalInformation
-						|| (this.additionalInformation != null
-						    && this.additionalInformation.equals(reason.additionalInformation)));
+						|| this.additionalInformation != null
+						    && this.additionalInformation.equals(reason.additionalInformation));
 		}
 		return super.equals(obj);
 	}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,14 +96,18 @@ public enum OperatingSystem {
 	OTHER;
 
 	private static final String NULL = new String();
+
 	private static OperatingSystemWrapper nativeWrapper;
+
 	private static String osSerialNumber;
+
 	private static String osUUID;
+
 	private static OperatingSystem currentOSInstance;
 
 	//@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	static {
-		OperatingSystemIdentificationType type = OperatingSystemIdentificationType.BIOS;
+		var type = OperatingSystemIdentificationType.BIOS;
 		nativeWrapper = null;
 
 		switch (getCurrentOS()) {
@@ -232,29 +236,29 @@ public enum OperatingSystem {
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static OperatingSystem getCurrentOS() {
 		if (currentOSInstance == null) {
-			final String os = System.getProperty("os.name").trim().toLowerCase(); //$NON-NLS-1$
+			final var os = System.getProperty("os.name").trim().toLowerCase(); //$NON-NLS-1$
 			/* Let's try to figure canonical OS name, just in case some
 			 * JVMs use funny values (unlikely)
 			 */
 			if (os.indexOf("windows") >= 0) { //$NON-NLS-1$
 				currentOSInstance = WIN;
 			} else if (os.indexOf("linux") >= 0) { //$NON-NLS-1$
-				final String vmName = System.getProperty("java.vm.name").trim().toLowerCase(); //$NON-NLS-1$
+				final var vmName = System.getProperty("java.vm.name").trim().toLowerCase(); //$NON-NLS-1$
 				if (vmName.indexOf("dalvik") >= 0) { //$NON-NLS-1$
 					currentOSInstance = ANDROID;
 				} else {
-					final String runtimeName = System.getProperty("java.runtime.name").trim().toLowerCase(); //$NON-NLS-1$
+					final var runtimeName = System.getProperty("java.runtime.name").trim().toLowerCase(); //$NON-NLS-1$
 					if (runtimeName.indexOf("android") >= 0) { //$NON-NLS-1$
 						currentOSInstance = ANDROID;
 					} else {
 						currentOSInstance = LINUX;
 					}
 				}
-			} else if ((os.indexOf("solaris") >= 0) //$NON-NLS-1$
-					|| (os.indexOf("sunos") >= 0)) { //$NON-NLS-1$
+			} else if (os.indexOf("solaris") >= 0 //$NON-NLS-1$
+					|| os.indexOf("sunos") >= 0) { //$NON-NLS-1$
 				currentOSInstance = SOLARIS;
-			} else if ((os.indexOf("mac os x") >= 0) //$NON-NLS-1$
-					|| (os.indexOf("macosx") >= 0)) { //$NON-NLS-1$
+			} else if (os.indexOf("mac os x") >= 0 //$NON-NLS-1$
+					|| os.indexOf("macosx") >= 0) { //$NON-NLS-1$
 				currentOSInstance = MACOSX;
 			} else if (os.indexOf("bsd") >= 0) { //$NON-NLS-1$
 				if (os.indexOf("freebsd") >= 0) { //$NON-NLS-1$
@@ -302,12 +306,12 @@ public enum OperatingSystem {
 	/** Replies if the current operating system is 32bit.
 	 *
 	 * @return {@code true} if the operating system is 32bits, othewise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static boolean is32BitOperatingSystem() {
-		final int dataModel = getOperatingSystemArchitectureDataModel();
+		final var dataModel = getOperatingSystemArchitectureDataModel();
 		return dataModel == 32 || dataModel == 0;
 	}
 

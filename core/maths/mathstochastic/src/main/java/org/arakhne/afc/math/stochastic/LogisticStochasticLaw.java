@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Law that representes a logistic density.
@@ -99,8 +98,8 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double f(double x)  throws MathException {
-		final double ex = Math.exp((this.mu - x) / this.scale);
-		final double denom = (1. + ex) * (1. + ex);
+		final var ex = Math.exp((this.mu - x) / this.scale);
+		final var denom = (1. + ex) * (1. + ex);
 		return ex / (this.scale * denom);
 	}
 
@@ -126,8 +125,8 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	@Override
 	public void toJson(JsonBuffer buffer) {
 		buffer.add(NAME_NAME, getLawName());
-		buffer.add(MU_NAME, this.mu);
-		buffer.add(SCALE_NAME, this.scale);
+		buffer.add(MU_NAME, Double.valueOf(this.mu));
+		buffer.add(SCALE_NAME, Double.valueOf(this.scale));
 	}
 
 }

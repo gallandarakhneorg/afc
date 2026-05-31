@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Law that representes a linear density.
@@ -97,8 +96,8 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @param ascendent indicates of the distribution function is ascendent or not
 	 */
 	public LinearStochasticLaw(double minX, double maxX, boolean ascendent) {
-		double i = minX;
-		double a = maxX;
+		var i = minX;
+		var a = maxX;
 		if (i > a) {
 			final double t = i;
 			i = a;
@@ -144,10 +143,10 @@ public class LinearStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double f(double x)  throws MathException {
-		if ((x < this.minX) || (x > this.maxX)) {
+		if (x < this.minX || x > this.maxX) {
 			throw new OutsideDomainException(x);
 		}
-		final double a = 2. / (this.delta * this.delta);
+		final var a = 2. / (this.delta * this.delta);
 		final double b;
 		if (this.ascendent) {
 			b = -a * this.minX;
@@ -183,10 +182,10 @@ public class LinearStochasticLaw extends StochasticLaw {
 	@Override
 	public void toJson(JsonBuffer buffer) {
 		buffer.add(NAME_NAME, getLawName());
-		buffer.add(ASCENDENT_NAME, this.ascendent);
-		buffer.add(MINX_NAME, this.minX);
-		buffer.add(MAXX_NAME, this.maxX);
-		buffer.add(DELTA_NAME, this.delta);
+		buffer.add(ASCENDENT_NAME, Boolean.valueOf(this.ascendent));
+		buffer.add(MINX_NAME, Double.valueOf(this.minX));
+		buffer.add(MAXX_NAME, Double.valueOf(this.maxX));
+		buffer.add(DELTA_NAME, Double.valueOf(this.delta));
 	}
 
 }

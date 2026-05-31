@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleObjectProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Rectangle with 2 double precision floating-point FX properties.
  *
@@ -117,7 +116,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 
 	@Override
 	public Rectangle2dfx clone() {
-		final Rectangle2dfx clone = super.clone();
+		final var clone = super.clone();
 		if (clone.min != null) {
 			clone.min = null;
 			clone.min = this.min.clone();
@@ -135,12 +134,12 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Override
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(getMinX());
 		bits = 31 * bits + Double.hashCode(getMinY());
 		bits = 31 * bits + Double.hashCode(getMaxX());
 		bits = 31 * bits + Double.hashCode(getMaxY());
-        return bits ^ (bits >> 31);
+        return (int) (bits ^ (bits >> 31));
 	}
 
 	@Override
@@ -167,32 +166,32 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
      */
 	private void addListeners() {
 	    this.min.xProperty().addListener((observable, oldValue, nValue) -> {
-	        final double currentMin = nValue.doubleValue();
-	        final double currentMax = getMaxX();
+	        final var currentMin = nValue.doubleValue();
+	        final var currentMax = getMaxX();
 	        if (currentMax < currentMin) {
 	            // min-max constrain is broken
 	            maxXProperty().set(currentMin);
 	        }
 	    });
 	    this.min.yProperty().addListener((observable, oValue, nValue) -> {
-	        final double currentMin = nValue.doubleValue();
-	        final double currentMax = getMaxY();
+	        final var currentMin = nValue.doubleValue();
+	        final var currentMax = getMaxY();
 	        if (currentMax < currentMin) {
 	            // min-max constrain is broken
 	            maxYProperty().set(currentMin);
 	        }
 	    });
 	    this.max.xProperty().addListener((observable, oValue, nValue) -> {
-	        final double currentMax = nValue.doubleValue();
-	        final double currentMin = getMinX();
+	        final var currentMax = nValue.doubleValue();
+	        final var currentMin = getMinX();
 	        if (currentMax < currentMin) {
 	            // min-max constrain is broken
 	            minXProperty().set(currentMax);
 	        }
 	    });
 	    this.max.yProperty().addListener((observable, oValue, nValue) -> {
-	        final double currentMax = nValue.doubleValue();
-	        final double currentMin = getMinY();
+	        final var currentMax = nValue.doubleValue();
+	        final var currentMin = getMinY();
 	        if (currentMax < currentMin) {
 	            // min-max constrain is broken
 	            minYProperty().set(currentMax);

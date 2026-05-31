@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package org.arakhne.afc.text;
 
 import java.lang.ref.SoftReference;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,14 +32,12 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.StringEscaper;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to manipulate texts.
@@ -77,8 +74,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static boolean equalsIgnoreCase(String firstText, String secondText, boolean isNullEmptyEquivalence) {
-		final String aa = (firstText != null || !isNullEmptyEquivalence) ? firstText : ""; //$NON-NLS-1$
-		final String bb = (secondText != null || !isNullEmptyEquivalence) ? secondText : ""; //$NON-NLS-1$
+		final var aa = (firstText != null || !isNullEmptyEquivalence) ? firstText : ""; //$NON-NLS-1$
+		final var bb = (secondText != null || !isNullEmptyEquivalence) ? secondText : ""; //$NON-NLS-1$
 		if (aa == null) {
 			return bb == null;
 		}
@@ -98,10 +95,10 @@ public final class TextUtil {
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static String encodeBase26(int number) {
-		final StringBuilder value = new StringBuilder();
+		final var value = new StringBuilder();
 		int code = number;
 		do {
-			final int rest = code % 26;
+			final var rest = code % 26;
 			value.insert(0, (char) ('A' + rest));
 			code = code / 26 - 1;
 		}
@@ -156,15 +153,12 @@ public final class TextUtil {
 
 		map = new TreeMap<>();
 
-		final String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
-		Integer isoCode;
-		String entity;
-		String code;
-		for (int i = 1; (i + 1) < pairs.length; i += 2) {
+		final var pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
+		for (var i = 1; (i + 1) < pairs.length; i += 2) {
 			try {
-				entity = pairs[i];
-				code = pairs[i + 1];
-				isoCode = Integer.valueOf(code);
+				final var entity = pairs[i];
+				final var code = pairs[i + 1];
+				final var isoCode = Integer.valueOf(code);
 				if (isoCode != null) {
 					map.put(entity, isoCode);
 				}
@@ -231,16 +225,13 @@ public final class TextUtil {
 		map = new TreeMap<>();
 
 		final String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
-		Integer isoCode;
-		String entity;
-		String code;
-		for (int i = 1; (i + 1) < pairs.length; i += 2) {
+		for (var i = 1; (i + 1) < pairs.length; i += 2) {
 			try {
-				entity = pairs[i];
-				code = pairs[i + 1];
-				isoCode = Integer.valueOf(code);
+				final var entity = pairs[i];
+				final var code = pairs[i + 1];
+				final var isoCode = Integer.valueOf(code);
 				if (isoCode != null) {
-					map.put((char) isoCode.intValue(), entity);
+					map.put(Character.valueOf((char) isoCode.intValue()), entity);
 				}
 			} catch (Throwable exception) {
 				//
@@ -272,22 +263,21 @@ public final class TextUtil {
 		if (html == null) {
 			return null;
 		}
-		final Map<String, Integer> transTbl = getHtmlToJavaTranslationTable();
+		final var transTbl = getHtmlToJavaTranslationTable();
 		assert transTbl != null;
 		if (transTbl.isEmpty()) {
 			return html;
 		}
-		final Pattern pattern = Pattern.compile("[&](([a-zA-Z]+)|(#x?[0-9]+))[;]"); //$NON-NLS-1$
-		final Matcher matcher = pattern.matcher(html);
-		final StringBuilder result = new StringBuilder();
-		String entity;
-		Integer isoCode;
-		int lastIndex = 0;
+		final var pattern = Pattern.compile("[&](([a-zA-Z]+)|(#x?[0-9]+))[;]"); //$NON-NLS-1$
+		final var matcher = pattern.matcher(html);
+		final var result = new StringBuilder();
+		var lastIndex = 0;
 		while (matcher.find()) {
 			final int idx = matcher.start();
 			result.append(html.substring(lastIndex, idx));
 			lastIndex = matcher.end();
-			entity = matcher.group(1);
+			final var entity = matcher.group(1);
+			Integer isoCode;
 			if (entity.startsWith("#x")) { //$NON-NLS-1$
 				try {
 					isoCode = Integer.valueOf(entity.substring(2), 16);
@@ -329,29 +319,28 @@ public final class TextUtil {
 		if (text == null) {
 			return null;
 		}
-		final Map<Character, String> transTbl = getJavaToHTMLTranslationTable();
+		final var transTbl = getJavaToHTMLTranslationTable();
 		assert transTbl != null;
 		if (transTbl.isEmpty()) {
 			return text;
 		}
-		final StringBuilder patternStr = new StringBuilder();
-		for (final Character c : transTbl.keySet()) {
+		final var patternStr = new StringBuilder();
+		for (final var c : transTbl.keySet()) {
 			if (patternStr.length() > 0) {
 				patternStr.append("|"); //$NON-NLS-1$
 			}
 			patternStr.append(Pattern.quote(c.toString()));
 		}
-		final Pattern pattern = Pattern.compile(patternStr.toString());
-		final Matcher matcher = pattern.matcher(text);
-		final StringBuilder result = new StringBuilder();
-		String character;
-		String entity;
+		final var pattern = Pattern.compile(patternStr.toString());
+		final var matcher = pattern.matcher(text);
+		final var result = new StringBuilder();
 		int lastIndex = 0;
 		while (matcher.find()) {
 			final int idx = matcher.start();
 			result.append(text.substring(lastIndex, idx));
 			lastIndex = matcher.end();
-			character = matcher.group();
+			final var character = matcher.group();
+			String entity;
 			if (character.length() == 1) {
 				entity = transTbl.get(Character.valueOf(character.charAt(0)));
 				if (entity != null) {
@@ -472,8 +461,8 @@ public final class TextUtil {
 	@Pure
 	public static char getMnemonicChar(String text) {
 		if (text != null) {
-			final int pos = text.indexOf('&');
-			if ((pos != -1) && (pos < text.length() - 1)) {
+			final var pos = text.indexOf('&');
+			if (pos != -1 && pos < text.length() - 1) {
 				return text.charAt(pos + 1);
 			}
 		}
@@ -538,10 +527,10 @@ public final class TextUtil {
 
 		map = new TreeMap<>();
 
-		final String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
-		for (final String pair : pairs) {
+		final var pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
+		for (final var pair : pairs) {
 			if (pair.length() > 1) {
-				map.put(pair.charAt(0), pair.substring(1));
+				map.put(Character.valueOf(pair.charAt(0)), pair.substring(1));
 			}
 		}
 
@@ -562,8 +551,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String removeAccents(String text) {
-		final Map<Character, String> map = getAccentTranslationTable();
-		if ((map == null) || (map.isEmpty())) {
+		final var map = getAccentTranslationTable();
+		if (map == null || map.isEmpty()) {
 			return text;
 		}
 		return removeAccents(text, map);
@@ -581,13 +570,13 @@ public final class TextUtil {
 		if (text == null) {
 			return text;
 		}
-		final StringBuilder buffer = new StringBuilder();
-		for (final char c : text.toCharArray()) {
-			final String trans = map.get(c);
+		final var buffer = new StringBuilder();
+		for (final var ch : text.toCharArray()) {
+			final var trans = map.get(Character.valueOf(ch));
 			if (trans != null) {
 				buffer.append(trans);
 			} else {
-				buffer.append(c);
+				buffer.append(ch);
 			}
 		}
 		return buffer.toString();
@@ -603,7 +592,7 @@ public final class TextUtil {
 	 * {@code ["a","b","cd"]}</li>
 	 * <li>{@code splitBrackets("abcd")} returns the array
 	 * {@code ["abcd"]}</li>
-	 * <li>{@code splitBrackets("a{bcd")} returns the array
+	 * <li>{@code splitBrackets("a&brace;bcd")} returns the array
 	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
@@ -626,7 +615,7 @@ public final class TextUtil {
 	 * {@code ["a","b","cd"]}</li>
 	 * <li>{@code split('{','}',"abcd")} returns the array
 	 * {@code ["abcd"]}</li>
-	 * <li>{@code split('{','}',"a{bcd")} returns the array
+	 * <li>{@code split('{','}',"a&brace;bcd")} returns the array
 	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
@@ -638,7 +627,7 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String[] split(char leftSeparator, char rightSeparator, String str) {
-		final SplitSeparatorToArrayAlgorithm algo = new SplitSeparatorToArrayAlgorithm();
+		final var algo = new SplitSeparatorToArrayAlgorithm();
 		splitSeparatorAlgorithm(leftSeparator, rightSeparator, str, algo);
 		return algo.toArray();
 	}
@@ -653,7 +642,7 @@ public final class TextUtil {
 	 * {@code ["a","b","cd"]}</li>
 	 * <li>{@code splitBrackets("abcd")} returns the array
 	 * {@code ["abcd"]}</li>
-	 * <li>{@code splitBrackets("a{bcd")} returns the array
+	 * <li>{@code splitBrackets("a&brace;bcd")} returns the array
 	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
@@ -676,7 +665,7 @@ public final class TextUtil {
 	 * {@code ["a","b","cd"]}</li>
 	 * <li>{@code split('{','}',"abcd")} returns the array
 	 * {@code ["abcd"]}</li>
-	 * <li>{@code split('{','}',"a{bcd")} returns the array
+	 * <li>{@code split('{','}',"a&brace;bcd")} returns the array
 	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
@@ -687,7 +676,7 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static List<String> splitAsList(char leftSeparator, char rightSeparator, String str) {
-		final List<String> list = new ArrayList<>();
+		final var list = new ArrayList<String>();
 		splitSeparatorAlgorithm(
 				leftSeparator, rightSeparator, str,
 				new SplitSeparatorToListAlgorithm(list));
@@ -700,7 +689,7 @@ public final class TextUtil {
 			String str, SplitSeparatorAlgorithm buffer) {
 		assert buffer != null;
 		if (str != null && str.length() > 0) {
-			final StringBuilder patternStr = new StringBuilder();
+			final var patternStr = new StringBuilder();
 			patternStr.append("([^\\"); //$NON-NLS-1$
 			patternStr.append(leftSeparator);
 			patternStr.append("\\"); //$NON-NLS-1$
@@ -710,21 +699,20 @@ public final class TextUtil {
 			patternStr.append("|\\"); //$NON-NLS-1$
 			patternStr.append(rightSeparator);
 			patternStr.append(")"); //$NON-NLS-1$
-			final Pattern pattern = Pattern.compile(patternStr.toString());
-			final Matcher matcher = pattern.matcher(str);
+			final var pattern = Pattern.compile(patternStr.toString());
+			final var matcher = pattern.matcher(str);
 
 			// inclusive
-			int startOffset = 0;
+			var startOffset = 0;
 			// exclusive
-			int endOffset;
-			int depth = 0;
+			var depth = 0;
 
-			final StringBuilder token = new StringBuilder();
+			final var token = new StringBuilder();
 
 			while (matcher.find()) {
-				final String previousText = matcher.group(1);
-				final String separator = matcher.group(2);
-				endOffset = startOffset + previousText.length();
+				final var previousText = matcher.group(1);
+				final var separator = matcher.group(2);
+				final var endOffset = startOffset + previousText.length();
 
 				if (startOffset < str.length() && endOffset > startOffset) {
 					token.append(str.substring(startOffset, endOffset));
@@ -734,7 +722,7 @@ public final class TextUtil {
 					if (depth > 0) {
 						token.append(separator);
 					} else if (token.length() > 0) {
-						final String s = token.toString().trim();
+						final var s = token.toString().trim();
 						if (s.length() > 0) {
 							buffer.addToken(s);
 						}
@@ -765,7 +753,7 @@ public final class TextUtil {
 			}
 
 			if (token.length() > 0) {
-				final String s = token.toString().trim();
+				final var s = token.toString().trim();
 				if (s.length() > 0) {
 					buffer.addToken(s);
 				}
@@ -783,7 +771,7 @@ public final class TextUtil {
 	 * {@code ["a","b","cd"]}</li>
 	 * <li>{@code splitBrackets("abcd")} returns the array
 	 * {@code ["abcd"]}</li>
-	 * <li>{@code splitBrackets("a{bcd")} returns the array
+	 * <li>{@code splitBrackets("a&brace;bcd")} returns the array
 	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
@@ -806,7 +794,7 @@ public final class TextUtil {
 	 * {@code ["a","b","cd"]}</li>
 	 * <li>{@code split('{','}',"abcd")} returns the array
 	 * {@code ["abcd"]}</li>
-	 * <li>{@code split('{','}',"a{bcd")} returns the array
+	 * <li>{@code split('{','}',"a&brace;bcd")} returns the array
 	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
@@ -818,7 +806,7 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static List<UUID> splitAsUUIDs(char leftSeparator, char rightSeparator, String str) {
-		final List<UUID> list = new ArrayList<>();
+		final var list = new ArrayList<UUID>();
 		splitSeparatorAlgorithm(leftSeparator, rightSeparator, str, new UUIDSplitSeparatorAlgorithm(list));
 		return list;
 	}
@@ -831,8 +819,8 @@ public final class TextUtil {
 	 * <ul>
 	 * <li>{@code mergeBrackets("a","b","cd")} returns the string
 	 * {@code "{a}{b}{cd}"}</li>
-	 * <li>{@code mergeBrackets("a{bcd")} returns the string
-	 * {@code "{a{bcd}"}</li>
+	 * <li>{@code mergeBrackets("a&brace;bcd")} returns the string
+	 * {@code "{a&brace;bcd}"}</li>
 	 * </ul>
 	 *
 	 * @param <T> is the type of the parameters.
@@ -853,8 +841,8 @@ public final class TextUtil {
 	 * <ul>
 	 * <li>{@code mergeBrackets("a","b","cd")} returns the string
 	 * {@code "{a}{b}{cd}"}</li>
-	 * <li>{@code mergeBrackets("a{bcd")} returns the string
-	 * {@code "{a{bcd}"}</li>
+	 * <li>{@code mergeBrackets("a&brace;bcd")} returns the string
+	 * {@code "{a&brace;bcd}"}</li>
 	 * </ul>
 	 *
 	 * @param strs is the array of strings.
@@ -875,8 +863,8 @@ public final class TextUtil {
 	 * <ul>
 	 * <li>{@code merge('{','}',"a","b","cd")} returns the string
 	 * {@code "{a}{b}{cd}"}</li>
-	 * <li>{@code merge('{','}',"a{bcd")} returns the string
-	 * {@code "{a{bcd}"}</li>
+	 * <li>{@code merge('{','}',"a&brace;bcd")} returns the string
+	 * {@code "{a&brace;bcd}"}</li>
 	 * </ul>
 	 *
 	 * @param <T> is the type of the parameters.
@@ -888,8 +876,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static <T> String join(char leftSeparator, char rightSeparator, @SuppressWarnings("unchecked") T... strs) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final Object s : strs) {
+		final var buffer = new StringBuilder();
+		for (final var s : strs) {
 			buffer.append(leftSeparator);
 			if (s != null) {
 				buffer.append(s.toString());
@@ -907,8 +895,8 @@ public final class TextUtil {
 	 * <ul>
 	 * <li>{@code merge('{','}',"a","b","cd")} returns the string
 	 * {@code "{a}{b}{cd}"}</li>
-	 * <li>{@code merge('{','}',"a{bcd")} returns the string
-	 * {@code "{a{bcd}"}</li>
+	 * <li>{@code merge('{','}',"a&brace;bcd")} returns the string
+	 * {@code "{a&brace;bcd}"}</li>
 	 * </ul>
 	 *
 	 * @param leftSeparator is the left separator to use.
@@ -919,8 +907,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(char leftSeparator, char rightSeparator, Iterable<?> strs) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final Object s : strs) {
+		final var buffer = new StringBuilder();
+		for (final var s : strs) {
 			buffer.append(leftSeparator);
 			if (s != null) {
 				buffer.append(s.toString());
@@ -1081,11 +1069,10 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, Iterable<?> elements) {
-		final StringBuilder buffer = new StringBuilder();
-		String txt;
-		for (final Object e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (e != null) {
-				txt = e.toString();
+				final var txt = e.toString();
 				if (txt != null && txt.length() > 0) {
 					if (buffer.length() > 0) {
 						buffer.append(joinText);
@@ -1115,8 +1102,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, boolean... elements) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final boolean e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (buffer.length() > 0) {
 				buffer.append(joinText);
 			}
@@ -1143,8 +1130,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, byte... elements) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final byte e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (buffer.length() > 0) {
 				buffer.append(joinText);
 			}
@@ -1171,8 +1158,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, char... elements) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final char e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (buffer.length() > 0) {
 				buffer.append(joinText);
 			}
@@ -1199,8 +1186,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, short... elements) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final short e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (buffer.length() > 0) {
 				buffer.append(joinText);
 			}
@@ -1227,8 +1214,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, int... elements) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final int e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (buffer.length() > 0) {
 				buffer.append(joinText);
 			}
@@ -1255,8 +1242,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, long... elements) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final long e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (buffer.length() > 0) {
 				buffer.append(joinText);
 			}
@@ -1283,8 +1270,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, float... elements) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final float e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (buffer.length() > 0) {
 				buffer.append(joinText);
 			}
@@ -1311,8 +1298,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String join(String joinText, String prefix, String postfix, double... elements) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final double e : elements) {
+		final var buffer = new StringBuilder();
+		for (final var e : elements) {
 			if (buffer.length() > 0) {
 				buffer.append(joinText);
 			}
@@ -1334,9 +1321,9 @@ public final class TextUtil {
 	 * characters in the two strings are equal ignoring accents.
 	 *
 	 * <p>This method is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * TextUtil.removeAccents(s1,map).equals(TextUtil.removeAccents(s2,map));
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param   s1 is the first string to compare.
 	 * @param   s2 is the second string to compare.
@@ -1360,9 +1347,9 @@ public final class TextUtil {
 	 * characters in the two strings are equal ignoring case and accents.
 	 *
 	 * <p>This method is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * TextUtil.removeAccents(s1,map).equalsIgnoreCase(TextUtil.removeAccents(s2,map));
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param   s1 is the first string to compare.
 	 * @param   s2 is the second string to compare.
@@ -1387,8 +1374,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String toLowerCaseWithoutAccent(String text) {
-		final Map<Character, String> map = getAccentTranslationTable();
-		if ((map == null) || (map.isEmpty())) {
+		final var map = getAccentTranslationTable();
+		if (map == null || map.isEmpty()) {
 			return text;
 		}
 		return toLowerCaseWithoutAccent(text, map);
@@ -1403,9 +1390,9 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String toLowerCaseWithoutAccent(String text, Map<Character, String> map) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final char c : text.toCharArray()) {
-			final String trans = map.get(c);
+		final var buffer = new StringBuilder();
+		for (final var c : text.toCharArray()) {
+			final var trans = map.get(Character.valueOf(c));
 			if (trans != null) {
 				buffer.append(trans.toLowerCase());
 			} else {
@@ -1422,8 +1409,8 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String toUpperCaseWithoutAccent(String text) {
-		final Map<Character, String> map = getAccentTranslationTable();
-		if ((map == null) || (map.isEmpty())) {
+		final var map = getAccentTranslationTable();
+		if (map == null || map.isEmpty()) {
 			return text;
 		}
 		return toUpperCaseWithoutAccent(text, map);
@@ -1438,9 +1425,9 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String toUpperCaseWithoutAccent(String text, Map<Character, String> map) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final char c : text.toCharArray()) {
-			final String trans = map.get(c);
+		final var buffer = new StringBuilder();
+		for (final var c : text.toCharArray()) {
+			final var trans = map.get(Character.valueOf(c));
 			if (trans != null) {
 				buffer.append(trans.toUpperCase());
 			} else {
@@ -1459,11 +1446,11 @@ public final class TextUtil {
 	 * @param amount is the amount expressed in the given unit.
 	 * @param unit is the unit of the given amount.
 	 * @return a string representation of the given amount.
+	 * @throws IllegalArgumentException if the time unit is not supported.
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static String formatTime(double amount, TimeUnit unit) {
-		double amt;
 		double coef = 1.;
 		switch (unit) {
 		case DAYS:
@@ -1491,23 +1478,17 @@ public final class TextUtil {
 		}
 
 		// amount is in seconds
-		amt = amount * coef;
+		var amt = amount * coef;
 
-		final StringBuilder text = new StringBuilder();
+		final var text = new StringBuilder();
 
-		String centuries = ""; //$NON-NLS-1$
-		String years = ""; //$NON-NLS-1$
-		String days = ""; //$NON-NLS-1$
-		String hours = ""; //$NON-NLS-1$
-		String minutes = ""; //$NON-NLS-1$
-		String seconds = ""; //$NON-NLS-1$
-		long ah = 0;
-		long am = 0;
-		long as = 0;
-		int idx = 0;
+		var centuries = ""; //$NON-NLS-1$
+		var years = ""; //$NON-NLS-1$
+		var days = ""; //$NON-NLS-1$
+		var idx = 0;
 
 		if (amt >= 3153600000.) {
-			final long a = (long) Math.floor(amt / 3153600000.);
+			final var a = (long) Math.floor(amt / 3153600000.);
 			centuries = Locale.getString((a >= 2) ? "TIME_FORMAT_Cs" : "TIME_FORMAT_C", //$NON-NLS-1$ //$NON-NLS-2$
 					Long.toString(a));
 			amt -= a * 3153600000.;
@@ -1516,7 +1497,7 @@ public final class TextUtil {
 		}
 
 		if (amt >= 31536000.) {
-			final long a = (long) Math.floor(amt / 31536000.);
+			final var a = (long) Math.floor(amt / 31536000.);
 			years = Locale.getString((a >= 2) ? "TIME_FORMAT_Ys" : "TIME_FORMAT_Y", //$NON-NLS-1$ //$NON-NLS-2$
 					Long.toString(a));
 			amt -= a * 31536000.;
@@ -1528,7 +1509,7 @@ public final class TextUtil {
 		}
 
 		if (amt >= 86400.) {
-			final long a = (long) Math.floor(amt / 86400.);
+			final var a = (long) Math.floor(amt / 86400.);
 			days = Locale.getString((a >= 2) ? "TIME_FORMAT_Ds" : "TIME_FORMAT_D", //$NON-NLS-1$ //$NON-NLS-2$
 					Long.toString(a));
 			amt -= a * 86400.;
@@ -1540,6 +1521,13 @@ public final class TextUtil {
 		}
 
 		//-------------------
+
+		var hours = ""; //$NON-NLS-1$
+		var minutes = ""; //$NON-NLS-1$
+		var seconds = ""; //$NON-NLS-1$
+		var ah = 0L;
+		var am = 0L;
+		var as = 0L;
 
 		if (amt >= 3600.) {
 			ah = (long) Math.floor(amt / 3600.);
@@ -1566,7 +1554,7 @@ public final class TextUtil {
 				as = (long) Math.floor(amt);
 				seconds = Long.toString(as);
 			} else {
-				final NumberFormat fmt = new DecimalFormat("#0.000"); //$NON-NLS-1$
+				final var fmt = new DecimalFormat("#0.000"); //$NON-NLS-1$
 				seconds = fmt.format(amt);
 			}
 			idx |= 1;
@@ -1638,18 +1626,18 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String formatDouble(double amount, int decimalCount) {
-		final int dc = (decimalCount < 0) ? 0 : decimalCount;
+		final var dc = (decimalCount < 0) ? 0 : decimalCount;
 
-		final StringBuilder str = new StringBuilder("#0"); //$NON-NLS-1$
+		final var str = new StringBuilder("#0"); //$NON-NLS-1$
 
 		if (dc > 0) {
 			str.append('.');
-			for (int i = 0; i < dc; ++i) {
+			for (var i = 0; i < dc; ++i) {
 				str.append('0');
 			}
 		}
 
-		final DecimalFormat fmt = new DecimalFormat(str.toString());
+		final var fmt = new DecimalFormat(str.toString());
 		return fmt.format(amount);
 	}
 
@@ -1661,18 +1649,18 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String formatFloat(float amount, int decimalCount) {
-		final int dc = (decimalCount < 0) ? 0 : decimalCount;
+		final var dc = (decimalCount < 0) ? 0 : decimalCount;
 
-		final StringBuilder str = new StringBuilder("#0"); //$NON-NLS-1$
+		final var str = new StringBuilder("#0"); //$NON-NLS-1$
 
 		if (dc > 0) {
 			str.append('.');
-			for (int i = 0; i < dc; ++i) {
+			for (var i = 0; i < dc; ++i) {
 				str.append('0');
 			}
 		}
 
-		final DecimalFormat fmt = new DecimalFormat(str.toString());
+		final var fmt = new DecimalFormat(str.toString());
 		return fmt.format(amount);
 	}
 
@@ -1686,44 +1674,44 @@ public final class TextUtil {
 	 * @see "https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance"
 	 */
 	public static int getLevenshteinDistance(String firstString, String secondString) {
-		final String s0 = firstString == null ? "" : firstString; //$NON-NLS-1$
-		final String s1 = secondString == null ? "" : secondString; //$NON-NLS-1$
+		final var s0 = firstString == null ? "" : firstString; //$NON-NLS-1$
+		final var s1 = secondString == null ? "" : secondString; //$NON-NLS-1$
 
-		final int len0 = s0.length() + 1;
-		final int len1 = s1.length() + 1;
+		final var len0 = s0.length() + 1;
+		final var len1 = s1.length() + 1;
 
 		// the array of distances
-		int[] cost = new int[len0];
-		int[] newcost = new int[len0];
+		var cost = new int[len0];
+		var newcost = new int[len0];
 
 		// initial cost of skipping prefix in String s0
-		for (int i = 0; i < len0; ++i) {
+		for (var i = 0; i < len0; ++i) {
 			cost[i] = i;
 		}
 
 		// dynamically computing the array of distances
 
 		// transformation cost for each letter in s1
-		for (int j = 1; j < len1; ++j) {
+		for (var j = 1; j < len1; ++j) {
 			// initial cost of skipping prefix in String s1
 			newcost[0] = j;
 
 			// transformation cost for each letter in s0
-			for (int i = 1; i < len0; ++i) {
+			for (var i = 1; i < len0; ++i) {
 				// matching current letters in both strings
-				final int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
+				final var match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
 
 				// computing cost for each transformation
-				final int costReplace = cost[i - 1] + match;
-				final int costInsert  = cost[i] + 1;
-				final int costDelete  = newcost[i - 1] + 1;
+				final var costReplace = cost[i - 1] + match;
+				final var costInsert  = cost[i] + 1;
+				final var costDelete  = newcost[i - 1] + 1;
 
 				// keep minimum cost
 				newcost[i] = Math.min(Math.min(costInsert, costDelete), costReplace);
 			}
 
 			// swap cost/newcost arrays
-			final int[] swap = cost;
+			final var swap = cost;
 			cost = newcost;
 			newcost = swap;
 		}
@@ -1746,7 +1734,7 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String toJavaString(String text) {
-		final StringEscaper escaper = new StringEscaper();
+		final var escaper = new StringEscaper();
 		return escaper.escape(text);
 	}
 
@@ -1763,7 +1751,7 @@ public final class TextUtil {
 	 */
 	@Pure
 	public static String toJsonString(String text) {
-		final StringEscaper escaper = new StringEscaper(
+		final var escaper = new StringEscaper(
 				StringEscaper.JAVA_ESCAPE_CHAR,
 				StringEscaper.JAVA_STRING_CHAR, StringEscaper.JAVA_ESCAPE_CHAR, StringEscaper.JSON_SPECIAL_ESCAPED_CHAR);
 		return escaper.escape(text);
@@ -1912,7 +1900,7 @@ public final class TextUtil {
 		@Override
 		public void addToken(String token) {
 			if (this.size >= this.array.length) {
-				final String[] t = new String[this.array.length + BUFFER_SIZE];
+				final var t = new String[this.array.length + BUFFER_SIZE];
 				System.arraycopy(this.array, 0, t, 0, this.array.length);
 				this.array = t;
 			}
@@ -1926,7 +1914,7 @@ public final class TextUtil {
 		 */
 		public String[] toArray() {
 			if (this.array.length > this.size) {
-				final String[] t = new String[this.size];
+				final var t = new String[this.size];
 				System.arraycopy(this.array, 0, t, 0, this.size);
 				return t;
 			}
@@ -1976,7 +1964,7 @@ public final class TextUtil {
 		 * @param lineLength is the current length of the line.
 		 * @param word is the word to add.
 		 * @return {@code true} if the word is overfulling the line,
-		 * {@code false} otherwise.
+		 *     {@code false} otherwise.
 		 */
 		boolean isOverfull(long lineLength, String word);
 

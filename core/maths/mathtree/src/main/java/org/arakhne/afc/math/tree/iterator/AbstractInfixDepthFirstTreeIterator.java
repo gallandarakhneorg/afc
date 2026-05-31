@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.IterableNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an infixed depth-first iterator on a tree.
@@ -127,8 +126,7 @@ public abstract class AbstractInfixDepthFirstTreeIterator<P extends IterableNode
 
 	private void startIterator() {
 		final P root = this.availableNodes.isEmpty() ? null : this.availableNodes.pop();
-		if ((root != null)
-				&& (isTraversableParent(root))) {
+		if (root != null && isTraversableParent(root)) {
 			if (this.infixPosition == -1) {
 				this.infixPosition = root.getChildCount() / 2;
 			}
@@ -146,8 +144,8 @@ public abstract class AbstractInfixDepthFirstTreeIterator<P extends IterableNode
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private void fillNodeList(P parent) {
-		P prt = parent;
-		if ((prt != null) && (prt.isLeaf())) {
+		var prt = parent;
+		if (prt != null && prt.isLeaf()) {
 			if (isTraversableParent(prt)) {
 				this.availableNodes.push(prt);
 			}
@@ -158,10 +156,10 @@ public abstract class AbstractInfixDepthFirstTreeIterator<P extends IterableNode
 			if (!prt.isLeaf()) {
 				if (!this.expandedNodes.contains(prt)) {
 					this.expandedNodes.add(prt);
-					for (int i = prt.getChildCount() - 1; i >= this.infixPosition; --i) {
-						final C child = prt.getChildAt(i);
+					for (var i = prt.getChildCount() - 1; i >= this.infixPosition; --i) {
+						final var child = prt.getChildAt(i);
 						if (child != null) {
-							final P cn = toTraversableChild(prt, child);
+							final var cn = toTraversableChild(prt, child);
 							if (cn != null) {
 								this.availableNodes.push(cn);
 							}
@@ -170,10 +168,10 @@ public abstract class AbstractInfixDepthFirstTreeIterator<P extends IterableNode
 
 					this.availableNodes.push(prt);
 
-					for (int i = this.infixPosition - 1; i >= 0; --i) {
-						final C child = prt.getChildAt(i);
+					for (var i = this.infixPosition - 1; i >= 0; --i) {
+						final var child = prt.getChildAt(i);
 						if (child != null) {
-							final P cn = toTraversableChild(prt, child);
+							final var cn = toTraversableChild(prt, child);
 							if (cn != null) {
 								this.availableNodes.push(cn);
 							}
@@ -187,7 +185,7 @@ public abstract class AbstractInfixDepthFirstTreeIterator<P extends IterableNode
 				}
 			}
 			prt = this.availableNodes.isEmpty() ? null : this.availableNodes.peek();
-			if ((prt != null) && (prt.isLeaf())) {
+			if (prt != null && prt.isLeaf()) {
 				return;
 			}
 			if (!this.availableNodes.isEmpty()) {
@@ -215,7 +213,7 @@ public abstract class AbstractInfixDepthFirstTreeIterator<P extends IterableNode
 			throw new NoSuchElementException();
 		}
 
-		final P current = this.availableNodes.pop();
+		final var current = this.availableNodes.pop();
 		if (current == null) {
 			throw new ConcurrentModificationException();
 		}
@@ -234,7 +232,7 @@ public abstract class AbstractInfixDepthFirstTreeIterator<P extends IterableNode
 
 	@Override
 	public void remove() {
-		final P lr = this.lastReplied;
+		final var lr = this.lastReplied;
 		this.lastReplied = null;
 		if (lr == null) {
 			throw new NoSuchElementException();

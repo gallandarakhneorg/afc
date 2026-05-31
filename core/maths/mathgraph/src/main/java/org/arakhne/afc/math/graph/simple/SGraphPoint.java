@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.references.WeakArrayList;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class provides a simple implementation of a graph's point
  * for a {@link SGraph}.
@@ -67,7 +66,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 	 * @param segments the segments to add.
 	 */
 	void add(Iterable<SGraphSegment> segments) {
-		for (final SGraphSegment segment : segments) {
+		for (final var segment : segments) {
 			this.segments.add(segment);
 		}
 	}
@@ -131,9 +130,9 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 	}
 
 	private List<SGraphSegment> computeConnectedSegmentsStartingFrom(SGraphSegment startingPoint) {
-		final List<SGraphSegment> list = new ArrayList<>(this.segments.size());
-		int idx = 0;
-		for (final SGraphSegment segment : this.segments) {
+		final var list = new ArrayList<SGraphSegment>(this.segments.size());
+		var idx = 0;
+		for (final var segment : this.segments) {
 			if (segment != null) {
 				if (idx > 0 || segment.equals(startingPoint)) {
 					list.add(idx, segment);
@@ -161,10 +160,10 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 	@Override
 	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnectionsStartingFrom(
 			SGraphSegment startingPoint) {
-		final List<PointConnection> list = new ArrayList<>(this.segments.size());
-		int idx = 0;
+		final var list = new ArrayList<PointConnection>(this.segments.size());
+		var idx = 0;
 		PointConnection connection;
-		for (final SGraphSegment segment : this.segments) {
+		for (final var segment : this.segments) {
 			if (segment != null) {
 				if (equals(segment.getBeginPoint())) {
 					connection = new PointConnection(segment, true);
@@ -191,9 +190,9 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 	@Override
 	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnectionsStartingFromInReverseOrder(
 			SGraphSegment startingPoint) {
-		final List<PointConnection> list = new ArrayList<>(this.segments.size());
+		final var list = new ArrayList<PointConnection>(this.segments.size());
 		PointConnection connection;
-		for (final SGraphSegment segment : this.segments) {
+		for (final var segment : this.segments) {
 			if (segment != null) {
 				if (equals(segment.getBeginPoint())) {
 					connection = new PointConnection(segment, true);
@@ -218,8 +217,8 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 	@Pure
 	@Override
 	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnections() {
-		final Collection<PointConnection> list = new ArrayList<>(this.segments.size());
-		for (final SGraphSegment segment : this.segments) {
+		final var list = new ArrayList<PointConnection>(this.segments.size());
+		for (final var segment : this.segments) {
 			if (segment != null) {
 				if (equals(segment.getBeginPoint())) {
 					list.add(new PointConnection(segment, true));
@@ -258,7 +257,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 	 */
 	@Pure
 	public int getUserDataCount() {
-		return (this.userData == null) ? 0 : this.userData.size();
+		return this.userData == null ? 0 : this.userData.size();
 	}
 
 	/** Replies the user data at the given index.

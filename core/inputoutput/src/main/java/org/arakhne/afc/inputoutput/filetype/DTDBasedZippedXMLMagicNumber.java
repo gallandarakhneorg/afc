@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,8 +77,8 @@ public class DTDBasedZippedXMLMagicNumber extends ZippedXMLMagicNumber {
 	 */
 	@Override
 	protected boolean isContentType(String schemaId, String schemaVersion, String systemId, String publicId) {
-		return (this.publicId != null && this.publicId.equalsIgnoreCase(publicId))
-				|| (this.systemId != null && this.systemId.equalsIgnoreCase(systemId));
+		return this.publicId != null && this.publicId.equalsIgnoreCase(publicId)
+				|| this.systemId != null && this.systemId.equalsIgnoreCase(systemId);
 	}
 
 }

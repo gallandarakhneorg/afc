@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class OperatingSystemUDevWrapper extends AbstractOperatingSystemWrapper {
 	}
 
 	private static String runUdev(File file, String key) {
-		final String result = runCommand(
+		final var result = runCommand(
 				"udevadm", //$NON-NLS-1$
 				"info", //$NON-NLS-1$
 				"-q", //$NON-NLS-1$
@@ -56,7 +56,7 @@ class OperatingSystemUDevWrapper extends AbstractOperatingSystemWrapper {
 
 	@Override
 	public String getOSSerialNumber(boolean enableSuperUser, boolean enableGUI) {
-		File file = new File("/dev/sda"); //$NON-NLS-1$
+		var file = new File("/dev/sda"); //$NON-NLS-1$
 		if (file.exists()) {
 			return runUdev(file, "ID_SERIAL"); //$NON-NLS-1$
 		}
@@ -71,7 +71,7 @@ class OperatingSystemUDevWrapper extends AbstractOperatingSystemWrapper {
 
 	@Override
 	public String getOSUUID(boolean enableSuperUser, boolean enableGUI) {
-		File file = new File("/dev/sda"); //$NON-NLS-1$
+		var file = new File("/dev/sda"); //$NON-NLS-1$
 		if (file.exists()) {
 			return runUdev(file, "ID_SERIAL_SHORT"); //$NON-NLS-1$
 		}

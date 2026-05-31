@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,11 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import com.google.common.collect.Iterators;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.location.GeoLocationNowhere;
 import org.arakhne.afc.gis.location.GeoLocationPoint;
-import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
@@ -40,6 +37,7 @@ import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.references.WeakArrayList;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bus stop is a designated place where buses stop for passengers to board or
@@ -168,8 +166,8 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
 		if (getGeoPosition() != null) {
-			buffer.add("x", getGeoPosition().getX()); //$NON-NLS-1$
-			buffer.add("y", getGeoPosition().getY()); //$NON-NLS-1$
+			buffer.add("x", Double.valueOf(getGeoPosition().getX())); //$NON-NLS-1$
+			buffer.add("y", Double.valueOf(getGeoPosition().getY())); //$NON-NLS-1$
 		}
 	}
 
@@ -184,7 +182,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 		if (busNetwork == null) {
 			return null;
 		}
-		int nb = busNetwork.getBusStopCount();
+		var nb = busNetwork.getBusStopCount();
 		String name;
 		do {
 			++nb;
@@ -207,19 +205,19 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 							BusPrimitiveInvalidityType.NO_STOP_POSITION,
 							null);
 		} else {
-			final BusNetwork busNetwork = getBusNetwork();
+			final var busNetwork = getBusNetwork();
 			if (busNetwork == null) {
 				invalidityReason = new BusPrimitiveInvalidity(
 						BusPrimitiveInvalidityType.STOP_NOT_IN_NETWORK,
 						null);
 			} else {
-				final RoadNetwork roadNetwork = busNetwork.getRoadNetwork();
+				final var roadNetwork = busNetwork.getRoadNetwork();
 				if (roadNetwork == null) {
 					invalidityReason = new BusPrimitiveInvalidity(
 							BusPrimitiveInvalidityType.STOP_NOT_IN_NETWORK,
 							null);
 				} else {
-					final Rectangle2d bounds = roadNetwork.getBoundingBox();
+					final var bounds = roadNetwork.getBoundingBox();
 					if (bounds == null || !bounds.contains(this.position.getPoint())) {
 						invalidityReason = new BusPrimitiveInvalidity(
 								BusPrimitiveInvalidityType.OUTSIDE_MAP_BOUNDS,
@@ -236,10 +234,10 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	 */
 	private void notifyDependencies() {
 		if (getContainer() != null) {
-			for (final BusHub hub : busHubs()) {
+			for (final var hub : busHubs()) {
 				hub.checkPrimitiveValidity();
 			}
-			for (final BusItineraryHalt halt : getBindedBusHalts()) {
+			for (final var halt : getBindedBusHalts()) {
 				halt.checkPrimitiveValidity();
 			}
 		}
@@ -289,8 +287,8 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	 * @param position the position.
 	 */
 	public void setPosition(GeoLocationPoint position) {
-		if ((this.position == null && position != null)
-			|| (this.position != null && !this.position.equals(position))) {
+		if (this.position == null && position != null
+			|| this.position != null && !this.position.equals(position)) {
 			this.position = position;
 			fireShapeChanged();
 			checkPrimitiveValidity();
@@ -337,11 +335,11 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		final GeoLocationPoint p2d = getGeoPosition();
+		final var p2d = getGeoPosition();
 		if (p2d == null) {
 			return null;
 		}
-		final Rectangle2d rect = new Rectangle2d();
+		final var rect = new Rectangle2d();
 		rect.setFromCorners(p2d.getX(), p2d.getY(), p2d.getX(), p2d.getY());
 		return rect;
 	}
@@ -354,7 +352,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	@Override
 	@Pure
 	public GeoLocation getGeoLocation() {
-		final GeoLocationPoint pt = getGeoPosition();
+		final var pt = getGeoPosition();
 		if (pt == null) {
 			return new GeoLocationNowhere(getUUID());
 		}
@@ -370,7 +368,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	@Pure
 	public double distance(double x, double y) {
 		if (isValidPrimitive()) {
-			final GeoLocationPoint p = getGeoPosition();
+			final var p = getGeoPosition();
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), x, y);
 		}
 		return Double.NaN;
@@ -384,8 +382,8 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	@Pure
 	public double distance(BusStop stop) {
 		if (isValidPrimitive() && stop.isValidPrimitive()) {
-			final GeoLocationPoint p = getGeoPosition();
-			final GeoLocationPoint p2 = stop.getGeoPosition();
+			final var p = getGeoPosition();
+			final var p2 = stop.getGeoPosition();
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), p2.getX(), p2.getY());
 		}
 		return Double.NaN;
@@ -399,8 +397,8 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	@Pure
 	public double distance(BusItineraryHalt halt) {
 		if (isValidPrimitive() && halt.isValidPrimitive()) {
-			final GeoLocationPoint p = getGeoPosition();
-			final GeoLocationPoint p2 = halt.getGeoPosition();
+			final var p = getGeoPosition();
+			final var p2 = halt.getGeoPosition();
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), p2.getX(), p2.getY());
 		}
 		return Double.NaN;
@@ -414,7 +412,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	@Pure
 	public double distance(Point2D<?, ?> point) {
 		if (isValidPrimitive()) {
-			final GeoLocationPoint p = getGeoPosition();
+			final var p = getGeoPosition();
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), point.getX(), point.getY());
 		}
 		return Double.NaN;
@@ -428,7 +426,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 	@Pure
 	public double distance(GeoLocationPoint point) {
 		if (isValidPrimitive()) {
-			final GeoLocationPoint p = getGeoPosition();
+			final var p = getGeoPosition();
 			return Point2D.getDistancePointPoint(p.getX(), p.getY(), point.getX(), point.getY());
 		}
 		return Double.NaN;

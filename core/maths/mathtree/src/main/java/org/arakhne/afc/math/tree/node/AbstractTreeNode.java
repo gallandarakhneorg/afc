@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.TreeNodeAddedEvent;
-import org.arakhne.afc.math.tree.TreeNodeListener;
 import org.arakhne.afc.math.tree.TreeNodeParentChangedEvent;
 import org.arakhne.afc.math.tree.TreeNodeRemovedEvent;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This is the generic implementation of a tree
  * tree with a weak reference to its parent node.
@@ -98,7 +96,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 	@Override
 	@Pure
 	public int getDepth() {
-		final N p = getParentNode();
+		final var p = getParentNode();
 		if (p == null) {
 			return 0;
 		}
@@ -123,7 +121,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 	 * @since 4.0
 	 */
 	boolean setParentNodeReference(N newParent, boolean fireEvent) {
-		final N oldParent = getParentNode();
+		final var oldParent = getParentNode();
 		if (newParent == oldParent) {
 			return false;
 		}
@@ -140,7 +138,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 
 	@Override
 	public N removeFromParent() {
-		final N lparent = getParentNode();
+		final var lparent = getParentNode();
 		if (lparent != null) {
 			final int index = lparent.indexOf(toN());
 			if (index != -1) {
@@ -152,8 +150,8 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 
 	@Override
 	public void removeDeeplyFromParent() {
-		N lparent = getParentNode();
-		N child = toN();
+		var lparent = getParentNode();
+		var child = toN();
 
 		while (lparent != null && lparent.isEmpty()) {
 			child = lparent;
@@ -161,7 +159,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 		}
 
 		if (lparent != null) {
-			final int index = lparent.indexOf(child);
+			final var index = lparent.indexOf(child);
 			if (index != -1) {
 				lparent.setChildAt(index, null);
 			}
@@ -183,13 +181,13 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 	 */
 	void firePropertyChildAdded(TreeNodeAddedEvent event) {
 		if (this.nodeListeners != null) {
-			for (final TreeNodeListener listener : this.nodeListeners) {
+			for (final var listener : this.nodeListeners) {
 				if (listener != null) {
 					listener.treeNodeChildAdded(event);
 				}
 			}
 		}
-		final N parentNode = getParentNode();
+		final var parentNode = getParentNode();
 		assert parentNode != this;
 		if (parentNode != null) {
 			parentNode.firePropertyChildAdded(event);
@@ -211,7 +209,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 	 */
 	void firePropertyChildRemoved(TreeNodeRemovedEvent event) {
 		if (this.nodeListeners != null) {
-			for (final TreeNodeListener listener : this.nodeListeners) {
+			for (final var listener : this.nodeListeners) {
 				if (listener != null) {
 					listener.treeNodeChildRemoved(event);
 				}
@@ -248,13 +246,13 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 	 */
 	void firePropertyParentChanged(TreeNodeParentChangedEvent event) {
 		if (this.nodeListeners != null) {
-			for (final TreeNodeListener listener : this.nodeListeners) {
+			for (final var listener : this.nodeListeners) {
 				if (listener != null) {
 					listener.treeNodeParentChanged(event);
 				}
 			}
 		}
-		final N parentNode = getParentNode();
+		final var parentNode = getParentNode();
 		if (parentNode != null) {
 			parentNode.firePropertyParentChanged(event);
 		}
@@ -270,7 +268,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 	@SuppressWarnings("unchecked")
 	@Pure
 	public final N[] getChildren(Class<N> type) {
-		final N[] array = (N[]) Array.newInstance(type, getChildCount());
+		final var array = (N[]) Array.newInstance(type, getChildCount());
 		getChildren(array);
 		return array;
 	}
@@ -309,7 +307,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 			return false;
 		}
 
-		int newIndex = index;
+		var newIndex = index;
 		if (isDynamicChildList) {
 			if (newIndex < 0) {
 				newIndex = 0;
@@ -320,14 +318,14 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 			return false;
 		}
 
-		final N oldParent = getParentNode();
+		final var oldParent = getParentNode();
 		if (oldParent == newParent) {
 			return false;
 		}
-		final N me = toN();
+		final var me = toN();
 
 		// Remove from previous parent
-		int oldIndex = -1;
+		var oldIndex = -1;
 		if (oldParent != null) {
 			oldIndex = oldParent.indexOf(me);
 			if (oldIndex >= 0) {
@@ -344,7 +342,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 		newParent.setChildAtWithoutEventFiring(newIndex, me);
 
 		// Set the parent reference
-		final boolean fireEvent = setParentNodeReference(newParent, false);
+		final var fireEvent = setParentNodeReference(newParent, false);
 
 		// Fire events
 		if (oldIndex >= 0) {
@@ -393,7 +391,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 		}
 
 		private void searchNext() {
-			final int count = AbstractTreeNode.this.getChildCount();
+			final var count = AbstractTreeNode.this.getChildCount();
 			this.next = null;
 			while (this.next == null && this.idx < count) {
 				this.next = AbstractTreeNode.this.getChildAt(this.idx);
@@ -411,7 +409,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 			if (this.next == null) {
 				throw new NoSuchElementException();
 			}
-			final N n = this.next;
+			final var n = this.next;
 			searchNext();
 			return n;
 		}

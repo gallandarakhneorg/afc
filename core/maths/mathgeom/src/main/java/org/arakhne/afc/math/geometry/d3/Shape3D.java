@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,19 +21,17 @@
 package org.arakhne.afc.math.geometry.d3;
 
 import java.io.Serializable;
-import java.util.Objects;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D shape.
  *
- * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @param <P> is the type of the points.
@@ -48,14 +46,21 @@ import org.arakhne.afc.vmutil.json.JsonableObject;
  * @mavenartifactid $ArtifactId$
  */
 public interface Shape3D<
-	ST extends Shape3D<?, ?, I, P, V, Q, B>,
-	IT extends Shape3D<?, ?, I, P, V, Q, B>,
+	IT extends Shape3D<?, I, P, V, Q, B>,
 	I extends PathIterator3D<?>,
 	P extends Point3D<? super P, ? super V, ? super Q>,
 	V extends Vector3D<? super V, ? super P, ? super Q>,
 	Q extends Quaternion<? super P, ? super V, ? super Q>,
-	B extends Shape3D<?, ?, I, P, V, Q, B>>
+	B extends Shape3D<?, I, P, V, Q, B>>
 	extends Cloneable, Serializable, JsonableObject {
+
+	/** Replies the type of this shape 3D.
+	 *
+	 * @return the type.
+	 * @since 18.0
+	 */
+	@Pure
+	Shape3DType getType();
 
 	/** Replies the geometry factory associated to this point.
 	 *
@@ -70,7 +75,7 @@ public interface Shape3D<
 	 * subclasses for details.
 	 *
 	 * @return {@code true} if the shape is empty;
-	 * {@code false} otherwise.
+	 *      {@code false} otherwise.
 	 */
 	@Pure
 	boolean isEmpty();
@@ -81,41 +86,6 @@ public interface Shape3D<
 	 */
 	@Pure
 	IT clone();
-
-	/** Replies this shape as the same path iterator as the given one.
-	 *
-	 * <p>The equality test does not flatten the paths. It means that
-	 * is function has is functionnality equivalent to: <pre>{@code 
-	 * PathIterator2D it = this.getPathIterator();
-	 * while (it.hasNext() &amp;&amp; pathIterator.hasNext()) {
-	 *   PathElement2D e1 = it.next();
-	 *   PathElement2D e2 = it.next();
-	 *   if (!e1.equals(e2)) return false;
-	 * }
-	 * return !it.hasNext() &amp;&amp; !pathIterator.hasNext();
-	 * }</pre>
-	 *
-	 * @param pathIterator the path iterator to compare to the one of this shape.
-	 * @return {@code true} if the path iterator of this shape replies the same
-	 *     elements as the given path iterator.
-	 */
-	@Pure
-	default boolean equalsToPathIterator(PathIterator3D<?> pathIterator) {
-		final I localIterator = getPathIterator();
-		if (pathIterator == null) {
-			return false;
-		}
-		PathElement3D element1;
-		PathElement3D element2;
-		while (localIterator.hasNext() && pathIterator.hasNext()) {
-			element1 = localIterator.next();
-			element2 = pathIterator.next();
-			if (!Objects.equals(element1, element2)) {
-				return false;
-			}
-		}
-		return !localIterator.hasNext() && !pathIterator.hasNext();
-	}
 
 	/** Replies this shape is equal to the given shape.
 	 *
@@ -139,7 +109,7 @@ public interface Shape3D<
 	@Pure
 	boolean contains(Point3D<?, ?, ?> point);
 
-    /** Replies the point on the shape that is closest to the given point.
+	/** Replies the point on the shape that is closest to the given point.
 	 *
 	 * @param point the point.
 	 * @return the closest point on the shape; or the point itself
@@ -161,7 +131,7 @@ public interface Shape3D<
      */
     @Pure
     @Unefficient
-    P getClosestPointTo(Shape3D<?, ?, ?, ?, ?, ?, ?> shape);
+    P getClosestPointTo(Shape3D<?, ?, ?, ?, ?, ?> shape);
 
 	/** Replies the point on the shape that is farthest the given point.
 	 *
@@ -189,7 +159,7 @@ public interface Shape3D<
      */
     @Pure
     @Unefficient
-    default double getDistance(Shape3D<?, ?, ?, ?, ?, ?, ?> shape) {
+    default double getDistance(Shape3D<?, ?, ?, ?, ?, ?> shape) {
         assert shape != null : AssertMessages.notNullParameter();
         return Math.sqrt(getDistanceSquared(shape));
     }
@@ -209,11 +179,11 @@ public interface Shape3D<
      */
     @Pure
     @Unefficient
-    double getDistanceSquared(Shape3D<?, ?, ?, ?, ?, ?, ?> shape);
+    double getDistanceSquared(Shape3D<?, ?, ?, ?, ?, ?> shape);
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this shape and
-	 * point p1.  The L-1 distance is equal to abs(x1-x2) + abs(y1-y2) + abs(z1-z2).
+	 * point p1. The L-1 distance is equal to abs(x1-x2) + abs(y1-y2) + abs(z1-z2).
 	 * @param point the point
 	 * @return the distance.
 	 */
@@ -235,34 +205,6 @@ public interface Shape3D<
 	 * @param shape the shape.
 	 */
 	void set(IT shape);
-
-	/** Replies an iterator on the path elements.
-	 *
-	 * <p>The iterator for this class is not multi-threaded safe.
-	 *
-	 * @return an iterator on the path elements.
-	 */
-	@Pure
-	default I getPathIterator() {
-		return getPathIterator(null);
-	}
-
-	/** Replies the elements of the paths.
-	 *
-	 * @param transform is the transformation to apply to the path.
-	 * @return the elements of the path.
-	 */
-	@Pure
-	I getPathIterator(Transform3D transform);
-
-	/** Apply the transformation to the shape and reply the result.
-	 * This function does not change the current shape.
-	 *
-	 * @param transform is the transformation to apply to the shape.
-	 * @return the result of the transformation.
-	 */
-	@Pure
-	ST createTransformedShape(Transform3D transform);
 
 	/** Translate the shape.
 	 *
@@ -291,11 +233,11 @@ public interface Shape3D<
 	 *
 	 * @param shape the shape to compare to
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *      {@code false} if there is no intersection.
 	 */
 	@Pure
 	@Unefficient
-	boolean intersects(Shape3D<?, ?, ?, ?, ?, ?, ?> shape);
+	boolean intersects(Shape3D<?, ?, ?, ?, ?, ?> shape);
 
 	/** Translate this shape by adding the given vector: {@code this += v}
 	 *
@@ -307,6 +249,7 @@ public interface Shape3D<
 	 * @see #translate(Vector3D)
 	 */
 	@XtextOperator("+=")
+	@Inline("translate($1)")
 	default void operator_add(Vector3D<?, ?, ?> v) {
 		translate(v);
 	}
@@ -324,12 +267,12 @@ public interface Shape3D<
 	@Pure
 	@XtextOperator("+")
 	default IT operator_plus(Vector3D<?, ?, ?> v) {
-		final IT clone = clone();
+		final var clone = clone();
 		clone.translate(v);
 		return clone;
 	}
 
-	/** Translate this shape by substracting the given vector: {@code this -= v}
+	/** Translate this shape by subtracting the given vector: {@code this -= v}
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
@@ -340,7 +283,7 @@ public interface Shape3D<
 	 */
 	@XtextOperator("-=")
 	default void operator_remove(Vector3D<?, ?, ?> v) {
-		final Vector3D<?, ?, ?> negate = getGeomFactory().newVector();
+		final var negate = getGeomFactory().newVector();
 		negate.negate(v);
 		translate(negate);
 	}
@@ -358,27 +301,11 @@ public interface Shape3D<
 	@Pure
 	@XtextOperator("-")
 	default IT operator_minus(Vector3D<?, ?, ?> v) {
-		final IT clone = clone();
-		final Vector3D<?, ?, ?> negate = getGeomFactory().newVector();
+		final var clone = clone();
+		final var negate = getGeomFactory().newVector();
 		negate.negate(v);
 		clone.translate(negate);
 		return clone;
-	}
-
-	/** Create a new shape by applying the given transformation: {@code this * t}
-	 *
-	 * <p>This function is an implementation of the operator for
-	 * the languages that defined or based on the
-	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
-	 *
-	 * @param t the transformation
-	 * @return the transformed shape.
-	 * @see #createTransformedShape(Transform3D)
-	 */
-	@Pure
-	@XtextOperator("*")
-	default ST operator_multiply(Transform3D t) {
-		return createTransformedShape(t);
 	}
 
 	/** Replies if the given point is inside the shape: {@code this && b}
@@ -389,10 +316,11 @@ public interface Shape3D<
 	 *
 	 * @param point the point to test.
 	 * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
-	 * @see #createTransformedShape(Transform3D)
+	 * @see #contains(Point3D)
 	 */
 	@Pure
 	@XtextOperator("&&")
+	@Inline("contains($1)")
 	default boolean operator_and(Point3D<?, ?, ?> point) {
 		return contains(point);
 	}
@@ -414,7 +342,45 @@ public interface Shape3D<
 	@Pure
 	@Unefficient
 	@XtextOperator("&&")
-	default boolean operator_and(Shape3D<?, ?, ?, ?, ?, ?, ?> shape) {
+	@Inline("intersects($1)")
+	default boolean operator_and(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+		return intersects(shape);
+	}
+
+	/** Replies if the given point is inside the shape: {@code this && b}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param point the point to test.
+	 * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
+	 * @see #contains(Point3D)
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("contains($1)")
+	default boolean $amp$amp(Point3D<?, ?, ?> point) {
+		return contains(point);
+	}
+
+	/** Replies if the given shape has an intersection with this shape: {@code this && b}
+	 *
+	 * <p>You must use the intersection functions with a specific parameter type in place of
+	 * this general function. Indeed, the implementation of this function is unefficient due
+	 * to the tests against the types of the given shape, and the cast operators.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param shape the shape to test.
+	 * @return {@code true} if the shapes are intersecting. Otherwise, {@code false}.
+	 * @see #intersects(Shape3D)
+	 */
+	@Pure
+	@Unefficient
+	@ScalaOperator("&&")
+	@Inline("intersects($1)")
+	default boolean $amp$amp(Shape3D<?, ?, ?, ?, ?, ?> shape) {
 		return intersects(shape);
 	}
 
@@ -430,6 +396,7 @@ public interface Shape3D<
 	 */
 	@Pure
 	@XtextOperator("..")
+	@Inline("getDistance($1)")
 	default double operator_upTo(Point3D<?, ?, ?> pt) {
 		return getDistance(pt);
 	}
@@ -445,23 +412,9 @@ public interface Shape3D<
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default IT $minus(Vector3D<?, ?, ?> v) {
 		return operator_minus(v);
-	}
-
-	/** Create a new shape by applying the given transformation: {@code this * t}
-	 *
-	 * <p>This function is an implementation of the operator for
-	 * the <a href="http://scala-lang.org/">Scala Language</a>.
-	 *
-	 * @param t the transformation
-	 * @return the transformed shape.
-	 * @see #createTransformedShape(Transform3D)
-	 */
-	@Pure
-	@ScalaOperator("*")
-	default ST $times(Transform3D t) {
-		return operator_multiply(t);
 	}
 
 	/** Create a new shape by translating this shape of the given vector: {@code this + v}
@@ -475,6 +428,7 @@ public interface Shape3D<
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default IT $plus(Vector3D<?, ?, ?> v) {
 		return operator_plus(v);
 	}

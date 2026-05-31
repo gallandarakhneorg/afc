@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A MACNumber is the unique number associated to a network interface.
  *
@@ -101,14 +99,14 @@ public final class MACNumber {
 		if (address == null) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
-		final String[] parts = address.split(Pattern.quote(":")); //$NON-NLS-1$
+		final var parts = address.split(Pattern.quote(":")); //$NON-NLS-1$
 		if (parts.length != 6) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		this.bytes = new byte[6];
 		try {
 			int val;
-			for (int i = 0; i < 6; ++i) {
+			for (var i = 0; i < 6; ++i) {
 				val = Integer.parseInt(parts[i], 16);
 				this.bytes[i] = (byte) val;
 			}
@@ -125,15 +123,15 @@ public final class MACNumber {
 	 */
 	@Pure
 	public static MACNumber[] parse(String addresses) {
-		if ((addresses == null) || ("".equals(addresses))) { //$NON-NLS-1$
+		if (addresses == null || "".equals(addresses)) { //$NON-NLS-1$
 			return new MACNumber[0];
 		}
-		final String[] adrs = addresses.split(Pattern.quote(Character.toString(MACNUMBER_SEPARATOR)));
-		final List<MACNumber> list = new ArrayList<>();
-		for (final String adr : adrs) {
+		final var adrs = addresses.split(Pattern.quote(Character.toString(MACNUMBER_SEPARATOR)));
+		final var list = new ArrayList<MACNumber>();
+		for (final var adr : adrs) {
 			list.add(new MACNumber(adr));
 		}
-		final MACNumber[] tab = new MACNumber[list.size()];
+		final var tab = new MACNumber[list.size()];
 		list.toArray(tab);
 		list.clear();
 		return tab;
@@ -147,15 +145,15 @@ public final class MACNumber {
 	 */
 	@Pure
 	public static String[] parseAsString(String addresses) {
-		if ((addresses == null) || ("".equals(addresses))) { //$NON-NLS-1$
+		if (addresses == null || "".equals(addresses)) { //$NON-NLS-1$
 			return new String[0];
 		}
-		final String[] adrs = addresses.split(Pattern.quote(Character.toString(MACNUMBER_SEPARATOR)));
-		final List<String> list = new ArrayList<>();
-		for (final String adr : adrs) {
+		final var adrs = addresses.split(Pattern.quote(Character.toString(MACNUMBER_SEPARATOR)));
+		final var list = new ArrayList<String>();
+		for (final var adr : adrs) {
 			list.add(new MACNumber(adr).toString());
 		}
-		final String[] tab = new String[list.size()];
+		final var tab = new String[list.size()];
 		list.toArray(tab);
 		list.clear();
 		return tab;
@@ -168,11 +166,11 @@ public final class MACNumber {
 	 */
 	@Pure
 	public static String join(MACNumber... addresses) {
-		if ((addresses == null) || (addresses.length == 0)) {
+		if (addresses == null || addresses.length == 0) {
 			return null;
 		}
-		final StringBuilder buf = new StringBuilder();
-		for (final MACNumber number : addresses) {
+		final var buf = new StringBuilder();
+		for (final var number : addresses) {
 			if (buf.length() > 0) {
 				buf.append(MACNUMBER_SEPARATOR);
 			}
@@ -194,7 +192,7 @@ public final class MACNumber {
 	 */
 	@Pure
 	public static Collection<MACNumber> getAllAdapters() {
-		final List<MACNumber> av = new ArrayList<>();
+		final var av = new ArrayList<MACNumber>();
 		final Enumeration<NetworkInterface> interfaces;
 		try {
 			interfaces = NetworkInterface.getNetworkInterfaces();
@@ -206,7 +204,7 @@ public final class MACNumber {
 			while (interfaces.hasMoreElements()) {
 				inter = interfaces.nextElement();
 				try {
-					final byte[] addr = inter.getHardwareAddress();
+					final var addr = inter.getHardwareAddress();
 					if (addr != null) {
 						av.add(new MACNumber(addr));
 					}
@@ -232,7 +230,7 @@ public final class MACNumber {
 	 */
 	@Pure
 	public static Map<InetAddress, MACNumber> getAllMappings() {
-		final Map<InetAddress, MACNumber> av = new HashMap<>();
+		final var av = new HashMap<InetAddress, MACNumber>();
 		final Enumeration<NetworkInterface> interfaces;
 		try {
 			interfaces = NetworkInterface.getNetworkInterfaces();
@@ -240,18 +238,15 @@ public final class MACNumber {
 			return av;
 		}
 		if (interfaces != null) {
-			NetworkInterface inter;
-			MACNumber mac;
-			InetAddress inet;
 			while (interfaces.hasMoreElements()) {
-				inter = interfaces.nextElement();
+				final var inter = interfaces.nextElement();
 				try {
-					final byte[] addr = inter.getHardwareAddress();
+					final var addr = inter.getHardwareAddress();
 					if (addr != null) {
-						mac = new MACNumber(addr);
-						final Enumeration<InetAddress> inets = inter.getInetAddresses();
+						final var mac = new MACNumber(addr);
+						final var inets = inter.getInetAddresses();
 						while (inets.hasMoreElements()) {
-							inet = inets.nextElement();
+							final var inet = inets.nextElement();
 							av.put(inet, mac);
 						}
 					}
@@ -276,11 +271,10 @@ public final class MACNumber {
 			return null;
 		}
 		if (interfaces != null) {
-			NetworkInterface inter;
 			while (interfaces.hasMoreElements()) {
-				inter = interfaces.nextElement();
+				final var inter = interfaces.nextElement();
 				try {
-					final byte[] addr = inter.getHardwareAddress();
+					final var addr = inter.getHardwareAddress();
 					if (addr != null) {
 						return new MACNumber(addr);
 					}
@@ -306,14 +300,13 @@ public final class MACNumber {
 			return Collections.emptyList();
 		}
 		if (interfaces != null) {
-			NetworkInterface inter;
 			while (interfaces.hasMoreElements()) {
-				inter = interfaces.nextElement();
+				final var inter = interfaces.nextElement();
 				try {
-					final byte[] addr = inter.getHardwareAddress();
+					final var addr = inter.getHardwareAddress();
 					if (addr != null) {
-						final Collection<InetAddress> inetList = new ArrayList<>();
-						final Enumeration<InetAddress> inets = inter.getInetAddresses();
+						final var inetList = new ArrayList<InetAddress>();
+						final var inets = inter.getInetAddresses();
 						while (inets.hasMoreElements()) {
 							inetList.add(inets.nextElement());
 						}
@@ -334,12 +327,12 @@ public final class MACNumber {
 			return false;
 		}
 
-		final byte[] bao = ((MACNumber) object).bytes;
+		final var bao = ((MACNumber) object).bytes;
 		if (bao.length != this.bytes.length) {
 			return false;
 		}
 
-		for (int i = 0; i < bao.length; ++i) {
+		for (var i = 0; i < bao.length; ++i) {
 			if (bao[i] != this.bytes[i]) {
 				return false;
 			}
@@ -350,9 +343,9 @@ public final class MACNumber {
 	@Override
 	@Pure
 	public int hashCode() {
-		final int blen = this.bytes.length;
-		int hash = 1;
-		for (int i = 0; i < blen; ++i) {
+		final var blen = this.bytes.length;
+		var hash = 1;
+		for (var i = 0; i < blen; ++i) {
 			hash = 31 * hash +  Byte.hashCode(this.bytes[i]);
 		}
 		return hash ^ (hash >> 31);
@@ -362,11 +355,11 @@ public final class MACNumber {
 	@Override
 	@Pure
 	public String toString() {
-		final int blen = this.bytes.length;
-		final StringBuilder sb = new StringBuilder(blen * 3);
-		for (int i = 0; i < blen; ++i) {
-			int lo = this.bytes[i];
-			final int hi = (lo >> 4) & 0xF;
+		final var blen = this.bytes.length;
+		final var sb = new StringBuilder(blen * 3);
+		for (var i = 0; i < blen; ++i) {
+			var lo = this.bytes[i];
+			final var hi = (lo >> 4) & 0xF;
 			lo &= 0xF;
 			if (i != 0) {
 				sb.append(':');
@@ -384,7 +377,7 @@ public final class MACNumber {
 	 */
 	@Pure
 	public boolean isNull() {
-		for (int i = 0; i < this.bytes.length; ++i) {
+		for (var i = 0; i < this.bytes.length; ++i) {
 			if (this.bytes[i] != 0) {
 				return false;
 			}

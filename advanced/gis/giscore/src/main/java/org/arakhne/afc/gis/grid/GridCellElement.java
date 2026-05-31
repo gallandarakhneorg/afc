@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,9 @@ package org.arakhne.afc.gis.grid;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.references.WeakArrayList;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Element inside a grid cell.
@@ -57,7 +56,7 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 	 *
 	 * @param cell the grid cell.
 	 * @return {@code true} if the added cell is the reference;
-	 * {@code false} if the added cell is not the reference.
+	 *     {@code false} if the added cell is not the reference.
 	 */
 	public boolean addCellLink(GridCell<P> cell) {
 		if (this.cells.add(cell)) {
@@ -70,10 +69,10 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 	 *
 	 * @param cell the grid cell.
 	 * @return {@code true} if the removed cell is the reference;
-	 * {@code false} if the removed cell is not the reference.
+	 *     {@code false} if the removed cell is not the reference.
 	 */
 	public boolean removeCellLink(GridCell<P> cell) {
-		final int idx = this.cells.indexOf(cell);
+		final var idx = this.cells.indexOf(cell);
 		if (idx >= 0) {
 			this.cells.remove(idx);
 		}
@@ -86,7 +85,7 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 	 * @return a copy of the cells.
 	 */
 	public List<GridCell<P>> consumeCells() {
-		final List<GridCell<P>> list = new ArrayList<>(this.cells);
+		final var list = new ArrayList<>(this.cells);
 		this.cells.clear();
 		return list;
 	}
@@ -97,7 +96,7 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 	 *
 	 * @param cell is the cell to test
 	 * @return {@code true} if the specified cell is the reference cell;
-	 * {@code false} otherwise.
+	 *     {@code false} otherwise.
 	 */
 	@Pure
 	public boolean isReferenceCell(GridCell<P> cell) {
@@ -107,8 +106,8 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 	@Override
 	@Pure
 	public boolean equals(Object obj) {
-		if (obj instanceof GridCellElement<?>) {
-			return this.element.equals(((GridCellElement<?>) obj).get());
+		if (obj instanceof GridCellElement<?> g) {
+			return this.element.equals(g.get());
 		}
 		return this.element.equals(obj);
 	}
@@ -134,7 +133,7 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 		if (obj == null) {
 			return Integer.MAX_VALUE;
 		}
-		final P p2 = obj.get();
+		final var p2 = obj.get();
 		return this.element.getGeoId().compareTo(p2.getGeoId());
 	}
 

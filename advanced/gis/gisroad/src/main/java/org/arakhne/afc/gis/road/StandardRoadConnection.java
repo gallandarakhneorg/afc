@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
@@ -45,6 +43,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.references.WeakArrayList;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents the connection point inside a road network.
  *
@@ -93,11 +92,11 @@ class StandardRoadConnection implements RoadConnection {
 	@Override
 	@Pure
 	public boolean equals(Object obj) {
-		if (obj instanceof RoadConnection) {
-			return compareTo((RoadConnection) obj) == 0;
+		if (obj instanceof RoadConnection con) {
+			return compareTo(con) == 0;
 		}
-		if (obj instanceof Point2D<?, ?>) {
-			return compareTo((Point2D<?, ?>) obj) == 0;
+		if (obj instanceof Point2D pt) {
+			return compareTo(pt) == 0;
 		}
 		return super.equals(obj);
 	}
@@ -108,16 +107,16 @@ class StandardRoadConnection implements RoadConnection {
 		if (other == null) {
 			return Integer.MAX_VALUE;
 		}
-		if (other instanceof RoadConnection) {
-			final RoadConnection conn = ((RoadConnection) other).getWrappedRoadConnection();
+		if (other instanceof RoadConnection con) {
+			final var conn = con.getWrappedRoadConnection();
 			assert conn != null;
 			if (conn == this) {
 				return 0;
 			}
-			final Point2d p1 = getPoint();
-			final Point2d p2 = conn.getPoint();
+			final var p1 = getPoint();
+			final var p2 = conn.getPoint();
 			assert p1 != null && p2 != null;
-			final double sqDist = p1.getDistanceSquared(p2);
+			final var sqDist = p1.getDistanceSquared(p2);
 			if (MathUtil.isEpsilonZero(sqDist)) {
 				return 0;
 			}
@@ -141,9 +140,9 @@ class StandardRoadConnection implements RoadConnection {
 		if (pts == null) {
 			return Integer.MAX_VALUE;
 		}
-		final Point2d p1 = getPoint();
+		final var p1 = getPoint();
 		assert p1 != null;
-		final double sqDist = p1.getDistanceSquared(pts);
+		final var sqDist = p1.getDistanceSquared(pts);
 		if (MathUtil.isEpsilonZero(sqDist)) {
 			return 0;
 		}
@@ -162,7 +161,7 @@ class StandardRoadConnection implements RoadConnection {
 	@Override
 	@Pure
 	public UUID getUUID() {
-		final GeoLocationPoint pt = getGeoLocation();
+		final var pt = getGeoLocation();
 		if (pt != null) {
 			return pt.toUUID();
 		}
@@ -178,7 +177,7 @@ class StandardRoadConnection implements RoadConnection {
 	@Override
 	@Pure
 	public int hashCode() {
-		final Point2d p = getPoint();
+		final var p = getPoint();
 		assert p != null;
 		return p.hashCode();
 	}
@@ -186,10 +185,10 @@ class StandardRoadConnection implements RoadConnection {
 	@Override
 	@Pure
 	public Point2d getPoint() {
-		Point2d pts = this.location == null ? null : this.location.get();
+		var pts = this.location == null ? null : this.location.get();
 
 		if (pts == null && !this.connectedSegments.isEmpty()) {
-			final RoadPolyline segment = this.connectedSegments.get(0).getRoadPolyline();
+			final var segment = this.connectedSegments.get(0).getRoadPolyline();
 			if (segment.getBeginPoint(StandardRoadConnection.class) == this) {
 				pts = segment.getPointAt(0);
 			} else if (segment.getEndPoint(StandardRoadConnection.class) == this) {
@@ -205,9 +204,9 @@ class StandardRoadConnection implements RoadConnection {
 	@Override
 	@Pure
 	public GeoLocationPoint getGeoLocation() {
-		GeoLocationPoint pt = this.geolocation == null ? null : this.geolocation.get();
+		var pt = this.geolocation == null ? null : this.geolocation.get();
 		if (pt == null) {
-			final Point2d position = getPoint();
+			final var position = getPoint();
 			if (position != null) {
 				pt = new GeoLocationPoint(position.getX(), position.getY());
 				this.geolocation = new SoftReference<>(pt);
@@ -232,12 +231,12 @@ class StandardRoadConnection implements RoadConnection {
 	 *     and (1,0).
 	 */
 	private double computeAngle(RoadPolyline segment, boolean fromStartPoint) {
-		double angle = Double.NaN;
+		var angle = Double.NaN;
 		Point2d p1 = null;
 		Point2d p2 = null;
 		if (segment.getPointCount() > 1) {
 			if (fromStartPoint) {
-				final RoadConnection startPoint = segment.getBeginPoint(StandardRoadConnection.class);
+				final var startPoint = segment.getBeginPoint(StandardRoadConnection.class);
 				if (startPoint == this) {
 					p1 = startPoint.getPoint();
 					p2 = segment.getPointAt(1);
@@ -256,7 +255,7 @@ class StandardRoadConnection implements RoadConnection {
 									startPoint));
 				}
 			} else {
-				final RoadConnection endPoint = segment.getEndPoint(StandardRoadConnection.class);
+				final var endPoint = segment.getEndPoint(StandardRoadConnection.class);
 				if (endPoint == this) {
 					p1 = endPoint.getPoint();
 					p2 = segment.getAntepenulvianPoint();
@@ -313,10 +312,10 @@ class StandardRoadConnection implements RoadConnection {
 			this.connectedSegments.add(new Connection(segment, attachToStartPoint));
 		} else {
 			// Compute the angle to the unit vector for the new segment
-			final double newSegmentAngle = computeAngle(segment, attachToStartPoint);
+			final var newSegmentAngle = computeAngle(segment, attachToStartPoint);
 
 			// Search for the insertion index
-			final int insertionIndex = searchInsertionIndex(newSegmentAngle, 0, this.connectedSegments.size() - 1);
+			final var insertionIndex = searchInsertionIndex(newSegmentAngle, 0, this.connectedSegments.size() - 1);
 			// Insert
 			this.connectedSegments.add(insertionIndex, new Connection(segment, attachToStartPoint));
 		}
@@ -325,14 +324,14 @@ class StandardRoadConnection implements RoadConnection {
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity"})
 	private int searchInsertionIndex(double baseAngle, int startIdx, int endIdx) {
-		final int eIdx = Math.min(endIdx, this.connectedSegments.size() - 1);
+		final var eIdx = Math.min(endIdx, this.connectedSegments.size() - 1);
 
-		int idxSegment = startIdx;
+		var idxSegment = startIdx;
 		while (idxSegment <= eIdx) {
-			final RoadPolyline existingSegment = this.connectedSegments.get(idxSegment).getRoadPolyline();
+			final var existingSegment = this.connectedSegments.get(idxSegment).getRoadPolyline();
 			if (existingSegment != null) {
-				final RoadConnection startPt = existingSegment.getBeginPoint(StandardRoadConnection.class);
-				final RoadConnection endPt = existingSegment.getEndPoint(StandardRoadConnection.class);
+				final var startPt = existingSegment.getBeginPoint(StandardRoadConnection.class);
+				final var endPt = existingSegment.getEndPoint(StandardRoadConnection.class);
 
 				double angle;
 				if (startPt == this && endPt != this) {
@@ -341,10 +340,10 @@ class StandardRoadConnection implements RoadConnection {
 					angle = computeAngle(existingSegment, false);
 				} else if (startPt == this && endPt == this) {
 					angle = computeAngle(existingSegment, true);
-					double anglePrime = computeAngle(existingSegment, false);
+					var anglePrime = computeAngle(existingSegment, false);
 
 					if (angle > anglePrime) {
-						final double t = anglePrime;
+						final var t = anglePrime;
 						anglePrime = angle;
 						angle = t;
 					}
@@ -366,7 +365,7 @@ class StandardRoadConnection implements RoadConnection {
 
 					// The angle is between the two connections of the segment.
 					// Search the index of the next segment connection
-					int otherConnectionIdx = idxSegment + 1;
+					var otherConnectionIdx = idxSegment + 1;
 					while (otherConnectionIdx <= eIdx
 							&& this.connectedSegments.get(otherConnectionIdx).getRoadPolyline() != existingSegment) {
 						++otherConnectionIdx;
@@ -391,8 +390,8 @@ class StandardRoadConnection implements RoadConnection {
 	@SuppressWarnings("unlikely-arg-type")
 	private int indexOf(RoadSegment segment, boolean attachToStartPoint) {
 		if (segment != null) {
-			for (int i = 0; i < this.connectedSegments.size(); ++i) {
-				final Connection info = this.connectedSegments.get(i);
+			for (var i = 0; i < this.connectedSegments.size(); ++i) {
+				final var info = this.connectedSegments.get(i);
 				if (info != null && info.equals(segment) && info.connectedWithStartPoint == attachToStartPoint) {
 					return i;
 				}
@@ -413,7 +412,7 @@ class StandardRoadConnection implements RoadConnection {
 		if (segment == null) {
 			return -1;
 		}
-		final int idx = indexOf(segment, attachToStartPoint);
+		final var idx = indexOf(segment, attachToStartPoint);
 		if (idx != -1) {
 			this.connectedSegments.remove(idx);
 			fireIteratorUpdate();
@@ -506,7 +505,7 @@ class StandardRoadConnection implements RoadConnection {
 		if (segment == null) {
 			return false;
 		}
-		for (final Connection info : this.connectedSegments) {
+		for (final var info : this.connectedSegments) {
 			if (info.equals(segment)) {
 				return true;
 			}
@@ -538,8 +537,8 @@ class StandardRoadConnection implements RoadConnection {
 		if (this.connectedSegments.size() != 2) {
 			return null;
 		}
-		final RoadSegment s0 = getConnectedSegment(0);
-		final RoadSegment s1 = getConnectedSegment(1);
+		final var s0 = getConnectedSegment(0);
+		final var s1 = getConnectedSegment(1);
 		if (ref_segment == s0) {
 			return s1;
 		}
@@ -859,7 +858,7 @@ class StandardRoadConnection implements RoadConnection {
 	 */
 	protected void fireIteratorUpdate() {
 		if (this.listeningIterators != null) {
-			for (final IClockwiseIterator iterator : this.listeningIterators) {
+			for (final var iterator : this.listeningIterators) {
 				if (iterator != null) {
 					iterator.dataStructureUpdated();
 				}
@@ -909,8 +908,8 @@ class StandardRoadConnection implements RoadConnection {
 			if (obj instanceof RoadSegment) {
 				return this.segment.get().equals(obj);
 			}
-			if (obj instanceof Connection) {
-				return this.segment.get().equals(((Connection) obj).getRoadPolyline());
+			if (obj instanceof Connection con) {
+				return this.segment.get().equals(con.getRoadPolyline());
 			}
 			return super.equals(obj);
 		}
@@ -918,7 +917,7 @@ class StandardRoadConnection implements RoadConnection {
 		@Override
 		@Pure
 		public int hashCode() {
-			final RoadSegment s = this.segment.get();
+			final var s = this.segment.get();
 			if (s == null) {
 				return StandardRoadConnection.this.hashCode();
 			}
@@ -928,7 +927,7 @@ class StandardRoadConnection implements RoadConnection {
 		@Override
 		@Pure
 		public String toString() {
-			final StringBuilder buffer = new StringBuilder();
+			final var buffer = new StringBuilder();
 			if (this.connectedWithStartPoint) {
 				buffer.append('+');
 			}
@@ -1015,29 +1014,27 @@ class StandardRoadConnection implements RoadConnection {
 			StandardRoadConnection.this.addListeningIterator(this);
 
 			// Seach the start and end indexes.
-			int sIdx = -1;
-			int eIdx = -1;
+			var sIdx = -1;
+			var eIdx = -1;
 
-			Connection connectionInfo;
-			RoadSegment sgmt;
-
-			for (int i = 0; i < StandardRoadConnection.this.getConnectedSegmentCount() && (sIdx == -1 || eIdx == -1); ++i) {
+			for (var i = 0; i < StandardRoadConnection.this.getConnectedSegmentCount() && (sIdx == -1 || eIdx == -1); ++i) {
 				if (this.dataStructureUpdated) {
 					StandardRoadConnection.this.removeListeningIterator(this);
 					throw new ConcurrentModificationException();
 				}
 
-				connectionInfo = StandardRoadConnection.this.getConnectionInfo(i);
-				sgmt = connectionInfo.getRoadPolyline();
+				final var connectionInfo = StandardRoadConnection.this.getConnectionInfo(i);
+				final var sgmt = connectionInfo.getRoadPolyline();
 
 				if (sIdx == -1 && sgmt.equals(startSegment)
 						&& (startConnection == null
-						|| startConnection == connectionInfo.connectedWithStartPoint)) {
+						|| startConnection.booleanValue() == connectionInfo.connectedWithStartPoint)) {
 					sIdx = i;
 				}
 
 				if (eIdx == -1 && sgmt.equals(endSegment)
-						&& (endConnection == null || endConnection != connectionInfo.connectedWithStartPoint)) {
+						&& (endConnection == null
+						|| endConnection.booleanValue() != connectionInfo.connectedWithStartPoint)) {
 					eIdx = i;
 				}
 			}
@@ -1093,7 +1090,7 @@ class StandardRoadConnection implements RoadConnection {
 				throw new ConcurrentModificationException();
 			}
 
-			final boolean hasNext = this.nextSegment != null;
+			final var hasNext = this.nextSegment != null;
 
 			if (!hasNext) {
 				StandardRoadConnection.this.removeListeningIterator(this);
@@ -1111,7 +1108,7 @@ class StandardRoadConnection implements RoadConnection {
 				throw new ConcurrentModificationException();
 			}
 
-			final Connection toReturn = this.nextSegment;
+			final var toReturn = this.nextSegment;
 			if (toReturn == null) {
 				StandardRoadConnection.this.removeListeningIterator(this);
 				throw new NoSuchElementException();
@@ -1119,10 +1116,10 @@ class StandardRoadConnection implements RoadConnection {
 			this.removableSegment = this.nextSegment;
 
 			// Search for the next segment
-			final int count = StandardRoadConnection.this.getConnectedSegmentCount();
+			final var count = StandardRoadConnection.this.getConnectedSegmentCount();
 			if (this.index == -1
-					|| (this.index == (this.finalIndex + 1) % count && this.boundType.includeEnd())
-					|| (this.index == this.finalIndex && !this.boundType.includeEnd())) {
+					|| this.index == (this.finalIndex + 1) % count && this.boundType.includeEnd()
+					|| this.index == this.finalIndex && !this.boundType.includeEnd()) {
 				this.index = -1;
 				this.nextSegment = null;
 			} else {
@@ -1150,7 +1147,7 @@ class StandardRoadConnection implements RoadConnection {
 				throw new NoSuchElementException();
 			}
 
-			final int idx = StandardRoadConnection.this.removeConnectedSegment(
+			final var idx = StandardRoadConnection.this.removeConnectedSegment(
 					this.removableSegment.getRoadPolyline(), this.removableSegment.connectedWithStartPoint);
 
 			if (this.index >= idx) {
@@ -1205,29 +1202,27 @@ class StandardRoadConnection implements RoadConnection {
 			StandardRoadConnection.this.addListeningIterator(this);
 
 			// Seach the start and end indexes.
-			int sIdx = -1;
-			int eIdx = -1;
-			Connection connectionInfo;
-			RoadSegment sgmt;
+			var sIdx = -1;
+			var eIdx = -1;
 
-			for (int i = 0; i < StandardRoadConnection.this.getConnectedSegmentCount() && (sIdx == -1 || eIdx == -1); ++i) {
+			for (var i = 0; i < StandardRoadConnection.this.getConnectedSegmentCount() && (sIdx == -1 || eIdx == -1); ++i) {
 				if (this.dataStructureUpdated) {
 					StandardRoadConnection.this.removeListeningIterator(this);
 					throw new ConcurrentModificationException();
 				}
 
-				connectionInfo = StandardRoadConnection.this.getConnectionInfo(i);
-				sgmt = connectionInfo.getRoadPolyline();
+				final var connectionInfo = StandardRoadConnection.this.getConnectionInfo(i);
+				final var sgmt = connectionInfo.getRoadPolyline();
 
 				if (sIdx == -1 && sgmt.equals(startSegment)
 						&& (startConnection == null
-						|| startConnection == connectionInfo.connectedWithStartPoint)) {
+						|| startConnection.booleanValue() == connectionInfo.connectedWithStartPoint)) {
 					sIdx = i;
 				}
 
 				if (eIdx == -1 && sgmt.equals(endSegment)
 						&& (endConnection == null
-						|| endConnection != connectionInfo.connectedWithStartPoint)) {
+						|| endConnection.booleanValue() != connectionInfo.connectedWithStartPoint)) {
 					eIdx = i;
 				}
 			}
@@ -1285,7 +1280,7 @@ class StandardRoadConnection implements RoadConnection {
 				throw new ConcurrentModificationException();
 			}
 
-			final boolean hasNext = this.nextSegment != null;
+			final var hasNext = this.nextSegment != null;
 
 			if (!hasNext) {
 				StandardRoadConnection.this.removeListeningIterator(this);
@@ -1303,7 +1298,7 @@ class StandardRoadConnection implements RoadConnection {
 				throw new ConcurrentModificationException();
 			}
 
-			final Connection toReturn = this.nextSegment;
+			final var toReturn = this.nextSegment;
 			if (toReturn == null) {
 				StandardRoadConnection.this.removeListeningIterator(this);
 				throw new NoSuchElementException();
@@ -1311,13 +1306,13 @@ class StandardRoadConnection implements RoadConnection {
 			this.removableSegment = this.nextSegment;
 
 			// Search for the next segment
-			final int lastIdx = StandardRoadConnection.this.getConnectedSegmentCount() - 1;
-			int ee = this.finalIndex - 1;
+			final var lastIdx = StandardRoadConnection.this.getConnectedSegmentCount() - 1;
+			var ee = this.finalIndex - 1;
 			if (ee < 0) {
 				ee = lastIdx;
 			}
-			if (this.index == -1 || (this.index == ee && this.boundType.includeEnd())
-					|| (this.index == this.finalIndex && !this.boundType.includeEnd())) {
+			if (this.index == -1 || this.index == ee && this.boundType.includeEnd()
+					|| this.index == this.finalIndex && !this.boundType.includeEnd()) {
 				this.index = -1;
 				this.nextSegment = null;
 			} else {
@@ -1348,7 +1343,7 @@ class StandardRoadConnection implements RoadConnection {
 				throw new NoSuchElementException();
 			}
 
-			final int idx = StandardRoadConnection.this.removeConnectedSegment(
+			final var idx = StandardRoadConnection.this.removeConnectedSegment(
 					this.removableSegment.getRoadPolyline(), this.removableSegment.connectedWithStartPoint);
 
 			if (this.index >= idx) {
@@ -1391,7 +1386,7 @@ class StandardRoadConnection implements RoadConnection {
 
 		@Override
 		public RoadSegment next() {
-			final Connection con = this.iterator.next();
+			final var con = this.iterator.next();
 			if (con == null) {
 				throw new NoSuchElementException();
 			}

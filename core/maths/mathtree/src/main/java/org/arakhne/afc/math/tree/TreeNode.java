@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +132,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param data the data to add.
 	 * @return {@code true} if the data was successfully added,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 */
 	boolean addUserData(D data);
 
@@ -147,7 +147,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param data the data to remove.
 	 * @return {@code true} if the data was successfully removed,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 */
 	boolean removeUserData(Collection<D> data);
 
@@ -155,7 +155,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param data the data to remove.
 	 * @return {@code true} if the data was successfully removed,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 */
 	boolean removeUserData(D data);
 
@@ -171,7 +171,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param data the data to put inside.
 	 * @return {@code true} if the data was successfully set,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 */
 	boolean setUserData(Collection<D> data);
 
@@ -179,7 +179,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param data the data to put inside.
 	 * @return {@code true} if the data was successfully set,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 */
 	boolean setUserData(D data);
 
@@ -188,7 +188,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 * @param index the index at which the data must be set.
 	 * @param data the data to put inside.
 	 * @return {@code true} if the data was successfully set,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 * @throws IndexOutOfBoundsException if the given index was invalid
 	 */
 	boolean setUserDataAt(int index, D data) throws IndexOutOfBoundsException;

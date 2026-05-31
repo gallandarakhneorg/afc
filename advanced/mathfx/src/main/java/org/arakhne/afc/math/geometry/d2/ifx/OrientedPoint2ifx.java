@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,13 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D oriented point with integer FX properties.
  *
@@ -133,16 +132,16 @@ public class OrientedPoint2ifx
     @Override
     @SuppressWarnings("checkstyle:equalshashcode")
     public int hashCode() {
-        int bits = 1;
+    	var bits = 1L;
         bits = 31 * bits + super.hashCode();
         bits = 31 * bits + Integer.hashCode(itx());
         bits = 31 * bits + Integer.hashCode(ity());
-        return bits ^ (bits >> 31);
+        return (int) (bits ^ (bits >> 31));
     }
 
     @Override
     public OrientedPoint2ifx clone() {
-        final OrientedPoint2ifx clone = (OrientedPoint2ifx) super.clone();
+        final var clone = (OrientedPoint2ifx) super.clone();
         if (clone.tangent != null) {
             clone.tangent = null;
             clone.tangent = this.tangent.clone();

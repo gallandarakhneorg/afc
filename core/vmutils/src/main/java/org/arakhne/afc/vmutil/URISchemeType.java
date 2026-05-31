@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,18 +80,18 @@ public enum URISchemeType {
 	 * The ftp scheme is very similar to the http scheme, and is
 	 * used to locate files available via FTP
 	 * (File Transfer Protocol). The syntax is very similar to http syntax:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * ftp://sunsite.unc.edu/pub/Linux/ls-lR.gz
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>The above URL points to the FTP server on sunsite.unc.edu,
 	 * to the file ls-lR.gz in the /pub/Linux directory. It is
 	 * also possible to specify a username and optionally, a
 	 * password for the connection. The syntax is like this:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * ftp://user@host/path/file
 	 * ftp://user:password@host/path/file
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>Note that supplying a password like this is sometimes a
 	 * bad idea. Some people might tell you this is a huge
@@ -128,10 +128,10 @@ public enum URISchemeType {
 	 * this has nothing to do with the URL itself. The syntax
 	 * is again much like the http syntax, only omitting the
 	 * port numbers, like this:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * file:///home/stephanos/public_html/myface.jpg
 	 * file://localhost/temp/install_log.txt
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>Note that the pathname here represents a path name in the
 	 * local filesystem, so the slashes are usually replaced by
@@ -154,10 +154,10 @@ public enum URISchemeType {
 	 * the e-mail address. If you're someone who has a
 	 * thing for collecting e-mail addresses, you
 	 * might refer to yourself in the following ways:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * mailto:someone@arakhne.org
 	 * mailto:someone@arakhne.org?subject=Feedback
-	 * }</pre>
+	 * </code></pre>
 	 */
 	MAILTO {
 		@Override
@@ -175,11 +175,11 @@ public enum URISchemeType {
 	 * message id of a Usenet post. Note that the
 	 * message id must be entered without the usual
 	 * angle brackets (&lt; and &gt;).
-	 * <pre>{@code 
+	 * <pre><code>
 	 * news:comp.infosystems.www.authoring.html
 	 * news:ba-ciwah-1998Jun4-013702@mud.stack.nl
 	 * news:*
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>The third example points to all available
 	 * newsgroups and can be used to refer to Usenet
@@ -197,9 +197,9 @@ public enum URISchemeType {
 	 * with the exception that there is no pathame. Only a
 	 * hostname, and optionally a port, username and password
 	 * may be supplied.
-	 * <pre>{@code 
+	 * <pre><code>
 	 * telnet://user:password@somehost.internet.com:35/
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>The above indicates a telnet session for user "user"
 	 * with password "password" on port 35 of
@@ -217,18 +217,18 @@ public enum URISchemeType {
 	 * is very similar to the ftp scheme, and is
 	 * used to locate files available via SSH (Secure SHell).
 	 * The syntax is very similar to ftp syntax:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * ssh://sunsite.unc.edu/pub/Linux/ls-lR.gz
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>The above URL points to the SSH server on sunsite.unc.edu,
 	 * to the file ls-lR.gz in the /pub/Linux directory. It is
 	 * also possible to specify a username and optionally, a
 	 * password for the connection. The syntax is like this:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * ssh://user@host/path/file
 	 * ssh://user:password@host/path/file
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>Secure Shell is a network protocol that allows data to
 	 * be exchanged using a secure channel between two
@@ -251,23 +251,23 @@ public enum URISchemeType {
 	/**
 	 * The jar scheme describes a Java ARchive (JAR) file or
 	 * an entry in a JAR file. The syntax of a JAR URL is:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * jar:&lt;url&gt;!/{entry}
-	 * }</pre>
+	 * </code></pre>
 	 * where {@code &lt;url&gt;} is an URL of the JAR file,
 	 * and {@code {entry}} is the absolute path of a file
 	 * inside the JAR file; for example:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * jar:http://www.foo.com/bar/baz.jar!/COM/foo/Quux.class
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>Jar URLs should be used to refer to a JAR file or
 	 * entries in a JAR file. The example above is a JAR URL
 	 * which refers to a JAR entry. If the entry name is
 	 * omitted, the URL refers to the whole JAR file:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * jar:http://www.foo.com/bar/baz.jar!/
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>When constructing a JAR url via new URL(context, spec),
 	 * the following rules apply:
@@ -303,10 +303,10 @@ public enum URISchemeType {
 	 * in class paths.
 	 * The syntax is again much like the http syntax, only omitting
 	 * the port numbers, like this:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * resource:/org/arakhne/vmutil/resource.txt
 	 * resource:/org/arakhne/vmutil/resource.jpg
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>Because the pathname here represents a path name in the
 	 * class paths, the slashes are mandatory.
@@ -378,9 +378,9 @@ public enum URISchemeType {
 	@Pure
 	public String removeScheme(String string) {
 		if (string != null) {
-			final int idx = string.indexOf(':');
+			final var idx = string.indexOf(':');
 			if (idx >= 0) {
-				String result = string.substring(0, idx + 1);
+				var result = string.substring(0, idx + 1);
 				if (toString().equalsIgnoreCase(result)) {
 					result = string.substring(idx + 1);
 					if (result.startsWith("//")) { //$NON-NLS-1$
@@ -401,9 +401,9 @@ public enum URISchemeType {
 	@Pure
 	public static String removeAnyScheme(String string) {
 		if (string != null) {
-			final int idx = string.indexOf(':');
+			final var idx = string.indexOf(':');
 			if (idx >= 0) {
-				String result = string.substring(0, idx + 1);
+				var result = string.substring(0, idx + 1);
 				for (final URISchemeType type : values()) {
 					if (type.toString().equalsIgnoreCase(result)) {
 						result = string.substring(idx + 1);
@@ -420,8 +420,8 @@ public enum URISchemeType {
 
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	private static URISchemeType getSchemeType(String protocol) {
-		String proto = protocol;
-		final int idx = protocol.indexOf(':');
+		var proto = protocol;
+		final var idx = protocol.indexOf(':');
 		if (idx >= 0) {
 			proto = protocol.substring(0, idx);
 		}

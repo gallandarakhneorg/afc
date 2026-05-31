@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,11 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A 2D segment/line encapsulating points with 2 integer FX properties.
  *
@@ -108,7 +107,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 
 	@Override
 	public Segment2ifx clone() {
-		final Segment2ifx clone = super.clone();
+		final var clone = super.clone();
 		if (clone.p1 != null) {
 			clone.p1 = null;
 			clone.p1 = this.p1.clone();
@@ -124,19 +123,19 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Override
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		long bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.doubleToLongBits(getX1());
 		bits = 31 * bits + Double.doubleToLongBits(getY1());
 		bits = 31 * bits + Double.doubleToLongBits(getX2());
 		bits = 31 * bits + Double.doubleToLongBits(getY2());
-		final int b = (int) bits;
+		final var b = (int) bits;
 		return b ^ (b >> 31);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getX1());
 		b.append(";"); //$NON-NLS-1$
@@ -153,10 +152,10 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Override
 	public Segment2ifx createTransformedShape(Transform2D transform) {
 		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
-		final Point2ifx point = getGeomFactory().newPoint(getX1(), getY1());
+		final var point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
-		final int x1 = point.ix();
-		final int y1 = point.iy();
+		final var x1 = point.ix();
+		final var y1 = point.iy();
 		point.set(getX2(), getY2());
 		transform.transform(point);
 		return new Segment2ifx(x1, y1, point.ix(), point.iy());

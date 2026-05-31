@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
 import org.arakhne.afc.math.graph.GraphPath;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a path inside a road network.
@@ -99,8 +98,8 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 * @since 4.0
 	 */
 	public static boolean addPathToPath(RoadPath inside, RoadPath elements) {
-		RoadConnection first = elements.getFirstPoint();
-		RoadConnection last = elements.getLastPoint();
+		var first = elements.getFirstPoint();
+		var last = elements.getLastPoint();
 		assert first != null;
 		assert last != null;
 		first = first.getWrappedRoadConnection();
@@ -109,13 +108,13 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		assert last != null;
 
 		if (last.equals(inside.getLastPoint()) || last.equals(inside.getFirstPoint())) {
-			for (int i = elements.size() - 1; i >= 0; --i) {
+			for (var i = elements.size() - 1; i >= 0; --i) {
 				if (!inside.add(elements.get(i))) {
 					return false;
 				}
 			}
 		} else {
-			for (final RoadSegment segment : elements) {
+			for (final var segment : elements) {
 				if (!inside.add(segment)) {
 					return false;
 				}
@@ -137,7 +136,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	@Override
 	@Pure
 	public Object[] toArray() {
-		final RoadSegment[] tab = new RoadSegment[size()];
+		final var tab = new RoadSegment[size()];
 		toArray(tab);
 		return tab;
 	}
@@ -153,9 +152,9 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 */
 	@Pure
 	public Direction1D getSegmentDirectionAt(int index) {
-		final RoadSegment sgmt = get(index);
+		final var sgmt = get(index);
 		assert sgmt != null;
-		final RoadConnection conn = getStartingPointFor(index);
+		final var conn = getStartingPointFor(index);
 		assert conn != null;
 		if (conn.equals(sgmt.getBeginPoint())) {
 			return Direction1D.SEGMENT_DIRECTION;
@@ -179,12 +178,12 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		if (path.isEmpty()) {
 			return false;
 		}
-		RoadConnection first1 = getFirstPoint();
-		RoadConnection last1 = getLastPoint();
+		var first1 = getFirstPoint();
+		var last1 = getLastPoint();
 		first1 = first1.getWrappedRoadConnection();
 		last1 = last1.getWrappedRoadConnection();
-		RoadConnection first2 = path.getFirstPoint();
-		RoadConnection last2 = path.getLastPoint();
+		var first2 = path.getFirstPoint();
+		var last2 = path.getLastPoint();
 		first2 = first2.getWrappedRoadConnection();
 		last2 = last2.getWrappedRoadConnection();
 		return first1.equals(first2) || first1.equals(last2)
@@ -205,9 +204,9 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		if (path.isEmpty()) {
 			return null;
 		}
-		RoadConnection first1 = getFirstPoint();
-		RoadConnection first2 = path.getFirstPoint();
-		RoadConnection last2 = path.getLastPoint();
+		var first1 = getFirstPoint();
+		var first2 = path.getFirstPoint();
+		var last2 = path.getLastPoint();
 		first1 = first1.getWrappedRoadConnection();
 		first2 = first2.getWrappedRoadConnection();
 		last2 = last2.getWrappedRoadConnection();
@@ -234,9 +233,9 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		if (path.isEmpty()) {
 			return null;
 		}
-		RoadConnection last1 = getLastPoint();
-		RoadConnection first2 = path.getFirstPoint();
-		RoadConnection last2 = path.getLastPoint();
+		var last1 = getLastPoint();
+		var first2 = path.getFirstPoint();
+		var last2 = path.getLastPoint();
 		last1 = last1.getWrappedRoadConnection();
 		first2 = first2.getWrappedRoadConnection();
 		last2 = last2.getWrappedRoadConnection();
@@ -264,9 +263,9 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		if (path.isEmpty()) {
 			return false;
 		}
-		RoadConnection first1 = getFirstPoint();
-		RoadConnection first2 = path.getFirstPoint();
-		RoadConnection last2 = path.getLastPoint();
+		var first1 = getFirstPoint();
+		var first2 = path.getFirstPoint();
+		var last2 = path.getLastPoint();
 		first1 = first1.getWrappedRoadConnection();
 		first2 = first2.getWrappedRoadConnection();
 		last2 = last2.getWrappedRoadConnection();
@@ -288,9 +287,9 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		if (path.isEmpty()) {
 			return false;
 		}
-		RoadConnection last1 = getLastPoint();
-		RoadConnection first2 = path.getFirstPoint();
-		RoadConnection last2 = path.getLastPoint();
+		var last1 = getLastPoint();
+		var first2 = path.getFirstPoint();
+		var last2 = path.getLastPoint();
 		last1 = last1.getWrappedRoadConnection();
 		first2 = first2.getWrappedRoadConnection();
 		last2 = last2.getWrappedRoadConnection();
@@ -308,7 +307,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 */
 	@Pure
 	public boolean isCulDeSacWay() {
-		final RoadConnection lastPt = getLastPoint();
+		final var lastPt = getLastPoint();
 		return lastPt != null && lastPt.isReallyCulDeSac();
 	}
 
@@ -318,7 +317,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 */
 	@Pure
 	public RoadConnection getFirstCrossRoad() {
-		for (final RoadConnection pt : points()) {
+		for (final var pt : points()) {
 			if (pt.getConnectedSegmentCount() > 2) {
 				return pt;
 			}
@@ -332,16 +331,16 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 */
 	@Pure
 	public CrossRoad getFirstJunctionPoint() {
-		RoadConnection point = getFirstPoint();
-		double distance = 0;
+		var point = getFirstPoint();
+		var distance = 0.;
 		RoadSegment beforeSegment = null;
 		RoadSegment afterSegment = null;
-		int beforeSegmentIndex = -1;
-		int afterSegmentIndex = -1;
-		boolean found = false;
+		var beforeSegmentIndex = -1;
+		var afterSegmentIndex = -1;
+		var found = false;
 		if (point != null) {
-			int index = 0;
-			for (final RoadSegment sgmt : this) {
+			var index = 0;
+			for (final var sgmt : this) {
 				if (found) {
 					afterSegment = sgmt;
 					afterSegmentIndex = index;
@@ -353,7 +352,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 				beforeSegment = sgmt;
 				beforeSegmentIndex = index;
 				distance += sgmt.getLength();
-				final int count = point.getConnectedSegmentCount();
+				final var count = point.getConnectedSegmentCount();
 				if (count != 2) {
 					found = true;
 				}
@@ -417,13 +416,12 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		}
 
 		private void searchNext() {
-			boolean found = false;
-
 			this.distanceFromPrevious = 0.;
 			this.beforeSegment = null;
 			this.beforeSegmentIndex = -1;
 			this.afterSegmentIndex = -1;
 
+			var found = false;
 			if (this.point != null) {
 				RoadSegment sgmt;
 
@@ -447,10 +445,10 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 					this.point = sgmt.getOtherSidePoint(this.point);
 					this.beforeSegment = sgmt;
 					this.beforeSegmentIndex = this.index;
-					final double length = sgmt.getLength();
+					final var length = sgmt.getLength();
 					this.distance += length;
 					this.distanceFromPrevious += length;
-					final int count = this.point.getConnectedSegmentCount();
+					final var count = this.point.getConnectedSegmentCount();
 					if (count != 2) {
 						found = true;
 					}
@@ -479,7 +477,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 			if (this.afterSegment == null && this.beforeSegment == null) {
 				throw new NoSuchElementException();
 			}
-			final CrossRoad cr = new CrossRoad(this.point, this.beforeSegment,
+			final var cr = new CrossRoad(this.point, this.beforeSegment,
 					this.beforeSegmentIndex, this.afterSegment,
 					this.afterSegmentIndex, this.distance, this.distanceFromPrevious);
 			searchNext();

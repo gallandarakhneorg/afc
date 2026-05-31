@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ public class ProgressionInputStream extends FilterInputStream {
 	public int read(byte[] buffer,
 			int off,
 			int len) throws IOException {
-		final int nr = this.in.read(buffer, off, len);
+		final var nr = this.in.read(buffer, off, len);
 		if (nr > 0) {
 			this.read += nr;
 			this.monitor.setValue(this.read);
@@ -110,7 +110,7 @@ public class ProgressionInputStream extends FilterInputStream {
 
 	@Override
 	public long skip(long number) throws IOException {
-		final long nr = this.in.skip(number);
+		final var nr = this.in.skip(number);
 		if (nr > 0) {
 			this.read += nr;
 			this.monitor.setValue(this.read);

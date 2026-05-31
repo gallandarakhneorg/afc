@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,15 +33,13 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.maplayer.MapLayer;
 import org.arakhne.afc.progress.Progression;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Writer of GIS elements in a Java serialized form.
  *
@@ -82,6 +80,7 @@ public class GISLayerWriter implements AutoCloseable {
 	 * @param url is the URL of the file to write
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public GISLayerWriter(URL url) throws IOException {
 		this(url.openConnection().getOutputStream());
 	}
@@ -92,6 +91,7 @@ public class GISLayerWriter implements AutoCloseable {
 	 * @param channel is the file to write
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public GISLayerWriter(WritableByteChannel channel) throws IOException {
 		this(Channels.newOutputStream(channel));
 	}
@@ -139,11 +139,11 @@ public class GISLayerWriter implements AutoCloseable {
 			try {
 				this.tmpOutput.close();
 
-				try (WritableByteChannel out = Channels.newChannel(this.output)) {
-					try (ReadableByteChannel in = Channels.newChannel(new FileInputStream(this.tmpFile))) {
+				try (var out = Channels.newChannel(this.output)) {
+					try (var in = Channels.newChannel(new FileInputStream(this.tmpFile))) {
 						// Write the header
-						final int limit = HEADER_KEY.getBytes().length + 6;
-						final ByteBuffer hBuffer = ByteBuffer.allocate(limit);
+						final var limit = HEADER_KEY.getBytes().length + 6;
+						final var hBuffer = ByteBuffer.allocate(limit);
 						hBuffer.limit(limit);
 						in.read(hBuffer);
 						hBuffer.position(HEADER_KEY.getBytes().length + 2);
@@ -151,7 +151,7 @@ public class GISLayerWriter implements AutoCloseable {
 						hBuffer.rewind();
 						out.write(hBuffer);
 						// Write the objects
-						final ByteBuffer buffer = ByteBuffer.allocate(4096);
+						final var buffer = ByteBuffer.allocate(4096);
 						int read;
 						while ((read = in.read(buffer)) >= 0) {
 							buffer.rewind();
@@ -198,8 +198,8 @@ public class GISLayerWriter implements AutoCloseable {
 			this.progression.increment();
 		}
 
-		final ObjectOutputStream oos = new ObjectOutputStream(this.tmpOutput);
-		for (final MapLayer layer : layers) {
+		final var oos = new ObjectOutputStream(this.tmpOutput);
+		for (final var layer : layers) {
 			oos.writeObject(layer);
 			++this.length;
 			if (this.progression != null) {

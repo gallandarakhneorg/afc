@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.TreeSet;
 import java.util.UUID;
-
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.GISPolylineSet;
@@ -63,10 +58,12 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
-import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a road network.
@@ -177,7 +174,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 		if (this.roadSegments != null) {
 			clone.roadSegments = createInternalDataStructure(getBoundingBox());
 
-			for (final RoadPolyline segment : this.roadSegments) {
+			for (final var segment : this.roadSegments) {
 				try {
 					clone.addRoadSegment(segment.clone());
 				} catch (RoadNetworkException e) {
@@ -207,8 +204,8 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	@SuppressWarnings("unchecked")
 	@Pure
 	public Tree<RoadPolyline, ?> getInternalTree() {
-		if (this.roadSegments instanceof GISTreeSet<?, ?>) {
-			return ((GISTreeSet<RoadPolyline, ?>) this.roadSegments).getTree();
+		if (this.roadSegments instanceof GISTreeSet set) {
+			return set.getTree();
 		}
 		return null;
 	}
@@ -239,9 +236,8 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	 */
 	@Pure
 	public LegalTrafficSide getLegalTrafficSide() {
-		final String side;
 		try {
-			side = getAttributeAsString("LEGAL_TRAFFIC_SIDE"); //$NON-NLS-1$
+			final var side = getAttributeAsString("LEGAL_TRAFFIC_SIDE"); //$NON-NLS-1$
 			LegalTrafficSide sd;
 			try {
 				sd = LegalTrafficSide.valueOf(side);
@@ -312,11 +308,10 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		final Rectangle2d rect = new Rectangle2d();
-		boolean first = true;
-		Rectangle2d rs;
-		for (final RoadSegment segment : getRoadSegments()) {
-			rs = segment.getBoundingBox();
+		final var rect = new Rectangle2d();
+		var first = true;
+		for (final var segment : getRoadSegments()) {
+			final var rs = segment.getBoundingBox();
 			if (rs != null && !rs.isEmpty()) {
 				if (first) {
 					first = false;
@@ -377,12 +372,10 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	private static Collection<RoadConnection> getConnections(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds,
 			Iterator<RoadPolyline> iterator) {
 		assert bounds != null;
-		final Collection<RoadConnection> connections = new TreeSet<>();
-		RoadPolyline road;
-		RoadConnection connection;
+		final var connections = new TreeSet<RoadConnection>();
 		while (iterator.hasNext()) {
-			road = iterator.next();
-			connection = road.getBeginPoint(StandardRoadConnection.class);
+			final var road = iterator.next();
+			var connection = road.getBeginPoint(StandardRoadConnection.class);
 			if (bounds.contains(connection.getPoint())) {
 				connections.add(connection);
 			}
@@ -397,7 +390,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	@Override
 	@Pure
 	public RoadConnection getNearestConnection(Point2D<?, ?> pos) {
-		final RoadPolyline nearestSegment = this.roadSegments.getNearestEnd(pos);
+		final var nearestSegment = this.roadSegments.getNearestEnd(pos);
 		if (nearestSegment == null) {
 			return null;
 		}
@@ -419,7 +412,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	@Override
 	@Pure
 	public Point1d getNearestPosition(Point2D<?, ?> pos) {
-		final RoadSegment segment = this.roadSegments.getNearest(pos);
+		final var segment = this.roadSegments.getNearest(pos);
 		if (segment == null) {
 			return null;
 		}
@@ -429,7 +422,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	@Override
 	@Pure
 	public Point1d getNearestPositionOnRoadBorder(Point2D<?, ?> pos) {
-		final RoadSegment segment = this.roadSegments.getNearest(pos);
+		final var segment = this.roadSegments.getNearest(pos);
 		if (segment == null) {
 			return null;
 		}
@@ -442,8 +435,8 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 
 	@Override
 	public final void addRoadSegment(RoadSegment segment) throws RoadNetworkException {
-		if (segment instanceof RoadPolyline) {
-			addRoadPolyline((RoadPolyline) segment);
+		if (segment instanceof RoadPolyline polyline) {
+			addRoadPolyline(polyline);
 		} else {
 			throw new UnsupportedRoadSegmentException();
 		}
@@ -454,12 +447,13 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	 * @param segment is the road segment to insert
 	 * @return {@code true} if segment successfully added, otherwise {@code false}
 	 * @throws RoadNetworkException in case of error.
+	 * @throws RuntimeException in case of error.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public final boolean addRoadPolyline(RoadPolyline segment) throws RoadNetworkException {
 		// Check element validity
 		assert segment != null;
-		final RoadNetwork currentNetwork = segment.getRoadNetwork();
+		final var currentNetwork = segment.getRoadNetwork();
 		if (currentNetwork == this) {
 			return false;
 		}
@@ -492,14 +486,14 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 			throw new RoadNetworkException("segment has not a last point"); //$NON-NLS-1$
 		}
 
-		final OutputParameter<RoadPolyline> firstNeighbour = new OutputParameter<>();
-		final OutputParameter<RoadPolyline> secondNeighbour = new OutputParameter<>();
+		final var firstNeighbour = new OutputParameter<RoadPolyline>();
+		final var secondNeighbour = new OutputParameter<RoadPolyline>();
 
 		if (this.roadSegments.add(
 				segment,
 				RoadNetworkConstants.getPreferredRoadConnectionDistance(),
 				firstNeighbour, secondNeighbour)) {
-			RoadPolyline seg = firstNeighbour.get();
+			var seg = firstNeighbour.get();
 			if (seg != null) {
 				startConnection = seg.getNearestPoint(StandardRoadConnection.class, firstPoint.getX(), firstPoint.getY());
 			}
@@ -508,7 +502,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 				endConnection = seg.getNearestPoint(StandardRoadConnection.class, lastPoint.getX(), lastPoint.getY());
 			}
 
-			int nbNewConn = 0;
+			var nbNewConn = 0;
 
 			if (startConnection == null && endConnection == null
 					&& firstPoint.epsilonEquals(lastPoint, MapElementConstants.POINT_FUSION_DISTANCE)) {
@@ -537,7 +531,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 				throw new RuntimeException(e);
 			}
 
-			Rectangle2d bb = getBoundingBox();
+			var bb = getBoundingBox();
 			if (bb == null) {
 				bb = segment.getBoundingBox();
 			} else {
@@ -561,8 +555,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 			return false;
 		}
 		if (this.roadSegments.remove(segment)) {
-			if (segment instanceof RoadPolyline) {
-				final RoadPolyline pl = (RoadPolyline) segment;
+			if (segment instanceof RoadPolyline pl) {
 				pl.removeGISEditableChangeListener(this.eventHandler);
 				pl.setStartPoint(null);
 				pl.setEndPoint(null);
@@ -580,12 +573,11 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 
 	@Override
 	public boolean clear() {
-		boolean changed = false;
+		var changed = false;
 		if (!this.roadSegments.isEmpty()) {
-			final Iterator<RoadPolyline> iterator = this.roadSegments.iterator();
-			RoadPolyline road;
+			final var iterator = this.roadSegments.iterator();
 			while (iterator.hasNext()) {
-				road = iterator.next();
+				final var road = iterator.next();
 				road.removeGISEditableChangeListener(this.eventHandler);
 				road.setStartPoint(null);
 				road.setEndPoint(null);
@@ -615,36 +607,33 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 		if (connections.size() == 1) {
 			return connections.iterator().next();
 		}
-		final Point2d baryCenter = new Point2d();
-		for (final RoadConnection con : connections) {
-			final Point2D<?, ?> pts = con.getPoint();
+		final var baryCenter = new Point2d();
+		for (final var con : connections) {
+			final var pts = con.getPoint();
 			baryCenter.add(pts.getX(), pts.getY());
 		}
 		baryCenter.scale(1. / connections.size());
 
-		final StandardRoadConnection newConnection = new StandardRoadConnection();
+		final var newConnection = new StandardRoadConnection();
 		newConnection.setPosition(baryCenter);
 
 		// Use a list to avoid concurrent modification exception
-		final List<Pair<RoadPolyline, Boolean>> list = new ArrayList<>();
+		final var list = new ArrayList<Pair<RoadPolyline, Boolean>>();
 
-		RoadSegment sgmt;
-		RoadPolyline road;
-		for (final RoadConnection con : connections) {
-			for (final GraphPointConnection<RoadConnection, RoadSegment> c : con.getConnections()) {
-				sgmt = c.getGraphSegment();
+		for (final var con : connections) {
+			for (final var c : con.getConnections()) {
+				final var sgmt = c.getGraphSegment();
 				if (this != sgmt.getRoadNetwork()) {
 					throw new UnexpectedRoadNetworkException();
 				}
-				if (sgmt instanceof RoadPolyline) {
-					road = (RoadPolyline) sgmt;
-					list.add(new Pair<>(road, c.isSegmentStartConnected()));
+				if (sgmt instanceof RoadPolyline road) {
+					list.add(new Pair<>(road, Boolean.valueOf(c.isSegmentStartConnected())));
 				}
 			}
 		}
 
-		for (final Pair<RoadPolyline, Boolean> pair : list) {
-			road = pair.getKey();
+		for (final var pair : list) {
+			final var road = pair.getKey();
 			if (pair.getValue().booleanValue()) {
 				road.setStartPoint(newConnection);
 			} else {
@@ -654,7 +643,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 
 		resetBoundingBox();
 
-		for (final Pair<RoadPolyline, Boolean> pair : list) {
+		for (final var pair : list) {
 			fireSegmentChanged(pair.getKey());
 		}
 
@@ -668,7 +657,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 			Point2D<?, ?> position) {
 		assert segment != null;
 
-		final RoadSegment sgmt = segment.getWrappedRoadSegment();
+		final var sgmt = segment.getWrappedRoadSegment();
 		if (!(sgmt instanceof RoadPolyline)) {
 			throw new UnsupportedRoadSegmentException();
 		}
@@ -683,15 +672,15 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 				theConnection.setPosition(position);
 			}
 		} else {
-			final RoadConnection c = connection.getWrappedRoadConnection();
-			if (c instanceof StandardRoadConnection) {
-				theConnection = (StandardRoadConnection) c;
+			final var c = connection.getWrappedRoadConnection();
+			if (c instanceof StandardRoadConnection con) {
+				theConnection = con;
 			} else {
 				throw new UnsupportedRoadConnectionException();
 			}
 		}
 
-		final RoadPolyline road = (RoadPolyline) sgmt;
+		final var road = (RoadPolyline) sgmt;
 		road.setStartPoint(theConnection);
 
 		resetBoundingBox();
@@ -708,7 +697,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 			Point2D<?, ?> position) {
 		assert segment != null;
 
-		final RoadSegment sgmt = segment.getWrappedRoadSegment();
+		final var sgmt = segment.getWrappedRoadSegment();
 		if (!(sgmt instanceof RoadPolyline)) {
 			throw new UnsupportedRoadSegmentException();
 		}
@@ -723,15 +712,15 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 				theConnection.setPosition(position);
 			}
 		} else {
-			final RoadConnection c = connection.getWrappedRoadConnection();
-			if (c instanceof StandardRoadConnection) {
-				theConnection = (StandardRoadConnection) c;
+			final var c = connection.getWrappedRoadConnection();
+			if (c instanceof StandardRoadConnection con) {
+				theConnection = con;
 			} else {
 				throw new UnsupportedRoadConnectionException();
 			}
 		}
 
-		final RoadPolyline road = (RoadPolyline) sgmt;
+		final var road = (RoadPolyline) sgmt;
 		road.setEndPoint(theConnection);
 
 		resetBoundingBox();
@@ -765,7 +754,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	 */
 	protected void fireSegmentAdded(RoadSegment segment) {
 		if (this.listeners != null && isEventFirable()) {
-			for (final RoadNetworkListener listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.onRoadSegmentAdded(this, segment);
 			}
 		}
@@ -777,7 +766,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	 */
 	protected void fireSegmentChanged(RoadSegment segment) {
 		if (this.listeners != null && isEventFirable()) {
-			for (final RoadNetworkListener listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.onRoadSegmentChanged(this, segment);
 			}
 		}
@@ -789,7 +778,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	 */
 	protected void fireSegmentRemoved(RoadSegment segment) {
 		if (this.listeners != null && isEventFirable()) {
-			for (final RoadNetworkListener listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.onRoadSegmentRemoved(this, segment);
 			}
 		}

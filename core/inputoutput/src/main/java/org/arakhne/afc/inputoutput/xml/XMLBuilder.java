@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -30,8 +31,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
-
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * This interface permits to create several XML elements.
@@ -66,9 +65,9 @@ public interface XMLBuilder {
 	 *     name is mapped to the canonical form of that markup by the DOM
 	 *     implementation.
 	 * @return A new {@code Element} object with the
-	 *   {@code nodeName} attribute set to {@code tagName}, and
-	 *   {@code localName}, {@code prefix}, and
-	 *   {@code namespaceURI} set to {@code null}.
+	 *     {@code nodeName} attribute set to {@code tagName}, and
+	 *     {@code localName}, {@code prefix}, and
+	 *     {@code namespaceURI} set to {@code null}.
 	 * @throws DOMException
 	 *     INVALID_CHARACTER_ERR: Raised if the specified name is not an XML
 	 *     name according to the XML version in use specified in the
@@ -108,12 +107,12 @@ public interface XMLBuilder {
 	 * and attached to the element.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * Element e = createElement(tagName);
 	 * Text t = createText(data);
 	 * e.appendChild(t);
 	 * return e;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param tagName The name of the element type to instantiate. For XML,
 	 *     this is case-sensitive, otherwise it depends on the
@@ -127,8 +126,8 @@ public interface XMLBuilder {
 	 */
 	default Element createTextElement(String tagName, String data) {
 		assert tagName != null && !tagName.isEmpty() : AssertMessages.notNullParameter();
-		final Document doc = getDocument();
-		final Element e = doc.createElement(tagName);
+		final var doc = getDocument();
+		final var e = doc.createElement(tagName);
 		e.appendChild(doc.createTextNode(data));
 		return e;
 	}
@@ -147,8 +146,7 @@ public interface XMLBuilder {
 	 * string.
 	 * @param data The data for the {@code CDATASection} contents.
 	 * @return The new {@code CDATASection} object.
-	 * @throws DOMException
-	 *   NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
+	 * @throws DOMException NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
 	 */
 	default CDATASection createCDATASection(String data) throws DOMException {
 		return getDocument().createCDATASection(data);
@@ -234,11 +232,7 @@ public interface XMLBuilder {
 	 * <br>Per [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
 	 * , applications must use the value {@code null} as the
 	 * namespaceURI parameter for methods if they wish to have no namespace.
-	 * @param namespaceURI The namespace URI of the element to create.
-	 * @param qualifiedName The qualified name of the element type to
-	 *     instantiate.
-	 * @return A new {@code Element} object with the following
-	 *     attributes:
+	 *
 	 * <table border='1' cellpadding='3' summary="Attributes">
 	 * <tr>
 	 * <th>Attribute</th>
@@ -271,6 +265,11 @@ public interface XMLBuilder {
 	 *   {@code qualifiedName}</td>
 	 * </tr>
 	 * </table>
+	 *
+	 * @param namespaceURI The namespace URI of the element to create.
+	 * @param qualifiedName The qualified name of the element type to
+	 *     instantiate.
+	 * @return A new {@code Element} object with the attributes above.
 	 * @throws DOMException
 	 *     INVALID_CHARACTER_ERR: Raised if the specified
 	 *     {@code qualifiedName} is not an XML name according to the XML
@@ -301,10 +300,7 @@ public interface XMLBuilder {
 	 * , applications must use the value {@code null} as the
 	 * {@code namespaceURI} parameter for methods if they wish to have
 	 * no namespace.
-	 * @param namespaceURI The namespace URI of the attribute to create.
-	 * @param qualifiedName The qualified name of the attribute to
-	 *     instantiate.
-	 * @return A new {@code Attr} object with the following attributes:
+	 *
 	 * <table border='1' cellpadding='3' summary="Attributes">
 	 * <tr>
 	 * <th>
@@ -343,6 +339,11 @@ public interface XMLBuilder {
 	 *   string</td>
 	 * </tr>
 	 * </table>
+	 *
+	 * @param namespaceURI The namespace URI of the attribute to create.
+	 * @param qualifiedName The qualified name of the attribute to
+	 *     instantiate.
+	 * @return A new {@code Attr} object with the attributes above.
 	 * @throws DOMException
 	 *     INVALID_CHARACTER_ERR: Raised if the specified
 	 *     {@code qualifiedName} is not an XML name according to the XML

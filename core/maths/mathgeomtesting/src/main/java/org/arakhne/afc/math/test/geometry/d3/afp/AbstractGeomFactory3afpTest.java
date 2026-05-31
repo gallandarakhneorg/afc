@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -220,7 +220,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newPath_NONZERO(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp<?, ?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
+		Path3afp<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
 		assertNotNull(path);
 		assertSame(PathWindingRule.NON_ZERO, path.getWindingRule());
 		assertEquals(0, path.size());
@@ -231,7 +231,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newPath_EVENODD(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp<?, ?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
+		Path3afp<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
 		assertNotNull(path);
 		assertSame(PathWindingRule.EVEN_ODD, path.getWindingRule());
 		assertEquals(0, path.size());
@@ -242,7 +242,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newBox(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> r = this.factory.newBox();
+		AlignedBox3afp<?, ?, ?, ?, ?, ?> r = this.factory.newBox();
 		assertNotNull(r);
 		assertEpsilonEquals(0, r.getMinX());
 		assertEpsilonEquals(0, r.getMinY());
@@ -257,7 +257,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newBoxDoubleDoubleDoubleDoubleDoubleDouble(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4, 5, 6);
+		AlignedBox3afp<?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4, 5, 6);
 		assertNotNull(r);
 		assertEpsilonEquals(1, r.getMinX());
 		assertEpsilonEquals(2, r.getMinY());

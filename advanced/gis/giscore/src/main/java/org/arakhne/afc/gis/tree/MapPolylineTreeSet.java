@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,6 @@
 
 package org.arakhne.afc.gis.tree;
 
-import java.util.Iterator;
-
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.GISPolylineSet;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
@@ -37,6 +33,7 @@ import org.arakhne.afc.math.tree.iterator.BreadthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.NodeSelector;
 import org.arakhne.afc.math.tree.iterator.PostfixDepthFirstTreeIterator;
 import org.arakhne.afc.util.OutputParameter;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a quad tree that contains map polylines
@@ -84,7 +81,7 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 	public boolean add(P polyline, double precision, OutputParameter<P> firstNeighbour, OutputParameter<P> secondNeighbour) {
 		assert firstNeighbour != null;
 		assert secondNeighbour != null;
-		final OutputParameter<GISTreeSetNode<P>> insertionNode = new OutputParameter<>();
+		final var insertionNode = new OutputParameter<GISTreeSetNode<P>>();
 		GISTreeSetNode<P> node = null;
 		if (ComplexInsertionNodeSelector.computeConnectableInsertion(
 				getTree(),
@@ -191,7 +188,7 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 		 */
 		@Pure
 		public static <P extends MapPolyline> P getNearest(Tree<P, GISTreeSetNode<P>> tree, double x, double y) {
-			final NearNodeSelector<P> selector = new NearNodeSelector<>(x, y);
+			final var selector = new NearNodeSelector<P>(x, y);
 			return selector.select(tree);
 		}
 
@@ -205,13 +202,11 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 		}
 
 		private P select(Tree<P, GISTreeSetNode<P>> tree) {
-			final Iterator<GISTreeSetNode<P>> iter = new PostfixDepthFirstTreeIterator<>(tree, this);
-			GISTreeSetNode<P> node;
-			double distance;
+			final var iter = new PostfixDepthFirstTreeIterator<>(tree, this);
 			while (iter.hasNext()) {
-				node = iter.next();
-				for (final P data : node.getAllUserData()) {
-					distance = data.distanceToEnd(this.point);
+				final var node = iter.next();
+				for (final var data : node.getAllUserData()) {
+					final var distance = data.distanceToEnd(this.point);
 					if (distance < this.minDistance) {
 						this.minDistance = distance;
 						this.bestResult = data;
@@ -266,10 +261,10 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 			this.endPt.set(endX, endY);
 			this.precision = precision;
 			this.insertionCover = new Rectangle2d(this.startPt, this.endPt);
-			final double ix = this.insertionCover.getMinX() - this.precision;
-			final double iy = this.insertionCover.getMinY() - this.precision;
-			final double ax = this.insertionCover.getMaxX() + this.precision;
-			final double ay = this.insertionCover.getMaxY() + this.precision;
+			final var ix = this.insertionCover.getMinX() - this.precision;
+			final var iy = this.insertionCover.getMinY() - this.precision;
+			final var ax = this.insertionCover.getMaxX() + this.precision;
+			final var ay = this.insertionCover.getMaxY() + this.precision;
 			this.insertionCover.setFromCorners(ix, iy, ax, ay);
 		}
 
@@ -298,38 +293,36 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 			firstNeighbour.clear();
 			secondNeighbour.clear();
 
-			final Point2d startPoint = polyline.getPointAt(0);
-			final Point2d endPoint = polyline.getPointAt(-1);
-			double minDistance1 = Double.POSITIVE_INFINITY;
-			double minDistance2 = Double.POSITIVE_INFINITY;
+			final var startPoint = polyline.getPointAt(0);
+			final var endPoint = polyline.getPointAt(-1);
+			var minDistance1 = Double.POSITIVE_INFINITY;
+			var minDistance2 = Double.POSITIVE_INFINITY;
 
-			final ComplexInsertionNodeSelector<P> selector = new ComplexInsertionNodeSelector<>(
+			final var selector = new ComplexInsertionNodeSelector<P>(
 						polyline.getGeoLocation(),
 						startPoint.getX(), startPoint.getY(),
 						endPoint.getX(), endPoint.getY(),
 						precision);
 
-			final Iterator<GISTreeSetNode<P>> iter = new BreadthFirstTreeIterator<>(tree, selector);
-
-			GISTreeSetNode<P> node;
+			final var iter = new BreadthFirstTreeIterator<>(tree, selector);
 
 			while (iter.hasNext()) {
-				node = iter.next();
+				final var node = iter.next();
 
-				if ((!node.isLeaf())
+				if (!node.isLeaf()
 					&&
 					(selector.insertionNode == null || selector.insertionNode == node)) {
 					selector.insertionNode = node.getChildAt(GISTreeSetUtil.classifies(node, selector.location));
 				}
 
 				if (node.getUserDataCount() > 0) {
-					double dist = node.getBounds().getDistance(selector.startPt);
-					final boolean bstartTest = dist <= precision;
+					var dist = node.getBounds().getDistance(selector.startPt);
+					final var bstartTest = dist <= precision;
 					dist = node.getBounds().getDistance(selector.endPt);
-					final boolean bendTest = dist <= precision;
+					final var bendTest = dist <= precision;
 
 					if (bstartTest || bendTest) {
-						for (final P data : node.getAllUserData()) {
+						for (final var data : node.getAllUserData()) {
 
 							// Is the polyline already existing inside the tree?
 							if (polyline.equals(data)) {

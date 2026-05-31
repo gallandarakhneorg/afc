@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -30,6 +27,8 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Vector.
  *
@@ -41,8 +40,10 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ>, RP extends Point3D<? super RP, ? super RV, ? super RQ>, RQ extends Quaternion<? super RP, ? super RV, ? super RQ>>
-extends Tuple3D<RV> {
+public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ>,
+		RP extends Point3D<? super RP, ? super RV, ? super RQ>,
+		RQ extends Quaternion<? super RP, ? super RV, ? super RQ>>
+		extends Tuple3D<RV> {
 
 	/**
 	 * Replies if the vector is a unit vector.
@@ -62,7 +63,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@Inline(value = "(Vector3D.isUnitVector($1, $2, $3, MathConstants.UNIT_VECTOR_EPSILON))",
-	imported = {Vector3D.class, MathConstants.class})
+		imported = {Vector3D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y, double z) {
 		return isUnitVector(x, y, z, GeomConstants.UNIT_VECTOR_EPSILON);
 	}
@@ -86,7 +87,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@Inline(value = "(MathUtil.isEpsilonEqual($1 * $1 + $2 * $2 + $3 * $3, 1., $4))",
-	imported = {MathUtil.class})
+		imported = {MathUtil.class})
 	static boolean isUnitVector(double x, double y, double z, double epsilon) {
 		return MathUtil.isEpsilonEqual(x * x + y * y + z * z, 1., epsilon);
 	}
@@ -98,7 +99,7 @@ extends Tuple3D<RV> {
 	 * This approximation could be based on {@link MathUtil#isEpsilonEqual(double, double)}.
 	 *
 	 * @return {@code true} if the vector has a length equal to 1.
-	 * {@code false} otherwise.
+	 *     {@code false} otherwise.
 	 */
 	@Pure
 	default boolean isUnitVector() {
@@ -129,6 +130,7 @@ extends Tuple3D<RV> {
 	 * @see #perpProduct(double, double, double, double, double, double)
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parameternumber")
 	static double determinant(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
 		return x1 * (y2 * z3 - y3 * z2) + x2 * (y3 * z1 - y1 * z3) + x3 * (y1 * z2 - y2 * z1);
 	}
@@ -202,9 +204,9 @@ extends Tuple3D<RV> {
 	@Pure
 	static boolean isColinearVectors(double x1, double y1, double z1, double x2, double y2, double z2) {
 		// Cross product
-		final double cx = y1 * z2 - z1 * y2;
-		final double cy = z1 * x2 - x1 * z2;
-		final double cz = x1 * y2 - y1 * x2;
+		final var cx = y1 * z2 - z1 * y2;
+		final var cy = z1 * x2 - x1 * z2;
+		final var cz = x1 * y2 - y1 * x2;
 
 		return MathUtil.isEpsilonZero(cx * cx + cy * cy + cz * cz, GeomConstants.UNIT_VECTOR_EPSILON);
 	}
@@ -305,9 +307,9 @@ extends Tuple3D<RV> {
 	static void crossProductLeftHand(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2, Vector3D<?, ?, ?> result) {
-		final double x = y2 * z1 - z2 * y1;
-		final double y = z2 * x1 - x2 * z1;
-		final double z = x2 * y1 - y2 * x1;
+		final var x = y2 * z1 - z2 * y1;
+		final var y = z2 * x1 - x2 * z1;
+		final var z = x2 * y1 - y2 * x1;
 		result.set(x, y, z);
 	}
 
@@ -328,9 +330,9 @@ extends Tuple3D<RV> {
 	static void crossProductRightHand(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2, Vector3D<?, ?, ?> result) {
-		final double x = y1 * z2 - z1 * y2;
-		final double y = z1 * x2 - x1 * z2;
-		final double z = x1 * y2 - y1 * x2;
+		final var x = y1 * z2 - z1 * y2;
+		final var y = z1 * x2 - x1 * z2;
+		final var z = x1 * y2 - y1 * x2;
 		result.set(x, y, z);
 	}
 
@@ -361,17 +363,17 @@ extends Tuple3D<RV> {
 		// First method
 		// Angle
 		// A . B = |A|.|B|.cos(theta)
-		double dot = dotProduct(x1, y1, z1, x2, y2, z2) / lengths;
+		var dot = dotProduct(x1, y1, z1, x2, y2, z2) / lengths;
 		if (dot < -1.0) {
 			dot = -1.0;
 		}
 		if (dot > 1.0) {
 			dot = 1.0;
 		}
-		double angle = Math.acos(dot);
+		var angle = Math.acos(dot);
 
 		// On which side of A, B is located?
-		if ((dot > -1) && (dot < 1)) {
+		if (dot > -1 && dot < 1) {
 			// det(A,B) = |A|.|B|.sin(theta)
 			dot = perpProduct(x1, y1, z1, x2, y2, z2) / lengths;
 			if (dot < 0) {
@@ -398,7 +400,7 @@ extends Tuple3D<RV> {
 	 *
 	 * @param vector is the vector to reach.
 	 * @return the rotation angle to turn this vector to reach
-	 * {@code v}.
+	 *     {@code v}.
 	 */
 	@Pure
 	default double signedAngle(Vector3D<?, ?, ?> vector) {
@@ -531,22 +533,22 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	default PowerResult<RV> power(int power) {
-		final boolean isEven = power % 2 == 0;
+		final var isEven = power % 2 == 0;
 		final int evenPower;
 		if (isEven) {
 			evenPower = power / 2;
 		} else {
 			evenPower = MathUtil.sign(power) * (Math.abs(power) - 1) / 2;
 		}
-		final double x = getX();
-		final double y = getY();
-		final double z = getZ();
-		final double dot = dotProduct(x, y, z, x, y, z);
-		final double resultForEven = Math.pow(dot, evenPower);
+		final var x = getX();
+		final var y = getY();
+		final var z = getZ();
+		final var dot = dotProduct(x, y, z, x, y, z);
+		final var resultForEven = Math.pow(dot, evenPower);
 		if (isEven) {
 			return new PowerResult<>(resultForEven);
 		}
-		final RV r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven, getZ() * resultForEven);
+		final var r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven, getZ() * resultForEven);
 		return new PowerResult<>(r);
 
 	}
@@ -597,7 +599,7 @@ extends Tuple3D<RV> {
 	@Pure
 	default RV cross(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		final RV result = getGeomFactory().newVector();
+		final var result = getGeomFactory().newVector();
 		crossProduct(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
 	}
@@ -638,7 +640,7 @@ extends Tuple3D<RV> {
 	@Pure
 	default RV crossLeftHand(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		final RV result = getGeomFactory().newVector();
+		final var result = getGeomFactory().newVector();
 		crossProductLeftHand(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
 	}
@@ -672,7 +674,7 @@ extends Tuple3D<RV> {
 	@Pure
 	default RV crossRightHand(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		final RV result = getGeomFactory().newVector();
+		final var result = getGeomFactory().newVector();
 		crossProductRightHand(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
 	}
@@ -700,9 +702,9 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	default double getLength() {
-		final double x = getX();
-		final double y = getY();
-		final double z = getZ();
+		final var x = getX();
+		final var y = getY();
+		final var z = getZ();
 		return Math.sqrt(x * x + y * y + z * z);
 	}
 
@@ -712,9 +714,9 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	default double getLengthSquared() {
-		final double x = getX();
-		final double y = getY();
-		final double z = getZ();
+		final var x = getX();
+		final var y = getY();
+		final var z = getZ();
 		return x * x + y * y + z * z;
 	}
 
@@ -724,10 +726,10 @@ extends Tuple3D<RV> {
 	 */
 	default void normalize(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		final double x = vector.getX();
-		final double y = vector.getY();
-		final double z = vector.getZ();
-		double sqlength = x * x + y * y + z * z;
+		final var x = vector.getX();
+		final var y = vector.getY();
+		final var z = vector.getZ();
+		var sqlength = x * x + y * y + z * z;
 		if (sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
 			set(x / sqlength, y / sqlength, z / sqlength);
@@ -740,10 +742,10 @@ extends Tuple3D<RV> {
 	 * Normalizes this vector in place.
 	 */
 	default void normalize() {
-		final double x = getX();
-		final double y = getY();
-		final double z = getZ();
-		double sqlength = x * x + y * y + z * z;
+		final var x = getX();
+		final var y = getY();
+		final var z = getZ();
+		var sqlength = x * x + y * y + z * z;
 		if (sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
 			set(x / sqlength, y / sqlength, z / sqlength);
@@ -761,7 +763,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	default double angle(Vector3D<?, ?, ?> v1) {
-		double vDot = this.dot(v1) / (this.getLength() * v1.getLength());
+		var vDot = dot(v1) / (getLength() * v1.getLength());
 		if (vDot < -1.) {
 			vDot = -1.;
 		}
@@ -777,7 +779,7 @@ extends Tuple3D<RV> {
 	 * @param angle is the rotation angle in radians.
 	 */
 	default void turnVector(Vector3D<?, ?, ?> axis, double angle) {
-		final Transform3D mat = new Transform3D();
+		final var mat = new Transform3D();
 		mat.setRotation(getGeomFactory().newQuaternionFromAxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle));
 		mat.transform(this);
 	}
@@ -799,9 +801,9 @@ extends Tuple3D<RV> {
 	 * @param newLength - the new length.
 	 */
 	default void setLength(double newLength) {
-		final double l = getLength();
+		final var l = getLength();
 		if (l != 0.) {
-			final double f = newLength / l;
+			final var f = newLength / l;
 			set(getX() * f, getY() * f, getZ() * f);
 		} else {
 			set(newLength, 0, 0);
@@ -829,11 +831,11 @@ extends Tuple3D<RV> {
 	@Pure
 	default RV toColinearVector(double length) {
 		assert length >= 0. : AssertMessages.positiveOrZeroParameter();
-		final double len = getLength();
+		final var len = getLength();
 		if (len != 0.) {
-			final double x = (length * getX()) / len;
-			final double y = (length * getY()) / len;
-			final double z = (length * getZ()) / len;
+			final var x = (length * getX()) / len;
+			final var y = (length * getY()) / len;
+			final var z = (length * getZ()) / len;
 			return getGeomFactory().newVector(x, y, z);
 		}
 		return getGeomFactory().newVector();
@@ -862,6 +864,8 @@ extends Tuple3D<RV> {
 	 * @param v the vector
 	 * @see #add(Vector3D)
 	 */
+	@XtextOperator("+=")
+	@Inline("add($1)")
 	default void operator_add(Vector3D<?, ?, ?> v) {
 		add(v);
 	}
@@ -876,6 +880,7 @@ extends Tuple3D<RV> {
 	 * @see #sub(Vector3D)
 	 */
 	@XtextOperator("-=")
+	@Inline("sub($1)")
 	default void operator_remove(Vector3D<?, ?, ?> v) {
 		sub(v);
 	}
@@ -892,6 +897,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@XtextOperator("*")
+	@Inline("dot($1)")
 	default double operator_multiply(Vector3D<?, ?, ?> v) {
 		return dot(v);
 	}
@@ -924,6 +930,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@XtextOperator("==")
+	@Inline("equals($1)")
 	default boolean operator_equals(Tuple3D<?> v) {
 		return equals(v);
 	}
@@ -956,6 +963,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@XtextOperator("..")
+	@Inline("angle($1)")
 	default double operator_upTo(Vector3D<?, ?, ?> v) {
 		return angle(v);
 	}
@@ -972,6 +980,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@XtextOperator(">..")
+	@Inline("signedAngle($1)")
 	default double operator_greaterThanDoubleDot(Vector3D<?, ?, ?> v) {
 		return signedAngle(v);
 	}
@@ -1106,6 +1115,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@XtextOperator("**")
+	@Inline("perp($1)")
 	default double operator_power(Vector3D<?, ?, ?> v) {
 		return perp(v);
 	}
@@ -1126,6 +1136,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@XtextOperator("**")
+	@Inline("power($1)")
 	default PowerResult<RV> operator_power(int power) {
 		return power(power);
 	}
@@ -1140,7 +1151,8 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("/")
-	default RV $divide(double scale) {
+	@Inline("operator_divide($1)")
+	default RV $div(double scale) {
 		return operator_divide(scale);
 	}
 
@@ -1155,6 +1167,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RV $minus(Vector3D<?, ?, ?> v) {
 		return operator_minus(v);
 	}
@@ -1169,6 +1182,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("(-)")
+	@Inline("operator_minus()")
 	default RV $minus() {
 		return operator_minus();
 	}
@@ -1184,6 +1198,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("*")
+	@Inline("operator_multiply($1)")
 	default RV $times(double scale) {
 		return operator_multiply(scale);
 	}
@@ -1199,6 +1214,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("*")
+	@Inline("operator_multiply($1)")
 	default double $times(Vector3D<?, ?, ?> v) {
 		return operator_multiply(v);
 	}
@@ -1214,6 +1230,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default RP $plus(Point3D<?, ?, ?> point) {
 		return operator_plus(point);
 	}
@@ -1229,6 +1246,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default RV $plus(Vector3D<?, ?, ?> vector) {
 		return operator_plus(vector);
 	}
@@ -1249,6 +1267,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("^")
+	@Inline("operator_power($1)")
 	default PowerResult<RV> $up(int power) {
 		return operator_power(power);
 	}
@@ -1265,6 +1284,7 @@ extends Tuple3D<RV> {
 	 */
 	@Pure
 	@ScalaOperator("^")
+	@Inline("operator_power($1)")
 	default double $up(Vector3D<?, ?, ?> v) {
 		return operator_power(v);
 	}
@@ -1322,7 +1342,7 @@ extends Tuple3D<RV> {
 				return true;
 			}
 			if (this.vector != null) {
-				return this.vector.equals((Vector3D<?, ?, ?>) vector);
+				return this.vector.equals(vector);
 			}
 			return false;
 		}
@@ -1330,21 +1350,20 @@ extends Tuple3D<RV> {
 		@Override
 		@Pure
 		public boolean equals(Object obj) {
-			if (obj instanceof PowerResult<?>) {
+			if (obj instanceof PowerResult result) {
 				if (this == obj) {
 					return true;
 				}
-				final PowerResult<?> result = (PowerResult<?>) obj;
 				if (result.vector != null) {
 					return isSameVector(result.vector);
 				}
-				return isSameScalar(result.scalar);
+				return isSameScalar(Double.valueOf(result.scalar));
 			}
-			if (obj instanceof Vector3D<?, ?, ?>) {
-				return isSameVector((Vector3D<?, ?, ?>) obj);
+			if (obj instanceof Vector3D vec) {
+				return isSameVector(vec);
 			}
-			if (obj instanceof Number) {
-				return isSameScalar((Number) obj);
+			if (obj instanceof Number num) {
+				return isSameScalar(num);
 			}
 			return false;
 		}
@@ -1352,7 +1371,7 @@ extends Tuple3D<RV> {
 		@Override
 		@Pure
 		public int hashCode() {
-			long bits = 1;
+			var bits = 1L;
 			bits = 31 * bits + Double.doubleToLongBits(this.scalar);
 			bits = 31 * bits + ((this.vector == null) ? 0 : this.vector.hashCode());
 			final int b = (int) bits;

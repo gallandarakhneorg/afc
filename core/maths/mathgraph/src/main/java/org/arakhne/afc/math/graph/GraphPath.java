@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a path inside a graph.
@@ -93,10 +92,11 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 *
 	 * <p>Let s1 and s2 two segments respectively linked
 	 * to the points [p1, p2] and [p1, p3].
-	 * Let the following code:<pre>{@code 
+	 * Let the following code:<pre><code>
 	 * GraphPath path = new GraphPath();
 	 * path.add(s1);
-	 * path.add(s2);}</pre>
+	 * path.add(s2);
+	 * </code></pre>
 	 * If the path is not reversable, it is becoming
 	 * {@code [s2, s1]} because the order of s1
 	 * is preserved. If the path is reversable, it
@@ -105,10 +105,11 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * to the add function.
 	 *
 	 * <p>Let s1 and s2 the same segments as previously.
-	 * Let the following code:<pre>{@code 
+	 * Let the following code:<pre><code>
 	 * GraphPath path = new GraphPath();
 	 * path.add(s1, p2);
-	 * path.add(s2);}</pre>
+	 * path.add(s2);
+	 * </code></pre>
 	 * The first segment is not reversable because of
 	 * the call to the add function with the connection
 	 * as parameter. The path is becoming
@@ -128,10 +129,11 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 *
 	 * <p>Let s1 and s2 two segments respectively linked
 	 * to the points [p1, p2] and [p1, p3].
-	 * Let the following code:<pre>{@code 
+	 * Let the following code:<pre><code>
 	 * GraphPath path = new GraphPath();
 	 * path.add(s1);
-	 * path.add(s2);}</pre>
+	 * path.add(s2);
+	 * </code></pre>
 	 * If the path is not reversable, it is becoming
 	 * {@code [s2, s1]} because the order of s1
 	 * is preserved. If the path is reversable, it
@@ -140,10 +142,11 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * to the add function.
 	 *
 	 * <p>Let s1 and s2 the same segments as previously.
-	 * Let the following code:<pre>{@code 
+	 * Let the following code:<pre><code>
 	 * GraphPath path = new GraphPath();
 	 * path.add(s1, p2);
-	 * path.add(s2);}</pre>
+	 * path.add(s2);
+	 * </code></pre>
 	 * The first segment is not reversable because of
 	 * the call to the add function with the connection
 	 * as parameter. The path is becoming
@@ -285,8 +288,8 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 		// Check the connection validity
 		if (candidate != null) {
-			final PT first = segment.getBeginPoint();
-			final PT last = segment.getEndPoint();
+			final var first = segment.getBeginPoint();
+			final var last = segment.getEndPoint();
 			if (index == 0 && (candidate.equals(first) || candidate.equals(last))) {
 				this.segmentList.add(0, segment);
 				this.startingPoint = segment.getOtherSidePoint(this.startingPoint);
@@ -322,7 +325,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 		}
 
 		// The segment is connectable to the last point
-		PT endPoint = this.endingPoint;
+		var endPoint = this.endingPoint;
 		if (endPoint != null && endPoint.isConnectedSegment(segment) && this.segmentList.add(segment)) {
 			this.endingPoint = segment.getOtherSidePoint(endPoint);
 			this.length += segment.getLength();
@@ -373,20 +376,20 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public PT getStartingPointFor(int index) {
-		if ((index < 1) || (this.segmentList.size() <= 1)) {
+		if (index < 1 || this.segmentList.size() <= 1) {
 			if (this.startingPoint != null) {
 				return this.startingPoint;
 			}
 		} else {
-			int idx = index;
-			ST currentSegment = this.segmentList.get(idx);
-			ST previousSegment = this.segmentList.get(--idx);
+			var idx = index;
+			var currentSegment = this.segmentList.get(idx);
+			var previousSegment = this.segmentList.get(--idx);
 
 			// Because the two segments are the same
 			// we must go deeper in the path elements
 			// to detect the right segment
-			int count = 0;
-			while ((previousSegment != null) && (previousSegment.equals(currentSegment))) {
+			var count = 0;
+			while (previousSegment != null && previousSegment.equals(currentSegment)) {
 				currentSegment = previousSegment;
 				idx--;
 				previousSegment = (idx >= 0) ? this.segmentList.get(idx) : null;
@@ -396,10 +399,10 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 			if (count > 0) {
 				PT sp = null;
 				if (previousSegment != null) {
-					final PT p1 = currentSegment.getBeginPoint();
-					final PT p2 = currentSegment.getEndPoint();
-					final PT p3 = previousSegment.getBeginPoint();
-					final PT p4 = previousSegment.getEndPoint();
+					final var p1 = currentSegment.getBeginPoint();
+					final var p2 = currentSegment.getEndPoint();
+					final var p3 = previousSegment.getBeginPoint();
+					final var p4 = previousSegment.getEndPoint();
 
 					assert p1 != null && p2 != null && p3 != null && p4 != null;
 					if (p1.equals(p3) || p1.equals(p4)) {
@@ -415,14 +418,14 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 					return ((count % 2) == 0) ? sp : currentSegment.getOtherSidePoint(sp);
 				}
 
-			} else if ((currentSegment != null) && (previousSegment != null)) {
+			} else if (currentSegment != null && previousSegment != null) {
 				// if the two segments are different
 				// it is simple to detect the
 				// common point
-				final PT p1 = currentSegment.getBeginPoint();
-				final PT p2 = currentSegment.getEndPoint();
-				final PT p3 = previousSegment.getBeginPoint();
-				final PT p4 = previousSegment.getEndPoint();
+				final var p1 = currentSegment.getBeginPoint();
+				final var p2 = currentSegment.getEndPoint();
+				final var p3 = previousSegment.getBeginPoint();
+				final var p4 = previousSegment.getEndPoint();
 
 				assert p1 != null && p2 != null && p3 != null && p4 != null;
 				if (p1.equals(p3) || p1.equals(p4)) {
@@ -475,8 +478,8 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	@Override
 	public boolean addAll(Collection<? extends ST> collection) {
-		boolean listChanged = false;
-		final Iterator<? extends ST> iterator1 = collection.iterator();
+		var listChanged = false;
+		final var iterator1 = collection.iterator();
 		ST element;
 
 		while (iterator1.hasNext()) {
@@ -493,9 +496,9 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	@Override
 	public boolean addAll(int index, Collection<? extends ST> collection) {
-		boolean changed = false;
-		int idx = index;
-		for (final ST s : collection) {
+		var changed = false;
+		var idx = index;
+		for (final var s : collection) {
 			try {
 				add(idx, s);
 				changed = true;
@@ -509,7 +512,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	@Override
 	public boolean remove(Object obj) {
-		if ((obj != null) && (obj instanceof GraphSegment<?, ?>)) {
+		if (obj != null && obj instanceof GraphSegment) {
 			remove(this.segmentList.indexOf(obj));
 			return true;
 		}
@@ -518,10 +521,10 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	@Override
 	public ST remove(int index) {
-		if ((index > 0) && (index < this.segmentList.size())) {
-			PT toConnect = getStartingPointFor(index);
-			PT current = toConnect;
-			final ST oldSegment = this.segmentList.remove(index);
+		if (index > 0 && index < this.segmentList.size()) {
+			var toConnect = getStartingPointFor(index);
+			var current = toConnect;
+			final var oldSegment = this.segmentList.remove(index);
 			ST segment;
 
 			this.length -= oldSegment.getLength();
@@ -535,7 +538,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 				if (toConnect.equals(current)) {
 					toConnect = null;
 				} else {
-					final ST oldSegment2 = this.segmentList.remove(index);
+					final var oldSegment2 = this.segmentList.remove(index);
 					this.length -= oldSegment2.getLength();
 					if (this.length < 0) {
 						this.length = 0;
@@ -549,7 +552,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 			return oldSegment;
 		} else if (index == 0 && !this.segmentList.isEmpty()) {
-			final ST oldSegment = this.segmentList.remove(index);
+			final var oldSegment = this.segmentList.remove(index);
 			this.length -= oldSegment.getLength();
 			if (this.length < 0) {
 				this.length = 0;
@@ -576,15 +579,14 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 */
 	boolean removeUntil(int index, boolean inclusive) {
 		if (index >= 0) {
-			boolean changed = false;
-			PT startPoint = this.startingPoint;
-			ST segment;
-			int limit = index;
+			var changed = false;
+			var startPoint = this.startingPoint;
+			var limit = index;
 			if (inclusive) {
 				++limit;
 			}
-			for (int i = 0; i < limit; ++i) {
-				segment = this.segmentList.remove(0);
+			for (var i = 0; i < limit; ++i) {
+				final var segment = this.segmentList.remove(0);
 				this.length -= segment.getLength();
 				if (this.length < 0) {
 					this.length = 0;
@@ -611,7 +613,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * at the specified point. The specified element will
 	 * be removed.
 	 *
-	 * <p>This function removes until the <i>first occurence</i>
+	 * <p>This function removes until the <i>first occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to remove
@@ -627,7 +629,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * specified one. The specified element will
 	 * also be removed.
 	 *
-	 * <p>This function removes until the <i>first occurence</i>
+	 * <p>This function removes until the <i>first occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
@@ -642,7 +644,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * specified one. The specified element will
 	 * not be removed.
 	 *
-	 * <p>This function removes until the <i>first occurence</i>
+	 * <p>This function removes until the <i>first occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference element.
@@ -658,7 +660,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * at the specified point. The specified element will
 	 * not be removed.
 	 *
-	 * <p>This function removes until the <i>first occurence</i>
+	 * <p>This function removes until the <i>first occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to remove
@@ -675,7 +677,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * specified one. The specified element will
 	 * not be removed.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference element.
@@ -691,7 +693,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * at the specified point. The specified element will
 	 * not be removed.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to remove
@@ -709,7 +711,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * at the specified point. The specified element will
 	 * be removed.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to remove
@@ -725,7 +727,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * specified one. The specified element will
 	 * also be removed.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
@@ -738,10 +740,9 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	private boolean removeAfter(int index, boolean inclusive) {
 		if (index >= 0) {
-			boolean changed = false;
-			PT startPoint = this.startingPoint;
-			ST segment;
-			int limit = index;
+			var changed = false;
+			var startPoint = this.startingPoint;
+			var limit = index;
 			if (!inclusive) {
 				++limit;
 			}
@@ -756,14 +757,14 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 				}
 			} else {
 				this.length = 0;
-				final int segmentCount = this.segmentList.size();
-				for (int i = 0; i < segmentCount && i < limit; ++i) {
-					segment = this.segmentList.get(i);
+				final var segmentCount = this.segmentList.size();
+				for (var i = 0; i < segmentCount && i < limit; ++i) {
+					final var segment = this.segmentList.get(i);
 					this.length += segment.getLength();
 					startPoint = segment.getOtherSidePoint(startPoint);
 				}
 				this.endingPoint = startPoint;
-				for (int i = segmentCount - 1; i >= limit; --i) {
+				for (var i = segmentCount - 1; i >= limit; --i) {
 					this.segmentList.remove(i);
 					changed = true;
 				}
@@ -778,7 +779,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * at the specified point. The specified element will
 	 * not be removed.
 	 *
-	 * <p>This function removes after the <i>first occurence</i>
+	 * <p>This function removes after the <i>first occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to remove
@@ -794,7 +795,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * specified one. The specified element will
 	 * not be removed.
 	 *
-	 * <p>This function removes after the <i>first occurence</i>
+	 * <p>This function removes after the <i>first occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
@@ -808,7 +809,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * specified one. The specified element will
 	 * not be removed.
 	 *
-	 * <p>This function removes after the <i>last occurence</i>
+	 * <p>This function removes after the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
@@ -823,7 +824,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * at the specified point. The specified element will
 	 * not be removed.
 	 *
-	 * <p>This function removes after the <i>last occurence</i>
+	 * <p>This function removes after the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to remove
@@ -840,7 +841,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * at the specified point. The specified element will
 	 * be removed.
 	 *
-	 * <p>This function removes after the <i>last occurence</i>
+	 * <p>This function removes after the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to remove
@@ -856,7 +857,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * specified one. The specified element will
 	 * also be removed.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
@@ -871,7 +872,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * at the specified point. The specified element will
 	 * be removed.
 	 *
-	 * <p>This function removes after the <i>first occurence</i>
+	 * <p>This function removes after the <i>first occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to remove
@@ -887,7 +888,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * specified one. The specified element will
 	 * also be removed.
 	 *
-	 * <p>This function removes until the <i>first occurence</i>
+	 * <p>This function removes until the <i>first occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
@@ -922,12 +923,11 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	}
 
 	private int lastIndexOf(ST obj, PT startPoint) {
-		PT current = this.endingPoint;
-		ST segment;
-		int i = this.segmentList.size() - 1;
+		var current = this.endingPoint;
+		var i = this.segmentList.size() - 1;
 
 		while (i >= 0) {
-			segment = this.segmentList.get(i);
+			final var segment = this.segmentList.get(i);
 			current = segment.getOtherSidePoint(current);
 			if (segment.equals(obj) && current.equals(startPoint)) {
 				return i;
@@ -950,19 +950,17 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	}
 
 	private boolean filterList(Collection<?> collection, boolean pushOutside) {
-		boolean listChanged = false;
+		var listChanged = false;
 
-		boolean removed;
-		ST segment;
 		ST previous = null;
-		PT pt = this.startingPoint;
+		var pt = this.startingPoint;
 		PT first = null;
 		PT last = null;
-		final Iterator<ST> iterator = this.segmentList.iterator();
+		final var iterator = this.segmentList.iterator();
 
 		while (iterator.hasNext()) {
-			removed = false;
-			segment = iterator.next();
+			var removed = false;
+			final var segment = iterator.next();
 			if (pushOutside == collection.contains(segment)) {
 				iterator.remove();
 				this.length -= segment.getLength();
@@ -1029,11 +1027,10 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	@Override
 	public ST set(int index, ST element) {
 		if (index >= 0 && index < this.segmentList.size()) {
-			final ST oldSegment = this.segmentList.get(index);
+			final var oldSegment = this.segmentList.get(index);
 			if (!oldSegment.equals(element)) {
-				ST segment;
 				for (int i = this.segmentList.size() - 1; i >= index; --i) {
-					segment = this.segmentList.remove(i);
+					final var segment = this.segmentList.remove(i);
 					this.length -= segment.getLength();
 					if (this.length < 0) {
 						this.length = 0;
@@ -1074,13 +1071,12 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	/** Revert the order of the graph segment in this path.
 	 */
 	public void invert() {
-		final PT p = this.startingPoint;
+		final var p = this.startingPoint;
 		this.startingPoint = this.endingPoint;
 		this.endingPoint = p;
-		final int middle = this.segmentList.size() / 2;
-		ST segment;
+		final var middle = this.segmentList.size() / 2;
 		for (int i = 0, j = this.segmentList.size() - 1; i < middle; ++i, --j) {
-			segment = this.segmentList.get(i);
+			final var segment = this.segmentList.get(i);
 			this.segmentList.set(i, this.segmentList.get(j));
 			this.segmentList.set(j, segment);
 		}
@@ -1091,7 +1087,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	@Override
 	public GP clone() {
 		try {
-			final GP clone = (GP) super.clone();
+			final var clone = (GP) super.clone();
 			clone.segmentList = new LinkedList<>();
 			clone.segmentList.addAll(this.segmentList);
 			return clone;
@@ -1101,7 +1097,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	}
 
 	private GP splitAt(int index, boolean inclusive) {
-		final GP secondPath = clone();
+		final var secondPath = clone();
 		if (index >= 0) {
 			removeAfter(index, inclusive);
 			secondPath.removeUntil(index, !inclusive);
@@ -1116,11 +1112,11 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * The first occurrence of this specified element
 	 * will be in the second part.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return the rest of the path after the first occurence of the given element.
+	 * @return the rest of the path after the first occurrence of the given element.
 	 */
 	public GP splitAt(ST obj) {
 		return splitAt(this.segmentList.indexOf(obj), true);
@@ -1131,12 +1127,12 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * The first occurrence of this specified element
 	 * will be in the second part.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
 	 * @param startPoint is the starting point of the searched segment.
-	 * @return the rest of the path after the first occurence of the given element.
+	 * @return the rest of the path after the first occurrence of the given element.
 	 */
 	public GP splitAt(ST obj, PT startPoint) {
 		return splitAt(indexOf(obj, startPoint), true);
@@ -1155,14 +1151,14 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	/** Split this path and retains the first part of the
 	 * part in this object and reply the second part.
-	 * The last occurence of the specified element
+	 * The last occurrence of the specified element
 	 * will be in the first part.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return the rest of the path after the last occurence of the given element.
+	 * @return the rest of the path after the last occurrence of the given element.
 	 */
 	public GP splitAfterLast(ST obj) {
 		return splitAt(this.segmentList.lastIndexOf(obj), false);
@@ -1170,15 +1166,15 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	/** Split this path and retains the first part of the
 	 * part in this object and reply the second part.
-	 * The last occurence of the specified element
+	 * The last occurrence of the specified element
 	 * will be in the first part.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj is the segment to search for.
 	 * @param startPoint is the starting point of the searched segment.
-	 * @return the rest of the path after the last occurence of the given element.
+	 * @return the rest of the path after the last occurrence of the given element.
 	 */
 	public GP splitAfterLast(ST obj, PT startPoint) {
 		return splitAt(lastIndexOf(obj, startPoint), false);
@@ -1186,15 +1182,15 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	/** Split this path and retains the first part of the
 	 * part in this object and reply the second part.
-	 * The last occurence of the specified element
+	 * The last occurrence of the specified element
 	 * will be in the second part.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
 	 * @param startPoint is the starting point of the searched segment.
-	 * @return the rest of the path after the last occurence of the given element.
+	 * @return the rest of the path after the last occurrence of the given element.
 	 */
 	public GP splitAtLast(ST obj, PT startPoint) {
 		return splitAt(lastIndexOf(obj, startPoint), true);
@@ -1202,14 +1198,14 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	/** Split this path and retains the first part of the
 	 * part in this object and reply the second part.
-	 * The last occurence of the specified element
+	 * The last occurrence of the specified element
 	 * will be in the second part.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return the rest of the path after the last occurence of the given element.
+	 * @return the rest of the path after the last occurrence of the given element.
 	 */
 	public GP splitAtLast(ST obj) {
 		return splitAt(this.segmentList.lastIndexOf(obj), true);
@@ -1220,11 +1216,11 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * The first occurrence of specified element will be
 	 * in the first part.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return the rest of the path after the first occurence of the given element.
+	 * @return the rest of the path after the first occurrence of the given element.
 	 */
 	public GP splitAfter(ST obj) {
 		return splitAt(this.segmentList.indexOf(obj), false);
@@ -1235,12 +1231,12 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * The first occurrence of specified element will be
 	 * in the first part.
 	 *
-	 * <p>This function removes until the <i>last occurence</i>
+	 * <p>This function removes until the <i>last occurrence</i>
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
 	 * @param startPoint is the starting point of the searched segment.
-	 * @return the rest of the path after the first occurence of the given element.
+	 * @return the rest of the path after the first occurrence of the given element.
 	 */
 	public GP splitAfter(ST obj, PT startPoint) {
 		return splitAt(indexOf(obj, startPoint), false);
@@ -1311,13 +1307,13 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 		@Override
 		public PT next() {
-			final PT toReturn = this.point;
+			final var toReturn = this.point;
 			if (toReturn == null) {
 				throw new NoSuchElementException();
 			}
 
 			if (this.sgmtIterator.hasNext()) {
-				final ST sgmt = this.sgmtIterator.next();
+				final var sgmt = this.sgmtIterator.next();
 				this.point = sgmt.getOtherSidePoint(this.point);
 			} else {
 				this.point = null;

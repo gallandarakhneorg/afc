@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -33,14 +32,14 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
-import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.Shape3DType;
 import org.arakhne.afc.math.geometry.d3.Tuple3iComparator;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 3D sphere.
+/** Functional interface that represented a 3D sphere.
  *
- * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
@@ -54,15 +53,20 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Sphere3ai<
-		ST extends Shape3ai<?, ?, IE, P, V, Q, B>,
-		IT extends Sphere3ai<?, ?, IE, P, V, Q, B>,
+		IT extends Sphere3ai<?, IE, P, V, Q, B>,
 		IE extends PathElement3ai,
 		P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		B extends AlignedBox3ai<?, ?, IE, P, V, Q, B>>
-		extends Shape3ai<ST, IT, IE, P, V, Q, B> {
+		B extends AlignedBox3ai<?, IE, P, V, Q, B>>
+		extends Shape3ai<IT, IE, P, V, Q, B> {
+
+	@Override
+	default Shape3DType getType() {
+		return Shape3DType.SPHERE;
+	}
 
 	/** Replies if the given point is inside the sphere.
 	 *
@@ -79,14 +83,14 @@ public interface Sphere3ai<
 	static boolean contains(int cx, int cy, int cz, int cr, int x, int y, int z) {
 		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
 
-		final int vx = x - cx;
-		final int vy = y - cy;
-		final int vz = z - cz;
+		final var vx = x - cx;
+		final var vy = y - cy;
+		final var vz = z - cz;
 
         if (vx >= -cr && vx <= cr && vy >= -cr && vy <= cr && vz >= -cr && vz <= cr) {
 			final int octant;
-            final boolean xpos = vx >= 0;
-            final boolean ypos = vy >= 0;
+            final var xpos = vx >= 0;
+            final var ypos = vy >= 0;
             //TODO final boolean zpos = vz >= 0;
             if (xpos) {
                 if (ypos) {
@@ -102,23 +106,22 @@ public interface Sphere3ai<
                 }
             }
 
-			boolean allNull = true;
-            final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
-                    new SpherePerimeterIterator<>(
+            var allNull = true;
+            final var iterator = new SpherePerimeterIterator<>(
                     InnerComputationGeomFactory.SINGLETON, cx, cy, cz, cr, octant, octant + 2, false);
 
 			while (iterator.hasNext()) {
-			    final Point3D<?, ?, ?> pt = iterator.next();
+			    final var pt = iterator.next();
 			    // Trivial case
 			    if (pt.ix() == x && pt.iy() == y) {
 			        return true;
                 }
 
-				final int px = cy - pt.iy();
-				final int py = pt.ix() - cx;
-				final int cpx = x - pt.ix();
-				final int cpy = y - pt.iy();
-				final int ccw = cpx * py - cpy * px;
+				final var px = cy - pt.iy();
+				final var py = pt.ix() - cx;
+				final var cpx = x - pt.ix();
+				final var cpy = y - pt.iy();
+				final var ccw = cpx * py - cpy * px;
 
                 if (ccw > 0) {
                     return false;
@@ -140,17 +143,18 @@ public interface Sphere3ai<
 	 * @param cy is the y-coordinate of the sphere center
 	 * @param cz is the z-coordinate of the sphere center
 	 * @param cr is the radius of the sphere center
-	 * @param quadrant is the quadrant: <table summary="">
-	 * <thead>
-	 * <tr><th>quadrant</th><th>x</th><th>y</th></tr>
-	 * </thead>
-	 * <tbody>
-	 * <tr><td>0</td><td>&ge;cx</td><td>&ge;cy</td></tr>
-	 * <tr><td>1</td><td>&ge;cx</td><td>&lt;cy</td></tr>
-	 * <tr><td>2</td><td>&lt;cx</td><td>&ge;cy</td></tr>
-	 * <tr><td>3</td><td>&lt;cx</td><td>&lt;cy</td></tr>
-	 * </tbody>
-	 * </table>
+	 * @param quadrant is the quadrant:
+	 *     <table summary="">
+	 *     <thead>
+	 *     <tr><th>quadrant</th><th>x</th><th>y</th></tr>
+	 *     </thead>
+	 *     <tbody>
+	 *     <tr><td>0</td><td>&ge;cx</td><td>&ge;cy</td></tr>
+	 *     <tr><td>1</td><td>&ge;cx</td><td>&lt;cy</td></tr>
+	 *     <tr><td>2</td><td>&lt;cx</td><td>&ge;cy</td></tr>
+	 *     <tr><td>3</td><td>&lt;cx</td><td>&lt;cy</td></tr>
+	 *     </tbody>
+	 *     </table>
 	 * @param x is the x-coordinate of the point
 	 * @param y is the y-coordinate of the point
 	 * @param z is the z-coordinate of the point
@@ -159,15 +163,16 @@ public interface Sphere3ai<
 	@Pure
 	static boolean contains(int cx, int cy, int cz, int cr, int quadrant, int x, int y, int z) {
 		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		assert quadrant >= 0 && quadrant <= 3 : AssertMessages.outsideRangeInclusiveParameter(quadrant, 0, 3);
+		assert quadrant >= 0 && quadrant <= 3 : AssertMessages.outsideRangeInclusiveParameter(
+				Double.valueOf(quadrant), Double.valueOf(0), Double.valueOf(3));
 
-		final int vx = x - cx;
-		final int vy = y - cy;
+		final var vx = x - cx;
+		final var vy = y - cy;
 
         if (vx >= -cr && vx <= cr && vy >= -cr && vy <= cr) {
             final int octant;
-            final boolean xpos = vx >= 0;
-            final boolean ypos = vy >= 0;
+            final var xpos = vx >= 0;
+            final var ypos = vy >= 0;
             if (xpos) {
                 if (ypos) {
                     octant = 0;
@@ -186,17 +191,16 @@ public interface Sphere3ai<
                 return false;
             }
 
-			final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
-					new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON,
+			final var iterator = new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON,
 					        cx, cy, cz, cr, octant, octant + 2, false);
 
 			while (iterator.hasNext()) {
-				final Point3D<?, ?, ?> p = iterator.next();
-				final int px = cy - p.iy();
-				final int py = p.ix() - cx;
-				final int cpx = x - p.ix();
-				final int cpy = y - p.iy();
-				final int ccw = cpx * py - cpy * px;
+				final var p = iterator.next();
+				final var px = cy - p.iy();
+				final var py = p.ix() - cx;
+				final var cpx = x - p.ix();
+				final var cpy = y - p.iy();
+				final var ccw = cpx * py - cpy * px;
 
                 if (ccw > 0) {
                     return false;
@@ -218,28 +222,29 @@ public interface Sphere3ai<
     // TODO : integrate z coordinate
     @Pure
     @Override
-    default boolean contains(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> box) {
+    @SuppressWarnings("checkstyle:booleanexpressioncomplexity")
+    default boolean contains(AlignedBox3ai<?, ?, ?, ?, ?, ?> box) {
         assert box != null : AssertMessages.notNullParameter();
-        final int cx = getX();
-        final int cy = getY();
-        final int cz = getZ();
-        final int radius = getRadius();
-        final int vx1 = box.getMinX() - cx;
-        final int vy1 = box.getMinY() - cy;
+        final var cx = getX();
+        final var cy = getY();
+        final var cz = getZ();
+        final var radius = getRadius();
+        final var vx1 = box.getMinX() - cx;
+        final var vy1 = box.getMinY() - cy;
         //TODO final int vz1 = box.getMinZ() - cz;
-        final int vx2 = box.getMaxX() - cx;
-        final int vy2 = box.getMaxY() - cy;
+        final var vx2 = box.getMaxX() - cx;
+        final var vy2 = box.getMaxY() - cy;
         //TODO final int vz2 = box.getMaxZ() - cz;
 
         if (vx1 >= -radius && vx1 <= radius && vy1 >= -radius && vy1 <= radius && vx2 >= -radius && vx2 <= radius
                 && vy2 >= -radius && vy2 <= radius) {
-            final int[] quadrants = new int[4];
-            final int[] x = new int[] {vx1, vx2, vx2, vx1};
-            final int[] y = new int[] {vy1, vy1, vy2, vy2};
-            for (int i = 0; i < 4; ++i) {
-                final int xcoord = x[i];
-                final int ycoord = y[i];
-                final int flag = 1 << i;
+            final var quadrants = new int[4];
+            final var x = new int[] {vx1, vx2, vx2, vx1};
+            final var y = new int[] {vy1, vy1, vy2, vy2};
+            for (var i = 0; i < 4; ++i) {
+                final var xcoord = x[i];
+                final var ycoord = y[i];
+                final var flag = 1 << i;
                 if (xcoord > 0) {
                     if (ycoord > 0) {
                         quadrants[0] |= flag;
@@ -255,20 +260,20 @@ public interface Sphere3ai<
                 }
             }
 
-            for (int i = 0; i < quadrants.length; ++i) {
+            for (var i = 0; i < quadrants.length; ++i) {
                 if (quadrants[i] != 0) {
-                    final SpherePerimeterIterator<P, V, Q> iterator = new SpherePerimeterIterator<>(
+                    final var iterator = new SpherePerimeterIterator<>(
                             getGeomFactory(), cx, cy, cz, radius, i * 2, i * 2 + 2, false);
                     while (iterator.hasNext()) {
-                        final P p = iterator.next();
-                        final int px = cy - p.iy();
-                        final int py = p.ix() - cx;
+                        final var p = iterator.next();
+                        final var px = cy - p.iy();
+                        final var py = p.ix() - cx;
 
-                        for (int j = 0; j < 4; ++j) {
+                        for (var j = 0; j < 4; ++j) {
                             if ((quadrants[i] & (1 << j)) != 0) {
-                                final int cpx = x[j] - p.ix();
-                                final int cpy = y[j] - p.iy();
-                                final int ccw = cpx * py - cpy * px;
+                                final var cpx = x[j] - p.ix();
+                                final var cpy = y[j] - p.iy();
+                                final var ccw = cpx * py - cpy * px;
                                 if (ccw > 0) {
                                     return false;
                                 }
@@ -303,12 +308,12 @@ public interface Sphere3ai<
 		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert result != null : AssertMessages.notNullParameter(7);
 
-		final int vx = x - cx;
-		final int vy = y - cy;
+		final var vx = x - cx;
+		final var vy = y - cy;
 
 		final int octant;
-        final boolean xpos = vx >= 0;
-        final boolean ypos = vy >= 0;
+        final var xpos = vx >= 0;
+        final var ypos = vy >= 0;
         if (xpos) {
             if (ypos) {
                 octant = 0;
@@ -323,23 +328,22 @@ public interface Sphere3ai<
             }
         }
 
-		final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
-                new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON, cx, cy, cz, cr, octant, octant + 2, false);
+		final var iterator = new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON, cx, cy, cz, cr, octant, octant + 2, false);
 
-		boolean isInside = true;
-		int minDist = Integer.MAX_VALUE;
+		var isInside = true;
+		var minDist = Integer.MAX_VALUE;
 
 		while (iterator.hasNext()) {
-			final Point3D<?, ?, ?> p = iterator.next();
-			final int px = cy - p.iy();
-			final int py = p.ix() - cx;
-			final int cpx = x - p.ix();
-			final int cpy = y - p.iy();
-			final int ccw = cpx * py - cpy * px;
+			final var p = iterator.next();
+			final var px = cy - p.iy();
+			final var py = p.ix() - cx;
+			final var cpx = x - p.ix();
+			final var cpy = y - p.iy();
+			final var ccw = cpx * py - cpy * px;
 			if (ccw >= 0) {
 				isInside = false;
-				// Mahantan distance
-				final int dist = Math.abs(cpx) + Math.abs(cpy);
+				// Manhattan distance
+				final var dist = Math.abs(cpx) + Math.abs(cpy);
 				if (dist < minDist) {
 					minDist = dist;
 					result.set(p);
@@ -371,12 +375,12 @@ public interface Sphere3ai<
 	static void computeFarthestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?, ?> result) {
 		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
 
-		final int vx = x - cx;
-		final int vy = y - cy;
+		final var vx = x - cx;
+		final var vy = y - cy;
 
 		final int octant;
-        final boolean xpos = vx >= 0;
-        final boolean ypos = vy >= 0;
+        final var xpos = vx >= 0;
+        final var ypos = vy >= 0;
         if (xpos) {
             if (ypos) {
                 octant = 4;
@@ -391,21 +395,20 @@ public interface Sphere3ai<
             }
         }
 
-		final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
-                new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON, cx, cy, cz, cr, octant, octant + 2, false);
+		final var iterator = new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON, cx, cy, cz, cr, octant, octant + 2, false);
 
-		int maxL1Dist = Integer.MIN_VALUE;
-		int maxLinfDist = Integer.MIN_VALUE;
+		var maxL1Dist = Integer.MIN_VALUE;
+		var maxLinfDist = Integer.MIN_VALUE;
 		result.set(x, y, z);
 
 		while (iterator.hasNext()) {
-		    final Point3D<?, ?, ?>  p = iterator.next();
-			final int cpx = Math.abs(p.ix() - x);
-			final int cpy = Math.abs(p.iy() - y);
-			// Mahantan distance
-			final int l1 = cpx + cpy;
-			final int linfinv = Math.min(cpx, cpy);
-			if (l1 > maxL1Dist || (l1 == maxL1Dist && linfinv < maxLinfDist)) {
+		    final var p = iterator.next();
+			final var cpx = Math.abs(p.ix() - x);
+			final var cpy = Math.abs(p.iy() - y);
+			// Manhattan distance
+			final var l1 = cpx + cpy;
+			final var linfinv = Math.min(cpx, cpy);
+			if (l1 > maxL1Dist || l1 == maxL1Dist && linfinv < maxLinfDist) {
 				maxL1Dist = l1;
 				maxLinfDist = linfinv;
 				result.set(p);
@@ -424,13 +427,13 @@ public interface Sphere3ai<
 	 * @param z2 is the center of the second sphere
 	 * @param radius2 is the radius of the second sphere
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	static boolean intersectsSphereSphere(int x1, int y1, int z1, int radius1, int x2, int y2, int z2, int radius2) {
 		assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert radius2 >= 0 : AssertMessages.positiveOrZeroParameter(7);
-		final Point3D<?, ?, ?> point = new InnerComputationPoint3ai();
+		final var point = new InnerComputationPoint3ai();
 		computeClosestPointTo(x1, y1, z1, radius1, x2, y2, z2, point);
 		return contains(x2, y2, z2, radius2, point.ix(), point.iy(), point.iz());
 	}
@@ -448,9 +451,10 @@ public interface Sphere3ai<
 	 * @param y3 is the second corner of the rectangle.
 	 * @param z3 is the second corner of the rectangle.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsSphereAlignedBox(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3,
             int z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
@@ -472,8 +476,9 @@ public interface Sphere3ai<
 	 * @param y3 is the second point of the segment.
 	 * @param z3 is the second point of the segment.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSphereSegment(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		final Point3D<?, ?, ?> point = new InnerComputationPoint3ai();
@@ -502,7 +507,8 @@ public interface Sphere3ai<
 			GeomFactory3ai<?, P, V, Q, ?> factory) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert firstOctantIndex >= 0 && firstOctantIndex < 8
-				: AssertMessages.outsideRangeInclusiveParameter(firstOctantIndex, 0, 7);
+				: AssertMessages.outsideRangeInclusiveParameter(
+						Double.valueOf(firstOctantIndex), Double.valueOf(0), Double.valueOf(7));
 		int maxOctant;
         maxOctant = Math.min(8, firstOctantIndex + nbOctants);
 		if (maxOctant > 8) {
@@ -671,10 +677,10 @@ public interface Sphere3ai<
 	@Override
 	default void toBoundingBox(B box) {
 		assert box != null : AssertMessages.notNullParameter();
-		final int centerX = getX();
-		final int centerY = getY();
-		final int centerZ = getZ();
-		final int radius = getRadius();
+		final var centerX = getX();
+		final var centerY = getY();
+		final var centerZ = getZ();
+		final var radius = getRadius();
 		box.setFromCorners(
 				centerX - radius,
 				centerY - radius,
@@ -688,7 +694,7 @@ public interface Sphere3ai<
 	@Override
 	default double getDistanceSquared(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P c = getClosestPointTo(pt);
+		final var c = getClosestPointTo(pt);
 		return c.getDistanceSquared(pt);
 	}
 
@@ -696,14 +702,14 @@ public interface Sphere3ai<
 	@Override
 	default double getDistanceL1(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P c = getClosestPointTo(pt);
+		final var c = getClosestPointTo(pt);
 		return c.getDistanceL1(pt);
 	}
 
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?, ?> pt) {
-		final P c = getClosestPointTo(pt);
+		final var c = getClosestPointTo(pt);
 		return c.getDistanceLinf(pt);
 	}
 
@@ -711,33 +717,33 @@ public interface Sphere3ai<
 	@Override
 	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX(), getY(), getZ(), getRadius(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
 	}
 
     @Override
-    default P getClosestPointTo(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> rectangle) {
+    default P getClosestPointTo(AlignedBox3ai<?, ?, ?, ?, ?, ?> rectangle) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?, ?> circle) {
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
+    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?, ?> path) {
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
         throw new UnsupportedOperationException();
     }
 
@@ -745,14 +751,14 @@ public interface Sphere3ai<
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX(), getY(), getZ(), getRadius(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+	default boolean intersects(AlignedBox3ai<?, ?, ?, ?, ?, ?> AlignedBox) {
 		assert AlignedBox != null : AssertMessages.notNullParameter();
 		return intersectsSphereAlignedBox(
 				getX(), getY(), getZ(), getRadius(),
@@ -762,7 +768,7 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?, ?> sphere) {
+	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return intersectsSphereSphere(
 				getX(), getY(), getZ(), getRadius(),
@@ -771,7 +777,7 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
+	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
@@ -783,8 +789,8 @@ public interface Sphere3ai<
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = Path3ai.computeCrossingsFromSphere(
+		final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = Path3ai.computeCrossingsFromSphere(
 				0,
 				iterator,
 				getX(), getY(), getZ(), getRadius(),
@@ -794,7 +800,7 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
+	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
@@ -804,331 +810,14 @@ public interface Sphere3ai<
 		setCenter(getX() + dx, getY() + dy, getZ() + dz);
 	}
 
-	@Pure
-	@Override
-	default PathIterator3ai<IE> getPathIterator(Transform3D transform) {
-		if (transform == null || transform.isIdentity()) {
-			return new SpherePathIterator<>(this);
-		}
-		return new TransformedCirclePathIterator<>(this, transform);
-	}
-
 	/** Replies this sphere with a Geogebra-compatible form.
 	 *
 	 * @return the Geogebra representation of the sphere.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toCircleDefinition(3, getX(), getY(), getZ(), getRadius());
-	}
-
-	/** Abstract iterator on the path elements of the sphere.
-	 *
-	 * @param <IE> is the type of the path elements.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	// TODO integrate z coordinate
-	abstract class AbstractCirclePathIterator<IE extends PathElement3ai> implements PathIterator3ai<IE> {
-
-		/**
-		 * ArcIterator.btan(Math.PI/2).
-		 */
-		protected static final double CTRL_VAL = 0.5522847498307933f;
-
-		/**
-		 * ctrlpts contains the control points for a set of 4 cubic
-		 * bezier curves that approximate a sphere of radius 0.5
-		 * centered at 0.5, 0.5.
-		 */
-		protected static final double PCV = 0.5f + CTRL_VAL * 0.5f;
-
-		/**
-		 * ctrlpts contains the control points for a set of 4 cubic
-		 * bezier curves that approximate a sphere of radius 0.5
-		 * centered at 0.5, 0.5.
-		 */
-		protected static final double NCV = 0.5f - CTRL_VAL * 0.5f;
-
-		/**
-		 * ctrlpts contains the control points for a set of 4 cubic
-		 * bezier curves that approximate a sphere of radius 0.5
-		 * centered at 0.5, 0.5.
-		 */
-		protected static final double[][] CTRL_PTS = {
-			{1.0, PCV, PCV, 1.0, 0.5, 1.0},
-			{NCV, 1.0, 0.0, PCV, 0.0, 0.5},
-			{0.0, NCV, NCV, 0.0, 0.5, 0.0},
-			{PCV, 0.0, 1.0, NCV, 1.0, 0.5},
-		};
-
-		/**
-		 * The element factory.
-		 */
-		protected final Sphere3ai<?, ?, IE, ?, ?, ?, ?> sphere;
-
-		/** Constructor.
-		 * @param sphere the sphere.
-		 */
-		public AbstractCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?, ?> sphere) {
-			assert sphere != null : AssertMessages.notNullParameter();
-			this.sphere = sphere;
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Pure
-		@Override
-		public PathWindingRule getWindingRule() {
-			return PathWindingRule.NON_ZERO;
-		}
-
-		@Pure
-		@Override
-		public boolean isPolyline() {
-			return false;
-		}
-
-		@Override
-		public GeomFactory3ai<IE, ?, ?, ?, ?> getGeomFactory() {
-			return this.sphere.getGeomFactory();
-		}
-
-		@Override
-		public boolean isCurved() {
-			return true;
-		}
-
-		@Override
-		public boolean isMultiParts() {
-			return false;
-		}
-
-		@Override
-		public boolean isPolygon() {
-			return true;
-		}
-
-	}
-
-	/** Iterator on the path elements of the sphere.
-	 *
-	 * @param <IE> is the type of the path elements.
-	 * @author $Author: sgalland$
-	 * @author $Author: tpiotrow$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	class SpherePathIterator<IE extends PathElement3ai> extends AbstractCirclePathIterator<IE> {
-
-		private int x;
-
-		private int y;
-
-		private int z;
-
-		private int radius;
-
-		private int index;
-
-		private int movex;
-
-		private int movey;
-
-		private int movez;
-
-		private int lastx;
-
-		private int lasty;
-
-		private int lastz;
-
-		/** Constructor.
-		 * @param sphere the sphere to iterate on.
-		 */
-		public SpherePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?, ?> sphere) {
-			super(sphere);
-			if (sphere.isEmpty()) {
-				this.index = 6;
-			} else {
-				this.radius = sphere.getRadius();
-				this.x = sphere.getX() - this.radius;
-				this.y = sphere.getY() - this.radius;
-				this.z = sphere.getZ() - this.radius;
-			}
-		}
-
-		@Override
-		public PathIterator3ai<IE> restartIterations() {
-			return new SpherePathIterator<>(this.sphere);
-		}
-
-		@Pure
-		@Override
-		public boolean hasNext() {
-			return this.index <= 5;
-		}
-
-		// TODO : check indexes
-		@Override
-		public IE next() {
-			if (this.index > 5) {
-				throw new NoSuchElementException();
-			}
-            final int idx = this.index;
-			++this.index;
-            if (idx == 0) {
-                final int dr = 2 * this.radius;
-				final double[] ctrls = CTRL_PTS[3];
-                this.movex = (int) (this.x + ctrls[6] * dr);
-                this.movey = (int) (this.y + ctrls[7] * dr);
-                this.movez = (int) (this.z + ctrls[8] * dr);
-                this.lastx = this.movex;
-				this.lasty = this.movey;
-				this.lastz = this.movez;
-				return getGeomFactory().newMovePathElement(
-                        this.lastx, this.lasty, this.lastz);
-            } else if (idx < 5) {
-                final int dr = 2 * this.radius;
-                final double[] ctrls = CTRL_PTS[idx - 1];
-                final int ppx = this.lastx;
-                final int ppy = this.lasty;
-                final int ppz = this.lastz;
-                this.lastx = (int) (this.x + ctrls[6] * dr);
-                this.lasty = (int) (this.y + ctrls[7] * dr);
-                this.lastz = (int) (this.z + ctrls[8] * dr);
-                return getGeomFactory().newCurvePathElement(ppx, ppy, ppz, (int) (this.x + ctrls[0] * dr),
-                        (int) (this.y + ctrls[1] * dr), (int) (this.z + ctrls[2] * dr), (int) (this.x + ctrls[3] * dr),
-                        (int) (this.y + ctrls[4] * dr), (int) (this.z + ctrls[5] * dr), this.lastx, this.lasty, this.lastz);
-            }
-            final int ppx = this.lastx;
-            final int ppy = this.lasty;
-            final int ppz = this.lastz;
-			this.lastx = this.movex;
-			this.lasty = this.movey;
-			this.lastz = this.movez;
-			return getGeomFactory().newClosePathElement(
-					ppx, ppy, ppz,
-					this.lastx, this.lasty, this.lastz);
-		}
-
-	}
-
-	/** Iterator on the path elements of the sphere.
-	 *
-	 * @param <IE> is the type of the path elements.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	class TransformedCirclePathIterator<IE extends PathElement3ai> extends AbstractCirclePathIterator<IE> {
-
-		private final Transform3D transform;
-
-		private int x;
-
-		private int y;
-
-		private int z;
-
-		private int radius;
-
-		private int index;
-
-		private int movex;
-
-		private int movey;
-
-		private int movez;
-
-		private Point3D<?, ?, ?> p1;
-
-		private Point3D<?, ?, ?> p2;
-
-		private Point3D<?, ?, ?> ptmp1;
-
-		private Point3D<?, ?, ?> ptmp2;
-
-		/** Constructor.
-		 * @param sphere the sphere to iterate on.
-		 * @param transform the transformation to apply.
-		 */
-		public TransformedCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?, ?> sphere, Transform3D transform) {
-			super(sphere);
-			assert transform != null : AssertMessages.notNullParameter(1);
-			this.transform = transform;
-			if (sphere.isEmpty()) {
-				this.index = 6;
-			} else {
-				this.p1 = new InnerComputationPoint3ai();
-				this.p2 = new InnerComputationPoint3ai();
-				this.ptmp1 = new InnerComputationPoint3ai();
-				this.ptmp2 = new InnerComputationPoint3ai();
-				this.radius = sphere.getRadius();
-				this.x = sphere.getX() - this.radius;
-				this.y = sphere.getY() - this.radius;
-				this.z = sphere.getZ() - this.radius;
-			}
-		}
-
-		@Override
-		public PathIterator3ai<IE> restartIterations() {
-			return new TransformedCirclePathIterator<>(this.sphere, this.transform);
-		}
-
-		@Pure
-		@Override
-		public boolean hasNext() {
-			return this.index <= 5;
-		}
-
-		@Override
-		public IE next() {
-            if (this.index > 5) {
-                throw new NoSuchElementException();
-            }
-			final int idx = this.index;
-			++this.index;
-            if (idx == 0) {
-                final int dr = 2 * this.radius;
-                final double[] ctrls = CTRL_PTS[3];
-                this.movex = (int) (this.x + ctrls[6] * dr);
-                this.movey = (int) (this.y + ctrls[7] * dr);
-                this.movez = (int) (this.z + ctrls[8] * dr);
-                this.p2.set(this.movex, this.movey, this.movez);
-                this.transform.transform(this.p2);
-                return getGeomFactory().newMovePathElement(this.p2.ix(), this.p2.iy(), this.p2.iz());
-            } else if (idx < 5) {
-                final int dr = 2 * this.radius;
-                final double[] ctrls = CTRL_PTS[idx - 1];
-                this.p1.set(this.p2);
-                this.p2.set(this.x + ctrls[6] * dr, this.y + ctrls[7] * dr, this.z + ctrls[8] * dr);
-                this.transform.transform(this.p2);
-                this.ptmp1.set(this.x + ctrls[0] * dr, this.x + ctrls[1] * dr, this.y + ctrls[2] * dr);
-                this.transform.transform(this.ptmp1);
-                this.ptmp2.set(this.x + ctrls[3] * dr, this.y + ctrls[4] * dr, this.y + ctrls[5] * dr);
-                this.transform.transform(this.ptmp2);
-                return getGeomFactory().newCurvePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.ptmp1.ix(),
-                        this.ptmp1.iy(), this.ptmp1.iz(), this.ptmp2.ix(), this.ptmp2.iy(), this.ptmp2.iz(), this.p2.ix(),
-                        this.p2.iy(), this.p2.iz());
-            }
-            this.p1.set(this.p2);
-            this.p2.set(this.movex, this.movey, this.movez);
-            this.transform.transform(this.p2);
-            return getGeomFactory().newClosePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(), this.p2.iy(),
-                    this.p2.iz());
-        }
-
 	}
 
 	/** Iterates on points on the perimeter of a sphere.
@@ -1193,9 +882,11 @@ public interface Sphere3ai<
 			assert factory != null : AssertMessages.notNullParameter(0);
 			assert radius >= 0 : AssertMessages.positiveOrZeroParameter(4);
 			assert initialOctant >= 0 && initialOctant < 8
-					: AssertMessages.outsideRangeInclusiveParameter(initialOctant, 0, 7);
+					: AssertMessages.outsideRangeInclusiveParameter(
+							Double.valueOf(initialOctant), Double.valueOf(0), Double.valueOf(7));
 			assert lastOctant > initialOctant && lastOctant <= 8
-					: AssertMessages.outsideRangeInclusiveParameter(lastOctant, initialOctant + 1, 8);
+					: AssertMessages.outsideRangeInclusiveParameter(Double.valueOf(lastOctant),
+							Double.valueOf(initialOctant + 1), Double.valueOf(8));
 			this.factory = factory;
 			this.cx = centerX;
 			this.cy = centerY;
@@ -1275,10 +966,10 @@ public interface Sphere3ai<
 					}
 					++this.x;
 
-                    if (this.x > this.y) {
+					if (this.x > this.y) {
 						// The octant is finished.
 						// Save the junction.
-						boolean cont = this.junctionPoint.contains(this.next);
+						var cont = this.junctionPoint.contains(this.next);
 						if (!cont) {
 							final P point = this.factory.newPoint();
 							point.set(this.next.ix(), this.next.iy(), this.next.iz());
@@ -1287,15 +978,15 @@ public interface Sphere3ai<
 						// Goto next.
 						++this.currentOctant;
 						reset();
-                        if (this.currentOctant >= this.maxOctant) {
-                            if (cont) {
-                                this.next = null;
-                            }
-                            cont = false;
-                        }
-                        if (!cont) {
-                            return;
-                        }
+						if (this.currentOctant >= this.maxOctant) {
+							if (cont) {
+								this.next = null;
+							}
+							cont = false;
+						}
+						if (!cont) {
+							return;
+						}
 					} else {
 						return;
 					}
@@ -1305,7 +996,7 @@ public interface Sphere3ai<
 
 		@Override
 		public P next() {
-			final P pixel = this.next;
+			final var pixel = this.next;
             if (pixel == null) {
                 throw new NoSuchElementException();
             }

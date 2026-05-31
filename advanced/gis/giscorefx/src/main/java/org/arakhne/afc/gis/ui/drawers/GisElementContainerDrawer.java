@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,13 @@
 
 package org.arakhne.afc.gis.ui.drawers;
 
-import java.util.Iterator;
-
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.DrawerReference;
 import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Drawer of a map element container.
  *
@@ -98,10 +95,10 @@ public class GisElementContainerDrawer<T extends MapElement> implements Drawer<G
 	 * @since 16.0
 	 */
 	protected Drawer<? super T> drawPrimitives(ZoomableGraphicsContext gc, GISElementContainer<T> primitive, Drawer<? super T> drawer) {
-		Drawer<? super T> drw = drawer;
-		final Iterator<T> iterator = primitive.iterator(gc.getVisibleArea());
+		var drw = drawer;
+		final var iterator = primitive.iterator(gc.getVisibleArea());
 		while (iterator.hasNext()) {
-			final T mapelement = iterator.next();
+			final var mapelement = iterator.next();
 			if (drw == null) {
 				drw = Drawers.getDrawerFor(mapelement);
 				if (drw != null) {

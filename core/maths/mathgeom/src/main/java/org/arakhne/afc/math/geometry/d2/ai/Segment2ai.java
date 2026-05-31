@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d2.ai;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
@@ -34,13 +33,15 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D segment/line on a plane.
+/** Functional interface that represented a 2D segment/line on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -54,6 +55,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Segment2ai<
         ST extends Shape2ai<?, ?, IE, P, V, B>,
         IT extends Segment2ai<?, ?, IE, P, V, B>,
@@ -62,6 +64,11 @@ public interface Segment2ai<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2ai<?, ?, IE, P, V, B>>
         extends Shape2ai<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.SEGMENT;
+	}
 
     /** Replies the closest point in a circle to a point.
      *
@@ -90,18 +97,17 @@ public interface Segment2ai<
         // and (4;2). The algo must take this special
         // case into account.
 
-        int minDist = Integer.MAX_VALUE;
+        var minDist = Integer.MAX_VALUE;
         result.set(ax, ay);
         // Only for internal use
-        final InnerComputationPoint2ai cp = new InnerComputationPoint2ai();
-        final BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
-                new BresenhamLineIterator<>(
+        final var cp = new InnerComputationPoint2ai();
+        final var iterator = new BresenhamLineIterator<>(
                         InnerComputationGeomFactory.SINGLETON, ax, ay, bx, by);
         while (iterator.hasNext()) {
             iterator.next(cp);
-            final int a = Math.abs(px - cp.ix());
-            final int b = Math.abs(py - cp.iy());
-            final int d = a * a + b * b;
+            final var a = Math.abs(px - cp.ix());
+            final var b = Math.abs(py - cp.iy());
+            final var d = a * a + b * b;
             if (d == 0) {
                 // We are sure that the closest point was found
                 result.set(cp);
@@ -127,17 +133,18 @@ public interface Segment2ai<
      * @param result the is point on the segment.
      * @return the square distance between the segments.
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     static double findsClosestPointSegmentRectangle(int sx1, int sy1, int sx2, int sy2,
             int rx, int ry, int rwidth, int rheight, Point2D<?, ?> result) {
         assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(6);
         assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(7);
-        final int rmaxx = rx + rwidth;
-        final int rmaxy = ry + rheight;
-        final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
-        final int code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
-        final Point2D<?, ?> tmp1 = new InnerComputationPoint2ai();
-        final Point2D<?, ?> tmp2 = new InnerComputationPoint2ai();
-        final int zone = Rectangle2ai.reducesCohenSutherlandZoneRectangleSegment(
+        final var rmaxx = rx + rwidth;
+        final var rmaxy = ry + rheight;
+        final var code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
+        final var code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
+        final var tmp1 = new InnerComputationPoint2ai();
+        final var tmp2 = new InnerComputationPoint2ai();
+        final var zone = Rectangle2ai.reducesCohenSutherlandZoneRectangleSegment(
                 rx, ry, rmaxx, rmaxy,
                 sx1, sy1, sx2, sy2,
                 code1, code2,
@@ -183,6 +190,7 @@ public interface Segment2ai<
      * @param result the is point on the shape.
      * @return the square distance between the segments.
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     static double findsClosestPointSegmentSegment(
             int s1x1, int s1y1, int s1x2, int s1y2,
             int s2x1, int s2y1, int s2x2, int s2y2,
@@ -207,17 +215,18 @@ public interface Segment2ai<
      * @return the square distance between the segments.
      */
     @Unefficient
+    @SuppressWarnings("checkstyle:parameternumber")
     static double findsClosestPointsSegmentSegment(
             int s1x1, int s1y1, int s1x2, int s1y2,
             int s2x1, int s2y1, int s2x2, int s2y2,
             Point2D<?, ?> resultOnFirstSegment, Point2D<?, ?> resultOnSecondSegment) {
-        final Point2D<?, ?> c1 = new InnerComputationPoint2ai();
-        final Point2D<?, ?> c2 = new InnerComputationPoint2ai();
+        final var c1 = new InnerComputationPoint2ai();
+        final var c2 = new InnerComputationPoint2ai();
         Segment2afp.findsClosestPointSegmentSegment(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2, c1, c2);
-        final int a = c1.ix();
-        final int b = c1.iy();
-        final int c = c2.ix();
-        final int d = c2.iy();
+        final var a = c1.ix();
+        final var b = c1.iy();
+        final var c = c2.ix();
+        final var d = c2.iy();
         findsClosestPointSegmentPoint(s1x1, s1y1, s1x2, s1y2, c, d, c1);
         findsClosestPointSegmentPoint(s2x1, s2y1, s2x2, s2y2, a, b, c2);
         if (resultOnFirstSegment != null) {
@@ -227,13 +236,13 @@ public interface Segment2ai<
             resultOnSecondSegment.set(c2);
         }
 
-        final double distance = c1.getDistanceSquared(c2);
+        final var distance = c1.getDistanceSquared(c2);
 
         if (distance > 0. && distance <= 1.) {
-            final int side1 = findsSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1);
-            final int side2 = findsSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x2, s2y2);
-            final int side3 = findsSideLinePoint(s2x1, s2y1, s2x2, s2y2, s1x1, s1y1);
-            final int side4 = findsSideLinePoint(s2x1, s2y1, s2x2, s2y2, s1x2, s1y2);
+            final var side1 = findsSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1);
+            final var side2 = findsSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x2, s2y2);
+            final var side3 = findsSideLinePoint(s2x1, s2y1, s2x2, s2y2, s1x1, s1y1);
+            final var side4 = findsSideLinePoint(s2x1, s2y1, s2x2, s2y2, s1x2, s1y2);
             if (side1 == -side2 && side3 == -side4) {
                 // Segment are intersecting
                 return 0;
@@ -256,10 +265,10 @@ public interface Segment2ai<
      */
     static void findsFarthestPointSegmentPoint(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
         assert result != null : AssertMessages.notNullParameter(6);
-        final int v1x = px - ax;
-        final int v1y = py - ay;
-        final int v2x = px - bx;
-        final int v2y = py - by;
+        final var v1x = px - ax;
+        final var v1y = py - ay;
+        final var v2x = px - bx;
+        final var v2y = py - by;
         if ((v1x * v1x + v1y * v1y) >= (v2x * v2x + v2y * v2y)) {
             result.set(ax, ay);
         } else {
@@ -297,12 +306,12 @@ public interface Segment2ai<
      */
     @Pure
     static int findsSideLinePoint(int x1, int y1, int x2, int y2, int px, int py) {
-        final int  x21 = x2 - x1;
-        final int  y21 = y2 - y1;
-        final int  xp1 = px - x1;
-        final int  yp1 = py - y1;
-        final int side = xp1 * y21 - yp1 * x21;
-        return (side < 0) ? -1 : ((side > 0) ? 1 : 0);
+        final var x21 = x2 - x1;
+        final var y21 = y2 - y1;
+        final var xp1 = px - x1;
+        final var yp1 = py - y1;
+        final var side = xp1 * y21 - yp1 * x21;
+        return side < 0 ? -1 : (side > 0 ? 1 : 0);
     }
 
     /**
@@ -338,12 +347,12 @@ public interface Segment2ai<
             int x1, int y1) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 
-        int numCrosses = crossings;
+        var numCrosses = crossings;
 
-        final int xmin = cx - Math.abs(radius);
-        final int xmax = cx + Math.abs(radius);
-        final int ymin = cy - Math.abs(radius);
-        final int ymax = cy + Math.abs(radius);
+        final var xmin = cx - Math.abs(radius);
+        final var xmax = cx + Math.abs(radius);
+        final var ymin = cy - Math.abs(radius);
+        final var ymax = cy + Math.abs(radius);
 
         // The line is entirely on the top or on the bottom of the shadow
         if (y0 < ymin && y1 < ymin) {
@@ -352,7 +361,7 @@ public interface Segment2ai<
         if (y0 > ymax && y1 > ymax) {
             return numCrosses;
         }
-        // The line is entierly on the left of the shadow.
+        // The line is entirely on the left of the shadow.
         if (x0 < xmin && x1 < xmin) {
             return numCrosses;
         }
@@ -409,28 +418,29 @@ public interface Segment2ai<
      * @param x0 is the first point of the line.
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
+     * @param y1 is the second point of the line.
      * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:parameternumber"})
     static int calculatesCrossingsSegmentShadowSegment(
             int crossings,
             int sx1, int sy1,
             int sx2, int sy2,
             int x0, int y0,
             int x1, int y1) {
-        /* CAUTION:
-         * --------
-         * In the comments of this function, it is assumed that y0<=y1,
-         * to simplify the explanations.
-         * The source code is supporting y0<=y1 and y0>y1.
-         */
-        int numCrosses = crossings;
+    	/* CAUTION:
+    	 * --------
+    	 * In the comments of this function, it is assumed that y0<=y1,
+    	 * to simplify the explanations.
+    	 * The source code is supporting y0<=y1 and y0>y1.
+    	 */
+    	var numCrosses = crossings;
 
-        final int xmin = Math.min(sx1, sx2);
-        final int xmax = Math.max(sx1, sx2);
-        final int ymin = Math.min(sy1, sy2);
-        final int ymax = Math.max(sy1, sy2);
+    	final var xmin = Math.min(sx1, sx2);
+    	final var xmax = Math.max(sx1, sx2);
+    	final var ymin = Math.min(sy1, sy2);
+    	final var ymax = Math.max(sy1, sy2);
 
         // The line is entirely below or up to the shadow of the segment
         if (y0 < ymin && y1 < ymin) {
@@ -471,7 +481,7 @@ public interface Segment2ai<
             // Same for side2 and the second point of the line.
             final int side1;
             final int side2;
-            final boolean firstIsTop = sy1 <= sy2;
+            final var firstIsTop = sy1 <= sy2;
             if (firstIsTop) {
                 side1 = findsSideLinePoint(sx1, sy1, sx2, sy2, x0, y0);
                 side2 = findsSideLinePoint(sx1, sy1, sx2, sy2, x1, y1);
@@ -484,9 +494,9 @@ public interface Segment2ai<
                 // Now we compute the intersection with the up and bottom borders.
                 // Intersection is obtained by computed the crossing value from
                 // the two points of the segment.
-                final int n1 = calculatesCrossingsAndXPointShadowSegment(0, sx1, sy1, x0, y0, x1, y1,
+                final var n1 = calculatesCrossingsAndXPointShadowSegment(0, sx1, sy1, x0, y0, x1, y1,
                         firstIsTop, !firstIsTop, null);
-                final int n2 = calculatesCrossingsAndXPointShadowSegment(0, sx2, sy2, x0, y0, x1, y1,
+                final var n2 = calculatesCrossingsAndXPointShadowSegment(0, sx2, sy2, x0, y0, x1, y1,
                         !firstIsTop, firstIsTop, null);
 
                 // The total crossing value must be updated with the border's crossing values.
@@ -525,13 +535,15 @@ public interface Segment2ai<
      * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
+    	"checkstyle:booleanexpressioncomplexity", "checkstyle:nestedifdepth"})
     static int calculatesCrossingsRectangleShadowSegment(
             int crossings,
             int rxmin, int rymin,
             int rxmax, int rymax,
             int x0, int y0,
             int x1, int y1) {
-        int numCrosses = crossings;
+        var numCrosses = crossings;
         // The line is horizontal, only SHAPE_INTERSECT may be replies
         if (y0 == y1) {
             if (y0 >= rymin && y0 <= rymax
@@ -582,8 +594,8 @@ public interface Segment2ai<
             // Both x and y ranges overlap by a non-empty amount
             // First do trivial INTERSECTS rejection of the cases
             // where one of the endpoints is inside the rectangle.
-            if ((x0 >= rxmin && x0 <= rxmax && y0 >= rymin && y0 <= rymax)
-                    || (x1 >= rxmin && x1 <= rxmax && y1 >= rymin && y1 <= rymax)) {
+            if (x0 >= rxmin && x0 <= rxmax && y0 >= rymin && y0 <= rymax
+                    || x1 >= rxmin && x1 <= rxmax && y1 >= rymin && y1 <= rymax) {
                 return GeomConstants.SHAPE_INTERSECTS;
             }
 
@@ -600,10 +612,10 @@ public interface Segment2ai<
                         InnerComputationGeomFactory.SINGLETON, x1, y1, x0, y0);
                 ymaxline = y0;
             }
-            final InnerComputationPoint2ai p = new InnerComputationPoint2ai();
+            final var p = new InnerComputationPoint2ai();
             Integer xintercept1 = null;
             Integer xintercept2 = null;
-            boolean cont = true;
+            var cont = true;
             while (iterator.hasNext() && cont) {
                 iterator.next(p);
                 if (p.iy() == rymin && (xintercept1 == null || xintercept1.intValue() > p.ix())) {
@@ -727,7 +739,7 @@ public interface Segment2ai<
      * x is the number of border crossed by the lines.
      *
      * <p>The borders of the segment are the two side limits between the cells covered by the segment
-     * and the adjacents cells (not covered by the segment).
+     * and the adjacent cells (not covered by the segment).
      * In the following figure, the point (px;py) is represented.
      * The "shadow line" is the projection of (px;py) on the right.
      * The red lines represent the up and bottom borders.
@@ -740,12 +752,13 @@ public interface Segment2ai<
      * @param x0 is the first point of the line.
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
+     * @param y1 is the second point of the line.
      * @param enableTopBorder indicates if the top border must be enabled in the crossing computation.
      * @param enableBottomBorder indicates if the bottom border must be enabled in the crossing computation.
      * @param xCoordinate output parameter for the x coordinate that is intersecting.
      * @return the crossing; or {@link GeomConstants#SHAPE_INTERSECTS} if the segment is on the point.
      */
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
     static int calculatesCrossingsAndXPointShadowSegment(
             int crossing,
             int px, int py,
@@ -772,12 +785,12 @@ public interface Segment2ai<
 
         // General case: try to detect crossing
 
-        final BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
+        final var iterator =
                 new BresenhamLineIterator<>(
                         InnerComputationGeomFactory.SINGLETON, x0, y0, x1, y1);
 
         // Only for internal use.
-        final Point2D<?, ?> p = new InnerComputationPoint2ai();
+        final var p = new InnerComputationPoint2ai();
         while (iterator.hasNext()) {
             iterator.next(p);
             if (p.iy() == py) {
@@ -785,27 +798,27 @@ public interface Segment2ai<
                     return GeomConstants.SHAPE_INTERSECTS;
                 }
                 if (p.ix() > px) {
-                    // Found an intersection
-                    int numCrosses = crossing;
-                    if (y0 <= y1) {
-                        if (y0 < py && enableTopBorder) {
-                            ++numCrosses;
-                        }
-                        if (y1 > py && enableBottomBorder) {
-                            ++numCrosses;
-                        }
-                    } else {
-                        if (y0 > py && enableBottomBorder) {
-                            --numCrosses;
-                        }
-                        if (y1 < py && enableTopBorder) {
-                            --numCrosses;
-                        }
-                    }
-                    if (xCoordinate != null) {
-                        xCoordinate.set(Integer.valueOf(p.ix()));
-                    }
-                    return numCrosses;
+                	// Found an intersection
+                	var numCrosses = crossing;
+                	if (y0 <= y1) {
+                		if (y0 < py && enableTopBorder) {
+                			++numCrosses;
+                		}
+                		if (y1 > py && enableBottomBorder) {
+                			++numCrosses;
+                		}
+                	} else {
+                		if (y0 > py && enableBottomBorder) {
+                			--numCrosses;
+                		}
+                		if (y1 < py && enableTopBorder) {
+                			--numCrosses;
+                		}
+                	}
+                	if (xCoordinate != null) {
+                		xCoordinate.set(Integer.valueOf(p.ix()));
+                	}
+                	return numCrosses;
                 }
             }
         }
@@ -828,12 +841,12 @@ public interface Segment2ai<
      * @param x4 is the second point of the second segment.
      * @param y4 is the second point of the second segment.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-        final int side1 = findsSideLinePoint(x1, y1, x2, y2, x3, y3);
-        final int side2 = findsSideLinePoint(x1, y1, x2, y2, x4, y4);
+        final var side1 = findsSideLinePoint(x1, y1, x2, y2, x3, y3);
+        final var side2 = findsSideLinePoint(x1, y1, x2, y2, x4, y4);
         if ((side1 * side2) <= 0) {
             return findsIntersectionTypeSegmentSegment(x1, y1, x2, y2, x3, y3, x4, y4, true, true, null) != 0;
         }
@@ -858,8 +871,9 @@ public interface Segment2ai<
      * @param enableFourthPoint indicates if the intersection on the fourth point is computed.
      * @param intersectionPoint are the coordinates of the intersection, if exist.
      * @return {@code true} if the two segments are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3,
             int x4, int y4, boolean enableThirdPoint, boolean enableFourthPoint, Point2D<?, ?> intersectionPoint) {
         return findsIntersectionTypeSegmentSegment(x1, y1, x2, y2, x3, y3, x4, y4,
@@ -888,6 +902,7 @@ public interface Segment2ai<
      *     sides of the segment 1; {@code 2} if the segments are intersecting and the segment 2
      *     is only in one side of the segment 1.
      */
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
     static int findsIntersectionTypeSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4,
             boolean enableThirdPoint, boolean enableFourthPoint, Point2D<?, ?> intersectionPoint) {
         final BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> it1;
@@ -909,11 +924,11 @@ public interface Segment2ai<
 
         if (it1.hasNext() && it2.hasNext()) {
             // Only for internal use
-            final Point2D<?, ?> p1 = new InnerComputationPoint2ai();
+            final var p1 = new InnerComputationPoint2ai();
             // Only for internal use
-            final Point2D<?, ?> p2 = new InnerComputationPoint2ai();
+            final var p2 = new InnerComputationPoint2ai();
 
-            boolean isFirstPointOfSecondSegment = true;
+            var isFirstPointOfSecondSegment = true;
 
             it1.next(p1);
             it2.next(p2);
@@ -931,11 +946,11 @@ public interface Segment2ai<
                     }
                 }
 
-                final int x = p1.ix();
-                int min1 = p1.iy();
-                int max1 = p1.iy();
-                int min2 = isFirstPointOfSecondSegment && !enableThirdPoint ? Integer.MAX_VALUE : p2.iy();
-                int max2 = isFirstPointOfSecondSegment && !enableThirdPoint ? Integer.MIN_VALUE : p2.iy();
+                final var x = p1.ix();
+                var min1 = p1.iy();
+                var max1 = p1.iy();
+                var min2 = isFirstPointOfSecondSegment && !enableThirdPoint ? Integer.MAX_VALUE : p2.iy();
+                var max2 = isFirstPointOfSecondSegment && !enableThirdPoint ? Integer.MIN_VALUE : p2.iy();
 
                 while (it1.hasNext()) {
                     it1.next(p1);
@@ -1179,7 +1194,7 @@ public interface Segment2ai<
     @Override
     default double getDistanceSquared(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P closestPoint = getClosestPointTo(pt);
+        final var closestPoint = getClosestPointTo(pt);
         return closestPoint.getDistanceSquared(pt);
     }
 
@@ -1187,7 +1202,7 @@ public interface Segment2ai<
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P closestPoint = getClosestPointTo(pt);
+        final var closestPoint = getClosestPointTo(pt);
         return closestPoint.getDistanceL1(pt);
     }
 
@@ -1195,31 +1210,30 @@ public interface Segment2ai<
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P closestPoint = getClosestPointTo(pt);
+        final var closestPoint = getClosestPointTo(pt);
         return closestPoint.getDistanceLinf(pt);
     }
 
     @Pure
     @Override
     default boolean contains(int x, int y) {
-        final int ax = getX1();
-        final int ay = getY1();
-        final int bx = getX2();
-        final int by = getY2();
+        final var ax = getX1();
+        final var ay = getY1();
+        final var bx = getX2();
+        final var by = getY2();
         if (x >= ax && x <= bx && y >= ay && y <= by) {
             if (ax == bx || ay == by) {
                 return true;
             }
 
-            int minDist = Integer.MAX_VALUE;
-            final Point2D<?, ?> p = new InnerComputationPoint2ai();
-            final BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
-                    new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, ax, ay, bx, by);
+            var minDist = Integer.MAX_VALUE;
+            final var p = new InnerComputationPoint2ai();
+            final var iterator = new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, ax, ay, bx, by);
             while (iterator.hasNext()) {
                 iterator.next(p);
-                final int a = Math.abs(x - p.ix());
-                final int b = Math.abs(y - p.iy());
-                final int d = a * a + b * b;
+                final var a = Math.abs(x - p.ix());
+                final var b = Math.abs(y - p.iy());
+                final var d = a * a + b * b;
                 if (d == 0) {
                     return true;
                 }
@@ -1248,7 +1262,7 @@ public interface Segment2ai<
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointSegmentPoint(getX1(), getY1(), getX2(), getY2(), pt.ix(), pt.iy(), point);
         return point;
     }
@@ -1262,7 +1276,7 @@ public interface Segment2ai<
     @Override
     default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointsSegmentSegment(getX1(), getY1(), getX2(), getY2(),
                 segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(), point, null);
         return point;
@@ -1271,7 +1285,7 @@ public interface Segment2ai<
     @Override
     default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointSegmentRectangle(getX1(), getY1(), getX2(), getY2(),
                 rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight(), point);
         return point;
@@ -1280,7 +1294,7 @@ public interface Segment2ai<
     @Override
     default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2ai.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), point);
         return point;
     }
@@ -1289,7 +1303,7 @@ public interface Segment2ai<
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsFarthestPointSegmentPoint(getX1(), getY1(), getX2(), getY2(), pt.ix(), pt.iy(), point);
         return point;
     }
@@ -1343,7 +1357,7 @@ public interface Segment2ai<
      */
     default void transform(Transform2D transform) {
         assert transform != null : AssertMessages.notNullParameter();
-        final P p = getGeomFactory().newPoint(getX1(), getY1());
+        final var p = getGeomFactory().newPoint(getX1(), getY1());
         transform.transform(p);
         setP1(p);
         p.set(getX2(), getY2());
@@ -1363,19 +1377,19 @@ public interface Segment2ai<
      *     does not intersect the rectangle.
      */
     default boolean clipToRectangle(int rxmin, int rymin, int rxmax, int rymax) {
-        assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(0, rxmin, 2, rxmax);
-        assert rymin <= rymax : AssertMessages.lowerEqualParameters(1, rymin, 3, rymax);
+        assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(0, Double.valueOf(rxmin), 2, Double.valueOf(rxmax));
+        assert rymin <= rymax : AssertMessages.lowerEqualParameters(1, Double.valueOf(rymin), 3, Double.valueOf(rymax));
 
-        int x0 = getX1();
-        int y0 = getY1();
-        int x1 = getX2();
-        int y1 = getY2();
-        int code1 = MathUtil.getCohenSutherlandCode(x0, y0, rxmin, rymin, rxmax, rymax);
-        int code2 = MathUtil.getCohenSutherlandCode(x1, y1, rxmin, rymin, rxmax, rymax);
-        boolean accept = false;
-        boolean cont = true;
-        int x = 0;
-        int y = 0;
+        var x0 = getX1();
+        var y0 = getY1();
+        var x1 = getX2();
+        var y1 = getY2();
+        var code1 = MathUtil.getCohenSutherlandCode(x0, y0, rxmin, rymin, rxmax, rymax);
+        var code2 = MathUtil.getCohenSutherlandCode(x1, y1, rxmin, rymin, rxmax, rymax);
+        var accept = false;
+        var cont = true;
+        var x = 0;
+        var y = 0;
 
         while (cont) {
             if ((code1 | code2) == 0) {
@@ -1386,15 +1400,15 @@ public interface Segment2ai<
                 // Bitwise AND is not 0. Trivially reject and get out of loop
                 cont = false;
             } else {
-                // failed both tests, so calculate the line segment to clip
-                // from an outside point to an intersection with clip edge
+            	// failed both tests, so calculate the line segment to clip
+            	// from an outside point to an intersection with clip edge
 
-                // At least one endpoint is outside the clip rectangle; pick it.
-                int code3 = code1 != 0 ? code1 : code2;
+            	// At least one endpoint is outside the clip rectangle; pick it.
+            	var code3 = code1 != 0 ? code1 : code2;
 
-                // Now find the intersection point;
-                // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
-                if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+            	// Now find the intersection point;
+            	// use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
+            	if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
                     // point is above the clip rectangle
                     x = x0 + (x1 - x0) * (rymax - y0) / (y1 - y0);
                     y = rymax;
@@ -1470,8 +1484,8 @@ public interface Segment2ai<
     @Override
     default boolean intersects(PathIterator2ai<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2ai.calculatesCrossingsPathIteratorSegmentShadow(
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var crossings = Path2ai.calculatesCrossingsPathIteratorSegmentShadow(
                 0,
                 iterator,
                 getX1(), getY1(), getX2(), getY2(),
@@ -1492,6 +1506,7 @@ public interface Segment2ai<
 	 * @return the Geogebra representation of the segment.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toSegmentDefinition(2, getX1(), getY1(), getX2(), getY2());
 	}
@@ -1554,10 +1569,10 @@ public interface Segment2ai<
         public BresenhamLineIterator(GeomFactory2D<V, P> factory, int x0, int y0, int x1, int y1) {
             assert factory != null : AssertMessages.notNullParameter(0);
             this.factory = factory;
-            int localx0 = x0;
-            int localy0 = y0;
-            int localx1 = x1;
-            int localy1 = y1;
+            var localx0 = x0;
+            var localy0 = y0;
+            var localx1 = x1;
+            var localy1 = y1;
 
             this.steep = Math.abs(localy1 - localy0) > Math.abs(localx1 - localx0);
 
@@ -1607,8 +1622,8 @@ public interface Segment2ai<
         @Pure
         @Override
         public boolean hasNext() {
-            return ((this.xstep > 0) && (this.x <= this.x1))
-                    || ((this.xstep < 0) && (this.x1 <= this.x));
+            return this.xstep > 0 && this.x <= this.x1
+                    || this.xstep < 0 && this.x1 <= this.x;
         }
 
         /** Replies the next point in the given parameter.
@@ -1635,7 +1650,7 @@ public interface Segment2ai<
         @Pure
         @Override
         public P next() {
-            final P p = this.factory.newPoint();
+            final var p = this.factory.newPoint();
             next(p);
             return p;
         }
@@ -1767,7 +1782,7 @@ public interface Segment2ai<
             if (this.index > 1) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             switch (idx) {
             case 0:
@@ -1841,7 +1856,7 @@ public interface Segment2ai<
             if (this.index > 1) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             switch (idx) {
             case 0:

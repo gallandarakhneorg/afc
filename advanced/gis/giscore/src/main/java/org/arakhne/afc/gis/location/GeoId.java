@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An unique identifier of a Geo-referenced element.
  *
@@ -45,14 +44,14 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  * that for two elements with the same geo-localized points, they
  * have the same geo-location identifier (Geo-Id) and they
  * have different unique ientifier (Uid):
- * <pre>{@code 
+ * <pre><code>
  * GISElement obj1 = new MapPolyline(100,10,200,30,300,4);
  * GISElement obj2 = new MapPolyline(100,10,200,30,300,4);
  * assert( obj1.getGeoId().equals(obj2.getGeoId()) );
  * assert( obj2.getGeoId().equals(obj1.getGeoId()) );
  * assert( ! obj1.getUid().equals(obj2.getUid()) );
  * assert( ! obj2.getUid().equals(obj1.getUid()) );
- * }</pre>
+ * </code></pre>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -81,7 +80,7 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 	 * @param id is a unique identifier.
 	 */
 	GeoId(double lowerx, double lowery, double upperx, double uppery, String id) {
-		final StringBuilder geoid = new StringBuilder(id);
+		final var geoid = new StringBuilder(id);
 		geoid.append('#');
 		geoid.append((long) Math.floor(lowerx));
 		geoid.append(';');
@@ -137,14 +136,14 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 		if (obj == null) {
 			return false;
 		}
-		if (obj instanceof GeoId) {
-			return this.id.equals(((GeoId) obj).id);
+		if (obj instanceof GeoId id) {
+			return this.id.equals(id.id);
 		}
 		if (obj instanceof UUID) {
 			return toUUID().equals(obj);
 		}
-		if (obj instanceof GeoLocation) {
-			return this.id.equals(((GeoLocation) obj).toGeoId().id);
+		if (obj instanceof GeoLocation loc) {
+			return this.id.equals(loc.toGeoId().id);
 		}
 		return this.id.equals(obj.toString());
 	}
@@ -164,36 +163,36 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 	 */
 	@Pure
 	public Rectangle2d toBounds2D() {
-		int startIndex = this.id.indexOf('#');
+		var startIndex = this.id.indexOf('#');
 		if (startIndex <= 0) {
 			return null;
 		}
 
 		try {
-			int endIndex = this.id.indexOf(';', startIndex);
+			var endIndex = this.id.indexOf(';', startIndex);
 			if (endIndex <= startIndex) {
 				return null;
 			}
-			final long minx = Long.parseLong(this.id.substring(startIndex + 1, endIndex));
+			final var minx = Long.parseLong(this.id.substring(startIndex + 1, endIndex));
 
 			startIndex = endIndex + 1;
 			endIndex = this.id.indexOf(';', startIndex);
 			if (endIndex <= startIndex) {
 				return null;
 			}
-			final long miny = Long.parseLong(this.id.substring(startIndex, endIndex));
+			final var miny = Long.parseLong(this.id.substring(startIndex, endIndex));
 
 			startIndex = endIndex + 1;
 			endIndex = this.id.indexOf(';', startIndex);
 			if (endIndex <= startIndex) {
 				return null;
 			}
-			final long maxx = Long.parseLong(this.id.substring(startIndex, endIndex));
+			final var maxx = Long.parseLong(this.id.substring(startIndex, endIndex));
 
 			startIndex = endIndex + 1;
-			final long maxy = Long.parseLong(this.id.substring(startIndex));
+			final var maxy = Long.parseLong(this.id.substring(startIndex));
 
-			final Rectangle2d r = new Rectangle2d();
+			final var r = new Rectangle2d();
 			r.setFromCorners(minx, miny, maxx, maxy);
 			return r;
 		} catch (Throwable exception) {
@@ -210,7 +209,7 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 	 */
 	@Pure
 	public String getInternalId() {
-		final int endIndex = this.id.indexOf('#');
+		final var endIndex = this.id.indexOf('#');
 		if (endIndex <= 0) {
 			return null;
 		}

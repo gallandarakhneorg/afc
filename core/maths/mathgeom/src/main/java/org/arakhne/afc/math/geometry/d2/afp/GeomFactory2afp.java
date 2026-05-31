@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -141,6 +141,7 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
      * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
      * @return the path element.
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     E newArcPathElement(double startX, double startY, double targetX, double targetY,
             double radiusX, double radiusY, double xAxisRotation,
             boolean largeArcFlag, boolean sweepFlag);
@@ -173,13 +174,16 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
      *
      * @param iterator the iterator.
      * @return the iterator.
+     * @throws IllegalStateException if the iterator is invalid.
      */
     default PathIterator2afp<?> convert(PathIterator2D<?> iterator) {
-        if (iterator instanceof PathIterator2afp) {
-            return (PathIterator2afp<?>) iterator;
+        if (iterator instanceof PathIterator2afp it) {
+            return it;
         }
-        assert iterator instanceof PathIterator2ai;
-        return new PathIteratorWrapper(this, (PathIterator2ai<?>) iterator);
+        if (iterator instanceof PathIterator2ai it) {
+        	return new PathIteratorWrapper(this, it);
+        }
+        throw new IllegalStateException();
     }
 
 }

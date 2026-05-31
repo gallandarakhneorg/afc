@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * This utility class permits to get the java command line for the current VM.
@@ -138,10 +136,10 @@ public class VMCommandLine {
 	 */
 	@Pure
 	public static String getVMBinary() {
-		final String javaHome = System.getProperty("java.home"); //$NON-NLS-1$
-		final File binDir = new File(new File(javaHome), "bin"); //$NON-NLS-1$
+		final var javaHome = System.getProperty("java.home"); //$NON-NLS-1$
+		final var binDir = new File(new File(javaHome), "bin"); //$NON-NLS-1$
 		if (binDir.isDirectory()) {
-			File exec = new File(binDir, getExecutableFilename("javaw")); //$NON-NLS-1$
+			var exec = new File(binDir, getExecutableFilename("javaw")); //$NON-NLS-1$
 			if (exec.isFile()) {
 				return exec.getAbsolutePath();
 			}
@@ -176,17 +174,18 @@ public class VMCommandLine {
 	 * @param additionalParams is the list of additional parameters
 	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
+	 * @throws FileNotFoundException when the Java binary file cannot be found.
 	 * @since 6.2
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber"})
 	public static Process launchVMWithClassPath(String classToLaunch, String classpath,
 			String... additionalParams) throws IOException {
-		final String javaBin = getVMBinary();
+		final var javaBin = getVMBinary();
 		if (javaBin == null) {
 			throw new FileNotFoundException("java"); //$NON-NLS-1$
 		}
-		final long totalMemory = Runtime.getRuntime().maxMemory() / 1024;
-		final String userDir = FileSystem.getUserHomeDirectoryName();
+		final var totalMemory = Runtime.getRuntime().maxMemory() / 1024;
+		final var userDir = FileSystem.getUserHomeDirectoryName();
 		final String[] params;
 		final int nParams;
 		if (classpath != null && !"".equals(classpath)) { //$NON-NLS-1$
@@ -235,8 +234,8 @@ public class VMCommandLine {
 	 */
 	public static Process launchVMWithClassPath(String classToLaunch, File[] classpath,
 			String... additionalParams) throws IOException {
-		final StringBuilder b = new StringBuilder();
-		for (final File f : classpath) {
+		final var b = new StringBuilder();
+		for (final var f : classpath) {
 			if (b.length() > 0) {
 				b.append(File.pathSeparator);
 			}
@@ -251,18 +250,19 @@ public class VMCommandLine {
 	 * @param additionalParams is the list of additional parameters
 	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
+	 * @throws FileNotFoundException when the Java binary file cannot be found.
 	 * @since 6.2
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static Process launchVMWithJar(File jarFile, String... additionalParams) throws IOException {
-		final String javaBin = getVMBinary();
+		final var javaBin = getVMBinary();
 		if (javaBin == null) {
 			throw new FileNotFoundException("java"); //$NON-NLS-1$
 		}
-		final long totalMemory = Runtime.getRuntime().maxMemory() / 1024;
-		final String userDir = FileSystem.getUserHomeDirectoryName();
-		final int nParams = 4;
-		final String[] params = new String[additionalParams.length + nParams];
+		final var totalMemory = Runtime.getRuntime().maxMemory() / 1024;
+		final var userDir = FileSystem.getUserHomeDirectoryName();
+		final var nParams = 4;
+		final var params = new String[additionalParams.length + nParams];
 		params[0] = javaBin;
 		params[1] = "-Xmx" + totalMemory + "k"; //$NON-NLS-1$ //$NON-NLS-2$
 		params[2] = "-jar"; //$NON-NLS-1$
@@ -378,25 +378,21 @@ public class VMCommandLine {
 	@Pure
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static String[] getAllCommandLineParameters() {
-		final int osize = commandLineOptions == null ? 0 : commandLineOptions.size();
-		final int psize = commandLineParameters == null ? 0 : commandLineParameters.length;
-		final int tsize = (osize > 0 && psize > 0) ? 1 : 0;
-		final List<String> params = new ArrayList<>(osize + tsize);
+		final var osize = commandLineOptions == null ? 0 : commandLineOptions.size();
+		final var psize = commandLineParameters == null ? 0 : commandLineParameters.length;
+		final var tsize = (osize > 0 && psize > 0) ? 1 : 0;
+		final var params = new ArrayList<String>(osize + tsize);
 		if (osize > 0) {
-			List<Object> values;
-			String name;
-			String prefix;
-			String v;
-			for (final Entry<String, List<Object>> entry : commandLineOptions.entrySet()) {
-				name = entry.getKey();
-				prefix = (name.length() > 1) ? "--" : "-"; //$NON-NLS-1$ //$NON-NLS-2$
-				values = entry.getValue();
+			for (final var entry : commandLineOptions.entrySet()) {
+				final var name = entry.getKey();
+				final var prefix = (name.length() > 1) ? "--" : "-"; //$NON-NLS-1$ //$NON-NLS-2$
+				final var values = entry.getValue();
 				if (values == null || values.isEmpty()) {
 					params.add(prefix + name);
 				} else {
-					for (final Object value : values) {
+					for (final var value : values) {
 						if (value != null) {
-							v = value.toString();
+							final var v = value.toString();
 							if (v != null && v.length() > 0) {
 								params.add(prefix + name + "=" + v); //$NON-NLS-1$
 							} else {
@@ -411,7 +407,7 @@ public class VMCommandLine {
 			params.add("--"); //$NON-NLS-1$
 		}
 
-		final String[] tab = new String[params.size() + psize];
+		final var tab = new String[params.size() + psize];
 		params.toArray(tab);
 		params.clear();
 
@@ -445,7 +441,7 @@ public class VMCommandLine {
 				commandLineParameters = null;
 			} else {
 				removed = commandLineParameters[0];
-				final String[] newTab = new String[commandLineParameters.length - 1];
+				final var newTab = new String[commandLineParameters.length - 1];
 				System.arraycopy(commandLineParameters, 1, newTab, 0, commandLineParameters.length - 1);
 				commandLineParameters = newTab;
 			}
@@ -473,7 +469,7 @@ public class VMCommandLine {
 	@Pure
 	public static List<Object> getCommandLineOption(String name) {
 		if (commandLineOptions != null && commandLineOptions.containsKey(name)) {
-			final List<Object> value = commandLineOptions.get(name);
+			final var value = commandLineOptions.get(name);
 			return value == null ? Collections.emptyList() : value;
 		}
 		return Collections.emptyList();
@@ -492,11 +488,11 @@ public class VMCommandLine {
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private static boolean registerOptionValue(SortedMap<String, List<Object>> options, String name, Object value,
 			OptionType type) {
-		boolean success = true;
+		var success = true;
 
-		Object optValue = value;
+		var optValue = value;
 
-		List<Object> values = options.get(name);
+		var values = options.get(name);
 		if (values == null) {
 			values = new ArrayList<>();
 			options.put(name, values);
@@ -510,10 +506,10 @@ public class VMCommandLine {
 				optValue = values.get(0);
 				if (optValue == null) {
 					v = 0;
-				} else if (!(optValue instanceof Number)) {
-					v = Long.parseLong(optValue.toString());
+				} else if (optValue instanceof Number num) {
+					v = num.longValue();
 				} else {
-					v = ((Number) optValue).longValue();
+					v = Long.parseLong(optValue.toString());
 				}
 			}
 			if (values.isEmpty()) {
@@ -530,7 +526,7 @@ public class VMCommandLine {
 					optValue = values.get(0);
 				}
 			} else if (!(optValue instanceof Boolean)) {
-				optValue = Boolean.parseBoolean(optValue.toString());
+				optValue = Boolean.valueOf(optValue.toString());
 			}
 			if (values.isEmpty()) {
 				values.add(optValue);
@@ -543,7 +539,7 @@ public class VMCommandLine {
 			if (optValue == null) {
 				optValue = Boolean.TRUE;
 			} else if (!(optValue instanceof Boolean)) {
-				optValue = Boolean.parseBoolean(optValue.toString());
+				optValue = Boolean.valueOf(optValue.toString());
 			}
 			values.add(optValue);
 			break;
@@ -552,10 +548,10 @@ public class VMCommandLine {
 			try {
 				if (optValue == null) {
 					optValue = Double.valueOf(0.);
-				} else if (!(optValue instanceof Number)) {
-					optValue = Double.parseDouble(optValue.toString());
+				} else if (optValue instanceof Number num) {
+					optValue = Double.valueOf(num.doubleValue());
 				} else {
-					optValue = Double.valueOf(((Number) optValue).doubleValue());
+					optValue = Double.valueOf(optValue.toString());
 				}
 			} catch (NumberFormatException e) {
 				if (type.isOptional()) {
@@ -572,10 +568,10 @@ public class VMCommandLine {
 			try {
 				if (optValue == null) {
 					optValue = Long.valueOf(0);
-				} else if (!(optValue instanceof Number)) {
-					optValue = Long.parseLong(optValue.toString());
+				} else if (optValue instanceof Number num) {
+					optValue = Long.valueOf(num.longValue());
 				} else {
-					optValue = Long.valueOf(((Number) optValue).longValue());
+					optValue = Long.valueOf(optValue.toString());
 				}
 			} catch (NumberFormatException e) {
 				if (type.isOptional()) {
@@ -615,11 +611,12 @@ public class VMCommandLine {
 	 * <li>{@code name:f}: an option with an optional floating-point value,</li>
 	 * <li>{@code name=b}: an option with a mandatory boolean value,</li>
 	 * <li>{@code name:b}: an option with an optional boolean value,</li>
-	 * <li>{@code name+}: an option with an autoincremented integer value,</li>
-	 * <li>{@code name!}: an option which could be flaged or not: {@code --name} or {@code --noname}.</li>
+	 * <li>{@code name+}: an option with an auto-incremented integer value,</li>
+	 * <li>{@code name!}: an option which could be flagged or not: {@code --name} or {@code --noname}.</li>
 	 * </ul>
 	 *
 	 * @param optionDefinitions is the list of definitions of the available command line options.
+	 * @throws IllegalStateException when a mandatory value is expected.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "npathcomplexity"})
 	public static void splitOptionsAndParameters(String... optionDefinitions) {
@@ -627,13 +624,13 @@ public class VMCommandLine {
 			return;
 		}
 
-		final List<String> params = new ArrayList<>();
-		final SortedMap<String, List<Object>> options = new TreeMap<>();
+		final var params = new ArrayList<String>();
+		final var options = new TreeMap<String, List<Object>>();
 		String opt;
 
 		// Analyze definitions
-		final Map<String, OptionType> defs = new TreeMap<>();
-		for (final String def : optionDefinitions) {
+		final var defs = new TreeMap<String, OptionType>();
+		for (final var def : optionDefinitions) {
 			if (def.endsWith("!")) { //$NON-NLS-1$
 				opt = def.substring(0, def.length() - 1);
 				defs.put(opt, OptionType.FLAG);
@@ -678,10 +675,10 @@ public class VMCommandLine {
 		OptionType type;
 		OptionType waitingValue = null;
 		String valueOptionName = null;
-		boolean allParameters = false;
+		var allParameters = false;
 		boolean success;
 
-		for (final String param : commandLineParameters) {
+		for (final var param : commandLineParameters) {
 			if (allParameters) {
 				params.add(param);
 				continue;
@@ -705,7 +702,7 @@ public class VMCommandLine {
 				}
 				allParameters = true;
 				continue;
-			} else if ((File.separatorChar != '/') && (param.startsWith("/"))) { //$NON-NLS-1$
+			} else if (File.separatorChar != '/' && param.startsWith("/")) { //$NON-NLS-1$
 				opt = param.substring(1);
 			} else if (param.startsWith("--")) { //$NON-NLS-1$
 				opt = param.substring(2);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.primitive.GISFlagContainer;
@@ -45,6 +42,8 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.math.graph.GraphSegment;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -180,7 +179,7 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param otherSegment a segment.
 	 * @return a shared connection if the two segments are connected, otherwise
-	 * {@code null}
+	 *     {@code null}
 	 */
 	@Pure
 	RoadConnection getSharedConnectionWith(RoadSegment otherSegment);
@@ -629,7 +628,7 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 * @param point is a geo-referenced coordinate
 	 * @return {@code true} if this MapElement had an associated figure and
 	 *     the specified point was inside this bounds of this figure, otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	boolean contains(Point2D<?, ?> point);
@@ -681,7 +680,7 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 * @param bounds the bounds.s
 	 * @return {@code true} if this MapElement has an associated figure and
 	 *     the specified rectangle intersecting the figure, otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	boolean intersects(Shape2D<?, ?, ?, ?, ?, ? extends Rectangle2afp<?, ?, ?, ?, ?, ?>> bounds);
@@ -875,7 +874,7 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 * @return the path.
 	 */
 	default Path2d toPath2D(double startPosition, double endPosition) {
-		final Path2d path = new Path2d();
+		final var path = new Path2d();
 		toPath2D(path, startPosition, endPosition);
 		return path;
 	}

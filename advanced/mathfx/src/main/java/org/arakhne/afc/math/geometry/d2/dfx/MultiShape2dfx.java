@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javafx.beans.InvalidationListener;
@@ -34,12 +33,11 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ModifiableObservableListBase;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.javafx.changes.SimpleListUpdateChange;
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
  *
@@ -85,7 +83,7 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 	 */
 	public MultiShape2dfx(Iterable<? extends T> shapes) {
 		assert shapes != null : AssertMessages.notNullParameter();
-		for (final T element : shapes) {
+		for (final var element : shapes) {
 			add(element);
 		}
 	}
@@ -112,9 +110,9 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				final Rectangle2dfx box = getGeomFactory().newBox();
-				final Rectangle2dfx shapeBox = getGeomFactory().newBox();
-				final Iterator<T> iterator = elementsProperty().iterator();
+				final var box = getGeomFactory().newBox();
+				final var shapeBox = getGeomFactory().newBox();
+				final var iterator = elementsProperty().iterator();
 				if (iterator.hasNext()) {
 					iterator.next().toBoundingBox(shapeBox);
 					box.set(shapeBox);
@@ -133,10 +131,10 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 	@SuppressWarnings("unchecked")
 	@Override
 	public MultiShape2dfx<T> clone() {
-		final MultiShape2dfx<T> clone = super.clone();
+		final var clone = super.clone();
 		clone.elements = null;
 		if (this.elements != null) {
-			for (final T shape : this.elements) {
+			for (final var shape : this.elements) {
 				clone.elementsProperty().add((T) shape.clone());
 			}
 		}
@@ -184,13 +182,13 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 
 		private void bind(T shape) {
 			assert shape != null;
-			final ObjectProperty<Rectangle2dfx> property = shape.boundingBoxProperty();
+			final var property = shape.boundingBoxProperty();
 			property.addListener(this);
 		}
 
 		private void unbind(T shape) {
 			assert shape != null;
-			final ObjectProperty<Rectangle2dfx> property = shape.boundingBoxProperty();
+			final var property = shape.boundingBoxProperty();
 			property.removeListener(this);
 		}
 
@@ -214,7 +212,7 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 		@Override
 		protected T doSet(int index, T element) {
 			assert element != null : AssertMessages.notNullParameter(1);
-			final T old = this.internalList.set(index, element);
+			final var old = this.internalList.set(index, element);
 			unbind(old);
 			bind(element);
 			return old;
@@ -222,14 +220,14 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 
 		@Override
 		protected T doRemove(int index) {
-			final T old = this.internalList.remove(index);
+			final var old = this.internalList.remove(index);
 			unbind(old);
 			return old;
 		}
 
 		@Override
 		public void invalidated(Observable observable) {
-			final int position = indexOf(((Property<?>) observable).getBean());
+			final var position = indexOf(((Property<?>) observable).getBean());
 			if (position >= 0) {
 				fireChange(new SimpleListUpdateChange<>(position, this));
 			}
@@ -240,7 +238,7 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 			if (!super.equals(obj)) {
 				return false;
 			}
-			final InternalObservableList<?> lObj = (InternalObservableList<?>) obj;
+			final var lObj = (InternalObservableList<?>) obj;
 			if (this.internalList.equals(lObj.internalList)) {
 				return this.internalList.equals(lObj.internalList);
 			}
@@ -249,10 +247,9 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 
 		@Override
 		public int hashCode() {
-			int hash = 1;
-			final int prime = 31;
-			hash = hash * prime + this.internalList.hashCode();
-			return hash;
+			var hash = 1L;
+			hash = hash * 31 + this.internalList.hashCode();
+			return (int) hash;
 		}
 
 	}

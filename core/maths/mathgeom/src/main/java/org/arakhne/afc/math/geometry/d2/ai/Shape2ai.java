@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ package org.arakhne.afc.math.geometry.d2.ai;
 
 import java.util.Iterator;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -33,6 +31,7 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with 2d floating coordinates.
  *
@@ -99,19 +98,17 @@ public interface Shape2ai<
         if (isEmpty()) {
             return false;
         }
-        if (shape instanceof Rectangle2ai) {
-            return contains((Rectangle2ai<?, ?, ?, ?, ?, ?>) shape);
+        if (shape instanceof Rectangle2ai rect) {
+            return contains(rect);
         }
-        final PathIterator2ai<?> iterator = getPathIterator();
+        final var iterator = getPathIterator();
         final int crossings;
-        if (shape instanceof Circle2ai) {
-            final Circle2ai<?, ?, ?, ?, ?, ?> circle = (Circle2ai<?, ?, ?, ?, ?, ?>) shape;
+        if (shape instanceof Circle2ai circle) {
             crossings = Path2ai.calculatesCrossingsPathIteratorCircleShadow(
                     0, iterator,
                     circle.getX(), circle.getY(), circle.getRadius(),
                     CrossingComputationType.STANDARD);
-        } else if (shape instanceof Segment2ai) {
-            final Segment2ai<?, ?, ?, ?, ?, ?> segment = (Segment2ai<?, ?, ?, ?, ?, ?>) shape;
+        } else if (shape instanceof Segment2ai segment) {
             crossings = Path2ai.calculatesCrossingsPathIteratorSegmentShadow(
                     0, iterator,
                     segment.getX1(), segment.getY1(),
@@ -125,29 +122,28 @@ public interface Shape2ai<
             final int minY;
             final int maxX;
             final int maxY;
-            final Shape2D<?, ?, ?, ?, ?, ?> originalBounds = shape.toBoundingBox();
-            if (originalBounds instanceof Rectangle2ai) {
-                final Rectangle2ai<?, ?, ?, ?, ?, ?> rect = (Rectangle2ai<?, ?, ?, ?, ?, ?>) originalBounds;
+            final var originalBounds = shape.toBoundingBox();
+            if (originalBounds instanceof Rectangle2ai rect) {
                 minX = rect.getMinX();
                 minY = rect.getMinY();
                 maxX = rect.getMaxX();
                 maxY = rect.getMaxY();
             } else {
                 assert originalBounds instanceof Rectangle2ai;
-                final Rectangle2ai<?, ?, ?, ?, ?, ?> rect = (Rectangle2ai<?, ?, ?, ?, ?, ?>) originalBounds;
+                final var rect = (Rectangle2ai<?, ?, ?, ?, ?, ?>) originalBounds;
                 minX = rect.getMinX();
                 minY = rect.getMinY();
                 maxX = rect.getMaxX();
                 maxY = rect.getMaxY();
             }
-            final PathIterator2ai<?> shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
+            final var shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
             crossings = Path2ai.calculatesCrossingsPathIteratorPathShadow(
                     0, iterator,
                     new BasicPathShadow2ai(shapePathIterator, minX, minY, maxX, maxY),
                     CrossingComputationType.STANDARD);
         }
 
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
         return crossings != GeomConstants.SHAPE_INTERSECTS && (crossings & mask) != 0;
     }
 
@@ -167,7 +163,7 @@ public interface Shape2ai<
     @Pure
     @Override
     default B toBoundingBox() {
-        final B box = getGeomFactory().newBox();
+        final var box = getGeomFactory().newBox();
         toBoundingBox(box);
         return box;
     }
@@ -176,21 +172,29 @@ public interface Shape2ai<
     @Unefficient
     @Override
     default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> shape) {
-        if (shape instanceof Circle2ai) {
+    	assert shape != null : AssertMessages.notNullParameter();
+    	final var type = shape.getType();
+		assert type != null;
+    	assert type.getPreferredDiscreteShapeType() != null;
+    	assert type.getPreferredDiscreteShapeType().isInstance(shape);
+    	switch (type) {
+		case CIRCLE:
             return intersects((Circle2ai<?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Path2ai) {
+		case PATH:
             return intersects((Path2ai<?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof PathIterator2ai) {
-            return intersects((PathIterator2ai<?>) shape);
-        }
-        if (shape instanceof Rectangle2ai) {
+		case RECTANGLE:
             return intersects((Rectangle2ai<?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Segment2ai) {
+		case SEGMENT:
             return intersects((Segment2ai<?, ?, ?, ?, ?, ?>) shape);
-        }
+		case ELLIPSE:
+		case MULTISHAPE:
+		case ORIENTED_RECTANGLE:
+		case PARALLELOGRAM:
+		case ROUND_RECTANGLE:
+		case TRIANGLE:
+		default:
+			break;
+    	}
         return intersects(getPathIterator());
     }
 
@@ -198,7 +202,7 @@ public interface Shape2ai<
      *
      * @param rectangle the rectangle.
      * @return {@code true} if this shape is intersecting the given shape;
-     * {@code false} if there is no intersection.
+     *     {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle);
@@ -207,7 +211,7 @@ public interface Shape2ai<
      *
      * @param circle the circle.
      * @return {@code true} if this shape is intersecting the given shape;
-     * {@code false} if there is no intersection.
+     *     {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle);
@@ -216,7 +220,7 @@ public interface Shape2ai<
      *
      * @param segment the segment.
      * @return {@code true} if this shape is intersecting the given shape;
-     * {@code false} if there is no intersection.
+     *     {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment);
@@ -225,7 +229,7 @@ public interface Shape2ai<
      *
      * @param multishape the multishape.
      * @return {@code true} if this shape is intersecting the given shape;
-     * {@code false} if there is no intersection.
+     *     {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape);
@@ -234,7 +238,7 @@ public interface Shape2ai<
      *
      * @param path the path.
      * @return {@code true} if this shape is intersecting the given shape;
-     * {@code false} if there is no intersection.
+     *     {@code false} if there is no intersection.
      */
     @Pure
     default boolean intersects(Path2ai<?, ?, ?, ?, ?, ?> path) {
@@ -245,7 +249,7 @@ public interface Shape2ai<
      *
      * @param iterator the path iterator.
      * @return {@code true} if this shape is intersecting the given shape;
-     * {@code false} if there is no intersection.
+     *     {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(PathIterator2ai<?> iterator);
@@ -254,18 +258,29 @@ public interface Shape2ai<
     @Unefficient
     @Override
     default double getDistanceSquared(Shape2D<?, ?, ?, ?, ?, ?> shape) {
-        if (shape instanceof Circle2ai) {
+    	assert shape != null : AssertMessages.notNullParameter();
+    	final var type = shape.getType();
+		assert type != null;
+    	assert type.getPreferredDiscreteShapeType() != null;
+    	assert type.getPreferredDiscreteShapeType().isInstance(shape);
+    	switch (type) {
+		case CIRCLE:
             return getDistanceSquared((Circle2ai<?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Path2ai) {
+		case PATH:
             return getDistanceSquared((Path2ai<?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Rectangle2ai) {
+		case RECTANGLE:
             return getDistanceSquared((Rectangle2ai<?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Segment2ai) {
+		case SEGMENT:
             return getDistanceSquared((Segment2ai<?, ?, ?, ?, ?, ?>) shape);
-        }
+		case ELLIPSE:
+		case MULTISHAPE:
+		case ORIENTED_RECTANGLE:
+		case PARALLELOGRAM:
+		case ROUND_RECTANGLE:
+		case TRIANGLE:
+		default:
+			break;
+    	}
         throw new IllegalArgumentException();
     }
 
@@ -310,9 +325,9 @@ public interface Shape2ai<
     @Pure
     default double getDistanceSquared(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
-        double minDist = Double.POSITIVE_INFINITY;
+        var minDist = Double.POSITIVE_INFINITY;
         double dist;
-        for (final Shape2ai<?, ?, ?, ?, ?, ?> shape : multishape) {
+        for (final var shape : multishape) {
             dist = getDistanceSquared(shape);
             if (dist < minDist) {
                 minDist = dist;
@@ -336,20 +351,20 @@ public interface Shape2ai<
     @Unefficient
     @Override
     default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
-        if (shape instanceof Circle2ai) {
-            return getClosestPointTo((Circle2ai<?, ?, ?, ?, ?, ?>) shape);
+        if (shape instanceof Circle2ai circ) {
+            return getClosestPointTo(circ);
         }
-        if (shape instanceof MultiShape2ai) {
-            return getClosestPointTo((MultiShape2ai<?, ?, ?, ?, ?, ?, ?>) shape);
+        if (shape instanceof MultiShape2ai shp) {
+            return getClosestPointTo(shp);
         }
-        if (shape instanceof Path2ai) {
-            return getClosestPointTo((Path2ai<?, ?, ?, ?, ?, ?>) shape);
+        if (shape instanceof Path2ai pth) {
+            return getClosestPointTo(pth);
         }
-        if (shape instanceof Rectangle2ai) {
-            return getClosestPointTo((Rectangle2ai<?, ?, ?, ?, ?, ?>) shape);
+        if (shape instanceof Rectangle2ai rect) {
+            return getClosestPointTo(rect);
         }
-        if (shape instanceof Segment2ai) {
-            return getClosestPointTo((Segment2ai<?, ?, ?, ?, ?, ?>) shape);
+        if (shape instanceof Segment2ai sgmt) {
+            return getClosestPointTo(sgmt);
         }
         throw new IllegalArgumentException();
     }
@@ -391,9 +406,9 @@ public interface Shape2ai<
     default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
         Shape2ai<?, ?, ?, ?, ?, ?> closest = null;
-        double minDist = Double.POSITIVE_INFINITY;
+        var minDist = Double.POSITIVE_INFINITY;
         double dist;
-        for (final Shape2ai<?, ?, ?, ?, ?, ?> shape : multishape) {
+        for (final var shape : multishape) {
             dist = getDistanceSquared(shape);
             if (dist < minDist) {
                 minDist = dist;
@@ -425,11 +440,11 @@ public interface Shape2ai<
         if (transform == null || transform.isIdentity()) {
             return (ST) clone();
         }
-        final PathIterator2ai<?> pi = getPathIterator(transform);
-        final GeomFactory2ai<IE, P, V, B> factory = getGeomFactory();
-        final Path2ai<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
+        final var pi = getPathIterator(transform);
+        final var factory = getGeomFactory();
+        final var newPath = factory.newPath(pi.getWindingRule());
         while (pi.hasNext()) {
-            final PathElement2ai e = pi.next();
+            final var e = pi.next();
             switch (e.getType()) {
             case MOVE_TO:
                 newPath.moveTo(e.getToX(), e.getToY());

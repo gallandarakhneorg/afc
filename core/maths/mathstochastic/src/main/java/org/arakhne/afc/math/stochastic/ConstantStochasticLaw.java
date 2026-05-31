@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Law that representes an uniform density with as its upper and lower bounds
@@ -77,7 +76,7 @@ public class ConstantStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double f(double x) throws MathException {
-		return (x != this.value) ? 0 : 1.f;
+		return x != this.value ? 0 : 1.f;
 	}
 
 	@Pure
@@ -92,7 +91,7 @@ public class ConstantStochasticLaw extends StochasticLaw {
 	@Override
 	public void toJson(JsonBuffer buffer) {
 		buffer.add(NAME_NAME, getLawName());
-		buffer.add(VALUE_NAME, this.value);
+		buffer.add(VALUE_NAME, Double.valueOf(this.value));
 	}
 
 }

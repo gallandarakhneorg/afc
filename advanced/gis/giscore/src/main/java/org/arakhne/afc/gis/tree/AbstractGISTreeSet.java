@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.GISSet;
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocation;
@@ -44,6 +42,7 @@ import org.arakhne.afc.math.tree.iterator.NodeSelector;
 import org.arakhne.afc.math.tree.iterator.PrefixDataDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.PrefixDepthFirstTreeIterator;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a quad tree that contains GIS primitives
@@ -110,7 +109,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Pure
 	protected static <E> Class<? extends E> extractClassFrom(Collection<? extends E> collection) {
 		Class<? extends E> clazz = null;
-		for (final E elt : collection) {
+		for (final var elt : collection) {
 			clazz = (Class<? extends E>) ReflectionUtil.getCommonType(clazz, elt.getClass());
 		}
 		return clazz == null ? (Class<E>) Object.class : clazz;
@@ -151,7 +150,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	 */
 	@SuppressWarnings("unchecked")
 	protected final void updateComponentType(P newElement) {
-		final Class<? extends P> lclazz = (Class<? extends P>) newElement.getClass();
+		final var lclazz = (Class<? extends P>) newElement.getClass();
 		this.clazz = (Class<? extends P>) ReflectionUtil.getCommonType(this.clazz, lclazz);
 	}
 
@@ -162,7 +161,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	 */
 	@SuppressWarnings("unchecked")
 	protected final void updateComponentType(Collection<? extends P> newElements) {
-		final Class<? extends P> lclazz = extractClassFrom(newElements);
+		final var lclazz = extractClassFrom(newElements);
 		this.clazz = (Class<? extends P>) ReflectionUtil.getCommonType(this.clazz, lclazz);
 	}
 
@@ -175,9 +174,9 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Override
 	@Pure
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
+		final var buffer = new StringBuilder();
 		buffer.append("["); //$NON-NLS-1$
-		for (final P element : this.tree.toDataDepthFirstIterable()) {
+		for (final var element : this.tree.toDataDepthFirstIterable()) {
 			if (buffer.length() > 1) {
 				buffer.append(", "); //$NON-NLS-1$
 			}
@@ -190,10 +189,9 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Override
 	@Pure
 	public N getTreeNodeAt(double x, double y) {
-		final Iterator<N> iterator = new PrefixDepthFirstTreeIterator<>(this.tree, new PointSelector<N>(x, y));
-		N node;
+		final var iterator = new PrefixDepthFirstTreeIterator<>(this.tree, new PointSelector<N>(x, y));
 		while (iterator.hasNext()) {
-			node = iterator.next();
+			final var node = iterator.next();
 			if (node.isLeaf()) {
 				return node;
 			}
@@ -205,10 +203,10 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Pure
 	public P get(GeoId identifier) {
 		if (identifier != null) {
-			final Rectangle2afp<?, ?, ?, ?, ?, ?> objBounds = identifier.toBounds2D();
+			final var objBounds = identifier.toBounds2D();
 			if (objBounds != null) {
-				final GeoIdSelector<P, N> selector = new GeoIdSelector<>(objBounds, identifier);
-				final Iterator<P> iterator = new PrefixDataDepthFirstTreeIterator<>(this.tree, selector, selector);
+				final var selector = new GeoIdSelector<P, N>(objBounds, identifier);
+				final var iterator = new PrefixDataDepthFirstTreeIterator<>(this.tree, selector, selector);
 				if (iterator.hasNext()) {
 					return iterator.next();
 				}
@@ -221,8 +219,8 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Pure
 	public P get(GeoLocation location) {
 		if (location != null) {
-			final GeoLocationSelector<P, N> selector = new GeoLocationSelector<>(location);
-			final Iterator<P> iterator = new PrefixDataDepthFirstTreeIterator<>(this.tree, selector, selector);
+			final var selector = new GeoLocationSelector<P, N>(location);
+			final var iterator = new PrefixDataDepthFirstTreeIterator<>(this.tree, selector, selector);
 			if (iterator.hasNext()) {
 				return iterator.next();
 			}
@@ -236,11 +234,10 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 		if (index < 0) {
 			throw new IndexOutOfBoundsException("index<0"); //$NON-NLS-1$
 		}
-		final Iterator<P> iter = this.tree.dataDepthFirstIterator();
-		P data;
-		int idx = 0;
+		final var iter = this.tree.dataDepthFirstIterator();
+		var idx = 0;
 		while (iter.hasNext()) {
-			data = iter.next();
+			final var data = iter.next();
 			if (idx == index) {
 				return data;
 			}
@@ -286,14 +283,14 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Override
 	@Pure
 	public Iterator<P> iterator(Rectangle2afp<?, ?, ?, ?, ?, ?> clipBounds, int budget) {
-		final N root = this.tree.getRoot();
+		final var root = this.tree.getRoot();
 		if (root == null || clipBounds == null || clipBounds.isEmpty()) {
 			return Collections.emptyIterator();
 		}
 		if (budget >= 0) {
 			return new BudgetIterator<>(this.tree, clipBounds, budget);
 		}
-		final FrustumSelector<P, N> selector = new FrustumSelector<>(clipBounds);
+		final var selector = new FrustumSelector<P, N>(clipBounds);
 		return new DataBreadthFirstTreeIterator<>(
 				this.tree,
 				selector,
@@ -309,10 +306,10 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Override
 	@Pure
 	public Object[] toArray() {
-		final int count = this.tree.getUserDataCount();
-		final Object[] tab = new Object[count];
-		int i = 0;
-		for (final P element : this.tree.toDataDepthFirstIterable()) {
+		final var count = this.tree.getUserDataCount();
+		final var tab = new Object[count];
+		var i = 0;
+		for (final var element : this.tree.toDataDepthFirstIterable()) {
 			if (i >= count) {
 				break;
 			}
@@ -327,11 +324,11 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Pure
 	public <T> T[] toArray(T[] array) {
 		assert array != null;
-		final Class<T[]> clazz1 = (Class<T[]>) array.getClass();
-		final Class<? extends T> clazz2 = (Class<? extends T>) clazz1.getComponentType();
+		final var clazz1 = (Class<T[]>) array.getClass();
+		final var clazz2 = (Class<? extends T>) clazz1.getComponentType();
 
-		int count = this.tree.getUserDataCount();
-		T[] tab = array;
+		var count = this.tree.getUserDataCount();
+		var tab = array;
 
 		if (array.length > count) {
 			count = array.length;
@@ -340,8 +337,8 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 			tab = clazz1.cast(Array.newInstance(clazz2, count));
 		}
 
-		int i = 0;
-		for (final P element : this.tree.toDataDepthFirstIterable()) {
+		var i = 0;
+		for (final var element : this.tree.toDataDepthFirstIterable()) {
 			if (i >= count) {
 				break;
 			}
@@ -359,12 +356,11 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 			return false;
 		}
 		try {
-			final P primitive = (P) obj;
-			final Iterator<N> iter = nodeIterator(primitive.getGeoLocation().toBounds2D());
-			N node;
+			final var primitive = (P) obj;
+			final var iter = nodeIterator(primitive.getGeoLocation().toBounds2D());
 			while (iter.hasNext()) {
-				node = iter.next();
-				for (int i = 0; i < node.getUserDataCount(); ++i) {
+				final var node = iter.next();
+				for (var i = 0; i < node.getUserDataCount(); ++i) {
 					if (node.getUserDataAt(i).equals(obj)) {
 						return true;
 					}
@@ -383,10 +379,9 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 			return false;
 		}
 		try {
-			final PrefixDataDepthFirstTreeIterator<P, N> iterator = new PrefixDataDepthFirstTreeIterator<>(getTree());
-			P primitive;
+			final var iterator = new PrefixDataDepthFirstTreeIterator<>(getTree());
 			while (iterator.hasNext()) {
-				primitive = iterator.next();
+				final var primitive = iterator.next();
 				if (obj.equals(primitive)) {
 					return true;
 				}
@@ -400,7 +395,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Override
 	@Pure
 	public boolean containsAll(Collection<?> col) {
-		for (final Object object : col) {
+		for (final var object : col) {
 			if (!contains(object)) {
 				return false;
 			}
@@ -411,16 +406,15 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean remove(Object obj) {
-		final N root = this.tree.getRoot();
+		final var root = this.tree.getRoot();
 		if (root == null) {
 			return false;
 		}
 		try {
-			final P primitive = (P) obj;
-			final Iterator<N> iter = nodeIterator(primitive.getGeoLocation().toBounds2D());
-			N node;
+			final var primitive = (P) obj;
+			final var iter = nodeIterator(primitive.getGeoLocation().toBounds2D());
 			while (iter.hasNext()) {
-				node = iter.next();
+				final var node = iter.next();
 				if (node.removeUserData(primitive)) {
 					if (isEmpty()) {
 						this.clazz = null;
@@ -439,18 +433,17 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean removeAll(Collection<?> col) {
-		boolean changed = false;
-		final N root = this.tree.getRoot();
+		var changed = false;
+		final var root = this.tree.getRoot();
 		if (root == null) {
 			return false;
 		}
-		for (final Object o : col) {
+		for (final var o : col) {
 			try {
-				final P primitive = (P) o;
-				final Iterator<N> iter = nodeIterator(primitive.getGeoLocation().toBounds2D());
-				N node;
+				final var primitive = (P) o;
+				final var iter = nodeIterator(primitive.getGeoLocation().toBounds2D());
 				while (iter.hasNext()) {
-					node = iter.next();
+					final var node = iter.next();
 					if (node.removeUserData(primitive)) {
 						changed = true;
 					}
@@ -480,8 +473,8 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 		if (col == null) {
 			return false;
 		}
-		boolean changed = false;
-		for (final P element : col) {
+		var changed = false;
+		for (final var element : col) {
 			changed = add(element) | changed;
 		}
 		return changed;
@@ -504,11 +497,10 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 		} catch (ClassCastException exception) {
 			return -1;
 		}
-		final Iterator<P> iter = this.tree.dataDepthFirstIterator();
-		P data;
-		int idx = 0;
+		final var iter = this.tree.dataDepthFirstIterator();
+		var idx = 0;
 		while (iter.hasNext()) {
-			data = iter.next();
+			final var data = iter.next();
 			if (data == element) {
 				return idx;
 			}
@@ -694,7 +686,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 			@Override
 			@SuppressWarnings("unchecked")
 			public P next() {
-				final P n = this.next;
+				final var n = this.next;
 				this.next = null;
 				while (this.it.hasNext()) {
 					try {
@@ -829,7 +821,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 
 		@Override
 		public Rectangle2afp<?, ?, ?, ?, ?, ?> next() {
-			final AbstractGISTreeSetNode<?, ?> node = this.iterator.next();
+			final var node = this.iterator.next();
 			return node.getBounds();
 		}
 

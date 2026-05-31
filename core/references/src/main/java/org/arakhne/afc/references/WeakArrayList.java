@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A array-based <tt>List</tt> implementation with <em>weak keys</em>.
@@ -122,8 +121,8 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	public WeakArrayList(Collection<? extends T> collection) {
 		this.data = new Object[collection.size()];
 		this.size = this.data.length;
-		int i = 0;
-		for (final T t : collection) {
+		var i = 0;
+		for (final var t : collection) {
 			this.data[i] = createRef(t);
 			i++;
 		}
@@ -133,24 +132,23 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	private static <T> T maskNull(T value) {
-		return (value == null) ? (T) NULL_VALUE : value;
+		return value == null ? (T) NULL_VALUE : value;
 	}
 
 	/** Replies the value given by the user.
 	 */
 	private static <T> T unmaskNull(T value) {
-		return (value == NULL_VALUE) ? null : value;
+		return value == NULL_VALUE ? null : value;
 	}
 
 	@Pure
 	@Override
 	@SuppressWarnings("unchecked")
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
-		Reference<T> ref;
+		final var buffer = new StringBuilder();
 		T obj;
-		for (int i = 0; i < this.size; ++i) {
-			ref = (Reference<T>) this.data[i];
+		for (var i = 0; i < this.size; ++i) {
+			final var ref = (Reference<T>) this.data[i];
 			if (this.data[i] == null) {
 				obj = null;
 			} else {
@@ -182,9 +180,9 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	@SuppressWarnings("checkstyle:magicnumber")
 	public void ensureCapacity(int minCapacity) {
 		this.modCount++;
-		final int oldCapacity = this.data.length;
+		final var oldCapacity = this.data.length;
 		if (minCapacity > oldCapacity) {
-			final Object[] oldData = this.data;
+			final var oldData = this.data;
 			int newCapacity = (oldCapacity * 3) / 2 + 1;
 			if (newCapacity < minCapacity) {
 				newCapacity = minCapacity;
@@ -201,7 +199,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	 */
 	public void trimToSize() {
 		this.modCount++;
-		final int oldCapacity = this.data.length;
+		final var oldCapacity = this.data.length;
 		if (this.size < oldCapacity) {
 			this.data = Arrays.copyOf(this.data, this.size);
 		}
@@ -226,9 +224,9 @@ public class WeakArrayList<T> extends AbstractList<T> {
 			// Clear the table
 			Reference<? extends T> ref;
 			j = 0;
-			for (int i = 0; i < this.size; ++i) {
+			for (var i = 0; i < this.size; ++i) {
 				ref = (Reference<T>) this.data[i];
-				if ((ref == null) || (ref.refersTo(null)) || (ref.get() == null)) {
+				if (ref == null || ref.refersTo(null) || ref.get() == null) {
 					if (ref != null) {
 						ref.clear();
 					}
@@ -253,7 +251,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 			this.enquedElement = true;
 		}
 
-		final int oldSize = this.size;
+		final var oldSize = this.size;
 		this.size = j;
 
 		if (j < oldSize) {
@@ -267,17 +265,18 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	 *
 	 * @param index is the index totest
 	 * @param allowLast indicates if the last elements is assumed to be valid or not.
+	 * @throws IndexOutOfBoundsException if the {@code index} is negative.
 	 */
 	protected void assertRange(int index, boolean allowLast) {
-		final int csize = expurge();
+		final var csize = expurge();
 		if (index < 0) {
-			throw new IndexOutOfBoundsException(Locale.getString("E1", index)); //$NON-NLS-1$
+			throw new IndexOutOfBoundsException(Locale.getString("E1", Integer.valueOf(index))); //$NON-NLS-1$
 		}
-		if (allowLast && (index > csize)) {
-			throw new IndexOutOfBoundsException(Locale.getString("E2", csize, index)); //$NON-NLS-1$
+		if (allowLast && index > csize) {
+			throw new IndexOutOfBoundsException(Locale.getString("E2", Integer.valueOf(csize), Integer.valueOf(index))); //$NON-NLS-1$
 		}
-		if (!allowLast && (index >= csize)) {
-			throw new IndexOutOfBoundsException(Locale.getString("E3", csize, index)); //$NON-NLS-1$
+		if (!allowLast && index >= csize) {
+			throw new IndexOutOfBoundsException(Locale.getString("E3", Integer.valueOf(csize), Integer.valueOf(index))); //$NON-NLS-1$
 		}
 	}
 
@@ -295,8 +294,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 		do {
 			assertRange(index, false);
 			value = ((Reference<T>) this.data[index]).get();
-		}
-		while (value == null);
+		} while (value == null);
 		return unmaskNull(value);
 	}
 
@@ -309,8 +307,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 			assertRange(index, false);
 			ref = (Reference<T>) this.data[index];
 			oldValue = ref.get();
-		}
-		while (oldValue == null);
+		} while (oldValue == null);
 		ref.clear();
 		this.data[index] = createRef(element);
 		this.modCount++;
@@ -336,8 +333,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 			assertRange(index, false);
 			ref = (Reference<T>) this.data[index];
 			oldValue = ref.get();
-		}
-		while (oldValue == null);
+		} while (oldValue == null);
 		ref.clear();
 		System.arraycopy(this.data, index + 1, this.data, index, this.size - index - 1);
 		this.data[this.size - 1] = null;
@@ -354,7 +350,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 		if (this.listeners == null) {
 			this.listeners = new LinkedList<>();
 		}
-		final List<ReferenceListener> list = this.listeners;
+		final var list = this.listeners;
 		synchronized (list) {
 			list.add(listener);
 		}
@@ -365,7 +361,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	 * @param listener the listener.
 	 */
 	public void removeReferenceListener(ReferenceListener listener) {
-		final List<ReferenceListener> list = this.listeners;
+		final var list = this.listeners;
 		if (list != null) {
 			synchronized (list) {
 				list.remove(listener);
@@ -382,7 +378,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	 * @param released is the count of released objects.
 	 */
 	protected void fireReferenceRelease(int released) {
-		final List<ReferenceListener> list = this.listeners;
+		final var list = this.listeners;
 		if (list != null && !list.isEmpty()) {
 			for (final ReferenceListener listener : list) {
 				listener.referenceReleased(released);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,18 +22,19 @@ package org.arakhne.afc.math.geometry.d2.afp;
 
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D triangle on a plane.
+/** Functional interface that represented a 2D triangle on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -48,6 +49,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Triangle2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends Triangle2afp<?, ?, IE, P, V, B>,
@@ -56,6 +58,11 @@ public interface Triangle2afp<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends Shape2afp<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.TRIANGLE;
+	}
 
     /** Replies the closest feature of the triangle to the given point.
      *
@@ -71,52 +78,52 @@ public interface Triangle2afp<
      */
     static TriangleFeature findsClosestFeatureTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py) {
-        final double apx = px - tx1;
-        final double apy = py - ty1;
-        final double abx = tx2 - tx1;
-        final double aby = ty2 - ty1;
-        double d1 = Vector2D.dotProduct(abx, aby, apx, apy);
+        final var apx = px - tx1;
+        final var apy = py - ty1;
+        final var abx = tx2 - tx1;
+        final var aby = ty2 - ty1;
+        var d1 = Vector2D.dotProduct(abx, aby, apx, apy);
         if (d1 < 0.) {
-            final double acx = tx3 - tx1;
-            final double acy = ty3 - ty1;
+            final var acx = tx3 - tx1;
+            final var acy = ty3 - ty1;
             d1 = Vector2D.dotProduct(acx, acy, apx, apy);
             if (d1 < 0.) {
                 return TriangleFeature.FIRST_CORNER;
             }
-            final double d2 = Vector2D.dotProduct(acx, acy, acx, acy);
+            final var d2 = Vector2D.dotProduct(acx, acy, acx, acy);
             if (d1 > d2) {
                 return TriangleFeature.THIRD_CORNER;
             }
             return TriangleFeature.THIRD_SEGMENT;
         }
 
-        final double bpx = px - tx2;
-        final double bpy = py - ty2;
-        final double bcx = tx3 - tx2;
-        final double bcy = ty3 - ty2;
-        final double d2 = Vector2D.dotProduct(bcx, bcy, bpx, bpy);
+        final var bpx = px - tx2;
+        final var bpy = py - ty2;
+        final var bcx = tx3 - tx2;
+        final var bcy = ty3 - ty2;
+        final var d2 = Vector2D.dotProduct(bcx, bcy, bpx, bpy);
         if (d2 < 0.) {
-            final double d3 = Vector2D.dotProduct(abx, aby, abx, aby);
+            final var d3 = Vector2D.dotProduct(abx, aby, abx, aby);
             if (d1 > d3) {
                 return TriangleFeature.SECOND_CORNER;
             }
             return TriangleFeature.FIRST_SEGMENT;
         }
 
-        final double cpx = px - tx3;
-        final double cpy = py - ty3;
-        final double cax = tx1 - tx1;
-        final double cay = ty1 - ty1;
-        final double d3 = Vector2D.dotProduct(cax, cay, cpx, cpy);
+        final var cpx = px - tx3;
+        final var cpy = py - ty3;
+        final var cax = tx1 - tx1;
+        final var cay = ty1 - ty1;
+        final var d3 = Vector2D.dotProduct(cax, cay, cpx, cpy);
         if (d3 < 0.) {
-            final double d4 = Vector2D.dotProduct(bcx, bcy, bcx, bcy);
+            final var d4 = Vector2D.dotProduct(bcx, bcy, bcx, bcy);
             if (d2 > d4) {
                 return TriangleFeature.THIRD_CORNER;
             }
             return TriangleFeature.SECOND_SEGMENT;
         }
 
-        double d4 = Vector2D.dotProduct(abx, aby, abx, aby);
+        var d4 = Vector2D.dotProduct(abx, aby, abx, aby);
         if (d1 > d4) {
             return TriangleFeature.SECOND_SEGMENT;
         }
@@ -169,25 +176,25 @@ public interface Triangle2afp<
      * @param px is the point to test.
      * @param py is the point to test.
      * @return {@code true} if the point is inside the triangle;
-     * {@code false} if not.
+     *      {@code false} if not.
      */
     @Pure
     static boolean containsTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py) {
         // Barycentric algorithm
-        final double ty23 = ty2 - ty3;
-        final double tx13 = tx1 - tx3;
-        final double tx32 = tx3 - tx2;
-        final double ty13 = ty1 - ty3;
-        final double denominator = ty23 * tx13 + tx32 * ty13;
+        final var ty23 = ty2 - ty3;
+        final var tx13 = tx1 - tx3;
+        final var tx32 = tx3 - tx2;
+        final var ty13 = ty1 - ty3;
+        final var denominator = ty23 * tx13 + tx32 * ty13;
         if (denominator == 0.) {
             return false;
         }
-        final double px3 = px - tx3;
-        final double py3 = py - ty3;
-        final double a = (ty23 * px3 + tx32 * py3) / denominator;
-        final double b = (-ty13 * px3 + tx13 * py3) / denominator;
-        final double c = 1. - a - b;
+        final var px3 = px - tx3;
+        final var py3 = py - ty3;
+        final var a = (ty23 * px3 + tx32 * py3) / denominator;
+        final var b = (-ty13 * px3 + tx13 * py3) / denominator;
+        final var c = 1. - a - b;
         return 0. <= a && a <= 1. && 0. <= b && b <= 1. && 0. <= c && c <= 1.;
     }
 
@@ -205,9 +212,10 @@ public interface Triangle2afp<
      * @param rwidth the width of the rectangle.
      * @param rheight the height of the rectangle.
      * @return {@code true} if the rectangle is inside the triangle;
-     * {@code false} if not.
+     *     {@code false} if not.
      */
     @Pure
+    @SuppressWarnings("checkstyle:parameternumber")
     static boolean containsTriangleRectangle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double rx, double ry, double rwidth, double rheight) {
         assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(8);
@@ -232,13 +240,14 @@ public interface Triangle2afp<
      * @param closest the closest point.
      * @param farthest the farthest point.
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     static void findsClosestFarthestPointsTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py, Point2D<?, ?> closest, Point2D<?, ?> farthest) {
         assert closest != null || farthest != null : AssertMessages.oneNotNullParameter(8, 9);
         if (closest != null) {
-            final double side1 = Vector2D.perpProduct(tx2 - tx1, ty2 - ty1, px - tx1, py - ty1);
-            final double side2 = Vector2D.perpProduct(tx3 - tx2, ty3 - ty2, px - tx2, py - ty2);
-            final double side3 = Vector2D.perpProduct(tx1 - tx3, ty1 - ty3, px - tx3, py - ty3);
+            final var side1 = Vector2D.perpProduct(tx2 - tx1, ty2 - ty1, px - tx1, py - ty1);
+            final var side2 = Vector2D.perpProduct(tx3 - tx2, ty3 - ty2, px - tx2, py - ty2);
+            final var side3 = Vector2D.perpProduct(tx1 - tx3, ty1 - ty3, px - tx3, py - ty3);
             if (side1 <= 0) {
                 if (side2 <= 0) {
                     closest.set(tx2, ty2);
@@ -261,11 +270,10 @@ public interface Triangle2afp<
         }
 
         if (farthest != null) {
-            double dist;
-            double x = tx1;
-            double y = ty1;
-            double max = Math.pow(tx1 - px, 2) + Math.pow(ty1 - py, 2);
-            dist = Math.pow(tx2 - px, 2) + Math.pow(ty2 - py, 2);
+            var x = tx1;
+            var y = ty1;
+            var max = Math.pow(tx1 - px, 2) + Math.pow(ty1 - py, 2);
+            var dist = Math.pow(tx2 - px, 2) + Math.pow(ty2 - py, 2);
             if (dist > max) {
                 max = dist;
                 x = tx2;
@@ -314,9 +322,9 @@ public interface Triangle2afp<
             cx = tx2;
             cy = ty2;
         }
-        final double side1 = Vector2D.perpProduct(bx - tx1, by - ty1, px - tx1, py - ty1);
-        final double side2 = Vector2D.perpProduct(cx - bx, cy - by, px - bx, py - by);
-        final double side3 = Vector2D.perpProduct(tx1 - cx, ty1 - cy, px - cx, py - cy);
+        final var side1 = Vector2D.perpProduct(bx - tx1, by - ty1, px - tx1, py - ty1);
+        final var side2 = Vector2D.perpProduct(cx - bx, cy - by, px - bx, py - by);
+        final var side3 = Vector2D.perpProduct(tx1 - cx, ty1 - cy, px - cx, py - cy);
         if (side1 < 0) {
             if (side2 < 0) {
                 return Point2D.getDistanceSquaredPointPoint(px, py, tx2, ty2);
@@ -350,13 +358,14 @@ public interface Triangle2afp<
      * @param cy is the center of the circle
      * @param cradius is the radius of the circle
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
+    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsTriangleCircle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double cx, double cy, double cradius) {
         assert cradius >= 0 : AssertMessages.positiveOrZeroParameter(8);
-        final double distance = calculatesSquaredDistanceTrianglePoint(
+        final var distance = calculatesSquaredDistanceTrianglePoint(
                 tx1, ty1, tx2, ty2, tx3, ty3, cx, cy);
         return distance < cradius * cradius;
     }
@@ -374,24 +383,25 @@ public interface Triangle2afp<
      * @param ewidth is the width of the ellipse
      * @param eheight is the height of the ellipse
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *      {@code false}
      */
     @Pure
+    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsTriangleEllipse(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double ex, double ey, double ewidth, double eheight) {
         assert ewidth >= 0 : AssertMessages.positiveOrZeroParameter(8);
         assert eheight >= 0 : AssertMessages.positiveOrZeroParameter(9);
-        final double a = ewidth / 2.;
-        final double b = eheight / 2.;
-        final double centerX = ex + a;
-        final double centerY = ey + b;
-        final double x1 = (tx1 - centerX) / a;
-        final double y1 = (ty1 - centerY) / b;
-        final double x2 = (tx2 - centerX) / a;
-        final double y2 = (ty2 - centerY) / b;
-        final double x3 = (tx3 - centerX) / a;
-        final double y3 = (ty3 - centerY) / b;
-        final double distance = calculatesSquaredDistanceTrianglePoint(
+        final var a = ewidth / 2.;
+        final var b = eheight / 2.;
+        final var centerX = ex + a;
+        final var centerY = ey + b;
+        final var x1 = (tx1 - centerX) / a;
+        final var y1 = (ty1 - centerY) / b;
+        final var x2 = (tx2 - centerX) / a;
+        final var y2 = (ty2 - centerY) / b;
+        final var x3 = (tx3 - centerX) / a;
+        final var y3 = (ty3 - centerY) / b;
+        final var distance = calculatesSquaredDistanceTrianglePoint(
                 x1, y1, x2, y2, x3, y3, 0, 0);
         return distance < 1.;
     }
@@ -409,9 +419,10 @@ public interface Triangle2afp<
      * @param sx2 x coordinate of the second point of the segment.
      * @param sy2 y coordinate of the second point of the segment.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
+    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsTriangleSegment(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double sx1, double sy1, double sx2, double sy2) {
         // Separated axis theory on 4 axis (3 directions of the triangle, 1 direction of the segment)
@@ -422,13 +433,13 @@ public interface Triangle2afp<
         double min2;
         double max2;
         double a;
-        final double[] coordinates = new double[] {
+        final var coordinates = new double[] {
             tx2 - tx1, ty2 - ty1,
             tx3 - tx2, ty3 - ty3,
             tx1 - tx3, ty1 - ty3,
             sx2 - sx1, sy2 - sy1,
         };
-        for (int i = 0; i < coordinates.length; i += 2) {
+        for (var i = 0; i < coordinates.length; i += 2) {
             vx = coordinates[i];
             vy = coordinates[i + 1];
             min1 = Vector2D.perpProduct(vx, vy, tx1, ty1);
@@ -479,15 +490,16 @@ public interface Triangle2afp<
      * @param t2x3 x coordinate of the third point of the second triangle.
      * @param t2y3 y coordinate of the third point of the second triangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
+    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsTriangleTriangle(double t1x1, double t1y1, double t1x2, double t1y2,
             double t1x3, double t1y3, double t2x1, double t2y1, double t2x2, double t2y2,
             double t2x3, double t2y3) {
         assert isCCW(t1x1, t1y1, t1x2, t1y2, t1x3, t1y3) : AssertMessages.ccwParameters(0, 1, 2, 3, 4, 5);
 
-        final double[] coordinates = new double[] {
+        final var coordinates = new double[] {
             t1x2 - t1x1, t1x1, t1y2 - t1y1, t1y1,
             t2x2 - t2x1, t2x1, t2y2 - t2y1, t2y1,
             t1x3 - t1x2, t1x2, t1y3 - t1y2, t1y2,
@@ -495,23 +507,23 @@ public interface Triangle2afp<
             t1x1 - t1x3, t1x3, t1y1 - t1y3, t1y3,
             t2x1 - t2x3, t2x3, t2y1 - t2y3, t2y3,
         };
-        for (int i = 0; i < coordinates.length; i += 8) {
-            final double a = coordinates[i];
-            double ox = coordinates[i + 1];
-            final double b = coordinates[i + 2];
-            double oy = coordinates[i + 3];
-            if ((Vector2D.perpProduct(a, b, t2x1 - ox, t2y1 - oy) <= 0.)
-                    && (Vector2D.perpProduct(a, b, t2x2 - ox, t2y2 - oy) <= 0.)
-                    && (Vector2D.perpProduct(a, b, t2x3 - ox, t2y3 - oy) <= 0.)) {
+        for (var i = 0; i < coordinates.length; i += 8) {
+            final var a = coordinates[i];
+            var ox = coordinates[i + 1];
+            final var b = coordinates[i + 2];
+            var oy = coordinates[i + 3];
+            if (Vector2D.perpProduct(a, b, t2x1 - ox, t2y1 - oy) <= 0.
+                    && Vector2D.perpProduct(a, b, t2x2 - ox, t2y2 - oy) <= 0.
+                    && Vector2D.perpProduct(a, b, t2x3 - ox, t2y3 - oy) <= 0.) {
                 return false;
             }
-            final double c = coordinates[i + 4];
+            final var c = coordinates[i + 4];
             ox = coordinates[i + 5];
-            final double d = coordinates[i + 6];
+            final var d = coordinates[i + 6];
             oy = coordinates[i + 7];
-            if ((Vector2D.perpProduct(c, d, t1x1 - ox, t1y1 - oy) <= 0.)
-                    && (Vector2D.perpProduct(c, d, t1x2 - ox, t1y2 - oy) <= 0.)
-                    && (Vector2D.perpProduct(c, d, t1x3 - ox, t1y3 - oy) <= 0.)) {
+            if (Vector2D.perpProduct(c, d, t1x1 - ox, t1y1 - oy) <= 0.
+                    && Vector2D.perpProduct(c, d, t1x2 - ox, t1y2 - oy) <= 0.
+                    && Vector2D.perpProduct(c, d, t1x3 - ox, t1y3 - oy) <= 0.) {
                 return false;
             }
         }
@@ -532,16 +544,17 @@ public interface Triangle2afp<
      * @param rwidth width of the rectangle.
      * @param rheight height of the rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
+    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsTriangleRectangle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double rx, double ry, double rwidth, double rheight) {
         assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(8);
         assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(9);
         // Test triangle segment intersection with the rectangle
-        final double rx2 = rx + rwidth;
-        final double ry2 = ry + rheight;
+        final var rx2 = rx + rwidth;
+        final var ry2 = ry + rheight;
         if (Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2, tx1, ty1, tx2, ty2)
                 || Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2, tx2, ty2, tx3, ty3)
                 || Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2, tx3, ty3, tx1, ty1)) {
@@ -758,16 +771,16 @@ public interface Triangle2afp<
     @Override
     default void toBoundingBox(B box) {
         assert box != null : AssertMessages.notNullParameter();
-        double minx = getX1();
-        double maxx = minx;
+        var minx = getX1();
+        var maxx = minx;
         if (getX2() < minx) {
             minx = getX2();
         }
         if (getX2() > maxx) {
             maxx = getX2();
         }
-        double miny = getY1();
-        double maxy = miny;
+        var miny = getY1();
+        var maxy = miny;
         if (getY2() < miny) {
             miny = getY2();
         }
@@ -791,8 +804,8 @@ public interface Triangle2afp<
 
     @Override
     default boolean isEmpty() {
-        final double x = getX1();
-        final double y = getY1();
+        final var x = getX1();
+        final var y = getY1();
         return x == getX2() && x == getX3() && y == getY2() && y == getY3();
     }
 
@@ -807,7 +820,7 @@ public interface Triangle2afp<
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> r = getClosestPointTo(pt);
+        final var r = getClosestPointTo(pt);
         return r.getDistanceL1(pt);
     }
 
@@ -815,7 +828,7 @@ public interface Triangle2afp<
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> r = getClosestPointTo(pt);
+        final var r = getClosestPointTo(pt);
         return r.getDistanceLinf(pt);
     }
 
@@ -915,8 +928,8 @@ public interface Triangle2afp<
     @Override
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.calculatesCrossingsPathIteratorTriangleShadow(
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var crossings = Path2afp.calculatesCrossingsPathIteratorTriangleShadow(
                 0,
                 iterator,
                 getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
@@ -943,7 +956,7 @@ public interface Triangle2afp<
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestFarthestPointsTrianglePoint(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 pt.getX(), pt.getY(), point, null);
         return point;
@@ -959,7 +972,7 @@ public interface Triangle2afp<
     @Unefficient
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), ellipse.getPathIterator(), point);
         return point;
     }
@@ -968,7 +981,7 @@ public interface Triangle2afp<
     @Unefficient
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), rectangle.getPathIterator(), point);
         return point;
     }
@@ -977,7 +990,7 @@ public interface Triangle2afp<
     @Unefficient
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), segment.getPathIterator(), point);
         return point;
     }
@@ -986,7 +999,7 @@ public interface Triangle2afp<
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), triangle.getPathIterator(), point);
         return point;
     }
@@ -995,7 +1008,7 @@ public interface Triangle2afp<
     @Unefficient
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         assert orientedRectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), orientedRectangle.getPathIterator(), point);
         return point;
     }
@@ -1004,7 +1017,7 @@ public interface Triangle2afp<
     @Unefficient
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         assert parallelogram != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), parallelogram.getPathIterator(), point);
         return point;
     }
@@ -1013,7 +1026,7 @@ public interface Triangle2afp<
     @Unefficient
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         assert roundRectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
     }
@@ -1022,7 +1035,7 @@ public interface Triangle2afp<
     @Unefficient
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), point);
         return point;
     }
@@ -1031,7 +1044,7 @@ public interface Triangle2afp<
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestFarthestPointsTrianglePoint(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 pt.getX(), pt.getY(), null, point);
         return point;
@@ -1051,19 +1064,20 @@ public interface Triangle2afp<
 	 * @return the Geogebra representation of the triangle.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toPolygonDefinition(2, getX1(), getY1(), getX2(), getY2(), getX3(), getY3());
 	}
 
 	/** Abstract iterator on the path elements of the triangle.
-     *
-     * @param <T> the type of the path elements.
-     * @author $Author: sgalland$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
-     */
-    abstract class AbstractTrianglePathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
+	 *
+	 * @param <T> the type of the path elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	abstract class AbstractTrianglePathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
         /** Number of path elements.
          */
@@ -1187,7 +1201,7 @@ public interface Triangle2afp<
             if (this.index >= NUMBER_ELEMENTS) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             if (idx < 0) {
                 this.movex = this.x1;
@@ -1197,8 +1211,8 @@ public interface Triangle2afp<
                 return getGeomFactory().newMovePathElement(
                         this.lastx, this.lasty);
             }
-            final double ppx = this.lastx;
-            final double ppy = this.lasty;
+            final var ppx = this.lastx;
+            final var ppy = this.lasty;
             switch (idx) {
             case 0:
                 this.lastx = this.x2;
@@ -1296,7 +1310,7 @@ public interface Triangle2afp<
             if (this.index >= NUMBER_ELEMENTS) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             if (idx < 0) {
                 this.tmpPoint.set(this.x1, this.y1);
@@ -1308,8 +1322,8 @@ public interface Triangle2afp<
                 return getGeomFactory().newMovePathElement(
                         this.lastx, this.lasty);
             }
-            final double ppx = this.lastx;
-            final double ppy = this.lasty;
+            final var ppx = this.lastx;
+            final var ppy = this.lasty;
             switch (idx) {
             case 0:
                 this.tmpPoint.set(this.x2, this.y2);

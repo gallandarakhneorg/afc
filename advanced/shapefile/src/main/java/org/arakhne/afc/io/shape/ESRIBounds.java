@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,8 @@
 
 package org.arakhne.afc.io.shape;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Bounds for a ESRI shape file.
@@ -155,7 +154,7 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 	 * @return the union of this bounds and the given one.
 	 */
 	public ESRIBounds createUnion(ESRIBounds bounds) {
-		final ESRIBounds eb = new ESRIBounds();
+		final var eb = new ESRIBounds();
 		eb.minx = (bounds.minx < this.minx) ? bounds.minx : this.minx;
 		eb.maxx = (bounds.maxx < this.maxx) ? this.maxx : bounds.maxx;
 		eb.miny = (bounds.miny < this.miny) ? bounds.miny : this.miny;
@@ -201,8 +200,8 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 	@Override
 	@Pure
 	public boolean equals(Object obj) {
-		if (obj instanceof ESRIBounds) {
-			return compareTo((ESRIBounds) obj) == 0;
+		if (obj instanceof ESRIBounds bounds) {
+			return compareTo(bounds) == 0;
 		}
 		return false;
 	}
@@ -210,16 +209,15 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 	@Pure
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Double.hashCode(this.minx);
-		result = prime * result + Double.hashCode(this.miny);
-		result = prime * result + Double.hashCode(this.minz);
-		result = prime * result + Double.hashCode(this.minm);
-		result = prime * result + Double.hashCode(this.maxx);
-		result = prime * result + Double.hashCode(this.maxy);
-		result = prime * result + Double.hashCode(this.maxz);
-		result = prime * result + Double.hashCode(this.maxm);
+		var result = 1;
+		result = 21 * result + Double.hashCode(this.minx);
+		result = 21 * result + Double.hashCode(this.miny);
+		result = 21 * result + Double.hashCode(this.minz);
+		result = 21 * result + Double.hashCode(this.minm);
+		result = 21 * result + Double.hashCode(this.maxx);
+		result = 21 * result + Double.hashCode(this.maxy);
+		result = 21 * result + Double.hashCode(this.maxz);
+		result = 21 * result + Double.hashCode(this.maxm);
 		return result;
 	}
 
@@ -229,7 +227,7 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 		if (bounds == null) {
 			return -1;
 		}
-		int cmp = (int) Math.signum(bounds.minx - this.minx);
+		var cmp = (int) Math.signum(bounds.minx - this.minx);
 		if (cmp != 0) {
 			return cmp;
 		}
@@ -374,7 +372,7 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 	 */
 	@Pure
 	public Rectangle2d toRectangle2d() {
-		final Rectangle2d bounds = new Rectangle2d();
+		final var bounds = new Rectangle2d();
 		bounds.setFromCorners(this.minx, this.miny, this.maxx, this.maxy);
 		return bounds;
 	}
@@ -408,7 +406,7 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append('(');
 		b.append(this.minx);
 		b.append(';');

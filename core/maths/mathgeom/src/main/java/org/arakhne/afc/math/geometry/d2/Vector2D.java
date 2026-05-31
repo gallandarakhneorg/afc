@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,6 @@ package org.arakhne.afc.math.geometry.d2;
 
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions;
@@ -33,6 +30,8 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Vector.
  *
@@ -44,6 +43,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:methodcount")
 public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extends Point2D<? super RP, ? super RV>>
 		extends Tuple2D<RV> {
 
@@ -97,7 +97,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * A unit vector has a length equal to 1.
 	 *
 	 * @return {@code true} if the vector has a length equal to 1.
-	 * {@code false} otherwise.
+	 *     {@code false} otherwise.
 	 */
 	@Pure
 	default boolean isUnitVector() {
@@ -150,7 +150,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 *
 	 * @param vector the vector to compare to this vector.
 	 * @return {@code true} if the vectors are orthogonal.
-	 * {@code false} otherwise.
+	 *     {@code false} otherwise.
 	 */
 	@Pure
 	default boolean isOrthogonal(Vector2D<?, ?> vector) {
@@ -274,17 +274,17 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	static double signedAngle(double x1, double y1, double x2, double y2) {
-		final double length1 = Math.hypot(x1, y1);
-		final double length2 = Math.hypot(x2, y2);
+		final var length1 = Math.hypot(x1, y1);
+		final var length2 = Math.hypot(x2, y2);
 
-		if ((length1 == 0.) || (length2 == 0.)) {
+		if (length1 == 0. || length2 == 0.) {
 			return Double.NaN;
 		}
 
-		double cx1 = x1;
-		double cy1 = y1;
-		double cx2 = x2;
-		double cy2 = y2;
+		var cx1 = x1;
+		var cy1 = y1;
+		var cx2 = x2;
+		var cy2 = y2;
 
 		// A and B are normalized
 		if (length1 != 1.) {
@@ -299,9 +299,9 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 
 		// Second method
 		// A . B = |A|.|B|.cos(theta) = cos(theta)
-		final double cos = cx1 * cx2 + cy1 * cy2;
+		final var cos = cx1 * cx2 + cy1 * cy2;
 		// A x B = |A|.|B|.sin(theta).N = sin(theta) (where N is the unit vector perpendicular to plane AB)
-		final double sin = cx1 * cy2 - cy1 * cx2;
+		final var sin = cx1 * cy2 - cy1 * cx2;
 
 		return Math.atan2(sin, cos);
 	}
@@ -322,7 +322,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 *
 	 * @param vector is the vector to reach.
 	 * @return the rotation angle to turn this vector to reach
-	 * {@code v}.
+	 *     {@code v}.
 	 */
 	@Pure
 	default double signedAngle(Vector2D<?, ?> vector) {
@@ -498,21 +498,21 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default PowerResult<RV> power(int power) {
-		final boolean isEven = power % 2 == 0;
+		final var isEven = power % 2 == 0;
 		final int evenPower;
 		if (isEven) {
 			evenPower = power / 2;
 		} else {
 			evenPower = MathUtil.sign(power) * (Math.abs(power) - 1) / 2;
 		}
-		final double x = getX();
-		final double y = getY();
-		final double dot = dotProduct(x, y, x, y);
-		final double resultForEven = Math.pow(dot, evenPower);
+		final var x = getX();
+		final var y = getY();
+		final var dot = dotProduct(x, y, x, y);
+		final var resultForEven = Math.pow(dot, evenPower);
 		if (isEven) {
 			return new PowerResult<>(resultForEven);
 		}
-		final RV r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven);
+		final var r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven);
 		return new PowerResult<>(r);
 
 	}
@@ -580,10 +580,10 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	@Pure
 	default RV toColinearVector(double length) {
 		assert length >= 0. : AssertMessages.positiveOrZeroParameter();
-		final double len = getLength();
+		final var len = getLength();
 		if (len != 0.) {
-			final double x = (length * getX()) / len;
-			final double y = (length * getY()) / len;
+			final var x = (length * getX()) / len;
+			final var y = (length * getY()) / len;
 			return getGeomFactory().newVector(x, y);
 		}
 		return getGeomFactory().newVector();
@@ -606,8 +606,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double getLengthSquared() {
-		final double x = getX();
-		final double y = getY();
+		final var x = getX();
+		final var y = getY();
 		return x * x + y * y;
 	}
 
@@ -618,8 +618,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	default void normalize(Vector2D<?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		final double x = vector.getX();
-		final double y = vector.getY();
+		final var x = vector.getX();
+		final var y = vector.getY();
 		double sqlength = x * x + y * y;
 		if (sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
@@ -635,8 +635,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * <p>If the length of the vector is zero, x and y are set to zero.
 	 */
 	default void normalize() {
-		final double x = getX();
-		final double y = getY();
+		final var x = getX();
+		final var y = getY();
 		double sqlength = x * x + y * y;
 		if (sqlength != 1.) {
 			if (sqlength != 0.) {
@@ -659,7 +659,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	@Pure
 	default double angle(Vector2D<?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		double vDot = dotProduct(getX(), getY(), vector.getX(), vector.getY()) / (getLength() * vector.getLength());
+		var vDot = dotProduct(getX(), getY(), vector.getX(), vector.getY()) / (getLength() * vector.getLength());
 		if (vDot < -1.) {
 			vDot = -1.;
 		}
@@ -699,10 +699,10 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	default void turn(double angle, Vector2D<?, ?> vectorToTurn) {
 		assert vectorToTurn != null : AssertMessages.notNullParameter(1);
-		final double sin = Math.sin(angle);
-		final double cos = Math.cos(angle);
-		final double x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY();
-		final double y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
+		final var sin = Math.sin(angle);
+		final var cos = Math.cos(angle);
+		final var x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY();
+		final var y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
 		set(x, y);
 	}
 
@@ -755,8 +755,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #turnRight(double)
 	 */
 	default void turnLeft(double angle, Vector2D<?, ?> vectorToTurn, CoordinateSystem2D system) {
-		final double sin = Math.sin(angle);
-		final double cos = Math.cos(angle);
+		final var sin = Math.sin(angle);
+		final var cos = Math.cos(angle);
 		final double x;
 		final double y;
 		if (system.isRightHanded()) {
@@ -808,8 +808,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double getOrientationAngle() {
-		final double angle = Math.acos(getX());
-		if (getY() < 0f) {
+		final var angle = Math.acos(getX());
+		if (getY() < 0.) {
 			return MathConstants.TWO_PI - angle;
 		}
 		return angle;
@@ -821,9 +821,9 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param newLength - the new length.
 	 */
 	default void setLength(double newLength) {
-		final double l = getLength();
+		final var l = getLength();
 		if (l != 0.) {
-			final double f = newLength / l;
+			final var f = newLength / l;
 			set(getX() * f, getY() * f);
 		} else {
 			set(newLength, 0);
@@ -836,7 +836,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV toUnitVector() {
-		final double length = getLength();
+		final var length = getLength();
 		if (length == 0.) {
 			return getGeomFactory().newVector();
 		}
@@ -867,6 +867,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #add(Vector2D)
 	 */
 	@XtextOperator("+=")
+	@Inline("add($1)")
 	default void operator_add(Vector2D<?, ?> v) {
 		add(v);
 	}
@@ -881,6 +882,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #sub(Vector2D)
 	 */
 	@XtextOperator("-=")
+	@Inline("sub($1)")
 	default void operator_remove(Vector2D<?, ?> v) {
 		sub(v);
 	}
@@ -897,6 +899,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@XtextOperator("*")
+	@Inline("dot($1)")
 	default double operator_multiply(Vector2D<?, ?> v) {
 		return dot(v);
 	}
@@ -932,6 +935,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@XtextOperator("==")
+	@Inline("equals($1)")
 	default boolean operator_equals(Tuple2D<?> v) {
 		return equals(v);
 	}
@@ -964,6 +968,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@XtextOperator("..")
+	@Inline("angle($1)")
 	default double operator_upTo(Vector2D<?, ?> v) {
 		return angle(v);
 	}
@@ -980,6 +985,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@XtextOperator(">..")
+	@Inline("signedAngle($1)")
 	default double operator_greaterThanDoubleDot(Vector2D<?, ?> v) {
 		return signedAngle(v);
 	}
@@ -1169,6 +1175,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@XtextOperator("**")
+	@Inline("perp($1)")
 	default double operator_power(Vector2D<?, ?> v) {
 		return perp(v);
 	}
@@ -1189,6 +1196,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@XtextOperator("**")
+	@Inline("power($1)")
 	default PowerResult<RV> operator_power(int power) {
 		return power(power);
 	}
@@ -1204,6 +1212,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("*")
+	@Inline("operator_multiply($1)")
 	default double $times(Vector2D<?, ?> v) {
 		return operator_multiply(v);
 	}
@@ -1223,6 +1232,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("*")
+	@Inline("operator_multiply($1)")
 	default RV $times(double factor) {
 		return operator_multiply(factor);
 	}
@@ -1237,6 +1247,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("(-)")
+	@Inline("operator_minus()")
 	default RV $minus() {
 		return operator_minus();
 	}
@@ -1252,6 +1263,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RV $minus(Vector2D<?, ?> v) {
 		return operator_minus(v);
 	}
@@ -1271,6 +1283,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RV $minus(double scalar) {
 		return operator_minus(scalar);
 	}
@@ -1286,6 +1299,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RP $minus(Point2D<?, ?> point) {
 		return operator_minus(point);
 	}
@@ -1304,6 +1318,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("/")
+	@Inline("operator_divide($1)")
 	default RV $div(double factor) {
 		return operator_divide(factor);
 	}
@@ -1319,6 +1334,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default RV $plus(Vector2D<?, ?> v) {
 		return operator_plus(v);
 	}
@@ -1334,6 +1350,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default RP $plus(Point2D<?, ?> pt) {
 		return operator_plus(pt);
 	}
@@ -1353,6 +1370,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default RV $plus(double scalar) {
 		return operator_plus(scalar);
 	}
@@ -1368,6 +1386,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("^")
+	@Inline("operator_power($1)")
 	default double $up(Vector2D<?, ?> v) {
 		return operator_power(v);
 	}
@@ -1387,6 +1406,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("^")
+	@Inline("operator_power($1)")
 	default PowerResult<RV> $up(int power) {
 		return operator_power(power);
 	}
@@ -1443,7 +1463,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 				return true;
 			}
 			if (this.vector != null) {
-				return this.vector.equals((Vector2D<?, ?>) vector);
+				return this.vector.equals(vector);
 			}
 			return false;
 		}
@@ -1451,21 +1471,20 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 		@Override
 		@Pure
 		public boolean equals(Object obj) {
-			if (obj instanceof PowerResult<?>) {
+			if (obj instanceof PowerResult result) {
 				if (this == obj) {
 					return true;
 				}
-				final PowerResult<?> result = (PowerResult<?>) obj;
 				if (result.vector != null) {
 					return isSameVector(result.vector);
 				}
-				return isSameScalar(result.scalar);
+				return isSameScalar(Double.valueOf(result.scalar));
 			}
-			if (obj instanceof Vector2D<?, ?>) {
-				return isSameVector((Vector2D<?, ?>) obj);
+			if (obj instanceof Vector2D vec) {
+				return isSameVector(vec);
 			}
-			if (obj instanceof Number) {
-				return isSameScalar((Number) obj);
+			if (obj instanceof Number num) {
+				return isSameScalar(num);
 			}
 			return false;
 		}
@@ -1473,10 +1492,10 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1;
+			var bits = 1L;
 			bits = 31 * bits + Double.hashCode(this.scalar);
 			bits = 31 * bits + Objects.hashCode(this.vector);
-			final int b = (int) bits;
+			final var b = (int) bits;
 			return b ^ (b >> 31);
 		}
 

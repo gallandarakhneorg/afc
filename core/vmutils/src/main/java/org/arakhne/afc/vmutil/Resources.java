@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,7 +90,7 @@ public final class Resources {
 	@Pure
 	public static URL getResource(String path) {
 		try {
-			final Class<?> type = Caller.getCallerClass(1);
+			final var type = Caller.getCallerClass(1);
 			if (type != null) {
 				return getResource(type, path);
 			}
@@ -108,10 +108,10 @@ public final class Resources {
 	 *
 	 * <p>The name of {@code packagename} is translated into a resource
 	 * path (by replacing the dots by slashes) and the given path
-	 * is append to. For example, the two following codes are equivalent:<pre>{@code 
+	 * is append to. For example, the two following codes are equivalent:<pre><code>
 	 * Resources.getResources(Package.getPackage("org.arakhne.afc"), "/a/b/c/d.png");
 	 * Resources.getResources("org/arakhne/afc/a/b/c/d.png");
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>This function tries to use the class loader of the {@link Caller#getCallerClass()} calling class}
 	 * for retrieving the resource.
@@ -137,7 +137,7 @@ public final class Resources {
 		if (packagename == null || path == null) {
 			return null;
 		}
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append(packagename.getName().replaceAll(
 				Pattern.quote("."), //$NON-NLS-1$
 				Matcher.quoteReplacement(NAME_SEPARATOR)));
@@ -145,7 +145,7 @@ public final class Resources {
 			b.append(NAME_SEPARATOR);
 		}
 		b.append(path);
-		ClassLoader cl = classLoader;
+		var cl = classLoader;
 		if (cl == null) {
 			cl = packagename.getClass().getClassLoader();
 		}
@@ -160,10 +160,10 @@ public final class Resources {
 	 *
 	 * <p>The name of {@code classname} is translated into a resource
 	 * path (by remove the name of the class and replacing the dots by slashes) and the given path
-	 * is append to. For example, the two following codes are equivalent:<pre>{@code 
+	 * is append to. For example, the two following codes are equivalent:<pre><code>
 	 * Resources.getResource(Resources.class, "/a/b/c/d.png");
 	 * Resources.getResource("org/arakhne/vmutil/a/b/c/d.png");
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>The class loader of the given class is used. If it is {@code null},
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
@@ -245,10 +245,10 @@ public final class Resources {
 	 *
 	 * <p>The name of {@code packagename} is translated into a resource
 	 * path (by replacing the dots by slashes) and the given path
-	 * is append to. For example, the two following codes are equivalent:<pre>{@code 
+	 * is append to. For example, the two following codes are equivalent:<pre><code>
 	 * Resources.getResources(Package.getPackage("org.arakhne.afc"), "/a/b/c/d.png");
 	 * Resources.getResources("org/arakhne/afc/a/b/c/d.png");
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>If the {@code classLoader} parameter is {@code null},
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
@@ -272,7 +272,7 @@ public final class Resources {
 		if (packagename == null || path == null) {
 			return null;
 		}
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append(packagename.getName().replaceAll(
 				Pattern.quote("."), //$NON-NLS-1$
 				Matcher.quoteReplacement(NAME_SEPARATOR)));
@@ -280,7 +280,7 @@ public final class Resources {
 			b.append(NAME_SEPARATOR);
 		}
 		b.append(path);
-		ClassLoader cl = classLoader;
+		var cl = classLoader;
 		if (cl == null) {
 			cl = packagename.getClass().getClassLoader();
 		}
@@ -295,10 +295,10 @@ public final class Resources {
 	 *
 	 * <p>The name of {@code classname} is translated into a resource
 	 * path (by remove the name of the class and replacing the dots by slashes) and the given path
-	 * is append to. For example, the two following codes are equivalent:<pre>{@code 
+	 * is append to. For example, the two following codes are equivalent:<pre><code>
 	 * Resources.getResources(Resources.class, "/a/b/c/d.png");
 	 * Resources.getResources("org/arakhne/vmutil/a/b/c/d.png");
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * <p>The class loader of the given class is used. If it is {@code null},
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
@@ -357,17 +357,17 @@ public final class Resources {
 	 */
 	@Pure
 	public static URL getPropertyFile(Class<?> classname, Locale locale) {
-		final StringBuilder name = new StringBuilder();
+		final var name = new StringBuilder();
 
 		// Localized file
 		if (locale != null) {
-			final String country = locale.getCountry();
+			final var country = locale.getCountry();
 			if (country != null && !country.isEmpty()) {
 				name.append(classname.getSimpleName());
 				name.append("_"); //$NON-NLS-1$
 				name.append(country);
 				name.append(".properties"); //$NON-NLS-1$
-				final URL url = getResource(classname, name.toString());
+				final var url = getResource(classname, name.toString());
 				if (url != null) {
 					return url;
 				}
@@ -398,17 +398,17 @@ public final class Resources {
 	@Pure
 	@Deprecated(since = "17.0")
 	public static URL getPropertyFile(ClassLoader classLoader, Class<?> classname, Locale locale) {
-		final StringBuilder name = new StringBuilder();
+		final var name = new StringBuilder();
 
 		// Localized file
 		if (locale != null) {
-			final String country = locale.getCountry();
+			final var country = locale.getCountry();
 			if (country != null && !country.isEmpty()) {
 				name.append(classname.getSimpleName());
 				name.append("_"); //$NON-NLS-1$
 				name.append(country);
 				name.append(".properties"); //$NON-NLS-1$
-				final URL url = getResource(classLoader, classname.getPackage(), name.toString());
+				final var url = getResource(classLoader, classname.getPackage(), name.toString());
 				if (url != null) {
 					return url;
 				}

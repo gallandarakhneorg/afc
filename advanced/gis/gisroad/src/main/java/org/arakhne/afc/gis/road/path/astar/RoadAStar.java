@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -140,7 +140,7 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 			return super.solve(startPoint, endPoint);
 		}
 		if (endPoint.getConnectedSegmentCount() > 0) {
-			final RoadSegment segment = endPoint.getConnectedSegment(0);
+			final var segment = endPoint.getConnectedSegment(0);
 			if (segment != null) {
 				final VirtualPoint pts = new VirtualPoint(endPoint.getPoint(), segment);
 				return super.solve(startPoint, pts);
@@ -160,12 +160,12 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 	 */
 	public RoadPath solve(Point2D<?, ?> startPoint, Point2D<?, ?> endPoint, RoadNetwork network) {
 		assert network != null && startPoint != null && endPoint != null;
-		final RoadSegment startSegment = network.getNearestSegment(startPoint);
+		final var startSegment = network.getNearestSegment(startPoint);
 		if (startSegment != null) {
-			final RoadSegment endSegment = network.getNearestSegment(endPoint);
+			final var endSegment = network.getNearestSegment(endPoint);
 			if (endSegment != null) {
-				final VirtualPoint start = new VirtualPoint(startPoint, startSegment);
-				final VirtualPoint end = new VirtualPoint(endPoint, endSegment);
+				final var start = new VirtualPoint(startPoint, startSegment);
+				final var end = new VirtualPoint(endPoint, endSegment);
 				return solve(start, end);
 			}
 		}
@@ -183,9 +183,9 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 	 */
 	public RoadPath solve(RoadConnection startPoint, Point2D<?, ?> endPoint, RoadNetwork network) {
 		assert network != null && startPoint != null && endPoint != null;
-		final RoadSegment endSegment = network.getNearestSegment(endPoint);
+		final var endSegment = network.getNearestSegment(endPoint);
 		if (endSegment != null) {
-			final VirtualPoint end = new VirtualPoint(endPoint, endSegment);
+			final var end = new VirtualPoint(endPoint, endSegment);
 			return solve(startPoint, end);
 		}
 		return null;
@@ -202,9 +202,9 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 	 */
 	public RoadPath solve(Point2D<?, ?> startPoint, RoadConnection endPoint, RoadNetwork network) {
 		assert network != null && startPoint != null && endPoint != null;
-		final RoadSegment startSegment = network.getNearestSegment(startPoint);
+		final var startSegment = network.getNearestSegment(startPoint);
 		if (startSegment != null) {
-			final VirtualPoint start = new VirtualPoint(startPoint, startSegment);
+			final var start = new VirtualPoint(startPoint, startSegment);
 			return solve(start, endPoint);
 		}
 		return null;
@@ -228,9 +228,7 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		// oriented from the point to the road connection.
 		//
 
-		RoadSegment seg;
-
-		seg = endPoint.getConnectedSegment(0);
+		var seg = endPoint.getConnectedSegment(0);
 		assert seg instanceof VirtualSegment;
 		assert seg.getEndPoint() != null;
 		if (seg.getEndPoint().equals(node.getGraphPoint())) {
@@ -284,8 +282,8 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		VirtualPoint(Point2D<?, ?> p2d, RoadSegment segment) {
 			this.originalPoint = p2d;
 
-			final RoadConnection target1 = segment.getBeginPoint();
-			final RoadConnection target2 = segment.getEndPoint();
+			final var target1 = segment.getBeginPoint();
+			final var target2 = segment.getEndPoint();
 
 			this.segment1 = new VirtualSegment(segment, this, target1);
 			this.segment2 = new VirtualSegment(segment, this, target2);
@@ -298,7 +296,7 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public String toString() {
-			final StringBuilder buffer = new StringBuilder();
+			final var buffer = new StringBuilder();
 			buffer.append("VP["); //$NON-NLS-1$
 			buffer.append(this.virtualizedSegment.toString());
 			buffer.append("]"); //$NON-NLS-1$
@@ -337,9 +335,9 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 			if (pts == null) {
 				return 1;
 			}
-			final Point2d p1 = getPoint();
+			final var p1 = getPoint();
 			assert p1 != null;
-			final double sqDist = p1.getDistanceSquared(pts);
+			final var sqDist = p1.getDistanceSquared(pts);
 			if (MathUtil.isEpsilonZero(sqDist)) {
 				return 0;
 			}
@@ -673,7 +671,7 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public String toString() {
-			final StringBuilder buffer = new StringBuilder();
+			final var buffer = new StringBuilder();
 			buffer.append("VS["); //$NON-NLS-1$
 			buffer.append(this.virtualizedSegment.toString());
 			buffer.append("->"); //$NON-NLS-1$
@@ -785,7 +783,7 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public Point2d getFirstPoint() {
-			final RoadConnection r = getBeginPoint();
+			final var r = getBeginPoint();
 			if (r == null) {
 				return null;
 			}
@@ -892,7 +890,7 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public Point2d getLastPoint() {
-			final RoadConnection r = getEndPoint();
+			final var r = getEndPoint();
 			if (r == null) {
 				return null;
 			}
@@ -901,8 +899,8 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public double getLength() {
-			final Point2d p1 = getFirstPoint();
-			final Point2d p2 = getLastPoint();
+			final var p1 = getFirstPoint();
+			final var p2 = getLastPoint();
 			return p1.getDistance(p2);
 		}
 
@@ -1032,9 +1030,9 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		@Override
 		public boolean isTraversableFrom(RoadConnection point) {
 			if (point.equals(getBeginPoint())) {
-				final RoadSegment sgmt = getVirtualizedSegment();
-				final RoadConnection c1 = getEndPoint();
-				final RoadConnection c2 = sgmt.getOtherSidePoint(c1);
+				final var sgmt = getVirtualizedSegment();
+				final var c1 = getEndPoint();
+				final var c2 = sgmt.getOtherSidePoint(c1);
 				return sgmt.isTraversableFrom(c2);
 			}
 			return false;
@@ -1620,9 +1618,9 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public Iterable<RoadSegment> getGraphSegments() {
-			final List<RoadSegment> list = new ArrayList<>();
+			final var list = new ArrayList<RoadSegment>();
 			list.add(this.virtualSegment);
-			for (final RoadSegment s : getVirtualizedCandidate().getGraphSegments()) {
+			for (final var s : getVirtualizedCandidate().getGraphSegments()) {
 				list.add(s);
 			}
 			return list;

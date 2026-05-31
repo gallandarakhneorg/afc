@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,8 +71,8 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
 
     @Override
     public boolean contains(Object obj) {
-        if (obj instanceof Point2D) {
-            return this.path.contains((Point2D<?, ?>) obj);
+        if (obj instanceof Point2D p) {
+            return this.path.contains(p);
         }
         return false;
     }
@@ -91,8 +91,8 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
     @Override
     public <T> T[] toArray(T[] array) {
         assert array != null : AssertMessages.notNullParameter();
-        final Iterator<P> iterator = new PointIterator();
-        for (int i = 0; i < array.length && iterator.hasNext(); ++i) {
+        final var iterator = new PointIterator();
+        for (var i = 0; i < array.length && iterator.hasNext(); ++i) {
             array[i] = (T) iterator.next();
         }
         return array;
@@ -113,8 +113,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
 
     @Override
     public boolean remove(Object obj) {
-        if (obj instanceof Point2D) {
-            final Point2D<?, ?> p = (Point2D<?, ?>) obj;
+        if (obj instanceof Point2D p) {
             return this.path.remove(p.ix(), p.iy());
         }
         return false;
@@ -123,9 +122,9 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
     @Override
     public boolean containsAll(Collection<?> collection) {
         assert collection != null : AssertMessages.notNullParameter();
-        for (final Object obj : collection) {
-            if ((!(obj instanceof Point2D))
-                    || (!this.path.contains((Point2D<?, ?>) obj))) {
+        for (final var obj : collection) {
+            if (!(obj instanceof Point2D)
+                    || !this.path.contains((Point2D<?, ?>) obj)) {
                 return false;
             }
         }
@@ -135,8 +134,8 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
     @Override
     public boolean addAll(Collection<? extends P> collection) {
         assert collection != null : AssertMessages.notNullParameter();
-        boolean changed = false;
-        for (final P pts : collection) {
+        var changed = false;
+        for (final var pts : collection) {
             if (add(pts)) {
                 changed = true;
             }
@@ -147,10 +146,9 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
     @Override
     public boolean removeAll(Collection<?> collection) {
         assert collection != null : AssertMessages.notNullParameter();
-        boolean changed = false;
-        for (final Object obj : collection) {
-            if (obj instanceof Point2D) {
-                final Point2D<?, ?> pts = (Point2D<?, ?>) obj;
+        var changed = false;
+        for (final var obj : collection) {
+            if (obj instanceof Point2D pts) {
                 if (this.path.remove(pts.ix(), pts.iy())) {
                     changed = true;
                 }
@@ -206,7 +204,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
 
         @Override
         public void remove() {
-            final Point2D<?, ?> p = this.lastReplied;
+            final var p = this.lastReplied;
             this.lastReplied = null;
             if (p == null) {
                 throw new NoSuchElementException();

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,6 @@ import java.util.UUID;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
@@ -44,6 +42,7 @@ import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.util.ListUtil;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bus network is composed of {@link BusLine bus lines}.
@@ -193,16 +192,16 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public void rebuild(boolean fireEvents) {
-		for (final BusLine line : this.busLines) {
+		for (final var line : this.busLines) {
 			line.rebuild();
 		}
 
-		final BusStop[] tabV = new BusStop[this.validBusStops.size()];
+		final var tabV = new BusStop[this.validBusStops.size()];
 		this.validBusStops.toArray(tabV);
-		final BusStop[] tabI = new BusStop[this.invalidBusStops.size()];
+		final var tabI = new BusStop[this.invalidBusStops.size()];
 		this.invalidBusStops.toArray(tabI);
 
-		for (final BusStop stop : tabV) {
+		for (final var stop : tabV) {
 			assert stop != null;
 			stop.rebuild();
 			if (!stop.isValidPrimitive() && isEventFirable()) {
@@ -211,7 +210,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			}
 		}
 
-		for (final BusStop stop : tabI) {
+		for (final var stop : tabI) {
 			assert stop != null;
 			stop.revalidate();
 			if (stop.isValidPrimitive() && isEventFirable()) {
@@ -220,12 +219,12 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			}
 		}
 
-		final BusHub[] tabV2 = new BusHub[this.validBusHubs.size()];
+		final var tabV2 = new BusHub[this.validBusHubs.size()];
 		this.validBusHubs.toArray(tabV2);
-		final BusHub[] tabI2 = new BusHub[this.invalidBusHubs.size()];
+		final var tabI2 = new BusHub[this.invalidBusHubs.size()];
 		this.invalidBusHubs.toArray(tabI2);
 
-		for (final BusHub hub : tabV2) {
+		for (final var hub : tabV2) {
 			assert hub != null;
 			hub.rebuild();
 			if (!hub.isValidPrimitive() && isEventFirable()) {
@@ -281,12 +280,11 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		final Rectangle2d r = new Rectangle2d();
-		boolean first = true;
-		Rectangle2d lr;
+		final var r = new Rectangle2d();
+		var first = true;
 		if (this.busLines != null) {
-			for (final BusLine line : this.busLines) {
-				lr = line.getBoundingBox();
+			for (final var line : this.busLines) {
+				final var lr = line.getBoundingBox();
 				if (lr != null) {
 					if (first) {
 						first = false;
@@ -356,19 +354,19 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		//
 		// Revalidate bus stops
 		//
-		final BusStop[] tabV = new BusStop[this.validBusStops.size()];
+		final var tabV = new BusStop[this.validBusStops.size()];
 		this.validBusStops.toArray(tabV);
-		final BusStop[] tabI = new BusStop[this.invalidBusStops.size()];
+		final var tabI = new BusStop[this.invalidBusStops.size()];
 		this.invalidBusStops.toArray(tabI);
 
 		// Revalidate valid stops
-		for (final BusStop stop : tabV) {
+		for (final var stop : tabV) {
 			assert stop != null;
 			stop.revalidate();
 		}
 
 		// Revalidate invalid stops
-		for (final BusStop stop : tabI) {
+		for (final var stop : tabI) {
 			assert stop != null;
 			stop.revalidate();
 		}
@@ -376,19 +374,19 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		//
 		// Revalidate bus hubs
 		//
-		final BusHub[] tabV2 = new BusHub[this.validBusHubs.size()];
+		final var tabV2 = new BusHub[this.validBusHubs.size()];
 		this.validBusHubs.toArray(tabV2);
-		final BusHub[] tabI2 = new BusHub[this.invalidBusHubs.size()];
+		final var tabI2 = new BusHub[this.invalidBusHubs.size()];
 		this.invalidBusHubs.toArray(tabI2);
 
 		// Revalidate valid hubs
-		for (final BusHub hub : tabV2) {
+		for (final var hub : tabV2) {
 			assert hub != null;
 			hub.revalidate();
 		}
 
 		// Revalidate invalid hubs
-		for (final BusHub hub : tabI2) {
+		for (final var hub : tabI2) {
 			assert hub != null;
 			hub.revalidate();
 		}
@@ -396,7 +394,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		//
 		// Revalidate bus lines
 		//
-		for (final BusLine line : this.busLines) {
+		for (final var line : this.busLines) {
 			assert line != null;
 			line.revalidate();
 		}
@@ -424,10 +422,9 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 					BusPrimitiveInvalidityType.NO_LINE_IN_NETWORK,
 					null);
 		} else {
-			final Iterator<BusLine> lineIterator = this.busLines.iterator();
-			BusLine line;
+			final var lineIterator = this.busLines.iterator();
 			while (lineIterator.hasNext() && invalidityReason == null) {
-				line = lineIterator.next();
+				final var line = lineIterator.next();
 				if (!line.isValidPrimitive()) {
 					invalidityReason = new BusPrimitiveInvalidity(
 							BusPrimitiveInvalidityType.INVALID_LINE_IN_NETWORK,
@@ -458,7 +455,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		if (!this.busLines.add(busLine)) {
 			return false;
 		}
-		final boolean isValidLine = busLine.isValidPrimitive();
+		final var isValidLine = busLine.isValidPrimitive();
 		busLine.setEventFirable(isEventFirable());
 		busLine.setContainer(this);
 		if (isEventFirable()) {
@@ -524,7 +521,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Remove all the bus lines from the current network.
 	 */
 	public void removeAllBusLines() {
-		for (final BusLine busline : this.busLines) {
+		for (final var busline : this.busLines) {
 			busline.setContainer(null);
 			busline.setEventFirable(true);
 		}
@@ -549,7 +546,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * @return {@code true} if the bus line was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusLine(BusLine busLine) {
-		final int index = this.busLines.indexOf(busLine);
+		final var index = this.busLines.indexOf(busLine);
 		if (index >= 0) {
 			return removeBusLine(index);
 		}
@@ -566,11 +563,10 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * @return {@code true} if the bus line was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusLine(String name) {
-		final Iterator<BusLine> iterator = this.busLines.iterator();
-		BusLine busLine;
-		int i = 0;
+		final var iterator = this.busLines.iterator();
+		var i = 0;
 		while (iterator.hasNext()) {
-			busLine = iterator.next();
+			final var busLine = iterator.next();
 			if (name.equals(busLine.getName())) {
 				iterator.remove();
 				busLine.setContainer(null);
@@ -601,7 +597,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 */
 	public boolean removeBusLine(int index) {
 		try {
-			final BusLine busLine = this.busLines.remove(index);
+			final var busLine = this.busLines.remove(index);
 			busLine.setContainer(null);
 			busLine.setEventFirable(true);
 			fireShapeChanged(new BusChangeEvent(this,
@@ -680,7 +676,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		if (uuid == null) {
 			return null;
 		}
-		for (final BusLine busLine : this.busLines) {
+		for (final var busLine : this.busLines) {
 			if (uuid.equals(busLine.getUUID())) {
 				return busLine;
 			}
@@ -700,8 +696,8 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		if (name == null) {
 			return null;
 		}
-		final Comparator<String> cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
-		for (final BusLine busLine : this.busLines) {
+		final var cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
+		for (final var busLine : this.busLines) {
 			if (cmp.compare(name, busLine.getName()) == 0) {
 				return busLine;
 			}
@@ -778,11 +774,11 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Remove all the bus stops from the current network.
 	 */
 	public void removeAllBusStops() {
-		for (final BusStop busStop : this.validBusStops) {
+		for (final var busStop : this.validBusStops) {
 			busStop.setContainer(null);
 			busStop.setEventFirable(true);
 		}
-		for (final BusStop busStop : this.invalidBusStops) {
+		for (final var busStop : this.invalidBusStops) {
 			busStop.setContainer(null);
 			busStop.setEventFirable(true);
 		}
@@ -820,7 +816,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			checkPrimitiveValidity();
 			return true;
 		}
-		final int idx = ListUtil.remove(this.invalidBusStops, INVALID_STOP_COMPARATOR, busStop);
+		final var idx = ListUtil.remove(this.invalidBusStops, INVALID_STOP_COMPARATOR, busStop);
 		if (idx >= 0) {
 			busStop.setContainer(null);
 			fireShapeChanged(new BusChangeEvent(this,
@@ -845,12 +841,9 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * @return {@code true} if the bus stop was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusStop(String name) {
-		Iterator<BusStop> iterator;
-		BusStop busStop;
-
-		iterator = this.validBusStops.iterator();
+		var iterator = this.validBusStops.iterator();
 		while (iterator.hasNext()) {
-			busStop = iterator.next();
+			final var busStop = iterator.next();
 			if (name.equals(busStop.getName())) {
 				iterator.remove();
 				busStop.setContainer(null);
@@ -869,7 +862,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 		iterator = this.invalidBusStops.iterator();
 		while (iterator.hasNext()) {
-			busStop = iterator.next();
+			final var busStop = iterator.next();
 			if (name.equals(busStop.getName())) {
 				iterator.remove();
 				busStop.setContainer(null);
@@ -920,14 +913,14 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		if (id == null) {
 			return null;
 		}
-		for (final BusStop busStop : this.validBusStops) {
-			final UUID busid = busStop.getUUID();
+		for (final var busStop : this.validBusStops) {
+			final var busid = busStop.getUUID();
 			if (id.equals(busid)) {
 				return busStop;
 			}
 		}
-		for (final BusStop busStop : this.invalidBusStops) {
-			final UUID busid = busStop.getUUID();
+		for (final var busStop : this.invalidBusStops) {
+			final var busid = busStop.getUUID();
 			if (id.equals(busid)) {
 				return busStop;
 			}
@@ -947,13 +940,13 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		if (name == null) {
 			return null;
 		}
-		final Comparator<String> cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
-		for (final BusStop busStop : this.validBusStops) {
+		final var cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
+		for (final var busStop : this.validBusStops) {
 			if (cmp.compare(name, busStop.getName()) == 0) {
 				return busStop;
 			}
 		}
-		for (final BusStop busStop : this.invalidBusStops) {
+		for (final var busStop : this.invalidBusStops) {
 			if (cmp.compare(name, busStop.getName()) == 0) {
 				return busStop;
 			}
@@ -977,7 +970,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 */
 	@Pure
 	public Iterable<BusStop> busStops() {
-		final MultiCollection<BusStop> col = new MultiCollection<>();
+		final var col = new MultiCollection<BusStop>();
 		col.addCollection(this.validBusStops);
 		col.addCollection(this.invalidBusStops);
 		return Iterables.unmodifiableIterable(col);
@@ -1027,12 +1020,11 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 */
 	@Pure
 	public BusStop getNearestBusStop(double x, double y) {
-		double distance = Double.POSITIVE_INFINITY;
+		var distance = Double.POSITIVE_INFINITY;
 		BusStop bestStop = null;
-		double dist;
 
-		for (final BusStop stop : this.validBusStops) {
-			dist = stop.distance(x, y);
+		for (final var stop : this.validBusStops) {
+			final var dist = stop.distance(x, y);
 			if (dist < distance) {
 				distance = dist;
 				bestStop = stop;
@@ -1068,10 +1060,10 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * @return the create bus hub, or {@code null} if not created.
 	 */
 	public BusHub addBusHub(String name, BusStop... stops) {
-		// Do not set immediatly the container to
+		// Do not set immediately the container to
 		// avoid event firing when adding the stops
-		final BusHub hub = new BusHub(null, name);
-		for (final BusStop stop : stops) {
+		final var hub = new BusHub(null, name);
+		for (final var stop : stops) {
 			hub.addBusStop(stop, false);
 		}
 		if (addBusHub(hub)) {
@@ -1096,7 +1088,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			return false;
 		}
 
-		final boolean isValidPrimitive = hub.isValidPrimitive();
+		final var isValidPrimitive = hub.isValidPrimitive();
 
 		if (isValidPrimitive) {
 			if (!this.validBusHubs.add(hub)) {
@@ -1126,11 +1118,11 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Remove all the bus hubs from the current network.
 	 */
 	public void removeAllBusHubs() {
-		for (final BusHub busHub : this.validBusHubs) {
+		for (final var busHub : this.validBusHubs) {
 			busHub.setContainer(null);
 			busHub.setEventFirable(true);
 		}
-		for (final BusHub busHub : this.invalidBusHubs) {
+		for (final var busHub : this.invalidBusHubs) {
 			busHub.setContainer(null);
 			busHub.setEventFirable(true);
 		}
@@ -1166,7 +1158,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			checkPrimitiveValidity();
 			return true;
 		}
-		final int idx = ListUtil.remove(this.invalidBusHubs, INVALID_HUB_COMPARATOR, busHub);
+		final var idx = ListUtil.remove(this.invalidBusHubs, INVALID_HUB_COMPARATOR, busHub);
 		if (idx >= 0) {
 			busHub.setContainer(null);
 			busHub.setEventFirable(true);
@@ -1190,12 +1182,9 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * @return {@code true} if the bus hub was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusHub(String name) {
-		Iterator<BusHub> iterator;
-		BusHub busHub;
-
-		iterator = this.validBusHubs.iterator();
+		var iterator = this.validBusHubs.iterator();
 		while (iterator.hasNext()) {
-			busHub = iterator.next();
+			final var busHub = iterator.next();
 			if (name.equals(busHub.getName())) {
 				iterator.remove();
 				busHub.setContainer(null);
@@ -1214,7 +1203,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 		iterator = this.invalidBusHubs.iterator();
 		while (iterator.hasNext()) {
-			busHub = iterator.next();
+			final var busHub = iterator.next();
 			if (name.equals(busHub.getName())) {
 				iterator.remove();
 				busHub.setContainer(null);
@@ -1265,12 +1254,12 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		if (uuid == null) {
 			return null;
 		}
-		for (final BusHub busHub : this.validBusHubs) {
+		for (final var busHub : this.validBusHubs) {
 			if (uuid.equals(busHub.getUUID())) {
 				return busHub;
 			}
 		}
-		for (final BusHub busHub : this.invalidBusHubs) {
+		for (final var busHub : this.invalidBusHubs) {
 			if (uuid.equals(busHub.getUUID())) {
 				return busHub;
 			}
@@ -1290,13 +1279,13 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		if (name == null) {
 			return null;
 		}
-		final Comparator<String> cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
-		for (final BusHub busHub : this.validBusHubs) {
+		final var cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
+		for (final var busHub : this.validBusHubs) {
 			if (cmp.compare(name, busHub.getName()) == 0) {
 				return busHub;
 			}
 		}
-		for (final BusHub busHub : this.invalidBusHubs) {
+		for (final var busHub : this.invalidBusHubs) {
 			if (cmp.compare(name, busHub.getName()) == 0) {
 				return busHub;
 			}
@@ -1320,7 +1309,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 */
 	@Pure
 	public Iterable<BusHub> busHubs() {
-		final MultiCollection<BusHub> col = new MultiCollection<>();
+		final var col = new MultiCollection<BusHub>();
 		col.addCollection(this.validBusHubs);
 		col.addCollection(this.invalidBusHubs);
 		return Collections.unmodifiableCollection(col);
@@ -1370,12 +1359,11 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 */
 	@Pure
 	public BusHub getNearestBusHub(double x, double y) {
-		double distance = Double.POSITIVE_INFINITY;
+		var distance = Double.POSITIVE_INFINITY;
 		BusHub bestHub = null;
-		double dist;
 
-		for (final BusHub hub : this.validBusHubs) {
-			dist = hub.distance(x, y);
+		for (final var hub : this.validBusHubs) {
+			final var dist = hub.distance(x, y);
 			if (dist < distance) {
 				distance = dist;
 				bestHub = hub;
@@ -1391,8 +1379,8 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	private void onBusStopChanged(BusStop stop) {
 		if (stop.getContainer() == this) {
-			final boolean oldValidity = !ListUtil.contains(this.invalidBusStops, INVALID_STOP_COMPARATOR, stop);
-			final boolean currentValidity = stop.isValidPrimitive();
+			final var oldValidity = !ListUtil.contains(this.invalidBusStops, INVALID_STOP_COMPARATOR, stop);
+			final var currentValidity = stop.isValidPrimitive();
 			if (oldValidity != currentValidity) {
 				if (currentValidity) {
 					ListUtil.remove(this.invalidBusStops, INVALID_STOP_COMPARATOR, stop);
@@ -1407,8 +1395,8 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	private void onBusHubChanged(BusHub hub) {
 		if (hub.getContainer() == this) {
-			final boolean oldValidity = !ListUtil.contains(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub);
-			final boolean currentValidity = hub.isValidPrimitive();
+			final var oldValidity = !ListUtil.contains(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub);
+			final var currentValidity = hub.isValidPrimitive();
 			if (oldValidity != currentValidity) {
 				if (currentValidity) {
 					ListUtil.remove(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub);
@@ -1423,11 +1411,11 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	@Override
 	public void onBusPrimitiveChanged(BusChangeEvent event) {
-		final Object source = event.getSource();
-		if (source instanceof BusStop) {
-			onBusStopChanged((BusStop) source);
-		} else if (source instanceof BusHub) {
-			onBusHubChanged((BusHub) source);
+		final var source = event.getSource();
+		if (source instanceof BusStop stop) {
+			onBusStopChanged(stop);
+		} else if (source instanceof BusHub hub) {
+			onBusHubChanged(hub);
 		}
 		super.onBusPrimitiveChanged(event);
 	}

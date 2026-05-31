@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Base64;
-import java.util.Properties;
 import java.util.ServiceLoader;
 import javax.crypto.Cipher;
 import javax.crypto.spec.DESKeySpec;
@@ -67,8 +66,8 @@ public final class Encryption {
 		// Create the crypting key
 		Key kkey;
 		try {
-			final Properties p = System.getProperties();
-			final String seed =	p.getProperty("user.name") //$NON-NLS-1$
+			final var p = System.getProperties();
+			final var seed =	p.getProperty("user.name") //$NON-NLS-1$
 					+ '@'
 					+ new InetSocketAddress(0).getHostName()
 					+ ":jdk_" //$NON-NLS-1$
@@ -77,10 +76,10 @@ public final class Encryption {
 					+ p.getProperty("os.name") //$NON-NLS-1$
 					+ '-'
 					+ p.getProperty("os.version"); //$NON-NLS-1$
-			final byte[] original = md5(seed).getBytes("UTF8"); //$NON-NLS-1$
+			final var original = md5(seed).getBytes("UTF8"); //$NON-NLS-1$
 
-			final byte[] bkey = new byte[DESKeySpec.DES_KEY_LEN];
-			for (int i = 0; i < DESKeySpec.DES_KEY_LEN; ++i) {
+			final var bkey = new byte[DESKeySpec.DES_KEY_LEN];
+			for (var i = 0; i < DESKeySpec.DES_KEY_LEN; ++i) {
 				bkey[i] = original[i % original.length];
 			}
 
@@ -104,16 +103,16 @@ public final class Encryption {
 	 */
 	public static void loadDefaultEncryptionModule() {
 		// Be sure that the cryptographical algorithms are loaded
-		final Provider[] providers = Security.getProviders();
-		boolean found = false;
-		for (final Provider provider : providers) {
+		final var providers = Security.getProviders();
+		var found = false;
+		for (final var provider : providers) {
 			if (NAME.equals(provider.getName())) {
 				found = true;
 				break;
 			}
 		}
 		if (!found) {
-			for (final Provider p : ServiceLoader.load(Provider.class, ClassLoader.getSystemClassLoader())) {
+			for (final var p : ServiceLoader.load(Provider.class, ClassLoader.getSystemClassLoader())) {
 	            if (NAME.equals(p.getName())) {
 	                Security.addProvider(p);
 	                return;
@@ -136,12 +135,13 @@ public final class Encryption {
 	 *
 	 * @param str is the string to encrypt.
 	 * @return the MD5 encryption of the string <var>str</var>
+	 * @throws Error when MD5 algorithm is not available.
 	 */
 	public static String md5(String str) {
 		if (str == null) {
 			return "";  //$NON-NLS-1$
 		}
-		final byte[] uniqueKey = str.getBytes();
+		final var uniqueKey = str.getBytes();
 		byte[] hash = null;
 
 		try {
@@ -150,10 +150,10 @@ public final class Encryption {
 			throw new Error(Locale.getString("NO_MD5")); //$NON-NLS-1$
 		}
 
-		final StringBuilder hashString = new StringBuilder();
+		final var hashString = new StringBuilder();
 
-		for (int i = 0; i < hash.length; ++i) {
-			final String hex = Integer.toHexString(hash[i]);
+		for (var i = 0; i < hash.length; ++i) {
+			final var hex = Integer.toHexString(hash[i]);
 			if (hex.length() == 1) {
 				hashString.append('0');
 				hashString.append(hex.charAt(hex.length() - 1));
@@ -182,12 +182,13 @@ public final class Encryption {
 	 *
 	 * @param str is the string to encrypt.
 	 * @return the SHA encryption of the string <var>str</var>
+	 * @throws Error when SHA algorithm is not available.
 	 */
 	public static String sha(String str) {
 		if (str == null) {
 			return "";  //$NON-NLS-1$
 		}
-		final byte[] uniqueKey = str.getBytes();
+		final var uniqueKey = str.getBytes();
 		byte[] hash = null;
 
 		try {
@@ -196,10 +197,10 @@ public final class Encryption {
 			throw new Error(Locale.getString("NO_SHA")); //$NON-NLS-1$
 		}
 
-		final StringBuilder hashString = new StringBuilder();
+		final var hashString = new StringBuilder();
 
-		for (int i = 0; i < hash.length; ++i) {
-			final String hex = Integer.toHexString(hash[i]);
+		for (var i = 0; i < hash.length; ++i) {
+			final var hex = Integer.toHexString(hash[i]);
 			if (hex.length() == 1) {
 				hashString.append('0');
 				hashString.append(hex.charAt(hex.length() - 1));
@@ -236,13 +237,13 @@ public final class Encryption {
 	public static String encrypt(String str, Key encrypting_key) {
 		try {
 			// Get the data to encrypt
-			final byte[] inputBytes = str.getBytes("UTF8"); //$NON-NLS-1$
+			final var inputBytes = str.getBytes("UTF8"); //$NON-NLS-1$
 
 			// Encode
-			final byte[] outputBytes = encrypt(inputBytes, encrypting_key);
+			final var outputBytes = encrypt(inputBytes, encrypting_key);
 
 			// Recode on base 64
-			final String base64 = new String(Base64.getEncoder().encode(outputBytes));
+			final var base64 = new String(Base64.getEncoder().encode(outputBytes));
 
 			return base64;
 		} catch (Exception e) {
@@ -291,7 +292,7 @@ public final class Encryption {
 	public static byte[] encrypt(byte[] str, Key encrypting_key, String algorithm) {
 		try {
 			// Initialize the encoder
-			final Cipher cipher = Cipher.getInstance(algorithm);
+			final var cipher = Cipher.getInstance(algorithm);
 			cipher.init(Cipher.ENCRYPT_MODE, encrypting_key);
 
 			// Encode
@@ -327,10 +328,10 @@ public final class Encryption {
 	public static String decrypt(String str, Key decrypting_key) {
 		try {
 			// Decode on base 64
-			final byte[] inputBytes = Base64.getDecoder().decode(str);
+			final var inputBytes = Base64.getDecoder().decode(str);
 
 			// Decode
-			final byte[] outputBytes = decrypt(inputBytes, decrypting_key);
+			final var outputBytes = decrypt(inputBytes, decrypting_key);
 
 			return new String(outputBytes, "UTF8"); //$NON-NLS-1$
 		} catch (Exception e) {
@@ -379,7 +380,7 @@ public final class Encryption {
 	public static byte[] decrypt(byte[] str, Key decrypting_key, String algorithm) {
 		try {
 			// Initialize the decoder
-			final Cipher cipher = Cipher.getInstance(algorithm);
+			final var cipher = Cipher.getInstance(algorithm);
 			cipher.init(Cipher.DECRYPT_MODE, decrypting_key);
 
 			// Decode

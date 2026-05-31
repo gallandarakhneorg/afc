@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,27 +22,21 @@ package org.arakhne.afc.vmutil;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
-
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This utility class provides a way to extend the reflection API and
@@ -319,13 +313,13 @@ public final class ReflectionUtil {
 	 */
 	@Pure
 	public static Collection<Class<?>> getPackageClasses(String packageName) {
-		final Collection<Class<?>> classes = new ArrayList<>();
+		final var classes = new ArrayList<Class<?>>();
 
-		final String[] entries = System.getProperty("java.class.path") //$NON-NLS-1$
+		final var entries = System.getProperty("java.class.path") //$NON-NLS-1$
 				.split(Pattern.quote(System.getProperty("path.separator"))); //$NON-NLS-1$
 		String lentry;
 
-		for (final String path : entries) {
+		for (final var path : entries) {
 			lentry = path.toLowerCase();
 			if (lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$ //$NON-NLS-2$
 				getPackageClassesFromJar(classes, path, packageName);
@@ -339,7 +333,7 @@ public final class ReflectionUtil {
 	}
 
 	private static String basename(String name) {
-		final int idx = name.lastIndexOf('/');
+		final var idx = name.lastIndexOf('/');
 		if (idx >= 0 && idx < name.length()) {
 			return name.substring(idx + 1);
 		}
@@ -347,8 +341,8 @@ public final class ReflectionUtil {
 	}
 
 	private static String filename(String name) {
-		final String basename = basename(name);
-		final int idx = basename.indexOf('.');
+		final var basename = basename(name);
+		final var idx = basename.indexOf('.');
 		if (idx >= 0 && idx < basename.length()) {
 			return basename.substring(0, idx);
 		}
@@ -356,23 +350,20 @@ public final class ReflectionUtil {
 	}
 
 	private static void getPackageClassesFromJar(Collection<Class<?>> classes, String jarFilename, String packageName) {
-		try (JarFile jarFile = new JarFile(jarFilename)) {
-			final String packagePath = packageName.replace(".", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+		try (var jarFile = new JarFile(jarFilename)) {
+			final var packagePath = packageName.replace(".", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 
-			final Enumeration<JarEntry> entries = jarFile.entries();
-			JarEntry entry;
-			String entryPath;
-			String entryClassname;
+			final var entries = jarFile.entries();
 
 			while (entries.hasMoreElements()) {
-				entry = entries.nextElement();
-				entryPath = entry.getName();
+				final var entry = entries.nextElement();
+				final var entryPath = entry.getName();
 
 				// In package and not inner class
 				if (entryPath.startsWith(packagePath)
 						&& !entryPath.endsWith("/") //$NON-NLS-1$
 						&& !entryPath.contains("$")) { //$NON-NLS-1$
-					entryClassname = packageName + "." + filename(entryPath); //$NON-NLS-1$
+					final var entryClassname = packageName + "." + filename(entryPath); //$NON-NLS-1$
 					try {
 						classes.add(Class.forName(entryClassname));
 					} catch (ClassNotFoundException exception) {
@@ -386,16 +377,15 @@ public final class ReflectionUtil {
 	}
 
 	private static void getPackageClassesFromFileSystem(Collection<Class<?>> classes, String directory, String packageName) {
-		final String packagePath = packageName.replace(".", File.separator); //$NON-NLS-1$
-		final File packageDirectory = new File(directory, packagePath);
-		String entryClassname;
+		final var packagePath = packageName.replace(".", File.separator); //$NON-NLS-1$
+		final var packageDirectory = new File(directory, packagePath);
 
 		if (packageDirectory.isDirectory()) {
-			for (final String entryPath : packageDirectory.list()) {
+			for (final var entryPath : packageDirectory.list()) {
 
 				// In package and not inner class
 				if (!entryPath.contains("$")) { //$NON-NLS-1$
-					entryClassname = packageName + "." + FileSystem.shortBasename(entryPath); //$NON-NLS-1$
+					final var entryClassname = packageName + "." + FileSystem.shortBasename(entryPath); //$NON-NLS-1$
 					try {
 						classes.add(Class.forName(entryClassname));
 					} catch (AssertionError e) {
@@ -435,7 +425,7 @@ public final class ReflectionUtil {
 	 */
 	@Pure
 	public static <T> Collection<Class<? extends T>> getSubClasses(Class<T> className, DynamicURLClassLoader classLoader) {
-		final Collection<Class<? extends T>> list = new ArrayList<>();
+		final var list = new ArrayList<Class<? extends T>>();
 		getSubClasses(className, true, true, true, list, classLoader);
 		return list;
 	}
@@ -473,9 +463,9 @@ public final class ReflectionUtil {
 			boolean allowEnum, Collection<Class<? extends T>> result, DynamicURLClassLoader classLoader) {
 		final String[] entries;
 		if (classLoader != null) {
-			final URL[] urls = classLoader.getURLs();
+			final var urls = classLoader.getURLs();
 			entries = new String[urls.length];
-			for (int i = 0; i < entries.length; ++i) {
+			for (var i = 0; i < entries.length; ++i) {
 				entries[i] = FileSystem.convertURLToFile(urls[i]).getPath();
 			}
 		} else {
@@ -483,10 +473,8 @@ public final class ReflectionUtil {
 					.split(Pattern.quote(System.getProperty("path.separator"))); //$NON-NLS-1$
 		}
 
-		String lentry;
-
-		for (final String path : entries) {
-			lentry = path.toLowerCase();
+		for (final var path : entries) {
+			final var lentry = path.toLowerCase();
 			if (lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$ //$NON-NLS-2$
 				getSubClassesFromJar(result, path, className, allowAbstract, allowInterface, allowEnum, classLoader);
 			} else {
@@ -500,22 +488,19 @@ public final class ReflectionUtil {
 	private static <T> void getSubClassesFromJar(Collection<Class<? extends T>> classes, String jarFilename,
 			Class<T> className, boolean allowAbstract, boolean allowInterface, boolean allowEnum,
 			DynamicURLClassLoader classLoader) {
-		try (JarFile jarFile = new JarFile(jarFilename)) {
-			final String classN = className.getCanonicalName();
+		try (var jarFile = new JarFile(jarFilename)) {
+			final var classN = className.getCanonicalName();
 			if (classN != null) {
-				final Enumeration<JarEntry> entries = jarFile.entries();
-				JarEntry entry;
-				String entryPath;
-				String entryClassname;
+				final var entries = jarFile.entries();
 
 				while (entries.hasMoreElements()) {
-					entry = entries.nextElement();
-					entryPath = entry.getName();
+					final var entry = entries.nextElement();
+					final var entryPath = entry.getName();
 
 					// In package and not inner class
 					if (entryPath.endsWith(".class") //$NON-NLS-1$
 							&& !entryPath.contains("$")) { //$NON-NLS-1$
-						entryClassname = entryPath.substring(0, entryPath.length() - 6).replaceAll(
+						final var entryClassname = entryPath.substring(0, entryPath.length() - 6).replaceAll(
 								Pattern.quote(File.separator), "."); //$NON-NLS-1$
 						try {
 							final Class<?> clazz;
@@ -547,23 +532,18 @@ public final class ReflectionUtil {
 	private static <T> void getSubClassesFromFileSystem(Collection<Class<? extends T>> classes, String directory,
 			Class<T> className, boolean allowAbstract, boolean allowInterface, boolean allowEnum,
 			DynamicURLClassLoader classLoader) {
-		final String classN = className.getCanonicalName();
+		final var classN = className.getCanonicalName();
 		if (classN != null) {
-			final List<String> directories = new ArrayList<>();
+			final var directories = new ArrayList<String>();
 			directories.add(""); //$NON-NLS-1$
 
-			String ldir;
-			String entryClassname;
-			File dir;
-			File fullFile;
-
 			while (!directories.isEmpty()) {
-				ldir = directories.remove(0);
-				dir = new File(directory, ldir);
+				final var ldir = directories.remove(0);
+				final var dir = new File(directory, ldir);
 				if (dir.isDirectory()) {
-					for (final String entryPath : dir.list()) {
+					for (final var entryPath : dir.list()) {
 
-						fullFile = new File(dir, entryPath);
+						final var fullFile = new File(dir, entryPath);
 
 						if (fullFile.isDirectory()) {
 							if (ldir == null || "".equals(ldir)) { //$NON-NLS-1$
@@ -575,7 +555,7 @@ public final class ReflectionUtil {
 								&& !entryPath.contains("$")) { //$NON-NLS-1$
 							// In package and not inner class
 							assert ldir != null;
-							entryClassname = ldir.replaceAll(
+							final var entryClassname = ldir.replaceAll(
 									Pattern.quote(File.separator), ".") //$NON-NLS-1$
 									+ "." + FileSystem.shortBasename(entryPath); //$NON-NLS-1$
 							try {
@@ -611,7 +591,7 @@ public final class ReflectionUtil {
 	 * the super classes. This function does not explore super-interfaces
 	 * of implemented interfaces.
 	 *
-	 * <pre>{@code 
+	 * <pre><code>
 	 * interface IA {}
 	 * interface IB extends IA {}
 	 * interface IC {}
@@ -619,7 +599,7 @@ public final class ReflectionUtil {
 	 * class CA implements IC {}
 	 * class CB extends CA {}
 	 * class CC extends CB implements IB {}
-	 * }</pre>
+	 * </code></pre>
 	 * This function replies for:
 	 * <ul>
 	 * <li>{@code getAllDirectInterfaces(IA,null,null)}={@code {}}</li>
@@ -644,11 +624,11 @@ public final class ReflectionUtil {
 	public static <T, I> Set<Class<? extends I>> getAllDirectInterfaces(Class<? extends T> lowestType,
 			Class<T> highestType, Class<I> interfaceType) {
 		assert lowestType != null;
-		final Set<Class<? extends I>> collection = new TreeSet<>(ClassComparator.SINGLETON);
+		final var collection = new TreeSet<Class<? extends I>>(ClassComparator.SINGLETON);
 		Class<?> type = lowestType;
 		boolean cont;
 		do {
-			for (final Class<?> directInterface : type.getInterfaces()) {
+			for (final var directInterface : type.getInterfaces()) {
 				if (interfaceType == null || interfaceType.isAssignableFrom(directInterface)) {
 					collection.add((Class<? extends I>) directInterface);
 				}
@@ -668,7 +648,7 @@ public final class ReflectionUtil {
 	 * the super classes. This function does not explore super-interfaces
 	 * of implemented interfaces.
 	 *
-	 * <pre>{@code 
+	 * <pre><code>
 	 * interface IA {}
 	 * interface IB extends IA {}
 	 * interface IC {}
@@ -676,7 +656,7 @@ public final class ReflectionUtil {
 	 * class CA implements IC {}
 	 * class CB extends CA {}
 	 * class CC extends CB implements IB {}
-	 * }</pre>
+	 * </code></pre>
 	 * This function replies for:
 	 * <ul>
 	 * <li>{@code getAllDirectInterfaces(IA,null,null)}={@code {}}</li>
@@ -696,11 +676,11 @@ public final class ReflectionUtil {
 	 */
 	public static <T> Set<Class<?>> getAllDirectInterfaces(Class<? extends T> lowestType, Class<T> highestType) {
 		assert lowestType != null;
-		final Set<Class<?>> collection = new TreeSet<>(ClassComparator.SINGLETON);
+		final var collection = new TreeSet<>(ClassComparator.SINGLETON);
 		Class<?> type = lowestType;
 		boolean cont;
 		do {
-			for (final Class<?> directInterface : type.getInterfaces()) {
+			for (final var directInterface : type.getInterfaces()) {
 				collection.add(directInterface);
 			}
 			cont = highestType == null || !type.equals(highestType);
@@ -723,8 +703,8 @@ public final class ReflectionUtil {
 	@Pure
 	public static <T> Collection<Class<? super T>> getSuperClasses(Class<T> className) {
 		assert className != null;
-		final Collection<Class<? super T>> list = new ArrayList<>();
-		Class<? super T> type = className.getSuperclass();
+		final var list = new ArrayList<Class<? super T>>();
+		var type = className.getSuperclass();
 		while (type != null && !Object.class.equals(type)) {
 			list.add(type);
 			type = type.getSuperclass();
@@ -746,7 +726,7 @@ public final class ReflectionUtil {
 		if (type2 == null) {
 			return type1;
 		}
-		Class<?> top = type1;
+		var top = type1;
 		while (!top.isAssignableFrom(type2)) {
 			top = top.getSuperclass();
 			assert top != null;
@@ -769,7 +749,7 @@ public final class ReflectionUtil {
 		if (instance2 == null) {
 			return instance1.getClass();
 		}
-		Class<?> top = instance1.getClass();
+		var top = instance1.getClass();
 		while (!top.isInstance(instance2)) {
 			top = top.getSuperclass();
 			assert top != null;
@@ -868,7 +848,7 @@ public final class ReflectionUtil {
 			return parameterValues == null;
 		}
 		if (parameterValues != null && formalParameters.length == parameterValues.length) {
-			for (int i = 0; i < formalParameters.length; ++i) {
+			for (var i = 0; i < formalParameters.length; ++i) {
 				if (!isInstance(formalParameters[i], parameterValues[i])) {
 					return false;
 				}
@@ -900,7 +880,7 @@ public final class ReflectionUtil {
 	 * @return the string representation.
 	 */
 	public static String toString(Object object) {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		toJson(object, buffer);
 		return buffer.toString();
 	}
@@ -918,13 +898,13 @@ public final class ReflectionUtil {
 		if (object == null) {
 			return;
 		}
-		for (final Method method : object.getClass().getMethods()) {
+		for (final var method : object.getClass().getMethods()) {
 			try {
 				if (!method.isSynthetic() && !Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 0
 					&& (method.getReturnType().isPrimitive() || String.class.equals(method.getReturnType())
 						|| method.getReturnType().isEnum()
 						|| JsonableObject.class.isAssignableFrom(method.getReturnType()))) {
-					final String name = method.getName();
+					final var name = method.getName();
 					if (name.startsWith("get") && name.length() > 3) { //$NON-NLS-1$
 						output.add(makeName(name, 3), method.invoke(object));
 					} else if (name.startsWith("is") && name.length() > 2) { //$NON-NLS-1$
@@ -938,11 +918,11 @@ public final class ReflectionUtil {
 	}
 
 	private static String makeName(String value, int first) {
-		final String post = value.substring(first);
+		final var post = value.substring(first);
 		if (Pattern.matches("^[A-Z]+$", post)) { //$NON-NLS-1$
 			return post.toLowerCase();
 		}
-		final String firstLetter = Character.toString(Character.toLowerCase(post.charAt(0)));
+		final var firstLetter = Character.toString(Character.toLowerCase(post.charAt(0)));
 		if  (post.length() > 1) {
 			return firstLetter + post.substring(1);
 		}
@@ -976,7 +956,7 @@ public final class ReflectionUtil {
 	public static <T> T newInstance(Class<T> type, Object... arguments)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (type != null) {
-			for (final Constructor<?> cons : type.getConstructors()) {
+			for (final var cons : type.getConstructors()) {
 				if (matchesParameters(cons.getParameterTypes(), arguments)) {
 					return type.cast(cons.newInstance(arguments));
 				}

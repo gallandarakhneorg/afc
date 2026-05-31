@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.gis.mapelement;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.ColorNames;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Set of global constants for map elements.
@@ -54,7 +53,7 @@ public final class MapElementConstants {
 
 	/** Default color of a map elements.
 	 */
-	public static final int DEFAULT_COLOR = ColorNames.getColorFromName("darkgray"); //$NON-NLS-1$
+	public static final int DEFAULT_COLOR = ColorNames.getColorFromName("darkgray").intValue(); //$NON-NLS-1$
 
 	private MapElementConstants() {
 		//
@@ -66,7 +65,7 @@ public final class MapElementConstants {
 	 */
 	@Pure
 	public static double getPreferredRadius() {
-		final Preferences prefs = Preferences.userNodeForPackage(MapElementConstants.class);
+		final var prefs = Preferences.userNodeForPackage(MapElementConstants.class);
 		if (prefs != null) {
 			return prefs.getDouble("RADIUS", DEFAULT_RADIUS); //$NON-NLS-1$
 		}
@@ -79,7 +78,7 @@ public final class MapElementConstants {
 	 */
 	public static void setPreferredRadius(double radius) {
 		assert !Double.isNaN(radius);
-		final Preferences prefs = Preferences.userNodeForPackage(MapElementConstants.class);
+		final var prefs = Preferences.userNodeForPackage(MapElementConstants.class);
 		if (prefs != null) {
 			prefs.putDouble("RADIUS", radius); //$NON-NLS-1$
 			try {
@@ -96,7 +95,7 @@ public final class MapElementConstants {
 	 */
 	@Pure
 	public static int getPreferredColor() {
-		final Preferences prefs = Preferences.userNodeForPackage(MapElementConstants.class);
+		final var prefs = Preferences.userNodeForPackage(MapElementConstants.class);
 		if (prefs != null) {
 			return prefs.getInt("COLOR", DEFAULT_COLOR); //$NON-NLS-1$
 		}
@@ -108,7 +107,7 @@ public final class MapElementConstants {
 	 * @param color is the default color for map elements.
 	 */
 	public static void setPreferredColor(int color) {
-		final Preferences prefs = Preferences.userNodeForPackage(MapElementConstants.class);
+		final var prefs = Preferences.userNodeForPackage(MapElementConstants.class);
 		if (prefs != null) {
 			prefs.putInt("COLOR", color); //$NON-NLS-1$
 			try {

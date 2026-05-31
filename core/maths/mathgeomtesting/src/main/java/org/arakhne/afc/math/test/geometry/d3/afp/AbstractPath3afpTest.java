@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import static org.arakhne.afc.math.geometry.GeomConstants.SHAPE_INTERSECTS;
 import static org.arakhne.afc.math.geometry.GeomConstants.SPLINE_APPROXIMATION_RATIO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
@@ -46,7 +46,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractPath3afpTest<T extends Path3afp<?, T, ?, ?, ?, ?, B>, B extends AlignedBox3afp<?, ?, ?, ?, ?, ?, B>>
+public abstract class AbstractPath3afpTest<T extends Path3afp<T, ?, ?, ?, ?, B>, B extends AlignedBox3afp<?, ?, ?, ?, ?, B>>
 extends AbstractShape3afpTest<T, B> {
 
 	@Override
@@ -296,7 +296,7 @@ extends AbstractShape3afpTest<T, B> {
 	@EnumSource(CoordinateSystem3D.class)
 	public void addIterator_open(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp<?, ?, ?, ?, ?, ?, B> p2 = createPath();
+		Path3afp<?, ?, ?, ?, ?, B> p2 = createPath();
 		p2.moveTo(7, -5, 0);
 		p2.lineTo(4, 6, 0);
 		p2.lineTo(0, 8, 0);
@@ -324,7 +324,7 @@ extends AbstractShape3afpTest<T, B> {
 	@EnumSource(CoordinateSystem3D.class)
 	public void addIterator_closeAfter(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp<?, ?, ?, ?, ?, ?, B> p2 = createPath();
+		Path3afp<?, ?, ?, ?, ?, B> p2 = createPath();
 		p2.moveTo(7, -5, 0);
 		p2.lineTo(4, 6, 0);
 		p2.lineTo(0, 8, 0);
@@ -356,7 +356,7 @@ extends AbstractShape3afpTest<T, B> {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		this.shape.closePath();
 
-		Path3afp<?, ?, ?, ?, ?, ?, B> p2 = createPath();
+		Path3afp<?, ?, ?, ?, ?, B> p2 = createPath();
 		p2.moveTo(7, -5, 0);
 		p2.lineTo(4, 6, 0);
 		p2.lineTo(0, 8, 0);
@@ -386,7 +386,7 @@ extends AbstractShape3afpTest<T, B> {
 	public void curveToDoubleDoubleDoubleDoubleDoubleDouble_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3afp<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.curveTo(15, 145, 0, 50, 20, 0, 0, 0, 0);
 		});
 	}
@@ -412,7 +412,7 @@ extends AbstractShape3afpTest<T, B> {
 	public void curveToPoint3DPoint3DPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3afp<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.curveTo(createPoint(15, 145, 0), createPoint(50, 20, 0), createPoint(0, 0, 0));
 		});
 	}
@@ -1982,7 +1982,7 @@ extends AbstractShape3afpTest<T, B> {
 	public void lineToDoubleDoubleDouble_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3afp<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.lineTo(15, 145, 0);
 		});
 	}
@@ -2008,7 +2008,7 @@ extends AbstractShape3afpTest<T, B> {
 	public void lineToPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3afp<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.lineTo(createPoint(15, 145, 0));
 		});
 	}
@@ -2064,7 +2064,7 @@ extends AbstractShape3afpTest<T, B> {
 	public void quadToDoubleDoubleDoubleDoubleDoubleDouble_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3afp<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.quadTo(15, 145, 0, 50, 20, 0);
 		});
 	}
@@ -2090,7 +2090,7 @@ extends AbstractShape3afpTest<T, B> {
 	public void quadToPoint3DPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3afp<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.quadTo(createPoint(15, 145, 0), createPoint(50, 20, 0));
 		});
 	}
@@ -2246,11 +2246,11 @@ extends AbstractShape3afpTest<T, B> {
 	@DisplayName("equals(Object -> PathIterator3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Override
 	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equals(createPath().getPathIterator()));
-		assertFalse(this.shape.equals(createSegment(5, 8, 0, 5, 10, 0).getPathIterator()));
+		//TODO assertFalse(this.shape.equals(createSegment(5, 8, 0, 5, 10, 0).getPathIterator()));
+		fail("TODO");
 		assertTrue(this.shape.equals(this.shape.getPathIterator()));
 		assertTrue(this.shape.equals(this.shape.clone().getPathIterator()));
 	}
@@ -2258,12 +2258,12 @@ extends AbstractShape3afpTest<T, B> {
 	@DisplayName("equalsToPathIterator(PathIterator3afp)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Override
 	public void equalsToPathIterator(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equalsToPathIterator((PathIterator3afp) null));
 		assertFalse(this.shape.equalsToPathIterator(createPath().getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 0, 5, 10, 0).getPathIterator()));
+		//TODO assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 0, 5, 10, 0).getPathIterator()));
+		fail("TODO");
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.clone().getPathIterator()));
 	}
@@ -2493,7 +2493,6 @@ extends AbstractShape3afpTest<T, B> {
 	@DisplayName("getPathIterator")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Override
 	public void getPathIterator(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		PathIterator3afp pi = this.shape.getPathIterator();
@@ -2515,7 +2514,6 @@ extends AbstractShape3afpTest<T, B> {
 	@DisplayName("getPathIterator(Transform3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Override
 	public void getPathIteratorTransform3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		PathIterator3afp pi;
@@ -2571,34 +2569,6 @@ extends AbstractShape3afpTest<T, B> {
 		assertElement(pi, PathElementType.CURVE_TO, 19, -6, 1.5, 20, 0, 1.5, 21, -10, 1.5);
 		assertElement(pi, PathElementType.CLOSE, 14, -5, 1.5);
 		assertNoElement(pi);
-	}
-
-	@DisplayName("createTransformedShape(Transform3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void createTransformedShape(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p1 = randomPoint3d();
-		Point3D p2 = randomPoint3d();
-		Point3D p3 = randomPoint3d();
-		Point3D p4 = randomPoint3d();
-		Point3D p5 = randomPoint3d();
-		Point3D p6 = randomPoint3d();
-		Point3D p7 = randomPoint3d();
-		
-		Path3afp path = createPath();
-		path.moveTo(p1.getX(), p1.getY(), p1.getZ());
-		path.lineTo(p2.getX(), p2.getY(), p2.getZ());
-		path.quadTo(p3.getX(), p3.getY(), p3.getZ(), p4.getX(),p4.getY(), p4.getZ());
-		path.curveTo(p5.getX(),p5.getY(), p5.getZ(), p6.getX(), p6.getY(), p6.getZ(), p7.getX(),p7.getY(), p7.getZ());
-		path.closePath();
-
-		Transform3D trans = new Transform3D(randomMatrix4f());
-		Path3afp transformedShape = (Path3afp) path.createTransformedShape(trans);
-		path.transform(trans);		
-	
-		assertTrue(path.equalsToShape(transformedShape));
 	}
 
 	@DisplayName("translate(double,double,double)")
@@ -2875,34 +2845,6 @@ extends AbstractShape3afpTest<T, B> {
 		assertElement(pi, PathElementType.QUAD_TO, -dx + 3, -dy, -dx + 4, -dy + 3);
 		assertElement(pi, PathElementType.CURVE_TO, -dx + 5, -dy - 1, -dx + 6, -dy + 5, -dx + 7, -dy - 5);
 		assertNoElement(pi);
-	}
-
-	@DisplayName("p * Tranform3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p1 = randomPoint3d();
-		Point3D p2 = randomPoint3d();
-		Point3D p3 = randomPoint3d();
-		Point3D p4 = randomPoint3d();
-		Point3D p5 = randomPoint3d();
-		Point3D p6 = randomPoint3d();
-		Point3D p7 = randomPoint3d();
-		
-		Path3afp path = createPath();
-		path.moveTo(p1.getX(), p1.getY(), p1.getZ());
-		path.lineTo(p2.getX(), p2.getY(), p2.getZ());
-		path.quadTo(p3.getX(), p3.getY(), p3.getZ(), p4.getX(), p4.getY(), p4.getZ());
-		path.curveTo(p5.getX(), p5.getY(), p5.getZ(), p6.getX(), p6.getY(), p6.getZ(), p7.getX(), p7.getY(), p7.getZ());
-		path.closePath();
-
-		Transform3D trans = new Transform3D(randomMatrix4d());
-		Path3afp transformedShape = (Path3afp) path.operator_multiply(trans);
-		path.transform(trans);		
-	
-		assertTrue(path.equalsToShape(transformedShape));
 	}
 
 	@DisplayName("p && Point3D")

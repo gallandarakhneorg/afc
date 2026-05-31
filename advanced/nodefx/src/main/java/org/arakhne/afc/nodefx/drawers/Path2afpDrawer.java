@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ public class Path2afpDrawer implements Drawer<Path2afp> {
 		final PathIterator2D<? extends PathElement2afp> iterator = element.getPathIterator();
 		gc.beginPath();
 		while (iterator.hasNext()) {
-			final PathElement2afp pelement = iterator.next();
+			final var pelement = iterator.next();
 			switch (pelement.getType()) {
 			case LINE_TO:
 				gc.lineTo(pelement.getToX(), pelement.getToY());

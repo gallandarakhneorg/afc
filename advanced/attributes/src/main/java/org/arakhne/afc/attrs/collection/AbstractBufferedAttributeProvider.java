@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -34,6 +32,7 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.references.SoftValueTreeMap;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class implements an abstract attribute container that use
@@ -56,7 +55,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 	 */
 	@Override
 	public AbstractBufferedAttributeProvider clone() {
-		final AbstractBufferedAttributeProvider clone = (AbstractBufferedAttributeProvider) super.clone();
+		final var clone = (AbstractBufferedAttributeProvider) super.clone();
 		clone.cache = new SoftValueTreeMap<>(this.cache);
 		return clone;
 	}
@@ -95,12 +94,11 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 	@Pure
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		final ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
-		Attribute newAttr;
-		for (final String name : getAllAttributeNames()) {
+		final var list = new ArrayList<Attribute>(getAttributeCount());
+		for (final var name : getAllAttributeNames()) {
 			if (name != null) {
 				try {
-					newAttr = new AttributeImpl(name, extractValueFor(name));
+					final var newAttr = new AttributeImpl(name, extractValueFor(name));
 					list.add(newAttr);
 				} catch (AttributeException exception) {
 					//
@@ -113,13 +111,12 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 	@Pure
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
-		final Map<AttributeType, Collection<Attribute>> map = new TreeMap<>();
-		Attribute newAttr;
-		for (final String name : getAllAttributeNames()) {
+		final var map = new TreeMap<AttributeType, Collection<Attribute>>();
+		for (final var name : getAllAttributeNames()) {
 			if (name != null) {
 				try {
-					newAttr = new AttributeImpl(name, extractValueFor(name));
-					Collection<Attribute> list = map.get(newAttr.getType());
+					final var newAttr = new AttributeImpl(name, extractValueFor(name));
+					var list = map.get(newAttr.getType());
 					if (list == null) {
 						list = new ArrayList<>();
 						map.put(newAttr.getType(), list);

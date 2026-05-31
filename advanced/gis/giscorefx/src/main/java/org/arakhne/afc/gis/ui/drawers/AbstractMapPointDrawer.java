@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,11 +43,11 @@ public abstract class AbstractMapPointDrawer<T extends MapPoint> extends Abstrac
 	 * @param element the map element.
 	 */
 	protected void defineSmallRectangle(ZoomableGraphicsContext gc, T element) {
-		final double ptsSize = element.getPointSize() / 2.;
-		final double x = element.getX() - ptsSize;
-		final double y = element.getY() - ptsSize;
-		final double mx = element.getX() + ptsSize;
-		final double my = element.getY() + ptsSize;
+		final var ptsSize = element.getPointSize() / 2.;
+		final var x = element.getX() - ptsSize;
+		final var y = element.getY() - ptsSize;
+		final var mx = element.getX() + ptsSize;
+		final var my = element.getY() + ptsSize;
 		gc.moveTo(x, y);
 		gc.lineTo(mx, y);
 		gc.lineTo(mx, my);
@@ -64,11 +64,11 @@ public abstract class AbstractMapPointDrawer<T extends MapPoint> extends Abstrac
 	 * @param element the map element.
 	 */
 	protected void defineBigRectangle(ZoomableGraphicsContext gc, T element) {
-		final double ptsSize = element.getPointSize();
-		final double x = element.getX() - ptsSize;
-		final double y = element.getY() - ptsSize;
-		final double mx = element.getX() + ptsSize;
-		final double my = element.getY() + ptsSize;
+		final var ptsSize = element.getPointSize();
+		final var x = element.getX() - ptsSize;
+		final var y = element.getY() - ptsSize;
+		final var mx = element.getX() + ptsSize;
+		final var my = element.getY() + ptsSize;
 		gc.moveTo(x, y);
 		gc.lineTo(mx, y);
 		gc.lineTo(mx, my);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,14 +72,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
-RV extends Vector3D<? super RV, ? super RP, ? super RQ>,
-RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Serializable, JsonableObject {
+		RV extends Vector3D<? super RV, ? super RP, ? super RQ>,
+		RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Serializable, JsonableObject {
 
 	/** Default value that represents the maximal approximation allowed in the quaternion's components.
-	 * @since 18.0 
+	 * @since 18.0
 	 */
-	final static double EPS = 0.000001;
+	double EPS = 0.000001;
 
 	/**
 	 * Returns true if the L-infinite distance between the two quaternions is less than or equal to the epsilon parameter,
@@ -97,10 +98,10 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * @return  true or false
 	 */
 	@Pure
-	static boolean isEpsilonEquals(double t1x, double t1y, double t1z, double t1w, double t2x, double t2y, double t2z, double t2w, double epsilon) {
-		double diff;
-
-		diff = t1x - t2x;
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:parameternumber"})
+	static boolean isEpsilonEquals(double t1x, double t1y, double t1z, double t1w,
+			double t2x, double t2y, double t2z, double t2w, double epsilon) {
+		var diff = t1x - t2x;
 		if (Double.isNaN(diff) || (diff < 0 ? -diff : diff) > epsilon) {
 			return false;
 		}
@@ -131,19 +132,22 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * @param z is the z coordinate of the rotation axis
 	 * @param angle is the rotation around the axis in radians.
 	 * @return the components {@code (x, y, z, w)} of the quaternion.
-	 * @since 18.0 
+	 * @since 18.0
 	 */
 	static QuaternionComponents computeWithAxisAngle(double x, double y, double z, double angle) {
-		final double qx, qy, qz, qw;
-		double amag = Math.sqrt(x * x + y * y + z * z);
+		var amag = Math.sqrt(x * x + y * y + z * z);
+		final double qx;
+		final double qy;
+		final double qz;
+		final double qw;
 		if (amag < EPS) {
 			qw = 0.;
 			qx = 0.;
 			qy = 0.;
 			qz = 0.;
-		} else {  
-			amag = 1. / amag; 
-			final double mag = Math.sin(angle / 2.);
+		} else {
+			amag = 1. / amag;
+			final var mag = Math.sin(angle / 2.);
 			qw = Math.cos(angle / 2.);
 			qx = x * amag * mag;
 			qy = y * amag * mag;
@@ -160,15 +164,14 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * @param z the z coordinate of the quaternion.
 	 * @param w the w coordinate of the quaternion.
 	 * @return the axis angle
-	 * @since 18.0 
+	 * @since 18.0
 	 */
 	static AxisAngle computeAxisAngle(double x, double y, double z, double w) {
-		double mag = x * x + y * y + z * z;  
-
+		var mag = x * x + y * y + z * z;
 		if (mag > EPS) {
 			mag = Math.sqrt(mag);
-			final double invMag = 1. / mag;
-			final ImmutableVector3D iv = new ImmutableVector3D(x * invMag, y * invMag, z * invMag);
+			final var invMag = 1. / mag;
+			final var iv = new ImmutableVector3D(x * invMag, y * invMag, z * invMag);
 			return new AxisAngle(iv.getX(), iv.getY(), iv.getZ(), 2. * Math.atan2(mag, w), iv);
 		}
 		return new AxisAngle(0, 0, 1, 0, new ImmutableVector3D(0, 0, 1));
@@ -183,31 +186,31 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * @param heading is the rotation around top vector.
 	 * @param system the coordinate system to use for applying the Euler angles.
 	 * @return the quaternion components.
+	 * @since 18.0
 	 * @see CoordinateSystem3D#getDefaultCoordinateSystem()
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
-	 * @since 18.0
 	 */
 	static QuaternionComponents computeWithEulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
-		final CoordinateSystem3D cs = system == null ? CoordinateSystem3D.getDefaultCoordinateSystem() : system;
+		final var cs = system == null ? CoordinateSystem3D.getDefaultCoordinateSystem() : system;
 
-		final double c1 = Math.cos(heading / 2.);
-		final double s1 = Math.sin(heading / 2.);
-		final double c2 = Math.cos(attitude / 2.);
-		final double s2 = Math.sin(attitude / 2.);
-		final double c3 = Math.cos(bank / 2.);
-		final double s3 = Math.sin(bank / 2.);
+		final var c1 = Math.cos(heading / 2.);
+		final var s1 = Math.sin(heading / 2.);
+		final var c2 = Math.cos(attitude / 2.);
+		final var s2 = Math.sin(attitude / 2.);
+		final var c3 = Math.cos(bank / 2.);
+		final var s3 = Math.sin(bank / 2.);
 
 		// Source: http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm
 		// Standard used: XZY_RIGHT_HAND
-		final double c1c2 = c1 * c2;
-		final double s1s2 = s1 * s2;
-		final double w = c1c2 * c3 - s1s2 * s3;
-		final double x = c1c2 * s3 + s1s2 * c3;
-		final double y = s1 * c2 * c3 + c1 * s2 * s3;
-		final double z = c1 * s2 * c3 - s1 * c2 * s3;
+		final var c1c2 = c1 * c2;
+		final var s1s2 = s1 * s2;
+		final var w = c1c2 * c3 - s1s2 * s3;
+		final var x = c1c2 * s3 + s1s2 * c3;
+		final var y = s1 * c2 * c3 + c1 * s2 * s3;
+		final var z = c1 * s2 * c3 - s1 * c2 * s3;
 
-		QuaternionComponents comps = new QuaternionComponents(x, y, z, w);
+		var comps = new QuaternionComponents(x, y, z, w);
 		comps = CoordinateSystem3D.XZY_RIGHT_HAND.toSystem(comps, cs);
 		return comps;
 	}
@@ -221,31 +224,38 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * @param w the w coordinate of the quaternion.
 	 * @param system the coordinate system to use as the reference for the Euler angles.
 	 * @return the Euler angles.
-	 * @since 18.0 
+	 * @since 18.0
 	 */
 	static EulerAngles computeEulerAngles(double x, double y, double z, double w, CoordinateSystem3D system) {
 		// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
 		// Standard used: XZY_RIGHT_HAND
-		final QuaternionComponents q = system.toSystem(new QuaternionComponents(x, y, z, w), CoordinateSystem3D.XZY_RIGHT_HAND);
+		final var q = system.toSystem(new QuaternionComponents(x, y, z, w), CoordinateSystem3D.XZY_RIGHT_HAND);
 
-		final double sqw = q.w * q.w;
-		final double sqx = q.x * q.x;
-		final double sqy = q.y * q.y;
-		final double sqz = q.z * q.z;
-		final double unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
-		final double test = q.x * q.y + q.z * q.w;
+		final var sqw = q.w * q.w;
+		final var sqx = q.x * q.x;
+		final var sqy = q.y * q.y;
+		final var sqz = q.z * q.z;
+		// if normalized is one, otherwise is correction factor
+		final var unit = sqx + sqy + sqz + sqw;
+		final var test = q.x * q.y + q.z * q.w;
 
-		if (MathUtil.compareEpsilon(test, .5 * unit) >= 0) { // singularity at north pole
+		if (MathUtil.compareEpsilon(test, .5 * unit) >= 0) {
+			// singularity at north pole
 			return new EulerAngles(
-					2. * Math.atan2(q.x, q.w), // heading
-					MathConstants.DEMI_PI, // attitude
+					// heading
+					2. * Math.atan2(q.x, q.w),
+					// attitude
+					MathConstants.DEMI_PI,
 					0.,
 					system);
 		}
-		if (MathUtil.compareEpsilon(test, -.5 * unit) <= 0) { // singularity at south pole
+		if (MathUtil.compareEpsilon(test, -.5 * unit) <= 0) {
+			// singularity at south pole
 			return new EulerAngles(
-					-2. * Math.atan2(q.x, q.w), // heading
-					-MathConstants.DEMI_PI, // attitude
+					// heading
+					-2. * Math.atan2(q.x, q.w),
+					// attitude
+					-MathConstants.DEMI_PI,
 					0.,
 					system);
 		}
@@ -394,9 +404,9 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	/**
 	 * Sets the value of this quaternion to the conjugate of quaternion q1.
 	 * The result is the quaternion {@code (-x, -y, -z, w)}.
-	 * @param q the source vector
+	 * @param quaternion the source vector
 	 */
-	void conjugate(Quaternion<?, ?, ?> q);
+	void conjugate(Quaternion<?, ?, ?> quaternion);
 
 	/**
 	 * Sets the value of this quaternion to the conjugate of itself.
@@ -418,10 +428,10 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	/**
 	 * Sets the value of this quaternion to the quaternion product of
 	 * itself and q1 (this = this * q1).
-	 * @param q the other quaternion
+	 * @param quaternion the other quaternion
 	 */
-	default void mul(Quaternion<?, ?, ?> q) {
-		mul(this, q);
+	default void mul(Quaternion<?, ?, ?> quaternion) {
+		mul(this, quaternion);
 	}
 
 	/**
@@ -437,18 +447,18 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * Multiplies this quaternion by the inverse of quaternion q1 and places
 	 * the value into this quaternion.  The value of the argument quaternion
 	 * is preserved (this = this * q^-1).
-	 * @param q the other quaternion
+	 * @param quaternion the other quaternion
 	 */
-	default void mulInverse(Quaternion<?, ?, ?> q) {
-		mulInverse(this, q);
+	default void mulInverse(Quaternion<?, ?, ?> quaternion) {
+		mulInverse(this, quaternion);
 	}
 
 	/**
 	 * Sets the value of this quaternion to quaternion inverse of quaternion q1.
 	 * The result is the NORMALIZED quaternion from {@code (-x, -y, -z, w)}.
-	 * @param q the quaternion to be inverted
+	 * @param quaternion the quaternion to be inverted
 	 */
-	void inverse(Quaternion<?, ?, ?> q);
+	void inverse(Quaternion<?, ?, ?> quaternion);
 
 	/**
 	 * Sets the value of this quaternion to the quaternion inverse of itself.
@@ -461,9 +471,9 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	/**
 	 * Sets the value of this quaternion to the normalized value
 	 * of quaternion q1.
-	 * @param q the quaternion to be normalized.
+	 * @param quaternion the quaternion to be normalized.
 	 */
-	void normalize(Quaternion<?, ?, ?> q);
+	void normalize(Quaternion<?, ?, ?> quaternion);
 
 	/**
 	 * Normalizes the value of this quaternion in place.
@@ -498,7 +508,7 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 */
 	default void setAxisAngle(Vector3D<?, ?, ?> axis, double angle) {
 		assert axis != null;
-		final QuaternionComponents comps = computeWithAxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle);
+		final var comps = computeWithAxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle);
 		set(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
@@ -511,7 +521,7 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * @param angle is the rotation around the axis in radians.
 	 */
 	default void setAxisAngle(double x, double y, double z, double angle) {
-		final QuaternionComponents comps = computeWithAxisAngle(x, y, z, angle);
+		final var comps = computeWithAxisAngle(x, y, z, angle);
 		set(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
@@ -519,13 +529,13 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * of the Axis-Angle arguments.
 	 *
 	 * @param axisangle the Axis-Angle object.
+	 * @since 18.0
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
-	 * @since 18.0
 	 */
 	default void setAxisAngle(AxisAngle axisangle)  {
 		assert axisangle != null;
-		final QuaternionComponents comps = computeWithAxisAngle(axisangle.x, axisangle.y, axisangle.z, axisangle.angle);
+		final var comps = computeWithAxisAngle(axisangle.x, axisangle.y, axisangle.z, axisangle.angle);
 		set(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
@@ -535,7 +545,7 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 */
 	@Pure
 	default RV getAxis() {
-		final Vector3D<?, ?, ?> axis = getAxisAngle().axis;
+		final var axis = getAxisAngle().axis;
 		return getGeomFactory().newVector(axis.getX(), axis.getY(), axis.getZ());
 	}
 
@@ -567,11 +577,11 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 *  Performs a great circle interpolation between this quaternion
 	 *  and the quaternion parameter and places the result into this
 	 *  quaternion.
-	 *  @param q the other quaternion
+	 *  @param quaternion the other quaternion
 	 *  @param alpha the alpha interpolation parameter
 	 */
-	default void interpolate(Quaternion<?, ?, ?> q, double alpha) {
-		interpolate(this, q, alpha);
+	default void interpolate(Quaternion<?, ?, ?> quaternion, double alpha) {
+		interpolate(this, quaternion, alpha);
 	}
 
 	/**
@@ -591,7 +601,7 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 */
 	default void setEulerAngles(EulerAngles angles) {
 		assert angles != null;
-		final QuaternionComponents comps = computeWithEulerAngles(angles.attitude(), angles.bank(), angles.heading(), angles.system());
+		final var comps = computeWithEulerAngles(angles.attitude(), angles.bank(), angles.heading(), angles.system());
 		set(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
@@ -607,7 +617,7 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
 	 */
 	default void setEulerAngles(double attitude, double bank, double heading) {
-		final QuaternionComponents comps = computeWithEulerAngles(attitude, bank, heading, null);
+		final var comps = computeWithEulerAngles(attitude, bank, heading, null);
 		set(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
@@ -621,7 +631,7 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
 	 */
 	default void setEulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
-		final QuaternionComponents comps = computeWithEulerAngles(attitude, bank, heading, system);
+		final var comps = computeWithEulerAngles(attitude, bank, heading, system);
 		set(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
@@ -670,7 +680,10 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	@Pure
 	default boolean equals(Quaternion<?, ?, ?> quaternion) {
 		try {
-			return getX() == quaternion.getX() && getY() == quaternion.getY() && getZ() == quaternion.getZ() && getW() == quaternion.getW();
+			return getX() == quaternion.getX()
+					&& getY() == quaternion.getY()
+					&& getZ() == quaternion.getZ()
+					&& getW() == quaternion.getW();
 		} catch (Throwable exception) {
 			return false;
 		}
@@ -701,10 +714,10 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 
 	@Override
 	default void toJson(JsonBuffer buffer) {
-		buffer.add("x", getX()); //$NON-NLS-1$
-		buffer.add("y", getY()); //$NON-NLS-1$
-		buffer.add("z", getZ()); //$NON-NLS-1$
-		buffer.add("w", getW()); //$NON-NLS-1$
+		buffer.add("x", Double.valueOf(getX())); //$NON-NLS-1$
+		buffer.add("y", Double.valueOf(getY())); //$NON-NLS-1$
+		buffer.add("z", Double.valueOf(getZ())); //$NON-NLS-1$
+		buffer.add("w", Double.valueOf(getW())); //$NON-NLS-1$
 		buffer.add("q", toGnuOctave()); //$NON-NLS-1$
 	}
 
@@ -718,77 +731,83 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	}
 
 	/**
-	 * Sets the value of this quaternion to the quaternion product of
-	 * itself and q1 (this = this * q1).
+	 * Sets the value of the quaternion to the quaternion product of
+	 * this quaternion and quaternion (r = this * quaternion).
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param q the other quaternion
-	 * @see #mul(Quaternion)
+	 * @param quaternion the other quaternion
+	 * @return the result of the multiplication.
 	 * @since 18.0
+	 * @see #mul(Quaternion)
 	 */
 	@Pure
 	@XtextOperator("*")
-	default RQ operator_multiply(Quaternion<?, ?, ?> q) {
+	default RQ operator_multiply(Quaternion<?, ?, ?> quaternion) {
 		final RQ result = getGeomFactory().newQuaternion(getX(), getY(), getZ(), getW());
-		result.mul(q);
+		result.mul(quaternion);
 		return result;
 	}
 
 	/**
-	 * Sets the value of this quaternion to the quaternion product of
-	 * itself and q1 (this = this / q1).
+	 * Sets the value of the quaternion to the quaternion division of
+	 * this quaternion and quaternion (r = this / quaternion).
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param q the other quaternion
-	 * @see #mulInverse(Quaternion)
+	 * @param quaternion the other quaternion
+	 * @return the result of the division.
 	 * @since 18.0
+	 * @see #mulInverse(Quaternion)
 	 */
 	@Pure
 	@XtextOperator("/")
-	default RQ operator_divide(Quaternion<?, ?, ?> q) {
+	default RQ operator_divide(Quaternion<?, ?, ?> quaternion) {
 		final RQ result = getGeomFactory().newQuaternion(getX(), getY(), getZ(), getW());
-		result.mulInverse(q);
+		result.mulInverse(quaternion);
 		return result;
 	}
 
 	/**
-	 * Sets the value of this quaternion to the quaternion product of
-	 * itself and q1 (this = this * q1).
+	 * Sets the value of the quaternion to the quaternion product of
+	 * this quaternion and quaternion (r = this * quaternion).
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the <a href="http://scala-lang.org/">Scala Language</a>.
 	 *
-	 * @param q the other quaternion
-	 * @see #mul(Quaternion)
+	 * @param quaternion the other quaternion
+	 * @return the result of the multiplication.
 	 * @since 18.0
+	 * @see #mul(Quaternion)
 	 */
 	@Pure
 	@ScalaOperator("*")
-	default RQ $times(Quaternion<?, ?, ?> q) {
-		return operator_multiply(q);
+	@Inline("operator_multiply($1)")
+	default RQ $times(Quaternion<?, ?, ?> quaternion) {
+		return operator_multiply(quaternion);
 	}
 
 	/**
-	 * Sets the value of this quaternion to the quaternion product of
-	 * itself and q1 (this = this / q1).
+	 * Sets the value of the quaternion to the quaternion division of
+	 * this quaternion and quaternion (r = this / quaternion).
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the <a href="http://scala-lang.org/">Scala Language</a>.
 	 *
-	 * @param q the other quaternion
-	 * @see #mulInverse(Quaternion)
+	 * @param quaternion the other quaternion
+	 * @return the result of the division.
 	 * @since 18.0
+	 * @see #mulInverse(Quaternion)
 	 */
 	@Pure
 	@ScalaOperator("/")
-	default RQ $divide(Quaternion<?, ?, ?> q) {
-		return operator_divide(q);
+	@Inline("operator_divide($1)")
+	default RQ $div(Quaternion<?, ?, ?> quaternion) {
+		return operator_divide(quaternion);
 	}
 
 	/** Replies this quaternion with a Geogebra-compatible form.
@@ -856,7 +875,6 @@ RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends Cloneable, Se
 	record AxisAngle(double x, double y, double z, double angle, UnmodifiableVector3D<?, ?, ?> axis) {
 		//
 	}
-
 
 	/** A representation of the components of the quaternion.
 	 *

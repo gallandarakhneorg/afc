@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ package org.arakhne.afc.math.geometry.d2.afp;
 
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
@@ -33,12 +31,15 @@ import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * Fonctional interface that represented a 2D segment/line on a plane.
+ * Functional interface that represented a 2D segment/line on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -52,6 +53,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber", "checkstyle:parameternumber"})
 public interface Segment2afp<
 		ST extends Shape2afp<?, ?, IE, P, V, B>,
 		IT extends Segment2afp<?, ?, IE, P, V, B>,
@@ -60,6 +62,11 @@ public interface Segment2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 	extends Shape2afp<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.SEGMENT;
+	}
 
 	/** Iterator on the path elements of the segment.
 	 *
@@ -155,7 +162,7 @@ public interface Segment2afp<
 			if (this.index > 1) {
 				throw new NoSuchElementException();
 			}
-			final int idx = this.index;
+			final var idx = this.index;
 			++this.index;
 			switch (idx) {
 			case 0:
@@ -289,11 +296,11 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static int ccw(double x1, double y1, double x2, double y2, double px, double py, double epsilon) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		double xp1 = px - x1;
-		double yp1 = py - y1;
-		double ccw = xp1 * y21 - yp1 * x21;
+		final var x21 = x2 - x1;
+		final var y21 = y2 - y1;
+		var xp1 = px - x1;
+		var yp1 = py - y1;
+		var ccw = xp1 * y21 - yp1 * x21;
 		if (MathUtil.isEpsilonZero(ccw, epsilon)) {
 			// The point is colinear, classify based on which side of
 			// the segment the point falls on. We can calculate a
@@ -318,7 +325,7 @@ public interface Segment2afp<
 				}
 			}
 		}
-		return (ccw < 0.) ? -1 : ((ccw > 0.) ? 1 : 0);
+		return ccw < 0. ? -1 : ((ccw > 0.) ? 1 : 0);
 	}
 
 	/** Replies the point on the segment that is closest to the given point.
@@ -335,7 +342,7 @@ public interface Segment2afp<
 			double ax, double ay, double bx, double by, double px, double py,
 			Point2D<?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(6);
-		final double ratio = Segment2afp.findsProjectedPointPointLine(px, py, ax, ay, bx, by);
+		final var ratio = Segment2afp.findsProjectedPointPointLine(px, py, ax, ay, bx, by);
 		if (ratio <= 0.) {
 			result.set(ax, ay);
 		} else if (ratio >= 1.) {
@@ -363,13 +370,13 @@ public interface Segment2afp<
 			double rx, double ry, double rwidth, double rheight, Point2D<?, ?> result) {
 		assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(6);
 		assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(7);
-		final double rmaxx = rx + rwidth;
-		final double rmaxy = ry + rheight;
-		final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
-		final int code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
-		final Point2D<?, ?> tmp1 = new InnerComputationPoint2afp();
-		final Point2D<?, ?> tmp2 = new InnerComputationPoint2afp();
-		final int zone = Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(
+		final var rmaxx = rx + rwidth;
+		final var rmaxy = ry + rheight;
+		final var code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
+		final var code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
+		final var tmp1 = new InnerComputationPoint2afp();
+		final var tmp2 = new InnerComputationPoint2afp();
+		final var zone = Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(
 				rx, ry, rmaxx, rmaxy,
 				sx1, sy1, sx2, sy2,
 				code1, code2,
@@ -433,22 +440,23 @@ public interface Segment2afp<
 	 * @param resultOnSecondSegment the point on the second segment.
 	 * @return the square distance between the segments.
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static double findsClosestPointSegmentSegment(
 			double s1x1, double s1y1, double s1x2, double s1y2,
 			double s2x1, double s2y1, double s2x2, double s2y2,
 			Point2D<?, ?> resultOnFirstSegment, Point2D<?, ?> resultOnSecondSegment) {
-		final double ux = s1x2 - s1x1;
-		final double uy = s1y2 - s1y1;
-		final double vx = s2x2 - s2x1;
-		final double vy = s2y2 - s2y1;
-		final double wx = s1x1 - s2x1;
-		final double wy = s1y1 - s2y1;
-		final double a = Vector2D.dotProduct(ux, uy, ux, uy);
-		final double b = Vector2D.dotProduct(ux, uy, vx, vy);
-		final double c = Vector2D.dotProduct(vx, vy, vx, vy);
-		final double d = Vector2D.dotProduct(ux, uy, wx, wy);
-		final double e = Vector2D.dotProduct(vx, vy, wx, wy);
-		final double bigD = a * c - b * b;
+		final var ux = s1x2 - s1x1;
+		final var uy = s1y2 - s1y1;
+		final var vx = s2x2 - s2x1;
+		final var vy = s2y2 - s2y1;
+		final var wx = s1x1 - s2x1;
+		final var wy = s1y1 - s2y1;
+		final var a = Vector2D.dotProduct(ux, uy, ux, uy);
+		final var b = Vector2D.dotProduct(ux, uy, vx, vy);
+		final var c = Vector2D.dotProduct(vx, vy, vx, vy);
+		final var d = Vector2D.dotProduct(ux, uy, wx, wy);
+		final var e = Vector2D.dotProduct(vx, vy, wx, wy);
+		final var bigD = a * c - b * b;
 		double svD = bigD;
 		double tvD = bigD;
 		double svN;
@@ -506,13 +514,13 @@ public interface Segment2afp<
 		}
 
 		// finally do the division to get sc and tc
-		final double sc = MathUtil.isEpsilonZero(svN) ? 0. : (svN / svD);
-		final double tc = MathUtil.isEpsilonZero(tvN) ? 0. : (tvN / tvD);
+		final var sc = MathUtil.isEpsilonZero(svN) ? 0. : (svN / svD);
+		final var tc = MathUtil.isEpsilonZero(tvN) ? 0. : (tvN / tvD);
 
 		// get the difference of the two closest points
 		// =  S1(sc) - S2(tc)
-		final double dPx = wx + (sc * ux) - (tc * vx);
-		final double dPy = wy + (sc * uy) - (tc * vy);
+		final var dPx = wx + (sc * ux) - (tc * vx);
+		final var dPy = wy + (sc * uy) - (tc * vy);
 
 		if (resultOnFirstSegment != null) {
 			resultOnFirstSegment.set(s1x1 + sc * ux, s1y1 + sc * uy);
@@ -547,11 +555,11 @@ public interface Segment2afp<
 			double x0, double y0,
 			double x1, double y1) {
 		assert radius >= 0. : AssertMessages.positiveOrZeroParameter(3);
-		int numCrosses = crossings;
+		var numCrosses = crossings;
 
-		final double xmin = cx - Math.abs(radius);
-		final double ymin = cy - Math.abs(radius);
-		final double ymax = cy + Math.abs(radius);
+		final var xmin = cx - Math.abs(radius);
+		final var ymin = cy - Math.abs(radius);
+		final var ymax = cy + Math.abs(radius);
 
 		if (y0 <= ymin && y1 <= ymin) {
 			return numCrosses;
@@ -616,12 +624,12 @@ public interface Segment2afp<
 			double x1, double y1) {
 		assert ew >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		assert eh >= 0 : AssertMessages.positiveOrZeroParameter(4);
-		int numCrosses = crossings;
+		var numCrosses = crossings;
 
-		final double xmin = ex;
-		final double ymin = ey;
-		final double xmax = ex + ew;
-		final double ymax = ey + eh;
+		final var xmin = ex;
+		final var ymin = ey;
+		final var xmax = ex + ew;
+		final var ymax = ey + eh;
 
 		if (y0 <= ymin && y1 <= ymin) {
 			return numCrosses;
@@ -655,7 +663,7 @@ public interface Segment2afp<
 				x0, y0, x1, y1, true)) {
 			return GeomConstants.SHAPE_INTERSECTS;
 		} else {
-			final double xcenter = (xmin + xmax) / 2.;
+			final var xcenter = (xmin + xmax) / 2.;
 			numCrosses += calculatesCrossingsPointShadowSegment(xcenter, ymin, x0, y0, x1, y1);
 			numCrosses += calculatesCrossingsPointShadowSegment(xcenter, ymax, x0, y0, x1, y1);
 		}
@@ -683,6 +691,7 @@ public interface Segment2afp<
 	 * @return the crossing.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	static int calculatesCrossingsPointShadowSegment(
 			double px, double py,
 			double x0, double y0,
@@ -701,7 +710,7 @@ public interface Segment2afp<
 		if (px < x0 && px < x1) {
 			return (y0 < y1) ? 1 : -1;
 		}
-		final double xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
+		final var xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
 		if (px >= xintercept) {
 			return 0;
 		}
@@ -728,6 +737,7 @@ public interface Segment2afp<
 	 * @return the crossing.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	static int calculatesCrossingsPointShadowSegmentWithoutEquality(
 			double px, double py,
 			double x0, double y0,
@@ -770,14 +780,15 @@ public interface Segment2afp<
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:booleanexpressioncomplexity"})
 	static int calculatesCrossingsRectangleShadowSegment(
 			int crossings,
 			double rxmin, double rymin,
 			double rxmax, double rymax,
 			double x0, double y0,
 			double x1, double y1) {
-		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(1, rxmin, 3, rxmax);
-		assert rymin <= rymax : AssertMessages.lowerEqualParameters(2, rymin, 4, rymax);
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(1, Double.valueOf(rxmin), 3, Double.valueOf(rxmax));
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(2, Double.valueOf(rymin), 4, Double.valueOf(rymax));
 		int numCrosses = crossings;
 
 		if (y0 >= rymax && y1 >= rymax) {
@@ -820,19 +831,19 @@ public interface Segment2afp<
 		// Both x and y ranges overlap by a non-empty amount
 		// First do trivial INTERSECTS rejection of the cases
 		// where one of the endpoints is inside the rectangle.
-		if ((x0 > rxmin && x0 < rxmax && y0 > rymin && y0 < rymax)
-				|| (x1 > rxmin && x1 < rxmax && y1 > rymin && y1 < rymax)) {
+		if (x0 > rxmin && x0 < rxmax && y0 > rymin && y0 < rymax
+				|| x1 > rxmin && x1 < rxmax && y1 > rymin && y1 < rymax) {
 			return GeomConstants.SHAPE_INTERSECTS;
 		}
 		// Otherwise calculate the y intercepts and see where
 		// they fall with respect to the rectangle
-		double xi0 = x0;
+		var xi0 = x0;
 		if (y0 < rymin) {
 			xi0 += (rymin - y0) * (x1 - x0) / (y1 - y0);
 		} else if (y0 > rymax) {
 			xi0 += (rymax - y0) * (x1 - x0) / (y1 - y0);
 		}
-		double xi1 = x1;
+		var xi1 = x1;
 		if (y1 < rymin) {
 			xi1 += (rymin - y1) * (x0 - x1) / (y0 - y1);
 		} else if (y1 > rymax) {
@@ -885,6 +896,7 @@ public interface Segment2afp<
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	static int calculatesCrossingsRoundRectangleShadowSegment(
 			int crossings,
 			double rxmin, double rymin,
@@ -892,13 +904,15 @@ public interface Segment2afp<
 			double arcWidth, double arcHeight,
 			double x0, double y0,
 			double x1, double y1) {
-		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(1, rxmin, 3, rxmax);
-		assert rymin <= rymax : AssertMessages.lowerEqualParameters(2, rymin, 4, rymax);
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(1, Double.valueOf(rxmin), 3, Double.valueOf(rxmax));
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(2, Double.valueOf(rymin), 4, Double.valueOf(rymax));
 		assert arcWidth >= 0. && arcWidth <= (rxmax - rxmin) / 2.
-				: AssertMessages.outsideRangeInclusiveParameter(5, arcWidth, 0, (rxmax - rxmin) / 2.);
+				: AssertMessages.outsideRangeInclusiveParameter(5, Double.valueOf(arcWidth), Double.valueOf(0),
+						Double.valueOf((rxmax - rxmin) / 2.));
 		assert arcHeight >= 0. && arcHeight <= (rymax - rymin) / 2.
-				: AssertMessages.outsideRangeInclusiveParameter(6, arcHeight, 0, (rymax - rymin) / 2.);
-		int numCrosses = crossings;
+				: AssertMessages.outsideRangeInclusiveParameter(6, Double.valueOf(arcHeight), Double.valueOf(0),
+						Double.valueOf((rymax - rymin) / 2.));
+		var numCrosses = crossings;
 
 		if (y0 >= rymax && y1 >= rymax) {
 			return numCrosses;
@@ -945,7 +959,7 @@ public interface Segment2afp<
 			return GeomConstants.SHAPE_INTERSECTS;
 		}
 
-		final double x = rxmax - arcWidth;
+		final var x = rxmax - arcWidth;
 		numCrosses += calculatesCrossingsPointShadowSegment(x, rymin, x0, y0, x1, y1);
 		numCrosses += calculatesCrossingsPointShadowSegment(x, rymax, x0, y0, x1, y1);
 
@@ -968,18 +982,19 @@ public interface Segment2afp<
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	static int calculatesCrossingsSegmentShadowSegment(
 			int crossings,
 			double sx1, double sy1,
 			double sx2, double sy2,
 			double x0, double y0,
 			double x1, double y1) {
-		int numCrosses = crossings;
+		var numCrosses = crossings;
 
-		final double xmin = Math.min(sx1, sx2);
-		final double xmax = Math.max(sx1, sx2);
-		final double ymin = Math.min(sy1, sy2);
-		final double ymax = Math.max(sy1, sy2);
+		final var xmin = Math.min(sx1, sx2);
+		final var xmax = Math.max(sx1, sx2);
+		final var ymin = Math.min(sy1, sy2);
+		final var ymax = Math.max(sy1, sy2);
 
 		if (y0 <= ymin && y1 <= ymin) {
 			return numCrosses;
@@ -1020,7 +1035,7 @@ public interface Segment2afp<
 				side2 = findsSideLinePoint(sx2, sy2, sx1, sy1, x1, y1, 0.);
 			}
 			if (side1 > 0 || side2 > 0) {
-				final int n1 = calculatesCrossingsPointShadowSegment(sx1, sy1, x0, y0, x1, y1);
+				final var n1 = calculatesCrossingsPointShadowSegment(sx1, sy1, x0, y0, x1, y1);
 				final int n2;
 				if (n1 != 0) {
 					n2 = calculatesCrossingsPointShadowSegmentWithoutEquality(sx2, sy2, x0, y0, x1, y1);
@@ -1054,6 +1069,7 @@ public interface Segment2afp<
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static int calculatesCrossingsTriangleShadowSegment(
 			int crossings,
 			double tx1, double ty1,
@@ -1061,10 +1077,8 @@ public interface Segment2afp<
 			double tx3, double ty3,
 			double x0, double y0,
 			double x1, double y1) {
-		int numCrosses = crossings;
-
-		double xmin = tx1;
-		double xmax = tx1;
+		var xmin = tx1;
+		var xmax = tx1;
 
 		if (tx2 < xmin) {
 			xmin = tx2;
@@ -1072,10 +1086,10 @@ public interface Segment2afp<
 		if (tx2 > xmax) {
 			xmax = tx2;
 		}
-		double ymin = ty1;
-		double ymax = ty1;
-		double x4ymin = tx1;
-		double x4ymax = tx1;
+		var ymin = ty1;
+		var ymax = ty1;
+		var x4ymin = tx1;
+		var x4ymax = tx1;
 		if (ty2 == ymin) {
 			x4ymin = Math.max(tx2, x4ymin);
 		} else if (ty2 < ymin) {
@@ -1107,6 +1121,8 @@ public interface Segment2afp<
 			ymax = ty3;
 			x4ymax = tx3;
 		}
+
+		var numCrosses = crossings;
 
 		if (y0 <= ymin && y1 <= ymin) {
 			return numCrosses;
@@ -1161,13 +1177,13 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static double calculatesDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		final double denomenator = x21 * x21 + y21 * y21;
+		final var x21 = x2 - x1;
+		final var y21 = y2 - y1;
+		final var denomenator = x21 * x21 + y21 * y21;
 		if (denomenator == 0.) {
 			return Point2D.getDistancePointPoint(px, py, x1, y1);
 		}
-		final double factor = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
+		final var factor = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
 		return Math.abs(factor) * Math.sqrt(denomenator);
 	}
 
@@ -1183,30 +1199,30 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static double calculatesDistanceSegmentPoint(double x1, double y1, double x2, double y2, double px, double py) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
+		final var x21 = x2 - x1;
+		final var y21 = y2 - y1;
 
-		final double denomenator = x21 * x21 + y21 * y21;
+		final var denomenator = x21 * x21 + y21 * y21;
 		if (denomenator == 0.) {
 			return Point2D.getDistancePointPoint(px, py, x1, y1);
 		}
 
-		final double xp1 = px - x1;
-		final double yp1 = py - y1;
-		final double numerator = xp1 * x21 + yp1 * y21;
-		final double ratio = numerator / denomenator;
+		final var xp1 = px - x1;
+		final var yp1 = py - y1;
+		final var numerator = xp1 * x21 + yp1 * y21;
+		final var ratio = numerator / denomenator;
 
 		if (ratio <= 0.) {
 			return Math.hypot(xp1, yp1);
 		}
 
 		if (ratio >= 1.) {
-			final double xp2 = px - x2;
-			final double yp2 = py - y2;
+			final var xp2 = px - x2;
+			final var yp2 = py - y2;
 			return Math.hypot(xp2, yp2);
 		}
 
-		final double factor = (xp1 * y21 - yp1 * x21) / denomenator;
+		final var factor = (xp1 * y21 - yp1 * x21) / denomenator;
 		return Math.abs(factor) * Math.sqrt(denomenator);
 	}
 
@@ -1223,13 +1239,13 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static double calculatesDistanceSquaredLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		final double denomenator = x21 * x21 + y21 * y21;
+		final var x21 = x2 - x1;
+		final var y21 = y2 - y1;
+		final var denomenator = x21 * x21 + y21 * y21;
 		if (denomenator == 0.) {
 			return Point2D.getDistanceSquaredPointPoint(px, py, x1, y1);
 		}
-		final double s = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
+		final var s = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
 		return (s * s) * Math.abs(denomenator);
 	}
 
@@ -1245,29 +1261,29 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static double calculatesDistanceSquaredSegmentPoint(double x1, double y1, double x2, double y2, double px, double py) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		final double denomenator = x21 * x21 + y21 * y21;
+		final var x21 = x2 - x1;
+		final var y21 = y2 - y1;
+		final var denomenator = x21 * x21 + y21 * y21;
 		if (denomenator == 0.) {
 			return Point2D.getDistanceSquaredPointPoint(px, py, x1, y1);
 		}
 
-		final double xp1 = px - x1;
-		final double yp1 = py - y1;
-		final double numerator = xp1 * x21 + yp1 * y21;
-		final double ratio = numerator / denomenator;
+		final var xp1 = px - x1;
+		final var yp1 = py - y1;
+		final var numerator = xp1 * x21 + yp1 * y21;
+		final var ratio = numerator / denomenator;
 
 		if (ratio <= 0.) {
 			return Math.abs(xp1 * xp1 + yp1 * yp1);
 		}
 
 		if (ratio >= 1.) {
-			final double xp2 = px - x2;
-			final double yp2 = py - y2;
+			final var xp2 = px - x2;
+			final var yp2 = py - y2;
 			return Math.abs(xp2 * xp2 + yp2 * yp2);
 		}
 
-		final double factor =  (xp1 * y21 - yp1 * x21) / denomenator;
+		final var factor =  (xp1 * y21 - yp1 * x21) / denomenator;
 		return (factor * factor) * Math.abs(denomenator);
 	}
 
@@ -1285,7 +1301,7 @@ public interface Segment2afp<
 	 */
 	@Pure
 	@Inline(value = "$9.findsClosestPointSegmentSegment(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), null)",
-	imported = {Segment2afp.class})
+		imported = {Segment2afp.class})
 	static double calculatesDistanceSquaredSegmentSegment(double s1x1, double s1y1, double s1x2, double s1y2,
 			double s2x1, double s2y1, double s2x2, double s2y2) {
 		return findsClosestPointSegmentSegment(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2, null);
@@ -1304,10 +1320,10 @@ public interface Segment2afp<
 	static void findsFarthestPointSegmentPoint(
 			double ax, double ay, double bx, double by, double px, double py, Point2D<?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(6);
-		final double xpa = px - ax;
-		final double ypa = py - ay;
-		final double xpb = px - bx;
-		final double ypb = py - by;
+		final var xpa = px - ax;
+		final var ypa = py - ay;
+		final var xpb = px - bx;
+		final var ypb = py - by;
 		if ((xpa * xpa + ypa * ypa) >= (xpb * xpb + ypb * ypb)) {
 			result.set(ax, ay);
 		} else {
@@ -1329,12 +1345,12 @@ public interface Segment2afp<
 	 */
 	static void findsFarthestPointSegmentRectangle(double sx1, double sy1, double sx2, double sy2,
 			double rx, double ry, double rwidth, double rheight, Point2D<?, ?> result) {
-		final double rmaxx = rx + rwidth;
-		final double rmaxy = ry + rheight;
-		final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
-		final int code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
-		final Point2D<?, ?> tmp1 = new InnerComputationPoint2afp();
-		final Point2D<?, ?> tmp2 = new InnerComputationPoint2afp();
+		final var rmaxx = rx + rwidth;
+		final var rmaxy = ry + rheight;
+		final var code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
+		final var code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
+		final var tmp1 = new InnerComputationPoint2afp();
+		final var tmp2 = new InnerComputationPoint2afp();
 		final int zone;
 		if (code1 != code2) {
 			zone = Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(
@@ -1364,8 +1380,8 @@ public interface Segment2afp<
 					sx1, sy1, sx2, sy2,
 					rx, rmaxy, rmaxx, rmaxy, result);
 		} else {
-			final double dist1 = Point2D.getDistanceSquaredPointPoint(tmp1.getX(), tmp1.getY(), sx1, sy1);
-			final double dist2 = Point2D.getDistanceSquaredPointPoint(tmp2.getX(), tmp2.getY(), sx2, sy2);
+			final var dist1 = Point2D.getDistanceSquaredPointPoint(tmp1.getX(), tmp1.getY(), sx1, sy1);
+			final var dist2 = Point2D.getDistanceSquaredPointPoint(tmp2.getX(), tmp2.getY(), sx2, sy2);
 			if (dist1 >= dist2) {
 				result.set(sx1, sy1);
 			} else {
@@ -1391,18 +1407,18 @@ public interface Segment2afp<
 			double s1x1, double s1y1, double s1x2, double s1y2,
 			double s2x1, double s2y1, double s2x2, double s2y2,
 			Point2D<?, ?> result) {
-		final double ux = s1x2 - s1x1;
-		final double uy = s1y2 - s1y1;
-		final double vx = s2x2 - s2x1;
-		final double vy = s2y2 - s2y1;
-		final double wx = s1x1 - s2x1;
-		final double wy = s1y1 - s2y1;
-		final double a = Vector2D.dotProduct(ux, uy, ux, uy);
-		final double b = Vector2D.dotProduct(ux, uy, vx, vy);
-		final double c = Vector2D.dotProduct(vx, vy, vx, vy);
-		final double d = Vector2D.dotProduct(ux, uy, wx, wy);
-		final double e = Vector2D.dotProduct(vx, vy, wx, wy);
-		final double bigD = a * c - b * b;
+		final var ux = s1x2 - s1x1;
+		final var uy = s1y2 - s1y1;
+		final var vx = s2x2 - s2x1;
+		final var vy = s2y2 - s2y1;
+		final var wx = s1x1 - s2x1;
+		final var wy = s1y1 - s2y1;
+		final var a = Vector2D.dotProduct(ux, uy, ux, uy);
+		final var b = Vector2D.dotProduct(ux, uy, vx, vy);
+		final var c = Vector2D.dotProduct(vx, vy, vx, vy);
+		final var d = Vector2D.dotProduct(ux, uy, wx, wy);
+		final var e = Vector2D.dotProduct(vx, vy, wx, wy);
+		final var bigD = a * c - b * b;
 		double svD = bigD;
 		double tvD = bigD;
 		double svN;
@@ -1459,8 +1475,8 @@ public interface Segment2afp<
 			}
 		}
 
-		final double sc = MathUtil.isEpsilonZero(svN) ? 0. : (svN / svD);
-		final double tc = MathUtil.isEpsilonZero(tvN) ? 0. : (tvN / tvD);
+		final var sc = MathUtil.isEpsilonZero(svN) ? 0. : (svN / svD);
+		final var tc = MathUtil.isEpsilonZero(tvN) ? 0. : (tvN / tvD);
 
 		if (result != null) {
 			if (sc <= .5) {
@@ -1471,8 +1487,8 @@ public interface Segment2afp<
 		}
 
 		// get the difference of the two closest points
-		final double dPx = wx + (sc * ux) - (tc * vx);
-		final double dPy = wy + (sc * uy) - (tc * vy);
+		final var dPx = wx + (sc * ux) - (tc * vx);
+		final var dPy = wy + (sc * uy) - (tc * vy);
 
 		return dPx * dPx + dPy * dPy;
 	}
@@ -1495,19 +1511,19 @@ public interface Segment2afp<
 			double x3, double y3, double x4, double y4,
 			Point2D<?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(8);
-		final double x21 = x2 - x1;
-		final double x43 = x4 - x3;
-		final double y21 = y2 - y1;
-		final double y43 = y4 - y3;
+		final var x21 = x2 - x1;
+		final var x43 = x4 - x3;
+		final var y21 = y2 - y1;
+		final var y43 = y4 - y3;
 
-		final double denom = y43 * x21 - x43 * y21;
+		final var denom = y43 * x21 - x43 * y21;
 		if (denom == 0.) {
 			return false;
 		}
-		final double x13 = x1 - x3;
-		final double y13 = y1 - y3;
+		final var x13 = x1 - x3;
+		final var y13 = y1 - y3;
 		double intersectionFactor1 = x43 * y13 - y43 * x13;
-		final double intersectionFactor2 = x21 * y13 - y21 * x13;
+		final var intersectionFactor2 = x21 * y13 - y21 * x13;
 		if (intersectionFactor1 == intersectionFactor2) {
 			return false;
 		}
@@ -1550,13 +1566,13 @@ public interface Segment2afp<
 	@Pure
 	static double calculatesLineLineIntersectionFactor(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
-		final double vx1 = x2 - x1;
-		final double vy1 = y2 - y1;
-		final double vx2 = x4 - x3;
-		final double vy2 = y4 - y3;
+		final var vx1 = x2 - x1;
+		final var vy1 = y2 - y1;
+		final var vx2 = x4 - x3;
+		final var vy2 = y4 - y3;
 
 		// determinant is zero when parallel = det(L1, L2)
-		final double det = Vector2D.perpProduct(vx1, vy1, vx2, vy2);
+		final var det = Vector2D.perpProduct(vx1, vy1, vx2, vy2);
 		if (det == 0.) {
 			return Double.NaN;
 		}
@@ -1597,10 +1613,10 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static double findsProjectedPointPointLine(double px, double py, double s1x, double s1y, double s2x, double s2y) {
-		final double vx = s2x - s1x;
-		final double vy = s2y - s1y;
-		final double numerator = (px - s1x) * vx + (py - s1y) * vy;
-		final double denomenator = vx * vx + vy * vy;
+		final var vx = s2x - s1x;
+		final var vy = s2y - s1y;
+		final var numerator = (px - s1x) * vx + (py - s1y) * vy;
+		final var denomenator = vx * vx + vy * vy;
 		return numerator / denomenator;
 	}
 
@@ -1627,13 +1643,13 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static double calculatesRelativeDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		final double denomenator = x21 * x21 + y21 * y21;
+		final var x21 = x2 - x1;
+		final var y21 = y2 - y1;
+		final var denomenator = x21 * x21 + y21 * y21;
 		if (denomenator == 0.) {
 			return Point2D.getDistancePointPoint(px, py, x1, y1);
 		}
-		final double factor = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
+		final var factor = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
 		return factor * Math.sqrt(denomenator);
 	}
 
@@ -1663,7 +1679,7 @@ public interface Segment2afp<
 			double x3, double y3, double x4, double y4,
 			Point2D<?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(8);
-		final double m = calculatesSegmentSegmentIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
+		final var m = calculatesSegmentSegmentIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (Double.isNaN(m)) {
 			return false;
 		}
@@ -1703,13 +1719,13 @@ public interface Segment2afp<
 	@Pure
 	static double calculatesSegmentSegmentIntersectionFactor(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
-		final double vx1 = x2 - x1;
-		final double vy1 = y2 - y1;
-		final double vx2 = x4 - x3;
-		final double vy2 = y4 - y3;
+		final var vx1 = x2 - x1;
+		final var vy1 = y2 - y1;
+		final var vx2 = x4 - x3;
+		final var vy2 = y4 - y3;
 
 		// determinant is zero when parallel = det(L1, L2)
-		final double det = Vector2D.perpProduct(vx1, vy1, vx2, vy2);
+		final var det = Vector2D.perpProduct(vx1, vy1, vx2, vy2);
 		if (det == 0.) {
 			return Double.NaN;
 		}
@@ -1722,9 +1738,9 @@ public interface Segment2afp<
 		// then
 		// ua = det(L2, V) / det(L1, L2)
 		// ub = det(L1, V) / det(L1, L2)
-		final double vx3 = x1 - x3;
-		final double vy3 = y1 - y3;
-		double intersectionFactor = Vector2D.perpProduct(vx1, vy1, vx3, vy3) / det;
+		final var vx3 = x1 - x3;
+		final var vy3 = y1 - y3;
+		var intersectionFactor = Vector2D.perpProduct(vx1, vy1, vx3, vy3) / det;
 		if (intersectionFactor < 0. || intersectionFactor > 1.) {
 			return Double.NaN;
 		}
@@ -1775,11 +1791,11 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static int findsSideLinePoint(double x1, double y1, double x2, double y2, double px, double py, double epsilon) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		final double xp1 = px - x1;
-		final double yp1 = py - y1;
-		double side = xp1 * y21 - yp1 * x21;
+		final var x21 = x2 - x1;
+		final var y21 = y2 - y1;
+		final var xp1 = px - x1;
+		final var yp1 = py - y1;
+		var side = xp1 * y21 - yp1 * x21;
 		if (side != 0. && MathUtil.isEpsilonZero(side, epsilon)) {
 			side = 0.;
 		}
@@ -1808,18 +1824,18 @@ public interface Segment2afp<
 	@Pure
 	static UncertainIntersection findsUncertainIntersectionSegmentSegmentWithEnds(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
-		final double vx1 = x2 - x1;
-		final double vy1 = y2 - y1;
+		final var vx1 = x2 - x1;
+		final var vy1 = y2 - y1;
 
 		// Based on CCW. It is different than MathUtil.ccw(); because
 		// this small algorithm is computing a ccw of 0 for colinear points.
-		final double vx2a = x3 - x1;
-		final double vy2a = y3 - y1;
-		double f1 = vx2a * vy1 - vy2a * vx1;
+		final var vx2a = x3 - x1;
+		final var vy2a = y3 - y1;
+		var f1 = vx2a * vy1 - vy2a * vx1;
 
-		final double vx2b = x4 - x1;
-		final double vy2b = y4 - y1;
-		double f2 = vx2b * vy1 - vy2b * vx1;
+		final var vx2b = x4 - x1;
+		final var vy2b = y4 - y1;
+		var f2 = vx2b * vy1 - vy2b * vx1;
 
 		// s = f1 * f2
 		//
@@ -1833,7 +1849,7 @@ public interface Segment2afp<
 		//  1  -1  -1  T
 		//  1   0   0  ON SEGMENT?
 		//  1   1   1  F
-		final double sign = f1 * f2;
+		final var sign = f1 * f2;
 
 		if (sign < 0) {
 			return UncertainIntersection.PERHAPS;
@@ -1842,13 +1858,13 @@ public interface Segment2afp<
 			return UncertainIntersection.NO;
 		}
 
-		final double squaredLength = vx1 * vx1 + vy1 * vy1;
+		final var squaredLength = vx1 * vx1 + vy1 * vy1;
 
 		if (f1 == 0. && f2 == 0.) {
 			// Projection of the point on the segment line:
 			// <0 -> means before first point
 			// >1 -> means after second point
-			// otherwhise on the segment.
+			// otherwise on the segment.
 
 			f1 = (vx2a * vx1 + vy2a * vy1) / squaredLength;
 			f2 = (vx2b * vx1 + vy2b * vy1) / squaredLength;
@@ -1864,7 +1880,7 @@ public interface Segment2afp<
 			// Projection of the point on the segment line:
 			// <0 -> means before first point
 			// >1 -> means after second point
-			// otherwhise on the segment.
+			// otherwise on the segment.
 
 			f1 = (vx2a * vx1 + vy2a * vy1) / squaredLength;
 
@@ -1879,7 +1895,7 @@ public interface Segment2afp<
 			// Projection of the point on the segment line:
 			// <0 -> means before first point
 			// >1 -> means after second point
-			// otherwhise on the segment.
+			// otherwise on the segment.
 
 			f2 = (vx2b * vx1 + vy2b * vy1) / squaredLength;
 
@@ -1912,20 +1928,20 @@ public interface Segment2afp<
 	@Pure
 	static UncertainIntersection findsUncertainIntersectionSegmentSegmentWithoutEnds(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
-		final double vx1 = x2 - x1;
-		final double vy1 = y2 - y1;
+		final var vx1 = x2 - x1;
+		final var vy1 = y2 - y1;
 
-		final double vx2a = x3 - x1;
-		final double vy2a = y3 - y1;
-		double f1 = vx2a * vy1 - vy2a * vx1;
+		final var vx2a = x3 - x1;
+		final var vy2a = y3 - y1;
+		var f1 = vx2a * vy1 - vy2a * vx1;
 
-		final double vx2b = x4 - x1;
-		final double vy2b = y4 - y1;
-		double f2 = vx2b * vy1 - vy2b * vx1;
+		final var vx2b = x4 - x1;
+		final var vy2b = y4 - y1;
+		var f2 = vx2b * vy1 - vy2b * vx1;
 
 		// s = f1 * f2
-				//
-				// f1  f2  s   intersect
+		//
+		// f1  f2  s   intersect
 		// -1  -1   1  F
 		// -1   0   0  F
 		// -1   1  -1  T
@@ -1936,7 +1952,7 @@ public interface Segment2afp<
 		//  1   0   0  F
 		//  1   1   1  F
 
-		final double sign = f1 * f2;
+		final var sign = f1 * f2;
 
 		if (sign < 0) {
 			return UncertainIntersection.PERHAPS;
@@ -1949,9 +1965,9 @@ public interface Segment2afp<
 			// Projection of the point on the segment line:
 			// <0 -> means before first point
 			// >1 -> means after second point
-			// otherwhise on the segment.
+			// otherwise on the segment.
 
-			final double squaredLength = vx1 * vx1 + vy1 * vy1;
+			final var squaredLength = vx1 * vx1 + vy1 * vy1;
 
 			f1 = (vx2a * vx1 + vy2a * vy1) / squaredLength;
 			f2 = (vx2b * vx1 + vy2b * vy1) / squaredLength;
@@ -1977,9 +1993,10 @@ public interface Segment2afp<
 	 */
 	static void interpolates(double p1x, double p1y, double p2x, double p2y, double factor, Point2D<?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(5);
-		assert factor >= 0. && factor <= 1. : AssertMessages.outsideRangeInclusiveParameter(4, factor, 0, 1);
-		final double vx = p2x - p1x;
-		final double vy = p2y - p1y;
+		assert factor >= 0. && factor <= 1. : AssertMessages.outsideRangeInclusiveParameter(4, Double.valueOf(factor),
+				Double.valueOf(0), Double.valueOf(1));
+		final var vx = p2x - p1x;
+		final var vy = p2y - p1y;
 		result.set(
 				p1x + factor * vx,
 				p1y + factor * vy);
@@ -1996,7 +2013,7 @@ public interface Segment2afp<
 	 * @param x4 is the second point of the second line.
 	 * @param y4 is the second point of the second line.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	static boolean intersectsLineLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
@@ -2017,7 +2034,7 @@ public interface Segment2afp<
 	 * @param x4 is the second point of the second line.
 	 * @param y4 is the second point of the second line.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	static boolean intersectsSegmentLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
@@ -2040,13 +2057,13 @@ public interface Segment2afp<
 	 * @param x4 is the second point of the second segment.
 	 * @param y4 is the second point of the second segment.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double)
 	 */
 	@Pure
 	static boolean intersectsSegmentSegmentWithEnds(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
-		final UncertainIntersection result = findsUncertainIntersectionSegmentSegmentWithEnds(x1, y1, x2, y2, x3, y3, x4, y4);
+		final var result = findsUncertainIntersectionSegmentSegmentWithEnds(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (!result.booleanValue()) {
 			return result.booleanValue();
 		}
@@ -2068,13 +2085,13 @@ public interface Segment2afp<
 	 * @param x4 is the second point of the second segment.
 	 * @param y4 is the second point of the second segment.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double, double, double)
 	 */
 	@Pure
 	static boolean intersectsSegmentSegmentWithoutEnds(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
-		final UncertainIntersection result = findsUncertainIntersectionSegmentSegmentWithoutEnds(x1, y1, x2, y2, x3, y3, x4, y4);
+		final var result = findsUncertainIntersectionSegmentSegmentWithoutEnds(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (!result.booleanValue()) {
 			return result.booleanValue();
 		}
@@ -2224,18 +2241,18 @@ public interface Segment2afp<
 	 */
 	@Pure
 	default boolean clipToRectangle(double rxmin, double rymin, double rxmax, double rymax) {
-		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(0, rxmin, 2, rxmax);
-		assert rymin <= rymax : AssertMessages.lowerEqualParameters(1, rymin, 3, rymax);
-		double x0 = getX1();
-		double y0 = getY1();
-		double x1 = getX2();
-		double y1 = getY2();
-		int code1 = MathUtil.getCohenSutherlandCode(x0, y0, rxmin, rymin, rxmax, rymax);
-		int code2 = MathUtil.getCohenSutherlandCode(x1, y1, rxmin, rymin, rxmax, rymax);
-		boolean accept = false;
-		boolean cont = true;
-		double x = 0;
-		double y = 0;
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(0, Double.valueOf(rxmin), 2, Double.valueOf(rxmax));
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(1, Double.valueOf(rymin), 3, Double.valueOf(rymax));
+		var x0 = getX1();
+		var y0 = getY1();
+		var x1 = getX2();
+		var y1 = getY2();
+		var code1 = MathUtil.getCohenSutherlandCode(x0, y0, rxmin, rymin, rxmax, rymax);
+		var code2 = MathUtil.getCohenSutherlandCode(x1, y1, rxmin, rymin, rxmax, rymax);
+		var accept = false;
+		var cont = true;
+		var x = 0.;
+		var y = 0.;
 
 		while (cont) {
 			if ((code1 | code2) == 0) {
@@ -2348,7 +2365,7 @@ public interface Segment2afp<
 	@Unefficient
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
 		assert ellipse != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), ellipse.getPathIterator(), point);
 		return point;
 	}
@@ -2357,21 +2374,21 @@ public interface Segment2afp<
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectngle) {
 		assert orientedRectngle != null : AssertMessages.notNullParameter();
 		// Change of basis to the local basis of the oriented rectangle
-		final double cx = orientedRectngle.getCenterX();
-		final double cy = orientedRectngle.getCenterY();
-		final double sx1 = getX1() - cx;
-		final double sy1 = getY1() - cy;
-		final double sx2 = getX2() - cx;
-		final double sy2 = getY2() - cy;
-		final double rx = orientedRectngle.getFirstAxisX();
-		final double ry = orientedRectngle.getFirstAxisY();
-		double x1 = OrientedRectangle2afp.findsVectorProjectionRAxisVector(rx, ry, sx1, sy1);
-		double y1 = OrientedRectangle2afp.findsVectorProjectionSAxisVector(rx, ry, sx1, sy1);
-		final double x2 = OrientedRectangle2afp.findsVectorProjectionRAxisVector(rx, ry, sx2, sy2);
-		final double y2 = OrientedRectangle2afp.findsVectorProjectionSAxisVector(rx, ry, sx2, sy2);
-		final double extent1 = orientedRectngle.getFirstAxisExtent();
-		final double extent2 = orientedRectngle.getSecondAxisExtent();
-		final P point = getGeomFactory().newPoint();
+		final var cx = orientedRectngle.getCenterX();
+		final var cy = orientedRectngle.getCenterY();
+		final var sx1 = getX1() - cx;
+		final var sy1 = getY1() - cy;
+		final var sx2 = getX2() - cx;
+		final var sy2 = getY2() - cy;
+		final var rx = orientedRectngle.getFirstAxisX();
+		final var ry = orientedRectngle.getFirstAxisY();
+		var x1 = OrientedRectangle2afp.findsVectorProjectionRAxisVector(rx, ry, sx1, sy1);
+		var y1 = OrientedRectangle2afp.findsVectorProjectionSAxisVector(rx, ry, sx1, sy1);
+		final var x2 = OrientedRectangle2afp.findsVectorProjectionRAxisVector(rx, ry, sx2, sy2);
+		final var y2 = OrientedRectangle2afp.findsVectorProjectionSAxisVector(rx, ry, sx2, sy2);
+		final var extent1 = orientedRectngle.getFirstAxisExtent();
+		final var extent2 = orientedRectngle.getSecondAxisExtent();
+		final var point = getGeomFactory().newPoint();
 		findsClosestPointSegmentRectangle(x1, y1, x2, y2, -extent1, -extent2, 2. * extent1, 2. * extent2, point);
 		// Invert change of basis
 		x1 = cx + point.getX() * rx - point.getY() * ry;
@@ -2384,29 +2401,29 @@ public interface Segment2afp<
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
 		assert parallelogram != null : AssertMessages.notNullParameter();
 		// Change of basis to the local basis of the oriented rectangle
-		final double cx = parallelogram.getCenterX();
-		final double cy = parallelogram.getCenterY();
-		final double sx1 = getX1() - cx;
-		final double sy1 = getY1() - cy;
-		final double sx2 = getX2() - cx;
-		final double sy2 = getY2() - cy;
-		final double rx = parallelogram.getFirstAxisX();
-		final double ry = parallelogram.getFirstAxisY();
-		final double sx = parallelogram.getSecondAxisX();
-		final double sy = parallelogram.getSecondAxisY();
-		final double extent1 = parallelogram.getFirstAxisExtent();
-		final double extent2 = parallelogram.getSecondAxisExtent();
-		final P point = getGeomFactory().newPoint();
+		final var cx = parallelogram.getCenterX();
+		final var cy = parallelogram.getCenterY();
+		final var sx1 = getX1() - cx;
+		final var sy1 = getY1() - cy;
+		final var sx2 = getX2() - cx;
+		final var sy2 = getY2() - cy;
+		final var rx = parallelogram.getFirstAxisX();
+		final var ry = parallelogram.getFirstAxisY();
+		final var sx = parallelogram.getSecondAxisX();
+		final var sy = parallelogram.getSecondAxisY();
+		final var extent1 = parallelogram.getFirstAxisExtent();
+		final var extent2 = parallelogram.getSecondAxisExtent();
+		final var point = getGeomFactory().newPoint();
 		//
-		final double x1 = Parallelogram2afp.findsVectorProjectionRAxisPoint(rx, ry, sx, sy, sx1, sy1);
-		final double y1 = Parallelogram2afp.findsVectorProjectionSAxisVector(rx, ry, sx, sy, sx1, sy1);
-		final double x2 = Parallelogram2afp.findsVectorProjectionRAxisPoint(rx, ry, sx, sy, sx2, sy2);
-		final double y2 = Parallelogram2afp.findsVectorProjectionSAxisVector(rx, ry, sx, sy, sx2, sy2);
-		final int code1 = MathUtil.getCohenSutherlandCode(x1, y1, -extent1, -extent2, extent1, extent2);
-		final int code2 = MathUtil.getCohenSutherlandCode(x2, y2, -extent1, -extent2, extent1, extent2);
-		final Point2D<?, ?> tmp1 = new InnerComputationPoint2afp();
-		final Point2D<?, ?> tmp2 = new InnerComputationPoint2afp();
-		final int zone = Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(
+		final var x1 = Parallelogram2afp.findsVectorProjectionRAxisPoint(rx, ry, sx, sy, sx1, sy1);
+		final var y1 = Parallelogram2afp.findsVectorProjectionSAxisVector(rx, ry, sx, sy, sx1, sy1);
+		final var x2 = Parallelogram2afp.findsVectorProjectionRAxisPoint(rx, ry, sx, sy, sx2, sy2);
+		final var y2 = Parallelogram2afp.findsVectorProjectionSAxisVector(rx, ry, sx, sy, sx2, sy2);
+		final var code1 = MathUtil.getCohenSutherlandCode(x1, y1, -extent1, -extent2, extent1, extent2);
+		final var code2 = MathUtil.getCohenSutherlandCode(x2, y2, -extent1, -extent2, extent1, extent2);
+		final var tmp1 = new InnerComputationPoint2afp();
+		final var tmp2 = new InnerComputationPoint2afp();
+		final var zone = Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(
 				-extent1, -extent2, extent1, extent2,
 				x1, y1, x2, y2,
 				code1, code2,
@@ -2450,7 +2467,7 @@ public interface Segment2afp<
 	@Unefficient
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), point);
 		return point;
 	}
@@ -2459,7 +2476,7 @@ public interface Segment2afp<
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Segment2afp.findsClosestPointSegmentPoint(
 				getX1(), getY1(),
 				getX2(), getY2(),
@@ -2472,7 +2489,7 @@ public interface Segment2afp<
 	@Override
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		findsClosestPointSegmentRectangle(getX1(), getY1(), getX2(), getY2(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight(), point);
 		return point;
@@ -2482,7 +2499,7 @@ public interface Segment2afp<
 	@Unefficient
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
 		assert roundRectangle != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), roundRectangle.getPathIterator(), point);
 		return point;
 	}
@@ -2491,7 +2508,7 @@ public interface Segment2afp<
 	@Override
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		findsClosestPointSegmentSegment(getX1(), getY1(), getX2(), getY2(),
 				segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(), point);
 		return point;
@@ -2501,24 +2518,24 @@ public interface Segment2afp<
 	@Override
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null : AssertMessages.notNullParameter();
-		final double[] segments = new double[] {
+		final var segments = new double[] {
 				triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(),
 				triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3(),
 				triangle.getX3(), triangle.getY3(), triangle.getX1(), triangle.getY1(),
 		};
-		final P point = getGeomFactory().newPoint();
-		final P tmp = getGeomFactory().newPoint();
-		double minDistance = Double.POSITIVE_INFINITY;
-		final double ox1 = getX1();
-		final double oy1 = getY1();
-		final double ox2 = getX2();
-		final double oy2 = getY2();
-		for (int i = 0; i < segments.length; i += 4) {
-			final double x1 = segments[i];
-			final double y1 = segments[i + 1];
-			final double x2 = segments[i + 2];
-			final double y2 = segments[i + 3];
-			final double distance = findsClosestPointSegmentSegment(ox1, oy1, ox2, oy2, x1, y1, x2, y2, tmp);
+		final var point = getGeomFactory().newPoint();
+		final var tmp = getGeomFactory().newPoint();
+		var minDistance = Double.POSITIVE_INFINITY;
+		final var ox1 = getX1();
+		final var oy1 = getY1();
+		final var ox2 = getX2();
+		final var oy2 = getY2();
+		for (var i = 0; i < segments.length; i += 4) {
+			final var x1 = segments[i];
+			final var y1 = segments[i + 1];
+			final var x2 = segments[i + 2];
+			final var y2 = segments[i + 3];
+			final var distance = findsClosestPointSegmentSegment(ox1, oy1, ox2, oy2, x1, y1, x2, y2, tmp);
 			if (distance < minDistance) {
 				minDistance = distance;
 				point.set(tmp);
@@ -2531,10 +2548,10 @@ public interface Segment2afp<
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		double ratio = findsProjectedPointPointLine(pt.getX(), pt.getY(), getX1(), getY1(), getX2(), getY2());
+		var ratio = findsProjectedPointPointLine(pt.getX(), pt.getY(), getX1(), getY1(), getX2(), getY2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
-		final double vx = (getX2() - getX1()) * ratio;
-		final double vy = (getY2() - getY1()) * ratio;
+		final var vx = (getX2() - getX1()) * ratio;
+		final var vy = (getY2() - getY1()) * ratio;
 		return Math.abs(getX1() + vx - pt.getX())
 				+ Math.abs(getY1() + vy - pt.getY());
 	}
@@ -2543,10 +2560,10 @@ public interface Segment2afp<
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		double ratio = findsProjectedPointPointLine(pt.getX(), pt.getY(), getX1(), getY1(), getX2(), getY2());
+		var ratio = findsProjectedPointPointLine(pt.getX(), pt.getY(), getX1(), getY1(), getX2(), getY2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
-		final double vx = (getX2() - getX1()) * ratio;
-		final double vy = (getY2() - getY1()) * ratio;
+		final var vx = (getX2() - getX1()) * ratio;
+		final var vy = (getY2() - getY1()) * ratio;
 		return Math.max(
 				Math.abs(this.getX1() + vx - pt.getX()),
 				Math.abs(this.getY1() + vy - pt.getY()));
@@ -2574,7 +2591,7 @@ public interface Segment2afp<
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Segment2afp.findsFarthestPointSegmentPoint(
 				getX1(), getY1(),
 				getX2(), getY2(),
@@ -2708,8 +2725,8 @@ public interface Segment2afp<
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = Path2afp.calculatesCrossingsPathIteratorSegmentShadow(
+		final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = Path2afp.calculatesCrossingsPathIteratorSegmentShadow(
 				0,
 				iterator,
 				getX1(), getY1(), getX2(), getY2(),
@@ -2874,10 +2891,10 @@ public interface Segment2afp<
 	 */
 	default void transform(Transform2D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
-		final Point2D<?, ?> p = new InnerComputationPoint2afp(getX1(), getY1());
+		final var p = new InnerComputationPoint2afp(getX1(), getY1());
 		transform.transform(p);
-		final double x1 = p.getX();
-		final double y1 = p.getY();
+		final var x1 = p.getX();
+		final var y1 = p.getY();
 		p.set(getX2(), getY2());
 		transform.transform(p);
 		set(x1, y1, p.getX(), p.getY());
@@ -2893,6 +2910,7 @@ public interface Segment2afp<
 	 * @return the Geogebra representation of the tuple.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toSegmentDefinition(2, getX1(), getY1(), getX2(), getY2());
 	}

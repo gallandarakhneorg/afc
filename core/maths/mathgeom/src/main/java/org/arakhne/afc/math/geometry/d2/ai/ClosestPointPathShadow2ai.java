@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ class ClosestPointPathShadow2ai {
                 iterator,
                 x0, y0, x1, y1);
 
-        // Test if the shape is intesecting the shadow shape.
+        // Test if the shape is intersecting the shadow shape.
         if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
             // The given line is intersecting the path shape
             return GeomConstants.SHAPE_INTERSECTS;
@@ -141,24 +141,23 @@ class ClosestPointPathShadow2ai {
         return crossings + numCrosses;
     }
 
+    @SuppressWarnings({"npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     private void discretizePathIterator(
             PathIterator2ai<?> pi,
             int x1, int y1, int x2, int y2) {
         if (!pi.hasNext() || this.crossings == GeomConstants.SHAPE_INTERSECTS) {
             return;
         }
-        PathElement2ai element;
-
-        element = pi.next();
+        var element = pi.next();
         if (element.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString(Path2ai.class, "E1")); //$NON-NLS-1$
         }
 
         Path2ai<?, ?, ?, ?, ?, ?> localPath;
-        int movx = element.getToX();
-        int movy = element.getToY();
-        int curx = movx;
-        int cury = movy;
+        var movx = element.getToX();
+        var movy = element.getToY();
+        var curx = movx;
+        var cury = movy;
         int endx;
         int endy;
         double distance;
@@ -315,14 +314,15 @@ class ClosestPointPathShadow2ai {
      * @param sx1 x coordinate of the second point of the segment.
      * @param sy1 y coordinate of the second point of the segment.
      */
+    @SuppressWarnings({"npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     private void crossSegmentTwoShadowLines(
             int shadowX0, int shadowY0,
             int shadowX1, int shadowY1,
             int sx0, int sy0,
             int sx1, int sy1) {
         // Update the global bounds of the shadow.
-        final int shadowYmin = Math.min(shadowY0, shadowY1);
-        final int shadowYmax = Math.max(shadowY0, shadowY1);
+        final var shadowYmin = Math.min(shadowY0, shadowY1);
+        final var shadowYmax = Math.max(shadowY0, shadowY1);
 
         if (shadowYmin != this.boundingMinY && shadowYmax != this.boundingMaxY) {
             // Shadow is not contributing to the crossing computation.
@@ -347,42 +347,42 @@ class ClosestPointPathShadow2ai {
         }
         if (sx0 > shadowXmax && sx1 > shadowXmax) {
             // The line is entirely at the right of the shadow
-            final OutputParameter<Integer> param = new OutputParameter<>();
+            final var param = new OutputParameter<Integer>();
             if (shadowYmin == shadowYmax) {
-                final int cross = this.crossings;
+                final var cross = this.crossings;
                 this.crossings = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
                         cross,
                         shadowXmax, shadowYmin,
                         sx0, sy0, sx1, sy1,
                         shadowYmin == this.boundingMinY, shadowYmax == this.boundingMaxY, param);
                 if (cross != this.crossings) {
-                    final int xintercept = param.get().intValue();
+                    final var xintercept = param.get().intValue();
                     setCrossingCoordinateForYMax(xintercept, shadowYmin);
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     this.crossings = cross;
                 }
             } else {
                 if (shadowYmin == this.boundingMinY) {
-                    final int cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
+                    final var cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
                             this.crossings,
                             shadowXmax, shadowYmin,
                             sx0, sy0, sx1, sy1,
                             shadowYmin == this.boundingMinY, false, param);
                     if (cross != this.crossings) {
-                        final int xintercept = param.get().intValue();
+                        final var xintercept = param.get().intValue();
                         setCrossingCoordinateForYMax(xintercept, shadowYmin);
                         setCrossingCoordinateForYMin(xintercept, shadowYmin);
                         this.crossings = cross;
                     }
                 }
                 if (shadowYmax == this.boundingMaxY) {
-                    final int cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
+                    final var cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
                             this.crossings,
                             shadowXmax, shadowYmax,
                             sx0, sy0, sx1, sy1,
                             false, shadowYmax == this.boundingMaxY, param);
                     if (cross != this.crossings) {
-                        final int xintercept = param.get().intValue();
+                        final var xintercept = param.get().intValue();
                         setCrossingCoordinateForYMax(xintercept, shadowYmax);
                         setCrossingCoordinateForYMin(xintercept, shadowYmax);
                         this.crossings = cross;
@@ -463,12 +463,12 @@ class ClosestPointPathShadow2ai {
             return;
         }
         // Compute the intersection point between the segment and the shadow line
-        final OutputParameter<Integer> param = new OutputParameter<>();
-        final int cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
+        final var param = new OutputParameter<Integer>();
+        final var cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
                 this.crossings,
                 shadowx, shadowy, sx0, sy0, sx1, sy1, top, bottom, param);
         if (cross != this.crossings) {
-            final int xintercept = param.get().intValue();
+            final var xintercept = param.get().intValue();
             setCrossingCoordinateForYMax(xintercept, shadowy);
             setCrossingCoordinateForYMin(xintercept, shadowy);
             this.crossings = cross;

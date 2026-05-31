@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@
 package org.arakhne.afc.testtools;
 
 import static org.junit.jupiter.api.Assertions.fail;
-
-import java.lang.reflect.Method;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -50,7 +48,7 @@ public final class XbaseInlineTestUtil {
 	 */
 	public static Inline getInlineAnnotation(Class<?> type, String methodName, Class<?>... parameters) {
 		try {
-			final Method method = type.getDeclaredMethod(methodName, parameters);
+			final var method = type.getDeclaredMethod(methodName, parameters);
 			return method.getAnnotation(Inline.class);
 		} catch (NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
@@ -66,13 +64,13 @@ public final class XbaseInlineTestUtil {
 	 * @param parameters the list of parameter types.
 	 */
 	public static void assertInlineParameterUsage(Class<?> type, String methodName, Class<?>... parameters) {
-		final Inline annotation = getInlineAnnotation(type, methodName, parameters);
+		final var annotation = getInlineAnnotation(type, methodName, parameters);
 		if (annotation == null) {
 			fail("@Inline annotation not found"); //$NON-NLS-1$
 			return;
 		}
-		final String value = Strings.nullToEmpty(annotation.value());
-		for (int i = 1; i <= parameters.length; ++i) {
+		final var value = Strings.nullToEmpty(annotation.value());
+		for (var i = 1; i <= parameters.length; ++i) {
 			if (!value.contains("$" + i)) { //$NON-NLS-1$
 				fail("@Inline value does not contains the string \"$" + i + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}

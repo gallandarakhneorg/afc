@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,6 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.tree.Tree;
@@ -34,6 +32,7 @@ import org.arakhne.afc.math.tree.iterator.AbstractDataTreeIterator;
 import org.arakhne.afc.math.tree.iterator.NodeSelectionTreeIterator;
 import org.arakhne.afc.math.tree.iterator.NodeSelector;
 import org.arakhne.afc.math.tree.node.UnsupportedOperationTreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class provides a broad-first iterator supplying
@@ -89,6 +88,8 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 	private static class BudgetFrustumSelector<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P, N>>
 			extends FrustumSelector<P, N> {
 
+		/** Reference to the current selected node.
+		 */
 		WeakReference<BudgetNode<P, N>> currentNode;
 
 		/** Constructor.
@@ -105,7 +106,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 			if (!super.dataCouldBeRepliedByIterator(data)) {
 				return false;
 			}
-			final BudgetNode<P, N> n = this.currentNode == null ? null : this.currentNode.get();
+			final var n = this.currentNode == null ? null : this.currentNode.get();
 			return n != null && n.branchBudget > 0;
 		}
 
@@ -132,7 +133,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 		 * @param budget is the maximal size of the replied list. If this value is negative, all the elements will be replied.
 		 */
 		BudgetDataIterator(Tree<P, N> tree, Rectangle2afp<?, ?, ?, ?, ?, ?> clipBounds, int budget) {
-			this(tree, new BudgetFrustumSelector<P, N>(clipBounds), budget);
+			this(tree, new BudgetFrustumSelector<>(clipBounds), budget);
 		}
 
 		private BudgetDataIterator(Tree<P, N> tree, BudgetFrustumSelector<P, N> selector, int budget) {
@@ -196,10 +197,10 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 		@Override
 		protected BudgetNode<P, N> toTraversableChild(BudgetNode<P, N> parent, N child, int childIndex, int notNullChildIndex) {
 			assert parent != null && child != null;
-			final int nbNotNull = parent.getNotNullChildCount();
+			final var nbNotNull = parent.getNotNullChildCount();
 			if (nbNotNull > 0) {
-				final int totalBudget = parent.branchBudget;
-				int branchBudget = totalBudget / (nbNotNull - notNullChildIndex);
+				final var totalBudget = parent.branchBudget;
+				var branchBudget = totalBudget / (nbNotNull - notNullChildIndex);
 				branchBudget += totalBudget % (nbNotNull - notNullChildIndex);
 				if (branchBudget > 0 && (this.selector == null || this.selector.nodeCouldBeTreatedByIterator(child))) {
 					parent.branchBudget -= branchBudget;

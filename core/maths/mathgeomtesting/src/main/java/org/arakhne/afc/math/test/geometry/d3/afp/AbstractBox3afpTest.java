@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ import org.arakhne.afc.math.geometry.d3.afp.Box3afp;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 
 @SuppressWarnings("all")
-public abstract class AbstractBox3afpTest<T extends Box3afp<?, T, ?, ?, ?, ?, B>,
-		B extends AlignedBox3afp<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
+public abstract class AbstractBox3afpTest<T extends Box3afp<T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
 
 	@DisplayName("inflate(double,double,double)")
 	public abstract void inflate(CoordinateSystem3D cs);
@@ -81,7 +81,7 @@ public abstract class AbstractBox3afpTest<T extends Box3afp<?, T, ?, ?, ?, ?, B>
 		assertEpsilonEquals(0, this.shape.getMinZ());
 		assertEpsilonEquals(128.456, this.shape.getMaxX());
 		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(1, this.shape.getMaxZ());
+		assertEpsilonEquals(10, this.shape.getMaxZ());
 	}
 
 	@DisplayName("setHeight(double)")
@@ -95,7 +95,7 @@ public abstract class AbstractBox3afpTest<T extends Box3afp<?, T, ?, ?, ?, ?, B>
 		assertEpsilonEquals(0, this.shape.getMinZ());
 		assertEpsilonEquals(10, this.shape.getMaxX());
 		assertEpsilonEquals(131.456, this.shape.getMaxY());
-		assertEpsilonEquals(1, this.shape.getMaxZ());
+		assertEpsilonEquals(10, this.shape.getMaxZ());
 	}
 	
 	@DisplayName("setDepth(double)")
@@ -187,7 +187,7 @@ public abstract class AbstractBox3afpTest<T extends Box3afp<?, T, ?, ?, ?, ?, B>
 		assertEpsilonEquals(0, this.shape.getMinZ());
 		assertEpsilonEquals(123.456, this.shape.getMaxX());
 		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(1, this.shape.getMaxZ());
+		assertEpsilonEquals(10, this.shape.getMaxZ());
 	}
 
 	@DisplayName("getCenterX")
@@ -217,7 +217,7 @@ public abstract class AbstractBox3afpTest<T extends Box3afp<?, T, ?, ?, ?, ?, B>
 		assertEpsilonEquals(0, this.shape.getMinZ());
 		assertEpsilonEquals(-123.456, this.shape.getMaxX());
 		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(1, this.shape.getMaxZ());
+		assertEpsilonEquals(10, this.shape.getMaxZ());
 	}
 
 	@DisplayName("getMinY")
@@ -239,7 +239,7 @@ public abstract class AbstractBox3afpTest<T extends Box3afp<?, T, ?, ?, ?, ?, B>
 		assertEpsilonEquals(0, this.shape.getMinZ());
 		assertEpsilonEquals(10, this.shape.getMaxX());
 		assertEpsilonEquals(123.456, this.shape.getMaxY());
-		assertEpsilonEquals(1, this.shape.getMaxZ());
+		assertEpsilonEquals(10, this.shape.getMaxZ());
 	}
 
 	@DisplayName("getCenterY")
@@ -269,7 +269,7 @@ public abstract class AbstractBox3afpTest<T extends Box3afp<?, T, ?, ?, ?, ?, B>
 		assertEpsilonEquals(0, this.shape.getMinZ());
 		assertEpsilonEquals(10, this.shape.getMaxX());
 		assertEpsilonEquals(-123.456, this.shape.getMaxY());
-		assertEpsilonEquals(1, this.shape.getMaxZ());
+		assertEpsilonEquals(10, this.shape.getMaxZ());
 	}
 
 	@DisplayName("getMinZ")
@@ -307,7 +307,7 @@ public abstract class AbstractBox3afpTest<T extends Box3afp<?, T, ?, ?, ?, ?, B>
 	@EnumSource(CoordinateSystem3D.class)
 	public void getMaxZ(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(1, this.shape.getMaxZ());
+		assertEpsilonEquals(10, this.shape.getMaxZ());
 	}
 
 	@DisplayName("setMaxZ(double)")

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,21 +66,21 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 	/** Replies the count of characters available for reading.
 	 */
 	private int ensureBuffer(int offset, int length) throws IOException {
-		final int lastPos = offset + length - 1;
-		final int desiredSize = ((lastPos / BUFFER_SIZE) + 1) * BUFFER_SIZE;
-		final int currentSize = this.buffer.length;
+		final var lastPos = offset + length - 1;
+		final var desiredSize = ((lastPos / BUFFER_SIZE) + 1) * BUFFER_SIZE;
+		final var currentSize = this.buffer.length;
 
 		if (desiredSize > currentSize) {
-			final byte[] readBuffer = new byte[desiredSize - currentSize];
-			final int count = this.in.read(readBuffer);
+			final var readBuffer = new byte[desiredSize - currentSize];
+			final var count = this.in.read(readBuffer);
 
 			if (count > 0) {
-				final byte[] newBuffer = new byte[currentSize + count];
+				final var newBuffer = new byte[currentSize + count];
 				System.arraycopy(this.buffer, 0, newBuffer, 0, currentSize);
 				System.arraycopy(readBuffer, 0, newBuffer, currentSize, count);
 				this.buffer = newBuffer;
 			}
-			return (lastPos < this.buffer.length) ? length : length - (lastPos - this.buffer.length + 1);
+			return lastPos < this.buffer.length ? length : length - (lastPos - this.buffer.length + 1);
 		}
 		return length;
 	}
@@ -91,10 +91,11 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 	 * @param length is the count of bytes to read.
 	 * @return the array of red bytes.
 	 * @throws IOException in case of problems
+	 * @throws EOFException in case of end-of-file reached
 	 */
 	public byte[] read(int offset, int length) throws IOException {
 		if (ensureBuffer(offset, length) >= length) {
-			final byte[] array = new byte[length];
+			final var array = new byte[length];
 			System.arraycopy(this.buffer, offset, array, 0, length);
 			this.pos = offset + length;
 			return array;
@@ -107,6 +108,7 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 	 * @param offset is the position of the byte to read.
 	 * @return the byte.
 	 * @throws IOException in case of problems
+	 * @throws EOFException in case of end-of-file reached
 	 */
 	public byte read(int offset) throws IOException {
 		if (ensureBuffer(offset, 1) > 0) {
@@ -119,7 +121,7 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 	@Override
 	public int read() throws IOException {
 		if (ensureBuffer(this.pos, 1) > 0) {
-			final int c = this.buffer[this.pos];
+			final var c = this.buffer[this.pos];
 			++this.pos;
 			return c;
 		}
@@ -133,8 +135,8 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 	 * @throws IOException in case of problems
 	 */
 	public byte[] readLine(int offset) throws IOException {
-		int lastIndex = -1;
-		int localOffset = offset;
+		var lastIndex = -1;
+		var localOffset = offset;
 		int read;
 		do {
 			read = ensureBuffer(localOffset, BUFFER_SIZE);
@@ -145,9 +147,9 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 			}
 
 			// NOT EOF, search for end of line
-			final int end = localOffset + read;
-			for (int idx = localOffset; (lastIndex == -1) && (idx < this.buffer.length) && (idx < end); ++idx) {
-				if ((this.buffer[idx] == '\n') || (this.buffer[idx] == '\r')) {
+			final var end = localOffset + read;
+			for (var idx = localOffset; lastIndex == -1 && idx < this.buffer.length && idx < end; ++idx) {
+				if (this.buffer[idx] == '\n' || this.buffer[idx] == '\r') {
 					lastIndex = idx;
 				}
 			}

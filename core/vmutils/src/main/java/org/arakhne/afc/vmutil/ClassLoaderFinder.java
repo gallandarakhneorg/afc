@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,9 +66,9 @@ public final class ClassLoaderFinder {
 	public static void setPreferredClassLoader(ClassLoader classLoader) {
 		if (classLoader != dynamicLoader) {
 			dynamicLoader = classLoader;
-			final Thread[] threads = new Thread[Thread.activeCount()];
+			final var threads = new Thread[Thread.activeCount()];
 			Thread.enumerate(threads);
-			for (final Thread t : threads) {
+			for (final var t : threads) {
 				if (t != null) {
 					t.setContextClassLoader(classLoader);
 				}
@@ -79,13 +79,13 @@ public final class ClassLoaderFinder {
 	/** Pop the preferred class loader.
 	 */
 	public static void popPreferredClassLoader() {
-		final ClassLoader sysLoader = ClassLoaderFinder.class.getClassLoader();
+		final var sysLoader = ClassLoaderFinder.class.getClassLoader();
 
-		if ((dynamicLoader == null) || (dynamicLoader == sysLoader)) {
+		if (dynamicLoader == null || dynamicLoader == sysLoader) {
 			dynamicLoader = null;
-			final Thread[] threads = new Thread[Thread.activeCount()];
+			final var threads = new Thread[Thread.activeCount()];
 			Thread.enumerate(threads);
-			for (final Thread t : threads) {
+			for (final var t : threads) {
 				if (t != null) {
 					t.setContextClassLoader(sysLoader);
 				}
@@ -93,13 +93,13 @@ public final class ClassLoaderFinder {
 			return;
 		}
 
-		final ClassLoader parent = dynamicLoader.getParent();
+		final var parent = dynamicLoader.getParent();
 
 		dynamicLoader = (parent == sysLoader) ? null : parent;
 
-		final Thread[] threads = new Thread[Thread.activeCount()];
+		final var threads = new Thread[Thread.activeCount()];
 		Thread.enumerate(threads);
-		for (final Thread t : threads) {
+		for (final var t : threads) {
 			if (t != null) {
 				t.setContextClassLoader(parent);
 			}

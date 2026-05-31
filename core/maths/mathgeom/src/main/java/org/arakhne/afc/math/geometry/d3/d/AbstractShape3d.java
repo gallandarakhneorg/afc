@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,11 @@ package org.arakhne.afc.math.geometry.d3.d;
 
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.references.WeakArrayList;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Abstract shape with 2 double precision floating-point numbers.
  *
@@ -78,9 +76,9 @@ public abstract class AbstractShape3d<T extends AbstractShape3d<?>> implements S
 		if (this.geometryListeners == null) {
 			return;
 		}
-		final ShapeGeometryChangeListener[] array = new ShapeGeometryChangeListener[this.geometryListeners.size()];
+		final var array = new ShapeGeometryChangeListener[this.geometryListeners.size()];
 		this.geometryListeners.toArray(array);
-		for (final ShapeGeometryChangeListener listener : array) {
+		for (final var listener : array) {
 			listener.shapeGeometryChange(this);
 		}
 	}
@@ -97,17 +95,13 @@ public abstract class AbstractShape3d<T extends AbstractShape3d<?>> implements S
 
 	@Pure
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "checkstyle:equalshashcode"})
 	public final boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
 		try {
-			try {
-				return equalsToShape((T) obj);
-			} catch (ClassCastException exception) {
-				return equalsToPathIterator((PathIterator3D<?>) obj);
-			}
+			return equalsToShape((T) obj);
 		} catch (Throwable exception) {
 			//
 		}

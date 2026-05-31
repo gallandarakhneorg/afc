@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class provides the implementation
  * of a road connection wrapped to an other road connection
@@ -71,10 +70,10 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	@Override
 	@Pure
 	public RoadSegment getConnectedSegment(int index) throws ArrayIndexOutOfBoundsException {
-		final int max = this.connection.get().getConnectedSegmentCount();
+		final var max = this.connection.get().getConnectedSegmentCount();
 		RoadSegment seg = null;
 		for (int i = 0, j = 0; seg == null && i < max; ++i) {
-			final RoadSegment c = this.connection.get().getConnectedSegment(i);
+			final var c = this.connection.get().getConnectedSegment(i);
 			if (!isExcludedRoadSegment(c)) {
 				if (j == index) {
 					seg = c;
@@ -134,7 +133,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 		if (isExcludedRoadSegment(refSegment)) {
 			return null;
 		}
-		final RoadSegment other = this.connection.get().getOtherSideSegment(refSegment);
+		final var other = this.connection.get().getOtherSideSegment(refSegment);
 		if (isExcludedRoadSegment(other)) {
 			return null;
 		}
@@ -474,7 +473,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 		private void searchNext() {
 			this.next = null;
 			while (this.next == null && this.iterator.hasNext()) {
-				final RoadSegment s = this.iterator.next();
+				final var s = this.iterator.next();
 				if (!isExcludedRoadSegment(s)) {
 					this.next = s;
 				}
@@ -489,7 +488,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 
 		@Override
 		public RoadSegment next() {
-			final RoadSegment n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}
@@ -524,7 +523,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 		private void searchNext() {
 			this.next = null;
 			while (this.next == null && this.iterator.hasNext()) {
-				final GraphPointConnection<RoadConnection, RoadSegment> s = this.iterator.next();
+				final var s = this.iterator.next();
 				if (!isExcludedRoadSegment(s.getGraphSegment())) {
 					this.next = s;
 				}
@@ -539,7 +538,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 
 		@Override
 		public GraphPointConnection<RoadConnection, RoadSegment> next() {
-			final GraphPointConnection<RoadConnection, RoadSegment> n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}

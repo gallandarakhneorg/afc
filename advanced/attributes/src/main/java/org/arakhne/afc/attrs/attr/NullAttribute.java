@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,8 +71,8 @@ public final class NullAttribute implements Serializable, Cloneable {
 		if (obj == null) {
 			return true;
 		}
-		if (obj instanceof NullAttribute) {
-			return this.type == ((NullAttribute) obj).type;
+		if (obj instanceof NullAttribute attr) {
+			return this.type == attr.type;
 		}
 		return false;
 	}

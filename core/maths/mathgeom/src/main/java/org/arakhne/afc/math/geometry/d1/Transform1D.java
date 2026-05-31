@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -35,6 +32,8 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Is represented internally as curviline translation and a shift translation.
@@ -92,7 +91,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 */
 	public Transform1D(Transform1D<? extends S> transform) {
 		assert transform != null : AssertMessages.notNullParameter();
-		final List<? extends S> path = transform.getPath();
+		final var path = transform.getPath();
 		this.path = path == null || path.isEmpty() ? null : new ArrayList<>(path);
 		this.firstSegmentDirection = transform.firstSegmentDirection;
 		this.curvilineTranslation = transform.curvilineTranslation;
@@ -179,10 +178,10 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 
 	private Direction1D detectFirstSegmentDirection(Direction1D defaultValue) {
 		if (this.path != null && this.path.size() > 1) {
-			int i = 1;
-			S s1 = this.path.get(0);
-			S s2 = this.path.get(i);
-			boolean eq = s1.equals(s2);
+			var i = 1;
+			var s1 = this.path.get(0);
+			var s2 = this.path.get(i);
+			var eq = s1.equals(s2);
 			while (eq && i < (this.path.size() - 1)) {
 				++i;
 				s1 = s2;
@@ -190,7 +189,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 				eq = s1.equals(s2);
 			}
 			if (!eq) {
-				boolean sgDir = s1.isLastPointConnectedTo(s2);
+				var sgDir = s1.isLastPointConnectedTo(s2);
 				if ((i % 2) == 0) {
 					sgDir = !sgDir;
 				}
@@ -273,8 +272,8 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	@Pure
 	public boolean isIdentity() {
         if (this.isIdentity == null) {
-            this.isIdentity = MathUtil.isEpsilonZero(this.curvilineTranslation)
-                    && MathUtil.isEpsilonZero(this.curvilineTranslation);
+            this.isIdentity = Boolean.valueOf(MathUtil.isEpsilonZero(this.curvilineTranslation)
+                    && MathUtil.isEpsilonZero(this.curvilineTranslation));
         }
         return this.isIdentity.booleanValue();
 	}
@@ -480,19 +479,12 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 *      or {@code -1} if the segment of the point is not the first segment in the path.
 	 */
 	@Pure
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"rawtypes", "unchecked", "checkstyle:nestedifdepth"})
 	public int transform(Point1D<?, ?, ? super S> point, Tuple2D<?> appliedTranslation) {
 		assert point != null : AssertMessages.notNullParameter(0);
 		assert point.getSegment() != null;
 
-		int idx;
-		double distanceToSegmentEnd;
-		Direction1D direction;
-		Segment1D<?, ?> previousSegment;
-		double shift = point.getY();
-		double curviline = point.getCurvilineCoordinate();
 		Segment1D<?, ?> segment = point.getSegment();
-		double distance = 0;
 
 		// Ensure the path is valid
 		final List<? extends Segment1D<?, ?>> rpath;
@@ -508,18 +500,24 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 		}
 
 		// Change the shift.
+		var shift = point.getY();
 		if (this.firstSegmentDirection.isSegmentDirection()) {
 			shift += this.shiftTranslation;
 		} else {
 			shift -= this.shiftTranslation;
 		}
 
-		double distanceToMove = this.curvilineTranslation;
+		int idx;
+		Segment1D<?, ?> previousSegment;
+		var curviline = point.getCurvilineCoordinate();
+		var distance = 0.;
+		var distanceToMove = this.curvilineTranslation;
 		if (distanceToMove >= 0.) {
-			// Move foward, along the path.
-			direction = this.firstSegmentDirection;
+			// Move forward, along the path.
+			var direction = this.firstSegmentDirection;
 			idx = 0;
 			do {
+				final double distanceToSegmentEnd;
 				if (direction.isSegmentDirection()) {
 					distanceToSegmentEnd = segment.getLength() - curviline;
 					if (distanceToSegmentEnd < distanceToMove) {
@@ -615,11 +613,11 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	@Pure
 	public final Transform2D toTransform2D(Segment1D<?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter(0);
-		final Point2D<?, ?> a = segment.getFirstPoint();
+		final var a = segment.getFirstPoint();
 		if (a == null) {
 			return null;
 		}
-		final Point2D<?, ?> b = segment.getLastPoint();
+		final var b = segment.getLastPoint();
 		if (b == null) {
 			return null;
 		}
@@ -651,14 +649,14 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 */
 	@Pure
 	public final Transform2D toTransform2D(double startX, double startY, double endX, double endY) {
-		final Transform2D trans = new Transform2D();
+		final var trans = new Transform2D();
 
-		final Vector2d direction = new Vector2d(endX - startX, endY - startY);
+		final var direction = new Vector2d(endX - startX, endY - startY);
 
-		final Vector2d shiftVector = direction.toOrthogonalVector();
+		final var shiftVector = direction.toOrthogonalVector();
 
-		double c = this.curvilineTranslation;
-		double j = this.shiftTranslation;
+		var c = this.curvilineTranslation;
+		var j = this.shiftTranslation;
 
 		if (!this.firstSegmentDirection.isSegmentDirection()) {
 			c = -c;
@@ -691,8 +689,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 		if (obj == this) {
 			return true;
 		}
-		if (obj instanceof Transform1D<?>) {
-			final Transform1D<?> t = (Transform1D<?>) obj;
+		if (obj instanceof Transform1D t) {
 			return this.firstSegmentDirection == t.firstSegmentDirection
 					&& this.curvilineTranslation == t.curvilineTranslation
 					&& this.shiftTranslation == t.shiftTranslation
@@ -704,12 +701,12 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	@Pure
 	@Override
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Objects.hashCode(this.path);
 		bits = 31 * bits + Double.hashCode(this.curvilineTranslation);
 		bits = 31 * bits + Double.hashCode(this.shiftTranslation);
 		bits = 31 * bits + Objects.hashCode(this.firstSegmentDirection);
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 }

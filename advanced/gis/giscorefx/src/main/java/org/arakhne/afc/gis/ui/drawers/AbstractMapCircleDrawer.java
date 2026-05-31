@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,10 +40,10 @@ public abstract class AbstractMapCircleDrawer<T extends MapCircle> extends Abstr
 	 * @param element the map element.
 	 */
 	protected void stroke(ZoomableGraphicsContext gc, T element) {
-		final double radius = element.getRadius();
-		final double diameter = radius + radius;
-		final double minx = element.getX() - radius;
-		final double miny = element.getY() - radius;
+		final var radius = element.getRadius();
+		final var diameter = radius + radius;
+		final var minx = element.getX() - radius;
+		final var miny = element.getY() - radius;
 		gc.strokeOval(minx, miny, diameter, diameter);
 	}
 
@@ -53,10 +53,10 @@ public abstract class AbstractMapCircleDrawer<T extends MapCircle> extends Abstr
 	 * @param element the map element.
 	 */
 	protected void fill(ZoomableGraphicsContext gc, T element) {
-		final double radius = element.getRadius();
-		final double diameter = radius + radius;
-		final double minx = element.getX() - radius;
-		final double miny = element.getY() - radius;
+		final var radius = element.getRadius();
+		final var diameter = radius + radius;
+		final var minx = element.getX() - radius;
+		final var miny = element.getY() - radius;
 		gc.fillOval(minx, miny, diameter, diameter);
 	}
 

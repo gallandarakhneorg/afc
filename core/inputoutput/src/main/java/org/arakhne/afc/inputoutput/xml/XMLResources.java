@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,13 +29,12 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.inputoutput.filetype.FileType;
 import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.inputoutput.path.PathBuilder;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Class that store a collection of resources (URL, files and raw data) and their associated
  * identifiers within a XML file. An object of this type may be used as a repository
@@ -86,8 +85,8 @@ public class XMLResources implements Comparator<Object> {
 			return Integer.MAX_VALUE;
 		}
 
-		if (o1 instanceof byte[] && o2 instanceof byte[]) {
-			return compareArrays((byte[]) o1, (byte[]) o2);
+		if (o1 instanceof byte[] arr1 && o2 instanceof byte[] arr2) {
+			return compareArrays(arr1, arr2);
 		} else if (o1 instanceof byte[]) {
 			return Integer.MAX_VALUE;
 		} else if (o2 instanceof byte[]) {
@@ -97,37 +96,37 @@ public class XMLResources implements Comparator<Object> {
 		final URL a1;
 		final URL a2;
 		if (this.pathBuilder != null) {
-			if (o1 instanceof URL) {
-				a1 = this.pathBuilder.makeAbsolute((URL) o1);
-			} else if (o1 instanceof File) {
-				a1 = this.pathBuilder.makeAbsolute((File) o1);
+			if (o1 instanceof URL url) {
+				a1 = this.pathBuilder.makeAbsolute(url);
+			} else if (o1 instanceof File file) {
+				a1 = this.pathBuilder.makeAbsolute(file);
 			} else {
 				throw new IllegalStateException();
 			}
-			if (o2 instanceof URL) {
-				a2 = this.pathBuilder.makeAbsolute((URL) o2);
-			} else if (o2 instanceof File) {
-				a2 = this.pathBuilder.makeAbsolute((File) o2);
+			if (o2 instanceof URL url) {
+				a2 = this.pathBuilder.makeAbsolute(url);
+			} else if (o2 instanceof File file) {
+				a2 = this.pathBuilder.makeAbsolute(file);
 			} else {
 				throw new IllegalStateException();
 			}
 		} else {
-			if (o1 instanceof URL) {
-				a1 = (URL) o1;
-			} else if (o1 instanceof File) {
+			if (o1 instanceof URL a0) {
+				a1 = a0;
+			} else if (o1 instanceof File file) {
 				try {
-					a1 = ((File) o1).toURI().toURL();
+					a1 = file.toURI().toURL();
 				} catch (MalformedURLException e) {
 					throw new IllegalStateException(e);
 				}
 			} else {
 				throw new IllegalStateException();
 			}
-			if (o2 instanceof URL) {
-				a2 = (URL) o2;
-			} else if (o2 instanceof File) {
+			if (o2 instanceof URL a0) {
+				a2 = a0;
+			} else if (o2 instanceof File file) {
 				try {
-					a2 = ((File) o2).toURI().toURL();
+					a2 = file.toURI().toURL();
 				} catch (MalformedURLException e) {
 					throw new IllegalStateException(e);
 				}
@@ -177,6 +176,7 @@ public class XMLResources implements Comparator<Object> {
 	 *
 	 * @param identifier the identifier to convert.
 	 * @return the numerical-representation of the given identifier.
+	 * @throws IllegalArgumentException if the given identifier is invalid.
 	 * @see #getStringIdentifier(long)
 	 * @see #isStringIdentifier(String)
 	 */
@@ -203,7 +203,7 @@ public class XMLResources implements Comparator<Object> {
 	 */
 	public synchronized String add(long identifier, URL url, String mimeType) {
 		assert url != null : AssertMessages.notNullParameter(1);
-		String mt = mimeType;
+		var mt = mimeType;
 		if (mt == null || "".equals(mt)) { //$NON-NLS-1$
 			mt = FileType.getContentType(url);
 		}
@@ -231,7 +231,7 @@ public class XMLResources implements Comparator<Object> {
 	 */
 	public synchronized String add(long identifier, File file, String mimeType) {
 		assert file != null : AssertMessages.notNullParameter(1);
-		String mt = mimeType;
+		var mt = mimeType;
 		if (mt == null || "".equals(mt)) { //$NON-NLS-1$
 			mt = FileType.getContentType(file);
 		}
@@ -259,7 +259,7 @@ public class XMLResources implements Comparator<Object> {
 	 */
 	public synchronized String add(long identifier, byte[] rawData, String mimeType) {
 		assert rawData != null : AssertMessages.notNullParameter(1);
-		String mt = mimeType;
+		var mt = mimeType;
 		if (mt == null || "".equals(mt)) { //$NON-NLS-1$
 			mt = MimeName.MIME_OCTET_STREAM.getMimeConstant();
 		}
@@ -372,7 +372,7 @@ public class XMLResources implements Comparator<Object> {
 	 * @return an identifier for a resource.
 	 */
 	public synchronized long computeNextIdentifier() {
-		long id = this.nextFreeId;
+		var id = this.nextFreeId;
 		while (this.resourcesFromIdentifiers.containsKey(id)) {
 			++id;
 		}
@@ -407,7 +407,7 @@ public class XMLResources implements Comparator<Object> {
 	 */
 	@Pure
 	public final long getIdentifier(URL url) {
-		final Long id = getIdentifierFromResource(url);
+		final var id = getIdentifierFromResource(url);
 		if (id == null) {
 			return -1;
 		}
@@ -421,7 +421,7 @@ public class XMLResources implements Comparator<Object> {
 	 */
 	@Pure
 	public final long getIdentifier(File file) {
-		final Long id = getIdentifierFromResource(file);
+		final var id = getIdentifierFromResource(file);
 		if (id == null) {
 			return -1;
 		}
@@ -435,7 +435,7 @@ public class XMLResources implements Comparator<Object> {
 	 */
 	@Pure
 	public final long getIdentifier(byte[] rawData) {
-		final Long id = getIdentifierFromResource(rawData);
+		final var id = getIdentifierFromResource(rawData);
 		if (id == null) {
 			return -1;
 		}
@@ -449,7 +449,7 @@ public class XMLResources implements Comparator<Object> {
 	 */
 	@Pure
 	public final URL getResourceURL(long identifier) {
-		final Entry o = getResourceFromIdentifier(identifier);
+		final var o = getResourceFromIdentifier(identifier);
 		if (o.isURL()) {
 			return this.pathBuilder.makeAbsolute(o.getURL());
 		}
@@ -475,7 +475,7 @@ public class XMLResources implements Comparator<Object> {
 	 * @param url the url to remove.
 	 */
 	public synchronized void remove(URL url) {
-		final Long id = this.identifiersFromResources.remove(url);
+		final var id = this.identifiersFromResources.remove(url);
 		if (id != null) {
 			this.resourcesFromIdentifiers.remove(id);
 		}
@@ -486,7 +486,7 @@ public class XMLResources implements Comparator<Object> {
 	 * @param file the file to remove.
 	 */
 	public synchronized void remove(File file) {
-		final Long id = this.identifiersFromResources.remove(file);
+		final var id = this.identifiersFromResources.remove(file);
 		if (id != null) {
 			this.resourcesFromIdentifiers.remove(id);
 		}
@@ -497,7 +497,7 @@ public class XMLResources implements Comparator<Object> {
 	 * @param rawData the data to remove.
 	 */
 	public synchronized void remove(byte[] rawData) {
-		final Long id = this.identifiersFromResources.remove(rawData);
+		final var id = this.identifiersFromResources.remove(rawData);
 		if (id != null) {
 			this.resourcesFromIdentifiers.remove(id);
 		}
@@ -508,7 +508,7 @@ public class XMLResources implements Comparator<Object> {
 	 * @param identifier the identifier to remove.
 	 */
 	public synchronized void remove(long identifier) {
-		final Entry o = this.resourcesFromIdentifiers.remove(identifier);
+		final var o = this.resourcesFromIdentifiers.remove(identifier);
 		if (o != null) {
 			this.identifiersFromResources.remove(o.getResource());
 		}
@@ -597,8 +597,8 @@ public class XMLResources implements Comparator<Object> {
 		 */
 		@Pure
 		public URL getURL() {
-			if (this.resource instanceof URL) {
-				return (URL) this.resource;
+			if (this.resource instanceof URL url) {
+				return url;
 			}
 			return null;
 		}
@@ -610,8 +610,8 @@ public class XMLResources implements Comparator<Object> {
 		 */
 		@Pure
 		public File getFile() {
-			if (this.resource instanceof File) {
-				return (File) this.resource;
+			if (this.resource instanceof File file) {
+				return file;
 			}
 			return null;
 		}
@@ -623,8 +623,8 @@ public class XMLResources implements Comparator<Object> {
 		 */
 		@Pure
 		public byte[] getEmbeddedData() {
-			if (this.resource instanceof byte[]) {
-				return (byte[]) this.resource;
+			if (this.resource instanceof byte[] arr) {
+				return arr;
 			}
 			return null;
 		}

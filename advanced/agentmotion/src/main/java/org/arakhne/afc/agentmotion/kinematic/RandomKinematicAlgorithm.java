@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,11 @@ package org.arakhne.afc.agentmotion.kinematic;
 import java.io.Serializable;
 import java.util.Random;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.agentmotion.AgentMotion;
 import org.arakhne.afc.agentmotion.RandomMotionAlgorithm;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Agent is changing randomly its position and orientation.
  *
@@ -50,7 +49,7 @@ public class RandomKinematicAlgorithm implements RandomMotionAlgorithm, Serializ
 	@Override
 	public RandomKinematicAlgorithm clone() {
 		try {
-			final RandomKinematicAlgorithm clone = (RandomKinematicAlgorithm) super.clone();
+			final var clone = (RandomKinematicAlgorithm) super.clone();
 			clone.random = new Random();
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -61,8 +60,8 @@ public class RandomKinematicAlgorithm implements RandomMotionAlgorithm, Serializ
 	@Override
 	public AgentMotion calculate(Point2D<?, ?> position, Vector2D<?, ?> orientation, double linearSpeed,
 			double maxLinearSpeed, double angularSpeed, double maxAngularSpeed) {
-		final Vector2D<?, ?> v = orientation.toColinearVector(maxLinearSpeed);
-		final double rotation = this.random.nextGaussian() * maxAngularSpeed;
+		final var v = orientation.toColinearVector(maxLinearSpeed);
+		final var rotation = this.random.nextGaussian() * maxAngularSpeed;
 		return new AgentMotion(v, rotation);
 	}
 

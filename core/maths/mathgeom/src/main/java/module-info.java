@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,5 @@ open module org.arakhne.afc.core.mathgeom {
 	exports org.arakhne.afc.math.geometry.d3.afp;
 	exports org.arakhne.afc.math.geometry.d3.ai;
 	exports org.arakhne.afc.math.geometry.d3.d;
-	exports org.arakhne.afc.math.geometry.d3.i;
 	exports org.arakhne.afc.math.matrix;
 }

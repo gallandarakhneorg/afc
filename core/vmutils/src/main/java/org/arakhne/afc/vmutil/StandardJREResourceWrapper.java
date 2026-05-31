@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 	private static String makeRelativePath(Class<?> type, String path) {
 		assert type != null;
 		assert path != null;
-		final StringBuilder buffer = new StringBuilder();
+		final var buffer = new StringBuilder();
 		buffer.append("/"); //$NON-NLS-1$
 		buffer.append(type.getPackageName().replaceAll(Pattern.quote("."), "/")); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append(path);
@@ -76,13 +76,13 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		if (path == null) {
 			return null;
 		}
-		final String resourcePath = ensurePathPrefix(path);
-		final ClassLoader loader = (classLoader == null)
+		final var resourcePath = ensurePathPrefix(path);
+		final var loader = (classLoader == null)
 				? ClassLoaderFinder.findClassLoader()
 				: classLoader;
 		assert loader != null;
 
-		URL url = loader.getResource(resourcePath);
+		var url = loader.getResource(resourcePath);
 
 		if (url == null) {
 			// Try to find in ./resources sub directory
@@ -97,18 +97,18 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		if (path == null) {
 			return null;
 		}
-		final String resourcePath = ensurePathPrefix(path);
+		final var resourcePath = ensurePathPrefix(path);
 
 		assert clazz != null;
 
-		URL url = clazz.getResource(resourcePath);
+		var url = clazz.getResource(resourcePath);
 
 		if (url == null) {
 			// Try to find in ./resources sub directory
 			url = clazz.getResource(RESOURCE_PREFIX + resourcePath);
 			if (url == null) {
 				// Try to find in the class's package
-				final String resourcePath2 = makeRelativePath(clazz, resourcePath);
+				final var resourcePath2 = makeRelativePath(clazz, resourcePath);
 				url = clazz.getResource(resourcePath2);
 				if (url == null) {
 					// Try to find in ./resources sub directory
@@ -119,7 +119,6 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		return url;
 	}
 
-	@SuppressWarnings("resource")
 	@Override
 	@Pure
 	@Deprecated(since = "17.0")
@@ -127,8 +126,8 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		if (path == null) {
 			return null;
 		}
-		final String resourcePath = ensurePathPrefix(path);
-		ClassLoader loader = classLoader;
+		final var resourcePath = ensurePathPrefix(path);
+		var loader = classLoader;
 		if (loader == null) {
 			loader = ClassLoaderFinder.findClassLoader();
 		}
@@ -137,7 +136,7 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		}
 
 		assert loader != null;
-		InputStream is = loader.getResourceAsStream(resourcePath);
+		var is = loader.getResourceAsStream(resourcePath);
 		if (is == null) {
 			// Try to find in ./resources sub directory
 			is = loader.getResourceAsStream(RESOURCE_PREFIX + resourcePath);
@@ -145,22 +144,21 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		return is;
 	}
 
-	@SuppressWarnings("resource")
 	@Override
 	@Pure
 	public InputStream getResourceAsStream(Class<?> clazz, String path) {
 		if (path == null) {
 			return null;
 		}
-		final String resourcePath = ensurePathPrefix(path);
+		final var resourcePath = ensurePathPrefix(path);
 		assert clazz != null;
-		InputStream is = clazz.getResourceAsStream(resourcePath);
+		var is = clazz.getResourceAsStream(resourcePath);
 		if (is == null) {
 			// Try to find in ./resources sub directory
 			is = clazz.getResourceAsStream(RESOURCE_PREFIX + resourcePath);
 			if (is == null) {
 				// Try to find in the class's package
-				final String resourcePath2 = makeRelativePath(clazz, resourcePath);
+				final var resourcePath2 = makeRelativePath(clazz, resourcePath);
 				is = clazz.getResourceAsStream(resourcePath2);
 				if (is == null) {
 					// Try to find in ./resources sub directory

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ package org.arakhne.afc.gis.bus.layer;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent;
 import org.arakhne.afc.gis.bus.network.BusChangeListener;
@@ -36,6 +34,7 @@ import org.arakhne.afc.gis.maplayer.MapLayerContentEvent;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to display a bus itinerary.
@@ -146,9 +145,9 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 		this.listener = new BusChangeListener() {
 			@Override
 			public void onBusPrimitiveChanged(BusChangeEvent event) {
-				BusItinerary i = event.getBusItinerary();
+				var i = event.getBusItinerary();
 				if (i == null) {
-					final BusItineraryHalt h = event.getBusHalt();
+					final var h = event.getBusHalt();
 					if (h != null) {
 						i = h.getContainer();
 					}
@@ -160,9 +159,9 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 
 			@Override
 			public void onBusPrimitiveGraphicalAttributeChanged(BusChangeEvent event) {
-				BusItinerary i = event.getBusItinerary();
+				var i = event.getBusItinerary();
 				if (i == null) {
-					final BusItineraryHalt h = event.getBusHalt();
+					final var h = event.getBusHalt();
 					if (h != null) {
 						i = h.getContainer();
 					}
@@ -176,16 +175,16 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 			@Override
 			@SuppressWarnings({"checkstyle:cyclomaticcomplexity"})
 			public void onBusPrimitiveShapeChanged(BusChangeEvent event) {
-				BusItinerary i = event.getBusItinerary();
+				var i = event.getBusItinerary();
 				if (i == null) {
-					final BusItineraryHalt h = event.getBusHalt();
+					final var h = event.getBusHalt();
 					if (h != null) {
 						i = h.getContainer();
 					}
 				}
 				if (i == getBusItinerary()) {
 					BusItineraryLayer.this.resetBoundingBox();
-					boolean fired = false;
+					var fired = false;
 					switch (event.getEventType()) {
 					case ITINERARY_HALT_ADDED:
 						fired = onBusItineraryHaltAdded(event.getBusHalt(), event.getIndex(), event);
@@ -239,7 +238,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nofinalizer")
+	@SuppressWarnings({ "checkstyle:nofinalizer", "removal" })
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		this.busItinerary.removeBusChangeListener(this.listener);
@@ -253,10 +252,10 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	 * not invoked if this parameter is {@code false}.
 	 */
 	protected void initializeElements() {
-		final BusItinerary itinerary = getBusItinerary();
+		final var itinerary = getBusItinerary();
 		if (itinerary != null) {
-			int i = 0;
-			for (final BusItineraryHalt halt : itinerary.busHalts()) {
+			var i = 0;
+			for (final var halt : itinerary.busHalts()) {
 				onBusItineraryHaltAdded(halt, i, null);
 				++i;
 			}
@@ -353,7 +352,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	 * a bus itinerary was removed or added.
 	 *
 	 * @return {@code true} if the layer is automatically updated,
-	 * {@code false}.
+	 *     {@code false}.
 	 */
 	@Pure
 	public boolean isLayerAutoUpdated() {
@@ -364,7 +363,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	 * a bus itinerary was removed or added.
 	 *
 	 * @param update is {@code true} if the layer should be automatically updated,
-	 * {@code false}.
+	 *     {@code false}.
 	 */
 	public void setLayerAutoUpdated(boolean update) {
 		this.autoUpdate.set(update);
@@ -427,7 +426,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	@Override
 	@Pure
 	public boolean isValidLayer() {
-		final BusItinerary itinerary = getBusItinerary();
+		final var itinerary = getBusItinerary();
 		if (itinerary != null) {
 			return itinerary.isValidPrimitive();
 		}
@@ -437,7 +436,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	@Override
 	@Pure
 	public BusPrimitiveInvalidity getInvalidityReason() {
-		final BusItinerary itinerary = getBusItinerary();
+		final var itinerary = getBusItinerary();
 		if (itinerary != null) {
 			return itinerary.getInvalidityReason();
 		}
@@ -446,7 +445,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 
 	@Override
 	public void revalidate() {
-		final BusItinerary itinerary = getBusItinerary();
+		final var itinerary = getBusItinerary();
 		if (itinerary != null) {
 			itinerary.revalidate();
 		}

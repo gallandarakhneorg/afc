@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,10 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class contains an attribute value.
@@ -215,7 +214,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
-	public AttributeImpl(String name, Point3D<?, ?> value) {
+	public AttributeImpl(String name, Point3D<?, ?, ?> value) {
 		super(value);
 		this.name = name;
 	}
@@ -264,7 +263,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
-	public AttributeImpl(String name, Point3D<?, ?>[] value) {
+	public AttributeImpl(String name, Point3D<?, ?, ?>[] value) {
 		super(value);
 		this.name = name;
 	}
@@ -353,9 +352,9 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 			return -1;
 		}
 
-		final String n0 = arg0.getName();
-		final String n1 = arg1.getName();
-		final int cmp = compareAttrNames(n0, n1);
+		final var n0 = arg0.getName();
+		final var n1 = arg1.getName();
+		final var cmp = compareAttrNames(n0, n1);
 
 		if (cmp == 0) {
 			return compareValues(arg0, arg1);
@@ -369,8 +368,8 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param arg0 first attribute.
 	 * @param arg1 second attribute.
 	 * @return replies a negative value if {@code arg0} is lesser than
-	 * {@code arg1}, a positive value if {@code arg0} is greater than
-	 * {@code arg1}, or {@code 0} if they are equal.
+	 *     {@code arg1}, a positive value if {@code arg0} is greater than
+	 *     {@code arg1}, or {@code 0} if they are equal.
 	 * @see AttributeNameComparator
 	 */
 	@Pure
@@ -390,8 +389,8 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	@Pure
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Attribute) {
-			return compareAttrs(this, (Attribute) obj) == 0;
+		if (obj instanceof Attribute attr) {
+			return compareAttrs(this, attr) == 0;
 		}
 		return super.equals(obj);
 	}
@@ -399,11 +398,10 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	@Pure
 	@Override
 	public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + Objects.hashCode(this.name);
-        result = prime * result + super.hashCode();
-        return result ^ (result >> 31);
+		var result = 1L;
+        result = 31 * result + Objects.hashCode(this.name);
+        result = 31 * result + super.hashCode();
+        return (int) (result ^ (result >> 31));
 	}
 
 	@Override

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,11 +52,11 @@ public class Tuple3dComparator implements Comparator<Tuple3D<?>> {
         if (tuple2 == null) {
             return Integer.MAX_VALUE;
         }
-        final int cmpX = Double.compare(tuple1.getX(), tuple2.getX());
+        final var cmpX = Double.compare(tuple1.getX(), tuple2.getX());
         if (cmpX != 0) {
             return cmpX;
         }
-        final int cmpY = Double.compare(tuple1.getY(), tuple2.getY());
+        final var cmpY = Double.compare(tuple1.getY(), tuple2.getY());
         if (cmpY != 0) {
             return cmpY;
         }

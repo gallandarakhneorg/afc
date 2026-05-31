@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Iterator on attributes.
@@ -57,7 +56,7 @@ public class AttributeIterator implements Iterator<Attribute> {
 	@Pure
 	@Override
 	public boolean hasNext() {
-		if ((this.provider == null) || (this.names.isEmpty())) {
+		if (this.provider == null || this.names.isEmpty()) {
 			this.provider = null;
 			return false;
 		}
@@ -66,16 +65,16 @@ public class AttributeIterator implements Iterator<Attribute> {
 
 	@Override
 	public Attribute next() {
-		if ((this.provider == null) || (this.names.isEmpty())) {
+		if (this.provider == null || this.names.isEmpty()) {
 			throw new NoSuchElementException();
 		}
 
-		final String name = this.names.remove(0);
+		final var name = this.names.remove(0);
 		if (name == null) {
 			throw new NoSuchElementException();
 		}
 
-		final Attribute attr = this.provider.getAttributeObject(name);
+		final var attr = this.provider.getAttributeObject(name);
 		if (attr == null) {
 			throw new NoSuchElementException();
 		}
@@ -91,11 +90,11 @@ public class AttributeIterator implements Iterator<Attribute> {
 
 	@Override
 	public void remove() {
-		if ((this.provider == null) || (this.lastName == null)) {
+		if (this.provider == null || this.lastName == null) {
 			throw new NoSuchElementException();
 		}
-		if (this.provider instanceof AttributeCollection) {
-			((AttributeCollection) this.provider).removeAttribute(this.lastName);
+		if (this.provider instanceof AttributeCollection col) {
+			col.removeAttribute(this.lastName);
 		}
 		this.lastName = null;
 	}

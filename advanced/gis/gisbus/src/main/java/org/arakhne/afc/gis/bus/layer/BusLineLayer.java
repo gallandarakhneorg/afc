@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ package org.arakhne.afc.gis.bus.layer;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent;
 import org.arakhne.afc.gis.bus.network.BusChangeListener;
@@ -36,6 +34,7 @@ import org.arakhne.afc.gis.maplayer.MultiMapLayer;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to display a bus line.
@@ -214,7 +213,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nofinalizer")
+	@SuppressWarnings({ "checkstyle:nofinalizer", "removal" })
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		this.busLine.removeBusChangeListener(this.listener);
@@ -228,10 +227,10 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	 * not invoked if this parameter is {@code false}.
 	 */
 	protected void initializeElements() {
-		final BusLine line = getBusLine();
+		final var line = getBusLine();
 		if (line != null) {
-			int i = 0;
-			for (final BusItinerary itinerary : line.busItineraries()) {
+			var i = 0;
+			for (final var itinerary : line.busItineraries()) {
 				onBusItineraryAdded(itinerary, i);
 				++i;
 			}
@@ -293,7 +292,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	 */
 	protected boolean onAllBusItineraryRemoved() {
 		if (this.autoUpdate.get()) {
-			final boolean fired = size() > 0;
+			final var fired = size() > 0;
 			clear();
 			return fired;
 		}
@@ -329,7 +328,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	 * a bus itinerary was removed or added.
 	 *
 	 * @return {@code true} if the layer is automatically updated,
-	 * {@code false}.
+	 *     {@code false}.
 	 */
 	public boolean isLayerAutoUpdated() {
 		return this.autoUpdate.get();
@@ -339,7 +338,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	 * a bus itinerary was removed or added.
 	 *
 	 * @param update is {@code true} if the layer should be automatically updated,
-	 * {@code false}.
+	 *     {@code false}.
 	 */
 	public void setLayerAutoUpdated(boolean update) {
 		this.autoUpdate.set(update);
@@ -396,7 +395,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 
 	@Override
 	public boolean isValidLayer() {
-		final BusLine line = getBusLine();
+		final var line = getBusLine();
 		if (line != null) {
 			return line.isValidPrimitive();
 		}
@@ -405,7 +404,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 
 	@Override
 	public BusPrimitiveInvalidity getInvalidityReason() {
-		final BusLine line = getBusLine();
+		final var line = getBusLine();
 		if (line != null) {
 			return line.getInvalidityReason();
 		}
@@ -414,7 +413,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 
 	@Override
 	public void revalidate() {
-		final BusLine line = getBusLine();
+		final var line = getBusLine();
 		if (line != null) {
 			line.revalidate();
 		}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,17 +34,15 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
-import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Path with 2 integer FX properties.
  *
@@ -148,9 +146,9 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public boolean containsControlPoint(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		if (this.coords != null && !this.coords.isEmpty()) {
-			final int size = this.coords.size();
-			for (int i = 0; i < size; i++) {
-				final Point2ifx point = this.coords.get(i);
+			final var size = this.coords.size();
+			for (var i = 0; i < size; i++) {
+				final var point = this.coords.get(i);
 				if (point.ix() == pt.ix() && point.iy() == pt.iy()) {
 					return true;
 				}
@@ -200,16 +198,16 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	@Override
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Objects.hashCode(this.coords);
 		bits = 31 * bits + Objects.hashCode(this.types);
 		bits = 31 * bits + Objects.hashCode(this.windingRule);
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Override
 	public void translate(int dx, int dy) {
-		for (final Point2ifx pt : this.coords) {
+		for (final var pt : this.coords) {
 			pt.add(dx, dy);
 		}
 	}
@@ -217,7 +215,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	@Override
 	public void transform(Transform2D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
-		for (final Point2ifx pt : this.coords) {
+		for (final var pt : this.coords) {
 			transform.transform(pt);
 		}
 	}
@@ -230,14 +228,14 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.isEmpty == null) {
 			this.isEmpty = new SimpleBooleanProperty(this, MathFXAttributeNames.IS_EMPTY);
 			this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-				final PathIterator2ai<PathElement2ifx> pi = getPathIterator();
+				final var pi = getPathIterator();
 				while (pi.hasNext()) {
-					final PathElement2ifx pe = pi.next();
+					final var pe = pi.next();
 					if (pe.isDrawable()) {
-						return false;
+						return Boolean.FALSE;
 					}
 				}
-				return true;
+				return Boolean.TRUE;
 			}, innerTypesProperty(), innerPointsProperty()));
 		}
 		return this.isEmpty;
@@ -253,7 +251,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.boundingBox == null) {
 			this.boundingBox = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				final Rectangle2ifx bb = getGeomFactory().newBox();
+				final var bb = getGeomFactory().newBox();
 				Path2ai.calculatesDrawableElementBoundingBox(
 						getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 						bb);
@@ -274,7 +272,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.logicalBounds == null) {
 			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.CONTROL_POINT_BOUNDING_BOX);
 			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
-				final Rectangle2ifx bb = getGeomFactory().newBox();
+				final var bb = getGeomFactory().newBox();
 				Path2ai.calculatesControlPointBoundingBox(
 						getPathIterator(),
 						bb);
@@ -327,21 +325,21 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.isPolyline == null) {
 			this.isPolyline = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_POLYLINE, false);
 			this.isPolyline.bind(Bindings.createBooleanBinding(() -> {
-				boolean first = true;
-				boolean hasOneLine = false;
-				for (final PathElementType type : innerTypesProperty()) {
+				var first = true;
+				var hasOneLine = false;
+				for (final var type : innerTypesProperty()) {
 					if (first) {
 						if (type != PathElementType.MOVE_TO) {
-							return false;
+							return Boolean.FALSE;
 						}
 						first = false;
 					} else if (type != PathElementType.LINE_TO) {
-						return false;
+						return Boolean.FALSE;
 					} else {
 						hasOneLine = true;
 					}
 				}
-				return hasOneLine;
+				return Boolean.valueOf(hasOneLine);
 			}, innerTypesProperty()));
 		}
 		return this.isPolyline;
@@ -360,12 +358,12 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.isCurved == null) {
 			this.isCurved = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_CURVED, false);
 			this.isCurved.bind(Bindings.createBooleanBinding(() -> {
-				for (final PathElementType type : innerTypesProperty()) {
+				for (final var type : innerTypesProperty()) {
 					if (type == PathElementType.CURVE_TO || type == PathElementType.QUAD_TO) {
-						return true;
+						return Boolean.TRUE;
 					}
 				}
-				return false;
+				return Boolean.FALSE;
 			}, innerTypesProperty()));
 		}
 		return this.isCurved;
@@ -384,16 +382,16 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.isMultipart == null) {
 			this.isMultipart = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_MULTIPARTS, false);
 			this.isMultipart.bind(Bindings.createBooleanBinding(() -> {
-				boolean foundOne = false;
-				for (final PathElementType type : innerTypesProperty()) {
+				var foundOne = false;
+				for (final var type : innerTypesProperty()) {
 					if (type == PathElementType.MOVE_TO) {
 						if (foundOne) {
-							return true;
+							return Boolean.TRUE;
 						}
 						foundOne = true;
 					}
 				}
-				return false;
+				return Boolean.FALSE;
 			}, innerTypesProperty()));
 		}
 		return this.isMultipart;
@@ -412,22 +410,22 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.isPolygon == null) {
 			this.isPolygon = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_POLYGON, false);
 			this.isPolygon.bind(Bindings.createBooleanBinding(() -> {
-				boolean first = true;
-				boolean lastIsClose = false;
-				for (final PathElementType type : innerTypesProperty()) {
+				var first = true;
+				var lastIsClose = false;
+				for (final var type : innerTypesProperty()) {
 					lastIsClose = false;
 					if (first) {
 						if (type != PathElementType.MOVE_TO) {
-							return false;
+							return Boolean.FALSE;
 						}
 						first = false;
 					} else if (type == PathElementType.MOVE_TO) {
-						return false;
+						return Boolean.FALSE;
 					} else if (type == PathElementType.CLOSE) {
 						lastIsClose = true;
 					}
 				}
-				return lastIsClose;
+				return Boolean.valueOf(lastIsClose);
 			}, innerTypesProperty()));
 		}
 		return this.isPolygon;
@@ -442,8 +440,8 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public void closePath() {
 		if (this.types == null
 				|| this.types.isEmpty()
-				|| (this.types.get(this.types.size() - 1) != PathElementType.CLOSE
-				&& this.types.get(this.types.size() - 1) != PathElementType.MOVE_TO)) {
+				|| this.types.get(this.types.size() - 1) != PathElementType.CLOSE
+				&& this.types.get(this.types.size() - 1) != PathElementType.MOVE_TO) {
 			this.types.add(PathElementType.CLOSE);
 		}
 	}
@@ -461,12 +459,12 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public int[] toIntArray(Transform2D transform) {
-		final int n = (this.coords != null) ? this.coords.size() * 2 : 0;
-		final int[] clone = new int[n];
+		final var n = (this.coords != null) ? this.coords.size() * 2 : 0;
+		final var clone = new int[n];
 		if (n > 0) {
-			final Iterator<Point2ifx> iterator = this.coords.iterator();
-			Point2ifx point = iterator.next();
-			for (int i = 0; i < n; i += 2) {
+			final var iterator = this.coords.iterator();
+			var point = iterator.next();
+			for (var i = 0; i < n; i += 2) {
 				if (!(transform == null || transform.isIdentity())) {
 					transform.transform(point);
 				}
@@ -480,12 +478,12 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public float[] toFloatArray(Transform2D transform) {
-		final int n = (this.coords != null) ? this.coords.size() * 2 : 0;
-		final float[] clone = new float[n];
+		final var n = (this.coords != null) ? this.coords.size() * 2 : 0;
+		final var clone = new float[n];
 		if (n > 0) {
-			final Iterator<Point2ifx> iterator = this.coords.iterator();
-			Point2ifx point = iterator.next();
-			for (int i = 0; i < n; i += 2) {
+			final var iterator = this.coords.iterator();
+			var point = iterator.next();
+			for (var i = 0; i < n; i += 2) {
 				if (!(transform == null || transform.isIdentity())) {
 					transform.transform(point);
 				}
@@ -499,12 +497,12 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public double[] toDoubleArray(Transform2D transform) {
-		final int n = (this.coords != null) ? this.coords.size() * 2 : 0;
-		final double[] clone = new double[n];
+		final var n = (this.coords != null) ? this.coords.size() * 2 : 0;
+		final var clone = new double[n];
 		if (n > 0) {
-			final Iterator<Point2ifx> iterator = this.coords.iterator();
-			Point2ifx point = iterator.next();
-			for (int i = 0; i < n; i += 2) {
+			final var iterator = this.coords.iterator();
+			var point = iterator.next();
+			for (var i = 0; i < n; i += 2) {
 				if (!(transform == null || transform.isIdentity())) {
 					transform.transform(point);
 				}
@@ -518,12 +516,12 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public Point2ifx[] toPointArray(Transform2D transform) {
-		final int n = (this.coords != null) ? this.coords.size() : 0;
-		final Point2ifx[] clone = new Point2ifx[n];
+		final var n = (this.coords != null) ? this.coords.size() : 0;
+		final var clone = new Point2ifx[n];
 		if (n > 0) {
-			final Iterator<Point2ifx> iterator = this.coords.iterator();
-			Point2ifx point = iterator.next();
-			for (int i = 0; i < n; ++i) {
+			final var iterator = this.coords.iterator();
+			var point = iterator.next();
+			for (var i = 0; i < n; ++i) {
 				if (!(transform == null || transform.isIdentity())) {
 					transform.transform(point);
 				}
@@ -548,7 +546,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int index = this.coords.size() - 1;
+		final var index = this.coords.size() - 1;
 		return this.coords.get(index).ix();
 	}
 
@@ -558,7 +556,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int index = this.coords.size() - 1;
+		final var index = this.coords.size() - 1;
 		return this.coords.get(index).iy();
 	}
 
@@ -568,7 +566,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int baseIdx = this.coords.size() - 1;
+		final var baseIdx = this.coords.size() - 1;
 		return this.coords.get(baseIdx);
 	}
 
@@ -581,8 +579,8 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	@SuppressWarnings("checkstyle:magicnumber")
 	public void removeLast() {
 		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
-			final int lastIndex = this.types.size() - 1;
-			final int coordSize = this.coords.size();
+			final var lastIndex = this.types.size() - 1;
+			final var coordSize = this.coords.size();
 			final int coordIndex;
 			switch (this.types.get(lastIndex)) {
 			case CLOSE:
@@ -617,11 +615,11 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
 			assert this.coords != null && !this.coords.isEmpty();
-			final int idx = this.coords.size() - 1;
+			final var idx = this.coords.size() - 1;
 			this.coords.set(idx, getGeomFactory().newPoint(x, y));
 		} else {
 			innerTypesProperty().add(PathElementType.MOVE_TO);
-			final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+			final var coords = innerPointsProperty();
 			coords.add(getGeomFactory().newPoint(x, y));
 		}
 	}
@@ -632,11 +630,11 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
 			assert this.coords != null && !this.coords.isEmpty();
-			final int idx = this.coords.size() - 1;
+			final var idx = this.coords.size() - 1;
 			this.coords.set(idx, getGeomFactory().convertToPoint(position));
 		} else {
 			innerTypesProperty().add(PathElementType.MOVE_TO);
-			final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+			final var coords = innerPointsProperty();
 			coords.add(getGeomFactory().convertToPoint(position));
 		}
 	}
@@ -651,7 +649,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public void lineTo(int x, int y) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
-		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		final var coords = innerPointsProperty();
 		coords.add(getGeomFactory().newPoint(x, y));
 	}
 
@@ -660,7 +658,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		assert to != null : AssertMessages.notNullParameter();
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
-		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		final var coords = innerPointsProperty();
 		coords.add(getGeomFactory().convertToPoint(to));
 	}
 
@@ -668,7 +666,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public void quadTo(int x1, int y1, int x2, int y2) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.QUAD_TO);
-		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		final var coords = innerPointsProperty();
 		coords.add(getGeomFactory().newPoint(x1, y1));
 		coords.add(getGeomFactory().newPoint(x2, y2));
 	}
@@ -679,7 +677,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		assert to != null : AssertMessages.notNullParameter(2);
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.QUAD_TO);
-		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		final var coords = innerPointsProperty();
 		coords.add(getGeomFactory().convertToPoint(ctrl));
 		coords.add(getGeomFactory().convertToPoint(to));
 	}
@@ -688,7 +686,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public void curveTo(int x1, int y1, int x2, int y2, int x3, int y3) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.CURVE_TO);
-		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		final var coords = innerPointsProperty();
 		coords.add(getGeomFactory().newPoint(x1, y1));
 		coords.add(getGeomFactory().newPoint(x2, y2));
 		coords.add(getGeomFactory().newPoint(x3, y3));
@@ -701,7 +699,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		assert to != null : AssertMessages.notNullParameter(2);
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.CURVE_TO);
-		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		final var coords = innerPointsProperty();
 		coords.add(getGeomFactory().convertToPoint(ctrl1));
 		coords.add(getGeomFactory().convertToPoint(ctrl2));
 		coords.add(getGeomFactory().convertToPoint(to));
@@ -732,15 +730,15 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final Point2ifx point = this.coords.get(index / 2);
+		final var point = this.coords.get(index / 2);
 		return index % 2 == 0 ? point.ix() : point.iy();
 	}
 
 	@Override
 	public void setLastPoint(int x, int y) {
 		if (this.coords != null && !this.coords.isEmpty()) {
-			final int idx = this.coords.size() - 1;
-			final Point2ifx point = this.coords.get(idx);
+			final var idx = this.coords.size() - 1;
+			final var point = this.coords.get(idx);
 			point.setX(x);
 			point.setY(y);
 		} else {
@@ -751,7 +749,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	@Override
 	public void setLastPoint(Point2D<?, ?> point) {
 		if (this.coords != null && !this.coords.isEmpty()) {
-			final int idx = this.coords.size() - 1;
+			final var idx = this.coords.size() - 1;
 			this.coords.get(idx).set(point.ix(), point.iy());
 		} else {
 			throw new IllegalStateException();
@@ -763,7 +761,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public boolean remove(int x, int y) {
 		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
 			for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); j++) {
-				final Point2ifx point = this.coords.get(i);
+				final var point = this.coords.get(i);
 				switch (this.types.get(j)) {
 				case MOVE_TO:
 					//$FALL-THROUGH$
@@ -776,11 +774,11 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 					i++;
 					break;
 				case CURVE_TO:
-					final Point2ifx p2 = this.coords.get(i + 1);
-					final Point2ifx p3 = this.coords.get(i + 2);
-					if ((x == point.ix() && y == point.iy())
-							|| (x == p2.ix() && y == p2.iy())
-							|| (x == p3.ix() && y == p3.iy())) {
+					final var p2 = this.coords.get(i + 1);
+					final var p3 = this.coords.get(i + 2);
+					if (x == point.ix() && y == point.iy()
+							|| x == p2.ix() && y == p2.iy()
+							|| x == p3.ix() && y == p3.iy()) {
 						this.coords.remove(i, i + 3);
 						this.types.remove(j);
 						return true;
@@ -788,9 +786,9 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 					i += 3;
 					break;
 				case QUAD_TO:
-					final Point2ifx pt = this.coords.get(i + 1);
-					if ((x == point.ix() && y == point.iy())
-							|| (x == pt.ix() && y == pt.iy())) {
+					final var pt = this.coords.get(i + 1);
+					if (x == point.ix() && y == point.iy()
+							|| x == pt.ix() && y == pt.iy()) {
 						this.coords.remove(i, i + 2);
 						this.types.remove(j);
 						return true;
@@ -820,7 +818,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public boolean remove(Point2D<?, ?> point) {
 		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
 			for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); j++) {
-				final Point2ifx currentPoint = this.coords.get(i);
+				final var currentPoint = this.coords.get(i);
 				switch (this.types.get(j)) {
 				case MOVE_TO:
 					//$FALL-THROUGH$
@@ -833,8 +831,8 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 					i++;
 					break;
 				case CURVE_TO:
-					final Point2ifx p2 = this.coords.get(i + 1);
-					final Point2ifx p3 = this.coords.get(i + 2);
+					final var p2 = this.coords.get(i + 1);
+					final var p3 = this.coords.get(i + 2);
 					if ((point.equals(currentPoint))
 							|| (point.equals(p2))
 							|| (point.equals(p3))) {
@@ -845,7 +843,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 					i = i + 3;
 					break;
 				case QUAD_TO:
-					final Point2ifx pt = this.coords.get(i + 1);
+					final var pt = this.coords.get(i + 1);
 					if ((point.equals(currentPoint))
 							|| (point.equals(pt))) {
 						this.coords.remove(i, i + 2);

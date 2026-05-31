@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,11 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.AbstractGeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
-import org.arakhne.afc.math.geometry.d3.Quaternion.QuaternionComponents;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
-/** Factory of geometrical elements.
+/** Factory of geometric elements.
  *
  * @author $Author: sgalland$
  * @author $Author: tpiotrow$
@@ -38,6 +37,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public class GeomFactory3d extends AbstractGeomFactory3D<Vector3d, Point3d, Quaternion4d>
 		implements GeomFactory3afp<PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
@@ -146,6 +146,7 @@ public class GeomFactory3d extends AbstractGeomFactory3D<Vector3d, Point3d, Quat
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:parameternumber")
     public PathElement3d newCurvePathElement(double startX, double startY, double startZ, double controlX, double controlY,
             double controlZ, double targetX, double targetY, double targetZ) {
         return new PathElement3d.QuadPathElement3d(startX, startY, startZ, controlX, controlY, controlZ, targetX, targetY,
@@ -153,6 +154,7 @@ public class GeomFactory3d extends AbstractGeomFactory3D<Vector3d, Point3d, Quat
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:parameternumber")
     public PathElement3d newCurvePathElement(double startX, double startY, double startZ, double controlX1, double controlY1,
             double controlZ1, double controlX2, double controlY2, double controlZ2, double targetX, double targetY,
             double targetZ) {
@@ -187,13 +189,13 @@ public class GeomFactory3d extends AbstractGeomFactory3D<Vector3d, Point3d, Quat
 
 	@Override
 	public Quaternion4d newQuaternionFromAxisAngle(double x, double y, double z, double angle) {
-		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
+		final var comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
 		return new Quaternion4d(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
 	@Override
 	public Quaternion4d newQuaternionFromAxisAngle(int x, int y, int z, int angle) {
-		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
+		final var comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
 		return new Quaternion4d(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 

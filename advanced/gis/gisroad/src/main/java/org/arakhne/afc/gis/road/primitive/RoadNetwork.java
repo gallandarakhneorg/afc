@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,6 @@ package org.arakhne.afc.gis.road.primitive;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.primitive.BoundedGISElement;
@@ -33,6 +30,8 @@ import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This interface describes a road network.
@@ -164,8 +163,8 @@ public interface RoadNetwork extends BoundedGISElement, RoadSegmentContainer {
 	/** Remove a segment from this network.
 	 *
 	 * @param segment is the segment to remove
-	 * @return {@code true} if the segment was successfully removed, otherwhise
-	 * {@code false}
+	 * @return {@code true} if the segment was successfully removed, otherwise
+	 *     {@code false}
 	 */
 	boolean removeRoadSegment(RoadSegment segment);
 
@@ -200,7 +199,7 @@ public interface RoadNetwork extends BoundedGISElement, RoadSegmentContainer {
 	 * to the given road connection or to a new connection.
 	 *
 	 * @param connection is the connection to connect to, or
-	 * {@code null} if a new connection should be created.
+	 *     {@code null} if a new connection should be created.
 	 * @param segment is the road to connected to.
 	 * @param position is the position where the first point of the
 	 *     segment should be located, or {@code null} if this position
@@ -215,7 +214,7 @@ public interface RoadNetwork extends BoundedGISElement, RoadSegmentContainer {
 	 * to the given road connection or to a new connection.
 	 *
 	 * @param connection is the connection to connect to, or
-	 * {@code null} if a new connection should be created.
+	 *     {@code null} if a new connection should be created.
 	 * @param segment is the road to connected to.
 	 * @param position is the position where the end point of the
 	 *     segment should be located, or {@code null} if this position

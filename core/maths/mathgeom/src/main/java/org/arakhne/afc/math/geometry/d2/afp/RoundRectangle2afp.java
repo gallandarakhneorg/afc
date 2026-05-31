@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,14 @@ import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D round rectangle on a plane.
+/** Functional interface that represented a 2D round rectangle on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -50,6 +51,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 public interface RoundRectangle2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends RoundRectangle2afp<?, ?, IE, P, V, B>,
@@ -58,6 +60,11 @@ public interface RoundRectangle2afp<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends RectangularShape2afp<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.ROUND_RECTANGLE;
+	}
 
     /** Replies if a rectangle is inside in the round rectangle.
      *
@@ -83,10 +90,10 @@ public interface RoundRectangle2afp<
         assert aheight >= 0. : AssertMessages.positiveOrZeroParameter(5);
         assert rwidth2 >= 0. : AssertMessages.positiveOrZeroParameter(8);
         assert rheight2 >= 0. : AssertMessages.positiveOrZeroParameter(9);
-        final double rcx1 = rx1 + rwidth1 / 2;
-        final double rcy1 = ry1 + rheight1 / 2;
-        final double rcx2 = rx2 + rwidth2 / 2;
-        final double rcy2 = ry2 + rheight2 / 2;
+        final var rcx1 = rx1 + rwidth1 / 2;
+        final var rcy1 = ry1 + rheight1 / 2;
+        final var rcx2 = rx2 + rwidth2 / 2;
+        final var rcy2 = ry2 + rheight2 / 2;
         final double farX;
         if (rcx1 <= rcx2) {
             farX = rx2 + rwidth2;
@@ -125,42 +132,42 @@ public interface RoundRectangle2afp<
         if (rwidth <= 0 && rheight <= 0) {
             return rx == px && ry == py;
         }
-        final double rrx = rx + rwidth;
-        final double rry = ry + rheight;
+        final var rrx = rx + rwidth;
+        final var rry = ry + rheight;
         // Check for trivial rejection - point is outside bounding rectangle
         if (px < rx || py < ry || px > rrx || py > rry) {
             return false;
         }
-        final double aw = Math.min(rwidth, Math.abs(awidth)) / 2.;
-        final double ah = Math.min(rheight, Math.abs(aheight)) / 2.;
+        final var aw = Math.min(rwidth, Math.abs(awidth)) / 2.;
+        final var ah = Math.min(rheight, Math.abs(aheight)) / 2.;
         // Check which corner point is in and do circular containment
         // test - otherwise simple acceptance
-        final double irx = rx + aw;
+        final var irx = rx + aw;
         final double bx;
         if (px < irx) {
             bx = irx;
         } else {
-            final double irrx = rrx - aw;
+            final var irrx = rrx - aw;
             if (px > irrx) {
                 bx = irrx;
             } else {
                 return true;
             }
         }
-        final double iry = ry + ah;
+        final var iry = ry + ah;
         final double by;
         if (py < iry) {
             by = iry;
         } else {
-            final double irry = rry - ah;
+            final var irry = rry - ah;
             if (py > irry) {
                 by = irry;
             } else {
                 return true;
             }
         }
-        final double xx = (px - bx) / aw;
-        final double yy = (py - by) / ah;
+        final var xx = (px - bx) / aw;
+        final var yy = (py - by) / ah;
         return xx * xx + yy * yy <= 1.;
     }
 
@@ -177,22 +184,23 @@ public interface RoundRectangle2afp<
      * @param sx2 is the second point of the segment.
      * @param sy2 is the second point of the segment.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
     static boolean intersectsRoundRectangleSegment(double rx1, double ry1, double rx2, double ry2,
             double aw, double ah, double sx1, double sy1, double sx2, double sy2) {
-        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
-        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rx2));
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(ry2));
         assert aw >= 0. : AssertMessages.positiveOrZeroParameter(4);
         assert ah >= 0. : AssertMessages.positiveOrZeroParameter(5);
-        double segmentX1 = sx1;
-        double segmentY1 = sy1;
-        double segmentX2 = sx2;
-        double segmentY2 = sy2;
+        var segmentX1 = sx1;
+        var segmentY1 = sy1;
+        var segmentX2 = sx2;
+        var segmentY2 = sy2;
 
-        int code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
-        int code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
+        var code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
+        var code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
 
         while (true) {
             if ((code1 | code2) == 0) {
@@ -200,34 +208,34 @@ public interface RoundRectangle2afp<
                 // Special case: if the segment is empty, it is on the border => no intersection.
                 if (segmentX1 != segmentX2 || segmentY1 != segmentY2) {
                     // Special case: intersecting outside the corner's ellipse.
-                    final double ellipseMinX = rx1 + aw;
+                    final var ellipseMinX = rx1 + aw;
                     if (segmentX1 <= ellipseMinX && segmentX2 <= ellipseMinX) {
-                        final double ellipseMinY = ry1 + ah;
+                        final var ellipseMinY = ry1 + ah;
                         if (segmentY1 <= ellipseMinY && segmentY2 <= ellipseMinY) {
                             return Ellipse2afp.intersectsEllipseSegment(
                                     rx1, ry1, aw * 2, ah * 2,
                                     sx1, sy1, sx2, sy2, false);
                         }
-                        final double ellipseMaxY = ry2 - ah;
+                        final var ellipseMaxY = ry2 - ah;
                         if (segmentY1 >= ellipseMaxY && segmentY2 >= ellipseMaxY) {
-                            final double ellipseHeight = ah * 2;
+                            final var ellipseHeight = ah * 2;
                             return Ellipse2afp.intersectsEllipseSegment(
                                     rx1, ry1 - ellipseHeight, aw * 2, ellipseHeight,
                                     sx1, sy1, sx2, sy2, false);
                         }
                     } else {
-                        final double ellipseMaxX = rx2 - aw;
+                        final var ellipseMaxX = rx2 - aw;
                         if (segmentX1 >= ellipseMaxX && segmentX2 >= ellipseMaxX) {
-                            final double ellipseMinY = ry1 + ah;
-                            final double ellipseWidth = aw * 2;
+                            final var ellipseMinY = ry1 + ah;
+                            final var ellipseWidth = aw * 2;
                             if (segmentY1 <= ellipseMinY && segmentY2 <= ellipseMinY) {
                                 return Ellipse2afp.intersectsEllipseSegment(
                                         rx2 - ellipseWidth, ry1, ellipseWidth, ah * 2,
                                         sx1, sy1, sx2, sy2, false);
                             }
-                            final double ellipseMaxY = ry2 - ah;
+                            final var ellipseMaxY = ry2 - ah;
                             if (segmentY1 >= ellipseMaxY && segmentY2 >= ellipseMaxY) {
-                                final double ellipseHeight = ah * 2;
+                                final var ellipseHeight = ah * 2;
                                 return Ellipse2afp.intersectsEllipseSegment(
                                         rx2 - ellipseWidth, ry2 - ellipseHeight, ellipseWidth, ellipseHeight,
                                         sx1, sy1, sx2, sy2, false);
@@ -246,10 +254,10 @@ public interface RoundRectangle2afp<
             // failed both tests, so calculate the line segment intersection
 
             // At least one endpoint is outside the clip rectangle; pick it.
-            int code3 = (code1 != 0) ? code1 : code2;
+            var code3 = (code1 != 0) ? code1 : code2;
 
-            double x = 0;
-            double y = 0;
+            var x = 0.;
+            var y = 0.;
 
             // Now find the intersection point;
             // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
@@ -304,33 +312,33 @@ public interface RoundRectangle2afp<
      * @param r2aw is the width of the arcs of the second rectangle.
      * @param r2ah is the height of the arcs of the second rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     @Unefficient
     static boolean intersectsRoundRectangleRoundRectangle(double r1x1, double r1y1, double r1x2,
             double r1y2, double r1aw, double r1ah,
             double r2x1, double r2y1, double r2x2, double r2y2, double r2aw, double r2ah) {
-        assert r1x1 <= r1x2 : AssertMessages.lowerEqualParameters(0, r1x1, 2, r1x2);
-        assert r1y1 <= r1y2 : AssertMessages.lowerEqualParameters(1, r1y1, 3, r1y2);
+        assert r1x1 <= r1x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(r1x1), 2, Double.valueOf(r1x2));
+        assert r1y1 <= r1y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(r1y1), 3, Double.valueOf(r1y2));
         assert r1aw >= 0. : AssertMessages.positiveOrZeroParameter(4);
         assert r1ah >= 0. : AssertMessages.positiveOrZeroParameter(5);
-        assert r2x1 <= r2x2 : AssertMessages.lowerEqualParameters(6, r2x1, 8, r2x2);
-        assert r2y1 <= r2y2 : AssertMessages.lowerEqualParameters(7, r2y1, 9, r2y2);
+        assert r2x1 <= r2x2 : AssertMessages.lowerEqualParameters(6, Double.valueOf(r2x1), 8, Double.valueOf(r2x2));
+        assert r2y1 <= r2y2 : AssertMessages.lowerEqualParameters(7, Double.valueOf(r2y1), 9, Double.valueOf(r2y2));
         assert r2aw >= 0. : AssertMessages.positiveOrZeroParameter(10);
         assert r2ah >= 0. : AssertMessages.positiveOrZeroParameter(11);
         if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
             // Boundings rectangles are intersecting
 
             // Test internal rectangles
-            final double r1InnerMinX = r1x1 + r1aw;
-            final double r1InnerMaxX = r1x2 - r1aw;
-            final double r1InnerMinY = r1y1 + r1ah;
-            final double r1InnerMaxY = r1y2 - r1ah;
-            final double r2InnerMinX = r2x1 + r2aw;
-            final double r2InnerMaxX = r2x2 - r2aw;
-            final double r2InnerMinY = r2y1 + r2ah;
-            final double r2InnerMaxY = r2y2 - r2ah;
+            final var r1InnerMinX = r1x1 + r1aw;
+            final var r1InnerMaxX = r1x2 - r1aw;
+            final var r1InnerMinY = r1y1 + r1ah;
+            final var r1InnerMaxY = r1y2 - r1ah;
+            final var r2InnerMinX = r2x1 + r2aw;
+            final var r2InnerMaxX = r2x2 - r2aw;
+            final var r2InnerMinY = r2y1 + r2ah;
+            final var r2InnerMaxY = r2y2 - r2ah;
             if (Rectangle2afp.intersectsRectangleRectangle(
                     r1InnerMinX, r1y1, r1InnerMaxX, r1y2,
                     r2InnerMinX, r2y1, r2InnerMaxX, r2y2)
@@ -387,23 +395,23 @@ public interface RoundRectangle2afp<
      * @param cy is the center of the circle.
      * @param radius is the radius of the circle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     @Unefficient
     static boolean intersectsRoundRectangleCircle(double rx1, double ry1, double rx2,
             double ry2, double aw, double ah,
             double cx, double cy, double radius) {
-        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
-        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rx2));
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(ry2));
         assert aw >= 0. : AssertMessages.positiveOrZeroParameter(4);
         assert ah >= 0. : AssertMessages.positiveOrZeroParameter(5);
         assert radius >= 0. : AssertMessages.positiveOrZeroParameter(8);
 
-        final double rInnerMinX = rx1 + aw;
-        final double rInnerMaxX = rx2 - aw;
-        final double rInnerMinY = ry1 + ah;
-        final double rInnerMaxY = ry2 - ah;
+        final var rInnerMinX = rx1 + aw;
+        final var rInnerMaxX = rx2 - aw;
+        final var rInnerMinY = ry1 + ah;
+        final var rInnerMaxY = ry2 - ah;
 
         if (cx < rInnerMinX) {
             if (cy < rInnerMinY) {
@@ -439,27 +447,27 @@ public interface RoundRectangle2afp<
      * @param r2x2 is the second corner of the second rectangle.
      * @param r2y2 is the second corner of the second rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     @Unefficient
     static boolean intersectsRoundRectangleRectangle(double r1x1, double r1y1, double r1x2,
             double r1y2, double r1aw, double r1ah,
             double r2x1, double r2y1, double r2x2, double r2y2) {
-        assert r1x1 <= r1x2 : AssertMessages.lowerEqualParameters(0, r1x1, 2, r1x2);
-        assert r1y1 <= r1y2 : AssertMessages.lowerEqualParameters(1, r1y1, 3, r1y2);
+        assert r1x1 <= r1x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(r1x1), 2, Double.valueOf(r1x2));
+        assert r1y1 <= r1y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(r1y1), 3, Double.valueOf(r1y2));
         assert r1aw >= 0. : AssertMessages.positiveOrZeroParameter(4);
         assert r1ah >= 0. : AssertMessages.positiveOrZeroParameter(5);
-        assert r2x1 <= r2x2 : AssertMessages.lowerEqualParameters(6, r2x1, 8, r2x2);
-        assert r2y1 <= r2y2 : AssertMessages.lowerEqualParameters(7, r2y1, 9, r2y2);
+        assert r2x1 <= r2x2 : AssertMessages.lowerEqualParameters(6, Double.valueOf(r2x1), 8, Double.valueOf(r2x2));
+        assert r2y1 <= r2y2 : AssertMessages.lowerEqualParameters(7, Double.valueOf(r2y1), 9, Double.valueOf(r2y2));
         if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
             // Boundings rectangles are intersecting
 
             // Test internal rectangles
-            final double r1InnerMinX = r1x1 + r1aw;
-            final double r1InnerMaxX = r1x2 - r1aw;
-            final double r1InnerMinY = r1y1 + r1ah;
-            final double r1InnerMaxY = r1y2 - r1ah;
+            final var r1InnerMinX = r1x1 + r1aw;
+            final var r1InnerMaxX = r1x2 - r1aw;
+            final var r1InnerMinY = r1y1 + r1ah;
+            final var r1InnerMaxY = r1y2 - r1ah;
             if (Rectangle2afp.intersectsRectangleRectangle(
                     r1InnerMinX, r1y1, r1InnerMaxX, r1y2,
                     r2x1, r2y1, r2x2, r2y2)
@@ -505,29 +513,29 @@ public interface RoundRectangle2afp<
      * @param ew is the width of the ellipse.
      * @param eh is the height of the ellipse.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     @Unefficient
     static boolean intersectsRoundRectangleEllipse(double rx1, double ry1, double rx2,
             double ry2, double aw, double ah,
             double ex, double ey, double ew, double eh) {
-        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
-        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rx2));
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(ry2));
         assert aw >= 0. : AssertMessages.positiveOrZeroParameter(2);
         assert ah >= 0. : AssertMessages.positiveOrZeroParameter(5);
         assert ew >= 0. : AssertMessages.positiveOrZeroParameter(8);
         assert eh >= 0. : AssertMessages.positiveOrZeroParameter(9);
 
-        final double rInnerMinX = rx1 + aw;
-        final double rInnerMaxX = rx2 - aw;
-        final double rInnerMinY = ry1 + ah;
-        final double rInnerMaxY = ry2 - ah;
+        final var rInnerMinX = rx1 + aw;
+        final var rInnerMaxX = rx2 - aw;
+        final var rInnerMinY = ry1 + ah;
+        final var rInnerMaxY = ry2 - ah;
 
-        final double radius1 = ew / 2;
-        final double radius2 = eh / 2;
-        final double centerX = ex + radius1;
-        final double centerY = ey + radius2;
+        final var radius1 = ew / 2;
+        final var radius2 = eh / 2;
+        final var centerX = ex + radius1;
+        final var centerY = ey + radius2;
 
         if (centerX < rInnerMinX) {
             if (centerY < rInnerMinY) {
@@ -663,7 +671,7 @@ public interface RoundRectangle2afp<
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> n = getClosestPointTo(pt);
+        final var n = getClosestPointTo(pt);
         return n.getDistanceL1(pt);
     }
 
@@ -671,7 +679,7 @@ public interface RoundRectangle2afp<
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> n = getClosestPointTo(pt);
+        final var n = getClosestPointTo(pt);
         return n.getDistanceLinf(pt);
     }
 
@@ -760,8 +768,8 @@ public interface RoundRectangle2afp<
     @Override
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.calculatesCrossingsPathIteratorRoundRectangleShadow(
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var crossings = Path2afp.calculatesCrossingsPathIteratorRoundRectangleShadow(
                 0,
                 iterator,
                 getMinX(), getMinY(), getMaxX(), getMaxY(), getArcWidth(), getArcHeight(),
@@ -806,21 +814,21 @@ public interface RoundRectangle2afp<
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final double px = pt.getX();
-        final double py = pt.getY();
-        final double rx1 = getMinX();
-        final double ry1 = getMinY();
-        final double rx2 = getMaxX();
-        final double ry2 = getMaxY();
+        final var px = pt.getX();
+        final var py = pt.getY();
+        final var rx1 = getMinX();
+        final var ry1 = getMinY();
+        final var rx2 = getMaxX();
+        final var ry2 = getMaxY();
 
-        final double aw = getArcWidth();
-        final double ah = getArcHeight();
+        final var aw = getArcWidth();
+        final var ah = getArcHeight();
 
-        final GeomFactory2afp<?, P, V, ?> factory = getGeomFactory();
+        final var factory = getGeomFactory();
 
         if (px < rx1 + aw) {
             if (py < ry1 + ah) {
-                final P point = factory.newPoint();
+                final var point = factory.newPoint();
                 Ellipse2afp.findsClosestPointSolidEllipsePoint(
                         px, py,
                         rx1, ry1,
@@ -829,8 +837,8 @@ public interface RoundRectangle2afp<
                 return point;
             }
             if (py > ry2 - ah) {
-                final double eh = ah * 2;
-                final P point = factory.newPoint();
+                final var eh = ah * 2;
+                final var point = factory.newPoint();
                 Ellipse2afp.findsClosestPointSolidEllipsePoint(
                         px, py,
                         rx1, ry2 - eh,
@@ -840,8 +848,8 @@ public interface RoundRectangle2afp<
             }
         } else if (px > rx2 - aw) {
             if (py < ry1 + ah) {
-                final double ew = aw * 2;
-                final P point = factory.newPoint();
+                final var ew = aw * 2;
+                final var point = factory.newPoint();
                 Ellipse2afp.findsClosestPointSolidEllipsePoint(
                         px, py,
                         rx2 - ew, ry1,
@@ -850,9 +858,9 @@ public interface RoundRectangle2afp<
                 return point;
             }
             if (py > ry2 - ah) {
-                final double ew = aw * 2;
-                final double eh = ah * 2;
-                final P point = factory.newPoint();
+                final var ew = aw * 2;
+                final var eh = ah * 2;
+                final var point = factory.newPoint();
                 Ellipse2afp.findsClosestPointSolidEllipsePoint(
                         px, py,
                         rx2 - ew, ry2 - eh,
@@ -862,7 +870,7 @@ public interface RoundRectangle2afp<
             }
         }
 
-        int same = 0;
+        var same = 0;
         final double x;
         final double y;
 
@@ -900,7 +908,7 @@ public interface RoundRectangle2afp<
     @Unefficient
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), ellipse.getPathIterator(), point);
         return point;
     }
@@ -909,7 +917,7 @@ public interface RoundRectangle2afp<
     @Unefficient
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), rectangle.getPathIterator(), point);
         return point;
     }
@@ -918,7 +926,7 @@ public interface RoundRectangle2afp<
     @Unefficient
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> pointOnSegment = segment.getClosestPointTo(this);
+        final var pointOnSegment = segment.getClosestPointTo(this);
         return getClosestPointTo(pointOnSegment);
     }
 
@@ -926,7 +934,7 @@ public interface RoundRectangle2afp<
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), triangle.getPathIterator(), point);
         return point;
     }
@@ -935,7 +943,7 @@ public interface RoundRectangle2afp<
     @Unefficient
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         assert orientedRectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(),
                 orientedRectangle.getPathIterator(), point);
         return point;
@@ -945,7 +953,7 @@ public interface RoundRectangle2afp<
     @Unefficient
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         assert parallelogram != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), parallelogram.getPathIterator(), point);
         return point;
     }
@@ -954,7 +962,7 @@ public interface RoundRectangle2afp<
     @Unefficient
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         assert roundRectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
     }
@@ -972,31 +980,31 @@ public interface RoundRectangle2afp<
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final double px = pt.getX();
-        final double py = pt.getY();
-        final double rx1 = getMinX();
-        final double ry1 = getMinY();
-        final double rx2 = getMaxX();
-        final double ry2 = getMaxY();
-        final double centerX = getCenterX();
-        final double centerY = getCenterY();
+        final var px = pt.getX();
+        final var py = pt.getY();
+        final var rx1 = getMinX();
+        final var ry1 = getMinY();
+        final var rx2 = getMaxX();
+        final var ry2 = getMaxY();
+        final var centerX = getCenterX();
+        final var centerY = getCenterY();
 
-        final double aw = getArcWidth();
-        final double ah = getArcHeight();
+        final var aw = getArcWidth();
+        final var ah = getArcHeight();
 
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
 
         if (px <= centerX) {
             if (py <= centerY) {
-                final double ew = aw * 2;
-                final double eh = ah * 2;
+                final var ew = aw * 2;
+                final var eh = ah * 2;
                 Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                         px, py,
                         rx2 - ew, ry2 - eh,
                         ew, eh,
                         point);
             } else {
-                final double ew = aw * 2;
+                final var ew = aw * 2;
                 Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                         px, py,
                         rx2 - ew, ry1,
@@ -1004,7 +1012,7 @@ public interface RoundRectangle2afp<
                         point);
             }
         } else if (px <= centerY) {
-            final double eh = ah * 2;
+            final var eh = ah * 2;
             Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                     px, py,
                     rx1, ry2 - eh,
@@ -1026,6 +1034,7 @@ public interface RoundRectangle2afp<
 	 * @return the Geogebra representation of the round rectangle.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toPolygonDefinition(2,
 				getMinX(), getMinY(), getMaxX(), getMinY(),
@@ -1033,14 +1042,14 @@ public interface RoundRectangle2afp<
 	}
 
 	/** Abstract iterator on the path elements of the round rectangle.
-     *
-     * @param <T> the type of the path elements.
-     * @author $Author: sgalland$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
-     */
-    abstract class AbstractRoundRectanglePathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
+	 *
+	 * @param <T> the type of the path elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	abstract class AbstractRoundRectanglePathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
         /** Number of elements in the path (except move).
          */
@@ -1167,7 +1176,7 @@ public interface RoundRectangle2afp<
             if (this.index >= ELEMENT_COUNT) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
 
             if (idx < 0) {
@@ -1179,8 +1188,8 @@ public interface RoundRectangle2afp<
                         this.lastX, this.lastY);
             }
 
-            final double x = this.lastX;
-            final double y = this.lastY;
+            final var x = this.lastX;
+            final var y = this.lastY;
 
             final double curveX;
             final double curveY;
@@ -1330,7 +1339,7 @@ public interface RoundRectangle2afp<
             if (this.index >= ELEMENT_COUNT) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
 
             if (idx < 0) {
@@ -1341,8 +1350,8 @@ public interface RoundRectangle2afp<
                         this.last.getX(), this.last.getY());
             }
 
-            final double x = this.last.getX();
-            final double y = this.last.getY();
+            final var x = this.last.getX();
+            final var y = this.last.getY();
 
             switch (idx) {
             case 0:

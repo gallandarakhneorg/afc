@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.math.graph;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -60,14 +59,14 @@ public class ShortestSegmentFirstGraphCourseModel<ST extends GraphSegment<ST, PT
 	@Override
 	public void addIterationElement(GraphIterationElement<ST, PT> element) {
 		// Search for the insertion index
-		final Iterator<GraphIterationElement<ST, PT>> iterator = this.list.iterator();
-		final double d1 = element.getDistanceToReachSegment() + element.getSegment().getLength();
-		int index = 0;
+		final var iterator = this.list.iterator();
+		final var d1 = element.getDistanceToReachSegment() + element.getSegment().getLength();
+		var index = 0;
 
 		while (iterator.hasNext()) {
-			final GraphIterationElement<ST, PT> e = iterator.next();
+			final var e = iterator.next();
 			if (e != null) {
-				final double d2 = e.getDistanceToReachSegment() + e.getSegment().getLength();
+				final var d2 = e.getDistanceToReachSegment() + e.getSegment().getLength();
 				if (d1 <= d2) {
 					// Stop looping
 					break;
@@ -112,7 +111,7 @@ public class ShortestSegmentFirstGraphCourseModel<ST extends GraphSegment<ST, PT
 
 	@Override
 	public void removeIterationElements(Iterable<GraphIterationElement<ST, PT>> elements) {
-		for (final GraphIterationElement<ST, PT> element : elements) {
+		for (final var element : elements) {
 			this.list.remove(element);
 		}
 	}

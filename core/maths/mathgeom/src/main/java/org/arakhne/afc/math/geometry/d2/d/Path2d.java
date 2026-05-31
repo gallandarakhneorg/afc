@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,6 @@ import java.lang.ref.SoftReference;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -35,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Path with 2 double precision floating-point numbers.
  *
@@ -46,6 +45,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public class Path2d
 		extends AbstractShape2d<Path2d>
 		implements Path2afp<Shape2d<?>, Path2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
@@ -171,9 +171,9 @@ public class Path2d
 	@Override
 	public boolean containsControlPoint(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		for (int i = 0; i < this.numCoords; i += 2) {
-			final double x = this.coords[i];
-			final double y = this.coords[i + 1];
+		for (var i = 0; i < this.numCoords; i += 2) {
+			final var x = this.coords[i];
+			final var y = this.coords[i + 1];
 			if (x == pt.getX() && y == pt.getY()) {
 				return true;
 			}
@@ -210,24 +210,24 @@ public class Path2d
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Integer.hashCode(this.numCoords);
 		bits = 31 * bits + Integer.hashCode(this.numTypes);
 		bits = 31 * bits + Arrays.hashCode(this.coords);
 		bits = 31 * bits + Arrays.hashCode(this.types);
 		bits = 31 * bits + this.windingRule.hashCode();
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Override
 	public void translate(double dx, double dy) {
-		for (int i = 0; i < this.numCoords; i += 2) {
+		for (var i = 0; i < this.numCoords; i += 2) {
 			this.coords[i] += dx;
 			this.coords[i + 1] += dy;
 		}
-		Rectangle2d bb;
-		bb = this.logicalBounds == null ? null : this.logicalBounds.get();
+		var bb = this.logicalBounds == null ? null : this.logicalBounds.get();
 		if (bb != null) {
 			bb.translate(dx, dy);
 		}
@@ -241,8 +241,8 @@ public class Path2d
 	@Override
 	public void transform(Transform2D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
-		final Point2D<?, ?> p = new InnerComputationPoint2afp();
-		for (int i = 0; i < this.numCoords; i += 2) {
+		final var p = new InnerComputationPoint2afp();
+		for (var i = 0; i < this.numCoords; i += 2) {
 			p.set(this.coords[i], this.coords[i + 1]);
 			transform.transform(p);
 			this.coords[i] = p.getX();
@@ -258,9 +258,9 @@ public class Path2d
 	public boolean isEmpty() {
 		if (this.isEmpty == null) {
 			this.isEmpty = Boolean.TRUE;
-			final PathIterator2afp<PathElement2d> pi = getPathIterator();
+			final var pi = getPathIterator();
 			while (this.isEmpty == Boolean.TRUE && pi.hasNext()) {
-				final PathElement2d pe = pi.next();
+				final var pe = pi.next();
 				if (pe.isDrawable()) {
 					this.isEmpty = Boolean.FALSE;
 				}
@@ -271,7 +271,7 @@ public class Path2d
 
 	@Override
 	public Rectangle2d toBoundingBox() {
-		Rectangle2d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
+		var bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path2afp.calculatesDrawableElementBoundingBox(
@@ -286,7 +286,7 @@ public class Path2d
 	@Override
 	public void toBoundingBox(Rectangle2d box) {
 		assert box != null : AssertMessages.notNullParameter();
-		Rectangle2d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
+		var bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path2afp.calculatesDrawableElementBoundingBox(
@@ -306,11 +306,11 @@ public class Path2d
 	public boolean isPolyline() {
 		if (this.isPolyline == null) {
 			final PathIterator2afp<PathElement2d> pi = getPathIterator();
-			boolean first = true;
-			boolean hasOneLine = false;
+			var first = true;
+			var hasOneLine = false;
 			while (this.isPolyline == null && pi.hasNext()) {
-				final PathElement2d pe = pi.next();
-				final PathElementType t = pe.getType();
+				final var pe = pi.next();
+				final var t = pe.getType();
 				if (first) {
 					if (t != PathElementType.MOVE_TO) {
 						this.isPolyline = Boolean.FALSE;
@@ -324,7 +324,7 @@ public class Path2d
 				}
 			}
 			if (this.isPolyline == null) {
-				this.isPolyline = hasOneLine;
+				this.isPolyline = Boolean.valueOf(hasOneLine);
 			}
 		}
 		return this.isPolyline.booleanValue();
@@ -334,10 +334,10 @@ public class Path2d
 	public boolean isCurved() {
 		if (this.isCurved == null) {
 			this.isCurved = Boolean.FALSE;
-			final PathIterator2afp<PathElement2d> pi = getPathIterator();
+			final var pi = getPathIterator();
 			while (this.isCurved == Boolean.FALSE && pi.hasNext()) {
-				final PathElement2d pe = pi.next();
-				final PathElementType t = pe.getType();
+				final var pe = pi.next();
+				final var t = pe.getType();
 				if (t == PathElementType.CURVE_TO || t == PathElementType.QUAD_TO) {
 					this.isCurved = Boolean.TRUE;
 				}
@@ -350,11 +350,11 @@ public class Path2d
 	public boolean isMultiParts() {
 		if (this.isMultipart == null) {
 			this.isMultipart = Boolean.FALSE;
-			final PathIterator2afp<PathElement2d> pi = getPathIterator();
-			boolean foundOne = false;
+			final var pi = getPathIterator();
+			var foundOne = false;
 			while (this.isMultipart == Boolean.FALSE && pi.hasNext()) {
-				final PathElement2d pe = pi.next();
-				final PathElementType t = pe.getType();
+				final var pe = pi.next();
+				final var t = pe.getType();
 				if (t == PathElementType.MOVE_TO) {
 					if (foundOne) {
 						this.isMultipart = Boolean.TRUE;
@@ -370,12 +370,12 @@ public class Path2d
 	@Override
 	public boolean isPolygon() {
 		if (this.isPolygon == null) {
-			final PathIterator2afp<PathElement2d> pi = getPathIterator();
-			boolean first = true;
-			boolean lastIsClose = false;
+			final var pi = getPathIterator();
+			var first = true;
+			var lastIsClose = false;
 			while (this.isPolygon == null && pi.hasNext()) {
-				final PathElement2d pe = pi.next();
-				final PathElementType t = pe.getType();
+				final var pe = pi.next();
+				final var t = pe.getType();
 				lastIsClose = false;
 				if (first) {
 					if (t != PathElementType.MOVE_TO) {
@@ -399,11 +399,11 @@ public class Path2d
 	@Override
 	public void closePath() {
 		if (this.numTypes <= 0
-				|| (this.types[this.numTypes - 1] != PathElementType.CLOSE
-				&& this.types[this.numTypes - 1] != PathElementType.MOVE_TO)) {
+				|| this.types[this.numTypes - 1] != PathElementType.CLOSE
+				&& this.types[this.numTypes - 1] != PathElementType.MOVE_TO) {
 			ensureSlots(true, 0);
 			this.types[this.numTypes++] = PathElementType.CLOSE;
-			this.isPolyline = false;
+			this.isPolyline = Boolean.FALSE;
 			this.isPolygon = null;
 			fireGeometryChange();
 		}
@@ -412,7 +412,7 @@ public class Path2d
 	@Override
 	@Pure
 	public Rectangle2d toBoundingBoxWithCtrlPoints() {
-		Rectangle2d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
+		var bb = this.logicalBounds == null ? null : this.logicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path2afp.calculatesControlPointBoundingBox(
@@ -427,7 +427,7 @@ public class Path2d
 	@Pure
 	public void toBoundingBoxWithCtrlPoints(Rectangle2d box) {
 		assert box != null : AssertMessages.notNullParameter();
-		Rectangle2d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
+		var bb = this.logicalBounds == null ? null : this.logicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path2afp.calculatesControlPointBoundingBox(
@@ -441,14 +441,14 @@ public class Path2d
 	@Override
 	@Pure
 	public int[] toIntArray(Transform2D transform) {
-		final int[] clone = new int[this.numCoords];
+		final var clone = new int[this.numCoords];
 		if (transform == null || transform.isIdentity()) {
-			for (int i = 0; i < this.numCoords; ++i) {
+			for (var i = 0; i < this.numCoords; ++i) {
 				clone[i] = (int) this.coords[i];
 			}
 		} else {
-			final Point2D<?, ?> p = new InnerComputationPoint2afp();
-			for (int i = 0; i < clone.length; i += 2) {
+			final var p = new InnerComputationPoint2afp();
+			for (var i = 0; i < clone.length; i += 2) {
 				p.set(this.coords[i], this.coords[i + 1]);
 				transform.transform(p);
 				clone[i] = p.ix();
@@ -461,14 +461,14 @@ public class Path2d
 	@Override
 	@Pure
 	public float[] toFloatArray(Transform2D transform) {
-		final float[] clone = new float[this.numCoords];
+		final var clone = new float[this.numCoords];
 		if (transform == null || transform.isIdentity()) {
-			for (int i = 0; i < this.numCoords; ++i) {
+			for (var i = 0; i < this.numCoords; ++i) {
 				clone[i] = (float) this.coords[i];
 			}
 		} else {
-			final Point2D<?, ?> p = new InnerComputationPoint2afp();
-			for (int i = 0; i < clone.length; i += 2) {
+			final var p = new InnerComputationPoint2afp();
+			for (var i = 0; i < clone.length; i += 2) {
 				p.set(this.coords[i], this.coords[i + 1]);
 				transform.transform(p);
 				clone[i] = (float) p.getX();
@@ -484,9 +484,9 @@ public class Path2d
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		final Point2D<?, ?> p = new InnerComputationPoint2afp();
-		final double[] clone = new double[this.numCoords];
-		for (int i = 0; i < clone.length; i += 2) {
+		final var p = new InnerComputationPoint2afp();
+		final var clone = new double[this.numCoords];
+		for (var i = 0; i < clone.length; i += 2) {
 			p.set(this.coords[i], this.coords[i + 1]);
 			transform.transform(p);
 			clone[i] = p.getX();
@@ -498,7 +498,7 @@ public class Path2d
 	@Override
 	@Pure
 	public Point2d[] toPointArray(Transform2D transform) {
-		final Point2d[] clone = new Point2d[this.numCoords / 2];
+		final var clone = new Point2d[this.numCoords / 2];
 		if (transform == null || transform.isIdentity()) {
 			for (int i = 0, j = 0; j < this.numCoords; ++i, j += 2) {
 				clone[i] = getGeomFactory().newPoint(
@@ -519,7 +519,7 @@ public class Path2d
 	@Override
 	@Pure
 	public Point2d getPointAt(int index) {
-		final int didx = index * 2;
+		final var didx = index * 2;
 		return getGeomFactory().newPoint(
 				this.coords[didx],
 				this.coords[didx + 1]);
@@ -689,6 +689,7 @@ public class Path2d
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:fallthrough")
 	public boolean remove(double x, double y) {
 		for (int i = 0, j = 0; i < this.numCoords && j < this.numTypes;) {
 			switch (this.types[j]) {
@@ -712,9 +713,9 @@ public class Path2d
 				++j;
 				break;
 			case CURVE_TO:
-				if ((x == this.coords[i] && y == this.coords[i + 1])
-						|| (x == this.coords[i + 2] && y == this.coords[i + 3])
-						|| (x == this.coords[i + 4] && y == this.coords[i + 5])) {
+				if (x == this.coords[i] && y == this.coords[i + 1]
+						|| x == this.coords[i + 2] && y == this.coords[i + 3]
+						|| x == this.coords[i + 4] && y == this.coords[i + 5]) {
 					this.numCoords -= 6;
 					--this.numTypes;
 					System.arraycopy(this.coords, i + 6, this.coords, i, this.numCoords);
@@ -731,8 +732,8 @@ public class Path2d
 				++j;
 				break;
 			case QUAD_TO:
-				if ((x == this.coords[i] && y == this.coords[i + 1])
-						|| (x == this.coords[i + 2] && y == this.coords[i + 3])) {
+				if (x == this.coords[i] && y == this.coords[i + 1]
+						|| x == this.coords[i + 2] && y == this.coords[i + 3]) {
 					this.numCoords -= 4;
 					--this.numTypes;
 					System.arraycopy(this.coords, i + 4, this.coords, i, this.numCoords);

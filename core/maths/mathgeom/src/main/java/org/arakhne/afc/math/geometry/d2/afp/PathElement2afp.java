@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.PathElement2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path.
  *
@@ -52,7 +51,7 @@ public interface PathElement2afp extends PathElement2D {
 	/** Replies the x coordinate of the first control point.
 	 *
 	 * @return the x coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
+	 *     {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
 	double getCtrlX1();
@@ -60,7 +59,7 @@ public interface PathElement2afp extends PathElement2D {
 	/** Replies the y coordinate of the first control point.
 	 *
 	 * @return the y coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
+	 *     {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
 	double getCtrlY1();
@@ -68,7 +67,7 @@ public interface PathElement2afp extends PathElement2D {
 	/** Replies the x coordinate of the second control point.
 	 *
 	 * @return the x coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
+	 *     {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
 	double getCtrlX2();
@@ -76,7 +75,7 @@ public interface PathElement2afp extends PathElement2D {
 	/** Replies the y coordinate of the second  control point.
 	 *
 	 * @return the y coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
+	 *     {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
 	double getCtrlY2();

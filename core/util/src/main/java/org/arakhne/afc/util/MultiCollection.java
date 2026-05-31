@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public class MultiCollection<E> implements Collection<E> {
 	@Override
 	@Pure
 	public boolean contains(Object obj) {
-		for (final Collection<? extends E> c : this.collections) {
+		for (final var c : this.collections) {
 			if (c.contains(obj)) {
 				return true;
 			}
@@ -106,7 +106,7 @@ public class MultiCollection<E> implements Collection<E> {
 	@Override
 	@Pure
 	public boolean containsAll(Collection<?> collection) {
-		for (final Object o : collection) {
+		for (final var o : collection) {
 			if (!contains(o)) {
 				return false;
 			}
@@ -117,7 +117,7 @@ public class MultiCollection<E> implements Collection<E> {
 	@Override
 	@Pure
 	public boolean isEmpty() {
-		for (final Collection<? extends E> c : this.collections) {
+		for (final var c : this.collections) {
 			if (!c.isEmpty()) {
 				return false;
 			}
@@ -158,8 +158,8 @@ public class MultiCollection<E> implements Collection<E> {
 	@Override
 	@Pure
 	public int size() {
-		int t = 0;
-		for (final Collection<? extends E> c : this.collections) {
+		var t = 0;
+		for (final var c : this.collections) {
 			t += c.size();
 		}
 		return t;
@@ -203,8 +203,8 @@ public class MultiCollection<E> implements Collection<E> {
 			if (this.currentIterator == null || !this.currentIterator.hasNext()) {
 				this.currentIterator = null;
 				while (this.currentIterator == null && this.iterator.hasNext()) {
-					final Collection<? extends E> iterable = this.iterator.next();
-					final Iterator<? extends E> iter = iterable.iterator();
+					final var iterable = this.iterator.next();
+					final var iter = iterable.iterator();
 					if (iter.hasNext()) {
 						this.currentIterator = iter;
 					}
@@ -222,7 +222,7 @@ public class MultiCollection<E> implements Collection<E> {
 			if (this.currentIterator == null) {
 				throw new NoSuchElementException();
 			}
-			final E n = this.currentIterator.next();
+			final var n = this.currentIterator.next();
 			searchNext();
 			return n;
 		}

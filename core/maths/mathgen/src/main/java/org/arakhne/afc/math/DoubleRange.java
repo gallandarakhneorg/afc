@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,8 @@ package org.arakhne.afc.math;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A range of double floating-point numbers.
  *
@@ -48,7 +47,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	 * @param max the max value.
 	 */
 	public DoubleRange(double min, double max) {
-		assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
 		this.min = min;
 		this.max = max;
 	}
@@ -65,8 +64,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	@Override
 	@Pure
 	public boolean equals(Object obj) {
-		if (obj instanceof DoubleRange) {
-			final DoubleRange range = (DoubleRange) obj;
+		if (obj instanceof DoubleRange range) {
 			return this.min == range.getMin() && this.max == range.getMax();
 		}
 		return false;
@@ -75,10 +73,10 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	@Override
 	@Pure
 	public int hashCode() {
-		long bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(this.min);
 		bits = 31 * bits + Double.hashCode(this.max);
-		final int b = (int) bits;
+		final var b = (int) bits;
 		return b ^ (b >> 31);
 	}
 

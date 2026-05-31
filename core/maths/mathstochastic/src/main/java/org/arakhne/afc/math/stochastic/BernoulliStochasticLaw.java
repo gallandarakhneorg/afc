@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Law that representes a Bernoulli density.
@@ -91,10 +90,10 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double f(double x)  throws MathException {
-		if ((x != 0.) && (x != 1.)) {
+		if (x != 0. && x != 1.) {
 			throw new OutsideDomainException(x);
 		}
-		return (x == 1.) ? this.p : (1. - this.p);
+		return x == 1. ? this.p : (1. - this.p);
 	}
 
 	@Pure
@@ -119,9 +118,9 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		buffer.add(NAME_NAME, getLawName());
-		buffer.add(P_NAME, this.p);
-		buffer.add(P0_NAME, 1. - this.p);
-		buffer.add(P1_NAME, this.p);
+		buffer.add(P_NAME, Double.valueOf(this.p));
+		buffer.add(P0_NAME, Double.valueOf(1. - this.p));
+		buffer.add(P1_NAME, Double.valueOf(this.p));
 	}
 
 }

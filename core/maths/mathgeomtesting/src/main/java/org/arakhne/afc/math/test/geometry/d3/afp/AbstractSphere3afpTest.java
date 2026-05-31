@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,14 +45,15 @@ import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 
 @SuppressWarnings("all")
-public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?, ?, B>,
-		B extends AlignedBox3afp<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
+public abstract class AbstractSphere3afpTest<T extends Sphere3afp<T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
 
 	@Override
 	protected final T createShape() {
 		return (T) createSphere(5, 8, 9, 5);
 	}
 
+	@DisplayName("clone")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -68,6 +69,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertEpsilonEquals(5, clone.getRadius());
 	}
 
+	@DisplayName("equals(Object)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -82,31 +84,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertTrue(this.shape.equals(createSphere(5, 8, 9, 5)));
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equals(createSphere(0, 0, 0, 5).getPathIterator()));
-		assertFalse(this.shape.equals(createSphere(5, 8, 0, 6).getPathIterator()));
-		assertFalse(this.shape.equals(createSegment(5, 8, 0, 6, 10, 0).getPathIterator()));
-		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		assertTrue(this.shape.equals(createSphere(5, 8, 9, 5).getPathIterator()));
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void equalsToPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
-		assertFalse(this.shape.equalsToPathIterator(createSphere(0, 0, 0, 5).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSphere(5, 8, 0, 6).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 0, 6, 10, 0).getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(createSphere(5, 8, 9, 5).getPathIterator()));
-	}
-
+	@DisplayName("equalsToShape(Shape3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -119,6 +97,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertTrue(this.shape.equalsToShape((T) createSphere(5, 8, 9, 5)));
 	}
 
+	@DisplayName("isEmpty")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -129,6 +108,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertTrue(this.shape.isEmpty());
 	}
 
+	@DisplayName("clear")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -141,6 +121,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertEpsilonEquals(0, this.shape.getRadius());
 	}
 
+	@DisplayName("contains(double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -405,94 +386,6 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
-	public void getPathIteratorTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		PathIterator3afp pi = this.shape.getPathIterator(null);
-		assertElement(pi, PathElementType.MOVE_TO, 10, 8, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 10, 10.76142374915397, 0, 7.761423749153966, 13, 0, 5, 13, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 2.238576250846033, 13, 0, 0, 10.76142374915397, 0, 0, 8, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 0, 5.238576250846034, 2.238576250846033, 3, 0, 5, 3, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 7.761423749153966, 3, 0, 10, 5.238576250846034, 0, 10, 8, 0);
-		assertElement(pi, PathElementType.CLOSE, 10, 8, 0);
-		assertNoElement(pi);
-
-		Transform3D tr;
-		
-		tr = new Transform3D();
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 10, 8, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 10, 10.76142374915397, 0, 7.761423749153966, 13, 0, 5, 13, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 2.238576250846033, 13, 0, 0, 10.76142374915397, 0, 0, 8, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 0, 5.238576250846034, 0, 2.238576250846033, 3, 0, 5, 3, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 7.761423749153966, 3, 0, 10, 5.238576250846034, 0, 10, 8, 0);
-		assertElement(pi, PathElementType.CLOSE, 10, 8, 0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(10, -10, 0);
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 20, -2, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 20, 0.76142374915397, 0, 17.761423749153966, 3, 0, 15, 3, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 12.238576250846033, 3, 0, 10, 0.76142374915397, 0, 10, -2, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 10, -4.761423749153966, 0, 12.238576250846033, -7, 0, 15, -7, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 17.761423749153966, -7, 0, 20, -4.761423749153966, 0, 20, -2, 0);
-		assertElement(pi, PathElementType.CLOSE, 20, -2, 0);
-		assertNoElement(pi);
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void getPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		PathIterator3afp pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 10, 8, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 10, 10.76142374915397, 0, 7.761423749153966, 13, 0, 5, 13, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 2.238576250846033, 13, 0, 0, 10.76142374915397, 0, 0, 8, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 0, 5.238576250846034, 0, 2.238576250846033, 3, 0, 5, 3, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 7.761423749153966, 3, 0, 10, 5.238576250846034, 0, 10, 8, 0);
-		assertElement(pi, PathElementType.CLOSE, 10, 8, 0);
-		assertNoElement(pi);
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void createTransformedShape(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		Shape3afp newShape;
-		
-		newShape = this.shape.createTransformedShape(null);
-		assertNotNull(newShape);
-		assertNotSame(this.shape, newShape);
-		assertEquals(this.shape, newShape);
-
-		tr = new Transform3D();
-		newShape = this.shape.createTransformedShape(tr);
-		assertNotNull(newShape);
-		assertNotSame(this.shape, newShape);
-		assertEquals(this.shape, newShape);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(10, -10, 0);
-		newShape = this.shape.createTransformedShape(tr);
-		assertNotNull(newShape);
-		assertNotSame(this.shape, newShape);
-		assertTrue(newShape instanceof Path3afp);
-		PathIterator3afp pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 20, -2, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 20, 0.76142374915397, 0, 17.761423749153966, 3, 0, 15, 3, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 12.238576250846033, 3, 0, 10, 0.76142374915397, 0, 10, -2, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 10, -4.761423749153966, 0, 12.238576250846033, -7, 0, 15, -7, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 17.761423749153966, -7, 0, 20, -4.761423749153966, 0, 20, -2, 0);
-		assertElement(pi, PathElementType.CLOSE, 20, -2, 0);
-		assertNoElement(pi);
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
 	public void containsAlignedBox3afp(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.contains(createAlignedBox(-4, -4, 9, 1, 1, 1)));
@@ -507,27 +400,33 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertTrue(this.shape.contains(createAlignedBox(2, 6, 7, 1, 1, 1)));
 	}
 
+	@DisplayName("intersects(AlignedBox3afp)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
 	public void intersectsAlignedBox3afp(CoordinateSystem3D cs) {
-//		createSphere(5, 8, 9, 5);
-//		(0, 3, 4) -> (10, 13, 14)
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-//		(-4, -4, 0) -> (-3, -4, 1)
 		assertFalse(this.shape.intersects(createAlignedBox(-4, -4, 0, 1, 1, 1)));
-//		(-5, -5, 0) -> (5, 5, 1)
-		assertTrue(this.shape.intersects(createAlignedBox(-5, -5, 0, 10, 10, 1)));
+		assertFalse(this.shape.intersects(createAlignedBox(-4, -4, 0, 1, 1, 10)));
+		assertFalse(this.shape.intersects(createAlignedBox(-5, -5, 0, 10, 10, 1)));
+		assertTrue(this.shape.intersects(createAlignedBox(-5, -5, 0, 10, 10, 10)));
 		assertFalse(this.shape.intersects(createAlignedBox(-5, -5, 0, 5.5, 5.5, 1)));
+		assertFalse(this.shape.intersects(createAlignedBox(-5, -5, 0, 5.5, 5.5, 10)));
 		assertFalse(this.shape.intersects(createAlignedBox(-5, -4, 0, 5.5, 1, 1)));
+		assertFalse(this.shape.intersects(createAlignedBox(-5, -4, 0, 5.5, 1, 10)));
 		assertFalse(this.shape.intersects(createAlignedBox(20, .5, 0, 1, 1, 1)));
+		assertFalse(this.shape.intersects(createAlignedBox(20, .5, 0, 1, 1, 10)));
 		assertFalse(this.shape.intersects(createAlignedBox(-5, -5, 0, 1, 1, 1)));
+		assertFalse(this.shape.intersects(createAlignedBox(-5, -5, 0, 1, 1, 10)));
 		assertFalse(this.shape.intersects(createAlignedBox(-1, -100, 0, 1, 200, 1)));
-		assertTrue(this.shape.intersects(createAlignedBox(-1, -100, 0, 1.0001, 200, 1)));
+		assertFalse(this.shape.intersects(createAlignedBox(-1, -100, 0, 1, 200, 10)));
+		assertFalse(this.shape.intersects(createAlignedBox(-1, -100, 0, 1.0001, 200, 1)));
+		assertTrue(this.shape.intersects(createAlignedBox(-1, -100, 0, 1.0001, 200, 10)));
 		assertFalse(this.shape.intersects(createAlignedBox(-1, 2, 0, 1.0001, 1.0001, 1)));
-
+		assertFalse(this.shape.intersects(createAlignedBox(-1, 2, 0, 1.0001, 1.0001, 10)));
 	}
 
+	@DisplayName("intersects(Sphere3afp)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -543,6 +442,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertTrue(this.shape.intersects(createSphere(12, 8, 9, 2.1)));
 	}
 
+	@DisplayName("intersects(Segment3afp)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -556,6 +456,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertFalse(this.shape.intersects(createSegment(5, 0, 9, 0, 6, 9)));
 	}
 
+	@DisplayName("intersects(Path3afp)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -672,6 +573,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertFalse(this.shape.intersects(path));
 	}
 
+	@DisplayName("intersects(PathIterator3afp)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -789,8 +691,10 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@DisplayName("containsSpherePoint(double,double,double,double,double,double,double)")
-	@Test
-	public void staticContainsSpherePoint() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void staticContainsSpherePoint(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(Sphere3afp.containsSpherePoint(0, 0, 0, 1, 0, 0, 0));
 		assertTrue(Sphere3afp.containsSpherePoint(0, 0, 0, 1, 1, 0, 0));
 		assertTrue(Sphere3afp.containsSpherePoint(0, 0, 0, 1, 0, 1, 0));
@@ -804,16 +708,20 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@DisplayName("containsSphereAlignedBox(double,double,double,double,double,double,double,double,double,double)")
-	@Test
-	public void staticContainsSphereAlignedBox() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void staticContainsSphereAlignedBox(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(Sphere3afp.containsSphereAlignedBox(0, 0, 0, 1, 0, 0, 0, .5, .5, 0));
 		assertFalse(Sphere3afp.containsSphereAlignedBox(0, 0, 0, 1, 0, 0, 0, 1, 1, 0));
 		assertFalse(Sphere3afp.containsSphereAlignedBox(0, 0, 0, 1, 0, 0, 0, .5, 1, 0));
 	}
 	
 	@DisplayName("intersectsSphereSphere(double,double,double,double,double,double,double,double)")
-	@Test
-	public void staticIntersectsSphereSphere() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void staticIntersectsSphereSphere(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(Sphere3afp.intersectsSphereSphere(
 				0, 0, 0, 1,
 				10, 10, 0, 1));
@@ -835,8 +743,10 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 	
 	@DisplayName("intersectsSphereLine(double,double,double,double,double,double,double,double,double,double)")
-	@Test
-	public void staticIntersectsSphereLine() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void staticIntersectsSphereLine(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(Sphere3afp.intersectsSphereLine(
 				0, 0, 0, 1,
 				-5, -5, 0, -4, -4, 0));
@@ -855,59 +765,66 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 	
 	@DisplayName("intersectsSphereAlignedBox(double,double,double,double,double,double,double,double,double,double)")
-	@Test
-	public void staticIntersectsSphereAlignedBox() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void staticIntersectsSphereAlignedBox(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				0, 0, 0, 1,
-				-5, -5, 0, -4, -4, 0));
+				-5, -5, 0, -4, -4, 10));
 		assertTrue(Sphere3afp.intersectsSphereAlignedBox(
 				0, 0, 0, 1,
-				-5, -5, 0, 5, 5, 0));
+				-5, -5, 0, 5, 5, 10));
 		assertTrue(Sphere3afp.intersectsSphereAlignedBox(
 				0, 0, 0, 1,
-				-5, -5, 0, .5, .5, 0));
+				-5, -5, 0, .5, .5, 10));
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				0, 0, 0, 1,
-				-5, -5, 0, .5, -4, 0));
+				-5, -5, 0, .5, -4, 10));
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				0, 0, 0, 1,
-				20, .5, 0, 21, 1.5, 0));
+				20, .5, 0, 21, 1.5, 10));
 
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
-				-4, -4, 0, -3, -4, 1));
+				-4, -4, 0, -3, -4, 10));
+		assertTrue(Sphere3afp.intersectsSphereAlignedBox(
+				5, 8, 9, 5,
+				-5, -5, 0, 5, 5, 10));
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
 				-5, -5, 0, 5, 5, 1));
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
-				-5, -5, 0, 5, 5, 1));
+				-5, -5, 0, .5, .5, 10));
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
-				-5, -5, 0, .5, .5, 1));
+				-5, -4, 0, .5, -3, 10));
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
-				-5, -4, 0, .5, -3, 1));
+				20, .5, 0, 21, 1.5, 10));
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
-				20, .5, 0, 21, 1.5, 1));
+				-5, -5, 0, -4, -4, 10));
 		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
-				-5, -5, 0, -4, -4, 1));
-		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
-				5, 8, 9, 5,
-				-1, -100, 0, 0, 100, 1));
+				-1, -100, 0, 0, 100, 10));
 		assertTrue(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
-				-1, -100, 0, .0001, 100, 1));
+				-1, -100, 0, .0001, 100, 10));
+		assertFalse(Sphere3afp.intersectsSphereAlignedBox(
+				5, 8, 9, 5,
+				-1, 2, 0, .0001, 3.0001, 10));
 		assertTrue(Sphere3afp.intersectsSphereAlignedBox(
 				5, 8, 9, 5,
-				-1, 2, 0, .0001, 3.0001, 1));
+				1, 4, 0, 2.0001, 5.0001, 10));
 	}
 	
 	@DisplayName("intersectsSphereSegment(double,double,double,double,double,double,double,double,double,double)")
-	@Test
-	public void staticIntersectsSphereSegment() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void staticIntersectsSphereSegment(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(Sphere3afp.intersectsSphereSegment(
 				0, 0, 0, 1,
 				-5, -5, 0, -4, -4, 0));
@@ -1067,6 +984,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertEpsilonEquals(456.789, this.shape.getRadius());
 	}
 
+	@DisplayName("intersects(Shape3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -1075,6 +993,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertTrue(this.shape.intersects((Shape3D) createSphere(10, 10, 9, 1)));
 	}
 
+	@DisplayName("s += Vector3D")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -1087,18 +1006,22 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertEpsilonEquals(5, this.shape.getRadius());
 	}
 
+	@DisplayName("s + Vector3D")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
 	public void operator_plusVector3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		T shape = this.shape.operator_plus(createVector(123.456, -789.123, 1));
+		assertNotNull(shape);
+		assertNotSame(this.shape, shape);
 		assertEpsilonEquals(128.456, shape.getX());
 		assertEpsilonEquals(-781.123, shape.getY());
 		assertEpsilonEquals(10, shape.getZ());
 		assertEpsilonEquals(5, shape.getRadius());
 	}
 
+	@DisplayName("s -= Vector3D")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -1111,53 +1034,22 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertEpsilonEquals(5, this.shape.getRadius());
 	}
 
+	@DisplayName("s - Vector3D")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
 	public void operator_minusVector3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		T shape = this.shape.operator_minus(createVector(123.456, -789.123, 1));
+		assertNotNull(shape);
+		assertNotSame(this.shape, shape);
 		assertEpsilonEquals(-118.456, shape.getX());
 		assertEpsilonEquals(797.123, shape.getY());
 		assertEpsilonEquals(8, shape.getZ());
 		assertEpsilonEquals(5, shape.getRadius());
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		Shape3afp newShape;
-		
-		newShape = this.shape.operator_multiply(null);
-		assertNotNull(newShape);
-		assertNotSame(this.shape, newShape);
-		assertEquals(this.shape, newShape);
-
-		tr = new Transform3D();
-		newShape = this.shape.operator_multiply(tr);
-		assertNotNull(newShape);
-		assertNotSame(this.shape, newShape);
-		assertEquals(this.shape, newShape);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(10, -10, 0);
-		newShape = this.shape.operator_multiply(tr);
-		assertNotNull(newShape);
-		assertNotSame(this.shape, newShape);
-		assertInstanceOf(newShape, Sphere3afp.class);
-		PathIterator3afp pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 20, -2, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 20, 0.76142374915397, 0, 17.761423749153966, 3, 0, 15, 3, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 12.238576250846033, 3, 0, 10, 0.76142374915397, 0, 10, -2, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 10, -4.761423749153966, 0, 12.238576250846033, -7, 0, 15, -7, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 17.761423749153966, -7, 0, 20, -4.761423749153966, 0, 20, -2, 0);
-		assertElement(pi, PathElementType.CLOSE, 20, -2);
-		assertNoElement(pi);
-	}
-
+	@DisplayName("s && Point3D")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -1174,6 +1066,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertTrue(this.shape.operator_and(createPoint(9,10, 9)));
 	}
 
+	@DisplayName("s && Shape3D")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -1182,6 +1075,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertTrue(this.shape.operator_and(createSphere(10, 10, 9, 1)));
 	}
 
+	@DisplayName("s .. Point3D")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,8 +52,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -61,6 +59,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class contains an attribute value.
@@ -118,7 +117,7 @@ public class AttributeValueImpl implements AttributeValue {
 			this.type = value.getType();
 			try {
 				this.value = value.getValue();
-				this.assigned = isNullAllowed() || (this.value != null);
+				this.assigned = isNullAllowed() || this.value != null;
 			} catch (AttributeException exception) {
 				this.value = null;
 				this.assigned = false;
@@ -161,7 +160,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(UUID value) {
 		this.type = AttributeType.UUID;
-		this.value = (value != null) ? new UUID(value.getMostSignificantBits(),
+		this.value = value != null ? new UUID(value.getMostSignificantBits(),
 				value.getLeastSignificantBits()) : null;
 		this.assigned = this.value != null;
 	}
@@ -172,8 +171,8 @@ public class AttributeValueImpl implements AttributeValue {
 	public AttributeValueImpl(URL value) {
 		this.type = AttributeType.URL;
 		try {
-			this.value = (value != null) ? new URL(value.toExternalForm()) : null;
-		} catch (MalformedURLException e) {
+			this.value = value != null ? value.toURI().toURL() : null;
+		} catch (URISyntaxException | MalformedURLException e) {
 			this.value = null;
 		}
 		this.assigned = this.value != null;
@@ -185,7 +184,7 @@ public class AttributeValueImpl implements AttributeValue {
 	public AttributeValueImpl(URI value) {
 		this.type = AttributeType.URI;
 		try {
-			this.value = (value != null) ? new URI(value.toASCIIString()) : null;
+			this.value = value != null ? new URI(value.toASCIIString()) : null;
 		} catch (URISyntaxException e) {
 			this.value = null;
 		}
@@ -197,7 +196,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(InetAddress value) {
 		this.type = AttributeType.INET_ADDRESS;
-		this.value = (value != null) ? value : null;
+		this.value = value != null ? value : null;
 		this.assigned = this.value != null;
 	}
 
@@ -206,7 +205,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(InetSocketAddress value) {
 		this.type = AttributeType.INET_ADDRESS;
-		this.value = (value != null) ? value.getAddress() : null;
+		this.value = value != null ? value.getAddress() : null;
 		this.assigned = this.value != null;
 	}
 
@@ -215,7 +214,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(Enum<?> value) {
 		this.type = AttributeType.ENUMERATION;
-		this.value = (value != null) ? value : null;
+		this.value = value != null ? value : null;
 		this.assigned = this.value != null;
 	}
 
@@ -224,7 +223,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(Class<?> value) {
 		this.type = AttributeType.TYPE;
-		this.value = (value != null) ? value : null;
+		this.value = value != null ? value : null;
 		this.assigned = this.value != null;
 	}
 
@@ -233,7 +232,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(Date value) {
 		this.type = AttributeType.DATE;
-		this.value = (value != null) ? new Date(value.getTime()) : null;
+		this.value = value != null ? new Date(value.getTime()) : null;
 		this.assigned = this.value != null;
 	}
 
@@ -305,7 +304,7 @@ public class AttributeValueImpl implements AttributeValue {
 	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
-	public AttributeValueImpl(Point3D<?, ?> value) {
+	public AttributeValueImpl(Point3D<?, ?, ?> value) {
 		this.type = AttributeType.POINT3D;
 		this.value = value;
 		this.assigned = this.value != null;
@@ -354,7 +353,7 @@ public class AttributeValueImpl implements AttributeValue {
 	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
-	public AttributeValueImpl(Point3D<?, ?>[] value) {
+	public AttributeValueImpl(Point3D<?, ?, ?>[] value) {
 		this.type = AttributeType.POLYLINE3D;
 		this.value = value;
 		this.assigned = this.value != null;
@@ -364,10 +363,10 @@ public class AttributeValueImpl implements AttributeValue {
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Object value) {
-		final AttributeType detectedType = AttributeType.fromValue(value);
+		final var detectedType = AttributeType.fromValue(value);
 		this.type = detectedType;
 		this.value = detectedType.cast(value);
-		this.assigned = isNullAllowed() || (this.value != null);
+		this.assigned = isNullAllowed() || this.value != null;
 	}
 
 	/** Replies the best attribute value that is representing
@@ -379,15 +378,15 @@ public class AttributeValueImpl implements AttributeValue {
 	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static AttributeValueImpl parse(String text) {
-		final AttributeValueImpl value = new AttributeValueImpl(text);
+		final var value = new AttributeValueImpl(text);
 		if (text != null && !text.isEmpty()) {
 			Object binValue;
-			for (final AttributeType type : AttributeType.values()) {
+			for (final var type : AttributeType.values()) {
 				try {
 					binValue = null;
 					switch (type) {
 					case BOOLEAN:
-						binValue = value.getBoolean();
+						binValue = Boolean.valueOf(value.getBoolean());
 						break;
 					case DATE:
 						binValue = value.getDate();
@@ -399,7 +398,7 @@ public class AttributeValueImpl implements AttributeValue {
 						binValue = value.getInetAddress();
 						break;
 					case INTEGER:
-						binValue = value.getInteger();
+						binValue = Long.valueOf(value.getInteger());
 						break;
 					case OBJECT:
 						binValue = value.getJavaObject();
@@ -417,13 +416,13 @@ public class AttributeValueImpl implements AttributeValue {
 						binValue = parsePolyline3D((String) value.value, true);
 						break;
 					case REAL:
-						binValue = value.getReal();
+						binValue = Double.valueOf(value.getReal());
 						break;
 					case STRING:
 						binValue = value.getString();
 						break;
 					case TIMESTAMP:
-						binValue = value.getTimestamp();
+						binValue = Long.valueOf(value.getTimestamp());
 						break;
 					case TYPE:
 						binValue = value.getJavaClass();
@@ -456,8 +455,8 @@ public class AttributeValueImpl implements AttributeValue {
 	 * @param arg0 first value.
 	 * @param arg1 second value.
 	 * @return replies a negative value if {@code arg0} is lesser than
-	 * {@code arg1}, a positive value if {@code arg0} is greater than
-	 * {@code arg1}, or {@code 0} if they are equal.
+	 *     {@code arg1}, a positive value if {@code arg0} is greater than
+	 *     {@code arg1}, or {@code 0} if they are equal.
 	 * @see AttributeValueComparator
 	 */
 	@Pure
@@ -495,8 +494,8 @@ public class AttributeValueImpl implements AttributeValue {
 	 * @param arg0 first value.
 	 * @param arg1 second value.
 	 * @return replies a negative value if {@code arg0} is lesser than
-	 * {@code arg1}, a positive value if {@code arg0} is greater than
-	 * {@code arg1}, or {@code 0} if they are equal.
+	 *     {@code arg1}, a positive value if {@code arg0} is greater than
+	 *     {@code arg1}, or {@code 0} if they are equal.
 	 */
 	@Pure
 	@SuppressWarnings({"unchecked", "rawtypes", "checkstyle:returncount", "checkstyle:npathcomplexity"})
@@ -511,21 +510,21 @@ public class AttributeValueImpl implements AttributeValue {
 			return Integer.MIN_VALUE;
 		}
 
-		if ((arg0 instanceof Number) && (arg1 instanceof Number)) {
-			return Double.compare(((Number) arg0).doubleValue(), ((Number) arg1).doubleValue());
+		if (arg0 instanceof Number num0 && arg1 instanceof Number num1) {
+			return Double.compare(num0.doubleValue(), num1.doubleValue());
 		}
 
 		try {
-			if (arg0 instanceof Comparable<?>) {
-				return ((Comparable) arg0).compareTo(arg1);
+			if (arg0 instanceof Comparable cmp) {
+				return cmp.compareTo(arg1);
 			}
 		} catch (RuntimeException exception) {
 			//
 		}
 
 		try {
-			if (arg1 instanceof Comparable<?>) {
-				return -((Comparable) arg1).compareTo(arg0);
+			if (arg1 instanceof Comparable cmp) {
+				return -cmp.compareTo(arg0);
 			}
 		} catch (RuntimeException exception) {
 			//
@@ -535,8 +534,8 @@ public class AttributeValueImpl implements AttributeValue {
 			return 0;
 		}
 
-		final String sv0 = arg0.toString();
-		final String sv1 = arg1.toString();
+		final var sv0 = arg0.toString();
+		final var sv1 = arg1.toString();
 
 		if (sv0 == sv1) {
 			return 0;
@@ -554,8 +553,8 @@ public class AttributeValueImpl implements AttributeValue {
 	@Pure
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof AttributeValue) {
-			return compareValues(this, (AttributeValue) obj) == 0;
+		if (obj instanceof AttributeValue attr) {
+			return compareValues(this, attr) == 0;
 		}
 		return compareRawValues(this.value, obj) == 0;
 	}
@@ -569,7 +568,7 @@ public class AttributeValueImpl implements AttributeValue {
 	@Pure
 	@Override
 	public final String toString() {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		toJson(buffer);
 		return buffer.toString();
 	}
@@ -609,7 +608,7 @@ public class AttributeValueImpl implements AttributeValue {
 	/** Assert that the attribute value was assigned.
 	 */
 	private void assertAssigned() throws AttributeNotInitializedException {
-		if ((this.type == null) || (!this.assigned)) {
+		if (this.type == null || !this.assigned) {
 			throw new AttributeNotInitializedException();
 		}
 	}
@@ -619,7 +618,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 * @throws AttributeNotInitializedException attribute not initialized.
 	 */
 	protected void assertAssignedAndNotNull() throws AttributeNotInitializedException {
-		if ((this.type == null) || (!this.assigned) || (this.value == null)) {
+		if (this.type == null || !this.assigned || this.value == null) {
 			throw new AttributeNotInitializedException();
 		}
 	}
@@ -711,7 +710,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Override
 	public boolean cast(AttributeType attrType) {
-		boolean b = true;
+		var b = true;
 		try {
 			setType(attrType);
 		} catch (InvalidAttributeTypeException ex) {
@@ -725,10 +724,10 @@ public class AttributeValueImpl implements AttributeValue {
 	@Override
 	public void castAndSet(AttributeType attrType, Object attrValue) {
 		try {
-			if (attrValue instanceof AttributeValue) {
-				this.type = ((AttributeValue) attrValue).getType();
+			if (attrValue instanceof AttributeValue attr) {
+				this.type = attr.getType();
 				try {
-					this.value = ((AttributeValue) attrValue).getValue();
+					this.value = attr.getValue();
 					this.assigned = true;
 				} catch (AttributeNotInitializedException e) {
 					this.value = attrType.getDefaultValue();
@@ -815,7 +814,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Override
 	public void setValue(Object value) {
-		final AttributeType detectedType = AttributeType.fromValue(value);
+		final var detectedType = AttributeType.fromValue(value);
 		this.value = detectedType.cast(value);
 		this.assigned = this.value != null;
 	}
@@ -884,13 +883,13 @@ public class AttributeValueImpl implements AttributeValue {
 			case BOOLEAN:
 				return ((Boolean) this.value).booleanValue() ? 1 : 0;
 			case OBJECT:
-				if (this.value instanceof Number) {
-					return ((Number) this.value).longValue();
+				if (this.value instanceof Number num) {
+					return num.longValue();
 				}
 				break;
 			case ENUMERATION:
-				if (this.value instanceof Enum<?>) {
-					return ((Enum<?>) this.value).ordinal();
+				if (this.value instanceof Enum<?> en) {
+					return en.ordinal();
 				}
 				break;
 			case POINT:
@@ -946,13 +945,13 @@ public class AttributeValueImpl implements AttributeValue {
 			case BOOLEAN:
 				return ((Boolean) this.value).booleanValue() ? 1. : 0.;
 			case OBJECT:
-				if (this.value instanceof Number) {
-					return ((Number) this.value).doubleValue();
+				if (this.value instanceof Number en) {
+					return en.doubleValue();
 				}
 				break;
 			case ENUMERATION:
-				if (this.value instanceof Enum<?>) {
-					return ((Enum<?>) this.value).ordinal();
+				if (this.value instanceof Enum<?> en) {
+					return en.ordinal();
 				}
 				break;
 			case POINT:
@@ -992,16 +991,16 @@ public class AttributeValueImpl implements AttributeValue {
 			case BOOLEAN:
 				return ((Boolean) this.value).toString();
 			case UUID:
-				final UUID uuid = (UUID) this.value;
+				final var uuid = (UUID) this.value;
 				return uuid.toString();
 			case URL:
-				final URL url = (URL) this.value;
+				final var url = (URL) this.value;
 				return url.toExternalForm();
 			case URI:
-				final URI uri = (URI) this.value;
+				final var uri = (URI) this.value;
 				return uri.toASCIIString();
 			case TIMESTAMP:
-				final SimpleDateFormat tmformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
+				final var tmformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
 				return tmformat.format(new Date(((Timestamp) this.value).longValue()));
 			case INTEGER:
 				return ((Long) this.value).toString();
@@ -1012,7 +1011,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case POINT3D:
 				return getStringFromPoint3D();
 			case DATE:
-				final SimpleDateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
+				final var dtformat = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 				return dtformat.format((Date) this.value);
 			case POLYLINE:
 				return getStringFromPolyline();
@@ -1034,8 +1033,8 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private String getStringFromPoint() {
-		final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
-		final StringBuilder buffer1 = new StringBuilder();
+		final var pt2 = (Point2D<?, ?>) this.value;
+		final var buffer1 = new StringBuilder();
 		buffer1.append(pt2.getX());
 		buffer1.append(";"); //$NON-NLS-1$
 		buffer1.append(pt2.getY());
@@ -1043,8 +1042,8 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private String getStringFromPoint3D() {
-		final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
-		final StringBuilder buffer2 = new StringBuilder();
+		final var pt3 = (Point3D<?, ?, ?>) this.value;
+		final var buffer2 = new StringBuilder();
 		buffer2.append(pt3.getX());
 		buffer2.append(";"); //$NON-NLS-1$
 		buffer2.append(pt3.getY());
@@ -1054,9 +1053,9 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private String getStringFromPolyline() {
-		final StringBuilder buffer3 = new StringBuilder();
-		final Point2D<?, ?>[] lstpt2 = (Point2D<?, ?>[]) this.value;
-		for (int i = 0; i < lstpt2.length; ++i) {
+		final var buffer3 = new StringBuilder();
+		final var lstpt2 = (Point2D<?, ?>[]) this.value;
+		for (var i = 0; i < lstpt2.length; ++i) {
 			if (lstpt2[i] != null) {
 				if (buffer3.length() > 0) {
 					buffer3.append(";"); //$NON-NLS-1$
@@ -1070,9 +1069,9 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private String getStringFromPolyline3D() {
-		final StringBuilder buffer4 = new StringBuilder();
-		final Point3D<?, ?>[] lstpt3 = (Point3D<?, ?>[]) this.value;
-		for (int i = 0; i < lstpt3.length; ++i) {
+		final var buffer4 = new StringBuilder();
+		final var lstpt3 = (Point3D<?, ?, ?>[]) this.value;
+		for (var i = 0; i < lstpt3.length; ++i) {
 			if (lstpt3[i] != null) {
 				if (buffer4.length() > 0) {
 					buffer4.append(";"); //$NON-NLS-1$
@@ -1088,10 +1087,10 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private String getStringFromEnumeration() {
-		final StringBuilder buffer5 = new StringBuilder();
-		final Enum<?> enumeration = (Enum<?>) this.value;
-		final Class<?> enumerationType = enumeration.getDeclaringClass();
-		final String typeName = enumerationType.getCanonicalName();
+		final var buffer5 = new StringBuilder();
+		final var enumeration = (Enum<?>) this.value;
+		final var enumerationType = enumeration.getDeclaringClass();
+		final var typeName = enumerationType.getCanonicalName();
 		buffer5.append(typeName);
 		buffer5.append("."); //$NON-NLS-1$
 		buffer5.append(((Enum<?>) this.value).name());
@@ -1109,9 +1108,9 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	private static Date extractDate(String text, Locale locale) {
 		DateFormat fmt;
-		for (int style = 0; style <= 3; ++style) {
+		for (var style = 0; style <= 3; ++style) {
 			// Date and time parsing
-			for (int style2 = 0; style2 <= 3; ++style2) {
+			for (var style2 = 0; style2 <= 3; ++style2) {
 				fmt = DateFormat.getDateTimeInstance(style, style2, locale);
 				try {
 					return fmt.parse(text);
@@ -1176,24 +1175,22 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private Date getDateFromObject() throws InvalidAttributeTypeException {
-		if (this.value instanceof Date) {
-			return (Date) this.value;
+		if (this.value instanceof Date dt) {
+			return dt;
 		}
-		if (this.value instanceof Calendar) {
-			return ((Calendar) this.value).getTime();
+		if (this.value instanceof Calendar cal) {
+			return cal.getTime();
 		}
-		if (this.value instanceof Number) {
-			return new Date(((Number) this.value).longValue());
+		if (this.value instanceof Number num) {
+			return new Date(num.longValue());
 		}
 		throw new InvalidAttributeTypeException();
 	}
 
 	private Date getDateFromString() throws Exception {
-		final String txt = (String) this.value;
-		DateFormat fmt;
-		Date dt;
+		final var txt = (String) this.value;
 
-		dt = extractDate(txt, Locale.getDefault());
+		var dt = extractDate(txt, Locale.getDefault());
 		if (dt != null) {
 			return dt;
 		}
@@ -1209,12 +1206,12 @@ public class AttributeValueImpl implements AttributeValue {
 		}
 
 		try {
-			fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
+			final var fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
 			return fmt.parse(txt);
 		} catch (ParseException exception) {
 			//
 		}
-		fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
+		final var fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 		return fmt.parse(txt);
 	}
 
@@ -1243,8 +1240,8 @@ public class AttributeValueImpl implements AttributeValue {
 			case REAL:
 				return ((Double) this.value).doubleValue() != 0.;
 			case OBJECT:
-				if (this.value instanceof Boolean) {
-					return ((Boolean) this.value).booleanValue();
+				if (this.value instanceof Boolean bol) {
+					return bol.booleanValue();
 				}
 				break;
 			case DATE:
@@ -1384,14 +1381,14 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private long getTimestampFromObject() throws InvalidAttributeTypeException {
-		if (this.value instanceof Number) {
-			return ((Number) this.value).longValue();
+		if (this.value instanceof Number num) {
+			return num.longValue();
 		}
-		if (this.value instanceof Date) {
-			return ((Date) this.value).getTime();
+		if (this.value instanceof Date dt) {
+			return dt.getTime();
 		}
-		if (this.value instanceof Calendar) {
-			return ((Calendar) this.value).getTimeInMillis();
+		if (this.value instanceof Calendar cal) {
+			return cal.getTimeInMillis();
 		}
 		throw new InvalidAttributeTypeException();
 	}
@@ -1403,12 +1400,12 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	private static Point3D<?, ?> parsePoint3D(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); //$NON-NLS-1$
+	private static Point3D<?, ?, ?> parsePoint3D(String text, boolean isStrict) {
+		final var comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && comp.length != 3) {
 			return null;
 		}
-		final Point3D<?, ?> pt3 = new Point3d();
+		final var pt3 = new Point3d();
 		if (comp.length > 0) {
 			pt3.setX(Double.parseDouble(comp[0]));
 		}
@@ -1424,27 +1421,27 @@ public class AttributeValueImpl implements AttributeValue {
 	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
-	public Point3D<?, ?> getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
+	public Point3D<?, ?, ?> getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		try {
 			assertAssignedAndNotNull();
 			switch (this.type) {
 			case REAL:
-				final Double flt = (Double) this.value;
+				final var flt = (Double) this.value;
 				return new Point3d(flt.doubleValue(), 0, 0);
 			case INTEGER:
-				final Long lg = (Long) this.value;
+				final var lg = (Long) this.value;
 				return new Point3d(lg.doubleValue(), 0, 0);
 			case TIMESTAMP:
-				final Timestamp ts = (Timestamp) this.value;
+				final var ts = (Timestamp) this.value;
 				return new Point3d(ts.doubleValue(), 0, 0);
 			case DATE:
-				final Date dt = (Date) this.value;
+				final var dt = (Date) this.value;
 				return new Point3d(dt.getTime(), 0, 0);
 			case POINT:
-				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
+				final var pt2 = (Point2D<?, ?>) this.value;
 				return new Point3d(pt2.getX(), pt2.getY(), 0);
 			case POINT3D:
-				return ((Point3D<?, ?>) this.value).clone();
+				return ((Point3D<?, ?, ?>) this.value).clone();
 			case STRING:
 				return parsePoint3D((String) this.value, false);
 			case OBJECT:
@@ -1468,20 +1465,18 @@ public class AttributeValueImpl implements AttributeValue {
 		throw new InvalidAttributeTypeException();
 	}
 
-	private Point3D<?, ?> getPoint3DFromObject() {
-		if (this.value instanceof Tuple3D) {
-			final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
+	private Point3D<?, ?, ?> getPoint3DFromObject() {
+		if (this.value instanceof Tuple3D t3) {
 			return new Point3d(t3.getX(), t3.getY(), t3.getZ());
 		}
-		if (this.value instanceof Tuple2D) {
-			final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
+		if (this.value instanceof Tuple2D t2) {
 			return new Point3d(t2.getX(), t2.getY(), 0);
 		}
 		return null;
 	}
 
 	@Override
-	public void setPoint3D(Point3D<?, ?> value) {
+	public void setPoint3D(Point3D<?, ?, ?> value) {
 		this.value = value;
 		this.type = AttributeType.POINT3D;
 		this.assigned = this.value != null;
@@ -1495,7 +1490,7 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private static Point2D<?, ?> parsePoint(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); //$NON-NLS-1$
+		final var comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && comp.length != 2) {
 			return null;
 		}
@@ -1523,22 +1518,22 @@ public class AttributeValueImpl implements AttributeValue {
 			assertAssignedAndNotNull();
 			switch (this.type) {
 			case REAL:
-				final Double flt = (Double) this.value;
+				final var flt = (Double) this.value;
 				return new Point2d(flt.doubleValue(), 0);
 			case INTEGER:
-				final Long lg = (Long) this.value;
+				final var lg = (Long) this.value;
 				return new Point2d(lg.doubleValue(), 0);
 			case TIMESTAMP:
-				final Timestamp ts = (Timestamp) this.value;
+				final var ts = (Timestamp) this.value;
 				return new Point2d(ts.doubleValue(), 0);
 			case DATE:
-				final Date dt = (Date) this.value;
+				final var dt = (Date) this.value;
 				return new Point2d(dt.getTime(), 0);
 			case POINT:
 				return new Point2d(((Point2D<?, ?>) this.value).getX(),
 						((Point2D<?, ?>) this.value).getY());
 			case POINT3D:
-				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
+				final var pt3 = (Point3D<?, ?, ?>) this.value;
 				return new Point2d(pt3.getX(), pt3.getY());
 			case STRING:
 				return parsePoint((String) this.value, false);
@@ -1562,12 +1557,10 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private Point2D<?, ?> getPointFromObject() throws InvalidAttributeTypeException {
-		if (this.value instanceof Tuple3D<?>) {
-			final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
+		if (this.value instanceof Tuple3D t3) {
 			return new Point2d(t3.getX(), t3.getY());
 		}
-		if (this.value instanceof Tuple2D<?>) {
-			final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
+		if (this.value instanceof Tuple2D t2) {
 			return new Point2d(t2.getX(), t2.getY());
 		}
 		throw new InvalidAttributeTypeException();
@@ -1589,7 +1582,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	private static UUID parseUUID(String text) {
 		try {
-			final URI uri = new URI(text);
+			final var uri = new URI(text);
 			if (UUID_STR.equalsIgnoreCase(uri.getScheme())) {
 				return UUID.fromString(uri.getHost());
 			}
@@ -1616,17 +1609,16 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Pure
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public UUID getUUID() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		try {
 			assertAssignedAndNotNull();
 			switch (this.type) {
 			case UUID:
-				final UUID id = (UUID) this.value;
+				final var id = (UUID) this.value;
 				return new UUID(id.getMostSignificantBits(), id.getLeastSignificantBits());
 			case URI:
-				final URI uri = (URI) this.value;
+				final var uri = (URI) this.value;
 				if (UUID_STR.equalsIgnoreCase(uri.getScheme())) {
 					return extractUUIDFromString(uri);
 				}
@@ -1656,7 +1648,7 @@ public class AttributeValueImpl implements AttributeValue {
 		if (this.value == null) {
 			return (UUID) AttributeType.UUID.getDefaultValue();
 		}
-		final String s = this.value.toString();
+		final var s = this.value.toString();
 		if (s == null || "".equals(s)) { //$NON-NLS-1$
 			return (UUID) AttributeType.UUID.getDefaultValue();
 		}
@@ -1671,34 +1663,34 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private UUID getUUIDFromObject() throws InvalidAttributeTypeException {
-		if (this.value instanceof UUID) {
-			return (UUID) this.value;
+		if (this.value instanceof UUID uuid) {
+			return uuid;
 		}
-		if (this.value instanceof URI
-				&& UUID_STR.equalsIgnoreCase(((URI) this.value).getScheme())) {
-			return extractUUIDFromString((URI) this.value);
+		if (this.value instanceof URI uri
+				&& UUID_STR.equalsIgnoreCase(uri.getScheme())) {
+			return extractUUIDFromString(uri);
 		}
 		throw new InvalidAttributeTypeException();
 	}
 
 	@Pure
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public URL getURL() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		try {
 			assertAssignedAndNotNull();
 			switch (this.type) {
 			case URL:
-				return new URL(((URL) this.value).toExternalForm());
+				return ((URL) this.value).toURI().toURL();
 			case URI:
 				return ((URI) this.value).toURL();
 			case STRING:
-				return new URL((String) this.value);
+				return new URI((String) this.value).toURL();
 			case OBJECT:
 				return getURLFromObject();
 			case INET_ADDRESS:
-				return new URL(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); //$NON-NLS-1$
+				return new URI(DEFAULT_SCHEME.name(), ((InetAddress) this.value)
+						.getHostAddress(), "", "").toURL(); //$NON-NLS-1$//$NON-NLS-2$
 			case UUID:
 			case BOOLEAN:
 			case DATE:
@@ -1713,29 +1705,29 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException | MalformedURLException exception) {
+		} catch (ClassCastException | URISyntaxException | MalformedURLException exception) {
 			//
 		}
 		if (this.value == null) {
 			return (URL) AttributeType.URL.getDefaultValue();
 		}
-		final String s = this.value.toString();
+		final var s = this.value.toString();
 		if (s == null) {
 			return (URL) AttributeType.URL.getDefaultValue();
 		}
 		try {
-			return new URL(s);
-		} catch (MalformedURLException exception) {
+			return new URI(s).toURL();
+		} catch (URISyntaxException | MalformedURLException exception) {
 			throw new InvalidAttributeTypeException();
 		}
 	}
 
 	private URL getURLFromObject() throws MalformedURLException, InvalidAttributeTypeException {
-		if (this.value instanceof URL) {
-			return (URL) this.value;
+		if (this.value instanceof URL url) {
+			return url;
 		}
-		if (this.value instanceof URI) {
-			return ((URI) this.value).toURL();
+		if (this.value instanceof URI uri) {
+			return uri.toURL();
 		}
 		throw new InvalidAttributeTypeException();
 	}
@@ -1754,8 +1746,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Pure
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public URI getURI() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		try {
 			assertAssignedAndNotNull();
@@ -1791,7 +1782,7 @@ public class AttributeValueImpl implements AttributeValue {
 		if (this.value == null) {
 			return (URI) AttributeType.URI.getDefaultValue();
 		}
-		final String s = this.value.toString();
+		final var s = this.value.toString();
 		if (s == null) {
 			return (URI) AttributeType.URI.getDefaultValue();
 		}
@@ -1803,14 +1794,14 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private URI getURIFromObject() throws URISyntaxException, InvalidAttributeTypeException {
-		if (this.value instanceof URI) {
-			return (URI) this.value;
+		if (this.value instanceof URI uri) {
+			return uri;
 		}
-		if (this.value instanceof URL) {
-			return ((URL) this.value).toURI();
+		if (this.value instanceof URL url) {
+			return url.toURI();
 		}
-		if (this.value instanceof UUID) {
-			return new URI(UUID_STR + ":" + ((UUID) this.value).toString()); //$NON-NLS-1$
+		if (this.value instanceof UUID uuid) {
+			return new URI(UUID_STR + ":" + uuid.toString()); //$NON-NLS-1$
 		}
 		throw new InvalidAttributeTypeException();
 	}
@@ -1852,7 +1843,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public void setURL(String url) {
 		try {
-			this.value = (url != null) ? new URL(url) : null;
+			this.value = (url != null) ? new URI(url).toURL() : null;
 		} catch (Throwable exception) {
 			this.value = null;
 		}
@@ -1874,7 +1865,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public void setURI(String uri) {
 		try {
-			this.value = (uri != null) ? new URI(uri) : null;
+			this.value = uri != null ? new URI(uri) : null;
 		} catch (Throwable exception) {
 			this.value = null;
 		}
@@ -1882,24 +1873,24 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	private static Point3D<?, ?>[] parsePolyline3D(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); //$NON-NLS-1$
+	private static Point3D<?, ?, ?>[] parsePolyline3D(String text, boolean isStrict) {
+		final var comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 3) != 0) {
 			return null;
 		}
-		final int fullPoints = comp.length / 3;
-		final boolean addPt = fullPoints * 3 != comp.length;
-		final Point3D<?, ?>[] tab = new Point3D[addPt ? fullPoints + 1 : fullPoints];
-		for (int i = 2, j = 0; (i < comp.length) && (j < tab.length); i += 3, ++j) {
+		final var fullPoints = comp.length / 3;
+		final var addPt = fullPoints * 3 != comp.length;
+		final var tab = new Point3D[addPt ? fullPoints + 1 : fullPoints];
+		for (int i = 2, j = 0; i < comp.length && j < tab.length; i += 3, ++j) {
 			tab[j] = new Point3d(
 					Double.parseDouble(comp[i - 2]),
 					Double.parseDouble(comp[i - 1]),
 					Double.parseDouble(comp[i]));
 		}
 		if (addPt) {
-			final double x = Double.parseDouble(comp[fullPoints * 3]);
-			final int idx = fullPoints * 3 + 1;
-			final double y = idx < comp.length ? Double.parseDouble(comp[idx]) : 0;
+			final var x = Double.parseDouble(comp[fullPoints * 3]);
+			final var idx = fullPoints * 3 + 1;
+			final var y = idx < comp.length ? Double.parseDouble(comp[idx]) : 0;
 			tab[tab.length - 1]  = new Point3d(x, y, 0);
 		}
 		return tab;
@@ -1907,20 +1898,19 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Pure
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
-	public Point3D<?, ?>[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	public Point3D<?, ?, ?>[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		try {
 			assertAssignedAndNotNull();
 			switch (this.type) {
 			case POINT:
-				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
+				final var pt2 = (Point2D<?, ?>) this.value;
 				return new Point3D[] {
 					new Point3d(pt2.getX(), pt2.getY(), 0),
 				};
 			case POINT3D:
 				return new Point3D[] {
-						((Point3D<?, ?>) this.value).clone(),
+						((Point3D<?, ?, ?>) this.value).clone(),
 				};
 			case POLYLINE:
 				return getPolyline3DFromPolyline();
@@ -1949,10 +1939,10 @@ public class AttributeValueImpl implements AttributeValue {
 		throw new InvalidAttributeTypeException();
 	}
 
-	private Point3D<?, ?>[] getPolyline3DFromPolyline() {
-		final Point2D<?, ?>[] current = (Point2D<?, ?>[]) this.value;
-		final Point3D<?, ?>[] tab = new Point3D[current.length];
-		for (int i = 0; i < current.length; ++i) {
+	private Point3D<?, ?, ?>[] getPolyline3DFromPolyline() {
+		final var current = (Point2D<?, ?>[]) this.value;
+		final var tab = new Point3D[current.length];
+		for (var i = 0; i < current.length; ++i) {
 			tab[i] = new Point3d(
 					current[i].getX(),
 					current[i].getY(),
@@ -1961,32 +1951,30 @@ public class AttributeValueImpl implements AttributeValue {
 		return tab;
 	}
 
-	private Point3D<?, ?>[] getPolyline3DFromObject() throws InvalidAttributeTypeException {
-		if (this.value instanceof Tuple2D<?>) {
-			final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
+	private Point3D<?, ?, ?>[] getPolyline3DFromObject() throws InvalidAttributeTypeException {
+		if (this.value instanceof Tuple2D t2) {
 			return new Point3D[] {new Point3d(t2.getX(), t2.getY(), 0),
 			};
-		} else if (this.value instanceof Tuple3D<?>) {
-			final Tuple3D<?> t2 = (Tuple3D<?>) this.value;
-			return new Point3D[] {new Point3d(t2.getX(), t2.getY(), t2.getZ()), };
+		} else if (this.value instanceof Tuple3D t3) {
+			return new Point3D[] {new Point3d(t3.getX(), t3.getY(), t3.getZ()), };
 		} else if (this.value.getClass().isArray()) {
-			final Class<?> elementType = this.value.getClass().getComponentType();
+			final var elementType = this.value.getClass().getComponentType();
 			if (Point3D.class.equals(elementType)) {
 				return (Point3D[]) this.value;
 			}
-			final int size = Array.getLength(this.value);
+			final var size = Array.getLength(this.value);
 			if (Tuple3D.class.isAssignableFrom(elementType)) {
-				final Point3D<?, ?>[] pa3 = new Point3D[size];
-				for (int i = 0; i < pa3.length; ++i) {
-					final Tuple3D<?> t = (Tuple3D<?>) Array.get(this.value, i);
+				final var pa3 = new Point3D[size];
+				for (var i = 0; i < pa3.length; ++i) {
+					final var t = (Tuple3D<?>) Array.get(this.value, i);
 					pa3[i] = new Point3d(t);
 				}
 				return pa3;
 			}
 			if (Tuple2D.class.isAssignableFrom(elementType)) {
-				final Point3D<?, ?>[] pa3 = new Point3D[size];
-				for (int i = 0; i < pa3.length; ++i) {
-					final Tuple2D<?> t = (Tuple2D<?>) Array.get(this.value, i);
+				final var pa3 = new Point3D[size];
+				for (var i = 0; i < pa3.length; ++i) {
+					final var t = (Tuple2D<?>) Array.get(this.value, i);
 					pa3[i] = new Point3d(t.getX(), t.getY(), 0);
 				}
 				return pa3;
@@ -1996,18 +1984,18 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	@Override
-	public void setPolyline3D(Point3D<?, ?>... value) {
+	public void setPolyline3D(Point3D<?, ?, ?>... value) {
 		this.value = value;
 		this.type = AttributeType.POLYLINE3D;
 		this.assigned = this.value != null;
 	}
 
 	@Override
-	public void setPolyline3D(Collection<? extends Point3D<?, ?>> value) {
+	public void setPolyline3D(Collection<? extends Point3D<?, ?, ?>> value) {
 		if (value == null) {
 			this.value = null;
 		} else {
-			final Point3D<?, ?>[] tab = new Point3D[value.size()];
+			final var tab = new Point3D[value.size()];
 			value.toArray(tab);
 			this.value = tab;
 		}
@@ -2016,12 +2004,12 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	@Override
-	public void addToPolyline3D(Point3D<?, ?>... pts) {
-		final Point3D<?, ?>[] tab;
-		if (this.value instanceof Point3D[]) {
-			final int size = ((Point3D[]) this.value).length;
+	public void addToPolyline3D(Point3D<?, ?, ?>... pts) {
+		final Point3D<?, ?, ?>[] tab;
+		if (this.value instanceof Point3D[] arr) {
+			final var size = arr.length;
 			tab = new Point3D[size + pts.length];
-			System.arraycopy(this.value, 0, tab, 0, size);
+			System.arraycopy(arr, 0, tab, 0, size);
 			System.arraycopy(pts, 0, tab, size, pts.length);
 		} else {
 			tab = pts;
@@ -2032,12 +2020,12 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	@Override
-	public void addToPolyline3D(Collection<? extends Point3D<?, ?>> pts) {
-		final Point3D<?, ?>[] tab;
-		if (this.value instanceof Point3D[]) {
-			final int size = ((Point3D[]) this.value).length;
+	public void addToPolyline3D(Collection<? extends Point3D<?, ?, ?>> pts) {
+		final Point3D<?, ?, ?>[] tab;
+		if (this.value instanceof Point3D[] arr) {
+			final var size = arr.length;
 			tab = new Point3D[size + pts.size()];
-			System.arraycopy(this.value, 0, tab, 0, size);
+			System.arraycopy(arr, 0, tab, 0, size);
 			System.arraycopy(pts.toArray(), 0, tab, size, pts.size());
 		} else {
 			tab = new Point3D[pts.size()];
@@ -2049,14 +2037,14 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private static Point2D<?, ?>[] parsePolyline(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); //$NON-NLS-1$
+		final var comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 2) != 0) {
 			return null;
 		}
-		final int fullPoints = comp.length / 2;
-		final boolean addPt = fullPoints * 2 != comp.length;
-		final Point2D<?, ?>[] tab = new Point2D[addPt ? fullPoints + 1 : fullPoints];
-		for (int i = 1, j = 0; (i < comp.length) && (j < fullPoints); i += 2, ++j) {
+		final var fullPoints = comp.length / 2;
+		final var addPt = fullPoints * 2 != comp.length;
+		final var tab = new Point2D[addPt ? fullPoints + 1 : fullPoints];
+		for (int i = 1, j = 0; i < comp.length && j < fullPoints; i += 2, ++j) {
 			tab[j] = new Point2d(
 					Double.parseDouble(comp[i - 1]),
 					Double.parseDouble(comp[i]));
@@ -2071,8 +2059,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Pure
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public Point2D<?, ?>[] getPolyline() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		try {
 			assertAssignedAndNotNull();
@@ -2082,7 +2069,7 @@ public class AttributeValueImpl implements AttributeValue {
 					new Point2d(((Point2D<?, ?>) this.value).getX(), ((Point2D<?, ?>) this.value).getY()),
 				};
 			case POINT3D:
-				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
+				final var pt3 = (Point3D<?, ?, ?>) this.value;
 				return new Point2D[] {
 					new Point2d(pt3.getX(), pt3.getY()),
 				};
@@ -2114,33 +2101,31 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private Point2D<?, ?>[]  getPolylineFromPolyline3D() {
-		final Point3D<?, ?>[] current = (Point3D[]) this.value;
-		final Point2D<?, ?>[] tab = new Point2D<?, ?>[current.length];
-		for (int i = 0; i < current.length; ++i) {
+		final var current = (Point3D[]) this.value;
+		final var tab = new Point2D<?, ?>[current.length];
+		for (var i = 0; i < current.length; ++i) {
 			tab[i] = new Point2d(current[i].getX(), current[i].getY());
 		}
 		return tab;
 	}
 
 	private Point2D<?, ?>[]  getPoint2DFromPolyline() {
-		if (this.value instanceof Tuple2D) {
-			return new Point2D[] {new Point2d(((Tuple2D<?>) this.value).getX(), ((Tuple2D<?>) this.value).getY()), };
-		} else if (this.value instanceof Tuple3D) {
-			final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
-			return new Point2D[] {new Point2d(t3.getX(), t3.getY()),
+		if (this.value instanceof Tuple2D t2) {
+			return new Point2D[] {new Point2d(t2.getX(), t2.getY()), };
+		} else if (this.value instanceof Tuple3D t3) {
+			return new Point2D[] {
+				new Point2d(t3.getX(), t3.getY()),
 			};
-		} else if (this.value instanceof Point2D[]) {
-			return (Point2D[]) this.value;
-		} else if (this.value instanceof Tuple2D[]) {
-			final Tuple2D<?>[] ta2 = (Tuple2D[]) this.value;
-			final Point2D<?, ?>[] pa2 = new Point2D[ta2.length];
-			for (int i = 0; i < pa2.length; ++i) {
+		} else if (this.value instanceof Point2D[] arr) {
+			return arr;
+		} else if (this.value instanceof Tuple2D[] ta2) {
+			final var pa2 = new Point2D[ta2.length];
+			for (var i = 0; i < pa2.length; ++i) {
 				pa2[i] = new Point2d(ta2[i]);
 			}
-		} else if (this.value instanceof Tuple3D[]) {
-			final Tuple3D<?>[] ta3 = (Tuple3D[]) this.value;
-			final Point2D<?, ?>[] pa2 = new Point2D<?, ?>[ta3.length];
-			for (int i = 0; i < pa2.length; ++i) {
+		} else if (this.value instanceof Tuple3D[] ta3) {
+			final var pa2 = new Point2D<?, ?>[ta3.length];
+			for (var i = 0; i < pa2.length; ++i) {
 				pa2[i] = new Point2d(ta3[i].getX(), ta3[i].getY());
 			}
 		}
@@ -2159,7 +2144,7 @@ public class AttributeValueImpl implements AttributeValue {
 		if (value == null) {
 			this.value = null;
 		} else {
-			final Point2D<?, ?>[] tab = new Point2D<?, ?>[value.size()];
+			final var tab = new Point2D<?, ?>[value.size()];
 			value.toArray(tab);
 			this.value = tab;
 		}
@@ -2171,11 +2156,11 @@ public class AttributeValueImpl implements AttributeValue {
 	@Override
 	public void addToPolyline(Point2D<?, ?>... pts) {
 		final Point2D<?, ?>[] tab;
-		if (this.value instanceof Point2D[]) {
-			final int size = ((Point2D<?, ?>[]) this.value).length;
+		if (this.value instanceof Point2D[] arr) {
+			final var size = arr.length;
 			tab = new Point2D[size + pts.length];
-			System.arraycopy(this.value, 0, tab, 0, size);
-			System.arraycopy(this.value, 0, tab, size, pts.length);
+			System.arraycopy(arr, 0, tab, 0, size);
+			System.arraycopy(arr, 0, tab, size, pts.length);
 		} else {
 			tab = pts;
 		}
@@ -2187,11 +2172,11 @@ public class AttributeValueImpl implements AttributeValue {
 	@Override
 	public void addToPolyline(Collection<? extends Point2D<?, ?>> pts) {
 		final Point2D<?, ?>[] tab;
-		if (this.value instanceof Point2D[]) {
-			final int size = ((Point2D<?, ?>[]) this.value).length;
+		if (this.value instanceof Point2D[] arr) {
+			final var size = arr.length;
 			tab = new Point2D[size + pts.size()];
-			System.arraycopy(this.value, 0, tab, 0, size);
-			System.arraycopy(this.value, 0, tab, size, pts.size());
+			System.arraycopy(arr, 0, tab, 0, size);
+			System.arraycopy(arr, 0, tab, size, pts.size());
 		} else {
 			tab = new Point2D[pts.size()];
 			pts.toArray(tab);
@@ -2203,7 +2188,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	private InetAddress extractInetAddress() {
 		try {
-			final InetAddress adr = InetAddress.getByName(this.value.toString());
+			final var adr = InetAddress.getByName(this.value.toString());
 			if (adr != null) {
 				return adr;
 			}
@@ -2215,8 +2200,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Pure
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public InetAddress getInetAddress() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		try {
 			assertAssignedAndNotNull();
@@ -2228,10 +2212,10 @@ public class AttributeValueImpl implements AttributeValue {
 			case OBJECT:
 				return getInetAddressFromObject();
 			case URI:
-				final URI uri = (URI) this.value;
+				final var uri = (URI) this.value;
 				return InetAddress.getByName(uri.getHost());
 			case URL:
-				final URL url = (URL) this.value;
+				final var url = (URL) this.value;
 				return InetAddress.getByName(url.getHost());
 			case POINT:
 			case POINT3D:
@@ -2254,11 +2238,11 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private InetAddress getInetAddressFromObject() throws InvalidAttributeTypeException {
-		if (this.value instanceof InetAddress) {
-			return (InetAddress) this.value;
+		if (this.value instanceof InetAddress adr) {
+			return adr;
 		}
-		if (this.value instanceof InetSocketAddress) {
-			return ((InetSocketAddress) this.value).getAddress();
+		if (this.value instanceof InetSocketAddress adr) {
+			return adr.getAddress();
 		}
 		if (this.value != null) {
 			return extractInetAddress();
@@ -2314,8 +2298,8 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return getEnumerationFromString();
 			case OBJECT:
-				if (this.value instanceof Enum<?>) {
-					return (Enum<?>) this.value;
+				if (this.value instanceof Enum<?> en) {
+					return en;
 				}
 				break;
 			case REAL:
@@ -2357,8 +2341,8 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return getEnumerationFromString(type);
 			case OBJECT:
-				if (this.value instanceof Enum<?>) {
-					return type.cast(this.value);
+				if (this.value instanceof Enum<?> en) {
+					return type.cast(en);
 				}
 				break;
 			case REAL:
@@ -2393,10 +2377,10 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Enum<?> getEnumerationFromString() throws ClassNotFoundException, InvalidAttributeTypeException {
-		final int index = ((String) this.value).lastIndexOf('.');
+		final var index = ((String) this.value).lastIndexOf('.');
 		if (index >= 0) {
-			final String classname = ((String) this.value).substring(0, index);
-			final String enumName = ((String) this.value).substring(index + 1);
+			final var classname = ((String) this.value).substring(0, index);
+			final var enumName = ((String) this.value).substring(index + 1);
 			final Class classType = Class.forName(classname);
 			if (Enum.class.isAssignableFrom(classType)) {
 				return Enum.valueOf(classType, enumName);
@@ -2406,11 +2390,11 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private <T extends Enum<T>> T getEnumerationFromString(Class<T> type) throws Exception {
-		final int index = ((String) this.value).lastIndexOf('.');
+		final var index = ((String) this.value).lastIndexOf('.');
 		if (index >= 0) {
-			final String classname = ((String) this.value).substring(0, index);
-			final String enumName = ((String) this.value).substring(index + 1);
-			final Class<?> classType = Class.forName(classname);
+			final var classname = ((String) this.value).substring(0, index);
+			final var enumName = ((String) this.value).substring(index + 1);
+			final var classType = Class.forName(classname);
 			assert type.equals(classType);
 			return Enum.valueOf(type, enumName);
 		}

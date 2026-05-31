@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,15 @@ package org.arakhne.afc.util;
 
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Utilities class that permits to obtain output parameters for Java functions.
  *
  * <p>The generic type describes the type of the parameter.
  *
  * <p>Example of the classic swap function:
- * <pre>{@code 
+ * <pre><code>
  * class SwapTest {
  *   public static void swap(OutputParameter&lt;Long&gt; a, OutputParameter&lt;Long&gt; b) {
  *     Long tmp = a.get();
@@ -49,14 +48,14 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
  *      System.out.println("after, y="+opy.get());
  *   }
  * }
- * }</pre>
+ * </code></pre>
  *
- * <p>The example outputs the text:<pre>{@code 
+ * <p>The example outputs the text:<pre><code>
  * before, x=24
  * before, y=36
  * after, x=36
  * after, y=24
- * }</pre>
+ * </code></pre>
  *
  * @param <T> is the type of the value to output with this object.
  * @author $Author: sgalland$
@@ -103,7 +102,7 @@ public class OutputParameter<T> {
 	 * @return the old value of the parameter.
 	 */
 	public T set(T newValue) {
-		final T obj = this.object;
+		final var obj = this.object;
 		this.object = newValue;
 		return obj;
 	}

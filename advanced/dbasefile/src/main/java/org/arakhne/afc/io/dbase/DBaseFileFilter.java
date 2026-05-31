@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ package org.arakhne.afc.io.dbase;
 import java.io.File;
 import java.net.URL;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.inputoutput.endian.EndianNumbers;
 import org.arakhne.afc.inputoutput.filefilter.AbstractFileFilter;
 import org.arakhne.afc.inputoutput.filetype.FileType;
@@ -32,6 +30,7 @@ import org.arakhne.afc.inputoutput.filetype.MagicNumber;
 import org.arakhne.afc.inputoutput.filetype.MagicNumberStream;
 import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to filter the files to show only
@@ -144,14 +143,14 @@ public class DBaseFileFilter extends AbstractFileFilter {
 		@Pure
 		protected final boolean isContentType(MagicNumberStream stream) {
 			try {
-				byte abyte = stream.read(0);
+				var abyte = stream.read(0);
 				if (abyte != 0x03 && abyte != 0x83 && abyte != 0x8B && abyte != 0x8E) {
 					return false;
 				}
 
 				// Read the count of columns
-				final byte[] bytes = stream.read(8, 2);
-				final int fieldCount = (EndianNumbers.toLEShort(bytes[0], bytes[1]) - 1) / 32 - 1;
+				final var bytes = stream.read(8, 2);
+				final var fieldCount = (EndianNumbers.toLEShort(bytes[0], bytes[1]) - 1) / 32 - 1;
 				if (fieldCount < 0) {
 					return false;
 				}

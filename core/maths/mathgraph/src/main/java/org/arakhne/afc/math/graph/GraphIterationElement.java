@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,10 @@ package org.arakhne.afc.math.graph;
 
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Describe an element of the graph during an iteration.
  *
@@ -98,7 +97,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 		this.fromStartPoint = fromStartPoint;
 
 		final PT otherPoint = segment.getOtherSidePoint(point);
-		this.culDeSac = (otherPoint != null) && (otherPoint != point) && otherPoint.isFinalConnectionPoint();
+		this.culDeSac = otherPoint != null && otherPoint != point && otherPoint.isFinalConnectionPoint();
 
 		this.lastReachableSegment = this.culDeSac;
 
@@ -162,7 +161,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		toJson(buffer);
 		return buffer.toString();
 	}
@@ -182,15 +181,15 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	@Pure
 	@Override
 	public final int compareTo(Object obj) {
-		if (obj instanceof GraphIterationElement<?, ?>) {
-			final GraphSegment<?, ?> sgmt = ((GraphIterationElement<?, ?>) obj).getSegment();
+		if (obj instanceof GraphIterationElement obj0) {
+			final var sgmt = obj0.getSegment();
 			return compareSegments(this.currentSegment, sgmt);
 		}
-		if (obj instanceof GraphSegment<?, ?>) {
-			return compareSegments(this.currentSegment, (GraphSegment<?, ?>) obj);
+		if (obj instanceof GraphSegment<?, ?> sgmt) {
+			return compareSegments(this.currentSegment, sgmt);
 		}
-		final int h1 = (obj == null) ? 0 : obj.hashCode();
-		final int h2 = (this.currentSegment == null) ? 0 : this.currentSegment.hashCode();
+		final var h1 = obj == null ? 0 : obj.hashCode();
+		final var h2 = this.currentSegment == null ? 0 : this.currentSegment.hashCode();
 		return h2 - h1;
 	}
 
@@ -203,11 +202,11 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	 *     or {@code 0} if {@code firstSegment} is equal to {@code secondSegment}.
 	 */
 	@Pure
-	@SuppressWarnings({ "unchecked", "rawtypes", "static-method" })
+	@SuppressWarnings({ "unchecked", "static-method" })
 	protected int compareSegments(GraphSegment<?, ?> firstSegment, GraphSegment<?, ?> secondSegment) {
-		if (firstSegment instanceof Comparable) {
+		if (firstSegment instanceof Comparable cmp) {
 			try {
-				return ((Comparable) firstSegment).compareTo(secondSegment);
+				return cmp.compareTo(secondSegment);
 			} catch (AssertionError e) {
 				throw e;
 			} catch (Throwable e) {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,8 @@ package org.arakhne.afc.math.physics;
 
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A <tt>SpeedUnit</tt> represents speed at a given unit of
@@ -95,7 +94,7 @@ public enum SpeedUnit {
 	 */
 	@Pure
 	public SpeedUnit lower() {
-		final int o = ordinal();
+		final var o = ordinal();
 		if (o <= 0) {
 			return this;
 		}
@@ -111,8 +110,8 @@ public enum SpeedUnit {
 	 */
 	@Pure
 	public SpeedUnit upper() {
-		final int o = ordinal();
-		final SpeedUnit[] units = values();
+		final var o = ordinal();
+		final var units = values();
 		if (o >= units.length - 1) {
 			return this;
 		}

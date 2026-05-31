@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.IterableNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class is an postfixed iterator on a tree.
  * It treats the parent node after going inside the child nodes.
@@ -88,9 +87,8 @@ public abstract class AbstractPostfixDepthFirstTreeIterator<P extends IterableNo
 	protected abstract boolean isTraversableParent(P parent);
 
 	private void startIterator() {
-		final P root = this.availableNodes.isEmpty() ? null : this.availableNodes.pop();
-		if ((root != null)
-				&& (isTraversableParent(root))) {
+		final var root = this.availableNodes.isEmpty() ? null : this.availableNodes.pop();
+		if (root != null && isTraversableParent(root)) {
 			this.availableNodes.push(root);
 			fillNodeList(root);
 		}
@@ -103,18 +101,18 @@ public abstract class AbstractPostfixDepthFirstTreeIterator<P extends IterableNo
 	 * @param parent is the node from which the tree must be explored.
 	 */
 	private void fillNodeList(P parent) {
-		P prt = parent;
-		if ((prt != null) && (prt.isLeaf())) {
+		var prt = parent;
+		if (prt != null && prt.isLeaf()) {
 			return;
 		}
 		while (prt != null) {
 			if (!prt.isLeaf()) {
 				if (!this.expandedNodes.contains(prt)) {
 					this.expandedNodes.add(prt);
-					for (int i = prt.getChildCount() - 1; i >= 0; --i) {
-						final C child = prt.getChildAt(i);
+					for (var i = prt.getChildCount() - 1; i >= 0; --i) {
+						final var child = prt.getChildAt(i);
 						if (child != null) {
-							final P cn = toTraversableChild(prt, child);
+							final var cn = toTraversableChild(prt, child);
 							if (cn != null) {
 								this.availableNodes.push(cn);
 							}
@@ -125,7 +123,7 @@ public abstract class AbstractPostfixDepthFirstTreeIterator<P extends IterableNo
 				}
 			}
 			prt = this.availableNodes.isEmpty() ? null : this.availableNodes.peek();
-			if ((prt != null) && (prt.isLeaf())) {
+			if (prt != null && prt.isLeaf()) {
 				return;
 			}
 		}
@@ -150,7 +148,7 @@ public abstract class AbstractPostfixDepthFirstTreeIterator<P extends IterableNo
 			throw new NoSuchElementException();
 		}
 
-		final P current = this.availableNodes.pop();
+		final var current = this.availableNodes.pop();
 		if (current == null) {
 			throw new ConcurrentModificationException();
 		}
@@ -169,7 +167,7 @@ public abstract class AbstractPostfixDepthFirstTreeIterator<P extends IterableNo
 
 	@Override
 	public void remove() {
-		final P lr = this.lastReplied;
+		final var lr = this.lastReplied;
 		this.lastReplied = null;
 		if (lr == null) {
 			throw new NoSuchElementException();

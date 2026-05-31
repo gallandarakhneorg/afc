@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d1.afp;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a rectangular shape on a plane.
+/** Functional interface that represented a rectangular shape on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -145,8 +144,8 @@ public interface RectangularShape1afp<
      * @param cornerY the Y coordinate of the specified corner point
      */
 	default void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
-		final double demiWidth = Math.abs(centerX - cornerX);
-		final double demiHeight = Math.abs(centerY - cornerY);
+		final var demiWidth = Math.abs(centerX - cornerX);
+		final var demiHeight = Math.abs(centerY - cornerY);
 		setFromCorners(centerX - demiWidth, centerY - demiHeight, centerX + demiWidth, centerY + demiHeight);
 	}
 

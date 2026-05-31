@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,6 @@
 
 package org.arakhne.afc.gis.tree;
 
-import java.util.Iterator;
-
-import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.GISElementSet;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.mapelement.MapElementConstants;
@@ -35,6 +30,8 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.iterator.BreadthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.NodeSelector;
+import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a quad tree that contains map elements
@@ -81,7 +78,7 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 	@Override
 	@Pure
 	public final P getNearest(Point2D<?, ?> position) {
-		final Pair<P, Double> data = getNearestData(position.getX(), position.getY());
+		final var data = getNearestData(position.getX(), position.getY());
 		if (data != null) {
 			return data.getKey();
 		}
@@ -91,7 +88,7 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 	@Override
 	@Pure
 	public final P getNearest(double x, double y) {
-		final Pair<P, Double> data = getNearestData(x, y);
+		final var data = getNearestData(x, y);
 		if (data != null) {
 			return data.getKey();
 		}
@@ -107,7 +104,7 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 	@Override
 	@Pure
 	public Pair<P, Double> getNearestData(double x, double y) {
-		final NearNodeSelector<P> selector = new NearNodeSelector<>(x, y);
+		final var selector = new NearNodeSelector<P>(x, y);
 		return selector.select(getTree());
 	}
 
@@ -143,7 +140,7 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 			if (node.isRoot()) {
 				return true;
 			}
-			final double distance = node.distance(this.point.getX(), this.point.getY());
+			final var distance = node.distance(this.point.getX(), this.point.getY());
 			return distance <= (this.minDistance + MapElementConstants.POINT_FUSION_DISTANCE);
 		}
 
@@ -153,13 +150,11 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 		 * @return the next pair or {@code null}.
 		 */
 		public Pair<P, Double> select(Tree<P, GISTreeSetNode<P>> tree) {
-			final Iterator<GISTreeSetNode<P>> iter = new BreadthFirstTreeIterator<>(tree, this);
-			GISTreeSetNode<P> node;
-			double distance;
+			final var iter = new BreadthFirstTreeIterator<>(tree, this);
 			while (iter.hasNext()) {
-				node = iter.next();
-				for (final P element : node.getAllUserData()) {
-					distance = element.getDistance(this.point);
+				final var node = iter.next();
+				for (final var element : node.getAllUserData()) {
+					final var distance = element.getDistance(this.point);
 					if (distance < this.minDistance) {
 						this.minDistance = distance;
 						this.bestResult = element;

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 	 * @param segment is the segment from which to start.
 	 * @param starting_point is the segment's point indicating the direction.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times
-	 *     the same segment, otherwhise {@code false}.
+	 *     the same segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments indicates if the iterator is taking into account
 	 *     the orientation of the road segments. If {@code true} it assumes that
 	 *     a segment could be reached by both its end points. If {@code false} it
@@ -57,6 +57,7 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 	 *     see {@link #DistanceBasedRoadNetworkIterator(RoadSegmentContainer, double, double, RoadSegment,
 	 *     RoadConnection, boolean, boolean, DynamicDepthUpdater)}.
 	 */
+	@SuppressWarnings("removal")
 	@Deprecated(since = "16.0", forRemoval = true)
 	DistanceBasedRoadNetworkIterator(
 			RoadSegmentContainer network,
@@ -79,7 +80,7 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 	 * @param segment is the segment from which to start.
 	 * @param starting_point is the segment's point indicating the direction.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times
-	 *     the same segment, otherwhise {@code false}.
+	 *     the same segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments indicates if the iterator is taking into account
 	 *     the orientation of the road segments. If {@code true} it assumes that
 	 *     a segment could be reached by both its end points. If {@code false} it

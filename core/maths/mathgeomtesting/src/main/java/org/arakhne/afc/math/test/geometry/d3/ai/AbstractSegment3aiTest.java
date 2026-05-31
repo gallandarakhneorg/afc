@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ import org.arakhne.afc.math.geometry.d3.ai.Segment3ai;
 import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
 
 @SuppressWarnings("all")
-public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?, ?, B>,
-		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+public abstract class AbstractSegment3aiTest<T extends Segment3ai<T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
 
 	protected static Quaternion4d newAxisAngleZ(double angle) {
 		final Quaternion4d q = new Quaternion4d();
@@ -92,18 +92,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
-	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equals(createSegment(0, 0, 0, 5, 5, 0).getPathIterator()));
-		assertFalse(this.shape.equals(createSegment(0, 0, 0, 10, 6, 0).getPathIterator()));
-		assertFalse(this.shape.equals(createAlignedBox(0, 0, 0, 10, 5, 0).getPathIterator()));
-		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		assertTrue(this.shape.equals(createSegment(0, 0, 0, 10, 5, 0).getPathIterator()));
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
 	public void equalsToShape(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equalsToShape(null));
@@ -111,19 +99,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertFalse(this.shape.equalsToShape((T) createSegment(0, 0, 0, 10, 6, 0)));
 		assertTrue(this.shape.equalsToShape(this.shape));
 		assertTrue(this.shape.equalsToShape((T) createSegment(0, 0, 0, 10, 5, 0)));
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void equalsToPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 5, 5, 0).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 10, 6, 0).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createAlignedBox(0, 0, 0, 10, 5, 0).getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 10, 5, 0).getPathIterator()));
 	}
 
 	@ParameterizedTest(name = "{index} => {0}")
@@ -371,80 +346,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 	}
-
-	@Override
-	public void getPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		PathIterator3ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 10, 5, 0);
-		assertNoElement(pi);
-	}
-
-	@Override
-	public void getPathIteratorTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		PathIterator3ai pi;
-		
-		tr = new Transform3D();
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 0,0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 10,5, 0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4f, 4.5f, 0);
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 3, 5, 0);
-		assertElement(pi, PathElementType.LINE_TO, 13, 10, 0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
-		pi = this.shape.getPathIterator(tr); 
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 4, 11, 0);
-		assertNoElement(pi);
-	}
-
-	@Override
-    public void createTransformedShape(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	T s;
-    	Transform3D tr;
-    	
-    	tr = new Transform3D();    	
-    	s = (T) this.shape.createTransformedShape(tr);
-		assertEquals(0, s.getX1());
-		assertEquals(0, s.getY1());
-		assertEquals(10, s.getX2());
-		assertEquals(5, s.getY2());
-
-    	tr = new Transform3D();
-    	tr.setTranslation(3.4f, 4.5f, 0);
-    	s = (T) this.shape.createTransformedShape(tr);
-		assertEquals(3, s.getX1());
-		assertEquals(5, s.getY1());
-		assertEquals(13, s.getX2());
-		assertEquals(10, s.getY2());
-
-    	tr = new Transform3D();
-    	tr.setRotation(newAxisAngleZ(MathConstants.PI));
-    	s = (T) this.shape.createTransformedShape(tr);
-		assertEquals(0, s.getX1());
-		assertEquals(0, s.getY1());
-		assertEquals(-10, s.getX2());
-		assertEquals(-5, s.getY2());
-
-    	tr = new Transform3D();
-    	tr.setRotation(newAxisAngleZ(MathConstants.QUARTER_PI));
-    	s = (T) this.shape.createTransformedShape(tr);
-		assertEquals(0, s.getX1());
-		assertEquals(0, s.getY1());
-		assertEquals(4, s.getX2());
-		assertEquals(11, s.getY2());
-    }
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
@@ -1180,44 +1081,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(-4, r.getY1());
 		assertEquals(7, r.getX2());
 		assertEquals(1, r.getY2());
-	}
-
-	@Override
-	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	T s;
-    	Transform3D tr;
-    	
-    	tr = new Transform3D();    	
-    	s = (T) this.shape.operator_multiply(tr);
-		assertEquals(0, s.getX1());
-		assertEquals(0, s.getY1());
-		assertEquals(10, s.getX2());
-		assertEquals(5, s.getY2());
-
-    	tr = new Transform3D();
-    	tr.setTranslation(3.4f, 4.5f, 0);
-    	s = (T) this.shape.operator_multiply(tr);
-		assertEquals(3, s.getX1());
-		assertEquals(5, s.getY1());
-		assertEquals(13, s.getX2());
-		assertEquals(10, s.getY2());
-
-    	tr = new Transform3D();
-    	tr.setRotation(newAxisAngleZ(MathConstants.PI));
-    	s = (T) this.shape.operator_multiply(tr);
-		assertEquals(0, s.getX1());
-		assertEquals(0, s.getY1());
-		assertEquals(-10, s.getX2());
-		assertEquals(-5, s.getY2());
-
-    	tr = new Transform3D();
-    	tr.setRotation(newAxisAngleZ(MathConstants.QUARTER_PI));
-    	s = (T) this.shape.operator_multiply(tr);
-		assertEquals(0, s.getX1());
-		assertEquals(0, s.getY1());
-		assertEquals(4, s.getX2());
-		assertEquals(11, s.getY2());
 	}
 
 	@Override

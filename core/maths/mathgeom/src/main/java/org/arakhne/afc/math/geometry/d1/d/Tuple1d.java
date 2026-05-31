@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ package org.arakhne.afc.math.geometry.d1.d;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.GeomFactory1D;
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
@@ -32,6 +30,7 @@ import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 1.5D tuple with 2 double precision floating-point numbers.
  *
@@ -139,6 +138,7 @@ public class Tuple1d<RT extends Tuple1d<? super RT>> implements Tuple2D<RT> {
 	 *
 	 * @return the factory.
 	 */
+	@SuppressWarnings("static-method")
 	public GeomFactory1D<Vector1d, Point1d> getGeomFactory() {
 		return GeomFactory1d.SINGLETON;
 	}
@@ -165,7 +165,7 @@ public class Tuple1d<RT extends Tuple1d<? super RT>> implements Tuple2D<RT> {
 	@Override
 	public RT clone() {
 		try {
-			final RT clone = (RT) super.clone();
+			final var clone = (RT) super.clone();
 			clone.segment = new WeakReference<>(this.segment.get());
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -386,16 +386,13 @@ public class Tuple1d<RT extends Tuple1d<? super RT>> implements Tuple2D<RT> {
 		if (object == this) {
 			return true;
 		}
-		if (object instanceof Vector1D<?, ?, ?>) {
-			final Point1D<?, ?, ?> tuple = (Point1D<?, ?, ?>) object;
+		if (object instanceof Vector1D tuple) {
 			return tuple.getSegment() == getSegment() && tuple.getX() == getX() && tuple.getY() == getY();
 		}
-		if (object instanceof Point1D<?, ?, ?>) {
-			final Point1D<?, ?, ?> tuple = (Point1D<?, ?, ?>) object;
+		if (object instanceof Point1D tuple) {
 			return tuple.getSegment() == getSegment() && tuple.getX() == getX() && tuple.getY() == getY();
 		}
-		if (object instanceof Tuple2D<?>) {
-			final Tuple2D<?> tuple = (Tuple2D<?>) object;
+		if (object instanceof Tuple2D tuple) {
 			return tuple.getX() == getX() && tuple.getY() == getY();
 		}
 		return false;
@@ -404,17 +401,17 @@ public class Tuple1d<RT extends Tuple1d<? super RT>> implements Tuple2D<RT> {
 	@Pure
 	@Override
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Objects.hashCode(this.segment.get());
 		bits = 31 * bits + Double.hashCode(this.x);
 		bits = 31 * bits + Double.hashCode(this.y);
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
         return objectDescription.toString();
 	}
@@ -422,8 +419,8 @@ public class Tuple1d<RT extends Tuple1d<? super RT>> implements Tuple2D<RT> {
 	@Override
 	public void toJson(JsonBuffer buffer) {
 		buffer.add("segment", getSegment()); //$NON-NLS-1$
-		buffer.add("x", getX()); //$NON-NLS-1$
-		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("x", Double.valueOf(getX())); //$NON-NLS-1$
+		buffer.add("y", Double.valueOf(getY())); //$NON-NLS-1$
 	}
 
 }

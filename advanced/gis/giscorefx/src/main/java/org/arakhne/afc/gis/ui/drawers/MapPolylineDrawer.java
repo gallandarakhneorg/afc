@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,11 @@
 
 package org.arakhne.afc.gis.ui.drawers;
 
-import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Drawer of a map polyline.
  *
@@ -48,7 +46,7 @@ public class MapPolylineDrawer extends AbstractMapPolylineDrawer<MapPolyline> {
 	public void draw(ZoomableGraphicsContext gc, MapPolyline element) {
 		definePath(gc, element);
 
-		final Color color = gc.rgb(getDrawingColor(element));
+		final var color = gc.rgb(getDrawingColor(element));
 		gc.setFill(null);
 		gc.setStroke(color);
 		if (element.isWidePolyline()) {

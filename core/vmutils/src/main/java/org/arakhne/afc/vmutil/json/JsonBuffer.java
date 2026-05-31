@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,8 @@
 package org.arakhne.afc.vmutil.json;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -112,10 +109,10 @@ public class JsonBuffer {
 	 */
 	public void retainAll(String... keys) {
 		if (keys != null && keys.length > 0) {
-			final Set<String> kk = new TreeSet<>(Arrays.asList(keys));
-			final Iterator<Entry<String, Object>> iterator = this.content.entrySet().iterator();
+			final var kk = new TreeSet<>(Arrays.asList(keys));
+			final var iterator = this.content.entrySet().iterator();
 			while (iterator.hasNext()) {
-				final Entry<String, Object> entry = iterator.next();
+				final var entry = iterator.next();
 				if (!kk.contains(entry.getKey())) {
 					iterator.remove();
 				}
@@ -139,9 +136,9 @@ public class JsonBuffer {
 	 * @return the string representation.
 	 */
 	public static String toString(String name, Object value, Object... otherPairs) {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		buffer.add(name, value);
-		for (int i = 0; i < otherPairs.length; i += 2) {
+		for (var i = 0; i < otherPairs.length; i += 2) {
 			buffer.add(Objects.toString(otherPairs[i]), otherPairs[i + 1]);
 		}
 		return buffer.toString();
@@ -154,14 +151,14 @@ public class JsonBuffer {
 	 * @since 15.0
 	 */
 	public static String toString(JsonableObject value) {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		value.toJson(buffer);
 		return buffer.toString();
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
+		final var buffer = new StringBuilder();
 		toString(buffer, 0, this.content);
 		return buffer.toString();
 	}
@@ -171,15 +168,15 @@ public class JsonBuffer {
 	}
 
 	private static void toString(StringBuilder buffer, int indent, JsonableObject jsonObject) {
-		final JsonBuffer jsonBuffer = new JsonBuffer();
+		final var jsonBuffer = new JsonBuffer();
 		jsonObject.toJson(jsonBuffer);
 		toString(buffer, indent, jsonBuffer);
 	}
 
 	private static void toString(StringBuilder buffer, int indent, Map<?, ?> map) {
 		buffer.append("{\n"); //$NON-NLS-1$
-		boolean first = true;
-		for (final Entry<?, ?> entry : map.entrySet()) {
+		var first = true;
+		for (final var entry : map.entrySet()) {
 			if (first) {
 				first = false;
 			} else {
@@ -199,8 +196,8 @@ public class JsonBuffer {
 
 	private static void toString(StringBuilder buffer, int indent, Iterable<?> iterable) {
 		buffer.append("[\n"); //$NON-NLS-1$
-		boolean first = true;
-		for (final Object value : iterable) {
+		var first = true;
+		for (final var value : iterable) {
 			if (first) {
 				first = false;
 			} else {
@@ -219,22 +216,22 @@ public class JsonBuffer {
 		}
 		if (value == null) {
 			buffer.append(NULL_CONSTANT);
-		} else if (value instanceof JsonBuffer) {
-			toString(buffer, indent + 1, (JsonBuffer) value);
-		} else if (value instanceof JsonableObject) {
-			toString(buffer, indent + 1, (JsonableObject) value);
-		} else if (value instanceof Map<?, ?>) {
-			toString(buffer, indent + 1, (Map<?, ?>) value);
-		} else if (value instanceof Iterable<?>) {
-			toString(buffer, indent + 1, (Iterable<?>) value);
+		} else if (value instanceof JsonBuffer buf) {
+			toString(buffer, indent + 1, buf);
+		} else if (value instanceof JsonableObject obj) {
+			toString(buffer, indent + 1, obj);
+		} else if (value instanceof Map map) {
+			toString(buffer, indent + 1, map);
+		} else if (value instanceof Iterable it) {
+			toString(buffer, indent + 1, it);
 		} else if (value instanceof Number) {
 			buffer.append(Objects.toString(value));
-		} else if (value instanceof Boolean) {
-			buffer.append(((Boolean) value).booleanValue() ? TRUE_CONSTANT : FALSE_CONSTANT);
+		} else if (value instanceof Boolean bol) {
+			buffer.append(bol.booleanValue() ? TRUE_CONSTANT : FALSE_CONSTANT);
 		} else {
-			final String rawValue = Objects.toString(value);
+			final var rawValue = Objects.toString(value);
 			buffer.append("\""); //$NON-NLS-1$
-			final StringEscaper escaper = new StringEscaper(
+			final var escaper = new StringEscaper(
 					StringEscaper.JAVA_ESCAPE_CHAR,
 					StringEscaper.JAVA_STRING_CHAR, StringEscaper.JAVA_ESCAPE_CHAR, StringEscaper.JSON_SPECIAL_ESCAPED_CHAR);
 			buffer.append(escaper.escape(rawValue));
@@ -243,7 +240,7 @@ public class JsonBuffer {
 	}
 
 	private static void doIndent(StringBuilder buffer, int level) {
-		for (int i = 0; i < level; ++i) {
+		for (var i = 0; i < level; ++i) {
 			buffer.append(INDENT_STRING);
 		}
 	}

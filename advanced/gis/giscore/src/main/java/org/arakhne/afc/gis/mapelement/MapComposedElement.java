@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.location.GeoLocationPointList;
@@ -35,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Abstract class that contains a set of grouped points (aka. groups).
  * This class permits to implement polylines and polygons...
@@ -77,11 +76,11 @@ public abstract class MapComposedElement extends MapElement {
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		final JsonBuffer groups = new JsonBuffer();
-		int grpIdx = 0;
-		for (final PointGroup grp : groups()) {
-			final JsonBuffer group = new JsonBuffer();
-			group.add("index", grpIdx); //$NON-NLS-1$
+		final var groups = new JsonBuffer();
+		var grpIdx = 0;
+		for (final var grp : groups()) {
+			final var group = new JsonBuffer();
+			group.add("index", Integer.valueOf(grpIdx)); //$NON-NLS-1$
 			groups.add("points", grp.points()); //$NON-NLS-1$
 			++grpIdx;
 		}
@@ -95,7 +94,7 @@ public abstract class MapComposedElement extends MapElement {
 	@Override
 	@Pure
 	public MapComposedElement clone() {
-		final MapComposedElement element = (MapComposedElement) super.clone();
+		final var element = (MapComposedElement) super.clone();
 		if (this.partIndexes == null) {
 			element.partIndexes = null;
 		} else {
@@ -123,28 +122,27 @@ public abstract class MapComposedElement extends MapElement {
 		if (element == this) {
 			return true;
 		}
-		if (element instanceof MapComposedElement) {
-			final MapComposedElement e = (MapComposedElement) element;
-			final int ptsCount = getPointCount();
+		if (element instanceof MapComposedElement e) {
+			final var ptsCount = getPointCount();
 			if (ptsCount != e.getPointCount()) {
 				return false;
 			}
-			for (int i = 0; i < ptsCount; ++i) {
-				final Point2d p1 = getPointAt(i);
-				final Point2d p2 = e.getPointAt(i);
+			for (var i = 0; i < ptsCount; ++i) {
+				final var p1 = getPointAt(i);
+				final var p2 = e.getPointAt(i);
 				if (!p1.epsilonEquals(p2, MapElementConstants.POINT_FUSION_DISTANCE)) {
 					return false;
 				}
 			}
-			int grpCount = getGroupCount();
+			var grpCount = getGroupCount();
 			if (grpCount != e.getGroupCount()) {
 				return false;
 			}
 			// Because the first group was not inside the array
 			--grpCount;
-			for (int i = 0; i < grpCount; ++i) {
-				final int idx1 = this.partIndexes[i];
-				final int idx2 = e.partIndexes[i];
+			for (var i = 0; i < grpCount; ++i) {
+				final var idx1 = this.partIndexes[i];
+				final var idx2 = e.partIndexes[i];
 				if (idx1 != idx2) {
 					return false;
 				}
@@ -188,26 +186,26 @@ public abstract class MapComposedElement extends MapElement {
 			return null;
 		}
 
-		final Iterator<Point2d> iterPoints = points().iterator();
+		final var iterPoints = points().iterator();
 		if (!iterPoints.hasNext()) {
 			return null;
 		}
 
-		Point2d point = iterPoints.next();
+		var point = iterPoints.next();
 		if (point == null) {
 			return null;
 		}
 
-		double minx = point.getX();
-		double maxx = point.getX();
-		double miny = point.getY();
-		double maxy = point.getY();
+		var minx = point.getX();
+		var maxx = point.getX();
+		var miny = point.getY();
+		var maxy = point.getY();
 
 		while (iterPoints.hasNext()) {
 			point = iterPoints.next();
 			if (point != null) {
-				final double x = point.getX();
-				final double y = point.getY();
+				final var x = point.getX();
+				final var y = point.getY();
 				if (x < minx) {
 					minx = x;
 				}
@@ -222,7 +220,7 @@ public abstract class MapComposedElement extends MapElement {
 				}
 			}
 		}
-		final Rectangle2d r = new Rectangle2d();
+		final var r = new Rectangle2d();
 		r.setFromCorners(minx, miny, maxx, maxy);
 		return r;
 	}
@@ -275,8 +273,8 @@ public abstract class MapComposedElement extends MapElement {
 		if (point == null) {
 			return false;
 		}
-		for (int i = 0; i < getPointCount(); ++i) {
-			final Point2d cur = getPointAt(i);
+		for (var i = 0; i < getPointCount(); ++i) {
+			final var cur = getPointAt(i);
 			if (cur.epsilonEquals(point, MapElementConstants.POINT_FUSION_DISTANCE)) {
 				return true;
 			}
@@ -289,10 +287,11 @@ public abstract class MapComposedElement extends MapElement {
 	 * @param point the point to compare with this coordinates
 	 * @param groupIndex into look for
 	 * @return true if p is already part of coordinates
+	 * @throws IndexOutOfBoundsException if {@code groupIndex} is out of bounds.
 	 */
 	@Pure
 	public boolean containsPoint(Point2D<?, ?> point, int groupIndex) {
-		final int grpCount = getGroupCount();
+		final var grpCount = getGroupCount();
 		if (groupIndex < 0) {
 			throw new IndexOutOfBoundsException(groupIndex + "<0"); //$NON-NLS-1$
 		}
@@ -303,8 +302,8 @@ public abstract class MapComposedElement extends MapElement {
 			return false;
 		}
 
-		for (int i = 0; i < getPointCountInGroup(groupIndex); ++i) {
-			final Point2d cur = getPointAt(groupIndex, i);
+		for (var i = 0; i < getPointCountInGroup(groupIndex); ++i) {
+			final var cur = getPointAt(groupIndex, i);
 			if (cur.epsilonEquals(point, MapElementConstants.POINT_FUSION_DISTANCE)) {
 				return true;
 			}
@@ -323,14 +322,14 @@ public abstract class MapComposedElement extends MapElement {
 		if (this.pointCoordinates == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int count = getGroupCount();
+		final var count = getGroupCount();
 		if (groupIndex < 0) {
 			throw new IndexOutOfBoundsException(groupIndex + "<0"); //$NON-NLS-1$
 		}
 		if (groupIndex >= count) {
 			throw new IndexOutOfBoundsException(groupIndex + ">=" + count); //$NON-NLS-1$
 		}
-		final int g = groupIndex - 1;
+		final var g = groupIndex - 1;
 		if (g >= 0 && this.partIndexes != null && g < this.partIndexes.length) {
 			return this.partIndexes[g];
 		}
@@ -348,7 +347,7 @@ public abstract class MapComposedElement extends MapElement {
 		if (this.pointCoordinates == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int count = getGroupCount();
+		final var count = getGroupCount();
 		if (groupIndex < 0) {
 			throw new IndexOutOfBoundsException(groupIndex + "<0"); //$NON-NLS-1$
 		}
@@ -377,7 +376,7 @@ public abstract class MapComposedElement extends MapElement {
 			return 0;
 		}
 
-		for (int i = 0; i < this.partIndexes.length; ++i) {
+		for (var i = 0; i < this.partIndexes.length; ++i) {
 			if (pointIndex < this.partIndexes[i]) {
 				return i;
 			}
@@ -397,8 +396,8 @@ public abstract class MapComposedElement extends MapElement {
 		if (groupIndex == 0 && this.pointCoordinates == null) {
 			return 0;
 		}
-		final int firstInGroup = firstInGroup(groupIndex);
-		final int lastInGroup = lastInGroup(groupIndex);
+		final var firstInGroup = firstInGroup(groupIndex);
+		final var lastInGroup = lastInGroup(groupIndex);
 		return (lastInGroup - firstInGroup) / 2 + 1;
 	}
 
@@ -412,7 +411,7 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	@Pure
 	public int getPointIndex(int groupIndex, int position) {
-		final int groupMemberCount = getPointCountInGroup(groupIndex);
+		final var groupMemberCount = getPointCountInGroup(groupIndex);
 		final int pos;
 		if (position < 0) {
 			pos = 0;
@@ -438,8 +437,8 @@ public abstract class MapComposedElement extends MapElement {
 			return -1;
 		}
 		Point2d cur = null;
-		int pos = -1;
-		for (int i = 0; i < getPointCountInGroup(groupIndex); ++i) {
+		var pos = -1;
+		for (var i = 0; i < getPointCountInGroup(groupIndex); ++i) {
 			cur = getPointAt(groupIndex, i);
 			if (cur.epsilonEquals(point2d, MapElementConstants.POINT_FUSION_DISTANCE)) {
 				pos = i;
@@ -458,7 +457,7 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	@Pure
 	public int getFirstPointIndexInGroup(int groupIndex) {
-		final int first = firstInGroup(groupIndex);
+		final var first = firstInGroup(groupIndex);
 		return first / 2;
 	}
 
@@ -470,7 +469,7 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	@Pure
 	public int getLastPointIndexInGroup(int groupIndex) {
-		final int last = lastInGroup(groupIndex);
+		final var last = lastInGroup(groupIndex);
 		return last / 2;
 	}
 
@@ -482,7 +481,7 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	@Pure
 	public PointGroup getGroupAt(int index) {
-		final int count = getGroupCount();
+		final var count = getGroupCount();
 		if (index < 0) {
 			throw new IndexOutOfBoundsException(index + "<0"); //$NON-NLS-1$
 		}
@@ -551,7 +550,7 @@ public abstract class MapComposedElement extends MapElement {
 			this.partIndexes = null;
 			pointIndex = 0;
 		} else {
-			double[] pts = new double[this.pointCoordinates.length + 2];
+			var pts = new double[this.pointCoordinates.length + 2];
 			System.arraycopy(this.pointCoordinates, 0, pts, 0, this.pointCoordinates.length);
 			pointIndex = pts.length - 2;
 			pts[pointIndex] = x;
@@ -588,7 +587,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
 	public int addPoint(double x, double y, int groupIndex) {
-		final int groupCount = getGroupCount();
+		final var groupCount = getGroupCount();
 
 		if (groupIndex < 0) {
 			throw new IndexOutOfBoundsException(groupIndex + "<0"); //$NON-NLS-1$
@@ -605,7 +604,7 @@ public abstract class MapComposedElement extends MapElement {
 			pointIndex = 0;
 		} else {
 			pointIndex = lastInGroup(groupIndex);
-			double[] pts = new double[this.pointCoordinates.length + 2];
+			var pts = new double[this.pointCoordinates.length + 2];
 
 			pointIndex += 2;
 
@@ -653,14 +652,14 @@ public abstract class MapComposedElement extends MapElement {
 			this.partIndexes = null;
 			pointIndex = 0;
 		} else {
-			double[] pts = new double[this.pointCoordinates.length + 2];
+			var pts = new double[this.pointCoordinates.length + 2];
 			System.arraycopy(this.pointCoordinates, 0, pts, 0, this.pointCoordinates.length);
 			pointIndex = pts.length - 2;
 			pts[pointIndex] = x;
 			pts[pointIndex + 1] = y;
 
-			final int groupCount = getGroupCount();
-			int[] grps = new int[groupCount];
+			final var groupCount = getGroupCount();
+			var grps = new int[groupCount];
 			if (this.partIndexes != null) {
 				System.arraycopy(this.partIndexes, 0, grps, 0, groupCount - 1);
 			}
@@ -701,7 +700,7 @@ public abstract class MapComposedElement extends MapElement {
 		if (this.pointCoordinates == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int grpCount = getGroupCount();
+		final var grpCount = getGroupCount();
 		if (groupIndex < 0) {
 			throw new IndexOutOfBoundsException(groupIndex + "<0"); //$NON-NLS-1$
 		}
@@ -709,10 +708,10 @@ public abstract class MapComposedElement extends MapElement {
 			throw new IndexOutOfBoundsException(groupIndex + ">" + grpCount); //$NON-NLS-1$
 		}
 
-		final int count = this.getPointCountInGroup(groupIndex);
-		final int first = firstInGroup(groupIndex);
-		double[] tmp = new double[count * 2];
-		for (int i = 0; i < count * 2; i += 2) {
+		final var count = this.getPointCountInGroup(groupIndex);
+		final var first = firstInGroup(groupIndex);
+		var tmp = new double[count * 2];
+		for (var i = 0; i < count * 2; i += 2) {
 			tmp[i] = this.pointCoordinates[first + 2 * count - 1 - (i + 1)];
 			tmp[i + 1] = this.pointCoordinates[first + 2 * count - 1  - i];
 		}
@@ -739,17 +738,17 @@ public abstract class MapComposedElement extends MapElement {
 		if (this.pointCoordinates == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		double[] tmp = new double[this.pointCoordinates.length];
-		for (int i = 0; i < this.pointCoordinates.length; i += 2) {
+		var tmp = new double[this.pointCoordinates.length];
+		for (var i = 0; i < this.pointCoordinates.length; i += 2) {
 			tmp[i] = this.pointCoordinates[this.pointCoordinates.length - 1 - (i + 1)];
 			tmp[i + 1] = this.pointCoordinates[this.pointCoordinates.length - 1 - i];
 		}
 		System.arraycopy(tmp, 0, this.pointCoordinates, 0, this.pointCoordinates.length);
 
 		if (this.partIndexes != null) {
-			int[] tmpint = new int[this.partIndexes.length];
+			var tmpint = new int[this.partIndexes.length];
 			//part 0 not inside the index array
-			for (int i = 0; i < this.partIndexes.length; ++i) {
+			for (var i = 0; i < this.partIndexes.length; ++i) {
 				tmpint[this.partIndexes.length - 1 - i] = this.pointCoordinates.length - this.partIndexes[i];
 			}
 			System.arraycopy(tmpint, 0, this.partIndexes, 0, this.partIndexes.length);
@@ -783,7 +782,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
 	public int insertPointAt(double x, double y, int groupIndex, int indexInGroup) {
-		final int groupCount = getGroupCount();
+		final var groupCount = getGroupCount();
 
 		if (groupIndex < 0) {
 			throw new IndexOutOfBoundsException(groupIndex + "<0"); //$NON-NLS-1$
@@ -799,10 +798,10 @@ public abstract class MapComposedElement extends MapElement {
 			this.partIndexes = null;
 			pointIndex = 0;
 		} else {
-			final int startIndex = firstInGroup(groupIndex);
+			final var startIndex = firstInGroup(groupIndex);
 
 			// Be sure that the member's index is in the group index's range
-			final int groupMemberCount = getPointCountInGroup(groupIndex);
+			final var groupMemberCount = getPointCountInGroup(groupIndex);
 			final int g;
 			if (indexInGroup < 0) {
 				g = 0;
@@ -816,7 +815,7 @@ public abstract class MapComposedElement extends MapElement {
 			pointIndex = startIndex + g * 2;
 
 			// Update the array of points
-			double[] pts = new double[this.pointCoordinates.length + 2];
+			var pts = new double[this.pointCoordinates.length + 2];
 			System.arraycopy(this.pointCoordinates, 0, pts, 0, pointIndex);
 			System.arraycopy(this.pointCoordinates, pointIndex, pts, pointIndex + 2, this.pointCoordinates.length - pointIndex);
 			pts[pointIndex] = x;
@@ -826,7 +825,7 @@ public abstract class MapComposedElement extends MapElement {
 
 			//Shift the following groups's indexes
 			if (this.partIndexes != null) {
-				for (int idx = groupIndex; idx < this.partIndexes.length; ++idx) {
+				for (var idx = groupIndex; idx < this.partIndexes.length; ++idx) {
 					this.partIndexes[idx] += 2;
 				}
 			}
@@ -851,8 +850,8 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	@Pure
 	public Point2d getPointAt(int index) {
-		final int count = getPointCount();
-		int idx = index;
+		final var count = getPointCount();
+		var idx = index;
 		if (idx < 0) {
 			idx = count + idx;
 		}
@@ -877,10 +876,10 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	@Pure
 	public Point2d getPointAt(int groupIndex, int indexInGroup) {
-		final int startIndex = firstInGroup(groupIndex);
+		final var startIndex = firstInGroup(groupIndex);
 
-		// Besure that the member's index is in the group index's range
-		final int groupMemberCount = getPointCountInGroup(groupIndex);
+		// Be sure that the member's index is in the group index's range
+		final var groupMemberCount = getPointCountInGroup(groupIndex);
 		if (indexInGroup < 0) {
 			throw new IndexOutOfBoundsException(indexInGroup + "<0"); //$NON-NLS-1$
 		}
@@ -923,7 +922,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
 	public boolean setPointAt(int index, double x, double y, boolean canonize) {
-		final int count = getPointCount();
+		final var count = getPointCount();
 		int idx = index;
 		if (idx < 0) {
 			idx = count + idx;
@@ -934,9 +933,9 @@ public abstract class MapComposedElement extends MapElement {
 		if (idx >= count) {
 			throw new IndexOutOfBoundsException(idx + ">=" + count); //$NON-NLS-1$
 		}
-		final PointFusionValidator validator = getPointFusionValidator();
-		final int idx1 = idx * 2;
-		final int idx2 = idx1 + 1;
+		final var validator = getPointFusionValidator();
+		final var idx1 = idx * 2;
+		final var idx2 = idx1 + 1;
 		if (!validator.isSame(x, y, this.pointCoordinates[idx1], this.pointCoordinates[idx2])) {
 			this.pointCoordinates[idx1] = x;
 			this.pointCoordinates[idx2] = y;
@@ -1011,19 +1010,19 @@ public abstract class MapComposedElement extends MapElement {
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
 	public boolean setPointAt(int groupIndex, int indexInGroup, double x, double y, boolean canonize) {
-		final int startIndex = firstInGroup(groupIndex);
+		final var startIndex = firstInGroup(groupIndex);
 
 		// Besure that the member's index is in the group index's range
-		final int groupMemberCount = getPointCountInGroup(groupIndex);
+		final var groupMemberCount = getPointCountInGroup(groupIndex);
 		if (indexInGroup < 0) {
 			throw new IndexOutOfBoundsException(indexInGroup + "<0"); //$NON-NLS-1$
 		}
 		if (indexInGroup >= groupMemberCount) {
 			throw new IndexOutOfBoundsException(indexInGroup + ">=" + groupMemberCount); //$NON-NLS-1$
 		}
-		final PointFusionValidator validator = getPointFusionValidator();
-		final int idx1 = startIndex + indexInGroup * 2;
-		final int idx2 = idx1 + 1;
+		final var validator = getPointFusionValidator();
+		final var idx1 = startIndex + indexInGroup * 2;
+		final var idx2 = idx1 + 1;
 
 		if (!validator.isSame(x, y, this.pointCoordinates[idx1], this.pointCoordinates[idx2])) {
 			this.pointCoordinates[idx1] = x;
@@ -1077,15 +1076,15 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	public boolean removeGroupAt(int groupIndex) {
 		try {
-			final int startIndex = firstInGroup(groupIndex);
-			final int lastIndex = lastInGroup(groupIndex);
+			final var startIndex = firstInGroup(groupIndex);
+			final var lastIndex = lastInGroup(groupIndex);
 
-			final int ptsToRemoveCount = (lastIndex - startIndex + 2) / 2;
-			int rest = this.pointCoordinates.length / 2 - ptsToRemoveCount;
+			final var ptsToRemoveCount = (lastIndex - startIndex + 2) / 2;
+			var rest = this.pointCoordinates.length / 2 - ptsToRemoveCount;
 			if (rest > 0) {
 				// Remove the points
 				rest *= 2;
-				final double[] newPts = new double[rest];
+				final var newPts = new double[rest];
 				System.arraycopy(this.pointCoordinates, 0, newPts, 0, startIndex);
 				System.arraycopy(
 						this.pointCoordinates, lastIndex + 2,
@@ -1096,7 +1095,7 @@ public abstract class MapComposedElement extends MapElement {
 				// Remove the group
 				if (this.partIndexes != null) {
 					// Shift the group's indexes
-					for (int i = groupIndex; i < this.partIndexes.length; ++i) {
+					for (var i = groupIndex; i < this.partIndexes.length; ++i) {
 						this.partIndexes[i] -= ptsToRemoveCount * 2;
 					}
 
@@ -1143,11 +1142,11 @@ public abstract class MapComposedElement extends MapElement {
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
 	public Point2d removePointAt(int groupIndex, int indexInGroup) {
-		final int startIndex = firstInGroup(groupIndex);
-		final int lastIndex = lastInGroup(groupIndex);
+		final var startIndex = firstInGroup(groupIndex);
+		final var lastIndex = lastInGroup(groupIndex);
 
 		// Translate local point's coordinate into global point's coordinate
-		final int g = indexInGroup * 2 + startIndex;
+		final var g = indexInGroup * 2 + startIndex;
 
 		// Be sure that the member's index is in the group index's range
 		if (g < startIndex) {
@@ -1157,7 +1156,7 @@ public abstract class MapComposedElement extends MapElement {
 			throw new IndexOutOfBoundsException(g + ">" + lastIndex); //$NON-NLS-1$
 		}
 
-		final Point2d p = new Point2d(
+		final var p = new Point2d(
 				this.pointCoordinates[g],
 				this.pointCoordinates[g + 1]);
 
@@ -1176,11 +1175,11 @@ public abstract class MapComposedElement extends MapElement {
 
 		if (this.partIndexes != null) {
 			// Shift the group's indexes
-			for (int i = groupIndex; i < this.partIndexes.length; ++i) {
+			for (var i = groupIndex; i < this.partIndexes.length; ++i) {
 				this.partIndexes[i] -= 2;
 			}
 			// Removing the group
-			final int ptsCount = (lastIndex - startIndex) / 2;
+			final var ptsCount = (lastIndex - startIndex) / 2;
 			if (ptsCount <= 0) {
 				int[] newGroups = null;
 
@@ -1220,9 +1219,9 @@ public abstract class MapComposedElement extends MapElement {
 	 * @return {@code true} if points are removed, otherwise {@code false}
 	 */
 	private boolean canonize(int index) {
-		final int count = getPointCount();
+		final var count = getPointCount();
 
-		int ix = index;
+		var ix = index;
 		if (ix < 0) {
 			ix = count + ix;
 		}
@@ -1233,25 +1232,25 @@ public abstract class MapComposedElement extends MapElement {
 			throw new IndexOutOfBoundsException(ix + ">=" + count); //$NON-NLS-1$
 		}
 
-		final int partIndex = groupIndexForPoint(ix);
+		final var partIndex = groupIndexForPoint(ix);
 
-		final int firstPts = firstInGroup(partIndex);
-		final int endPts = lastInGroup(partIndex);
+		final var firstPts = firstInGroup(partIndex);
+		final var endPts = lastInGroup(partIndex);
 
-		final int myIndex = ix * 2;
-		int firstToRemove = myIndex;
-		int lastToRemove = myIndex;
-		boolean removeOne = false;
+		final var myIndex = ix * 2;
+		var firstToRemove = myIndex;
+		var lastToRemove = myIndex;
+		var removeOne = false;
 
-		final double xbase = this.pointCoordinates[ix * 2];
-		final double ybase = this.pointCoordinates[ix * 2 + 1];
+		final var xbase = this.pointCoordinates[ix * 2];
+		final var ybase = this.pointCoordinates[ix * 2 + 1];
 
-		final PointFusionValidator validator = getPointFusionValidator();
+		final var validator = getPointFusionValidator();
 
 		// Search for the first point to remove
-		for (int idx = myIndex - 2; idx >= firstPts; idx -= 2) {
-			final double x = this.pointCoordinates[idx];
-			final double y = this.pointCoordinates[idx + 1];
+		for (var idx = myIndex - 2; idx >= firstPts; idx -= 2) {
+			final var x = this.pointCoordinates[idx];
+			final var y = this.pointCoordinates[idx + 1];
 			if (validator.isSame(xbase, ybase, x, y)) {
 				firstToRemove = idx;
 				removeOne = true;
@@ -1262,9 +1261,9 @@ public abstract class MapComposedElement extends MapElement {
 		}
 
 		// Search for the last point to remove
-		for (int idx = myIndex + 2; idx <= endPts; idx += 2) {
-			final double x = this.pointCoordinates[idx];
-			final double y = this.pointCoordinates[idx + 1];
+		for (var idx = myIndex + 2; idx <= endPts; idx += 2) {
+			final var x = this.pointCoordinates[idx];
+			final var y = this.pointCoordinates[idx + 1];
 			if (validator.isSame(xbase, ybase, x, y)) {
 				lastToRemove = idx;
 				removeOne = true;
@@ -1278,10 +1277,10 @@ public abstract class MapComposedElement extends MapElement {
 			// A set of points are detected as too near.
 			// They should be removed and replaced by the reference point
 
-			final int removalCount = (lastToRemove / 2 - firstToRemove / 2) * 2;
+			final var removalCount = (lastToRemove / 2 - firstToRemove / 2) * 2;
 
 			// Deleting the point
-			final double[] newPtsArray = new double[this.pointCoordinates.length - removalCount];
+			final var newPtsArray = new double[this.pointCoordinates.length - removalCount];
 			assert newPtsArray.length >= 2;
 
 			System.arraycopy(this.pointCoordinates, 0, newPtsArray, 0, firstToRemove);
@@ -1294,7 +1293,7 @@ public abstract class MapComposedElement extends MapElement {
 
 			if (this.partIndexes != null) {
 				// Shift the group's indexes
-				for (int i = partIndex; i < this.partIndexes.length; ++i) {
+				for (var i = partIndex; i < this.partIndexes.length; ++i) {
 					this.partIndexes[i] -= removalCount;
 				}
 			}
@@ -1366,8 +1365,7 @@ public abstract class MapComposedElement extends MapElement {
 		@Override
 		@Pure
 		public boolean equals(Object obj) {
-			if (obj instanceof MapComposedElement.PointGroup) {
-				final PointGroup g = (PointGroup) obj;
+			if (obj instanceof MapComposedElement.PointGroup g) {
 				return MapComposedElement.this == g.getParentInstance()
 						&& g.partIndex == this.partIndex;
 			}
@@ -1377,11 +1375,10 @@ public abstract class MapComposedElement extends MapElement {
 		@Override
 		@Pure
 		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + MapComposedElement.this.getGeoId().hashCode();
-			result = prime * result + this.partIndex;
-			return result;
+			var result = 1L;
+			result = 31 * result + MapComposedElement.this.getGeoId().hashCode();
+			result = 31 * result + this.partIndex;
+			return (int) result;
 		}
 
 		/** Add a point at the end of this part.
@@ -1468,11 +1465,11 @@ public abstract class MapComposedElement extends MapElement {
 		 */
 		@Pure
 		public int getMany(int index, Point2D<?, ?>... points) {
-			int count = 0;
+			var count = 0;
 			try {
-				final int size = MapComposedElement.this.getPointCountInGroup(this.partIndex);
+				final var size = MapComposedElement.this.getPointCountInGroup(this.partIndex);
 				for (int idx = index, idxP = 0; idx < size && idxP < points.length; ++idx, ++idxP) {
-					final Point2d pts = MapComposedElement.this.getPointAt(this.partIndex, idx);
+					final var pts = MapComposedElement.this.getPointAt(this.partIndex, idx);
 					if (pts != null && points[idxP] != null) {
 						points[idxP].set(pts);
 						++count;
@@ -1550,7 +1547,7 @@ public abstract class MapComposedElement extends MapElement {
 				}
 
 				try {
-					final Point2d pt = PointGroup.this.get(this.nextPointIndex);
+					final var pt = PointGroup.this.get(this.nextPointIndex);
 					++this.nextPointIndex;
 					return pt;
 				} catch (IndexOutOfBoundsException exception) {
@@ -1560,7 +1557,7 @@ public abstract class MapComposedElement extends MapElement {
 
 			@Override
 			public void remove() {
-				final int idxToRemove = this.nextPointIndex - 1;
+				final var idxToRemove = this.nextPointIndex - 1;
 				if (idxToRemove < 0 || idxToRemove >= PointGroup.this.size()) {
 					throw new NoSuchElementException();
 				}
@@ -1609,7 +1606,7 @@ public abstract class MapComposedElement extends MapElement {
 			}
 
 			try {
-				final PointGroup grp = MapComposedElement.this.getGroupAt(this.nextGroupIndex);
+				final var grp = MapComposedElement.this.getGroupAt(this.nextGroupIndex);
 				++this.nextGroupIndex;
 				return grp;
 			} catch (IndexOutOfBoundsException exception) {
@@ -1619,7 +1616,7 @@ public abstract class MapComposedElement extends MapElement {
 
 		@Override
 		public void remove() {
-			final int idxToRemove = this.nextGroupIndex - 1;
+			final var idxToRemove = this.nextGroupIndex - 1;
 			if (idxToRemove < 0 || idxToRemove >= MapComposedElement.this.getGroupCount()) {
 				throw new NoSuchElementException();
 			}
@@ -1663,7 +1660,7 @@ public abstract class MapComposedElement extends MapElement {
 			}
 
 			try {
-				final Point2d pt = MapComposedElement.this.getPointAt(this.nextPointIndex);
+				final var pt = MapComposedElement.this.getPointAt(this.nextPointIndex);
 				++this.nextPointIndex;
 				return pt;
 			} catch (IndexOutOfBoundsException exception) {

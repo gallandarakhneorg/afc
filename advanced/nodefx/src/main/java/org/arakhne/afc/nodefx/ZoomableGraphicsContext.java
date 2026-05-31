@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,12 +42,11 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.TextAlignment;
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is used to issue draw calls to a {@code ZoomableCanvas} using a buffer.
@@ -195,7 +194,7 @@ public class ZoomableGraphicsContext {
 	 */
 	public LevelOfDetails getLevelOfDetails() {
 		if (this.lod == null) {
-			final double meterSize = doc2fxSize(1);
+			final var meterSize = doc2fxSize(1);
 			if (meterSize <= LOW_DETAILLED_METER_SIZE) {
 				this.lod = LevelOfDetails.LOW;
 			} else if (meterSize >= HIGH_DETAILLED_METER_SIZE) {
@@ -258,9 +257,9 @@ public class ZoomableGraphicsContext {
 	@SuppressWarnings({ "checkstyle:magicnumber", "static-method" })
 	@Pure
 	public Color rgb(int color) {
-		final int red = (color & 0x00FF0000) >> 16;
-		final int green = (color & 0x0000FF00) >> 8;
-		final int blue = color & 0x000000FF;
+		final var red = (color & 0x00FF0000) >> 16;
+		final var green = (color & 0x0000FF00) >> 8;
+		final var blue = color & 0x000000FF;
 		return Color.rgb(red, green, blue);
 	}
 
@@ -272,10 +271,10 @@ public class ZoomableGraphicsContext {
 	@SuppressWarnings({ "checkstyle:magicnumber", "static-method" })
 	@Pure
 	public Color rgba(int color) {
-		final int alpha = (color & 0xFF000000) >> 24;
-		final int red = (color & 0x00FF0000) >> 16;
-		final int green = (color & 0x0000FF00) >> 8;
-		final int blue = color & 0x000000FF;
+		final var alpha = (color & 0xFF000000) >> 24;
+		final var red = (color & 0x00FF0000) >> 16;
+		final var green = (color & 0x0000FF00) >> 8;
+		final var blue = color & 0x000000FF;
 		final double opacity;
 		switch (alpha) {
 		case 0:
@@ -299,9 +298,9 @@ public class ZoomableGraphicsContext {
 	@SuppressWarnings({ "checkstyle:magicnumber", "static-method" })
 	@Pure
 	public Color rgba(int rgb, double opacity) {
-		final int red = (rgb & 0x00FF0000) >> 16;
-		final int green = (rgb & 0x0000FF00) >> 8;
-		final int blue = rgb & 0x000000FF;
+		final var red = (rgb & 0x00FF0000) >> 16;
+		final var green = (rgb & 0x0000FF00) >> 8;
+		final var blue = rgb & 0x000000FF;
 		return Color.rgb(red, green, blue, opacity);
 	}
 
@@ -315,9 +314,9 @@ public class ZoomableGraphicsContext {
 	@SuppressWarnings({ "checkstyle:magicnumber", "static-method" })
 	@Pure
 	public Color rgba(Color rgb, double opacity) {
-		final int red = (int) (rgb.getRed() * 255) & 0xFF;
-		final int green = (int) (rgb.getGreen() * 255) & 0xFF;
-		final int blue = (int) (rgb.getBlue() * 255) & 0xFF;
+		final var red = (int) (rgb.getRed() * 255) & 0xFF;
+		final var green = (int) (rgb.getGreen() * 255) & 0xFF;
+		final var blue = (int) (rgb.getBlue() * 255) & 0xFF;
 		return Color.rgb(red, green, blue, opacity);
 	}
 
@@ -394,7 +393,7 @@ public class ZoomableGraphicsContext {
 	 */
 	@Pure
 	public double doc2fxAngle(double angle) {
-		final ZoomableCanvas<?> canvas = getCanvas();
+		final var canvas = getCanvas();
 		if (canvas.isInvertedAxisX() != canvas.isInvertedAxisY()) {
 			return -angle;
 		}
@@ -408,7 +407,7 @@ public class ZoomableGraphicsContext {
 	 */
 	@Pure
 	public double fx2docAngle(double angle) {
-		final ZoomableCanvas<?> canvas = getCanvas();
+		final var canvas = getCanvas();
 		if (canvas.isInvertedAxisX() != canvas.isInvertedAxisY()) {
 			return -angle;
 		}
@@ -525,7 +524,7 @@ public class ZoomableGraphicsContext {
 		this.gc.restore();
 		if (this.stateStack != null) {
 			if (!this.stateStack.isEmpty()) {
-				final int[] data = this.stateStack.pop();
+				final var data = this.stateStack.pop();
 				if (this.stateStack.isEmpty()) {
 					this.stateStack = null;
 				}
@@ -906,7 +905,7 @@ public class ZoomableGraphicsContext {
 			newDashes = dashes;
 		} else {
 			newDashes = new double[dashes.length];
-			for (int i = 0; i < newDashes.length; ++i) {
+			for (var i = 0; i < newDashes.length; ++i) {
 				newDashes[i] = doc2fxSize(dashes[i]);
 			}
 		}
@@ -942,12 +941,12 @@ public class ZoomableGraphicsContext {
 	 * @see #getLineDashesInPixels()
 	 */
 	public double[] getLineDashesInMeters() {
-		final double[] pdashes = this.gc.getLineDashes();
+		final var pdashes = this.gc.getLineDashes();
 		if (pdashes == null) {
 			return null;
 		}
-		final double[] newDashes = new double[pdashes.length];
-		for (int i = 0; i < newDashes.length; ++i) {
+		final var newDashes = new double[pdashes.length];
+		for (var i = 0; i < newDashes.length; ++i) {
 			newDashes[i] = doc2fxSize(pdashes[i]);
 		}
 		return newDashes;
@@ -1439,7 +1438,7 @@ public class ZoomableGraphicsContext {
 	 * @param height height of the rectangle.
 	 */
 	public void rect(double x, double y, double width, double height) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.rect(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
@@ -1520,7 +1519,7 @@ public class ZoomableGraphicsContext {
 	 * @param height height of the rectangle.
 	 */
 	public void clearRect(double x, double y, double width, double height) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.clearRect(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
@@ -1539,7 +1538,7 @@ public class ZoomableGraphicsContext {
 	 * @param height the height of the rectangle.
 	 */
 	public void fillRect(double x, double y, double width, double height) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.fillRect(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
@@ -1558,7 +1557,7 @@ public class ZoomableGraphicsContext {
 	 * @param height the height of the rectangle.
 	 */
 	public void strokeRect(double x, double y, double width, double height) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.strokeRect(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
@@ -1577,7 +1576,7 @@ public class ZoomableGraphicsContext {
 	 * @param height the height at the center of the oval.
 	 */
 	public void fillOval(double x, double y, double width, double height) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.fillOval(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
@@ -1597,7 +1596,7 @@ public class ZoomableGraphicsContext {
 	 * @param height the height at the center of the oval.
 	 */
 	public void strokeOval(double x, double y, double width, double height) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.strokeOval(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
@@ -1622,7 +1621,7 @@ public class ZoomableGraphicsContext {
 	 */
 	public void fillArc(double x, double y, double width, double height,
 			double startAngle, double arcExtent, ArcType closure) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.fillArc(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height),
@@ -1649,7 +1648,7 @@ public class ZoomableGraphicsContext {
 	 */
 	public void strokeArc(double x, double y, double width, double height,
 			double startAngle, double arcExtent, ArcType closure) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.strokeArc(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height),
@@ -1673,7 +1672,7 @@ public class ZoomableGraphicsContext {
 	 * @param arcHeight the arc height of the rectangle corners.
 	 */
 	public void fillRoundRect(double x, double y, double width, double height, double arcWidth, double arcHeight) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.fillRoundRect(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height),
@@ -1696,7 +1695,7 @@ public class ZoomableGraphicsContext {
 	 */
 	public void strokeRoundRect(double x, double y, double width, double height,
 			double arcWidth, double arcHeight) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.strokeRoundRect(
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height),
@@ -1735,7 +1734,7 @@ public class ZoomableGraphicsContext {
 	 * @param y the Y coordinate on the destination for the upper left of the image.
 	 */
 	public void drawImage(Image img, double x, double y) {
-		final Point2d base = doc2fxRectBase(x, y, fx2docSize(img.getWidth()), fx2docSize(img.getHeight()));
+		final var base = doc2fxRectBase(x, y, fx2docSize(img.getWidth()), fx2docSize(img.getHeight()));
 		this.gc.drawImage(img, base.getX(), base.getY());
 	}
 
@@ -1755,7 +1754,7 @@ public class ZoomableGraphicsContext {
 	 * @param height the height of the destination rectangle.
 	 */
 	public void drawImage(Image img, double x, double y, double width, double height) {
-		final Point2d base = doc2fxRectBase(x, y, width, height);
+		final var base = doc2fxRectBase(x, y, width, height);
 		this.gc.drawImage(img,
 				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
@@ -1784,7 +1783,7 @@ public class ZoomableGraphicsContext {
 	public void drawImage(Image img,
 			double sx, double sy, double sw, double sh,
 			double dx, double dy, double dw, double dh) {
-		final Point2d base = doc2fxRectBase(dx, dy, dw, dh);
+		final var base = doc2fxRectBase(dx, dy, dw, dh);
 		this.gc.drawImage(img,
 				sx, sy, sw, sh,
 				base.getX(), base.getY(),

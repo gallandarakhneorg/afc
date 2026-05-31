@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,8 +136,8 @@ public class D3DSFileFilter extends AbstractFileFilter {
 		@SuppressWarnings("checkstyle:magicnumber")
 		protected final boolean isContentType(MagicNumberStream stream) {
 			try {
-				byte[] bytes = stream.read(0, 2);
-				short tag = EndianNumbers.toBEShort(bytes[0], bytes[1]);
+				var bytes = stream.read(0, 2);
+				var tag = EndianNumbers.toBEShort(bytes[0], bytes[1]);
 				if (tag != MAIN3DS_4D4D) {
 					return false;
 				}

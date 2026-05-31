@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public interface MultiShape2D<
 	default CT getFirstShapeContaining(Point2D<?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		if (toBoundingBox().contains(point)) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.contains(point)) {
 					return shape;
 				}
@@ -84,9 +84,9 @@ public interface MultiShape2D<
 	@Unefficient
 	default List<CT> getShapesContaining(Point2D<?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		final List<CT> list = new ArrayList<>();
+		final var list = new ArrayList<CT>();
 		if (toBoundingBox().contains(point)) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.contains(point)) {
 					list.add(shape);
 				}
@@ -130,7 +130,7 @@ public interface MultiShape2D<
 	@Override
 	default void set(IT shape) {
 		assert shape != null : AssertMessages.notNullParameter();
-		final List<CT> backend = getBackendDataList();
+		final var backend = getBackendDataList();
 		backend.clear();
 		backend.addAll(shape.getBackendDataList());
 		onBackendDataChange();
@@ -138,7 +138,7 @@ public interface MultiShape2D<
 
 	@Override
 	default CT set(int index, CT element) {
-		final CT old = getBackendDataList().set(index, element);
+		final var old = getBackendDataList().set(index, element);
 		onBackendDataChange();
 		return old;
 	}
@@ -171,10 +171,10 @@ public interface MultiShape2D<
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> point) {
 		P closestPoint = null;
-		double minDist = Double.POSITIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final P close = shape.getClosestPointTo(point);
-			final double dist = close.getDistanceSquared(point);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var close = shape.getClosestPointTo(point);
+			final var dist = close.getDistanceSquared(point);
 			if (dist < minDist) {
 				minDist = dist;
 				closestPoint = close;
@@ -187,10 +187,10 @@ public interface MultiShape2D<
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> point) {
 		P farthestPoint = null;
-		double maxDist = Double.NEGATIVE_INFINITY;
+		var maxDist = Double.NEGATIVE_INFINITY;
 		for (final CT shape : getBackendDataList()) {
-			final P far = shape.getFarthestPointTo(point);
-			final double dist = far.getDistanceSquared(point);
+			final var far = shape.getFarthestPointTo(point);
+			final var dist = far.getDistanceSquared(point);
 			if (dist > maxDist) {
 				maxDist = dist;
 				farthestPoint = far;
@@ -202,9 +202,9 @@ public interface MultiShape2D<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> point) {
-		double minDist = Double.POSITIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final double dist = shape.getDistanceSquared(point);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var dist = shape.getDistanceSquared(point);
 			if (dist < minDist) {
 				minDist = dist;
 			}
@@ -215,9 +215,9 @@ public interface MultiShape2D<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> point) {
-		double minDist = Double.POSITIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final double dist = shape.getDistanceL1(point);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var dist = shape.getDistanceL1(point);
 			if (dist < minDist) {
 				minDist = dist;
 			}
@@ -228,9 +228,9 @@ public interface MultiShape2D<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> point) {
-		double minDist = Double.POSITIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final double dist = shape.getDistanceLinf(point);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var dist = shape.getDistanceLinf(point);
 			if (dist < minDist) {
 				minDist = dist;
 			}
@@ -293,7 +293,7 @@ public interface MultiShape2D<
 
 	@Override
 	default CT remove(int index) {
-		final CT removed = getBackendDataList().remove(index);
+		final var removed = getBackendDataList().remove(index);
 		onBackendDataChange();
 		return removed;
 	}
@@ -380,11 +380,12 @@ public interface MultiShape2D<
 	 * @return the Geogebra representation of the multishape.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
-		final StringBuilder geogebra = new StringBuilder();
-		for (final CT shape : this) {
+		final var geogebra = new StringBuilder();
+		for (final var shape : this) {
 			if (geogebra.length() > 0) {
-				geogebra.append("\n");
+				geogebra.append("\n"); //$NON-NLS-1$
 			}
 			geogebra.append(shape.toGeogebra());
 		}

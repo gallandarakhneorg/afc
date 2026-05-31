@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -216,8 +216,8 @@ public enum LegalTrafficSide {
 		if (o2 == null) {
 			return Integer.MAX_VALUE;
 		}
-		final String n1 = o1.toString();
-		final String n2 = o2.toString();
+		final var n1 = o1.toString();
+		final var n2 = o2.toString();
 		return n1.compareToIgnoreCase(n2);
 	};
 
@@ -235,7 +235,7 @@ public enum LegalTrafficSide {
 	 * @return the legal traffic side according to the given locale.
 	 */
 	public static LegalTrafficSide get(Locale locale) {
-		final String country = locale.getCountry();
+		final var country = locale.getCountry();
 		if (ArrayUtil.contains(COMPARATOR, country, leftSide)) {
 			return LEFT;
 		}

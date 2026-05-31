@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -125,7 +124,8 @@ public final class LibraryLoader {
 	 * @throws  UnsatisfiedLinkError if the file does not exist.
 	 * @throws  NullPointerException if {@code filename} is
 	 *             {@code null}
-	 * @see        java.lang.System#load(java.lang.String)
+	 * @throws FileNotFoundException if the file cannot be found or loaded.
+	 * @see java.lang.System#load(java.lang.String)
 	 */
 	public static void load(URL filename) throws IOException {
 		// Silently ignore loading query
@@ -141,20 +141,20 @@ public final class LibraryLoader {
 			}
 		} else {
 			// Create a tmp file to receive the library code.
-			final String libName = System.mapLibraryName("javaDynLib"); //$NON-NLS-1$
-			String suffix = ".dll"; //$NON-NLS-1$
-			String prefix = "javaDynLib"; //$NON-NLS-1$
-			final int pos = libName.lastIndexOf('.');
+			final var libName = System.mapLibraryName("javaDynLib"); //$NON-NLS-1$
+			var suffix = ".dll"; //$NON-NLS-1$
+			var prefix = "javaDynLib"; //$NON-NLS-1$
+			final var pos = libName.lastIndexOf('.');
 			if (pos >= 0) {
 				suffix = libName.substring(pos);
 				prefix = libName.substring(0, pos);
 			}
-			final File file = File.createTempFile(prefix, suffix);
+			final var file = File.createTempFile(prefix, suffix);
 
 			// Copy the library code into the local file
-			try (FileOutputStream outs = new FileOutputStream(file)) {
-				try (InputStream ins = filename.openStream()) {
-					final byte[] buffer = new byte[BUFFER_SIZE];
+			try (var outs = new FileOutputStream(file)) {
+				try (var ins = filename.openStream()) {
+					final var buffer = new byte[BUFFER_SIZE];
 					int lu;
 					while ((lu = ins.read(buffer)) > 0) {
 						outs.write(buffer, 0, lu);
@@ -253,34 +253,34 @@ public final class LibraryLoader {
 	}
 
 	private static URL findLibraryURL(String path, String libName, String platform, String arch) {
-		String resourcePath = path;
+		var resourcePath = path;
 		if (resourcePath == null) {
 			resourcePath = ""; //$NON-NLS-1$
-		} else if ((resourcePath.length() > 0) && (!resourcePath.endsWith("/"))) { //$NON-NLS-1$
+		} else if (resourcePath.length() > 0 && !resourcePath.endsWith("/")) { //$NON-NLS-1$
 			resourcePath += "/"; //$NON-NLS-1$
 		}
 		// Find the 64bits version of the DLL
 		String realLibName;
 		if (platform != null) {
-			final StringBuilder buf = new StringBuilder(libName);
+			final var buf = new StringBuilder(libName);
 			buf.append("-"); //$NON-NLS-1$
 			buf.append(platform);
 			if (arch != null) {
 				buf.append(arch);
 			}
 			realLibName = System.mapLibraryName(buf.toString());
-			final int idx = realLibName.indexOf(libName);
+			final var idx = realLibName.indexOf(libName);
 			if (idx > 0) {
 				realLibName = realLibName.substring(idx);
 			}
 		} else {
-			final StringBuilder buf = new StringBuilder(libName);
+			final var buf = new StringBuilder(libName);
 			if (arch != null) {
 				buf.append(arch);
 			}
 			realLibName = System.mapLibraryName(buf.toString());
 		}
-		final URL libRes = Resources.getResource(resourcePath + realLibName);
+		final var libRes = Resources.getResource(resourcePath + realLibName);
 		if (libRes != null) {
 			return libRes;
 		}
@@ -294,7 +294,7 @@ public final class LibraryLoader {
 	 */
 	@Pure
 	static int getOperatingSystemArchitectureDataModel() {
-		final String arch = System.getProperty("sun.arch.data.model"); //$NON-NLS-1$
+		final var arch = System.getProperty("sun.arch.data.model"); //$NON-NLS-1$
 		if (arch != null) {
 			try {
 				return Integer.parseInt(arch);
@@ -310,8 +310,8 @@ public final class LibraryLoader {
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static URL getPlatformDependentLibrary(String[] paths, String libname, String platform) {
 		URL url;
-		final int dataModel = getOperatingSystemArchitectureDataModel();
-		for (final String path : paths) {
+		final var dataModel = getOperatingSystemArchitectureDataModel();
+		for (final var path : paths) {
 			if (dataModel == 64) {
 				// Load the 64 library
 				url = findLibraryURL(path, libname, platform, "64"); //$NON-NLS-1$

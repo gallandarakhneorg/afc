@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,8 @@ package org.arakhne.afc.vmutil;
 
 import java.lang.reflect.Method;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.caller.StackTraceCaller;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This utility class provides a way to determine which class
@@ -205,12 +204,12 @@ public final class Caller {
 	 */
 	@Pure
 	public static Class<?> findClassForFirstCallerOutsideVmutilModule() {
-		Class<?> type = getCaller().getCallerClass(1);
-		int i = 3;
-		while (type != null && MODULE_NAME.equals(type.getModule().getName())) {
+		Class<?> type;
+		var i = 1;
+		do {
 			type = getCaller().getCallerClass(i);
 			++i;
-		}
+		} while (type != null && MODULE_NAME.equals(type.getModule().getName()));
 		return type;
 	}
 

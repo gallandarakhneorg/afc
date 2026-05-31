@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,9 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This is the generic implementation of a
  * tree for which each node has five children.
@@ -146,7 +145,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 	 */
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		final N me = toN();
+		final var me = toN();
 		if (this.child1 != null) {
 			this.child1.setParentNodeReference(me, false);
 		}
@@ -177,27 +176,27 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 	@SuppressWarnings("checkstyle:magicnumber")
 	public void clear() {
 		if (this.child1 != null) {
-			final N child = this.child1;
+			final var child = this.child1;
 			setChildAt(0, null);
 			child.clear();
 		}
 		if (this.child2 != null) {
-			final N child = this.child2;
+			final var child = this.child2;
 			setChildAt(1, null);
 			child.clear();
 		}
 		if (this.child3 != null) {
-			final N child = this.child3;
+			final var child = this.child3;
 			setChildAt(2, null);
 			child.clear();
 		}
 		if (this.child4 != null) {
-			final N child = this.child4;
+			final var child = this.child4;
 			setChildAt(3, null);
 			child.clear();
 		}
 		if (this.child5 != null) {
-			final N child = this.child5;
+			final var child = this.child5;
 			setChildAt(4, null);
 			child.clear();
 		}
@@ -262,7 +261,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -296,7 +295,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -330,7 +329,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -364,7 +363,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -399,7 +398,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -423,7 +422,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 
 	@Override
 	@SuppressWarnings("checkstyle:magicnumber")
-		public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
+	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
 		switch (index) {
 		case 0:
 			return setChild1(newChild);

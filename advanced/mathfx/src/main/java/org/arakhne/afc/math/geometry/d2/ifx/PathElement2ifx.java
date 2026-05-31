@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,13 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path with 2 integer FX properties.
  *
@@ -224,7 +223,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	/** Replies the property for the x coordinate of the first control point.
 	 *
 	 * @return the x coordinate, or {@code null} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
+	 *     {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
 	public IntegerProperty ctrlX1Property() {
@@ -234,7 +233,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	/** Replies the property for the y coordinate of the first control point.
 	 *
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
+	 *     {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
 	public IntegerProperty ctrlY1Property() {
@@ -244,7 +243,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	/** Replies the property for the x coordinate of the second control point.
 	 *
 	 * @return the x coordinate, or {@code null} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
+	 *      {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
 	public IntegerProperty ctrlX2Property() {
@@ -254,7 +253,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	/** Replies the property for the y coordinate of the second control point.
 	 *
 	 * @return the y coordinate, or {@code null} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
+	 *      {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
 	public IntegerProperty ctrlY2Property() {
@@ -344,7 +343,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
                 if (this.getClass() != obj.getClass()) {
                     return false;
                 }
-				final PathElement2ai elt = (PathElement2ai) obj;
+				final var elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY();
@@ -357,11 +356,11 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public int hashCode() {
-			int bits = 1;
+			var bits = 1L;
 			bits = 31 * bits + this.type.hashCode();
 			bits = 31 * bits + Integer.hashCode(getToX());
 			bits = 31 * bits + Integer.hashCode(getToY());
-			return bits ^ (bits >> 31);
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure
@@ -489,7 +488,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
                 if (this.getClass() != obj.getClass()) {
                     return false;
                 }
-				final PathElement2ai elt = (PathElement2ai) obj;
+				final var elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -504,13 +503,13 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public int hashCode() {
-			int bits = 1;
+			var bits = 1L;
 			bits = 31 * bits + this.type.hashCode();
 			bits = 31 * bits + Integer.hashCode(getToX());
 			bits = 31 * bits + Integer.hashCode(getToY());
 			bits = 31 * bits + Integer.hashCode(getFromX());
 			bits = 31 * bits + Integer.hashCode(getFromY());
-			return bits ^ (bits >> 31);
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure
@@ -519,8 +518,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
 				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
-					fromXProperty().get() == toXProperty().get()
-							&& fromYProperty().get() == toYProperty().get(),
+					Boolean.valueOf(fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get()),
 						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
@@ -656,7 +655,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
                 if (this.getClass() != obj.getClass()) {
                     return false;
                 }
-				final PathElement2ai elt = (PathElement2ai) obj;
+				final var elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -690,10 +689,10 @@ public abstract class PathElement2ifx implements PathElement2ai {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
 				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
-					fromXProperty().get() == toXProperty().get()
+					Boolean.valueOf(fromXProperty().get() == toXProperty().get()
 							&& fromYProperty().get() == toYProperty().get()
 							&& ctrlX1Property().get() == toXProperty().get()
-							&& ctrlY1Property().get() == toYProperty().get(),
+							&& ctrlY1Property().get() == toYProperty().get()),
 						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
@@ -873,7 +872,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
                 if (this.getClass() != obj.getClass()) {
                     return false;
                 }
-				final PathElement2ai elt = (PathElement2ai) obj;
+				final var elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -892,7 +891,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public int hashCode() {
-			int bits = 1;
+			var bits = 1L;
 			bits = 31 * bits + this.type.hashCode();
 			bits = 31 * bits + Integer.hashCode(getToX());
 			bits = 31 * bits + Integer.hashCode(getToY());
@@ -902,7 +901,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 			bits = 31 * bits + Integer.hashCode(getCtrlY2());
 			bits = 31 * bits + Integer.hashCode(getFromX());
 			bits = 31 * bits + Integer.hashCode(getFromY());
-			return bits ^ (bits >> 31);
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure
@@ -911,12 +910,12 @@ public abstract class PathElement2ifx implements PathElement2ai {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
 				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
-					fromXProperty().get() == toXProperty().get()
+					Boolean.valueOf(fromXProperty().get() == toXProperty().get()
 							&& fromYProperty().get() == toYProperty().get()
 							&& ctrlX1Property().get() == toXProperty().get()
 							&& ctrlY1Property().get() == toYProperty().get()
 							&& ctrlX2Property().get() == toXProperty().get()
-							&& ctrlY2Property().get() == toYProperty().get(),
+							&& ctrlY2Property().get() == toYProperty().get()),
 						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
@@ -1099,7 +1098,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
                 if (this.getClass() != obj.getClass()) {
                     return false;
                 }
-				final PathElement2ai elt = (PathElement2ai) obj;
+				final var elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -1129,8 +1128,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
 				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
-					fromXProperty().get() == toXProperty().get()
-							&& fromYProperty().get() == toYProperty().get(),
+					Boolean.valueOf(fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get()),
 						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
@@ -1298,7 +1297,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
                 if (this.getClass() != obj.getClass()) {
                     return false;
                 }
-				final PathElement2afp elt = (PathElement2afp) obj;
+				final var elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -1316,7 +1315,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.hashCode();
 			bits = 31L * bits + Integer.hashCode(getToX());
 			bits = 31L * bits + Integer.hashCode(getToY());
@@ -1334,8 +1333,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
 				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
-					fromXProperty().get() == toXProperty().get()
-							&& fromYProperty().get() == toYProperty().get(),
+					Boolean.valueOf(fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get()),
 						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;

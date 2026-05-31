@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,12 @@ import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
-import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with 2D floating coordinates.
  *
- * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
@@ -45,14 +43,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Shape3afp<
-		ST extends Shape3afp<?, ?, IE, P, V, Q, B>,
-		IT extends Shape3afp<?, ?, IE, P, V, Q, B>,
+		IT extends Shape3afp<?, IE, P, V, Q, B>,
 		IE extends PathElement3afp,
 		P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		B extends AlignedBox3afp<?, ?, IE, P, V, Q, B>>
-		extends Shape3D<ST, IT, PathIterator3afp<IE>, P, V, Q, B> {
+		B extends AlignedBox3afp<?, IE, P, V, Q, B>>
+		extends Shape3D<IT, PathIterator3afp<IE>, P, V, Q, B> {
 
 	@Pure
 	@Override
@@ -68,7 +65,7 @@ public interface Shape3afp<
 	 *     shape, otherwise {@code false}.
 	 */
 	@Pure
-	boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> AlignedBox);
+	boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox);
 
 	/** Replies if the given point is inside this shape.
 	 *
@@ -99,26 +96,27 @@ public interface Shape3afp<
 	@Pure
 	@Unefficient
 	@Override
-	default boolean intersects(Shape3D<?, ?, ?, ?, ?, ?, ?> shape) {
-		if (shape instanceof AlignedBox3afp) {
-			return intersects((AlignedBox3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-        if (shape instanceof Sphere3afp) {
-			return intersects((Sphere3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Segment3afp) {
+	default boolean intersects(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+    	assert shape != null : AssertMessages.notNullParameter();
+    	final var type = shape.getType();
+    	assert type != null;
+    	assert type.getPreferredContinuousShapeType() != null;
+    	assert type.getPreferredContinuousShapeType().isInstance(shape);
+    	switch (type) {
+		case ALIGNED_BOX:
+			return intersects((AlignedBox3afp<?, ?, ?, ?, ?, ?>) shape);
+		case MULTISHAPE:
+			return intersects((MultiShape3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		case PATH:
+			return intersects((Path3afp<?, ?, ?, ?, ?, ?>) shape);
+		case SEGMENT:
 			return intersects((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Path3afp) {
-			return intersects((Path3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof PathIterator3afp) {
-			return intersects((PathIterator3afp<?>) shape);
-		}
-		if (shape instanceof MultiShape3afp) {
-			return intersects((MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-		return intersects(getPathIterator());
+		case SPHERE:
+			return intersects((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
+    	}
+    	throw new IllegalArgumentException();
 	}
 
 
@@ -126,25 +124,25 @@ public interface Shape3afp<
 	 *
 	 * @param sphere the sphere
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *      {@code false} if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere);
+	boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere);
 
 	/** Replies if this shape is intersecting the given aligned box.
 	 *
 	 * @param prism the prism
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> prism);
+	boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?> prism);
 
 	/** Replies if this shape is intersecting the given line.
 	 *
 	 * @param segment the segment
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment);
@@ -154,10 +152,10 @@ public interface Shape3afp<
 	 *
 	 * @param path the path
 	 * @return {@code true} if this shape is intersecting the given path;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
-	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?, ?> path) {
+	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
 		return intersects(path.getPathIterator());
 	}
@@ -166,7 +164,7 @@ public interface Shape3afp<
 	 *
 	 * @param iterator the iterator
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(PathIterator3afp<?> iterator);
@@ -175,30 +173,34 @@ public interface Shape3afp<
 	 *
 	 * @param multishape the multishape
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?> multishape);
+	boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape);
 
     @Pure
     @Unefficient
     @Override
-    default double getDistanceSquared(Shape3D<?, ?, ?, ?, ?, ?, ?> shape) {
-        if (shape instanceof Sphere3afp) {
-            return getDistanceSquared((Sphere3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof MultiShape3afp) {
-            return getDistanceSquared((MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Path3afp) {
-            return getDistanceSquared((Path3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof AlignedBox3afp) {
-            return getDistanceSquared((AlignedBox3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Segment3afp) {
+    default double getDistanceSquared(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+    	assert shape != null : AssertMessages.notNullParameter();
+    	final var type = shape.getType();
+    	assert type != null;
+    	assert type.getPreferredContinuousShapeType() != null;
+    	assert type.getPreferredContinuousShapeType().isInstance(shape);
+    	switch (type) {
+		case ALIGNED_BOX:
+            return getDistanceSquared((AlignedBox3afp<?, ?, ?, ?, ?, ?>) shape);
+		case MULTISHAPE:
+            return getDistanceSquared((MultiShape3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		case PATH:
+            return getDistanceSquared((Path3afp<?, ?, ?, ?, ?, ?>) shape);
+		case SEGMENT:
             return getDistanceSquared((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-        }
+		case SPHERE:
+            return getDistanceSquared((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
+    	}
         throw new IllegalArgumentException();
     }
 
@@ -208,7 +210,7 @@ public interface Shape3afp<
      * @return the minimum distance between the two shapes.
      */
     @Pure
-    default double getDistanceSquared(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
+    default double getDistanceSquared(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
         assert sphere != null : AssertMessages.notNullParameter();
         return sphere.getDistanceSquared(getClosestPointTo(sphere));
     }
@@ -219,7 +221,7 @@ public interface Shape3afp<
      * @return the minimum distance between the two shapes.
      */
     @Pure
-    default double getDistanceSquared(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+    default double getDistanceSquared(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
         assert AlignedBox != null : AssertMessages.notNullParameter();
         return AlignedBox.getDistanceSquared(getClosestPointTo(AlignedBox));
     }
@@ -241,7 +243,7 @@ public interface Shape3afp<
      * @return the minimum distance between the two shapes.
      */
     @Pure
-    default double getDistanceSquared(Path3afp<?, ?, ?, ?, ?, ?, ?> path) {
+    default double getDistanceSquared(Path3afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         return path.getDistanceSquared(getClosestPointTo(path));
     }
@@ -252,12 +254,11 @@ public interface Shape3afp<
      * @return the minimum distance between the two shapes.
      */
     @Pure
-    default double getDistanceSquared(MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
+    default double getDistanceSquared(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
-        double minDist = Double.POSITIVE_INFINITY;
-        double dist;
-        for (final Shape3afp<?, ?, ?, ?, ?, ?, ?> shape : multishape) {
-            dist = getDistanceSquared(shape);
+        var minDist = Double.POSITIVE_INFINITY;
+        for (final var shape : multishape) {
+            final var dist = getDistanceSquared(shape);
             if (dist < minDist) {
                 minDist = dist;
             }
@@ -268,22 +269,26 @@ public interface Shape3afp<
     @Pure
     @Unefficient
     @Override
-    default P getClosestPointTo(Shape3D<?, ?, ?, ?, ?, ?, ?> shape) {
-        if (shape instanceof Sphere3afp) {
-            return getClosestPointTo((Sphere3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof MultiShape3afp) {
-            return getClosestPointTo((MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Path3afp) {
-            return getClosestPointTo((Path3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof AlignedBox3afp) {
-            return getClosestPointTo((AlignedBox3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-        }
-        if (shape instanceof Segment3afp) {
+    default P getClosestPointTo(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+    	assert shape != null : AssertMessages.notNullParameter();
+    	final var type = shape.getType();
+    	assert type != null;
+    	assert type.getPreferredContinuousShapeType() != null;
+    	assert type.getPreferredContinuousShapeType().isInstance(shape);
+    	switch (type) {
+		case ALIGNED_BOX:
+            return getClosestPointTo((AlignedBox3afp<?, ?, ?, ?, ?, ?>) shape);
+		case MULTISHAPE:
+            return getClosestPointTo((MultiShape3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		case PATH:
+            return getClosestPointTo((Path3afp<?, ?, ?, ?, ?, ?>) shape);
+		case SEGMENT:
             return getClosestPointTo((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-        }
+		case SPHERE:
+            return getClosestPointTo((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
+    	}
         throw new IllegalArgumentException();
     }
 
@@ -301,7 +306,7 @@ public interface Shape3afp<
      */
     @Pure
     @Unefficient
-    P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere);
+    P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere);
 
     /** Replies the closest point on this shape to the given rectangular prism.
      *
@@ -316,7 +321,7 @@ public interface Shape3afp<
      *     if it is inside the shape.
      */
     @Pure
-    P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> AlignedBox);
+    P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox);
 
     /** Replies the closest point on this shape to the given segment.
      *
@@ -346,7 +351,7 @@ public interface Shape3afp<
      *     if it is inside the shape.
      */
     @Pure
-    P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?, ?> path);
+    P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path);
 
     /** Replies the closest point on this shape to the given multishape.
      *
@@ -361,13 +366,12 @@ public interface Shape3afp<
      *     if it is inside the shape.
      */
     @Pure
-    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
+    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
-        Shape3afp<?, ?, ?, ?, ?, ?, ?> closest = null;
-        double minDist = Double.POSITIVE_INFINITY;
-        double dist;
-        for (final Shape3afp<?, ?, ?, ?, ?, ?, ?> shape : multishape) {
-            dist = getDistanceSquared(shape);
+        Shape3afp<?, ?, ?, ?, ?, ?> closest = null;
+        var minDist = Double.POSITIVE_INFINITY;
+        for (final var shape : multishape) {
+            final var dist = getDistanceSquared(shape);
             if (dist < minDist) {
                 minDist = dist;
                 closest = shape;
@@ -382,47 +386,9 @@ public interface Shape3afp<
 	@Override
 	GeomFactory3afp<IE, P, V, Q, B> getGeomFactory();
 
-	@Pure
-	@SuppressWarnings("unchecked")
-	@Override
-	default ST createTransformedShape(Transform3D transform) {
-		if (transform == null || transform.isIdentity()) {
-			return (ST) clone();
-		}
-		final PathIterator3afp<?> pi = getPathIterator(transform);
-		final GeomFactory3afp<IE, P, V, Q, B> factory = getGeomFactory();
-		final Path3afp<?, ?, ?, P, V, Q, ?> newPath = factory.newPath(pi.getWindingRule());
-		PathElement3afp element;
-		while (pi.hasNext()) {
-			element = pi.next();
-            switch (element.getType()) {
-			case MOVE_TO:
-				newPath.moveTo(element.getToX(), element.getToY(), element.getToZ());
-				break;
-			case LINE_TO:
-				newPath.lineTo(element.getToX(), element.getToY(), element.getToZ());
-				break;
-			case QUAD_TO:
-                newPath.quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), element.getToX(), element.getToY(),
-                        element.getToZ());
-				break;
-			case CURVE_TO:
-                newPath.curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), element.getCtrlX2(),
-                        element.getCtrlY2(), element.getCtrlZ2(), element.getToX(), element.getToY(), element.getToZ());
-				break;
-			case CLOSE:
-				newPath.closePath();
-				break;
-				//$CASES-OMITTED$
-			default:
-			}
-		}
-		return (ST) newPath;
-	}
-
 	@Override
 	default B toBoundingBox() {
-		final B box = getGeomFactory().newBox();
+		final var box = getGeomFactory().newBox();
 		toBoundingBox(box);
 		return box;
 	}

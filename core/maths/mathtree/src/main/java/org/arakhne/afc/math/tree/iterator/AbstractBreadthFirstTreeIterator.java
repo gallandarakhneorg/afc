@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,8 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.IterableNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class is an iterator on a tree.
  *
@@ -110,7 +109,7 @@ public abstract class AbstractBreadthFirstTreeIterator<P extends IterableNode<? 
 	 * @param parent is the node from which the child node was retreived.
 	 * @param child is the child node to test.
 	 * @param childIndex is the position of the {@code child} node in its {@code parent}.
-	 * {@code childIndex} is always greater or equal to {@code notNullChildIndex}.
+	 *     {@code childIndex} is always greater or equal to {@code notNullChildIndex}.
 	 * @param notNullChildIndex is the position of the {@code child} node in the
 	 *     list of the not-null nodes of its {@code parent}. {@code notNullChildIndex}
 	 *     is always lower or equal to {@code childIndex}.
@@ -133,7 +132,7 @@ public abstract class AbstractBreadthFirstTreeIterator<P extends IterableNode<? 
 			throw new NoSuchElementException();
 		}
 
-		final P current = this.availableNodes.poll();
+		final var current = this.availableNodes.poll();
 
 		if (current == null) {
 			throw new ConcurrentModificationException();
@@ -142,15 +141,15 @@ public abstract class AbstractBreadthFirstTreeIterator<P extends IterableNode<? 
 		// Add the children of the polled element
 		onBeforeChildNodes(current);
 
-		int childCount = 0;
-		int notNullIndex = 0;
-		final int nb = current.getChildCount();
-		for (int i = 0; i < nb; ++i) {
+		var childCount = 0;
+		var notNullIndex = 0;
+		final var nb = current.getChildCount();
+		for (var i = 0; i < nb; ++i) {
 			try {
-				final C child = current.getChildAt(i);
+				final var child = current.getChildAt(i);
 				if (child != null) {
 					assert notNullIndex <= i;
-					final P tn = toTraversableChild(current, child, i, notNullIndex);
+					final var tn = toTraversableChild(current, child, i, notNullIndex);
 					if (tn != null) {
 						this.availableNodes.offer(tn);
 						++childCount;
@@ -181,7 +180,7 @@ public abstract class AbstractBreadthFirstTreeIterator<P extends IterableNode<? 
 
 	@Override
 	public void remove() {
-		final P lr = this.lastReplied;
+		final var lr = this.lastReplied;
 		this.lastReplied = null;
 		if (lr == null) {
 			throw new NoSuchElementException();

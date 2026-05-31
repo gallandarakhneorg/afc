@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,7 @@ import java.lang.ref.WeakReference;
 import java.util.EventListener;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.AttributeException;
-import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent;
 import org.arakhne.afc.attrs.collection.AttributeChangeListener;
@@ -39,9 +36,9 @@ import org.arakhne.afc.gis.location.GeoLocationNowhere;
 import org.arakhne.afc.gis.primitive.AbstractBoundedGISElement;
 import org.arakhne.afc.gis.primitive.FlagContainer;
 import org.arakhne.afc.gis.primitive.GISEditableChangeListener;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.util.ListenerCollection;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bus stop is a specific stop of an itinerary. It is situated on a
@@ -104,7 +101,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nofinalizer")
+	@SuppressWarnings({ "checkstyle:nofinalizer", "removal" })
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		getAttributeCollection().removeAttributeChangeListener(this.attributeListener);
@@ -199,7 +196,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	/** Fire the event that indicates this object has changed.
 	 */
 	protected final void firePrimitiveChanged() {
-		final BusChangeEvent event = new BusChangeEvent(
+		final var event = new BusChangeEvent(
 				// source of the event
 				this,
 				// type of the event
@@ -224,7 +221,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	 * @param newValue is the new value of the property.
 	 */
 	protected final void firePrimitiveChanged(String propertyName, Object oldValue, Object newValue) {
-		final BusChangeEvent event = new BusChangeEvent(
+		final var event = new BusChangeEvent(
 				// source of the event
 				this,
 				// type of the event
@@ -242,17 +239,17 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	@Override
 	public void firePrimitiveChanged(BusChangeEvent event) {
 		if (isEventFirable()) {
-			final BusContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				container.onBusPrimitiveChanged(event);
 			}
 			if (this.listeners != null) {
-				final GISEditableChangeListener[] theListeners = this.listeners.getListeners(GISEditableChangeListener.class);
-				for (final GISEditableChangeListener listener : theListeners) {
+				final var theListeners = this.listeners.getListeners(GISEditableChangeListener.class);
+				for (final var listener : theListeners) {
 					listener.editableGISElementHasChanged(event.getBusPrimitive());
 				}
-				final BusChangeListener[] llisteners = this.listeners.getListeners(BusChangeListener.class);
-				for (final BusChangeListener listener : llisteners) {
+				final var llisteners = this.listeners.getListeners(BusChangeListener.class);
+				for (final var listener : llisteners) {
 					listener.onBusPrimitiveChanged(event);
 				}
 			}
@@ -278,7 +275,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	protected void fireValidityChangedFor(Object changedObject, int index, BusPrimitiveInvalidity oldReason,
 			BusPrimitiveInvalidity newReason) {
 		resetBoundingBox();
-		final BusChangeEvent event = new BusChangeEvent(
+		final var event = new BusChangeEvent(
 				// source of the event
 				this,
 				// type of the event
@@ -295,7 +292,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	 */
 	@Override
 	public void fireGraphicalAttributeChanged(String propertyName, Object oldValue, Object newValue) {
-		final BusChangeEvent event = new BusChangeEvent(this,
+		final var event = new BusChangeEvent(this,
 				BusChangeEventType.change(getClass()), this,
 				indexInParent(),
 				propertyName,
@@ -307,13 +304,13 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	@Override
 	public void fireGraphicalAttributeChanged(BusChangeEvent event) {
 		if (isEventFirable()) {
-			final BusContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				container.onBusPrimitiveGraphicalAttributeChanged(event);
 			}
 			if (this.listeners != null) {
-				final BusChangeListener[] llisteners = this.listeners.getListeners(BusChangeListener.class);
-				for (final BusChangeListener listener : llisteners) {
+				final var llisteners = this.listeners.getListeners(BusChangeListener.class);
+				for (final var listener : llisteners) {
 					listener.onBusPrimitiveGraphicalAttributeChanged(event);
 				}
 			}
@@ -322,7 +319,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 
 	@Override
 	public void fireShapeChanged() {
-		final BusChangeEvent event = new BusChangeEvent(this,
+		final var event = new BusChangeEvent(this,
 				BusChangeEventType.change(getClass()), this,
 				indexInParent(),
 				//property name
@@ -338,13 +335,13 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	public void fireShapeChanged(BusChangeEvent event) {
 		resetBoundingBox();
 		if (isEventFirable()) {
-			final BusContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				container.onBusPrimitiveShapeChanged(event);
 			}
 			if (this.listeners != null) {
-				final BusChangeListener[] llisteners = this.listeners.getListeners(BusChangeListener.class);
-				for (final BusChangeListener listener : llisteners) {
+				final var llisteners = this.listeners.getListeners(BusChangeListener.class);
+				for (final var listener : llisteners) {
 					listener.onBusPrimitiveShapeChanged(event);
 				}
 			}
@@ -358,7 +355,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	@Override
 	public void setUUID(UUID id) {
 		assert id != null;
-		final UUID old = getUUID();
+		final var old = getUUID();
 		if (!id.equals(old)) {
 			super.setUUID(id);
 			firePrimitiveChanged();
@@ -368,7 +365,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	@Override
 	@Pure
 	public GeoLocation getGeoLocation() {
-		final Rectangle2d bounds = getBoundingBox();
+		final var bounds = getBoundingBox();
 		if (bounds == null) {
 			return new GeoLocationNowhere(getUUID());
 		}
@@ -396,11 +393,11 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	 */
 	@Pure
 	public int getColor(int defaultColor) {
-		final Integer c = getRawColor();
+		final var c = getRawColor();
 		if (c != null) {
-			return c;
+			return c.intValue();
 		}
-		final BusContainer<?> container = getContainer();
+		final var container = getContainer();
 		if (container != null) {
 			return container.getColor();
 		}
@@ -410,10 +407,10 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	@Override
 	@Pure
 	public Integer getRawColor() {
-		final AttributeValue val = getAttributeCollection().getAttribute(ATTR_COLOR);
+		final var val = getAttributeCollection().getAttribute(ATTR_COLOR);
 		if (val != null) {
 			try {
-				return (int) val.getInteger();
+				return Integer.valueOf((int) val.getInteger());
 			} catch (AttributeException e) {
 				//
 			}
@@ -424,7 +421,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	@Override
 	public void setColor(int color) {
 		try {
-			final int c = getColor();
+			final var c = getColor();
 			if (c != color) {
 				getAttributeCollection().setAttribute(ATTR_COLOR, new AttributeValueImpl(color));
 			}
@@ -474,7 +471,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 
 	@Override
 	public void switchFlag(int flagIndex) {
-		final int oldFlag = this.flag;
+		final var oldFlag = this.flag;
 		this.flag ^= flagIndex;
 		if ((flagIndex & FLAG_SELECTED) != 0) {
 			fireGraphicalAttributeChanged("flag", Integer.valueOf(oldFlag), Integer.valueOf(this.flag)); //$NON-NLS-1$
@@ -485,7 +482,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 
 	@Override
 	public void setFlag(int flag) {
-		final int oldFlag = this.flag;
+		final var oldFlag = this.flag;
 		this.flag |= flag;
 		if (oldFlag != this.flag) {
 			if ((flag & FLAG_SELECTED) != 0) {
@@ -498,8 +495,8 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 
 	@Override
 	public void unsetFlag(int flagIndex) {
-		final int oldFlag = this.flag;
-		this.flag = this.flag & (~flagIndex);
+		final var oldFlag = this.flag;
+		this.flag = this.flag & ~flagIndex;
 		if (oldFlag != this.flag) {
 			if ((flagIndex & FLAG_SELECTED) != 0) {
 				fireGraphicalAttributeChanged("flag", Integer.valueOf(oldFlag), Integer.valueOf(this.flag)); //$NON-NLS-1$
@@ -535,11 +532,11 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	 */
 	@SuppressWarnings("unlikely-arg-type")
 	protected final void setPrimitiveValidity(BusPrimitiveInvalidity invalidityReason) {
-		if ((invalidityReason == null && this.invalidityReason != null)
-				|| (invalidityReason != null
+		if (invalidityReason == null && this.invalidityReason != null
+				|| invalidityReason != null
 				&& !invalidityReason.equals(BusPrimitiveInvalidityType.VALIDITY_NOT_CHECKED)
-				&& !invalidityReason.equals(this.invalidityReason))) {
-			final BusPrimitiveInvalidity old = this.invalidityReason;
+				&& !invalidityReason.equals(this.invalidityReason)) {
+			final var old = this.invalidityReason;
 			this.invalidityReason = invalidityReason;
 			fireValidityChanged(old, this.invalidityReason);
 		}
@@ -600,7 +597,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 
 		@Override
 		public void onAttributeChangeEvent(AttributeChangeEvent event) {
-			final AbstractBusPrimitive<?> bp = this.object.get();
+			final var bp = this.object.get();
 			if (bp != null) {
 				bp.onAttributeChanged(event.getName());
 			}
@@ -612,8 +609,8 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		buffer.add("selected", hasFlag(FlagContainer.FLAG_SELECTED)); //$NON-NLS-1$
-		buffer.add("readOnly", hasFlag(FlagContainer.FLAG_READONLY)); //$NON-NLS-1$
+		buffer.add("selected", Boolean.valueOf(hasFlag(FlagContainer.FLAG_SELECTED))); //$NON-NLS-1$
+		buffer.add("readOnly", Boolean.valueOf(hasFlag(FlagContainer.FLAG_READONLY))); //$NON-NLS-1$
 	}
 
 }

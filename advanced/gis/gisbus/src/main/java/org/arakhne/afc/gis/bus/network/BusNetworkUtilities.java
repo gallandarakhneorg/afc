@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.text.TextUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Several utilities on bus network.
  *
@@ -51,8 +50,8 @@ public final class BusNetworkUtilities {
 		if (o2 == null) {
 			return Integer.MAX_VALUE;
 		}
-		final String s1 = TextUtil.removeAccents(o1);
-		final String s2 = TextUtil.removeAccents(o2);
+		final var s1 = TextUtil.removeAccents(o1);
+		final var s2 = TextUtil.removeAccents(o2);
 		return s1.compareToIgnoreCase(s2);
 	};
 
@@ -108,7 +107,7 @@ public final class BusNetworkUtilities {
 		private void searchNext() {
 			this.next = null;
 			while ((this.halts == null || !this.halts.hasNext()) && this.itineraries.hasNext()) {
-				final BusItinerary it = this.itineraries.next();
+				final var it = this.itineraries.next();
 				this.halts = it.busHaltIterator();
 			}
 			if (this.halts != null && this.halts.hasNext()) {
@@ -124,7 +123,7 @@ public final class BusNetworkUtilities {
 
 		@Override
 		public BusItineraryHalt next() {
-			final BusItineraryHalt n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}
@@ -161,7 +160,7 @@ public final class BusNetworkUtilities {
 		private void searchNext() {
 			this.next = null;
 			while ((this.halts == null || !this.halts.hasNext()) && this.lines.hasNext()) {
-				final BusLine li = this.lines.next();
+				final var li = this.lines.next();
 				this.halts = new LineHaltIterator(li);
 			}
 			if (this.halts.hasNext()) {
@@ -177,7 +176,7 @@ public final class BusNetworkUtilities {
 
 		@Override
 		public BusItineraryHalt next() {
-			final BusItineraryHalt n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}

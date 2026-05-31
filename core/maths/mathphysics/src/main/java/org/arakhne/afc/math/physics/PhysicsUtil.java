@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.math.physics;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Some physic utility functions.
@@ -70,7 +69,7 @@ public final class PhysicsUtil {
 	 * @return previous physics engine.
 	 */
 	public static PhysicsEngine setPhysicsEngine(PhysicsEngine newEngine) {
-		final PhysicsEngine oldEngine = engine;
+		final var oldEngine = engine;
 		if (newEngine == null) {
 			engine = new JavaPhysicsEngine();
 		} else {
@@ -159,6 +158,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 * @deprecated since 16.0, see {@link #motionNewtonLaw1D5(Vector1D, double, double, Vector1D, double, double, double, Vector1D)}
 	 */
+	@SuppressWarnings("removal")
 	@Deprecated(since = "16.0", forRemoval = true)
 	@Pure
 	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw1D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
@@ -381,6 +381,7 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 * @deprecated since 16.0, see {@link #motionNewtonEuler1Law1D5(Vector1D, double, double, double, Vector1D)}
 	 */
+	@SuppressWarnings("removal")
 	@Deprecated(since = "16.0", forRemoval = true)
 	@Pure
 	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law1D5(($1), ($2), ($3), ($4), ($5))",

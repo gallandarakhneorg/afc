@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,8 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.IcosepTreeNodeContainer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This is the generic implementation of a
  * tree for which each node has height children and
@@ -141,7 +140,7 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 	public void clear() {
 		super.clear();
 		if (this.nicosep != null) {
-			final N child = this.nicosep;
+			final var child = this.nicosep;
 			setIcosepChild(null);
 			child.clear();
 		}
@@ -177,7 +176,7 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 
 	@Override
 	public boolean setIcosepChild(N newChild) {
-		final N oldChild = this.nicosep;
+		final var oldChild = this.nicosep;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -189,7 +188,7 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -264,8 +263,8 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 	@Override
 	public void getChildren(Object[] array) {
 		if (array != null) {
-			final IcosepOctTreeZone[] zones = IcosepOctTreeZone.values();
-			for (int i = 0; i < zones.length && i < array.length; ++i) {
+			final var zones = IcosepOctTreeZone.values();
+			for (var i = 0; i < zones.length && i < array.length; ++i) {
 				array[i] = getChildAt(zones[i]);
 			}
 		}
@@ -371,7 +370,7 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 			if (index < 0) {
 				return null;
 			}
-			final IcosepOctTreeZone[] nodes = values();
+			final var nodes = values();
 			if (index >= nodes.length) {
 				return null;
 			}

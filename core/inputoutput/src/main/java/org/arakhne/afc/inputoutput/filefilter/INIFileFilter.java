@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,20 +137,18 @@ public class INIFileFilter extends AbstractFileFilter {
 		@Override
 		@SuppressWarnings("checkstyle:magicnumber")
 		protected final boolean isContentType(MagicNumberStream stream) {
-			String string;
-			boolean found;
-			int offset = 0;
-			boolean istext = false;
+			var offset = 0;
+			var istext = false;
 
-			for (int i = 0; i < 5; ++i) {
+			for (var i = 0; i < 5; ++i) {
 
-				found = false;
+				var found = false;
 				try {
-					final byte[] line = stream.readLine(offset);
+					final var line = stream.readLine(offset);
 					if (line == null) {
 						return true;
 					}
-					string = new String(line);
+					final var string = new String(line);
 					offset += line.length;
 
 					// Check if text.

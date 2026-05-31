@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ package org.arakhne.afc.inputoutput.filefilter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.arakhne.afc.inputoutput.filetype.FileType;
@@ -131,32 +130,30 @@ public class CSVFileFilter extends AbstractFileFilter {
 		 */
 		@Override
 		protected final boolean isContentType(MagicNumberStream stream) {
-			String string;
-			boolean found;
-			int offset = 0;
+			var offset = 0;
 
-			final Pattern pattern = Pattern.compile(REGEX);
+			final var pattern = Pattern.compile(REGEX);
 
-			for (int i = 0; i < 3; ++i) {
-				found = false;
+			for (var i = 0; i < 3; ++i) {
+				var found = false;
 				try {
-					final byte[] line = stream.readLine(offset);
+					final var line = stream.readLine(offset);
 					if (line == null) {
 						return true;
 					}
-					string = new String(line);
+					final var string = new String(line);
 					offset += line.length;
 
 					// Check if text.
-					final Matcher matcher = pattern.matcher(string);
+					final var matcher = pattern.matcher(string);
 					if (matcher.matches()) {
-						for (int j = 0; !found && j < QSEPARATORS.length; ++j) {
+						for (var j = 0; !found && j < QSEPARATORS.length; ++j) {
 							if (matchSeparator(QSEPARATORS[j], true, string)) {
 								found = true;
 							}
 						}
 						if (!found) {
-							for (int j = 0; !found && j < SEPARATORS.length; ++j) {
+							for (var j = 0; !found && j < SEPARATORS.length; ++j) {
 								if (matchSeparator(SEPARATORS[j], false, string)) {
 									found = true;
 								}
@@ -183,7 +180,7 @@ public class CSVFileFilter extends AbstractFileFilter {
 		 * @return {@code true} if matching separator, {@code false} otherwise
 		 */
 		private static boolean matchSeparator(String separator, boolean quoted, String str) {
-			final String regex = "^[\n\r\t ]*" //$NON-NLS-1$
+			final var regex = "^[\n\r\t ]*" //$NON-NLS-1$
 					+ (quoted ? "\"" : "") //$NON-NLS-1$//$NON-NLS-2$
 					+ "[^" //$NON-NLS-1$
 					+ separator + "]*" //$NON-NLS-1$

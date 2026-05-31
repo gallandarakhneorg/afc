@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
@@ -35,8 +36,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -44,6 +43,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * List of supported types for the metadata.
@@ -71,15 +71,15 @@ public enum AttributeType {
 				return null;
 			}
 			if (obj instanceof CharSequence) {
-				final String enumStr = obj.toString();
-				final int index = enumStr.lastIndexOf('.');
+				final var enumStr = obj.toString();
+				final var index = enumStr.lastIndexOf('.');
 				if (index > 0) {
-					final String enumName = enumStr.substring(0, index);
-					final String constantName = enumStr.substring(index + 1);
+					final var enumName = enumStr.substring(0, index);
+					final var constantName = enumStr.substring(index + 1);
 					try {
 						final Class type = Class.forName(enumName);
 						if (Enum.class.isAssignableFrom(type)) {
-							final Enum<?> v = Enum.valueOf(type, constantName.toUpperCase());
+							final var v = Enum.valueOf(type, constantName.toUpperCase());
 							if (v != null) {
 								return v;
 							}
@@ -129,9 +129,9 @@ public enum AttributeType {
 			if (obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof CharSequence) {
+			if (obj instanceof CharSequence seq) {
 				try {
-					return Class.forName(((CharSequence) obj).toString());
+					return Class.forName(seq.toString());
 				} catch (ClassNotFoundException e) {
 					//
 				}
@@ -217,8 +217,8 @@ public enum AttributeType {
 				return null;
 			}
 			final long value;
-			if (obj instanceof Enum<?>) {
-				value = ((Enum<?>) obj).ordinal();
+			if (obj instanceof Enum<?> en) {
+				value = en.ordinal();
 			} else {
 				value = ((Number) obj).longValue();
 			}
@@ -265,8 +265,8 @@ public enum AttributeType {
 				return null;
 			}
 			final double value;
-			if (obj instanceof Enum<?>) {
-				value = ((Enum<?>) obj).ordinal();
+			if (obj instanceof Enum<?> en) {
+				value = en.ordinal();
 			} else {
 				value = ((Number) obj).doubleValue();
 			}
@@ -312,11 +312,11 @@ public enum AttributeType {
 			if (obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof Number) {
-				return new Date(((Number) obj).longValue());
+			if (obj instanceof Number en) {
+				return new Date(en.longValue());
 			}
-			if (obj instanceof Calendar) {
-				return ((Calendar) obj).getTime();
+			if (obj instanceof Calendar cal) {
+				return cal.getTime();
 			}
 			return Date.class.cast(obj);
 		}
@@ -402,19 +402,17 @@ public enum AttributeType {
 			if (obj == null || obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof InetSocketAddress) {
-				return ((InetSocketAddress) obj).getAddress();
+			if (obj instanceof InetSocketAddress adr) {
+				return adr.getAddress();
 			}
-			if (obj instanceof java.net.URL) {
-				final java.net.URL url = (java.net.URL) obj;
+			if (obj instanceof java.net.URL url) {
 				try {
 					return InetAddress.getByName(url.getHost());
 				} catch (UnknownHostException exception) {
 					//
 				}
 			}
-			if (obj instanceof java.net.URI) {
-				final java.net.URI uri = (java.net.URI) obj;
+			if (obj instanceof java.net.URI uri) {
 				try {
 					return InetAddress.getByName(uri.getHost());
 				} catch (UnknownHostException exception) {
@@ -429,8 +427,8 @@ public enum AttributeType {
 
 		private InetAddress getInetAddressFromCharacterSequence(Object obj) {
 			try {
-				final String ipStr = obj.toString();
-				final int index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
+				final var ipStr = obj.toString();
+				final var index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
 				if (index >= 0) {
 					return InetAddress.getByName(ipStr.substring(index + 1));
 				}
@@ -476,26 +474,26 @@ public enum AttributeType {
 			if (obj == null || obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof java.net.URI) {
+			if (obj instanceof java.net.URI uri) {
 				try {
-					return ((java.net.URI) obj).toURL();
+					return uri.toURL();
 				} catch (MalformedURLException e) {
 					//
 				}
 			}
-			if (obj instanceof InetAddress) {
+			if (obj instanceof InetAddress adr) {
 				try {
-					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
-				} catch (MalformedURLException e) {
+					return new URI(AttributeConstants.DEFAULT_SCHEME.name(),
+							adr.getHostAddress(), "", "").toURL(); //$NON-NLS-1$//$NON-NLS-2$
+				} catch (URISyntaxException | MalformedURLException e) {
 					//
 				}
 			}
-			if (obj instanceof InetSocketAddress) {
+			if (obj instanceof InetSocketAddress adr) {
 				try {
-					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
-				} catch (MalformedURLException e) {
+					return new URI(AttributeConstants.DEFAULT_SCHEME.name(),
+							adr.getAddress().getHostAddress(), "", "").toURL(); //$NON-NLS-1$//$NON-NLS-2$
+				} catch (URISyntaxException | MalformedURLException e) {
 					//
 				}
 			}
@@ -537,25 +535,25 @@ public enum AttributeType {
 			if (obj == null || obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof java.net.URL) {
+			if (obj instanceof java.net.URL url) {
 				try {
-					return ((java.net.URL) obj).toURI();
+					return url.toURI();
 				} catch (URISyntaxException e) {
 					//
 				}
 			}
-			if (obj instanceof InetAddress) {
+			if (obj instanceof InetAddress adr) {
 				try {
 					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
+							adr.getHostAddress(), ""); //$NON-NLS-1$
 				} catch (URISyntaxException e) {
 					//
 				}
 			}
-			if (obj instanceof InetSocketAddress) {
+			if (obj instanceof InetSocketAddress adr) {
 				try {
 					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
+							adr.getAddress().getHostAddress(), ""); //$NON-NLS-1$
 				} catch (URISyntaxException e) {
 					//
 				}
@@ -600,14 +598,14 @@ public enum AttributeType {
 			if (obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof Calendar) {
-				return ((Calendar) obj).getTimeInMillis();
+			if (obj instanceof Calendar cal) {
+				return Long.valueOf(cal.getTimeInMillis());
 			}
-			if (obj instanceof Date) {
-				return ((Date) obj).getTime();
+			if (obj instanceof Date dt) {
+				return Long.valueOf(dt.getTime());
 			}
-			if (obj instanceof Number && !(obj instanceof Timestamp)) {
-				return ((Number) obj).longValue();
+			if (obj instanceof Number num && !(obj instanceof Timestamp)) {
+				return Long.valueOf(num.longValue());
 			}
 			return Timestamp.class.cast(obj);
 		}
@@ -651,8 +649,8 @@ public enum AttributeType {
 			if (obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof Tuple3D && !(obj instanceof Point3D)) {
-				return new Point3d((Tuple3D<?>) obj);
+			if (obj instanceof Tuple3D tuple && !(obj instanceof Point3D)) {
+				return new Point3d(tuple);
 			}
 			return Point3D.class.cast(obj);
 		}
@@ -696,8 +694,8 @@ public enum AttributeType {
 			if (obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof Tuple2D && !(obj instanceof Point2D)) {
-				return new Point2d((Tuple2D<?>) obj);
+			if (obj instanceof Tuple2D tuple && !(obj instanceof Point2D)) {
+				return new Point2d(tuple);
 			}
 			return Point2D.class.cast(obj);
 		}
@@ -742,12 +740,12 @@ public enum AttributeType {
 				return null;
 			}
 			if (obj.getClass().isArray()) {
-				final Class<?> elementType = obj.getClass().getComponentType();
+				final var elementType = obj.getClass().getComponentType();
 				if (Tuple3D.class.isAssignableFrom(elementType)
 						&& !Point3D.class.isAssignableFrom(elementType)) {
-					final int length = Array.getLength(obj);
-					final Point3D<?, ?>[] tab = new Point3D[length];
-					for (int i = 0; i < length; ++i) {
+					final var length = Array.getLength(obj);
+					final var tab = new Point3D[length];
+					for (var i = 0; i < length; ++i) {
 						tab[i] = new Point3d((Tuple3D<?>) Array.get(obj, i));
 					}
 					return tab;
@@ -794,12 +792,12 @@ public enum AttributeType {
 				return null;
 			}
 			if (obj.getClass().isArray()) {
-				final Class<?> elementType = obj.getClass().getComponentType();
+				final var elementType = obj.getClass().getComponentType();
 				if (Tuple2D.class.isAssignableFrom(elementType)
 						&& !Point2D.class.isAssignableFrom(elementType)) {
-					final int length = Array.getLength(obj);
-					final Point2D<?, ?>[] tab = new Point2D[length];
-					for (int i = 0; i < length; ++i) {
+					final var length = Array.getLength(obj);
+					final var tab = new Point2D[length];
+					for (var i = 0; i < length; ++i) {
 						tab[i] = new Point2d((Tuple2D<?>) Array.get(obj, i));
 					}
 					return tab;
@@ -845,8 +843,7 @@ public enum AttributeType {
 			if (obj instanceof NullAttribute) {
 				return null;
 			}
-			if (obj instanceof Enum<?>) {
-				final Enum<?> enumValue = (Enum<?>) obj;
+			if (obj instanceof Enum<?> enumValue) {
 				return enumValue.getClass().getCanonicalName()
 						+ "." //$NON-NLS-1$
 						+ enumValue.name();
@@ -951,7 +948,7 @@ public enum AttributeType {
 	@Pure
 	public static AttributeType fromInteger(int type) {
 		final AttributeType[] vals = values();
-		if ((type >= 0) && (type < vals.length)) {
+		if (type >= 0 && type < vals.length) {
 			return vals[type];
 		}
 		return OBJECT;
@@ -966,8 +963,8 @@ public enum AttributeType {
 	@Pure
 	public static AttributeType fromValue(Object value) {
 		if (value != null) {
-			if (value instanceof NullAttribute) {
-				return ((NullAttribute) value).getType();
+			if (value instanceof NullAttribute attr) {
+				return attr.getType();
 			}
 			return fromClass(value.getClass());
 		}
@@ -1084,7 +1081,7 @@ public enum AttributeType {
 			}
 
 			if (type.isArray()) {
-				final Class<?> elementType = type.getComponentType();
+				final var elementType = type.getComponentType();
 				if (Point2D.class.isAssignableFrom(elementType)) {
 					return POLYLINE;
 				}
@@ -1092,7 +1089,6 @@ public enum AttributeType {
 					return POLYLINE3D;
 				}
 			}
-
 
 			if (Enum.class.isAssignableFrom(type)) {
 				return ENUMERATION;
@@ -1161,7 +1157,7 @@ public enum AttributeType {
 	 * <p>Caution: even if isAssignableFrom is replying {@code true},
 	 * the {@link AttributeValue#cast(AttributeType)} and
 	 * {@link AttributeValue#castAndSet(AttributeType, Object)} may fail
-	 * if the target type does not support a specifical value of the
+	 * if the target type does not support a specific value of the
 	 * source type. The isAssignableFrom function replies {@code true}
 	 * if a least one value of the source type is assignable to a value
 	 * of the target type.

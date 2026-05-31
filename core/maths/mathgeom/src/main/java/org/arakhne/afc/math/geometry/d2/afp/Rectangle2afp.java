@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package org.arakhne.afc.math.geometry.d2.afp;
 
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
@@ -32,12 +31,14 @@ import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.IntersectionType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D rectangle on a plane.
+/** Functional interface that represented a 2D rectangle on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -52,6 +53,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings({"checkstyle:methodcount", "checkstyle:parameternumber", "checkstyle:magicnumber"})
 public interface Rectangle2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends Rectangle2afp<?, ?, IE, P, V, B>,
@@ -60,6 +62,11 @@ public interface Rectangle2afp<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends RectangularShape2afp<ST, IT, IE, P, V, B>, OrientedRectangle2afp<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.RECTANGLE;
+	}
 
     /** Compute the point on the rectangle that is the closest to the given point.
      *
@@ -75,8 +82,8 @@ public interface Rectangle2afp<
             double rx, double ry, double rmaxx, double rmaxy,
             double px, double py,
             Tuple2D<?> closest) {
-        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
-        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
+        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx), 2, Double.valueOf(rmaxx));
+        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry), 3, Double.valueOf(rmaxy));
         final double x;
         if (px < rx) {
             x = rx;
@@ -112,12 +119,12 @@ public interface Rectangle2afp<
             double rx1, double ry1, double rmaxx1, double rmaxy1,
             double rx2, double ry2, double rmaxx2, double rmaxy2,
             Tuple2D<?> closest) {
-        assert rmaxx1 >= rx1 : AssertMessages.lowerEqualParameters(0, rx1, 2, rmaxx1);
-        assert rmaxy1 >= ry1 : AssertMessages.lowerEqualParameters(1, ry1, 3, rmaxy1);
-        assert rmaxx2 >= rx2 : AssertMessages.lowerEqualParameters(4, rx2, 6, rmaxx2);
-        assert rmaxy2 >= ry2 : AssertMessages.lowerEqualParameters(5, rx2, 7, rmaxx2);
+        assert rmaxx1 >= rx1 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rmaxx1));
+        assert rmaxy1 >= ry1 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(rmaxy1));
+        assert rmaxx2 >= rx2 : AssertMessages.lowerEqualParameters(4, Double.valueOf(rx2), 6, Double.valueOf(rmaxx2));
+        assert rmaxy2 >= ry2 : AssertMessages.lowerEqualParameters(5, Double.valueOf(rx2), 7, Double.valueOf(rmaxx2));
         final double px;
-        final double cx = (rx2 + rmaxx2) / 2.;
+        final var cx = (rx2 + rmaxx2) / 2.;
         if (cx <= rx1) {
             px = rx1;
         } else if (cx >= rmaxx1) {
@@ -126,7 +133,7 @@ public interface Rectangle2afp<
             px = cx;
         }
         final double py;
-        final double cy = (ry2 + rmaxy2) / 2.;
+        final var cy = (ry2 + rmaxy2) / 2.;
         if (cy <= rx1) {
             py = ry1;
         } else if (cy >= rmaxy1) {
@@ -153,12 +160,12 @@ public interface Rectangle2afp<
             double rx, double ry, double rmaxx, double rmaxy,
             double sx1, double sy1, double sx2, double sy2,
             Tuple2D<?> closest) {
-        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
-        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
-        final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
-        final int code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
-        final Point2D<?, ?> tmp1 = new InnerComputationPoint2afp();
-        final int zone = Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(
+        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx), 2, Double.valueOf(rmaxx));
+        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry), 3, Double.valueOf(rmaxy));
+        final var code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
+        final var code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
+        final var tmp1 = new InnerComputationPoint2afp();
+        final var zone = Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(
                 rx, ry, rmaxx, rmaxy,
                 sx1, sy1, sx2, sy2,
                 code1, code2,
@@ -221,21 +228,21 @@ public interface Rectangle2afp<
             double centerX, double centerY, double axis1X, double axis1Y, double axis1Extent,
             double axis2X, double axis2Y, double axis2Extent,
             Tuple2D<?> closest) {
-        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
-        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
+        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx), 2, Double.valueOf(rmaxx));
+        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry), 3, Double.valueOf(rmaxy));
         assert Vector2D.isUnitVector(axis1X,  axis1Y) : AssertMessages.normalizedParameters(6, 7);
         assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(8);
         assert Vector2D.isUnitVector(axis2X,  axis2Y) : AssertMessages.normalizedParameters(9, 10);
         assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(11);
-        final double a1x = axis1X * axis1Extent;
-        final double a1y = axis1Y * axis1Extent;
-        final double a2x = axis2X * axis2Extent;
-        final double a2y = axis2Y * axis2Extent;
-        final Point2D<?, ?> point = new InnerComputationPoint2afp();
-        double x1 = centerX + a1x + a2x;
-        double y1 = centerY + a1y + a2y;
-        double min = Double.POSITIVE_INFINITY;
-        final double[] segments = new double[] {
+        final var a1x = axis1X * axis1Extent;
+        final var a1y = axis1Y * axis1Extent;
+        final var a2x = axis2X * axis2Extent;
+        final var a2y = axis2Y * axis2Extent;
+        final var point = new InnerComputationPoint2afp();
+        var x1 = centerX + a1x + a2x;
+        var y1 = centerY + a1y + a2y;
+        var min = Double.POSITIVE_INFINITY;
+        final var segments = new double[] {
             centerX - a1x + a2x,
             centerY - a1y + a2y,
             centerX - a1x - a2x,
@@ -245,11 +252,11 @@ public interface Rectangle2afp<
             x1,
             y1,
         };
-        for (int i = 0; i < segments.length; i += 2) {
-            final double x2 = segments[i];
-            final double y2 = segments[i + 1];
+        for (var i = 0; i < segments.length; i += 2) {
+            final var x2 = segments[i];
+            final var y2 = segments[i + 1];
             findsClosestPointRectangleSegment(rx, ry, rmaxx, rmaxy, x1, y1, x2, y2, point);
-            final double dist = Segment2afp.calculatesDistanceSquaredSegmentPoint(x1, y1, x2, y2, point.getX(), point.getY());
+            final var dist = Segment2afp.calculatesDistanceSquaredSegmentPoint(x1, y1, x2, y2, point.getX(), point.getY());
             if (dist <= 0.) {
                 closest.set(point);
                 return;
@@ -288,22 +295,23 @@ public interface Rectangle2afp<
      *     this parameter is ignored.
      * @param newSegmentP2 is set with the new coordinates of the segment second point. If {@code null},
      *     this parameter is ignored.
-     * @return the rectricted Cohen-Sutherland zone.
+     * @return the restricted Cohen-Sutherland zone.
      */
+    @SuppressWarnings("checkstyle:npathcomplexity")
     static int reducesCohenSutherlandZoneRectangleSegment(double rx1, double ry1, double rx2, double ry2,
             double sx1, double sy1, double sx2, double sy2, int codePoint1, int codePoint2,
             Tuple2D<?> newSegmentP1, Tuple2D<?> newSegmentP2) {
-        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
-        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rx2));
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(ry2));
         assert codePoint1 == MathUtil.getCohenSutherlandCode(sx1, sy1, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(8);
         assert codePoint2 == MathUtil.getCohenSutherlandCode(sx2, sy2, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(9);
-        double segmentX1 = sx1;
-        double segmentY1 = sy1;
-        double segmentX2 = sx2;
-        double segmentY2 = sy2;
+        var segmentX1 = sx1;
+        var segmentY1 = sy1;
+        var segmentX2 = sx2;
+        var segmentY2 = sy2;
 
-        int code1 = codePoint1;
-        int code2 = codePoint2;
+        var code1 = codePoint1;
+        var code2 = codePoint2;
 
         while (true) {
             if ((code1 | code2) == 0) {
@@ -330,10 +338,10 @@ public interface Rectangle2afp<
             // failed both tests, so calculate the line segment intersection
 
             // At least one endpoint is outside the clip rectangle; pick it.
-            int code3 = (code1 != 0) ? code1 : code2;
+            var code3 = code1 != 0 ? code1 : code2;
 
-            double x = 0;
-            double y = 0;
+            var x = 0.;
+            var y = 0.;
 
             // Now find the intersection point;
             // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
@@ -386,8 +394,8 @@ public interface Rectangle2afp<
     @Pure
     static double calculatesDistanceSquaredRectanglePoint(double rx, double ry, double rmaxx, double rmaxy,
             double px, double py) {
-        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
-        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
+        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx), 2, Double.valueOf(rmaxx));
+        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry), 3, Double.valueOf(rmaxy));
         final double dx;
         if (px < rx) {
             dx = rx - px;
@@ -418,15 +426,15 @@ public interface Rectangle2afp<
      * @param x4 is the second corner of the second rectangle.
      * @param y4 is the second corner of the second rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsRectangleRectangle(double x1, double y1, double x2, double y2,
             double x3, double y3, double x4, double y4) {
-        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
-        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
-        assert x3 <= x4 : AssertMessages.lowerEqualParameters(4, x3, 6, x4);
-        assert y3 <= y4 : AssertMessages.lowerEqualParameters(5, y3, 7, y4);
+        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(x1), 2, Double.valueOf(x2));
+        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(y1), 3, Double.valueOf(y2));
+        assert x3 <= x4 : AssertMessages.lowerEqualParameters(4, Double.valueOf(x3), 6, Double.valueOf(x4));
+        assert y3 <= y4 : AssertMessages.lowerEqualParameters(5, Double.valueOf(y3), 7, Double.valueOf(y4));
         return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4;
     }
 
@@ -441,15 +449,15 @@ public interface Rectangle2afp<
      * @param x4 is the second point of the line.
      * @param y4 is the second point of the line.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsRectangleLine(double x1, double y1, double x2, double y2,
             double x3, double y3, double x4, double y4) {
-        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
-        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
-        final int a = Segment2afp.ccw(x3, y3, x4, y4, x1, y1, 0.);
-        int b = Segment2afp.ccw(x3, y3, x4, y4, x2, y1, 0.);
+        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(x1), 2, Double.valueOf(x2));
+        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(y1), 3, Double.valueOf(y2));
+        final var a = Segment2afp.ccw(x3, y3, x4, y4, x1, y1, 0.);
+        var b = Segment2afp.ccw(x3, y3, x4, y4, x2, y1, 0.);
         if (a != b && b != 0) {
             return true;
         }
@@ -472,20 +480,20 @@ public interface Rectangle2afp<
      * @param sx2 is the second point of the segment.
      * @param sy2 is the second point of the segment.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsRectangleSegment(double rx1, double ry1, double rx2, double ry2,
             double sx1, double sy1, double sx2, double sy2) {
-        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
-        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
-        double segmentX1 = sx1;
-        double segmentY1 = sy1;
-        double segmentX2 = sx2;
-        double segmentY2 = sy2;
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rx2));
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(ry2));
+        var segmentX1 = sx1;
+        var segmentY1 = sy1;
+        var segmentX2 = sx2;
+        var segmentY2 = sy2;
 
-        int code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
-        int code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
+        var code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
+        var code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
 
         while (true) {
             if ((code1 | code2) == 0) {
@@ -501,10 +509,10 @@ public interface Rectangle2afp<
             // failed both tests, so calculate the line segment intersection
 
             // At least one endpoint is outside the clip rectangle; pick it.
-            int code3 = (code1 != 0) ? code1 : code2;
+            var code3 = (code1 != 0) ? code1 : code2;
 
-            double x = 0;
-            double y = 0;
+            var x = 0.;
+            var y = 0.;
 
             // Now find the intersection point;
             // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
@@ -562,10 +570,10 @@ public interface Rectangle2afp<
             double enclosingX2, double enclosingY2,
             double innerX1, double innerY1,
             double innerX2, double innerY2) {
-        assert enclosingX1 <= enclosingX2 : AssertMessages.lowerEqualParameters(0, enclosingX1, 2, enclosingX2);
-        assert enclosingY1 <= enclosingY2 : AssertMessages.lowerEqualParameters(1, enclosingY1, 3, enclosingY2);
-        assert innerX1 <= innerX2 : AssertMessages.lowerEqualParameters(4, innerX1, 6, innerX2);
-        assert innerY1 <= innerY2 : AssertMessages.lowerEqualParameters(5, innerY1, 7, innerY2);
+        assert enclosingX1 <= enclosingX2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(enclosingX1), 2, Double.valueOf(enclosingX2));
+        assert enclosingY1 <= enclosingY2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(enclosingY1), 3, Double.valueOf(enclosingY2));
+        assert innerX1 <= innerX2 : AssertMessages.lowerEqualParameters(4, Double.valueOf(innerX1), 6, Double.valueOf(innerX2));
+        assert innerY1 <= innerY2 : AssertMessages.lowerEqualParameters(5, Double.valueOf(innerY1), 7, Double.valueOf(innerY2));
         return innerX1 >= enclosingX1
                 && innerY1 >= enclosingY1
                 && innerX2 <= enclosingX2
@@ -587,9 +595,9 @@ public interface Rectangle2afp<
     static boolean containsRectanglePoint(
             double rx1, double ry1, double rx2, double ry2,
             double px, double py) {
-        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
-        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
-        return (px >= rx1 && px <= rx2) && (py >= ry1 && py <= ry2);
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rx2));
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(ry2));
+        return px >= rx1 && px <= rx2 && py >= ry1 && py <= ry2;
     }
 
     @Pure
@@ -624,10 +632,10 @@ public interface Rectangle2afp<
         assert Vector2D.isUnitVector(axis1x, axis1y) : AssertMessages.normalizedParameters(2, 3);
         assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
         assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(5);
-        final double mx = Math.max(Math.abs(axis1x * axis1Extent), Math.abs(-axis1y * axis2Extent));
-        final double my = Math.max(Math.abs(axis1y * axis1Extent), Math.abs(axis1x * axis2Extent));
-        final double vx = OrientedRectangle2afp.findsVectorProjectionRAxisVector(1, 0, mx, my);
-        final double vy = OrientedRectangle2afp.findsVectorProjectionSAxisVector(1, 0, mx, my);
+        final var mx = Math.max(Math.abs(axis1x * axis1Extent), Math.abs(-axis1y * axis2Extent));
+        final var my = Math.max(Math.abs(axis1y * axis1Extent), Math.abs(axis1x * axis2Extent));
+        final var vx = OrientedRectangle2afp.findsVectorProjectionRAxisVector(1, 0, mx, my);
+        final var vy = OrientedRectangle2afp.findsVectorProjectionSAxisVector(1, 0, mx, my);
         set(centerX - vx, centerY - vy, vx * 2, vy * 2);
     }
 
@@ -725,9 +733,8 @@ public interface Rectangle2afp<
     @Pure
     @Override
     default boolean contains(double x, double y) {
-        return (x >= getMinX() && x <= getMaxX())
-                &&
-                (y >= getMinY() && y <= getMaxY());
+        return x >= getMinX() && x <= getMaxX()
+                && y >= getMinY() && y <= getMaxY();
     }
 
     @Pure
@@ -776,10 +783,10 @@ public interface Rectangle2afp<
      * This function does not change this rectangle.
      *
      * <p>It is equivalent to (where {@code ur} is the union):
-     * <pre>{@code 
+     * <pre><code>
      * Rectangle2f ur = new Rectangle2f(this);
      * ur.setUnion(r);
-     * }</pre>
+     * </code></pre>
      *
      * @param rect the rectangular shape.
      * @return the union of this rectangle and the given rectangle.
@@ -788,7 +795,7 @@ public interface Rectangle2afp<
     @Pure
     default B createUnion(RectangularShape2afp<?, ?, ?, ?, ?, ?> rect) {
         assert rect != null : AssertMessages.notNullParameter();
-        final B rr = getGeomFactory().newBox();
+        final var rr = getGeomFactory().newBox();
         rr.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
         rr.setUnion(rect);
         return rr;
@@ -798,10 +805,10 @@ public interface Rectangle2afp<
      * This function does not change this rectangle.
      *
      * <p>It is equivalent to (where {@code ir} is the intersection):
-     * <pre>{@code 
+     * <pre><code>
      * Rectangle2f ir = new Rectangle2f(this);
      * ir.setIntersection(r);
-     * }</pre>
+     * </code></pre>
      *
      * @param rect the rectangular shape.
      * @return the union of this rectangle and the given rectangle.
@@ -810,11 +817,11 @@ public interface Rectangle2afp<
     @Pure
     default B createIntersection(RectangularShape2afp<?, ?, ?, ?, ?, ?> rect) {
         assert rect != null : AssertMessages.notNullParameter();
-        final B rr = getGeomFactory().newBox();
-        final double x1 = Math.max(getMinX(), rect.getMinX());
-        final double y1 = Math.max(getMinY(), rect.getMinY());
-        final double x2 = Math.min(getMaxX(), rect.getMaxX());
-        final double y2 = Math.min(getMaxY(), rect.getMaxY());
+        final var rr = getGeomFactory().newBox();
+        final var x1 = Math.max(getMinX(), rect.getMinX());
+        final var y1 = Math.max(getMinY(), rect.getMinY());
+        final var x2 = Math.min(getMaxX(), rect.getMaxX());
+        final var y2 = Math.min(getMaxY(), rect.getMaxY());
         if (x1 <= x2 && y1 <= y2) {
             rr.setFromCorners(x1, y1, x2, y2);
         } else {
@@ -849,10 +856,10 @@ public interface Rectangle2afp<
      */
     default void setIntersection(RectangularShape2afp<?, ?, ?, ?, ?, ?> rect) {
         assert rect != null : AssertMessages.notNullParameter();
-        final double x1 = Math.max(getMinX(), rect.getMinX());
-        final double y1 = Math.max(getMinY(), rect.getMinY());
-        final double x2 = Math.min(getMaxX(), rect.getMaxX());
-        final double y2 = Math.min(getMaxY(), rect.getMaxY());
+        final var x1 = Math.max(getMinX(), rect.getMinX());
+        final var y1 = Math.max(getMinY(), rect.getMinY());
+        final var x2 = Math.min(getMaxX(), rect.getMaxX());
+        final var y2 = Math.min(getMaxY(), rect.getMaxY());
         if (x1 <= x2 && y1 <= y2) {
             setFromCorners(x1, y1, x2, y2);
         } else {
@@ -953,8 +960,8 @@ public interface Rectangle2afp<
     @Override
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.calculatesCrossingsPathIteratorRectangleShadow(
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var crossings = Path2afp.calculatesCrossingsPathIteratorRectangleShadow(
                 0,
                 iterator,
                 getMinX(), getMinY(), getMaxX(), getMaxY(),
@@ -980,15 +987,15 @@ public interface Rectangle2afp<
     default void avoidCollisionWith(Rectangle2afp<?, ?, ?, ?, ?, ?> reference, Vector2D<?, ?> result) {
         assert reference != null : AssertMessages.notNullParameter();
         assert result != null : AssertMessages.notNullParameter();
-        final double dx1 = reference.getMaxX() - getMinX();
-        final double dx2 = getMaxX() - reference.getMinX();
-        final double dy1 = reference.getMaxY() - getMinY();
-        final double dy2 = getMaxY() - reference.getMinY();
+        final var dx1 = reference.getMaxX() - getMinX();
+        final var dx2 = getMaxX() - reference.getMinX();
+        final var dy1 = reference.getMaxY() - getMinY();
+        final var dy2 = getMaxY() - reference.getMinY();
 
-        final double absdx1 = Math.abs(dx1);
-        final double absdx2 = Math.abs(dx2);
-        final double absdy1 = Math.abs(dy1);
-        final double absdy2 = Math.abs(dy2);
+        final var absdx1 = Math.abs(dx1);
+        final var absdx2 = Math.abs(dx2);
+        final var absdy1 = Math.abs(dy1);
+        final var absdy2 = Math.abs(dy2);
 
         final double dx;
         final double dy;
@@ -1037,15 +1044,15 @@ public interface Rectangle2afp<
             return;
         }
 
-        final double dx1 = reference.getMaxX() - getMinX();
-        final double dx2 = reference.getMinX() - getMaxX();
-        final double dy1 = reference.getMaxY() - getMinY();
-        final double dy2 = reference.getMinY() - getMaxY();
+        final var dx1 = reference.getMaxX() - getMinX();
+        final var dx2 = reference.getMinX() - getMaxX();
+        final var dy1 = reference.getMaxY() - getMinY();
+        final var dy2 = reference.getMinY() - getMaxY();
 
-        final double absdx1 = Math.abs(dx1);
-        final double absdx2 = Math.abs(dx2);
-        final double absdy1 = Math.abs(dy1);
-        final double absdy2 = Math.abs(dy2);
+        final var absdx1 = Math.abs(dx1);
+        final var absdx2 = Math.abs(dx2);
+        final var absdy1 = Math.abs(dy1);
+        final var absdy2 = Math.abs(dy2);
 
         final double dx;
         final double dy;
@@ -1077,7 +1084,7 @@ public interface Rectangle2afp<
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
         final double x;
-        int same = 0;
+        var same = 0;
         if (pt.getX() < getMinX()) {
             x = getMinX();
         } else if (pt.getX() > getMaxX()) {
@@ -1111,7 +1118,7 @@ public interface Rectangle2afp<
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), triangle.getPathIterator(), point);
         return point;
     }
@@ -1119,7 +1126,7 @@ public interface Rectangle2afp<
     @Override
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), point);
         return point;
     }
@@ -1127,7 +1134,7 @@ public interface Rectangle2afp<
     @Override
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointRectangleRectangle(getMinX(), getMinY(), getMaxX(), getMaxY(),
                 rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY(),
                 point);
@@ -1137,7 +1144,7 @@ public interface Rectangle2afp<
     @Override
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointRectangleSegment(
                 getMinX(), getMinY(), getMaxX(), getMaxY(),
                 segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(), point);
@@ -1147,17 +1154,17 @@ public interface Rectangle2afp<
     @Override
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
-        final double cx = ellipse.getCenterX();
-        final double cy = ellipse.getCenterY();
-        final double sx = ellipse.getHorizontalRadius();
-        final double sy = ellipse.getVerticalRadius();
+        final var cx = ellipse.getCenterX();
+        final var cy = ellipse.getCenterY();
+        final var sx = ellipse.getHorizontalRadius();
+        final var sy = ellipse.getVerticalRadius();
         // Scale the rectangle
-        final double rx = (getMinX() - cx) / sx;
-        final double ry = (getMinY() - cy) / sy;
-        final double rwidth = getWidth() / sx;
-        final double rheight = getHeight() / sy;
+        final var rx = (getMinX() - cx) / sx;
+        final var ry = (getMinY() - cy) / sy;
+        final var rwidth = getWidth() / sx;
+        final var rheight = getHeight() / sy;
         // Compute the closest point
-        final P closest = getGeomFactory().newPoint();
+        final var closest = getGeomFactory().newPoint();
         findsClosestPointRectanglePoint(rx, ry, rx + rwidth, ry + rheight, 0, 0, closest);
         // Invert scale
         closest.set(closest.getX() * sx + cx, closest.getY() * sy + cy);
@@ -1167,7 +1174,7 @@ public interface Rectangle2afp<
     @Override
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         assert roundRectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointRectangleRectangle(getMinX(), getMinY(), getMaxX(), getMaxY(),
                 roundRectangle.getMinX(), roundRectangle.getMinY(), roundRectangle.getMaxX(), roundRectangle.getMaxY(),
                 point);
@@ -1177,7 +1184,7 @@ public interface Rectangle2afp<
     @Override
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         assert parallelogram != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointRectangleParallelogram(
                 getMinX(), getMinY(), getMaxX(), getMaxY(),
                 parallelogram.getCenterX(), parallelogram.getCenterY(),
@@ -1190,7 +1197,7 @@ public interface Rectangle2afp<
     @Override
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         assert orientedRectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointRectangleParallelogram(
                 getMinX(), getMinY(), getMaxX(), getMaxY(),
                 orientedRectangle.getCenterX(), orientedRectangle.getCenterY(),
@@ -1235,8 +1242,8 @@ public interface Rectangle2afp<
 
     @Override
     default void setCenter(double cx, double cy) {
-        final double demiWidth = getWidth() / 2.;
-        final double demiHeight = getHeight() / 2.;
+        final var demiWidth = getWidth() / 2.;
+        final var demiHeight = getHeight() / 2.;
         setMinX(cx - demiWidth);
         setMinY(cy - demiHeight);
         setMaxX(cx + demiWidth);
@@ -1245,14 +1252,14 @@ public interface Rectangle2afp<
 
     @Override
     default void setCenterX(double cx) {
-        final double demiWidth = getWidth() / 2.;
+        final var demiWidth = getWidth() / 2.;
         setMinX(cx - demiWidth);
         setMaxX(cx + demiWidth);
     }
 
     @Override
     default void setCenterY(double cy) {
-        final double demiHeight = getHeight() / 2.;
+        final var demiHeight = getHeight() / 2.;
         setMinY(cy - demiHeight);
         setMaxY(cy + demiHeight);
     }
@@ -1294,7 +1301,7 @@ public interface Rectangle2afp<
 
     @Override
     default void setFirstAxisExtent(double extent) {
-        final double x = getCenterX();
+        final var x = getCenterX();
         setMinX(x - extent);
         setMaxX(x + extent);
     }
@@ -1306,7 +1313,7 @@ public interface Rectangle2afp<
 
     @Override
     default void setSecondAxisExtent(double extent) {
-        final double y = getCenterY();
+        final var y = getCenterY();
         setMinY(y - extent);
         setMaxY(y + extent);
     }
@@ -1392,12 +1399,13 @@ public interface Rectangle2afp<
 	 *     {@link IntersectionType#SPANNING} otherwise.
 	 * @since 14.0
      */
+    @SuppressWarnings("checkstyle:returncount")
     static IntersectionType classifiesRectangleRectangle(double lx1, double ly1, double ux1, double uy1,
     		double lx2, double ly2, double ux2, double uy2) {
-    	assert lx1 <= ux1 : AssertMessages.lowerEqualParameters(0, lx1, 2, ux1);
-    	assert ly1 <= uy1 : AssertMessages.lowerEqualParameters(1, ly1, 3, uy1);
-    	assert lx2 <= ux2 : AssertMessages.lowerEqualParameters(4, lx2, 6, ux2);
-    	assert ly2 <= uy2 : AssertMessages.lowerEqualParameters(5, ly2, 7, uy2);
+    	assert lx1 <= ux1 : AssertMessages.lowerEqualParameters(0, Double.valueOf(lx1), 2, Double.valueOf(ux1));
+    	assert ly1 <= uy1 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ly1), 3, Double.valueOf(uy1));
+    	assert lx2 <= ux2 : AssertMessages.lowerEqualParameters(4, Double.valueOf(lx2), 6, Double.valueOf(ux2));
+    	assert ly2 <= uy2 : AssertMessages.lowerEqualParameters(5, Double.valueOf(ly2), 7, Double.valueOf(uy2));
 
     	final IntersectionType inter;
     	if (lx1 < lx2) {
@@ -1457,19 +1465,19 @@ public interface Rectangle2afp<
 
     @Override
     default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
-    	double minx = Double.MAX_VALUE;
-    	double miny = Double.MAX_VALUE;
-    	double maxx = Double.MIN_VALUE;
-    	double maxy = Double.MIN_VALUE;
-    	for (final Point2D<?, ?> pts : pointCloud) {
-    		final double x = pts.getX();
+    	var minx = Double.MAX_VALUE;
+    	var miny = Double.MAX_VALUE;
+    	var maxx = Double.MIN_VALUE;
+    	var maxy = Double.MIN_VALUE;
+    	for (final var pts : pointCloud) {
+    		final var x = pts.getX();
     		if (x < minx) {
     			minx = x;
     		}
     		if (x > maxx) {
     			maxx = x;
     		}
-    		final double y = pts.getY();
+    		final var y = pts.getY();
     		if (y < miny) {
     			miny = y;
     		}
@@ -1485,6 +1493,7 @@ public interface Rectangle2afp<
 	 * @return the Geogebra representation of the rectangle.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toPolygonDefinition(2,
 				getMinX(), getMinY(), getMaxX(), getMinY(),
@@ -1492,16 +1501,16 @@ public interface Rectangle2afp<
 	}
 
 	/** Iterator on the path elements of the rectangle.
-     *
-     * @param <T> the type of the path elements.
-     * @author $Author: sgalland$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
-     * @since 13.0
-     */
-    class RectanglePathIterator<T extends PathElement2afp>
-            implements PathIterator2afp<T> {
+	 *
+	 * @param <T> the type of the path elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	class RectanglePathIterator<T extends PathElement2afp>
+		implements PathIterator2afp<T> {
 
         private final Rectangle2afp<?, ?, T, ?, ?, ?> rectangle;
 

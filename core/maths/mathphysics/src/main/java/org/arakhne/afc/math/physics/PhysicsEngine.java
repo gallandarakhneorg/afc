@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,10 @@
 
 package org.arakhne.afc.math.physics;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Some physic utility functions implementing in Java.
@@ -157,8 +156,8 @@ public interface PhysicsEngine {
 	 *     vector becomes movement direction.
 	 * @param dt is the time.
 	 * @param result the motion.
-	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 * @since 16.0
+	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
 	void motionNewtonLaw1D5(

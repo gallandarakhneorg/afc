@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,10 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.references.SoftValueTreeMap;
 import org.arakhne.afc.vmutil.ClassComparator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Utility class for {@code ZoomableDrawer}.
  *
@@ -129,17 +128,17 @@ public final class Drawers {
 		assert type != null : AssertMessages.notNullParameter();
 		try {
 			assert getLock();
-			final Drawer<?> bufferedType = buffer.get(type);
+			final var bufferedType = buffer.get(type);
 			Drawer<T> choice = null;
 			if (bufferedType != null) {
 				choice = (Drawer<T>) bufferedType;
 			} else {
-				final Iterator<Drawer<?>> iterator = getAllDrawers();
+				final var iterator = getAllDrawers();
 				Drawer<?> exactMatcherDrawer = null;
 				Drawer<?> superMatcherDrawer = null;
 				while (iterator.hasNext()) {
-					final Drawer<?> drawer = iterator.next();
-					final Class<?> drawerType = drawer.getPrimitiveType();
+					final var drawer = iterator.next();
+					final var drawerType = drawer.getPrimitiveType();
 					if (exactMatcherDrawer != null) {
 						// Drawer that is exactly matching the element type is already found.
 						// If the new drawer is a subtype of the previous one, the new drawer is used.
@@ -187,9 +186,8 @@ public final class Drawers {
 	@SuppressWarnings("unchecked")
 	public static synchronized <T> Drawer<? super T> getDrawerFor(T instance) {
 		if (instance != null) {
-			if (instance instanceof DrawerReference) {
-				final DrawerReference<T> drawable = (DrawerReference<T>) instance;
-				Drawer<? super T> drawer = drawable.getDrawer();
+			if (instance instanceof DrawerReference drawable) {
+				var drawer = drawable.getDrawer();
 				if (drawer != null) {
 					return drawer;
 				}

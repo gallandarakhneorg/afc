@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,12 @@ package org.arakhne.afc.gis.grid;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Element of the grid.
@@ -95,12 +93,13 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 	 *
 	 * @param index the index.
 	 * @return the element.
+	 * @throws IndexOutOfBoundsException if the {@code index} is out of bounds.
 	 */
 	@Pure
 	public P getElementAt(int index) {
 		if (index >= 0 && index < this.referenceElementCount) {
-			int idx = 0;
-			for (final GridCellElement<P> element : this.elements) {
+			var idx = 0;
+			for (final var element : this.elements) {
 				if (element.isReferenceCell(this)) {
 					if (idx == index) {
 						return element.get();
@@ -120,8 +119,8 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 	@SuppressWarnings("unlikely-arg-type")
 	@Pure
 	public int indexOf(P element) {
-		int idx = 0;
-		for (final GridCellElement<P> e : this.elements) {
+		var idx = 0;
+		for (final var e : this.elements) {
 			if (e.isReferenceCell(this)) {
 				if (e.equals(element)) {
 					return idx;
@@ -204,11 +203,11 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 
 	@SuppressWarnings("unlikely-arg-type")
 	private GridCellElement<P> remove(P element) {
-		final SortedSet<GridCellElement<P>> elt = this.elements.tailSet(new GridCellElement<>(element));
+		final var elt = this.elements.tailSet(new GridCellElement<>(element));
 		assert elt != null;
-		final Iterator<GridCellElement<P>> iterator = elt.iterator();
+		final var iterator = elt.iterator();
 		while (iterator.hasNext()) {
-			final GridCellElement<P> e = iterator.next();
+			final var e = iterator.next();
 			if (e.equals(element)) {
 				iterator.remove();
 				return e;
@@ -223,7 +222,7 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 	 * @return the removed grid-cell element.
 	 */
 	public GridCellElement<P> removeElement(P element) {
-		final GridCellElement<P> elt = remove(element);
+		final var elt = remove(element);
 		if (elt != null) {
 			if (elt.removeCellLink(this)) {
 				--this.referenceElementCount;
@@ -267,9 +266,9 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 			this.next = null;
 			this.searched = true;
 			while (this.next == null && this.iterator.hasNext()) {
-				final GridCellElement<P> element = this.iterator.next();
+				final var element = this.iterator.next();
 				if (element != null) {
-					final P e = element.get();
+					final var e = element.get();
 					if (e != null && e.getGeoLocation().toBounds2D().intersects(this.bounds)) {
 						this.next = e;
 					}
@@ -291,7 +290,7 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 			if (!this.searched) {
 				searchNext();
 			}
-			final P element = this.next;
+			final var element = this.next;
 			if (element == null) {
 				throw new NoSuchElementException();
 			}
@@ -334,9 +333,9 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 			this.next = null;
 			this.searched = true;
 			while (this.next == null && this.iterator.hasNext()) {
-				final GridCellElement<P> element = this.iterator.next();
+				final var element = this.iterator.next();
 				if (element != null) {
-					final P e = element.get();
+					final var e = element.get();
 					if (e != null) {
 						this.next = e;
 					}
@@ -358,7 +357,7 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 			if (!this.searched) {
 				searchNext();
 			}
-			final P element = this.next;
+			final var element = this.next;
 			if (element == null) {
 				throw new NoSuchElementException();
 			}

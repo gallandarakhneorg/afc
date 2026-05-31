@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,11 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A grid.
@@ -151,10 +150,10 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 */
 	@Pure
 	public Rectangle2d getCellBounds(int row, int column) {
-		final double cellWidth = getCellWidth();
-		final double cellHeight = getCellHeight();
-		final double x = this.bounds.getMinX() + cellWidth * column;
-		final double y = this.bounds.getMinY() + cellHeight * row;
+		final var cellWidth = getCellWidth();
+		final var cellHeight = getCellHeight();
+		final var x = this.bounds.getMinX() + cellWidth * column;
+		final var y = this.bounds.getMinY() + cellHeight * row;
 		return new Rectangle2d(x, y, cellWidth, cellHeight);
 	}
 
@@ -166,7 +165,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 * @return the cell.
 	 */
 	public GridCell<P> createCellAt(int row, int column) {
-		GridCell<P> cell = this.cells[row][column];
+		var cell = this.cells[row][column];
 		if (cell == null) {
 			cell = new GridCell<>(row, column, getCellBounds(row, column));
 			this.cells[row][column] = cell;
@@ -183,11 +182,11 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 *     the specified location.
 	 */
 	public GridCell<P> removeCellAt(int row, int column) {
-		final GridCell<P> cell = this.cells[row][column];
+		final var cell = this.cells[row][column];
 		if (cell != null) {
 			this.cells[row][column] = null;
 			--this.cellCount;
-			for (final P element : cell) {
+			for (final var element : cell) {
 				removeElement(element);
 			}
 		}
@@ -201,10 +200,10 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 *     otherwise {@code false}.
 	 */
 	public boolean addElement(P element) {
-		boolean changed = false;
+		var changed = false;
 		if (element != null) {
-			final GridCellElement<P> gridElement = new GridCellElement<>(element);
-			for (final GridCell<P> cell : getGridCellsOn(element.getGeoLocation().toBounds2D(), true)) {
+			final var gridElement = new GridCellElement<>(element);
+			for (final var cell : getGridCellsOn(element.getGeoLocation().toBounds2D(), true)) {
 				if (cell.addElement(gridElement)) {
 					changed = true;
 				}
@@ -223,17 +222,16 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 *     otherwise {@code false}.
 	 */
 	public boolean removeElement(P element) {
-		boolean changed = false;
+		var changed = false;
 		if (element != null) {
-			GridCellElement<P> gridElement;
-			for (final GridCell<P> cell : getGridCellsOn(element.getGeoLocation().toBounds2D())) {
-				gridElement = cell.removeElement(element);
+			for (final var cell : getGridCellsOn(element.getGeoLocation().toBounds2D())) {
+				final var gridElement = cell.removeElement(element);
 				if (gridElement != null) {
 					if (cell.isEmpty()) {
 						this.cells[cell.row()][cell.column()] = null;
 						--this.cellCount;
 					}
-					for (final GridCell<P> otherCell : gridElement.consumeCells()) {
+					for (final var otherCell : gridElement.consumeCells()) {
 						assert otherCell != cell;
 						otherCell.removeElement(element);
 						if (otherCell.isEmpty()) {
@@ -288,10 +286,10 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 */
 	protected Iterable<GridCell<P>> getGridCellsOn(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds, boolean createCells) {
 		if (bounds.intersects(this.bounds)) {
-			final int c1 = getColumnFor(bounds.getMinX());
-			final int r1 = getRowFor(bounds.getMinY());
-			final int c2 = getColumnFor(bounds.getMaxX());
-			final int r2 = getRowFor(bounds.getMaxY());
+			final var c1 = getColumnFor(bounds.getMinX());
+			final var r1 = getRowFor(bounds.getMinY());
+			final var c2 = getColumnFor(bounds.getMaxX());
+			final var r2 = getRowFor(bounds.getMaxY());
 			return new CellIterable(r1, c1, r2, c2, createCells);
 		}
 		return Collections.emptyList();
@@ -322,9 +320,9 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 */
 	@Pure
 	public int getColumnFor(double x) {
-		final double xx = x - this.bounds.getMinX();
+		final var xx = x - this.bounds.getMinX();
 		if (xx >= 0.)  {
-			final int idx = (int) (xx / getCellWidth());
+			final var idx = (int) (xx / getCellWidth());
 			assert idx >= 0;
 			if (idx < getColumnCount()) {
 				return idx;
@@ -341,9 +339,9 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 */
 	@Pure
 	public int getRowFor(double y) {
-		final double yy = y - this.bounds.getMinY();
+		final var yy = y - this.bounds.getMinY();
 		if (yy >= 0.)  {
-			final int idx = (int) (yy / getCellHeight());
+			final var idx = (int) (yy / getCellHeight());
 			assert idx >= 0;
 			if (idx < getRowCount()) {
 				return idx;
@@ -363,8 +361,8 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 */
 	@Pure
 	public AroundCellIterable<P> getGridCellsAround(Point2D<?, ?> position, double maximalDistance) {
-		final int column = getColumnFor(position.getX());
-		final int row = getRowFor(position.getY());
+		final var column = getColumnFor(position.getX());
+		final var row = getRowFor(position.getY());
 		return new AroundIterable(row, column, position, maximalDistance);
 	}
 
@@ -383,10 +381,10 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	@Pure
 	public Iterator<P> iterator(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
 		if (this.bounds.intersects(bounds)) {
-			final int c1 = getColumnFor(bounds.getMinX());
-			final int r1 = getRowFor(bounds.getMinY());
-			final int c2 = getColumnFor(bounds.getMaxX());
-			final int r2 = getRowFor(bounds.getMaxY());
+			final var c1 = getColumnFor(bounds.getMinX());
+			final var r1 = getRowFor(bounds.getMinY());
+			final var c2 = getColumnFor(bounds.getMaxX());
+			final var r2 = getRowFor(bounds.getMaxY());
 			return new BoundedElementIterator(new CellIterator(r1, c1, r2, c2, false), -1, bounds);
 		}
 		return Collections.<P>emptyList().iterator();
@@ -402,10 +400,10 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	@Pure
 	public Iterator<P> iterator(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds, int budget) {
 		if ((budget == -1 || budget > 0) && this.cellCount > 0 && this.bounds.intersects(bounds)) {
-			final int c1 = getColumnFor(bounds.getMinX());
-			final int r1 = getRowFor(bounds.getMinY());
-			final int c2 = getColumnFor(bounds.getMaxX());
-			final int r2 = getRowFor(bounds.getMaxY());
+			final var c1 = getColumnFor(bounds.getMinX());
+			final var r1 = getRowFor(bounds.getMinY());
+			final var c2 = getColumnFor(bounds.getMaxX());
+			final var r2 = getRowFor(bounds.getMaxY());
 			return new BoundedElementIterator(new CellIterator(r1, c1, r2, c2, false), budget, bounds);
 		}
 		return Collections.<P>emptyList().iterator();
@@ -418,10 +416,9 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 */
 	@Pure
 	public int indexOf(P element) {
-		int idx;
-		int globalIdx = 0;
-		for (final GridCell<P> cell : getGridCells()) {
-			idx = cell.indexOf(element);
+		var globalIdx = 0;
+		for (final var cell : getGridCells()) {
+			final var idx = cell.indexOf(element);
 			if (idx != -1) {
 				return globalIdx + idx;
 			}
@@ -439,10 +436,9 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	@Pure
 	public P getElementAt(int index) {
 		if (index >= 0) {
-			int idx = 0;
-			int eIdx;
-			for (final GridCell<P> cell : getGridCells()) {
-				eIdx = idx + cell.getReferenceElementCount();
+			var idx = 0;
+			for (final var cell : getGridCells()) {
+				final var eIdx = idx + cell.getReferenceElementCount();
 				if (index < eIdx) {
 					try {
 						return cell.getElementAt(index - idx);
@@ -553,7 +549,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 			this.next = null;
 			this.searched = true;
 			while (this.next == null && this.row <= this.maxRow) {
-				GridCell<P> cell = getCellAt(this.row, this.column);
+				var cell = getCellAt(this.row, this.column);
 				if (cell == null && this.createCells) {
 					cell = createCellAt(this.row, this.column);
 				}
@@ -591,7 +587,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		@Override
 		public void remove() {
-			final GridCell<P> cell = this.next;
+			final var cell = this.next;
 			this.next = null;
 			this.searched = false;
 			if (cell == null) {
@@ -633,15 +629,13 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 		}
 
 		private void searchNext() {
-			GridCellElement<P> gElement;
-
 			this.next = null;
 			this.searched = true;
 
 			if (this.budget == -1 || this.budget > 0) {
 
 				while (this.next == null
-						&& ((this.elementIterator != null && this.elementIterator.hasNext()) || this.iterator.hasNext())) {
+						&& (this.elementIterator != null && this.elementIterator.hasNext() || this.iterator.hasNext())) {
 
 					while ((this.elementIterator == null || !this.elementIterator.hasNext())
 						&& this.iterator.hasNext()) {
@@ -650,7 +644,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 					}
 
 					while (this.next == null && this.elementIterator != null && this.elementIterator.hasNext()) {
-						gElement = this.elementIterator.next();
+						final var gElement = this.elementIterator.next();
 						if (gElement.isReferenceCell(this.currentCell)) {
 							this.next = gElement.get();
 							if (this.budget > 0) {
@@ -685,7 +679,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		@Override
 		public void remove() {
-			final P elt = this.next;
+			final var elt = this.next;
 			this.next = null;
 			this.searched = false;
 			if (elt == null) {
@@ -734,16 +728,13 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 		private void searchNext() {
-			GridCellElement<P> gElement;
-			P pElement;
-
 			this.next = null;
 			this.searched = true;
 
 			if (this.budget == -1 || this.budget > 0) {
 
 				while (this.next == null
-						&& ((this.elementIterator != null && this.elementIterator.hasNext()) || this.iterator.hasNext())) {
+						&& (this.elementIterator != null && this.elementIterator.hasNext() || this.iterator.hasNext())) {
 
 					while ((this.elementIterator == null || !this.elementIterator.hasNext())
 						&& this.iterator.hasNext()) {
@@ -752,10 +743,10 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 					}
 
 					while (this.next == null && this.elementIterator != null && this.elementIterator.hasNext()) {
-						gElement = this.elementIterator.next();
-						pElement = gElement.get();
+						final var gElement = this.elementIterator.next();
+						final var pElement = gElement.get();
 						final Rectangle2d pBounds = pElement.getGeoLocation().toBounds2D();
-						if (((this.iterationBounds.isEmpty() && this.iterationBounds.equals(pBounds))
+						if ((this.iterationBounds.isEmpty() && this.iterationBounds.equals(pBounds)
 							 || this.iterationBounds.intersects(pBounds)) && !this.closeList.contains(gElement)) {
 							this.next = pElement;
 							this.closeList.add(gElement);
@@ -791,7 +782,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		@Override
 		public void remove() {
-			final P elt = this.next;
+			final var elt = this.next;
 			this.next = null;
 			this.searched = false;
 			if (elt == null) {
@@ -902,8 +893,6 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 		private void searchNext() {
-			GridCell<P> cell;
-
 			this.next = null;
 			this.searched = true;
 
@@ -914,7 +903,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 				this.foundInCircle = false;
 				if (this.row >= 0 && this.row < getRowCount()
 						&& this.column >= 0 && this.column < getColumnCount()) {
-					cell = getCellAt(this.row, this.column);
+					final var cell = getCellAt(this.row, this.column);
 					if (isValidBounds(cell, this.row, this.column)) {
 						if (cell != null) {
 							this.next = cell;
@@ -931,12 +920,12 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 						this.foundInCircle = false;
 					}
 					while (this.next == null && this.sideIndex < (this.level - 1) * 2) {
-						final int r = this.row - this.level + 1;
+						final var r = this.row - this.level + 1;
 						if (r >= 0 && r < getRowCount()) {
-							final int c = this.column - this.level + 1 + this.sideIndex;
+							final var c = this.column - this.level + 1 + this.sideIndex;
 							++this.sideIndex;
 							if (c >= 0 && c < getColumnCount()) {
-								cell = getCellAt(r, c);
+								final var cell = getCellAt(r, c);
 								if (isValidBounds(cell, r, c)) {
 									this.foundInCircle = true;
 									if (cell != null) {
@@ -954,12 +943,12 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 					break;
 				case LEFT:
 					while (this.next == null && this.sideIndex < (this.level - 1) * 2) {
-						final int c = this.column + this.level - 1;
+						final var c = this.column + this.level - 1;
 						if (c >= 0 && c < getColumnCount()) {
-							final int r = this.row - this.level + 1 + this.sideIndex;
+							final var r = this.row - this.level + 1 + this.sideIndex;
 							++this.sideIndex;
 							if (r >= 0 && r < getRowCount()) {
-								cell = getCellAt(r, c);
+								final var cell = getCellAt(r, c);
 								if (isValidBounds(cell, r, c)) {
 									this.foundInCircle = true;
 									if (cell != null) {
@@ -977,12 +966,12 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 					break;
 				case BOTTOM:
 					while (this.next == null && this.sideIndex < (this.level - 1) * 2) {
-						final int r = this.row + this.level - 1;
+						final var r = this.row + this.level - 1;
 						if (r >= 0 && r < getRowCount()) {
-							final int c = this.column - this.level + 2 + this.sideIndex;
+							final var c = this.column - this.level + 2 + this.sideIndex;
 							++this.sideIndex;
 							if (c >= 0 && c < getColumnCount()) {
-								cell = getCellAt(r, c);
+								final var cell = getCellAt(r, c);
 								if (isValidBounds(cell, r, c)) {
 									this.foundInCircle = true;
 									if (cell != null) {
@@ -1000,12 +989,12 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 					break;
 				case RIGHT:
 					while (this.next == null && this.sideIndex < (this.level - 1) * 2) {
-						final int c = this.column - this.level + 1;
+						final var c = this.column - this.level + 1;
 						if (c >= 0 && c < getColumnCount()) {
-							final int r = this.row - this.level + 2 + this.sideIndex;
+							final var r = this.row - this.level + 2 + this.sideIndex;
 							++this.sideIndex;
 							if (r >= 0 && r < getRowCount()) {
-								cell = getCellAt(r, c);
+								final var cell = getCellAt(r, c);
 								if (isValidBounds(cell, r, c)) {
 									this.foundInCircle = true;
 									if (cell != null) {
@@ -1060,7 +1049,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		@Override
 		public void remove() {
-			final GridCell<P> cell = this.next;
+			final var cell = this.next;
 			this.next = null;
 			this.searched = false;
 			if (cell == null) {

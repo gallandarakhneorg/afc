@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,13 @@
 package org.arakhne.afc.math.test.geometry.d2.d;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
-
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.test.geometry.d2.AbstractVector2DTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 public class Vector2dTest extends AbstractVector2DTest<Vector2d, Point2d, Vector2d> {
@@ -52,6 +53,7 @@ public class Vector2dTest extends AbstractVector2DTest<Vector2d, Point2d, Vector
 	}
 
 	@Test
+	@DisplayName("toOrientationVector")
 	public void staticToOrientationVector() {
 		assertFpVectorEquals(1, 0, Vector2d.toOrientationVector(0));
 		assertFpVectorEquals(-1, 0, Vector2d.toOrientationVector(Math.PI));

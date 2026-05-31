@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.gis.maplayer;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This interface representes an event on the layer attribute changes.
@@ -131,9 +130,9 @@ public class MapLayerAttributeChangeEvent extends ConsumableEvent {
 	 */
 	@Pure
 	public boolean isTemporaryChange() {
-		final Object src = getSource();
-		if (src instanceof MapLayer) {
-			return ((MapLayer) src).isTemporaryLayer();
+		final var src = getSource();
+		if (src instanceof MapLayer lay) {
+			return lay.isTemporaryLayer();
 		}
 		return false;
 	}

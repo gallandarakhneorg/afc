@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,12 @@ package org.arakhne.afc.agentmotion.steering;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.agentmotion.ArrivingMotionAlgorithm;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Agent is changing its position for arriving (stopping) the target point.
  *
@@ -64,9 +63,10 @@ public class ArrivingSteeringAlgorithm implements ArrivingMotionAlgorithm, Seria
 	 */
 	public ArrivingSteeringAlgorithm(double stopDistance, double decelerationDistance, int approximationFactor) {
 		assert stopDistance >= 0. : AssertMessages.positiveOrZeroParameter();
-		assert decelerationDistance >= stopDistance : AssertMessages.lowerEqualParameters(0, stopDistance,
-				1, decelerationDistance);
-		assert approximationFactor > 1 : AssertMessages.lowerEqualParameter(2, decelerationDistance, 2);
+		assert decelerationDistance >= stopDistance : AssertMessages.lowerEqualParameters(0,
+				Double.valueOf(stopDistance), 1, Double.valueOf(decelerationDistance));
+		assert approximationFactor > 1 : AssertMessages.lowerEqualParameter(2,
+				Double.valueOf(decelerationDistance), Double.valueOf(2));
 		this.stopDistance = stopDistance * stopDistance;
 		this.decelerationDistance = decelerationDistance * decelerationDistance;
 		this.approximationFactor = approximationFactor;
@@ -85,10 +85,10 @@ public class ArrivingSteeringAlgorithm implements ArrivingMotionAlgorithm, Seria
 	@Override
 	public Vector2D<?, ?> calculate(Point2D<?, ?> position, double linearSpeed, double maxLinear,
 			Point2D<?, ?> target) {
-		final Vector2d v = new Vector2d(
+		final var v = new Vector2d(
 				target.getX() - position.getX(),
 				target.getY() - position.getY());
-		double length =  v.getLengthSquared();
+		var length =  v.getLengthSquared();
 		if (length <= this.stopDistance) {
 			length = -linearSpeed / 1.;
 		} else  if (length > this.decelerationDistance) {

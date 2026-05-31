@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A triangle with 2 double precision floating-point numbers.
  *
@@ -95,15 +94,16 @@ public class Triangle2d
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(this.x1);
 		bits = 31 * bits + Double.hashCode(this.y1);
 		bits = 31 * bits + Double.hashCode(this.x2);
 		bits = 31 * bits + Double.hashCode(this.y2);
 		bits = 31 * bits + Double.hashCode(this.x3);
 		bits = 31 * bits + Double.hashCode(this.y3);
-        return bits ^ (bits >> 31);
+        return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
@@ -112,14 +112,14 @@ public class Triangle2d
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		final Point2d point = getGeomFactory().newPoint(getX1(), getY1());
+		final var point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
-		final double x1 = point.getX();
-		final double y1 = point.getY();
+		final var x1 = point.getX();
+		final var y1 = point.getY();
 		point.set(getX2(), getY2());
 		transform.transform(point);
-		final double x2 = point.getX();
-		final double y2 = point.getY();
+		final var x2 = point.getX();
+		final var y2 = point.getY();
 		point.set(getX3(), getY3());
 		transform.transform(point);
 		return getGeomFactory().newTriangle(x1, y1, x2, y2, point.getX(), point.getY());

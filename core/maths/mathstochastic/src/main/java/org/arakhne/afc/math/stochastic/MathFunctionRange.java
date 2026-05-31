@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,8 +73,8 @@ public class MathFunctionRange {
 			this.min = max1;
 			this.max = min1;
 		}
-		this.includeMin = (this.min != Double.NEGATIVE_INFINITY) && includeMin1;
-		this.includeMax = (this.max != Double.POSITIVE_INFINITY) && includeMax1;
+		this.includeMin = this.min != Double.NEGATIVE_INFINITY && includeMin1;
+		this.includeMax = this.max != Double.POSITIVE_INFINITY && includeMax1;
 	}
 
 	/** Create a set of bounds that correspond to the specified discrete values.
@@ -84,8 +84,8 @@ public class MathFunctionRange {
 	 */
 	@Pure
 	public static MathFunctionRange[] createDiscreteSet(double... values) {
-		final MathFunctionRange[] bounds = new MathFunctionRange[values.length];
-		for (int i = 0; i < values.length; ++i) {
+		final var bounds = new MathFunctionRange[values.length];
+		for (var i = 0; i < values.length; ++i) {
 			bounds[i] = new MathFunctionRange(values[i]);
 		}
 		return bounds;
@@ -103,7 +103,7 @@ public class MathFunctionRange {
 	 */
 	@Pure
 	public static MathFunctionRange[] createSet(double... values) {
-		final MathFunctionRange[] bounds = new MathFunctionRange[values.length / 2];
+		final var bounds = new MathFunctionRange[values.length / 2];
 		for (int i = 0, j = 0; i < values.length; i += 2, ++j) {
 			bounds[j] = new MathFunctionRange(values[i], values[i + 1]);
 		}

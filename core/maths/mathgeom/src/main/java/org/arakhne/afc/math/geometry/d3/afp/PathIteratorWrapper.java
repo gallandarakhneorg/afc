@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d3.ai.PathElement3ai;
-import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 
 
 /** Wrapper of a path iterator.
@@ -40,14 +38,14 @@ class PathIteratorWrapper implements PathIterator3afp {
 
     private final GeomFactory3afp<?, ?, ?, ?, ?> factory;
 
-    private final PathIterator3ai<?> iterator;
+    private final PathIterator3afp<?> iterator;
 
     /** Create the wrapper.
      *
      * @param factory the geometry factory.
      * @param iterator the original iterator.
      */
-    PathIteratorWrapper(GeomFactory3afp<?, ?, ?, ?, ?> factory, PathIterator3ai<?> iterator) {
+    PathIteratorWrapper(GeomFactory3afp<?, ?, ?, ?, ?> factory, PathIterator3afp<?> iterator) {
         this.factory = factory;
         this.iterator = iterator;
     }
@@ -109,12 +107,12 @@ class PathIteratorWrapper implements PathIterator3afp {
 
         private static final long serialVersionUID = -3937298048366892845L;
 
-        private final PathElement3ai element;
+        private final PathElement3afp element;
 
         /** Constructor.
          * @param element the wrapped element.
          */
-        PathElementWrapper(PathElement3ai element) {
+        PathElementWrapper(PathElement3afp element) {
             this.element = element;
         }
 

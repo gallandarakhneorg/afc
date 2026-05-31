@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,10 @@
 
 package org.arakhne.afc.io.dbase;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.AttributeType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Describes the supported types in DBase fields.
  *
@@ -117,10 +115,11 @@ public enum DBaseFieldType {
 	 * @param abyte is a byte that describes the dBase field type.
 	 * @return the corresponding type.
 	 * @throws DBaseFileException  if the given byte is unknown.
+	 * @throws InvalidDBaseFieldTypeException if the field type is unrecognized.
 	 */
 	@Pure
 	public static DBaseFieldType fromByte(byte abyte) throws DBaseFileException {
-		for (final DBaseFieldType type : DBaseFieldType.values()) {
+		for (final var type : DBaseFieldType.values()) {
 			if (type.byteCode == abyte) {
 				return type;
 			}
@@ -225,11 +224,12 @@ public enum DBaseFieldType {
 	 *
 	 * @param value the value.
 	 * @return the size in bytes of a field that corresponds to this type.
+	 * @throws IllegalStateException invalid type.
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
 	public int getFieldSize(String value) {
-		int size = 0;
+		var size = 0;
 		switch (this) {
 		case VARIABLE:
 		case GENERAL:
@@ -276,11 +276,12 @@ public enum DBaseFieldType {
 	 *
 	 * @param value the value.
 	 * @return the position of the decimal point
+	 * @throws IllegalStateException invalid type.
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity"})
 	public int getDecimalPointPosition(String value) {
-		int position = 0;
+		var position = 0;
 		switch (this) {
 		case VARIABLE:
 		case GENERAL:
@@ -297,11 +298,11 @@ public enum DBaseFieldType {
 		case FLOATING_NUMBER:
 		case NUMBER:
 			if (value != null) {
-				final int idx = value.indexOf('.');
+				final var idx = value.indexOf('.');
 				if (idx != -1) {
 					// Remove .0 part of the number
-					final Pattern pattern = Pattern.compile("[.,]0*$"); //$NON-NLS-1$
-					final Matcher matcher = pattern.matcher(value);
+					final var pattern = Pattern.compile("[.,]0*$"); //$NON-NLS-1$
+					final var matcher = pattern.matcher(value);
 					if (!matcher.find()) {
 						position = value.length() - idx - 1;
 					}

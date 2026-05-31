@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ final class InnerComputationGeomFactory extends AbstractGeomFactory2D<InnerCompu
 
 	@Override
 	public InnerComputationPoint2ai convertToPoint(Point2D<?, ?> pt) {
-		if (pt instanceof InnerComputationPoint2ai) {
-			return (InnerComputationPoint2ai) pt;
+		if (pt instanceof InnerComputationPoint2ai pt0) {
+			return pt0;
 		}
 		final int x;
 		final int y;
@@ -89,8 +89,8 @@ final class InnerComputationGeomFactory extends AbstractGeomFactory2D<InnerCompu
 
 	@Override
 	public InnerComputationVector2ai convertToVector(Vector2D<?, ?> v) {
-		if (v instanceof InnerComputationVector2ai) {
-			return (InnerComputationVector2ai) v;
+		if (v instanceof InnerComputationVector2ai v0) {
+			return v0;
 		}
 		final int x;
 		final int y;

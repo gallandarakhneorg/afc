@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import java.util.List;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
@@ -41,6 +39,7 @@ import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.references.WeakArrayList;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bus hub is a set of {@link BusStop bus stops} located
@@ -107,7 +106,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 */
 	@Pure
 	public static String getFirstFreeBusHubName(BusNetwork busnetwork) {
-		int nb = busnetwork.getBusHubCount();
+		var nb = busnetwork.getBusHubCount();
 		String name;
 		do {
 			++nb;
@@ -143,15 +142,15 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 					BusPrimitiveInvalidityType.NO_STOP_IN_HUB,
 					null);
 		} else {
-			final Iterator<BusStop> iterator = this.busStops.iterator();
+			final var iterator = this.busStops.iterator();
 			while (iterator.hasNext() && invalidityReason == null) {
-				final BusStop stop = iterator.next();
+				final var stop = iterator.next();
 				if (!stop.isValidPrimitive()) {
 					invalidityReason = new BusPrimitiveInvalidity(
 							BusPrimitiveInvalidityType.INVALID_LINKED_STOP,
 							stop.getName());
 				} else {
-					final BusNetwork bn = stop.getBusNetwork();
+					final var bn = stop.getBusNetwork();
 					if (bn == null || bn != getBusNetwork()) {
 						invalidityReason = new BusPrimitiveInvalidity(
 								BusPrimitiveInvalidityType.NOT_IN_SAME_NETWORK,
@@ -175,7 +174,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	@Override
 	@Pure
 	public GeoLocation getGeoLocation() {
-		final Rectangle2d b = getBoundingBox();
+		final var b = getBoundingBox();
 		if (b == null) {
 			return new GeoLocationNowhere(getUUID());
 		}
@@ -188,7 +187,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 */
 	@Pure
 	public GeoLocationPoint getGeoPosition() {
-		final Rectangle2d b = getBoundingBox();
+		final var b = getBoundingBox();
 		if (b == null) {
 			return null;
 		}
@@ -201,7 +200,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 */
 	@Pure
 	public Point2d getPosition2D() {
-		final Rectangle2d b = getBoundingBox();
+		final var b = getBoundingBox();
 		if (b == null) {
 			return null;
 		}
@@ -224,7 +223,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	/** Replies the name of this hub.
 	 * If the bus stops inside this hub have the same
 	 * names, this method replies the name of the bus stops.
-	 * Otherwhise, it replies the value returned by
+	 * otherwise, it replies the value returned by
 	 * {@link #getName()}.
 	 *
 	 * <p>The string comparison is case-insensitive.
@@ -234,9 +233,9 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	@Override
 	@Pure
 	public String getName() {
-		String name = super.getName();
+		var name = super.getName();
 		if (name == null) {
-			for (final BusStop busstop : this.busStops) {
+			for (final var busstop : this.busStops) {
 				if (name == null) {
 					name = busstop.getName();
 				} else if (!name.equalsIgnoreCase(busstop.getName())) {
@@ -253,11 +252,11 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 		if (this.busStops == null || this.busStops.isEmpty()) {
 			return null;
 		}
-		final Rectangle2d r = new Rectangle2d();
-		boolean first = true;
-		for (final BusStop stop : this.busStops) {
+		final var r = new Rectangle2d();
+		var first = true;
+		for (final var stop : this.busStops) {
 			if (stop != null) {
-				final Point2d p = stop.getPosition2D();
+				final var p = stop.getPosition2D();
 				if (p != null) {
 					if (first) {
 						first = false;
@@ -315,10 +314,10 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 */
 	@Pure
 	public double distance(double x, double y) {
-		double dist = Double.POSITIVE_INFINITY;
+		var dist = Double.POSITIVE_INFINITY;
 		if (isValidPrimitive()) {
-			for (final BusStop stop : this.busStops) {
-				final double d = stop.distance(x, y);
+			for (final var stop : this.busStops) {
+				final var d = stop.distance(x, y);
 				if (!Double.isNaN(d) && d < dist) {
 					dist = d;
 				}
@@ -403,7 +402,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 * Remove all the bus stops from the current hub.
 	 */
 	public void removeAllBusStops() {
-		for (final BusStop busStop : this.busStops) {
+		for (final var busStop : this.busStops) {
 			busStop.removeBusHub(this);
 		}
 		this.busStops.clear();
@@ -425,7 +424,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 * @return {@code true} if the bus stop was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusStop(BusStop busStop) {
-		final int index = this.busStops.indexOf(busStop);
+		final var index = this.busStops.indexOf(busStop);
 		if (index >= 0) {
 			this.busStops.remove(index);
 			busStop.removeBusHub(this);
@@ -451,7 +450,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 */
 	public boolean removeBusStop(int index) {
 		try {
-			final BusStop busStop = this.busStops.remove(index);
+			final var busStop = this.busStops.remove(index);
 			busStop.removeBusHub(this);
 			resetBoundingBox();
 			firePrimitiveChanged(new BusChangeEvent(this,
@@ -495,7 +494,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 *
 	 * @param busStop is the bus stop to search for.
 	 * @return {@code true} if the bus stop is inside the hub,
-	 * {@code false} otherwise.
+	 *     {@code false} otherwise.
 	 */
 	@Pure
 	public boolean contains(BusStop busStop) {

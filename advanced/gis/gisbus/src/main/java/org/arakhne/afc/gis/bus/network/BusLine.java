@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.Iterators;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
@@ -39,6 +37,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bus line is group of {@link BusItinerary itineraries}.
@@ -237,7 +236,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 		if (network == null) {
 			return null;
 		}
-		int nb = network.getBusLineCount();
+		var nb = network.getBusLineCount();
 		String name;
 		do {
 			++nb;
@@ -249,7 +248,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	@Override
 	public void rebuild(boolean fireEvents) {
-		for (final BusItinerary itinerary : this.itineraries) {
+		for (final var itinerary : this.itineraries) {
 			itinerary.rebuild();
 		}
 		resetBoundingBox();
@@ -275,10 +274,9 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 					BusPrimitiveInvalidityType.NO_ITINERARY_IN_LINE,
 					null);
 		} else {
-			final Iterator<BusItinerary> iterator = this.itineraries.iterator();
-			BusItinerary itinerary;
+			final var iterator = this.itineraries.iterator();
 			while (iterator.hasNext() && invalidityReason == null) {
-				itinerary = iterator.next();
+				final var itinerary = iterator.next();
 				if (!itinerary.isValidPrimitive()) {
 					invalidityReason = new BusPrimitiveInvalidity(
 							BusPrimitiveInvalidityType.INVALID_ITINERARY_IN_LINE,
@@ -318,11 +316,10 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	@Override
 	protected Rectangle2d calcBounds() {
-		Rectangle2d ir;
-		final Rectangle2d r = new Rectangle2d();
-		boolean first = true;
-		for (final BusItinerary itinerary : this.itineraries) {
-			ir = itinerary.getBoundingBox();
+		final var r = new Rectangle2d();
+		var first = true;
+		for (final var itinerary : this.itineraries) {
+			final var ir = itinerary.getBoundingBox();
 			if (ir != null) {
 				if (first) {
 					first = true;
@@ -371,7 +368,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	@Pure
 	public void toPath2D(Path2d path) {
 		// loop on parts and build the path to draw
-		for (final BusItinerary iti : busItineraries()) {
+		for (final var iti : busItineraries()) {
 			iti.toPath2D(path);
 		}
 	}
@@ -406,7 +403,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 		if (!this.itineraries.add(busItinerary)) {
 			return false;
 		}
-		final boolean isValidItinerary = busItinerary.isValidPrimitive();
+		final var isValidItinerary = busItinerary.isValidPrimitive();
 		busItinerary.setEventFirable(isEventFirable());
 		busItinerary.setContainer(this);
 		if (isEventFirable()) {
@@ -443,7 +440,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 		if (this.itineraries.indexOf(busItinerary) != -1) {
 			return false;
 		}
-		final boolean isValidItinerary = busItinerary.isValidPrimitive();
+		final var isValidItinerary = busItinerary.isValidPrimitive();
 		try {
 			this.itineraries.add(index, busItinerary);
 		} catch (Throwable exception) {
@@ -472,7 +469,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 * Remove all the bus itineraries from the current line.
 	 */
 	public void removeAllBusItineraries() {
-		for (final BusItinerary itinerary : this.itineraries) {
+		for (final var itinerary : this.itineraries) {
 			itinerary.setContainer(null);
 			itinerary.setEventFirable(true);
 		}
@@ -495,7 +492,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 * @return {@code true} if the bus itinerary was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusItinerary(BusItinerary itinerary) {
-		final int index = this.itineraries.indexOf(itinerary);
+		final var index = this.itineraries.indexOf(itinerary);
 		if (index >= 0) {
 			return removeBusItinerary(index);
 		}
@@ -511,7 +508,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 */
 	public boolean removeBusItinerary(int index) {
 		try {
-			final BusItinerary busItinerary = this.itineraries.remove(index);
+			final var busItinerary = this.itineraries.remove(index);
 			busItinerary.setContainer(null);
 			busItinerary.setEventFirable(true);
 			fireShapeChanged(new BusChangeEvent(this,
@@ -549,7 +546,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	@Override
 	public int indexInParent() {
-		final BusNetwork network = getContainer();
+		final var network = getContainer();
 		if (network == null) {
 			return -1;
 		}
@@ -587,7 +584,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 		if (uuid == null) {
 			return null;
 		}
-		for (final BusItinerary busItinerary : this.itineraries) {
+		for (final var busItinerary : this.itineraries) {
 			if (uuid.equals(busItinerary.getUUID())) {
 				return busItinerary;
 			}
@@ -606,8 +603,8 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 		if (name == null) {
 			return null;
 		}
-		final Comparator<String> cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
-		for (final BusItinerary itinerary : this.itineraries) {
+		final var cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
+		for (final var itinerary : this.itineraries) {
 			if (cmp.compare(name, itinerary.getName()) == 0) {
 				return itinerary;
 			}

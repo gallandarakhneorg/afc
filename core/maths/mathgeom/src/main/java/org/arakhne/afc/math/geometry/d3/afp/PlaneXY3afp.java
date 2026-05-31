@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,20 +47,21 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 18.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 		S extends Segment3afp<?, ?, ?, P, V, Q, ?>,
 		P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>>
 	extends Plane3afp<PT, S, P, V, Q> {
-	
+
 	/** Calculates the distance between the given plane and this XY plane.
 	 *
 	 * <p>The replied distance may be positive if the second plane is located on the
 	 * half-space of the normal of the plane. The distance may be negative of
 	 * the second plane is located on the half-space that is opposite to the plane
-	 * normal. 
-	 * 
+	 * normal.
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param a the a coordinate of the other plane.
@@ -70,13 +71,14 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * @return the distance between the two planes. This distance may be
 	 *     positive if the point is located on the half-space of the normal of the plane.
 	 *     This distance may be negative of the point is located on the half-space that
-	 *     is opposite to the plane normal. 
+	 *     is opposite to the plane normal.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parametername")
 	static double calculatesPlaneXYPlaneDistance(
 			boolean positive, double z,
 			double a, double b, double c, double d) {
-		final double length = Math.sqrt(a * a + b * b + c * c);
+		final var length = Math.sqrt(a * a + b * b + c * c);
 		final double nx;
 		final double ny;
 		final double nz;
@@ -101,8 +103,8 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * <p>The replied distance may be positive if the point is located on the
 	 * half-space of the normal of the plane. The distance may be negative of
 	 * the point is located on the half-space that is opposite to the plane
-	 * normal. 
-	 * 
+	 * normal.
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param px the x coordinate of the point.
@@ -111,7 +113,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * @return the distance from the plane to the point. This distance may be
 	 *     positive if the point is located on the half-space of the normal of the plane.
 	 *     This distance may be negative of the point is located on the half-space that
-	 *     is opposite to the plane normal. 
+	 *     is opposite to the plane normal.
 	 */
 	@Pure
 	static double calculatesPlaneXYPointDistance(
@@ -121,13 +123,13 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	/** Classifies the given point against to the XY plane.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param px the x coordinate of the point.
 	 * @param py the y coordinate of the point.
 	 * @param pz the c coordinate of the point.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
 	static PlaneClassification classifiesPlaneXYPoint(
@@ -143,14 +145,14 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	/** Classifies the given sphere against to the XY plane.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param sx the x coordinate of the sphere center.
 	 * @param sy the y coordinate of the sphere center.
 	 * @param sz the c coordinate of the sphere center.
 	 * @param radius the radius of the sphere.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
 	static PlaneClassification classifiesPlaneXYSphere(
@@ -177,7 +179,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * permits to retrieve the intersection point from the segment definition,
 	 * i.e, {@code I = P1 + factor * (P2 - P1)}.
 	 * </ol>
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param sx1 x coordinate of the first point of the segment.
@@ -187,26 +189,26 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * @param sy2 y coordinate of the second point of the segment.
 	 * @param sz2 z coordinate of the second axis of the oriented box.
 	 * @return the factor that permits to compute the intersection point,
-	 * {@link Double#NaN} when no intersection, {@link Double#POSITIVE_INFINITY}
-	 * when an infinite number of intersection points.
+	 *     {@link Double#NaN} when no intersection, {@link Double#POSITIVE_INFINITY}
+	 *     when an infinite number of intersection points.
 	 */
 	@Pure
 	static double calculatesPlaneXYSegmentIntersectionFactor(
 			boolean positive, double z,
 			double sx1, double sy1, double sz1,
 			double sx2, double sy2, double sz2) {
-		final double d = positive ? -z : z;
-		final double c = positive ? 1. : -1.;
-		final double denom = c * (sz2 - sz1);
+		final var d = positive ? -z : z;
+		final var c = positive ? 1. : -1.;
+		final var denom = c * (sz2 - sz1);
 		if (denom == 0.) {
 			// Segment and plane are parallel
 			// Compute the distance between a point of the segment and the plane.
-			final double dist = c * sz1 + d;
+			final var dist = c * sz1 + d;
 			if (MathUtil.isEpsilonZero(dist)) {
 				return Double.POSITIVE_INFINITY;
 			}
 		} else {
-			final double factor = (-c * sz1 - d) / denom;
+			final var factor = (-c * sz1 - d) / denom;
 			if (factor >= 0. && factor <= 1.) {
 				return factor;
 			}
@@ -218,7 +220,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 *
 	 * <p>If the segment and the plane are not intersecting, this
 	 * function replies {@code false}.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param sx1 x coordinate of the first point of the segment.
@@ -231,12 +233,13 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * @return {@code true} if an intersection exists; otherwise {@code false}.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean calculatesPlaneXYSegmentIntersection(
 			boolean positive, double z,
 			double sx1, double sy1, double sz1,
 			double sx2, double sy2, double sz2,
 			Point3D<?, ?, ?> result) {
-		final double factor = calculatesPlaneXYSegmentIntersectionFactor(
+		final var factor = calculatesPlaneXYSegmentIntersectionFactor(
 				positive, z, sx1, sy1, sz1, sx2, sy2, sz2);
 		if (Double.isNaN(factor)) {
 			return false;
@@ -255,7 +258,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	/** Calculates the line that corresponds to the intersection between the XY plane and the general plane.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param a2 the a coordinate of the other plane.
@@ -279,7 +282,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	/** Calculates the line that corresponds to the intersection between the XY plane and the general plane.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param a2 the a coordinate of the other plane.
@@ -308,7 +311,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	/** Calculates the line that corresponds to the intersection between the XY plane and the general plane.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param a2 the a coordinate of the other plane.
@@ -337,7 +340,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	/** Calculates the line that corresponds to the intersection between the XY plane and the general plane.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param a2 the a coordinate of the other plane.
@@ -361,7 +364,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	/** Classifies the given segment against to the XY plane.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param x1 the x coordinate of the first point of the segment.
@@ -370,7 +373,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * @param x2 the x coordinate of the second point of the segment.
 	 * @param y2 the y coordinate of the second point of the segment.
 	 * @param z2 the z coordinate of the second point of the segment.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
 	static PlaneClassification classifiesPlaneXYSegment(
@@ -399,7 +402,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	/** Classifies the given segment against to the XY plane.
-	 * 
+	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
 	 * @param z the z coordinate that is for all the points of the plane.
 	 * @param minx the x coordinate of the minimum point of the aligned box.
@@ -408,16 +411,16 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * @param maxx the x coordinate of the maximum point of the aligned box.
 	 * @param maxy the y coordinate of the maximum point of the aligned box.
 	 * @param maxz the z coordinate of the maximum point of the aligned box.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
 	static PlaneClassification classifiesPlaneXYAlignedBox(
 			boolean positive, double z,
 			double minx, double miny, double minz,
 			double maxx, double maxy, double maxz) {
-		assert minx <= maxx : AssertMessages.lowerEqualParameters(2, minx, 5, maxx);
-		assert miny <= maxy : AssertMessages.lowerEqualParameters(3, miny, 6, maxy);
-		assert minz <= maxz : AssertMessages.lowerEqualParameters(4, minz, 7, maxz);
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(2, Double.valueOf(minx), 5, Double.valueOf(maxx));
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(3, Double.valueOf(miny), 6, Double.valueOf(maxy));
+		assert minz <= maxz : AssertMessages.lowerEqualParameters(4, Double.valueOf(minz), 7, Double.valueOf(maxz));
 		if (minz < z) {
 			if (maxz > z) {
 				return PlaneClassification.COINCIDENT;
@@ -438,7 +441,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * to the positive infinity.
 	 *
 	 * @return {@code true} if the plan normal is positive.
-	 */ 
+	 */
 	boolean isPositive();
 
 	/** Change if this plane is oriented to the positive side.
@@ -446,14 +449,14 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * to the positive infinity.
 	 *
 	 * @param positive {@code true} if the plan normal is positive.
-	 */ 
+	 */
 	void setPositive(boolean positive);
 
 	/** Set the z coordinate of the plane.
 	 *
 	 * @param z z coordinate of the point that is inside the plane.
 	 */
-	void setZ(double y);
+	void setZ(double z);
 
 	/** Replies the z coordinate of the plane.
 	 *
@@ -510,8 +513,9 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:parametername")
 	default void set(double a, double b, double c, double d) {
-		final boolean pos = c >= 0.;
+		final var pos = c >= 0.;
 		setPositive(pos);
 		setZ(pos ? -d : d);
 	}
@@ -536,7 +540,13 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 
 	@Override
 	default double getDistanceTo(double x, double y, double z) {
-		return calculatesPlaneXYPointDistance(isPositive(), getZ(), x, y ,z);
+		return calculatesPlaneXYPointDistance(isPositive(), getZ(), x, y, z);
+	}
+
+	@Override
+	@SuppressWarnings("checkstyle:parametername")
+	default double getDistanceTo(double a, double b, double c, double d) {
+		return calculatesPlaneXYPlaneDistance(isPositive(), getZ(), a, b, c, d);
 	}
 
 	@Override
@@ -550,14 +560,9 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	@Override
-	default double getDistanceTo(double a, double b, double c, double d) {
-		return calculatesPlaneXYPlaneDistance(isPositive(), getZ(), a, b, c, d);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "checkstyle:parametername"})
 	default S getIntersection(double a, double b, double c, double d) {
-		final S result = (S) getGeomFactory().newSegment();
+		final var result = (S) getGeomFactory().newSegment();
 		if (calculatesPlaneXYPlaneIntersection(isPositive(), getZ(), a, b, c, d, result)) {
 			return result;
 		}
@@ -567,7 +572,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	@Override
 	default P getIntersection(Segment3afp<?, ?, ?, ?, ?, ?, ?> line) {
 		assert line != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		if (calculatesPlaneXYSegmentIntersection(isPositive(), getZ(),
 				line.getX1(), line.getY1(), line.getZ1(),
 				line.getX2(), line.getY2(), line.getZ2(), point)) {
@@ -582,21 +587,10 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	@Override
-	default boolean intersects(double x, double y, double z) {
-		return z == getZ();
-	}
-
-	@Override
 	default PlaneClassification classifies(double x, double y, double z, double radius) {
 		return classifiesPlaneXYSphere(
 				isPositive(), getZ(),
 				x, y, z, radius);
-	}
-
-	@Override
-	default boolean intersects(double x, double y, double z, double radius) {
-		final double pz = getZ();
-		return z - radius < pz && pz < z + radius;
 	}
 
 	@Override
@@ -609,44 +603,65 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	}
 
 	@Override
-	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : AssertMessages.notNullParameter();
-		final double pz = getZ();
-		final double z1 = segment.getZ1();
-		final double z2 = segment.getZ2();
-		return (z1 < pz && z2 > pz) || (z2 < pz && z1 > pz);
-	}
-
-	@Override
 	default PlaneClassification classifies(double lx, double ly, double lz, double ux, double uy, double uz) {
 		return classifiesPlaneXYAlignedBox(isPositive(), getZ(), lx, ly, lz, ux, uy, uz);
 	}
 
+	@Override
+	default PlaneClassification classifies(Plane3D<?, ?, ?, ?, ?> otherPlane) {
+		assert otherPlane != null : AssertMessages.notNullParameter();
+		return classifiesPlaneXYPlane(
+				isPositive(), getZ(),
+				otherPlane.getEquationComponentA(), otherPlane.getEquationComponentB(),
+				otherPlane.getEquationComponentC(), otherPlane.getEquationComponentD());
+	}
+
+	@Override
+	default boolean intersects(double x, double y, double z) {
+		return z == getZ();
+	}
+
+	@Override
+	default boolean intersects(double x, double y, double z, double radius) {
+		final var pz = getZ();
+		return z - radius < pz && pz < z + radius;
+	}
+
+	@Override
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : AssertMessages.notNullParameter();
+		final var pz = getZ();
+		final var z1 = segment.getZ1();
+		final var z2 = segment.getZ2();
+		return z1 < pz && z2 > pz || z2 < pz && z1 > pz;
+	}
+
 	/** Classifies the given XY plane against to another plane.
-	 * 
+	 *
 	 * @param positive indicates of the plane is positive.
 	 * @param z is the z coordinate of the points of the plane.
 	 * @param a first component of the second plane equation.
 	 * @param b second component of the second plane equation.
 	 * @param c third component of the second plane equation.
 	 * @param d fourth component of the second plane equation.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parametername")
 	static PlaneClassification classifiesPlaneXYPlane(
 			boolean positive, double z,
 			double a, double b, double c, double d) {
-		final double normalSqLength = a * a + b * b + c * c;
+		final var normalSqLength = a * a + b * b + c * c;
 		final double nz;
 		if (MathUtil.isEpsilonEqual(normalSqLength, 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
 			nz = c;
 		} else {
-			final double normalLength = Math.sqrt(normalSqLength);
+			final var normalLength = Math.sqrt(normalSqLength);
 			nz = c / normalLength;
 		}
 		if (MathUtil.isEpsilonEqual(Math.abs(nz), 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
 			// planes are parallel
-			final double z2 = nz >= 0. ? -d : d;
+			final var z2 = nz >= 0. ? -d : d;
 			// Plane normals are to the same direction
 			if (MathUtil.isEpsilonEqual(z, z2, GeomConstants.UNIT_VECTOR_EPSILON)) {
 				return PlaneClassification.COINCIDENT;
@@ -663,15 +678,6 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 			return PlaneClassification.IN_FRONT_OF;
 		}
 		return PlaneClassification.COINCIDENT;
-	}
-
-	@Override
-	default PlaneClassification classifies(Plane3D<?, ?, ?, ?, ?> otherPlane) {
-		assert otherPlane != null : AssertMessages.notNullParameter();
-		return classifiesPlaneXYPlane(
-				isPositive(), getZ(),
-				otherPlane.getEquationComponentA(), otherPlane.getEquationComponentB(),
-				otherPlane.getEquationComponentC(), otherPlane.getEquationComponentD());
 	}
 
 }

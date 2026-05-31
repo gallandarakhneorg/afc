@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,9 +62,9 @@ public final class MathUtil {
 	 * @see Math#signum(double)
 	 */
 	@Pure
-	@Inline(value = "($1 == 0. || Double.isNaN($1)) ? 0 : (($1 < -0.) ? -1 : 1)")
+	@Inline(value = "($1 == 0. || Double.isNaN($1)) ? 0 : (($1 < 0.) ? -1 : 1)")
 	public static int sign(double value) {
-		return (value == 0. || Double.isNaN(value)) ? 0 : ((value < -0.) ? -1 : 1);
+		return value == 0. || Double.isNaN(value) ? 0 : (value < 0. ? -1 : 1);
 	}
 
 	/**
@@ -76,14 +76,14 @@ public final class MathUtil {
 	 *
 	 * @param value the floating-point value whose sign is to be returned
 	 * @return the sign of the argument, {@code -1} or {@code 1}.
+	 * @since 16.0
 	 * @see #sign(double)
 	 * @see Math#signum(double)
-	 * @since 16.0
 	 */
 	@Pure
-	@Inline(value = "(($1 < -0.) ? -1 : 1)")
+	@Inline(value = "(($1 < 0.) ? -1 : 1)")
 	public static int signNoZero(double value) {
-		return (value < -0.) ? -1 : 1;
+		return value < 0. ? -1 : 1;
 	}
 
 	/** Clamp the given value to the given range.
@@ -99,7 +99,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clamp(double v, double min, double max) {
-		assert min <= max : AssertMessages.lowerEqualParameters(1, min, 2, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(1, Double.valueOf(min), 2, Double.valueOf(max));
 		if (v < min) {
 			return min;
 		}
@@ -122,7 +122,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int clamp(int v, int min, int max) {
-		assert min <= max : AssertMessages.lowerEqualParameters(1, min, 2, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(1, Double.valueOf(min), 2, Double.valueOf(max));
 		if (v < min) {
 			return min;
 		}
@@ -140,9 +140,9 @@ public final class MathUtil {
 	 * @see Math#ulp(double)
 	 */
 	@Pure
-	@Inline(value = "Math.abs($1) <= Math.ulp($1)", imported = Math.class)
+	@Inline(value = "(!Double.isInfinite(value) && Math.abs($1) <= Math.ulp($1))", imported = Math.class)
 	public static boolean isEpsilonZero(double value) {
-		return Math.abs(value) <= Math.ulp(value);
+		return !Double.isInfinite(value) && Math.abs(value) <= Math.ulp(value);
 	}
 
 	/** Replies if the given value is near zero.
@@ -154,9 +154,12 @@ public final class MathUtil {
 	 *     is near zero, otherwise {@code false}.
 	 */
 	@Pure
-	@Inline(value = "Math.abs($1) < (Double.isNaN($2) ? Math.ulp($1) : ($2))", imported = Math.class)
+	@Inline(value = "(!Double.isInfinite(value) &&  (Math.abs($1) < (Double.isNaN($2) ? Math.ulp($1) : ($2))))", imported = Math.class)
 	public static boolean isEpsilonZero(double value, double epsilon) {
-		final double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
+		if (Double.isInfinite(value)) {
+			return false;
+		}
+		final var eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
 		return Math.abs(value) <= eps;
 	}
 
@@ -190,8 +193,8 @@ public final class MathUtil {
 		} else if (Double.isNaN(v1)) {
 			return false;
 		}
-		final double value = Math.abs(v1 - v2);
-		final double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
+		final var value = Math.abs(v1 - v2);
+		final var eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
 		return value <= eps;
 	}
 
@@ -208,7 +211,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int compareEpsilon(double v1, double v2) {
-		final double v = v1 - v2;
+		final var v = v1 - v2;
 		if (Math.abs(v) < Math.ulp(v)) {
 			return 0;
 		}
@@ -233,8 +236,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int compareEpsilon(double v1, double v2, double epsilon) {
-		final double v = v1 - v2;
-		final double eps = Double.isNaN(epsilon) ? Math.ulp(v) : epsilon;
+		final var v = v1 - v2;
+		final var eps = Double.isNaN(epsilon) ? Math.ulp(v) : epsilon;
 		if (Math.abs(v) <= eps) {
 			return 0;
 		}
@@ -254,8 +257,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return Double.NaN;
 		}
-		double max = values[0];
-		for (final double v : values) {
+		var max = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v > max) {
 				max = v;
 			}
@@ -273,8 +277,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return Float.NaN;
 		}
-		float max = values[0];
-		for (final float v : values) {
+		var max = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v > max) {
 				max = v;
 			}
@@ -292,8 +297,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return 0;
 		}
-		int max = values[0];
-		for (final int v : values) {
+		var max = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v > max) {
 				max = v;
 			}
@@ -311,8 +317,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return 0;
 		}
-		long max = values[0];
-		for (final long v : values) {
+		var max = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v > max) {
 				max = v;
 			}
@@ -330,8 +337,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return 0;
 		}
-		short max = values[0];
-		for (final short v : values) {
+		var max = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v > max) {
 				max = v;
 			}
@@ -349,8 +357,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return Double.NaN;
 		}
-		double min = values[0];
-		for (final double v : values) {
+		var min = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v < min) {
 				min = v;
 			}
@@ -368,8 +377,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return Float.NaN;
 		}
-		float min = values[0];
-		for (final float v : values) {
+		var min = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v < min) {
 				min = v;
 			}
@@ -387,8 +397,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return 0;
 		}
-		int min = values[0];
-		for (final int v : values) {
+		var min = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v < min) {
 				min = v;
 			}
@@ -406,8 +417,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return 0;
 		}
-		long min = values[0];
-		for (final long v : values) {
+		var min = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v < min) {
 				min = v;
 			}
@@ -425,8 +437,9 @@ public final class MathUtil {
 		if (values == null || values.length == 0) {
 			return 0;
 		}
-		short min = values[0];
-		for (final short v : values) {
+		var min = values[0];
+		for (var i = 1; i < values.length; ++i) {
+			final var v = values[i];
 			if (v < min) {
 				min = v;
 			}
@@ -447,22 +460,22 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampCyclic(double value, double min, double max) {
-		assert min <= max : AssertMessages.lowerEqualParameters(1, min, 2, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(1, Double.valueOf(min), 2, Double.valueOf(max));
 		if (Double.isNaN(max) || Double.isNaN(min) || Double.isNaN(max)) {
 			return Double.NaN;
 		}
 		if (value < min) {
-			final double perimeter = max - min;
-			final double nvalue = min - value;
-			double rest = perimeter - (nvalue % perimeter);
+			final var perimeter = max - min;
+			final var nvalue = min - value;
+			var rest = perimeter - (nvalue % perimeter);
 			if (rest >= perimeter) {
 				rest -= perimeter;
 			}
 			return min + rest;
 		} else if (value >= max) {
-			final double perimeter = max - min;
-			final double nvalue = value - max;
-			final double rest = nvalue % perimeter;
+			final var perimeter = max - min;
+			final var nvalue = value - max;
+			final var rest = nvalue % perimeter;
 			return min + rest;
 		}
 		return value;
@@ -482,8 +495,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampToNearestBounds(double value, double minBounds, double maxBounds) {
-		assert minBounds <= maxBounds : AssertMessages.lowerEqualParameters(1, minBounds, 2, maxBounds);
-		final double center = (minBounds + maxBounds) / 2;
+		assert minBounds <= maxBounds : AssertMessages.lowerEqualParameters(1, Double.valueOf(minBounds), 2, Double.valueOf(maxBounds));
+		final var center = (minBounds + maxBounds) / 2;
 		if (value <= center) {
 			return minBounds;
 		}
@@ -507,11 +520,12 @@ public final class MathUtil {
 	 * @see MathConstants#COHEN_SUTHERLAND_INSIDE
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	public static int getCohenSutherlandCode(int px, int py, int rxmin, int rymin, int rxmax, int rymax) {
-		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(2, rxmin, 4, rxmax);
-		assert rymin <= rymax : AssertMessages.lowerEqualParameters(3, rymin, 5, rymax);
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(2, Double.valueOf(rxmin), 4, Double.valueOf(rxmax));
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(3, Double.valueOf(rymin), 5, Double.valueOf(rymax));
 		// initialised as being inside of clip window
-		int code = COHEN_SUTHERLAND_INSIDE;
+		var code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
@@ -549,11 +563,12 @@ public final class MathUtil {
 	 * @see MathConstants#COHEN_SUTHERLAND_INSIDE
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	public static int getCohenSutherlandCode(double px, double py, double rxmin, double rymin, double rxmax, double rymax) {
-		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(2, rxmin, 4, rxmax);
-		assert rymin <= rymax : AssertMessages.lowerEqualParameters(3, rymin, 5, rymax);
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(2, Double.valueOf(rxmin), 4, Double.valueOf(rxmax));
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(3, Double.valueOf(rymin), 5, Double.valueOf(rymax));
 		// initialised as being inside of clip window
-		int code = COHEN_SUTHERLAND_INSIDE;
+		var code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
@@ -586,13 +601,14 @@ public final class MathUtil {
 	 * @return the zone
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:parameternumber"})
 	public static int getCohenSutherlandCode3D(int px, int py, int pz, int rxmin, int rymin, int rzmin, int rxmax, int rymax,
 			int rzmax) {
-		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, rxmin, 6, rxmax);
-		assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, rymin, 7, rymax);
-		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(5, rzmin, 8, rzmax);
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, Double.valueOf(rxmin), 6, Double.valueOf(rxmax));
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, Double.valueOf(rymin), 7, Double.valueOf(rymax));
+		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(5, Double.valueOf(rzmin), 8, Double.valueOf(rzmax));
 		// initialised as being inside of clip window
-		int code = COHEN_SUTHERLAND_INSIDE;
+		var code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
@@ -635,13 +651,14 @@ public final class MathUtil {
 	 * @return the zone
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:parameternumber"})
 	public static int getCohenSutherlandCode3D(double px, double py, double pz, double rxmin, double rymin, double rzmin,
 			double rxmax, double rymax, double rzmax) {
-		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, rxmin, 6, rxmax);
-		assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, rymin, 7, rymax);
-		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(5, rzmin, 8, rzmax);
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, Double.valueOf(rxmin), 6, Double.valueOf(rxmax));
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, Double.valueOf(rymin), 7, Double.valueOf(rymax));
+		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(5, Double.valueOf(rzmin), 8, Double.valueOf(rzmax));
 		// initialised as being inside of clip window
-		int code = COHEN_SUTHERLAND_INSIDE;
+		var code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
@@ -876,7 +893,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double haversine(double angle) {
-		final double sin2 = Math.sin(angle / 2.);
+		final var sin2 = Math.sin(angle / 2.);
 		return sin2 * sin2;
 	}
 

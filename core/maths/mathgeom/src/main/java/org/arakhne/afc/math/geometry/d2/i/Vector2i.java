@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -30,6 +27,8 @@ import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Vector with 2 integer numbers.
  *
@@ -111,8 +110,8 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 	 * @since 14.0
 	 */
 	public static Vector2i convert(Tuple2D<?> tuple) {
-		if (tuple instanceof Vector2i) {
-			return (Vector2i) tuple;
+		if (tuple instanceof Vector2i vec) {
+			return vec;
 		}
 		return new Vector2i(tuple.getX(), tuple.getY());
 	}
@@ -226,9 +225,9 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 
 	@Override
 	public void setLength(double newLength) {
-		final double l = getLength();
+		final var l = getLength();
 		if (l != 0) {
-			final double f = newLength / l;
+			final var f = newLength / l;
 			this.x = (int) Math.round(this.x * f);
 			this.y = (int) Math.round(this.y * f);
 		} else {
@@ -265,6 +264,7 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 			}
 
 			@Override
+			@SuppressWarnings("checkstyle:superclone")
 			public Vector2i clone() {
 				return Vector2i.this.getGeomFactory().newVector(
 						Vector2i.this.ix(),

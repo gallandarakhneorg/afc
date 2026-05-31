@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeError;
@@ -42,6 +39,7 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class contains a collection of attribute providers and
@@ -100,13 +98,13 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	@Override
 	public MultiAttributeCollection clone() {
-		final MultiAttributeCollection clone = (MultiAttributeCollection) super.clone();
+		final var clone = (MultiAttributeCollection) super.clone();
 		clone.runProviderEvents = new AtomicBoolean(true);
 		clone.eventHandler = new Handler();
 		clone.listeners = (this.listeners == null) ? null : new ArrayList<>(this.listeners);
-		for (final AttributeProvider c : clone.containers()) {
-			if (c instanceof AttributeCollection) {
-				((AttributeCollection) c).addAttributeChangeListener(clone.eventHandler);
+		for (final var c : clone.containers()) {
+			if (c instanceof AttributeCollection col) {
+				col.addAttributeChangeListener(clone.eventHandler);
 			}
 		}
 		return clone;
@@ -115,8 +113,8 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	@Override
 	public boolean addAttributeContainer(AttributeProvider container) {
 		if (super.addAttributeContainer(container)) {
-			if (container instanceof AttributeCollection) {
-				((AttributeCollection) container).addAttributeChangeListener(this.eventHandler);
+			if (container instanceof AttributeCollection col) {
+				col.addAttributeChangeListener(this.eventHandler);
 			}
 			return true;
 		}
@@ -126,8 +124,8 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	@Override
 	public boolean removeAttributeContainer(AttributeProvider container) {
 		if (super.removeAttributeContainer(container)) {
-			if (container instanceof AttributeCollection) {
-				((AttributeCollection) container).removeAttributeChangeListener(this.eventHandler);
+			if (container instanceof AttributeCollection col) {
+				col.removeAttributeChangeListener(this.eventHandler);
 			}
 			return true;
 		}
@@ -158,7 +156,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	 */
 	protected void fireAttributeChange(AttributeChangeEvent event) {
 		if (this.listeners != null && isEventFirable()) {
-			final AttributeChangeListener[] list = new AttributeChangeListener[this.listeners.size()];
+			final var list = new AttributeChangeListener[this.listeners.size()];
 			this.listeners.toArray(list);
 			for (final AttributeChangeListener listener : list) {
 				listener.onAttributeChangeEvent(event);
@@ -168,21 +166,21 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	@Override
 	public void flush() {
-		for (final AttributeProvider c : containers()) {
-			if (c instanceof AttributeCollection) {
-				((AttributeCollection) c).flush();
+		for (final var c : containers()) {
+			if (c instanceof AttributeCollection col) {
+				col.flush();
 			}
 		}
 	}
 
 	@Override
 	public boolean removeAllAttributes() {
-		final boolean b = this.runProviderEvents.getAndSet(false);
+		final var b = this.runProviderEvents.getAndSet(false);
 		try {
-			boolean changed = false;
-			for (final AttributeProvider c : containers()) {
-				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection) c).removeAllAttributes() || changed;
+			var changed = false;
+			for (final var c : containers()) {
+				if (c instanceof AttributeCollection col) {
+					changed = col.removeAllAttributes() || changed;
 				}
 			}
 			if (changed) {
@@ -198,18 +196,18 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	@Override
 	public boolean removeAttribute(String name) {
-		final boolean b = this.runProviderEvents.getAndSet(false);
+		final var b = this.runProviderEvents.getAndSet(false);
 		try {
-			boolean changed = false;
-			final ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
-			for (final AttributeProvider c : containers()) {
+			var changed = false;
+			final var oldValue = new ManyValueAttributeValue();
+			for (final var c : containers()) {
 				assign(oldValue, c.getAttribute(name));
-				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection) c).removeAttribute(name) || changed;
+				if (c instanceof AttributeCollection col) {
+					changed = col.removeAttribute(name) || changed;
 				}
 			}
 			if (changed) {
-				final AttributeValue value = canonize(oldValue);
+				final var value = canonize(oldValue);
 				this.cache.remove(name);
 				if (this.names != null) {
 					this.names.remove(name);
@@ -227,18 +225,18 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	@Override
 	public boolean renameAttribute(String oldname, String newname) {
-		final boolean b = this.runProviderEvents.getAndSet(false);
+		final var b = this.runProviderEvents.getAndSet(false);
 		try {
-			boolean changed = false;
-			final ManyValueAttributeValue currentValue = new ManyValueAttributeValue();
-			for (final AttributeProvider c : containers()) {
+			var changed = false;
+			final var currentValue = new ManyValueAttributeValue();
+			for (final var c : containers()) {
 				assign(currentValue, c.getAttribute(oldname));
-				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection) c).renameAttribute(oldname, newname) || changed;
+				if (c instanceof AttributeCollection col) {
+					changed = col.renameAttribute(oldname, newname) || changed;
 				}
 			}
 			if (changed) {
-				final AttributeValue cValue = canonize(currentValue);
+				final var cValue = canonize(currentValue);
 				this.cache.remove(oldname);
 				this.cache.remove(newname);
 				if (this.names != null) {
@@ -255,18 +253,18 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	@Override
 	public boolean renameAttribute(String oldname, String newname, boolean overwrite) {
-		final boolean b = this.runProviderEvents.getAndSet(false);
+		final var b = this.runProviderEvents.getAndSet(false);
 		try {
-			boolean changed = false;
-			final ManyValueAttributeValue currentValue = new ManyValueAttributeValue();
-			for (final AttributeProvider c : containers()) {
+			var changed = false;
+			final var currentValue = new ManyValueAttributeValue();
+			for (final var c : containers()) {
 				assign(currentValue, c.getAttribute(oldname));
-				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection) c).renameAttribute(oldname, newname, overwrite) || changed;
+				if (c instanceof AttributeCollection col) {
+					changed = col.renameAttribute(oldname, newname, overwrite) || changed;
 				}
 			}
 			if (changed) {
-				final AttributeValue cValue = canonize(currentValue);
+				final var cValue = canonize(currentValue);
 				this.cache.remove(oldname);
 				if (this.names != null) {
 					this.names.remove(oldname);
@@ -283,18 +281,16 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	@Override
 	public void addAttributes(AttributeProvider content)
 			throws AttributeException {
-		for (final Attribute attr : content.attributes()) {
+		for (final var attr : content.attributes()) {
 			setAttribute(attr);
 		}
 	}
 
 	@Override
 	public void addAttributes(Map<String, Object> content) {
-		AttributeType type;
-		Object rawValue;
-		for (final Entry<String, Object> entry : content.entrySet()) {
-			rawValue = entry.getValue();
-			type = AttributeType.fromValue(rawValue);
+		for (final var entry : content.entrySet()) {
+			var rawValue = entry.getValue();
+			final var type = AttributeType.fromValue(rawValue);
 			rawValue = type.cast(rawValue);
 			try {
 				setAttribute(entry.getKey(), new AttributeValueImpl(type, rawValue));
@@ -308,7 +304,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	public void setAttributes(AttributeProvider content)
 			throws AttributeException {
 		removeAllAttributes();
-		for (final Attribute attr : content.attributes()) {
+		for (final var attr : content.attributes()) {
 			setAttribute(attr);
 		}
 	}
@@ -316,11 +312,9 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	@Override
 	public void setAttributes(Map<String, Object> content) {
 		removeAllAttributes();
-		AttributeType type;
-		Object value;
-		for (final Entry<String, Object> entry : content.entrySet()) {
-			value = entry.getValue();
-			type = AttributeType.fromValue(value);
+		for (final var entry : content.entrySet()) {
+			var value = entry.getValue();
+			final var type = AttributeType.fromValue(value);
 			value = type.cast(value);
 			try {
 				setAttribute(entry.getKey(), new AttributeValueImpl(type, value));
@@ -332,16 +326,15 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	@Override
 	public Attribute setAttribute(String name, AttributeValue value) throws AttributeException {
-		final boolean b = this.runProviderEvents.getAndSet(false);
+		final var b = this.runProviderEvents.getAndSet(false);
 		try {
-			boolean changed = false;
-			Attribute attr;
-			final ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
-			final ManyValueAttributeValue newValue = new ManyValueAttributeValue();
-			for (final AttributeProvider c : containers()) {
+			var changed = false;
+			final var oldValue = new ManyValueAttributeValue();
+			final var newValue = new ManyValueAttributeValue();
+			for (final var c : containers()) {
 				assign(oldValue, c.getAttribute(name));
-				if (c instanceof AttributeCollection) {
-					attr = ((AttributeCollection) c).setAttribute(name, value);
+				if (c instanceof AttributeCollection col) {
+					final var attr = col.setAttribute(name, value);
 					assign(newValue, attr);
 					if (attr != null) {
 						changed = true;
@@ -351,8 +344,8 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 				}
 			}
 			if (changed) {
-				final AttributeValue oValue = canonize(oldValue);
-				final AttributeValue nValue = canonize(newValue);
+				final var oValue = canonize(oldValue);
+				final var nValue = canonize(newValue);
 				this.cache.put(name, nValue);
 				final AttributeChangeEvent event;
 				if (nValue == null) {
@@ -511,25 +504,24 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	@Override
 	public Attribute setAttributeType(String name, AttributeType type) throws AttributeException {
-		final boolean b = this.runProviderEvents.getAndSet(false);
+		final var b = this.runProviderEvents.getAndSet(false);
 		try {
-			final ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
-			final ManyValueAttributeValue attr = new ManyValueAttributeValue();
-			Attribute a;
-			boolean changed = false;
-			for (final AttributeProvider c : containers()) {
+			final var oldValue = new ManyValueAttributeValue();
+			final var attr = new ManyValueAttributeValue();
+			var changed = false;
+			for (final var c : containers()) {
 				assign(oldValue, c.getAttribute(name));
-				if (c instanceof AttributeCollection) {
-					a = ((AttributeCollection) c).setAttributeType(name, type);
+				if (c instanceof AttributeCollection col) {
+					final var a = col.setAttributeType(name, type);
 					assign(attr, a);
 					if (a != null) {
 						changed = true;
 					}
 				}
 			}
-			final AttributeValue cValue = canonize(attr);
+			final var cValue = canonize(attr);
 			if (changed) {
-				final AttributeValue oValue = canonize(oldValue);
+				final var oValue = canonize(oldValue);
 				this.cache.put(name, cValue);
 				fireAttributeChange(new AttributeChangeEvent(this, Type.VALUE_UPDATE, name, oValue, name, cValue));
 			}

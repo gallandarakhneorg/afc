@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ package org.arakhne.afc.gis.bus.layer;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent;
 import org.arakhne.afc.gis.bus.network.BusChangeListener;
@@ -36,6 +34,7 @@ import org.arakhne.afc.gis.maplayer.MultiMapLayer;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to display a bus network.
@@ -146,7 +145,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 
 			@Override
 			public void onBusPrimitiveChanged(BusChangeEvent event) {
-				BusNetwork b = event.getBusNetwork();
+				var b = event.getBusNetwork();
 				if (b == null) {
 					if (event.getBusStop() != null) {
 						b = event.getBusStop().getBusNetwork();
@@ -159,7 +158,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 
 			@Override
 			public void onBusPrimitiveGraphicalAttributeChanged(BusChangeEvent event) {
-				BusNetwork b = event.getBusNetwork();
+				var b = event.getBusNetwork();
 				if (b == null) {
 					if (event.getBusStop() != null) {
 						b = event.getBusStop().getBusNetwork();
@@ -176,7 +175,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 			public void onBusPrimitiveShapeChanged(BusChangeEvent event) {
 				if (event.getBusNetwork() == getBusNetwork()) {
 					BusNetworkLayer.this.resetBoundingBox();
-					boolean fired = false;
+					var fired = false;
 					switch (event.getEventType()) {
 					case LINE_ADDED:
 						fired = onBusLineAdded(event.getBusLine(), event.getIndex());
@@ -225,7 +224,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nofinalizer")
+	@SuppressWarnings({ "checkstyle:nofinalizer", "removal" })
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		this.busNetwork.removeBusChangeListener(this.listener);
@@ -239,10 +238,10 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 	 * not invoked if this parameter is {@code false}.
 	 */
 	protected void initializeElements() {
-		final BusNetwork network = getBusNetwork();
+		final var network = getBusNetwork();
 		if (network != null) {
-			int i = 0;
-			for (final BusLine line : network.busLines()) {
+			var i = 0;
+			for (final var line : network.busLines()) {
 				onBusLineAdded(line, i);
 				++i;
 			}
@@ -304,7 +303,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 	 */
 	protected boolean onAllBusLineRemoved() {
 		if (this.autoUpdate.get()) {
-			final boolean fired = size() > 0;
+			final var fired = size() > 0;
 			clear();
 			return fired;
 		}
@@ -340,7 +339,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 	 * a bus itinerary was removed or added.
 	 *
 	 * @return {@code true} if the layer is automatically updated,
-	 * {@code false}.
+	 *     {@code false}.
 	 */
 	public boolean isLayerAutoUpdated() {
 		return this.autoUpdate.get();
@@ -350,7 +349,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 	 * a bus itinerary was removed or added.
 	 *
 	 * @param update is {@code true} if the layer should be automatically updated,
-	 * {@code false}.
+	 *     {@code false}.
 	 */
 	public void setLayerAutoUpdated(boolean update) {
 		this.autoUpdate.set(update);
@@ -407,7 +406,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 
 	@Override
 	public boolean isValidLayer() {
-		final BusNetwork network = getBusNetwork();
+		final var network = getBusNetwork();
 		if (network != null) {
 			return network.isValidPrimitive();
 		}
@@ -416,7 +415,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 
 	@Override
 	public BusPrimitiveInvalidity getInvalidityReason() {
-		final BusNetwork network = getBusNetwork();
+		final var network = getBusNetwork();
 		if (network != null) {
 			return network.getInvalidityReason();
 		}
@@ -425,7 +424,7 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 
 	@Override
 	public void revalidate() {
-		final BusNetwork network = getBusNetwork();
+		final var network = getBusNetwork();
 		if (network != null) {
 			network.revalidate();
 		}

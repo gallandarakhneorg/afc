@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d1.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.GeomFactory1D;
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
@@ -30,6 +28,7 @@ import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 1.5D Vector with 2 double precision floating-point numbers.
  *
@@ -143,8 +142,8 @@ public class Vector1d extends Tuple1d<Vector1d> implements Vector1D<Vector1d, Po
 	 * @since 14.0
 	 */
 	public static Vector1d convert(Tuple1d<?> tuple) {
-		if (tuple instanceof Vector1d) {
-			return (Vector1d) tuple;
+		if (tuple instanceof Vector1d tuple0) {
+			return tuple0;
 		}
 		return new Vector1d(tuple.getSegment(), tuple.getX(), tuple.getY());
 	}
@@ -231,9 +230,9 @@ public class Vector1d extends Tuple1d<Vector1d> implements Vector1D<Vector1d, Po
 
 	@Override
 	public void setLength(double newLength) {
-		final double l = getLength();
+		final var l = getLength();
 		if (l != 0) {
-			final double f = newLength / l;
+			final var f = newLength / l;
 			this.x *= f;
 			this.y *= f;
 		} else {
@@ -254,6 +253,7 @@ public class Vector1d extends Tuple1d<Vector1d> implements Vector1D<Vector1d, Po
 			}
 
 			@Override
+			@SuppressWarnings("checkstyle:superclone")
 			public Vector1d clone() {
 				return Vector1d.this.getGeomFactory().newVector(Vector1d.this.getSegment(),
 						Vector1d.this.getX(), Vector1d.this.getY());

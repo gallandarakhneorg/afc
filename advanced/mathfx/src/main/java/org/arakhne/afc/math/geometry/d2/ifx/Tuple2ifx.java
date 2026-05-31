@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,11 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D tuple with 2 integer FX properties.
  *
@@ -108,7 +107,7 @@ public class Tuple2ifx<RT extends Tuple2ifx<? super RT>> implements Tuple2D<RT> 
 	@Override
 	public RT clone() {
 		try {
-			final RT clone = (RT) super.clone();
+			final var clone = (RT) super.clone();
 			if (this.x != null) {
 				clone.x = null;
 				clone.xProperty().set(ix());
@@ -139,24 +138,24 @@ public class Tuple2ifx<RT extends Tuple2ifx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	@Override
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Integer.hashCode(ix());
 		bits = 31 * bits + Integer.hashCode(iy());
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
         return objectDescription.toString();
 	}
 
 	@Override
 	public void toJson(JsonBuffer buffer) {
-		buffer.add("x", getX()); //$NON-NLS-1$
-		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("x", Double.valueOf(getX())); //$NON-NLS-1$
+		buffer.add("y", Double.valueOf(getY())); //$NON-NLS-1$
 	}
 
 	/** Replies the x property.

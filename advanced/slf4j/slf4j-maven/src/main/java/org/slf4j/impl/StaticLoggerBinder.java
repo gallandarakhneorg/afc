@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,10 @@
 package org.slf4j.impl;
 
 import org.apache.maven.plugin.logging.Log;
+import org.arakhne.afc.slf4j.maven.MavenSlf4jLoggerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.LoggerFactory;
 import org.slf4j.spi.LoggerFactoryBinder;
-
-import org.arakhne.afc.slf4j.maven.MavenSlf4jLoggerFactory;
 
 /** The binding of {@link LoggerFactory} class with an actual instance of
  * {@link ILoggerFactory} is performed using information returned by this class.
@@ -36,6 +35,7 @@ import org.arakhne.afc.slf4j.maven.MavenSlf4jLoggerFactory;
  * @mavenartifactid $ArtifactId$
  * @since 16.0
  */
+@SuppressWarnings("deprecation")
 public final class StaticLoggerBinder implements LoggerFactoryBinder {
 
 	/**

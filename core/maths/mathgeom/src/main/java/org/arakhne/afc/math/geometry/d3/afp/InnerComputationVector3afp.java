@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,10 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A vector that is used for internal computations.
  *
@@ -69,16 +68,16 @@ public class InnerComputationVector3afp implements Vector3D<InnerComputationVect
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
         return objectDescription.toString();
 	}
 
 	@Override
 	public void toJson(JsonBuffer buffer) {
-		buffer.add("x", getX()); //$NON-NLS-1$
-		buffer.add("y", getY()); //$NON-NLS-1$
-		buffer.add("z", getZ()); //$NON-NLS-1$
+		buffer.add("x", Double.valueOf(getX())); //$NON-NLS-1$
+		buffer.add("y", Double.valueOf(getY())); //$NON-NLS-1$
+		buffer.add("z", Double.valueOf(getZ())); //$NON-NLS-1$
 	}
 
 	@Override
@@ -157,7 +156,7 @@ public class InnerComputationVector3afp implements Vector3D<InnerComputationVect
 
 	@Override
 	public InnerComputationVector3afp toUnitVector() {
-		final double length = getLength();
+		final var length = getLength();
 		if (length == 0) {
 			return new InnerComputationVector3afp();
 		}

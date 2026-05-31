@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.math.tree.iterator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a tree that replies the user data.
@@ -93,18 +92,16 @@ public abstract class AbstractDataTreeIterator<D, N extends TreeNode<D, ?>> impl
 
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	private void searchNext() {
-		N node = this.nextDataNode;
-		N oldNode;
-		D data;
-
 		this.searched = true;
 		this.nextData = null;
 		this.nextDataNode = null;
 
-		while (this.nextData == null
-				&& ((this.dataIterator != null && this.dataIterator.hasNext()) || this.nodeIterator.hasNext())) {
+		var node = this.nextDataNode;
 
-			oldNode = node;
+		while (this.nextData == null
+				&& (this.dataIterator != null && this.dataIterator.hasNext() || this.nodeIterator.hasNext())) {
+
+			final var oldNode = node;
 
 			while ((this.dataIterator == null || !this.dataIterator.hasNext())
 				&& this.nodeIterator.hasNext()) {
@@ -122,7 +119,7 @@ public abstract class AbstractDataTreeIterator<D, N extends TreeNode<D, ?>> impl
 			}
 
 			while (this.nextData == null && this.dataIterator != null && this.dataIterator.hasNext()) {
-				data = this.dataIterator.next();
+				final var data = this.dataIterator.next();
 				if (this.dataSelector == null || this.dataSelector.dataCouldBeRepliedByIterator(data)) {
 					this.nextData = data;
 					this.nextDataNode = node;

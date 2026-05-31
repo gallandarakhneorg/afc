@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A 2D transformation.
  * Is represented internally as a 3x3 floating point matrix. The
@@ -34,20 +33,21 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * matrix mathematics.
  *
  * <p>The transformation matrix is:
- * <pre>{@code 
+ * <pre><code>
  * | cos(theta)   | -+sin(theta) | Tx |
  * | -+sin(theta) |   cos(theta) | Ty |
  * | 0            | 0            | 1  |
- * }</pre>
+ * </code></pre>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public class Transform2D extends Matrix3d {
 
-	/** This is the identifity transformation.
+	/** This is the identity transformation.
 	 */
 	public static final Transform2D IDENTITY = new Transform2D();
 
@@ -225,18 +225,18 @@ public class Transform2D extends Matrix3d {
 	 */
 	public void rotate(double theta) {
 		// Copied from AWT API
-		final double sin = Math.sin(theta);
+		final var sin = Math.sin(theta);
 		if (sin == 1.) {
 			rotate90();
 		} else if (sin == -1.) {
 			rotate270();
 		} else {
-			final double cos = Math.cos(theta);
+			final var cos = Math.cos(theta);
 			if (cos == -1.) {
 				rotate180();
 			} else if (cos != 1.) {
-				double m0 = this.m00;
-				double m1 = this.m01;
+				var m0 = this.m00;
+				var m1 = this.m01;
 				this.m00 =  cos * m0 + sin * m1;
 				this.m01 = -sin * m0 + cos * m1;
 				m0 = this.m10;
@@ -249,7 +249,7 @@ public class Transform2D extends Matrix3d {
 
 	private void rotate90() {
 		// Copied from AWT API
-		double m0 = this.m00;
+		var m0 = this.m00;
 		this.m00 = this.m01;
 		this.m01 = -m0;
 		m0 = this.m10;
@@ -269,7 +269,7 @@ public class Transform2D extends Matrix3d {
 
 	private void rotate270() {
 		// Copied from AWT API
-		double m0 = this.m00;
+		var m0 = this.m00;
 		this.m00 = -this.m01;
 		this.m01 = m0;
 		m0 = this.m10;
@@ -284,7 +284,7 @@ public class Transform2D extends Matrix3d {
 	 * @param rots the rotation factors.
 	 */
 	protected void getScaleRotate2x2(double[] scales, double[] rots) {
-		final double[] tmp = new double[9];
+		final var tmp = new double[9];
 
 		tmp[0] = this.m00;
 		tmp[1] = this.m01;
@@ -309,8 +309,8 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Pure
 	public double getRotation() {
-		final double[] tmpScale = new double[3];
-		final double[] tmpRot = new double[9];
+		final var tmpScale = new double[3];
+		final var tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
 		if (Math.signum(tmpRot[0]) != Math.signum(tmpRot[4])) {
 			// Sinuses are on the top-left to bottom-right diagonal
@@ -332,11 +332,11 @@ public class Transform2D extends Matrix3d {
 	 * @param angle the rotation angle.
 	 */
 	public void setRotation(double angle) {
-		final double[] tmpScale = new double[3];
-		final double[] tmpRot = new double[9];
+		final var tmpScale = new double[3];
+		final var tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
-		final double cos = Math.cos(angle);
-		final double sin = Math.sin(angle);
+		final var cos = Math.cos(angle);
+		final var sin = Math.sin(angle);
 		// R * S
 		this.m00 = tmpScale[0] * cos;
 		this.m01 = tmpScale[1] * -sin;
@@ -411,8 +411,8 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Pure
 	public double getScale() {
-		final double[] tmpScale = new double[3];
-		final double[] tmpRot = new double[9];
+		final var tmpScale = new double[3];
+		final var tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
 		return MathUtil.max(tmpScale);
 	}
@@ -424,8 +424,8 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Pure
 	public double getScaleX() {
-		final double[] tmpScale = new double[3];
-		final double[] tmpRot = new double[9];
+		final var tmpScale = new double[3];
+		final var tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
 		return tmpScale[0];
 	}
@@ -437,8 +437,8 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Pure
 	public double getScaleY() {
-		final double[] tmpScale = new double[3];
-		final double[] tmpRot = new double[9];
+		final var tmpScale = new double[3];
+		final var tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
 		return tmpScale[1];
 	}
@@ -451,8 +451,8 @@ public class Transform2D extends Matrix3d {
 	@Pure
 	public void getScaleVector(Tuple2D<?> scale) {
 		assert scale != null : AssertMessages.notNullParameter();
-		final double[] tmpScale = new double[3];
-		final double[] tmpRot = new double[9];
+		final var tmpScale = new double[3];
+		final var tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
 		scale.set(tmpScale[0], tmpScale[1]);
 	}
@@ -465,8 +465,8 @@ public class Transform2D extends Matrix3d {
 	 * @see #makeScaleMatrix(double, double)
 	 */
 	public void setScale(double scaleX, double scaleY) {
-		final double[] tmpScale = new double[3];
-		final double[] tmpRot = new double[9];
+		final var tmpScale = new double[3];
+		final var tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
 		this.m00 = tmpRot[0] * scaleX;
 		this.m01 = tmpRot[1] * scaleY;
@@ -510,8 +510,8 @@ public class Transform2D extends Matrix3d {
 	 * @param shearY the shearing factory along y axis.
 	 */
 	public void shear(double shearX, double shearY) {
-		double m0 = this.m00;
-		double m1 = this.m01;
+		var m0 = this.m00;
+		var m1 = this.m01;
 
 		this.m00 = m0 + m1 * shearY;
 		this.m01 = m0 * shearX + m1;
@@ -540,7 +540,7 @@ public class Transform2D extends Matrix3d {
 
 	/**
 	 * Sets the value of this matrix to a counter clockwise rotation about the x
-	 * axis, and no translation
+	 * axis, and no translation.
 	 *
 	 * <p>This function changes all the elements of
 	 * the matrix, icluding the translation.
@@ -558,8 +558,8 @@ public class Transform2D extends Matrix3d {
 	 * @see #setRotation(double)
 	 */
 	public void makeRotationMatrix(double angle) {
-		final double sinAngle = Math.sin(angle);
-		final double cosAngle = Math.cos(angle);
+		final var sinAngle = Math.sin(angle);
+		final var cosAngle = Math.cos(angle);
 
 		this.m00 = cosAngle;
 		this.m01 = -sinAngle;
@@ -651,8 +651,8 @@ public class Transform2D extends Matrix3d {
 	 */
 	public void transform(Point2D<?, ?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter();
-		final double x = this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02;
-		final double y = this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12;
+		final var x = this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02;
+		final var y = this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12;
 		tuple.set(x, y);
 	}
 
@@ -666,8 +666,8 @@ public class Transform2D extends Matrix3d {
 	 */
 	public void transform(Vector2D<?, ?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter();
-		final double x = this.m00 * tuple.getX() + this.m01 * tuple.getY();
-		final double y = this.m10 * tuple.getX() + this.m11 * tuple.getY();
+		final var x = this.m00 * tuple.getX() + this.m01 * tuple.getY();
+		final var y = this.m10 * tuple.getX() + this.m11 * tuple.getY();
 		tuple.set(x, y);
 	}
 
@@ -738,13 +738,14 @@ public class Transform2D extends Matrix3d {
 	 * thrown if the {@code createInverse} method is called.
 	 * @return a new {@code Transform2D} object representing the
 	 *     inverse transformation.
+	 * @throws SingularMatrixException if the matrix is singular.
 	 * @see #determinant()
 	 */
 	@Pure
 	public Transform2D createInverse() {
-		final double det = this.m00 * this.m11 - this.m01 * this.m10;
+		final var det = this.m00 * this.m11 - this.m01 * this.m10;
 		if (MathUtil.isEpsilonZero(det)) {
-			throw new SingularMatrixException(Locale.getString("E1", det)); //$NON-NLS-1$
+			throw new SingularMatrixException(Locale.getString("E1", Double.valueOf(det))); //$NON-NLS-1$
 		}
 		return new Transform2D(
 				this.m11 / det,
@@ -793,9 +794,9 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Override
 	public void invert() {
-		final double det = this.m00 * this.m11 - this.m01 * this.m10;
+		final var det = this.m00 * this.m11 - this.m01 * this.m10;
 		if (MathUtil.isEpsilonZero(det)) {
-			throw new SingularMatrixException(Locale.getString("E1", det)); //$NON-NLS-1$
+			throw new SingularMatrixException(Locale.getString("E1", Double.valueOf(det))); //$NON-NLS-1$
 		}
 		set(
 				this.m11 / det,
@@ -826,9 +827,9 @@ public class Transform2D extends Matrix3d {
 	@Override
 	public void invert(Matrix3d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
-		final double det = matrix.getM00() * matrix.getM11() - matrix.getM01() * matrix.getM10();
+		final var det = matrix.getM00() * matrix.getM11() - matrix.getM01() * matrix.getM10();
 		if (MathUtil.isEpsilonZero(det)) {
-			throw new SingularMatrixException(Locale.getString("E1", det)); //$NON-NLS-1$
+			throw new SingularMatrixException(Locale.getString("E1", Double.valueOf(det))); //$NON-NLS-1$
 		}
 		set(
 				matrix.getM11() / det,

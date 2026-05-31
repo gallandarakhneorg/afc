@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,10 @@ package org.arakhne.afc.attrs.collection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -39,6 +35,7 @@ import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.references.SoftValueTreeMap;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class contains a collection of attribute containers and
@@ -82,7 +79,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 
 	@Override
 	public void toMap(Map<String, Object> mapToFill) {
-		for (final AttributeProvider provider : this.containers) {
+		for (final var provider : this.containers) {
 			mapToFill.putAll(provider.toMap());
 		}
 	}
@@ -94,16 +91,16 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		if (this.cache.containsKey(name)) {
 			value = this.cache.get(name);
 		} else {
-			final ManyValueAttributeValue result = new ManyValueAttributeValue();
+			final var result = new ManyValueAttributeValue();
 			AttributeValue attrValue;
-			for (final AttributeProvider c : this.containers) {
+			for (final var c : this.containers) {
 				attrValue = c.getAttribute(name);
 				assign(result, attrValue);
 			}
 			value = canonize(result);
 			this.cache.put(name, value);
 		}
-		return (value != null) ? new AttributeImpl(name, value) : null;
+		return value != null ? new AttributeImpl(name, value) : null;
 	}
 
 	/** Assign the value v2 to v1 and change v1 according
@@ -206,9 +203,9 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	@Pure
 	@Override
 	public MultiAttributeProvider clone() {
-		final MultiAttributeProvider clone = (MultiAttributeProvider) super.clone();
+		final var clone = (MultiAttributeProvider) super.clone();
 		clone.cache = new SoftValueTreeMap<>();
-		for (final Entry<String, AttributeValue> e : this.cache.entrySet()) {
+		for (final var e : this.cache.entrySet()) {
 			clone.cache.put(e.getKey(), new AttributeValueImpl(e.getValue()));
 		}
 		clone.containers = new ArrayList<>(this.containers);
@@ -231,11 +228,10 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	@Pure
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		final List<Attribute> list = new ArrayList<>(getAttributeCount());
-		Attribute newAttr;
-		for (final String name : getAllAttributeNames()) {
+		final var list = new ArrayList<Attribute>(getAttributeCount());
+		for (final var name : getAllAttributeNames()) {
 			if (name != null) {
-				newAttr = extract(name);
+				final var newAttr = extract(name);
 				if (newAttr != null) {
 					list.add(newAttr);
 				}
@@ -247,13 +243,12 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	@Pure
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
-		final Map<AttributeType, Collection<Attribute>> map = new TreeMap<>();
-		Attribute newAttr;
+		final var map = new TreeMap<AttributeType, Collection<Attribute>>();
 		for (final String name : getAllAttributeNames()) {
 			if (name != null) {
-				newAttr = extract(name);
+				final var newAttr = extract(name);
 				if (newAttr != null) {
-					Collection<Attribute> list = map.get(newAttr.getType());
+					var list = map.get(newAttr.getType());
 					if (list == null) {
 						list = new ArrayList<>();
 						map.put(newAttr.getType(), list);
@@ -291,8 +286,8 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	@Override
 	public Collection<String> getAllAttributeNames() {
 		if (this.names == null) {
-			final Set<String> names = new TreeSet<>(new AttributeNameStringComparator());
-			for (final AttributeProvider c : this.containers) {
+			final var names = new TreeSet<>(new AttributeNameStringComparator());
+			for (final var c : this.containers) {
 				names.addAll(c.getAllAttributeNames());
 			}
 			this.names = names;
@@ -309,7 +304,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	@Pure
 	@Override
 	public boolean hasAttribute(String name) {
-		for (final AttributeProvider c : this.containers) {
+		for (final var c : this.containers) {
 			if (c.hasAttribute(name)) {
 				return true;
 			}
@@ -339,7 +334,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		public void toJson(JsonBuffer buffer) {
 			super.toJson(buffer);
 			buffer.add("topType", this.topType); //$NON-NLS-1$
-			buffer.add("hasMultipleValues", this.hasMultipleValues); //$NON-NLS-1$
+			buffer.add("hasMultipleValues", Boolean.valueOf(this.hasMultipleValues)); //$NON-NLS-1$
 		}
 
 		/** Replies the type type associated to this attribute value.

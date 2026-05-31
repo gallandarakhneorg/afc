@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This feature describes all the parameters that must
  * be used to center logical points on the screen view.
@@ -76,14 +75,14 @@ public class CenteringTransform {
 		this.translationX = new SimpleDoubleProperty(this, TRANSLATION_X_PROPERTY);
 		this.translationX.bind(Bindings.createDoubleBinding(
 			() -> {
-				final double center = visibleArea.get().getCenterX();
-				return this.invertX.get() ? center : -center;
+				final var center = visibleArea.get().getCenterX();
+				return Double.valueOf(this.invertX.get() ? center : -center);
 			}, visibleArea, this.invertX));
 		this.translationY = new SimpleDoubleProperty(this, TRANSLATION_Y_PROPERTY);
 		this.translationY.bind(Bindings.createDoubleBinding(
 			() -> {
-				final double center = visibleArea.get().getCenterY();
-				return this.invertY.get() ? center : -center;
+				final var center = visibleArea.get().getCenterY();
+				return Double.valueOf(this.invertY.get() ? center : -center);
 			}, visibleArea));
 	}
 
@@ -115,7 +114,7 @@ public class CenteringTransform {
 	 */
 	@Pure
 	public double toCenterX(double x) {
-		final double adjustedX = this.invertX.get() ? -x : x;
+		final var adjustedX = this.invertX.get() ? -x : x;
 		return adjustedX + this.translationX.get();
 	}
 
@@ -127,7 +126,7 @@ public class CenteringTransform {
 	 */
 	@Pure
 	public double toCenterY(double y) {
-		final double adjustedY = this.invertY.get() ? -y : y;
+		final var adjustedY = this.invertY.get() ? -y : y;
 		return adjustedY + this.translationY.get();
 	}
 
@@ -139,7 +138,7 @@ public class CenteringTransform {
 	 */
 	@Pure
 	public double toGlobalX(double x) {
-		final double adjustedX = x - this.translationX.get();
+		final var adjustedX = x - this.translationX.get();
 		return this.invertX.get() ? -adjustedX : adjustedX;
 	}
 
@@ -151,7 +150,7 @@ public class CenteringTransform {
 	 */
 	@Pure
 	public double toGlobalY(double y) {
-		final double adjustedY = y - this.translationY.get();
+		final var adjustedY = y - this.translationY.get();
 		return this.invertY.get() ? -adjustedY : adjustedY;
 	}
 

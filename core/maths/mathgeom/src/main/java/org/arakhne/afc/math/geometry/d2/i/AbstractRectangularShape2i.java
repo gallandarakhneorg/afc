@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangular shape with 2 integer numbers.
  *
@@ -164,13 +163,14 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Integer.hashCode(this.minx);
 		bits = 31 * bits + Integer.hashCode(this.miny);
 		bits = 31 * bits + Integer.hashCode(this.maxx);
 		bits = 31 * bits + Integer.hashCode(this.maxy);
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 }

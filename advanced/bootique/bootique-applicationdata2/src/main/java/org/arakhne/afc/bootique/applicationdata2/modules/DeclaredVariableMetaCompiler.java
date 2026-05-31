@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import java.util.Optional;
 import io.bootique.env.DeclaredVariable;
 import io.bootique.meta.config.ConfigMetadataNode;
 import io.bootique.meta.config.ConfigValueMetadata;
-import io.bootique.meta.module.ModuleMetadata;
 import io.bootique.meta.module.ModulesMetadata;
 
 /** Module for the compiler application metadata version 2.
@@ -37,7 +36,9 @@ import io.bootique.meta.module.ModulesMetadata;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 18.0
+ * @deprecated since 18.0
  */
+@Deprecated(since = "18.0")
 public final class DeclaredVariableMetaCompiler {
 
 	private DeclaredVariableMetaCompiler() {
@@ -51,10 +52,10 @@ public final class DeclaredVariableMetaCompiler {
 	 * @return the value's metadata
 	 */
 	public static Optional<ConfigValueMetadata> compileIfValid(DeclaredVariable var, ModulesMetadata modulesMetadata) {
-		for (final ModuleMetadata mm : modulesMetadata.getModules()) {
+		for (final var mm : modulesMetadata.getModules()) {
 			// TODO: 'findConfig' does a String split over and over again as we iterate through the loop.
 			//  Precalculate this once.
-			final Optional<ConfigMetadataNode> cmn = mm.findConfig(var.getConfigPath());
+			final var cmn = mm.findConfig(var.getConfigPath());
 			if (cmn.isPresent()) {
 				return cmn.map(n -> compileMetadata(var, n));
 			}

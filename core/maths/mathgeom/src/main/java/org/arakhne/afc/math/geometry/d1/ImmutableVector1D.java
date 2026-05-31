@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,9 @@ package org.arakhne.afc.math.geometry.d1;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Immutable vector 1.5D.
@@ -88,16 +87,13 @@ public final class ImmutableVector1D<S extends Segment1D<?, ?>>
 		if (object == this) {
 			return true;
 		}
-		if (object instanceof Vector1D<?, ?, ?>) {
-			final Point1D<?, ?, ?> tuple = (Point1D<?, ?, ?>) object;
+		if (object instanceof Vector1D tuple) {
 			return tuple.getSegment() == getSegment() && tuple.getX() == getX() && tuple.getY() == getY();
 		}
-		if (object instanceof Point1D<?, ?, ?>) {
-			final Point1D<?, ?, ?> tuple = (Point1D<?, ?, ?>) object;
+		if (object instanceof Point1D tuple) {
 			return tuple.getSegment() == getSegment() && tuple.getX() == getX() && tuple.getY() == getY();
 		}
-		if (object instanceof Tuple2D<?>) {
-			final Tuple2D<?> tuple = (Tuple2D<?>) object;
+		if (object instanceof Tuple2D tuple) {
 			return tuple.getX() == getX() && tuple.getY() == getY();
 		}
 		return false;
@@ -106,11 +102,11 @@ public final class ImmutableVector1D<S extends Segment1D<?, ?>>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Objects.hashCode(getSegment());
 		bits = 31 * bits + Double.hashCode(getX());
 		bits = 31 * bits + Double.hashCode(getY());
-		final int b = (int) bits;
+		final var b = (int) bits;
 		return b ^ (b >> 31);
 	}
 
@@ -125,8 +121,8 @@ public final class ImmutableVector1D<S extends Segment1D<?, ?>>
 	@Override
 	public void toJson(JsonBuffer buffer) {
 		buffer.add("segment", getSegment()); //$NON-NLS-1$
-		buffer.add("x", getX()); //$NON-NLS-1$
-		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("x", Double.valueOf(getX())); //$NON-NLS-1$
+		buffer.add("y", Double.valueOf(getY())); //$NON-NLS-1$
 	}
 
 	@SuppressWarnings("unchecked")

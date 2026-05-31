@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,14 +35,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
@@ -50,6 +46,7 @@ import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.inputoutput.stream.LittleEndianDataOutputStream;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to write a dBase file.
@@ -143,8 +140,8 @@ public class DBaseFileWriter implements AutoCloseable {
 	 */
 	public DBaseFileWriter(OutputStream dbfStream) {
 		assert dbfStream != null;
-		if (dbfStream instanceof LittleEndianDataOutputStream) {
-			this.stream = (LittleEndianDataOutputStream) dbfStream;
+		if (dbfStream instanceof LittleEndianDataOutputStream stream) {
+			this.stream = stream;
 		} else {
 			this.stream = new LittleEndianDataOutputStream(dbfStream);
 		}
@@ -188,20 +185,20 @@ public class DBaseFileWriter implements AutoCloseable {
 		// Be sure that the encoding will be the right one
 		int strSize = 0;
 		if (str != null) {
-			final Charset encodingCharset = this.language.getChatset();
+			final var encodingCharset = this.language.getChatset();
 			if (encodingCharset == null) {
 				throw new IOException(Locale.getString("UNKNOWN_CHARSET")); //$NON-NLS-1$
 			}
-			final byte[] bytes = str.getBytes(encodingCharset);
+			final var bytes = str.getBytes(encodingCharset);
 			if (bytes != null) {
 				strSize = bytes.length;
-				for (int i = 0; i < size && i < strSize; ++i) {
+				for (var i = 0; i < size && i < strSize; ++i) {
 					this.stream.writeByte(bytes[i]);
 				}
 			}
 		}
 
-		for (int i = strSize; i < size; ++i) {
+		for (var i = strSize; i < size; ++i) {
 			this.stream.writeByte(fillingChar);
 		}
 	}
@@ -220,17 +217,17 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * @throws IOException in case of error.
 	 */
 	private void writeDBFNumber(double number, int numberLength, int decimalLength) throws IOException {
-		final StringBuilder buffer = new StringBuilder("{0,number,#"); //$NON-NLS-1$
+		final var buffer = new StringBuilder("{0,number,#"); //$NON-NLS-1$
 		if (decimalLength > 0) {
 			buffer.append("."); //$NON-NLS-1$
-			for (int i = 0; i < decimalLength; ++i) {
+			for (var i = 0; i < decimalLength; ++i) {
 				buffer.append("#"); //$NON-NLS-1$
 			}
 		}
 		buffer.append("}"); //$NON-NLS-1$
 
-		final MessageFormat format = new MessageFormat(buffer.toString(), java.util.Locale.ROOT);
-		String formattedNumber = format.format(new Object[] {Double.valueOf(number)});
+		final var format = new MessageFormat(buffer.toString(), java.util.Locale.ROOT);
+		var formattedNumber = format.format(new Object[] {Double.valueOf(number)});
 
 		buffer.setLength(0);
 		buffer.append(formattedNumber);
@@ -240,11 +237,11 @@ public class DBaseFileWriter implements AutoCloseable {
 		formattedNumber = buffer.toString();
 
 		// Write the number with the original ASCII code page
-		final Charset encodingCharset = Charset.forName("IBM437"); //$NON-NLS-1$
+		final var encodingCharset = Charset.forName("IBM437"); //$NON-NLS-1$
 		if (encodingCharset == null) {
 			throw new IOException(Locale.getString("UNKNOWN_CHARSET")); //$NON-NLS-1$
 		}
-		final byte[] bytes = formattedNumber.getBytes(encodingCharset);
+		final var bytes = formattedNumber.getBytes(encodingCharset);
 		if (bytes != null) {
 			this.stream.write(bytes);
 		}
@@ -264,10 +261,10 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * @throws IOException in case of error.
 	 */
 	private void writeDBFNumber(long number, int numberLength, int decimalLength) throws IOException {
-		final StringBuilder buffer = new StringBuilder("{0,number,#}"); //$NON-NLS-1$
+		final var buffer = new StringBuilder("{0,number,#}"); //$NON-NLS-1$
 
-		final MessageFormat format = new MessageFormat(buffer.toString(), java.util.Locale.ROOT);
-		String formattedNumber = format.format(new Object[] {Double.valueOf(number)});
+		final var format = new MessageFormat(buffer.toString(), java.util.Locale.ROOT);
+		var formattedNumber = format.format(new Object[] {Double.valueOf(number)});
 
 		buffer.setLength(0);
 		buffer.append(formattedNumber);
@@ -277,11 +274,11 @@ public class DBaseFileWriter implements AutoCloseable {
 		formattedNumber = buffer.toString();
 
 		// Write the number with the original ASCII code page
-		final Charset encodingCharset = Charset.forName("IBM437"); //$NON-NLS-1$
+		final var encodingCharset = Charset.forName("IBM437"); //$NON-NLS-1$
 		if (encodingCharset == null) {
 			throw new IOException(Locale.getString("UNKNOWN_CHARSET")); //$NON-NLS-1$
 		}
-		final byte[] bytes = formattedNumber.getBytes(encodingCharset);
+		final var bytes = formattedNumber.getBytes(encodingCharset);
 		if (bytes != null) {
 			this.stream.write(bytes);
 		}
@@ -303,7 +300,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
 	private void writeDBFDate(Date date) throws IOException {
-		final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
+		final var format = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
 		writeDBFString(format.format(date), 8, (byte) ' ');
 	}
 
@@ -342,7 +339,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * @throws AttributeException  if an attribute is invalid.
 	 */
 	private static int computeFieldSize(AttributeValue value) throws DBaseFileException, AttributeException {
-		final DBaseFieldType dbftype = DBaseFieldType.fromAttributeType(value.getType());
+		final var dbftype = DBaseFieldType.fromAttributeType(value.getType());
 		return dbftype.getFieldSize(value.getString());
 	}
 
@@ -353,7 +350,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * @throws AttributeException  if an attribute is invalid.
 	 */
 	private static int computeDecimalSize(AttributeValue value) throws DBaseFileException, AttributeException {
-		final DBaseFieldType dbftype = DBaseFieldType.fromAttributeType(value.getType());
+		final var dbftype = DBaseFieldType.fromAttributeType(value.getType());
 		return dbftype.getDecimalPointPosition(value.getString());
 	}
 
@@ -366,11 +363,11 @@ public class DBaseFileWriter implements AutoCloseable {
 	 */
 	@Pure
 	public static boolean isSupportedType(DBaseFieldType type) {
-		return	(type != DBaseFieldType.BINARY)
-				&& (type != DBaseFieldType.GENERAL)
-				&& (type != DBaseFieldType.MEMORY)
-				&& (type != DBaseFieldType.PICTURE)
-				&& (type != DBaseFieldType.VARIABLE);
+		return	type != DBaseFieldType.BINARY
+				&& type != DBaseFieldType.GENERAL
+				&& type != DBaseFieldType.MEMORY
+				&& type != DBaseFieldType.PICTURE
+				&& type != DBaseFieldType.VARIABLE;
 	}
 
 	/** Extract the attribute's columns from the attributes providers.
@@ -385,27 +382,21 @@ public class DBaseFileWriter implements AutoCloseable {
 	@SuppressWarnings("checkstyle:magicnumber")
 	private List<DBaseFileField> extractColumns(List<? extends AttributeProvider> providers)
 			throws DBaseFileException, AttributeException {
-		final Map<String, DBaseFileField> attributeColumns = new TreeMap<>();
-		DBaseFileField oldField;
-		String name;
-		String kname;
-		int fieldSize;
-		int decimalSize;
+		final var attributeColumns = new TreeMap<String, DBaseFileField>();
+		final var skippedColumns = new TreeSet<String>();
 
-		final Set<String> skippedColumns = new TreeSet<>();
-
-		for (final AttributeProvider provider : providers) {
-			for (final Attribute attr : provider.attributes()) {
-				final DBaseFieldType dbftype = DBaseFieldType.fromAttributeType(attr.getType());
+		for (final var provider : providers) {
+			for (final var attr : provider.attributes()) {
+				final var dbftype = DBaseFieldType.fromAttributeType(attr.getType());
 				// The following types are not yet supported
 				if (isSupportedType(dbftype)) {
-					name = attr.getName();
-					kname = name.toLowerCase();
-					oldField = attributeColumns.get(kname);
+					final var name = attr.getName();
+					final var kname = name.toLowerCase();
+					var oldField = attributeColumns.get(kname);
 
 					// compute the sizes
-					fieldSize = computeFieldSize(attr);
-					decimalSize = computeDecimalSize(attr);
+					final var fieldSize = computeFieldSize(attr);
+					final var decimalSize = computeDecimalSize(attr);
 
 					if (oldField == null) {
 						oldField = new DBaseFileField(
@@ -431,11 +422,11 @@ public class DBaseFileWriter implements AutoCloseable {
 			throw new TooManyDBaseColumnException(attributeColumns.size(), 128);
 		}
 
-		final List<DBaseFileField> dbColumns = new ArrayList<>();
+		final var dbColumns = new ArrayList<DBaseFileField>();
 		dbColumns.addAll(attributeColumns.values());
 		attributeColumns.clear();
 
-		for (int idx = 0; idx < dbColumns.size(); ++idx) {
+		for (var idx = 0; idx < dbColumns.size(); ++idx) {
 			dbColumns.get(idx).setColumnIndex(idx);
 		}
 
@@ -458,7 +449,7 @@ public class DBaseFileWriter implements AutoCloseable {
 
 	/** Write the header of the DBF file on the main <var>stream</var>.
 	 *
-	 * <p><pre>
+	 * <pre>
 	 * -----------------------------------------------------------
 	 * 			DBF Header (32 bytes)
 	 * -----------------------------------------------------------
@@ -505,7 +496,7 @@ public class DBaseFileWriter implements AutoCloseable {
 		this.stream.writeByte(0x03);
 
 		// Date of last update (1-3)
-		final Calendar date = Calendar.getInstance();
+		final var date = Calendar.getInstance();
 		this.stream.writeByte(date.get(Calendar.YEAR) - 1900);
 		this.stream.writeByte(date.get(Calendar.MONTH) + 1);
 		this.stream.writeByte(date.get(Calendar.DAY_OF_MONTH));
@@ -515,8 +506,8 @@ public class DBaseFileWriter implements AutoCloseable {
 
 		// Number of bytes in the header (8-9)
 		// Each field description is stored in 32bits (see writeColumnHeaders())
-		final int columnHeaderSize = this.columns.size() * 32;
-		final int headerSize =
+		final var columnHeaderSize = this.columns.size() * 32;
+		final var headerSize =
 				// size of this header part
 				32
 				// size of the column headers
@@ -527,8 +518,8 @@ public class DBaseFileWriter implements AutoCloseable {
 
 		// Number of bytes one record (10-11)
 		// deletion flag
-		int recordSize = 1;
-		for (final DBaseFileField field : this.columns) {
+		var recordSize = 1;
+		for (final var field : this.columns) {
 			recordSize += field.getLength();
 		}
 		this.stream.writeLEShort((short) recordSize);
@@ -562,7 +553,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	 *
 	 * <p>The header must be finished by the character {@code 0Dh}.
 	 *
-	 * <p><pre>
+	 * <pre>
 	 * -----------------------------------------------------------
 	 * 			Field Header (n*32+1 bytes)
 	 * -----------------------------------------------------------
@@ -573,7 +564,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * -----------------------------------------------------------
 	 * </pre>
 	 *
-	 * <p><pre>
+	 * <pre>
 	 * -----------------------------------------------------------
 	 * 			Field Header (32 bytes)
 	 * -----------------------------------------------------------
@@ -592,7 +583,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * -----------------------------------------------------------
 	 * </pre>
 	 *
-	 * <p><pre>
+	 * <pre>
 	 * -----------------------------------------------------------
 	 * 			Field Type (1 byte)
 	 * -----------------------------------------------------------
@@ -635,7 +626,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	@SuppressWarnings("checkstyle:magicnumber")
 	private void writeColumns() throws IOException {
 
-		for (final DBaseFileField field : this.columns) {
+		for (final var field : this.columns) {
 			// Field name, filled with 0x00 (0-10)
 			writeDBFString(field.getName(), 10, (byte) 0x00);
 			this.stream.writeByte(0x00);
@@ -653,7 +644,7 @@ public class DBaseFileWriter implements AutoCloseable {
 			this.stream.writeByte(field.getDecimalPointPosition());
 
 			// Reserved (18-31)
-			for (int i = 18; i <= 31; ++i) {
+			for (var i = 18; i <= 31; ++i) {
 				this.stream.writeByte(0);
 			}
 		}
@@ -693,6 +684,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * @throws IOException in case of IO error.
 	 * @throws MustCallWriteHeaderFunctionException You must call the {@code writeHeader()}
 	 *     function prior to this function.
+	 * @throws IllegalStateException invalid element type.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
 	public void writeRecord(AttributeProvider element) throws IOException, AttributeException {
@@ -704,12 +696,12 @@ public class DBaseFileWriter implements AutoCloseable {
 		//Field deleted flag (value : 2Ah (*) => Record is deleted, 20h (blank) => Record is valid)
 		this.stream.writeByte(0x20);
 
-		for (final DBaseFileField field : this.columns) {
+		for (final var field : this.columns) {
 			// Get attribute
-			final DBaseFieldType dbftype = field.getType();
-			final String fieldName = field.getName();
+			final var dbftype = field.getType();
+			final var fieldName = field.getName();
 
-			AttributeValue attr = element != null ? element.getAttribute(fieldName) : null;
+			var attr = element != null ? element.getAttribute(fieldName) : null;
 
 			if (attr == null) {
 				attr = new AttributeValueImpl(dbftype.toAttributeType());
@@ -787,7 +779,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	public void write(AttributeProvider... providers) throws IOException, AttributeException {
 		writeHeader(providers);
 
-		for (final AttributeProvider provider : providers) {
+		for (final var provider : providers) {
 			writeRecord(provider);
 		}
 
@@ -810,7 +802,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	public void write(List<? extends AttributeProvider> providers) throws IOException, AttributeException {
 		writeHeader(providers);
 
-		for (final AttributeProvider provider : providers) {
+		for (final var provider : providers) {
 			writeRecord(provider);
 		}
 

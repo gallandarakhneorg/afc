@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
 
 package org.arakhne.afc.gis.primitive;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent;
 import org.arakhne.afc.attrs.collection.AttributeChangeListener;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Translate any {@link AttributeChangeEvent} to be
  * received by a specified {@link GISEditableChangeListener}.
@@ -61,9 +60,9 @@ public class GISEditableChangeAttributeChangeAdapter implements AttributeChangeL
 	@Override
 	public void onAttributeChangeEvent(AttributeChangeEvent event) {
 		if (this.listener != null) {
-			GISEditable editable = this.wrapper;
-			if (editable == null && event.getSource() instanceof GISEditable) {
-				editable = (GISEditable) event.getSource();
+			var editable = this.wrapper;
+			if (editable == null && event.getSource() instanceof GISEditable edit) {
+				editable = edit;
 			}
 			if (editable != null) {
 				this.listener.editableGISElementHasChanged(editable);
@@ -77,8 +76,8 @@ public class GISEditableChangeAttributeChangeAdapter implements AttributeChangeL
 		if (obj instanceof GISEditableChangeListener) {
 			return this.listener == obj;
 		}
-		if (obj instanceof GISEditableChangeAttributeChangeAdapter) {
-			return this.listener == ((GISEditableChangeAttributeChangeAdapter) obj).listener;
+		if (obj instanceof GISEditableChangeAttributeChangeAdapter adapter) {
+			return this.listener == adapter.listener;
 		}
 		return false;
 	}

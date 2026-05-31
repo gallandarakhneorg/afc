@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,9 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A 3D segment/line with two points with native coordinates.
  * This segment is based on the representation built up with 2 points, i.e.
@@ -43,7 +40,7 @@ import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
  * @see PointObjectSegment3d
  */
 public class Segment3d extends AbstractShape3d<Segment3d>
-	implements Segment3afp<Shape3d<?>, Segment3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
+	implements Segment3afp<Segment3d, Segment3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = -5667213589442134247L;
 
@@ -94,31 +91,16 @@ public class Segment3d extends AbstractShape3d<Segment3d>
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(this.ax);
 		bits = 31 * bits + Double.hashCode(this.ay);
 		bits = 31 * bits + Double.hashCode(this.az);
 		bits = 31 * bits + Double.hashCode(this.bx);
 		bits = 31 * bits + Double.hashCode(this.by);
 		bits = 31 * bits + Double.hashCode(this.bz);
-		return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public Segment3d createTransformedShape(Transform3D transform) {
-		if (transform == null || transform.isIdentity()) {
-			return clone();
-		}
-		final Point3D<?, ?, ?> point = new InnerComputationPoint3afp(getX1(), getY1(), getZ1());
-		transform.transform(point);
-		final double x1 = point.getX();
-		final double y1 = point.getY();
-		final double z1 = point.getZ();
-		point.set(getX2(), getY2(), getZ2());
-		transform.transform(point);
-		return getGeomFactory().newSegment(x1, y1, z1, point.getX(), point.getY(), point.getZ());
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Override

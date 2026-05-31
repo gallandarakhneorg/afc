@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,6 @@ import java.util.UUID;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
@@ -73,6 +71,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.SubGraph;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a road network sub graph.
@@ -138,15 +137,13 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 			return segment;
 		}
 
-		final RoadSegment uwSegment = unwrap(segment);
+		final var uwSegment = unwrap(segment);
 
-		RoadConnection con;
-
-		con = uwSegment.getBeginPoint();
-		final TerminalConnection start = isTerminalPoint(con) ? new TerminalConnection(con, uwSegment, true) : null;
+		var con = uwSegment.getBeginPoint();
+		final var start = isTerminalPoint(con) ? new TerminalConnection(con, uwSegment, true) : null;
 
 		con = uwSegment.getEndPoint();
-		final TerminalConnection end = isTerminalPoint(con) ? new TerminalConnection(con, uwSegment, false) : null;
+		final var end = isTerminalPoint(con) ? new TerminalConnection(con, uwSegment, false) : null;
 
 		return new WrapSegment(uwSegment, start, end);
 	}
@@ -202,11 +199,11 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	@SuppressWarnings({ "unchecked", "static-method" })
 	@Pure
 	protected final <O> O unwrap(O obj) {
-		O unwrapped = obj;
-		if (obj instanceof TerminalConnection) {
-			unwrapped = (O) ((TerminalConnection) obj).getWrappedRoadConnection();
-		} else if (obj instanceof WrapSegment) {
-			unwrapped = (O) ((WrapSegment) obj).getWrappedRoadSegment();
+		var unwrapped = obj;
+		if (obj instanceof TerminalConnection con) {
+			unwrapped = (O) con.getWrappedRoadConnection();
+		} else if (obj instanceof WrapSegment seg) {
+			unwrapped = (O) seg.getWrappedRoadSegment();
 		}
 		assert unwrapped != null;
 		return unwrapped;
@@ -221,7 +218,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	@Override
 	@Pure
 	public RoadSegment getRoadSegment(GeoId geoId) {
-		final RoadSegment original = ((WeakGISTreeSet<RoadSegment>) getGraphSegments()).get(geoId);
+		final var original = ((WeakGISTreeSet<RoadSegment>) getGraphSegments()).get(geoId);
 		if (original == null) {
 			return null;
 		}
@@ -231,7 +228,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	@Override
 	@Pure
 	public RoadSegment getRoadSegment(GeoLocation location) {
-		final RoadSegment original = ((WeakGISTreeSet<RoadSegment>) getGraphSegments()).get(location);
+		final var original = ((WeakGISTreeSet<RoadSegment>) getGraphSegments()).get(location);
 		if (original == null) {
 			return null;
 		}
@@ -330,8 +327,8 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		}
 
 		private RoadSegment wrapConnectedSegment() {
-			final TerminalConnection start = this.connectedToStart ? this : null;
-			final TerminalConnection end = this.connectedToStart ? null : this;
+			final var start = this.connectedToStart ? this : null;
+			final var end = this.connectedToStart ? null : this;
 			return new WrapSegment(this.segment.get(), start, end);
 		}
 
@@ -357,14 +354,14 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final List<RoadSegment> getConnectedSegmentsStartingFrom(RoadSegment startingSegment) {
-			final RoadSegment sgmt = this.segment.get();
+			final var sgmt = this.segment.get();
 			assert startingSegment != null && startingSegment.equals(sgmt);
 			return Collections.singletonList(wrapSegment(sgmt));
 		}
 
 		@Override
 		public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment startingSegment) {
-			final RoadSegment sgmt = this.segment.get();
+			final var sgmt = this.segment.get();
 			assert startingSegment != null && startingSegment.equals(sgmt);
 			return Collections.singletonList(wrapSegment(sgmt));
 		}
@@ -393,14 +390,13 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 				Boolean startSegmentConnectedByItsStart,
 				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
 				ClockwiseBoundType boundType) {
-			final RoadSegment sgmt = this.segment.get();
-			return (sgmt.equals(unwrap(startSegment)) && boundType.includeStart()
+			final var sgmt = this.segment.get();
+			return sgmt.equals(unwrap(startSegment)) && boundType.includeStart()
 					&& (startSegmentConnectedByItsStart == null
-					|| startSegmentConnectedByItsStart.booleanValue() == this.connectedToStart))
-					||
-					(sgmt.equals(unwrap(endSegment)) && boundType.includeEnd()
+					|| startSegmentConnectedByItsStart.booleanValue() == this.connectedToStart)
+					|| sgmt.equals(unwrap(endSegment)) && boundType.includeEnd()
 							&& (endSegmentConnectedByItsStart == null
-							|| endSegmentConnectedByItsStart.booleanValue() == this.connectedToStart));
+							|| endSegmentConnectedByItsStart.booleanValue() == this.connectedToStart);
 		}
 
 		private Iterator<RoadSegment> makeIterator(
@@ -423,7 +419,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Pure
 		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFrom(
 				RoadSegment startingPoint) {
-			final RoadSegment sgmt = this.segment.get();
+			final var sgmt = this.segment.get();
 			if (sgmt.equals(unwrap(startingPoint))) {
 				return Collections.singleton(this);
 			}
@@ -1038,8 +1034,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFromInReverseOrder(
 				RoadSegment startingPoint) {
-			final Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> original = this.connection.get()
-					.getConnectionsStartingFromInReverseOrder(startingPoint);
+			final var original = this.connection.get().getConnectionsStartingFromInReverseOrder(startingPoint);
 			return Iterables.transform(original, it -> wrapGraphPointConnection(it));
 		}
 
@@ -1106,7 +1101,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		 */
 		WrapSegment(RoadSegment segment, TerminalConnection terminalStart, TerminalConnection terminalEnd) {
 			assert segment != null;
-			final RoadSegment sgmt = unwrap(segment);
+			final var sgmt = unwrap(segment);
 			assert sgmt != null;
 			this.segment = new SoftReference<>(sgmt);
 			this.terminalStart = terminalStart;
@@ -1138,8 +1133,8 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final boolean equals(Object obj) {
-			if (obj instanceof WrapSegment) {
-				return this.segment.get().equals(((WrapSegment) obj).getWrappedRoadSegment());
+			if (obj instanceof WrapSegment seg) {
+				return this.segment.get().equals(seg.getWrappedRoadSegment());
 			}
 			return this.segment.get().equals(obj);
 		}
@@ -1470,22 +1465,22 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final RoadConnection getBeginPoint() {
-			final RoadConnection terminated = getTerminalStart();
+			final var terminated = getTerminalStart();
 			return terminated != null ? terminated : wrapPoint(this.segment.get().getBeginPoint());
 		}
 
 		@Override
 		@Pure
 		public final RoadConnection getEndPoint() {
-			final RoadConnection terminated = getTerminalEnd();
+			final var terminated = getTerminalEnd();
 			return terminated != null ? terminated : wrapPoint(this.segment.get().getEndPoint());
 		}
 
 		@Override
 		@Pure
 		public final RoadConnection getOtherSidePoint(RoadConnection ref_point) {
-			final RoadConnection tS = getBeginPoint();
-			final RoadConnection tE = getEndPoint();
+			final var tS = getBeginPoint();
+			final var tE = getEndPoint();
 			if (tS.equals(unwrap(ref_point))) {
 				return tE;
 			}
@@ -1495,8 +1490,8 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final RoadConnection getSharedConnectionWith(RoadSegment otherSegment) {
-			final RoadSegment sgmt = this.segment.get();
-			final RoadSegment usgmt = unwrap(otherSegment);
+			final var sgmt = this.segment.get();
+			final var usgmt = unwrap(otherSegment);
 			if (sgmt.isFirstPointConnectedTo(usgmt)) {
 				return getBeginPoint();
 			}
@@ -1509,16 +1504,16 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final boolean isFirstPointConnectedTo(Segment1D<?, ?> arg0) {
-			final RoadSegment sgmt = this.segment.get();
-			final Segment1D<?, ?> usgmt = unwrap(arg0);
+			final var sgmt = this.segment.get();
+			final var usgmt = unwrap(arg0);
 			return sgmt.isFirstPointConnectedTo(usgmt);
 		}
 
 		@Override
 		@Pure
 		public final boolean isLastPointConnectedTo(Segment1D<?, ?> arg0) {
-			final RoadSegment sgmt = this.segment.get();
-			final Segment1D<?, ?> usgmt = unwrap(arg0);
+			final var sgmt = this.segment.get();
+			final var usgmt = unwrap(arg0);
 			return sgmt.isLastPointConnectedTo(usgmt);
 		}
 
@@ -1532,14 +1527,14 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Pure
 		public final List<RoadSegment> getSegmentChain(boolean forward_search,
 				boolean backward_search) {
-			final List<RoadSegment> chain = new ArrayList<>();
+			final var chain = new ArrayList<RoadSegment>();
 
 			chain.add(this);
 
 			// Search for segments in the backward direction (starting at the first point)
 			if (backward_search) {
-				RoadConnection currPoint = getBeginPoint();
-				RoadSegment currSegment = currPoint.getOtherSideSegment(this);
+				var currPoint = getBeginPoint();
+				var currSegment = currPoint.getOtherSideSegment(this);
 
 				while (currSegment != null) {
 					chain.add(0, wrapSegment(currSegment));
@@ -1550,8 +1545,8 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 			// Search for segments in the forward direction (starting at the last point)
 			if (forward_search) {
-				RoadConnection currPoint = getEndPoint();
-				RoadSegment currSegment = currPoint.getOtherSideSegment(this);
+				var currPoint = getEndPoint();
+				var currSegment = currPoint.getOtherSideSegment(this);
 
 				while (currSegment != null) {
 					chain.add(chain.size(), wrapSegment(currSegment));
@@ -1560,7 +1555,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 				}
 			}
 
-			final RoadPath path = new RoadPath();
+			final var path = new RoadPath();
 
 			path.addAll(chain);
 
@@ -1570,7 +1565,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public String toString() {
-			final RoadSegment sgmt = this.segment.get();
+			final var sgmt = this.segment.get();
 			assert sgmt != null;
 			return sgmt.toString();
 		}

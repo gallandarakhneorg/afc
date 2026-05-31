@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This is the generic implementation of a n-ary
  * tree. This node has not a constant count of children.
@@ -134,8 +133,8 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 		if (this.children != null) {
-			final N me = toN();
-			for (final NaryTreeNode<D, N> child : this.children) {
+			final var me = toN();
+			for (final var child : this.children) {
 				if (child != null) {
 					child.setParentNodeReference(me, false);
 				}
@@ -156,11 +155,11 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	public void clear() {
 		removeAllUserData();
 		if (this.children != null) {
-			final List<N> nodes = new ArrayList<>(this.children);
+			final var nodes = new ArrayList<>(this.children);
 			while (!this.children.isEmpty()) {
 				setChildAt(0, null);
 			}
-			for (final N child : nodes) {
+			for (final var child : nodes) {
 				child.clear();
 			}
 			nodes.clear();
@@ -170,7 +169,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	@Pure
 	@Override
 	public final int getChildCount() {
-		return (this.children == null) ? 0 : this.children.size();
+		return this.children == null ? 0 : this.children.size();
 	}
 
 	@Pure
@@ -182,9 +181,9 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	@Pure
 	@Override
 	public final int indexOf(N child) {
-		int i = 0;
+		var i = 0;
 		if (this.children != null) {
-			for (final N cchild : this.children) {
+			for (final var cchild : this.children) {
 				if (cchild == child) {
 					return i;
 				}
@@ -231,13 +230,13 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	@Override
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
-		final int count = (this.children == null) ? 0 : this.children.size();
+		final var count = this.children == null ? 0 : this.children.size();
 
 		if (index < 0 || index >= count) {
 			throw new IndexOutOfBoundsException();
 		}
 
-		final N oldChild = this.children.get(index);
+		final var oldChild = this.children.get(index);
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -249,7 +248,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -273,8 +272,8 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
-		final int count = (this.children == null) ? 0 : this.children.size();
-		int insertionIndex = index;
+		final var count = (this.children == null) ? 0 : this.children.size();
+		var insertionIndex = index;
 		if (insertionIndex < 0) {
 			insertionIndex = 0;
 		}
@@ -293,7 +292,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 			if (insertionIndex >= count) {
 				insertionIndex = count - 1;
 			}
-			final N oldValue = this.children.remove(insertionIndex);
+			final var oldValue = this.children.remove(insertionIndex);
 			if (this.children.isEmpty()) {
 				this.children = null;
 			}
@@ -306,7 +305,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	@Override
 	public final boolean removeChild(N child) {
 		if (child != null && this.children != null) {
-			final int index = this.children.indexOf(child);
+			final var index = this.children.indexOf(child);
 			if (index >= 0 && index < this.children.size()) {
 				this.children.remove(index);
 				--this.notNullChildCount;
@@ -341,9 +340,9 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 			return false;
 		}
 
-		final int count = (this.children == null) ? 0 : this.children.size();
+		final var count = this.children == null ? 0 : this.children.size();
 
-		final N oldParent = newChild.getParentNode();
+		final var oldParent = newChild.getParentNode();
 		if (oldParent != this && oldParent != null) {
 			newChild.removeFromParent();
 		}
@@ -375,7 +374,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	@Pure
 	@Override
 	public final boolean isLeaf() {
-		return (this.children == null) || this.children.isEmpty();
+		return this.children == null || this.children.isEmpty();
 	}
 
 	@Override
@@ -388,10 +387,10 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	@Pure
 	@Override
 	public int getMinHeight() {
-		int min = Integer.MAX_VALUE;
-		boolean set = false;
+		var min = Integer.MAX_VALUE;
+		var set = false;
 		if (this.children != null) {
-			for (final N child : this.children) {
+			for (final var child : this.children) {
 				if (child != null) {
 					if (set) {
 						min = Math.min(min, child.getMinHeight());
@@ -408,10 +407,10 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	@Pure
 	@Override
 	public int getMaxHeight() {
-		int max = Integer.MIN_VALUE;
-		boolean set = false;
+		var max = Integer.MIN_VALUE;
+		var set = false;
 		if (this.children != null) {
-			for (final N child : this.children) {
+			for (final var child : this.children) {
 				if (child != null) {
 					if (set) {
 						max = Math.max(max, child.getMaxHeight());
@@ -430,7 +429,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 		if (isLeaf()) {
 			heights.add(Integer.valueOf(currentHeight));
 		} else {
-			for (final N child : this.children) {
+			for (final var child : this.children) {
 				if (child != null) {
 					child.getHeights(currentHeight + 1, heights);
 				}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,10 @@ package org.arakhne.afc.agentmotion.steering;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.agentmotion.AligningMotionAlgorithm;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Agent is changing its oriented for being align to the target vector.
  *
@@ -62,8 +61,10 @@ public class AligningSteeringAlgorithm implements AligningMotionAlgorithm, Seria
 	 */
 	public AligningSteeringAlgorithm(double stopAngle, double decelerationAngle, int approximationFactor) {
 		assert stopAngle >= 0. : AssertMessages.positiveOrZeroParameter();
-		assert decelerationAngle >= stopAngle : AssertMessages.lowerEqualParameters(0, stopAngle, 1, decelerationAngle);
-		assert approximationFactor > 1 : AssertMessages.lowerEqualParameter(2, decelerationAngle, 2);
+		assert decelerationAngle >= stopAngle : AssertMessages.lowerEqualParameters(0,
+				Double.valueOf(stopAngle), 1, Double.valueOf(decelerationAngle));
+		assert approximationFactor > 1 : AssertMessages.lowerEqualParameter(2,
+				Double.valueOf(decelerationAngle), Double.valueOf(2));
 		this.stopAngle = stopAngle;
 		this.decelerationAngle = decelerationAngle;
 		this.approximationFactor = approximationFactor;

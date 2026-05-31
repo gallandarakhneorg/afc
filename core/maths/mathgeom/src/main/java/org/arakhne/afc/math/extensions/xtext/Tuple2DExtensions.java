@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,13 @@
 
 package org.arakhne.afc.math.extensions.xtext;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.matrix.Matrix2d;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Xtext extensions for 2D vectors.
  *
@@ -77,9 +76,9 @@ public final class Tuple2DExtensions {
 	 * @param left the scaling factor.
 	 * @param right the vector.
 	 * @return the scaled vector.
+	 * @since 14.0
 	 * @see Vector2D#scale(double)
 	 * @see Vector2D#operator_multiply(double)
-	 * @since 14.0
 	 */
 	@Pure
 	@XtextOperator("*")
@@ -164,9 +163,9 @@ public final class Tuple2DExtensions {
 	 * @param left the scaling factor.
 	 * @param right the vector.
 	 * @return the result.
+	 * @since 14.0
 	 * @see Vector2D#sub(Vector2D)
 	 * @see Vector2D#operator_minus(double)
-	 * @since 14.0
 	 */
 	@Pure
 	@XtextOperator("-")
@@ -231,9 +230,9 @@ public final class Tuple2DExtensions {
 	 * @param left the scaling factor.
 	 * @param right the vector.
 	 * @return the result.
+	 * @since 14.0
 	 * @see Vector2D#add(Vector2D, Vector2D)
 	 * @see Vector2D#operator_plus(double)
-	 * @since 14.0
 	 */
 	@Pure
 	@XtextOperator("+")

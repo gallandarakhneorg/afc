@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.Iterator;
 
 import org.arakhne.afc.math.tree.Tree;
-import org.arakhne.afc.math.tree.TreeNode;
 
 /** This is a writer of .gxl file from a tree.
  *
@@ -84,12 +82,10 @@ public class DotGxlWriter {
             this.writer.append("\" edgeids=\"true\" edgemode=\"directed\">\n"); //$NON-NLS-1$
 
             // Write the node attributes
-            Iterator<? extends TreeNode<?, ?>> iterator = tree.breadthFirstIterator();
-            TreeNode<?, ?> node;
-            int dataCount;
+            var iterator = tree.breadthFirstIterator();
             while (iterator.hasNext()) {
-                node = iterator.next();
-                dataCount = node.getUserDataCount();
+                final var node = iterator.next();
+                final var dataCount = node.getUserDataCount();
                 final String name = "NODE" + Integer.toHexString(node.hashCode()); //$NON-NLS-1$
                 final String label = Integer.toString(dataCount);
 
@@ -108,17 +104,15 @@ public class DotGxlWriter {
 
             // Write the node attributes
             iterator = tree.breadthFirstIterator();
-            TreeNode<?, ?> child;
-            String childName;
             while (iterator.hasNext()) {
-                node = iterator.next();
-                final String name = "NODE" + Integer.toHexString(node.hashCode()); //$NON-NLS-1$
+                final var node = iterator.next();
+                final var name = "NODE" + Integer.toHexString(node.hashCode()); //$NON-NLS-1$
                 if (!node.isLeaf()) {
                     final int childCount = node.getChildCount();
                     for (int i = 0; i < childCount; ++i) {
-                        child = node.getChildAt(i);
+                        final var child = node.getChildAt(i);
                         if (child != null) {
-                            childName = "NODE" + Integer.toHexString(child.hashCode()); //$NON-NLS-1$
+                            final var childName = "NODE" + Integer.toHexString(child.hashCode()); //$NON-NLS-1$
 
                             this.writer.append("\t\t<edge id=\""); //$NON-NLS-1$
                             this.writer.append(name);

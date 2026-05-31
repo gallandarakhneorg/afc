@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class OperatingSystemDiskUtilWrapper extends AbstractOperatingSystemWrapper {
 	}
 
 	private static String runDiskUtil(File file, String key) {
-		final String result = runCommand(
+		final var result = runCommand(
 				"diskutil", //$NON-NLS-1$
 				"info", //$NON-NLS-1$
 				file.toString());
@@ -53,7 +53,7 @@ class OperatingSystemDiskUtilWrapper extends AbstractOperatingSystemWrapper {
 
 	@Override
 	public String getOSSerialNumber(boolean enableSuperUser, boolean enableGUI) {
-		final File file = new File("/dev/disk0s1"); //$NON-NLS-1$
+		final var file = new File("/dev/disk0s1"); //$NON-NLS-1$
 		if (file.exists()) {
 			return runDiskUtil(file, "Volume UUID"); //$NON-NLS-1$
 		}
@@ -62,7 +62,7 @@ class OperatingSystemDiskUtilWrapper extends AbstractOperatingSystemWrapper {
 
 	@Override
 	public String getOSUUID(boolean enableSuperUser, boolean enableGUI) {
-		final File file = new File("/dev/disk0s1"); //$NON-NLS-1$
+		final var file = new File("/dev/disk0s1"); //$NON-NLS-1$
 		if (file.exists()) {
 			return runDiskUtil(file, "Volume UUID"); //$NON-NLS-1$
 		}

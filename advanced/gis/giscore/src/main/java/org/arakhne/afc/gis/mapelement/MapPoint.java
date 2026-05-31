@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ package org.arakhne.afc.gis.mapelement;
 
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -32,6 +30,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to store a geo-located point.
@@ -138,8 +137,8 @@ public class MapPoint extends MapPonctualElement {
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		buffer.add("doubleFramed", isDoubleFramed()); //$NON-NLS-1$
-		buffer.add("pointSize", getPointSize()); //$NON-NLS-1$
+		buffer.add("doubleFramed", Boolean.valueOf(isDoubleFramed())); //$NON-NLS-1$
+		buffer.add("pointSize", Double.valueOf(getPointSize())); //$NON-NLS-1$
 	}
 
 	/**
@@ -162,11 +161,11 @@ public class MapPoint extends MapPonctualElement {
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		double x = this.getX();
-		double y = this.getY();
+		var x = this.getX();
+		var y = this.getY();
 
-		final double w = this.doubleFramed ? this.pointSize * 2 : this.pointSize;
-		final double h = w;
+		final var w = this.doubleFramed ? this.pointSize * 2 : this.pointSize;
+		final var h = w;
 
 		x -= w / 2.;
 		y -= h / 2.;

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeComparator;
@@ -50,6 +47,7 @@ import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
 import org.arakhne.afc.attrs.collection.AttributeChangeListener;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.attrs.collection.ROMBasedAttributeCollection;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -102,7 +100,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nofinalizer")
+	@SuppressWarnings({ "checkstyle:nofinalizer", "removal" })
 	@Deprecated(since = "17.0", forRemoval = true)
 	public void finalize() throws Throwable {
 		this.listeners = null;
@@ -117,7 +115,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Pure
 	@Override
 	public DBaseFileAttributeCollection clone() {
-		final DBaseFileAttributeCollection clone = (DBaseFileAttributeCollection) super.clone();
+		final var clone = (DBaseFileAttributeCollection) super.clone();
 		this.listeners = null;
 		this.buffer = null;
 		return clone;
@@ -147,9 +145,9 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 		if (this.buffer == null) {
 			return Collections.emptyList();
 		}
-		final Collection<Attribute> list = this.buffer.values();
-		final ArrayList<Attribute> tab = new ArrayList<>(list.size());
-		for (final Attribute attr : list) {
+		final var list = this.buffer.values();
+		final var tab = new ArrayList<Attribute>(list.size());
+		for (final var attr : list) {
 			tab.add(new AttributeImpl(attr));
 		}
 		return tab;
@@ -168,10 +166,10 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 		if (this.buffer == null) {
 			this.buffer = new TreeMap<>((key1, key2) -> AttributeImpl.compareAttrNames(key1, key2));
 		}
-		final Attribute oldValue = this.buffer.put(name, attr);
+		final var oldValue = this.buffer.put(name, attr);
 		if (oldValue == null) {
 			// First add inside the buffer. Added elements?
-			final boolean alreadyInside = hasAttributeInDBase(name);
+			final var alreadyInside = hasAttributeInDBase(name);
 			if (alreadyInside) {
 				fireAttributeChangedEvent(name, getAttributeObjectFromDBase(name), attr);
 			} else {
@@ -186,14 +184,14 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 
 	@Override
 	public Attribute setAttributeType(String name, AttributeType type) throws AttributeException {
-		final AttributeValue oldValue = getAttribute(name);
-		final AttributeType oldType = oldValue == null ? null : oldValue.getType();
+		final var oldValue = getAttribute(name);
+		final var oldType = oldValue == null ? null : oldValue.getType();
 
 		if (oldValue == null || oldType == null || type == null || type == oldType) {
 			return null;
 		}
 
-		final Attribute attr = new AttributeImpl(name, oldValue.getValue());
+		final var attr = new AttributeImpl(name, oldValue.getValue());
 		attr.cast(type);
 
 		setBuffer(name, attr);
@@ -288,11 +286,11 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 		if (this.buffer == null) {
 			return false;
 		}
-		final Attribute oldValue = this.buffer.remove(name);
+		final var oldValue = this.buffer.remove(name);
 		if (this.buffer.isEmpty()) {
 			this.buffer = null;
 		}
-		final Attribute fromDBase = getAttributeObjectFromDBase(name);
+		final var fromDBase = getAttributeObjectFromDBase(name);
 		if (oldValue != null) {
 			if (fromDBase != null) {
 				fireAttributeChangedEvent(name, oldValue, fromDBase);
@@ -328,7 +326,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 		if (!overwrite && this.buffer.containsKey(newname)) {
 			return false;
 		}
-		final Attribute value = this.buffer.remove(oldname);
+		final var value = this.buffer.remove(oldname);
 		if (value != null) {
 			this.buffer.put(newname, value);
 			fireAttributeRenamedEvent(oldname, newname, value);
@@ -352,8 +350,8 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public void addAttributes(Map<String, Object> otherContainer) {
 		if (otherContainer.size() > 0) {
-			for (final Entry<String, Object> entry : otherContainer.entrySet()) {
-				final Attribute attr = new AttributeImpl(entry.getKey(), entry.getValue());
+			for (final var entry : otherContainer.entrySet()) {
+				final var attr = new AttributeImpl(entry.getKey(), entry.getValue());
 				setBuffer(entry.getKey(), attr);
 			}
 		}
@@ -362,7 +360,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public void addAttributes(AttributeProvider otherContainer) throws AttributeException {
 		if (otherContainer.getAttributeCount() > 0) {
-			for (final Attribute attr : otherContainer.getAllAttributes()) {
+			for (final var attr : otherContainer.getAllAttributes()) {
 				setAttribute(attr);
 			}
 		}
@@ -405,7 +403,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Pure
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		final Set<Attribute> attrs = new TreeSet<>(new AttributeComparator());
+		final var attrs = new TreeSet<>(new AttributeComparator());
 		attrs.addAll(super.getAllAttributes());
 		if (this.buffer != null) {
 			attrs.addAll(this.buffer.values());
@@ -416,7 +414,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Pure
 	@Override
 	public Collection<String> getAllAttributeNames() {
-		final Set<String> names = new TreeSet<>((key1, key2) -> AttributeImpl.compareAttrNames(key1, key2));
+		final var names = new TreeSet<String>((key1, key2) -> AttributeImpl.compareAttrNames(key1, key2));
 		names.addAll(super.getAllAttributeNames());
 		if (this.buffer != null) {
 			names.addAll(this.buffer.keySet());
@@ -427,11 +425,10 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Pure
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
-		final Map<AttributeType, Collection<Attribute>> map = super.getAllAttributesByType();
+		final var map = super.getAllAttributesByType();
 		if (this.buffer != null) {
-			Collection<Attribute> col;
-			for (final Attribute attr : this.buffer.values()) {
-				col = map.get(attr.getType());
+			for (final var attr : this.buffer.values()) {
+				var col = map.get(attr.getType());
 				if (col == null) {
 					col = new HashSet<>();
 					map.put(attr.getType(), col);
@@ -449,7 +446,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public AttributeValue getAttribute(String name) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return new AttributeValueImpl(value);
 			}
@@ -461,7 +458,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public boolean getAttribute(String name, boolean defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getBoolean();
@@ -477,7 +474,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public long getAttribute(String name, long defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getInteger();
@@ -493,7 +490,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public int getAttribute(String name, int defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return (int) value.getInteger();
@@ -509,7 +506,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public float getAttribute(String name, float defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return (float) value.getReal();
@@ -525,7 +522,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public double getAttribute(String name, double defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getReal();
@@ -541,7 +538,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public String getAttribute(String name, String defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getString();
@@ -557,7 +554,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public UUID getAttribute(String name, UUID defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getUUID();
@@ -573,7 +570,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public URL getAttribute(String name, URL defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getURL();
@@ -589,7 +586,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public URI getAttribute(String name, URI defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getURI();
@@ -605,7 +602,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public Date getAttribute(String name, Date defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getDate();
@@ -621,7 +618,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public InetAddress getAttribute(String name, InetAddress defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return value.getInetAddress();
@@ -638,7 +635,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public <ET extends Enum<ET>> ET getAttribute(String name, ET defaultValue) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				try {
 					return (ET) value.getEnumeration();
@@ -656,7 +653,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public AttributeValue getAttribute(String name, AttributeValue default_value) {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value;
 			}
@@ -668,7 +665,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public Attribute getAttributeObject(String name) {
 		if (this.buffer != null) {
-			final Attribute value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return new AttributeImpl(value);
 			}
@@ -680,7 +677,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public boolean getAttributeAsBool(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getBoolean();
 			}
@@ -704,7 +701,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public long getAttributeAsLong(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getInteger();
 			}
@@ -716,7 +713,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public float getAttributeAsFloat(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return (float) value.getReal();
 			}
@@ -728,7 +725,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public double getAttributeAsDouble(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getReal();
 			}
@@ -740,7 +737,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public String getAttributeAsString(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getString();
 			}
@@ -752,7 +749,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public UUID getAttributeAsUUID(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getUUID();
 			}
@@ -764,7 +761,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public URL getAttributeAsURL(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getURL();
 			}
@@ -788,7 +785,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public Date getAttributeAsDate(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getDate();
 			}
@@ -800,7 +797,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public InetAddress getAttributeAsInetAddress(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getInetAddress();
 			}
@@ -812,7 +809,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public Enum<?> getAttributeAsEnumeration(String name) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getEnumeration();
 			}
@@ -824,7 +821,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	@Override
 	public <ET extends Enum<ET>> ET getAttributeAsEnumeration(String name, Class<ET> type) throws AttributeException {
 		if (this.buffer != null) {
-			final AttributeValue value = this.buffer.get(name);
+			final var value = this.buffer.get(name);
 			if (value != null) {
 				return value.getEnumeration(type);
 			}
@@ -860,7 +857,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	 */
 	protected void fireAttributeAddedEvent(String name, AttributeValue attr) {
 		if (this.listeners != null && isEventFirable()) {
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					//source
 					this,
 					//type
@@ -873,7 +870,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 					name,
 					//current value
 					attr);
-			for (final AttributeChangeListener listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -887,7 +884,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	 */
 	protected void fireAttributeChangedEvent(String name, AttributeValue oldValue, AttributeValue currentValue) {
 		if (this.listeners != null && isEventFirable()) {
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					//source
 					this,
 					//type
@@ -900,7 +897,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 					name,
 					//current value
 					currentValue);
-			for (final AttributeChangeListener listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -910,7 +907,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	 */
 	protected void fireAttributeClearedEvent() {
 		if (this.listeners != null && isEventFirable()) {
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					//source
 					this,
 					//type
@@ -923,7 +920,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 					null,
 					//current value
 					null);
-			for (final AttributeChangeListener listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -936,7 +933,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	 */
 	protected void fireAttributeRemovedEvent(String name, AttributeValue oldValue) {
 		if (this.listeners != null && isEventFirable()) {
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					//source
 					this,
 					//type
@@ -949,7 +946,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 					name,
 					//current value
 					oldValue);
-			for (final AttributeChangeListener listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -963,7 +960,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 	 */
 	protected void fireAttributeRenamedEvent(String oldName, String newName, AttributeValue attr) {
 		if (this.listeners != null && isEventFirable()) {
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					//source
 					this,
 					//type
@@ -976,7 +973,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 					newName,
 					//current value
 					attr);
-			for (final AttributeChangeListener listener : this.listeners) {
+			for (final var listener : this.listeners) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}

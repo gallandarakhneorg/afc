@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.inputoutput.filetype;
 import java.io.IOException;
 import javax.activation.MimeType;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.inputoutput.mime.MimeName;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This clas defines a set of informations that could distinguish
  * a file content from another one. It is also known as Magic Number
@@ -85,7 +84,7 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 			this.hostMimeTypes = new MimeType[0];
 		} else {
 			this.hostMimeTypes = new MimeType[hostMimeTypes.length];
-			for (int i = 0; i < hostMimeTypes.length; ++i) {
+			for (var i = 0; i < hostMimeTypes.length; ++i) {
 				this.hostMimeTypes[i] = hostMimeTypes[i].toMimeType();
 			}
 		}

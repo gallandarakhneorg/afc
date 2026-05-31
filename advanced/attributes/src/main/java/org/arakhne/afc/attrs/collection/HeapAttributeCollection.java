@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.UUID;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
@@ -45,6 +41,7 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.attr.InvalidAttributeTypeException;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class implements an attribute provider which
@@ -68,9 +65,9 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Pure
 	@Override
 	public HeapAttributeCollection clone() {
-		final HeapAttributeCollection clone = (HeapAttributeCollection) super.clone();
+		final var clone = (HeapAttributeCollection) super.clone();
 		clone.heap = new TreeMap<>(new AttributeNameStringComparator());
-		for (final Attribute attr : getAllAttributes()) {
+		for (final var attr : getAllAttributes()) {
 			try {
 				clone.setAttribute(attr);
 			} catch (AttributeException e) {
@@ -82,11 +79,11 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 	@Override
 	public void addAttributes(Map<String, Object> content) {
-		for (final Entry<String, Object> pair : content.entrySet()) {
-			Object value = pair.getValue();
-			final AttributeType type = AttributeType.fromValue(value);
+		for (final var pair : content.entrySet()) {
+			var value = pair.getValue();
+			final var type = AttributeType.fromValue(value);
 			value = type.cast(value);
-			final Object oldValue = this.heap.put(pair.getKey(), value);
+			final var oldValue = this.heap.put(pair.getKey(), value);
 			if (oldValue == null) {
 				fireAttributeAddedEvent(pair.getKey(), new AttributeValueImpl(type, value));
 			} else {
@@ -99,9 +96,9 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 	@Override
 	public void addAttributes(AttributeProvider content) throws AttributeException {
-		for (final Attribute attr : content.attributes()) {
-			final Object value = attr.getValue();
-			final Object oldValue = this.heap.put(attr.getName(), value);
+		for (final var attr : content.attributes()) {
+			final var value = attr.getValue();
+			final var oldValue = this.heap.put(attr.getName(), value);
 			if (oldValue == null) {
 				fireAttributeAddedEvent(attr.getName(),
 						new AttributeValueImpl(attr.getType(), value));
@@ -120,22 +117,22 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 	@Override
 	public void setAttributes(AttributeProvider content) throws AttributeException {
-		final Map<String, Object> newAttributes = new TreeMap<>();
+		final var newAttributes = new TreeMap<String, Object>();
 		content.toMap(newAttributes);
 		setAttributesInternal(newAttributes);
 	}
 
 	private void setAttributesInternal(Map<String, Object> newAttributes) {
-		final Iterator<Entry<String, Object>> iterator = this.heap.entrySet().iterator();
+		final var iterator = this.heap.entrySet().iterator();
 		while (iterator.hasNext()) {
-			final Entry<String, Object> entry = iterator.next();
-			Object newValue = newAttributes.remove(entry.getKey());
+			final var entry = iterator.next();
+			var newValue = newAttributes.remove(entry.getKey());
 			if (newValue == null) {
 				iterator.remove();
 				fireAttributeRemovedEvent(entry.getKey(),
 						new AttributeValueImpl(AttributeType.fromValue(entry.getValue()), entry.getValue()));
 			} else {
-				final AttributeType type = AttributeType.fromValue(newValue);
+				final var type = AttributeType.fromValue(newValue);
 				newValue = type.cast(newValue);
 				entry.setValue(newValue);
 				fireAttributeChangedEvent(entry.getKey(),
@@ -145,8 +142,8 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		}
 
 		for (final Entry<String, Object> e : newAttributes.entrySet()) {
-			Object newValue = e.getValue();
-			final AttributeType type = AttributeType.fromValue(newValue);
+			var newValue = e.getValue();
+			final var type = AttributeType.fromValue(newValue);
 			newValue = type.cast(newValue);
 			if (newValue != null) {
 				this.heap.put(e.getKey(), newValue);
@@ -176,12 +173,12 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Pure
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		final List<Attribute> list = new ArrayList<>(getAttributeCount());
-		for (final Entry<String, Object> entry : this.heap.entrySet()) {
-			final String name = entry.getKey();
+		final var list = new ArrayList<Attribute>(getAttributeCount());
+		for (final var entry : this.heap.entrySet()) {
+			final var name = entry.getKey();
 			if (name != null) {
-				final Object rawValue = entry.getValue();
-				final Attribute newAttr = new AttributeImpl(name);
+				final var rawValue = entry.getValue();
+				final var newAttr = new AttributeImpl(name);
 				newAttr.castAndSet(
 						AttributeType.fromValue(rawValue),
 						unprotectNull(rawValue));
@@ -194,18 +191,18 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Pure
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
-		final Map<AttributeType, Collection<Attribute>> map = new TreeMap<>();
-		for (final Entry<String, Object> entry : this.heap.entrySet()) {
-			Object value = entry.getValue();
+		final var map = new TreeMap<AttributeType, Collection<Attribute>>();
+		for (final var entry : this.heap.entrySet()) {
+			var value = entry.getValue();
 			if (value != null) {
-				final AttributeType type = AttributeType.fromValue(value);
+				final var type = AttributeType.fromValue(value);
 				value = unprotectNull(value);
-				Collection<Attribute> list = map.get(type);
+				var list = map.get(type);
 				if (list == null) {
 					list = new ArrayList<>();
 					map.put(type, list);
 				}
-				final Attribute attr = new AttributeImpl(entry.getKey());
+				final var attr = new AttributeImpl(entry.getKey());
 				attr.castAndSet(type, value);
 				list.add(attr);
 			}
@@ -228,7 +225,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Pure
 	@Override
 	public AttributeValue getAttribute(String name, AttributeValue defaultValue) {
-		final AttributeValue value = getStoredAttributeValue(name,
+		final var value = getStoredAttributeValue(name,
 				defaultValue == null ? null : defaultValue.getType());
 		if (value == null) {
 			return defaultValue;
@@ -250,11 +247,11 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Pure
 	protected Attribute getStoredAttribute(String name, AttributeType expectedType) {
-		Object val = this.heap.get(name);
+		var val = this.heap.get(name);
 		if (val != null) {
-			final AttributeType currentType = AttributeType.fromValue(val);
+			final var currentType = AttributeType.fromValue(val);
 			val = unprotectNull(val);
-			final Attribute attr = new AttributeImpl(name);
+			final var attr = new AttributeImpl(name);
 			if (expectedType == null) {
 				attr.castAndSet(currentType, val);
 			} else {
@@ -267,17 +264,17 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 	/** Replies the attribute with the given name.
 	 *
-	 * @param name is the name of the attribute to retreive
+	 * @param name is the name of the attribute to retrieve
 	 * @param expectedType is the expected type for the attribute.
 	 * @return the value or {@code null}
 	 */
 	@Pure
 	protected AttributeValue getStoredAttributeValue(String name, AttributeType expectedType) {
-		Object val = this.heap.get(name);
+		var val = this.heap.get(name);
 		if (val != null) {
-			final AttributeType currentType = AttributeType.fromValue(val);
+			final var currentType = AttributeType.fromValue(val);
 			val = unprotectNull(val);
-			final AttributeValue attr = new AttributeValueImpl(name);
+			final var attr = new AttributeValueImpl(name);
 			if (expectedType == null) {
 				attr.castAndSet(currentType, val);
 			} else {
@@ -289,10 +286,10 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	}
 
 	private AttributeValue copyValue(String name) {
-		final Object currentValue = this.heap.get(name);
+		final var currentValue = this.heap.get(name);
 		if (currentValue != null) {
-			final AttributeType oldType = AttributeType.fromValue(currentValue);
-			final AttributeValue oldValue = new AttributeValueImpl();
+			final var oldType = AttributeType.fromValue(currentValue);
+			final var oldValue = new AttributeValueImpl();
 			oldValue.castAndSet(oldType, currentValue);
 			return oldValue;
 		}
@@ -303,14 +300,14 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttributeType(String name, AttributeType type) throws AttributeException {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
-		final AttributeType oldType = (oldValue == null) ? null : oldValue.getType();
+		final var oldValue = copyValue(name);
+		final var oldType = (oldValue == null) ? null : oldValue.getType();
 
 		if (oldType == null || type == null || oldType == type) {
 			return null;
 		}
 
-		final Attribute attr = new AttributeImpl(name, (oldValue == null) ? null : oldValue.getValue());
+		final var attr = new AttributeImpl(name, (oldValue == null) ? null : oldValue.getValue());
 		attr.cast(type);
 
 		this.heap.put(name, protectNull(attr.getValue(), type));
@@ -323,7 +320,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Override
 	public Attribute setAttribute(String name, AttributeValue value) throws AttributeException {
 		assert name != null && value != null;
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -331,7 +328,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		this.heap.put(name, protectNull(value.getValue(), value.getType()));
 
-		final Attribute attr = new AttributeImpl(name, value.getValue());
+		final var attr = new AttributeImpl(name, value.getValue());
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, value);
@@ -347,15 +344,15 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, boolean value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null && oldValue.equals(Boolean.valueOf(value))) {
 			return null;
 		}
 
 		this.heap.put(name, Boolean.valueOf(value));
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -371,15 +368,15 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, int value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null && oldValue.equals(Integer.valueOf(value))) {
 			return null;
 		}
 
 		this.heap.put(name, Long.valueOf(value));
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -395,15 +392,15 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, long value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null && oldValue.equals(Long.valueOf(value))) {
 			return null;
 		}
 
 		this.heap.put(name, Long.valueOf(value));
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -420,7 +417,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		assert name != null;
 
 		final AttributeValue oldValue;
-		final Object currentValue = this.heap.get(name);
+		final var currentValue = this.heap.get(name);
 		if (currentValue != null) {
 			oldValue = new AttributeValueImpl();
 			oldValue.castAndSet(AttributeType.fromValue(currentValue), currentValue);
@@ -428,13 +425,13 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 			oldValue = null;
 		}
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null && oldValue.equals(Float.valueOf(value))) {
 			return null;
 		}
 
 		this.heap.put(name, Double.valueOf(value));
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (currentValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -450,15 +447,15 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, double value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null && oldValue.equals(Double.valueOf(value))) {
 			return null;
 		}
 
 		this.heap.put(name, Double.valueOf(value));
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -474,7 +471,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, String value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -483,7 +480,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		final Object rv = (value == null) ? AttributeType.STRING.getDefaultValue() : value;
 		this.heap.put(name, rv);
 
-		final Attribute attr = new AttributeImpl(name, rv);
+		final var attr = new AttributeImpl(name, rv);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -499,7 +496,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, UUID value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -508,7 +505,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		final Object rv = (value == null) ? AttributeType.UUID.getDefaultValue() : value;
 		this.heap.put(name, rv);
 
-		final Attribute attr = new AttributeImpl(name, rv);
+		final var attr = new AttributeImpl(name, rv);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -524,7 +521,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, URL value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -532,7 +529,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		this.heap.put(name, protectNull(value, AttributeType.URL));
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -548,7 +545,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, URI value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -556,7 +553,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		this.heap.put(name, protectNull(value, AttributeType.URI));
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -572,7 +569,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, Date value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -581,7 +578,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		final Object rv = (value == null) ? AttributeType.DATE.getDefaultValue() : value;
 		this.heap.put(name, rv);
 
-		final Attribute attr = new AttributeImpl(name, rv);
+		final var attr = new AttributeImpl(name, rv);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -595,8 +592,8 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Override
 	public Attribute setAttribute(Attribute value) throws AttributeException {
 		assert value != null;
-		final String name = value.getName();
-		final AttributeValue oldValue = copyValue(name);
+		final var name = value.getName();
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -618,7 +615,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, InetAddress value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -626,7 +623,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		this.heap.put(name, value);
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -647,7 +644,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, Enum<?> value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -655,7 +652,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		this.heap.put(name, value);
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -671,7 +668,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public Attribute setAttribute(String name, Class<?> value) {
 		assert name != null;
 
-		final AttributeValue oldValue = copyValue(name);
+		final var oldValue = copyValue(name);
 
 		if (oldValue != null && oldValue.equals(value)) {
 			return null;
@@ -679,7 +676,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		this.heap.put(name, value);
 
-		final Attribute attr = new AttributeImpl(name, value);
+		final var attr = new AttributeImpl(name, value);
 
 		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
@@ -695,7 +692,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		assert name != null;
 
 		final AttributeValue oldValue;
-		final Object currentValue = this.heap.remove(name);
+		final var currentValue = this.heap.remove(name);
 		if (currentValue != null) {
 			oldValue = new AttributeValueImpl();
 			oldValue.castAndSet(AttributeType.fromValue(currentValue), currentValue);
@@ -721,17 +718,17 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 			return false;
 		}
 
-		final AttributeValue valueOfOldName = copyValue(oldname);
+		final var valueOfOldName = copyValue(oldname);
 
 		// The attribute does not exist.
 		if (valueOfOldName == null) {
 			return false;
 		}
 
-		final AttributeValue oldValueOfNewName = copyValue(newname);
+		final var oldValueOfNewName = copyValue(newname);
 
 		// The target attribute is existing and overwrite was disabled
-		if ((!overwrite) && (oldValueOfNewName != null)) {
+		if (!overwrite && oldValueOfNewName != null) {
 			return false;
 		}
 

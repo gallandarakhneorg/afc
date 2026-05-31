@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,16 +65,16 @@ public final class ClasspathUtil {
 	@Pure
 	@SuppressWarnings("resource")
 	public static Iterator<URL> getClasspath() {
-		Iterator<URL> iterator = getStartClasspath();
+		var iterator = getStartClasspath();
 
-		final ClassLoader loader = ClassLoaderFinder.findClassLoader();
+		final var loader = ClassLoaderFinder.findClassLoader();
 		try {
-			final DynamicURLClassLoader dLoader = (DynamicURLClassLoader) loader;
+			final var dLoader = (DynamicURLClassLoader) loader;
 			iterator = new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator());
 		} catch (ClassCastException exception1) {
 			if (ClasspathUtil.class.getClassLoader() != loader) {
 				try {
-					try (URLClassLoader dLoader = (URLClassLoader) loader) {
+					try (var dLoader = (URLClassLoader) loader) {
 						iterator = new IteratorIterator(
 								new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
 								iterator);
@@ -154,9 +154,8 @@ public final class ClasspathUtil {
 
 		private void searchNext() {
 			this.next = null;
-			URL u;
 			while (this.next == null && this.iterator.hasNext()) {
-				u = this.iterator.next();
+				final var u = this.iterator.next();
 				if (u != null) {
 					this.next = u;
 				}
@@ -170,7 +169,7 @@ public final class ClasspathUtil {
 
 		@Override
 		public URL next() {
-			final URL n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}
@@ -248,7 +247,7 @@ public final class ClasspathUtil {
 
 		@Override
 		public URL next() {
-			final URL n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}

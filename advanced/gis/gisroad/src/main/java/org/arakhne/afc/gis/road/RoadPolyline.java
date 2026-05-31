@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.UUID;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
@@ -54,6 +51,7 @@ import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a road segment
@@ -136,7 +134,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
 		buffer.add("roadType", getRoadType()); //$NON-NLS-1$
-		buffer.add("width", getWidth()); //$NON-NLS-1$
+		buffer.add("width", Double.valueOf(getWidth())); //$NON-NLS-1$
 	}
 
 
@@ -147,14 +145,14 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public RoadPolyline clone() {
-		final RoadPolyline element = (RoadPolyline) super.clone();
+		final var element = (RoadPolyline) super.clone();
 
 		if (this.userData == null) {
 			element.userData = null;
 		} else {
 			element.userData = new TreeMap<>();
-			List<Object> dta;
-			for (final Entry<String, List<Object>> entry : this.userData.entrySet()) {
+			for (final var entry : this.userData.entrySet()) {
+				final List<Object> dta;
 				if (entry.getValue() == null) {
 					dta = null;
 				} else {
@@ -176,9 +174,8 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@SuppressWarnings({"checkstyle:equalshashcode", "unlikely-arg-type"})
 	@Pure
 	public boolean equals(Object element) {
-		if (element instanceof RoadSegment && !(element instanceof MapElement)) {
-			RoadSegment road = (RoadSegment) element;
-			RoadSegment rd = road.getWrappedRoadSegment();
+		if (element instanceof RoadSegment road && !(element instanceof MapElement)) {
+			var rd = road.getWrappedRoadSegment();
 			while (rd != road) {
 				road = rd;
 				rd = road.getWrappedRoadSegment();
@@ -216,7 +213,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	@Override
 	public RoadConnection getOtherSidePoint(RoadConnection ref_point) {
-		final RoadConnection pt = ref_point.getWrappedRoadConnection();
+		final var pt = ref_point.getWrappedRoadConnection();
 		if (getBeginPoint(StandardRoadConnection.class).equals(pt)) {
 			return getEndPoint(StandardRoadConnection.class);
 		}
@@ -238,10 +235,11 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	 * @param <CT> is the type of the connection to reply
 	 * @param connectionClass is the type of the connection to reply
 	 * @return the first point of {@code null}
+	 * @throws IllegalArgumentException if connection is invalid.
 	 */
 	@Pure
 	<CT extends RoadConnection> CT getBeginPoint(Class<CT> connectionClass) {
-		final StandardRoadConnection connection = this.firstConnection;
+		final var connection = this.firstConnection;
 		if (connection == null) {
 			return null;
 		}
@@ -265,10 +263,11 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	 * @param <CT> is the type of the connection to reply
 	 * @param connectionClass is the type of the connection to reply
 	 * @return the last point of {@code null}
+	 * @throws IllegalArgumentException if connection is invalid.
 	 */
 	@Pure
 	<CT extends RoadConnection> CT getEndPoint(Class<CT> connectionClass) {
-		final StandardRoadConnection connection = this.lastConnection;
+		final var connection = this.lastConnection;
 		if (connection == null) {
 			return null;
 		}
@@ -292,7 +291,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	 */
 	@Pure
 	<CT extends RoadConnection> CT getNearestPoint(Class<CT> connectionClass, double x, double y) {
-		final int index = getNearestEndIndex(x, y);
+		final var index = getNearestEndIndex(x, y);
 		if (index == 0) {
 			return getBeginPoint(connectionClass);
 		}
@@ -312,7 +311,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	<CT extends RoadConnection> CT getNearestPoint(Class<CT> connectionClass, double x, double y,
 			OutputParameter<Double> distance) {
-		final int index = getNearestEndIndex(x, y, distance);
+		final var index = getNearestEndIndex(x, y, distance);
 		if (index == 0) {
 			return getBeginPoint(connectionClass);
 		}
@@ -328,7 +327,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public Point2d getFirstPoint() {
-		final RoadConnection connection = getBeginPoint(RoadConnectionWithArrivalSegment.class);
+		final var connection = getBeginPoint(RoadConnectionWithArrivalSegment.class);
 		if (connection == null) {
 			return getPointAt(0);
 		}
@@ -338,7 +337,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public Point2d getLastPoint() {
-		final RoadConnection connection = getEndPoint(RoadConnectionWithArrivalSegment.class);
+		final var connection = getEndPoint(RoadConnectionWithArrivalSegment.class);
 		if (connection == null) {
 			return getPointAt(getPointCount() - 1);
 		}
@@ -358,8 +357,8 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public boolean isConnectedTo(RoadSegment otherSegment) {
-		final RoadConnection startPoint = getBeginPoint(StandardRoadConnection.class);
-		final RoadConnection endPoint = getEndPoint(StandardRoadConnection.class);
+		final var startPoint = getBeginPoint(StandardRoadConnection.class);
+		final var endPoint = getEndPoint(StandardRoadConnection.class);
 		if (otherSegment != this) {
 			if (startPoint != null && startPoint.isConnectedSegment(otherSegment)) {
 				return true;
@@ -376,14 +375,14 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public boolean isTraversableFrom(RoadConnection point) {
-		final RoadConnection startPoint = getBeginPoint(StandardRoadConnection.class);
-		final RoadConnection endPoint = getEndPoint(StandardRoadConnection.class);
+		final var startPoint = getBeginPoint(StandardRoadConnection.class);
+		final var endPoint = getEndPoint(StandardRoadConnection.class);
 		if (startPoint.equals(point)) {
-			final TrafficDirection d = getTrafficDirection();
+			final var d = getTrafficDirection();
 			return d == TrafficDirection.DOUBLE_WAY || d == TrafficDirection.ONE_WAY;
 		}
 		if (endPoint.equals(point)) {
-			final TrafficDirection d = getTrafficDirection();
+			final var d = getTrafficDirection();
 			return d == TrafficDirection.DOUBLE_WAY || d == TrafficDirection.NO_ENTRY;
 		}
 		return false;
@@ -393,7 +392,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	public TrafficDirection getTrafficDirection() {
 		try {
-			final TrafficDirection direction = TrafficDirection.fromString(
+			final var direction = TrafficDirection.fromString(
 					getAttribute(RoadNetworkConstants.getPreferredAttributeNameForTrafficDirection(), (String) null));
 			if (direction != null) {
 				return direction;
@@ -418,7 +417,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	public RoadType getRoadType() {
 		if (this.roadType == null) {
-			final String attrName = RoadNetworkConstants.getPreferredAttributeNameForRoadType();
+			final var attrName = RoadNetworkConstants.getPreferredAttributeNameForRoadType();
 			this.roadType = getAttribute(
 					attrName,
 					RoadType.OTHER);
@@ -454,7 +453,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public String getName() {
-		final String name = getAttribute(
+		final var name = getAttribute(
 				RoadNetworkConstants.getPreferredAttributeNameForRoadName(),
 				(String) null);
 		if (name != null && !"".equals(name)) { //$NON-NLS-1$
@@ -475,8 +474,8 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	public RoadConnection getSharedConnectionWith(RoadSegment otherSegment) {
 		if (otherSegment != this) {
-			final RoadConnection startPoint = getBeginPoint(StandardRoadConnection.class);
-			final RoadConnection endPoint = getEndPoint(StandardRoadConnection.class);
+			final var startPoint = getBeginPoint(StandardRoadConnection.class);
+			final var endPoint = getEndPoint(StandardRoadConnection.class);
 			if (startPoint != null && startPoint.isConnectedSegment(otherSegment)) {
 				return startPoint;
 			}
@@ -505,7 +504,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 		if (ratio > 1) {
 			return 0.;
 		}
-		final double segmentLength = getLength();
+		final var segmentLength = getLength();
 		if (ratio < 0) {
 			return segmentLength;
 		}
@@ -515,7 +514,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public Vector2d getTangentAt(double positionOnSegment) {
-		final Vector2d tangent = new Vector2d();
+		final var tangent = new Vector2d();
 		getGeoLocationForDistance(positionOnSegment, 0.,
 				tangent);
 		return tangent;
@@ -552,7 +551,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public final Point2d getGeoLocationForLocationRatio(double ratio) {
-		final Point2d gl = new Point2d();
+		final var gl = new Point2d();
 		getGeoLocationForLocationRatio(ratio, 0., gl, null);
 		return gl;
 	}
@@ -560,7 +559,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public final Point2d getGeoLocationForLocationRatio(double ratio, double shifting) {
-		final Point2d gl = new Point2d();
+		final var gl = new Point2d();
 		getGeoLocationForLocationRatio(ratio, shifting, gl, null);
 		return gl;
 	}
@@ -582,7 +581,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	public final Point2d getGeoLocationForLocationRatio(double ratio, double shifting,
 			Vector2D<?, ?> tangent) {
-		final Point2d gl = new Point2d();
+		final var gl = new Point2d();
 		getGeoLocationForLocationRatio(ratio, shifting, gl, tangent);
 		return gl;
 	}
@@ -593,9 +592,9 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 			Point2D<?, ?> output, Vector2D<?, ?> tangent) {
 		assert output != null;
 		if (ratio <= 0.) {
-			final Point2d startPoint = getFirstPoint();
+			final var startPoint = getFirstPoint();
 			if (tangent != null) {
-				final Point2d secondPoint = getPointAt(1);
+				final var secondPoint = getPointAt(1);
 				tangent.set(
 						secondPoint.getX() - startPoint.getX(),
 						secondPoint.getY() - startPoint.getY());
@@ -604,9 +603,9 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 			return;
 		}
 		if (ratio >= 1.) {
-			final Point2d endPoint = getLastPoint();
+			final var endPoint = getLastPoint();
 			if (tangent != null) {
-				final Point2d antepenulvianPoint = getAntepenulvianPoint();
+				final var antepenulvianPoint = getAntepenulvianPoint();
 				tangent.set(
 						endPoint.getX() - antepenulvianPoint.getX(),
 						endPoint.getY() - antepenulvianPoint.getY());
@@ -616,14 +615,14 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 		}
 
 		// Compute the location corresponding to the specified ration and shifting
-		final double desiredLength = ratio * getLength();
+		final var desiredLength = ratio * getLength();
 		getGeoLocationForDistance(desiredLength, shifting, output, tangent);
 	}
 
 	@Override
 	@Pure
 	public final Point2d getGeoLocationForDistance(double desired_distance) {
-		final Point2d gl = new Point2d();
+		final var gl = new Point2d();
 		getGeoLocationForDistance(desired_distance, 0., gl, null);
 		return gl;
 	}
@@ -631,7 +630,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public final Point2d getGeoLocationForDistance(double desired_distance, double shifting) {
-		final Point2d gl = new Point2d();
+		final var gl = new Point2d();
 		getGeoLocationForDistance(desired_distance, shifting, gl, null);
 		return gl;
 	}
@@ -640,7 +639,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	public Point2d getGeoLocationForDistance(double desired_distance, double shifting,
 			Vector2D<?, ?> tangent) {
-		final Point2d gl = new Point2d();
+		final var gl = new Point2d();
 		getGeoLocationForDistance(desired_distance, shifting, gl, tangent);
 		return gl;
 	}
@@ -676,13 +675,13 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	 * @param desiredConnection the connection.
 	 */
 	void setStartPoint(StandardRoadConnection desiredConnection) {
-		final StandardRoadConnection oldPoint = getBeginPoint(StandardRoadConnection.class);
+		final var oldPoint = getBeginPoint(StandardRoadConnection.class);
 		if (oldPoint != null) {
 			oldPoint.removeConnectedSegment(this, true);
 		}
 		this.firstConnection = desiredConnection;
 		if (desiredConnection != null) {
-			final Point2d pts = desiredConnection.getPoint();
+			final var pts = desiredConnection.getPoint();
 			if (pts != null) {
 				setPointAt(0, pts, true);
 			}
@@ -701,13 +700,13 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	 * @param desiredConnection the connection.
 	 */
 	void setEndPoint(StandardRoadConnection desiredConnection) {
-		final StandardRoadConnection oldPoint = getEndPoint(StandardRoadConnection.class);
+		final var oldPoint = getEndPoint(StandardRoadConnection.class);
 		if (oldPoint != null) {
 			oldPoint.removeConnectedSegment(this, false);
 		}
 		this.lastConnection = desiredConnection;
 		if (desiredConnection != null) {
-			final Point2d pts = desiredConnection.getPoint();
+			final var pts = desiredConnection.getPoint();
 			if (pts != null) {
 				setPointAt(-1, pts, true);
 			}
@@ -728,14 +727,14 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public List<RoadSegment> getSegmentChain(boolean forward_search, boolean backward_search) {
-		final List<RoadSegment> chain = new ArrayList<>();
+		final var chain = new ArrayList<RoadSegment>();
 
 		chain.add(this);
 
 		// Search for segments in the backward direction (starting at the first point)
 		if (backward_search) {
 			RoadConnection currPoint = getBeginPoint(StandardRoadConnection.class);
-			RoadSegment currSegment = currPoint.getOtherSideSegment(this);
+			var currSegment = currPoint.getOtherSideSegment(this);
 
 			while (currSegment != null) {
 				chain.add(0, currSegment);
@@ -747,7 +746,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 		// Search for segments in the forward direction (starting at the last point)
 		if (forward_search) {
 			RoadConnection currPoint = getEndPoint(StandardRoadConnection.class);
-			RoadSegment currSegment = currPoint.getOtherSideSegment(this);
+			var currSegment = currPoint.getOtherSideSegment(this);
 
 			while (currSegment != null) {
 				chain.add(chain.size(), currSegment);
@@ -756,7 +755,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 			}
 		}
 
-		final RoadPath path = new RoadPath();
+		final var path = new RoadPath();
 
 		path.addAll(chain);
 
@@ -774,11 +773,11 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 			RoadConnection starting_point, boolean allowManyReplies,
 			boolean assumeOrientedSegments,
 			DynamicDepthUpdater<RoadSegment, RoadConnection> dynamicDepthUpdate) {
-		RoadConnection pt = starting_point.getWrappedRoadConnection();
+		var pt = starting_point.getWrappedRoadConnection();
 
-		if ((pt == null)
-				|| ((!getBeginPoint(StandardRoadConnection.class).equals(pt))
-						&& (!getEndPoint(StandardRoadConnection.class).equals(pt)))) {
+		if (pt == null
+				|| !getBeginPoint(StandardRoadConnection.class).equals(pt)
+						&& !getEndPoint(StandardRoadConnection.class).equals(pt)) {
 			pt = getBeginPoint(StandardRoadConnection.class);
 		}
 
@@ -794,11 +793,11 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	public GraphIterator<RoadSegment, RoadConnection> iterator(
 			RoadConnection starting_point, boolean allowManyReplies,
 			boolean assumeOrientedSegments) {
-		RoadConnection pt = starting_point.getWrappedRoadConnection();
+		var pt = starting_point.getWrappedRoadConnection();
 
-		if ((pt == null)
-				|| ((!getBeginPoint(StandardRoadConnection.class).equals(pt))
-						&& (!getEndPoint(StandardRoadConnection.class).equals(pt)))) {
+		if (pt == null
+				|| !getBeginPoint(StandardRoadConnection.class).equals(pt)
+						&& !getEndPoint(StandardRoadConnection.class).equals(pt)) {
 			pt = getBeginPoint(StandardRoadConnection.class);
 		}
 		return new RoadNetworkIterator(
@@ -819,11 +818,11 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public boolean isFirstPointConnectedTo(Segment1D<?, ?> segment) {
-		if (segment instanceof RoadSegment) {
-			final RoadConnection startPoint = getBeginPoint(StandardRoadConnection.class);
-			final RoadConnection endPoint = getEndPoint(StandardRoadConnection.class);
+		if (segment instanceof RoadSegment road) {
+			final var startPoint = getBeginPoint(StandardRoadConnection.class);
+			final var endPoint = getEndPoint(StandardRoadConnection.class);
 			if (segment != this) {
-				if (startPoint != null && startPoint.isConnectedSegment((RoadSegment) segment)) {
+				if (startPoint != null && startPoint.isConnectedSegment(road)) {
 					return true;
 				}
 			} else if (startPoint != null && startPoint.equals(endPoint)) {
@@ -836,11 +835,11 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public boolean isLastPointConnectedTo(Segment1D<?, ?> segment) {
-		if (segment instanceof RoadSegment) {
-			final RoadConnection startPoint = getBeginPoint(StandardRoadConnection.class);
-			final RoadConnection endPoint = getEndPoint(StandardRoadConnection.class);
+		if (segment instanceof RoadSegment road) {
+			final var startPoint = getBeginPoint(StandardRoadConnection.class);
+			final var endPoint = getEndPoint(StandardRoadConnection.class);
 			if (segment != this) {
-				if (endPoint != null && endPoint.isConnectedSegment((RoadSegment) segment)) {
+				if (endPoint != null && endPoint.isConnectedSegment(road)) {
 					return true;
 				}
 			} else if (endPoint != null && startPoint.equals(endPoint)) {
@@ -885,7 +884,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	public boolean removeUserData(String id, Object data) {
 		if (this.userData != null) {
-			final List<Object> group = this.userData.get(id);
+			final var group = this.userData.get(id);
 			if (group != null) {
 				if (group.remove(data)) {
 					if (group.isEmpty()) {
@@ -921,7 +920,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	public <T> T getUserData(String id) {
 		if (this.userData != null) {
-			final List<Object> group = this.userData.get(id);
+			final var group = this.userData.get(id);
 			if (group != null && !group.isEmpty()) {
 				return (T) group.get(0);
 			}
@@ -934,7 +933,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@SuppressWarnings("unchecked")
 	public <T> Collection<? extends T> getUserDataCollection(String id) {
 		if (this.userData != null) {
-			final List<Object> group = this.userData.get(id);
+			final var group = this.userData.get(id);
 			if (group != null) {
 				return Collections.unmodifiableCollection((Collection<? extends T>) group);
 			}
@@ -952,7 +951,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	public boolean containsUserData(String id, Object data) {
 		if (this.userData != null) {
-			final List<Object> group = this.userData.get(id);
+			final var group = this.userData.get(id);
 			return group != null && group.contains(data);
 		}
 		return false;
@@ -985,7 +984,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 
 	@Override
 	public void setWidth(double width) {
-		final String attrName = RoadNetworkConstants.getPreferredAttributeNameForRoadWidth();
+		final var attrName = RoadNetworkConstants.getPreferredAttributeNameForRoadWidth();
 		if (width <= 0 || Double.isNaN(width)) {
 			this.width = Double.NaN;
 			removeAttribute(attrName);
@@ -1004,7 +1003,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public double getLaneSize(int laneIndex) {
-		final int laneCount = getLaneCount();
+		final var laneCount = getLaneCount();
 		if (laneIndex < 0 || laneIndex >= laneCount) {
 			throw new ArrayIndexOutOfBoundsException(laneIndex);
 		}
@@ -1014,14 +1013,14 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public double getLaneCenter(int laneIndex) {
-		double dist = getWidth() / 2.;
-		for (int i = 0; i < laneIndex; ++i) {
+		var dist = getWidth() / 2.;
+		for (var i = 0; i < laneIndex; ++i) {
 			dist -= getLaneSize(i);
 		}
 		dist -= getLaneSize(laneIndex) / 2.;
 
-		final boolean isRightSided = getRoadNetwork().isRightSidedTrafficDirection();
-		final boolean isLeftHanded = CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded();
+		final var isRightSided = getRoadNetwork().isRightSidedTrafficDirection();
+		final var isLeftHanded = CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded();
 		if (isRightSided == isLeftHanded) {
 			return dist;
 		}
@@ -1031,9 +1030,9 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public double getRoadBorderDistance() {
-		final double dist = getWidth() / 2.;
-		final boolean isRightSided = getRoadNetwork().isRightSidedTrafficDirection();
-		final boolean isLeftHanded = CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded();
+		final var dist = getWidth() / 2.;
+		final var isRightSided = getRoadNetwork().isRightSidedTrafficDirection();
+		final var isLeftHanded = CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded();
 		if (isRightSided == isLeftHanded) {
 			return dist;
 		}
@@ -1043,7 +1042,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public Direction1D getLaneDirection(int laneIndex) {
-		final int laneCount = getLaneCount();
+		final var laneCount = getLaneCount();
 		if (laneIndex < 0 || laneIndex >= laneCount) {
 			throw new ArrayIndexOutOfBoundsException(laneIndex);
 		}
@@ -1092,7 +1091,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 		/** Refresh the max distance from the user preferences.
 		 */
 		public void refresh() {
-			final double d = RoadNetworkConstants.getPreferredRoadConnectionDistance();
+			final var d = RoadNetworkConstants.getPreferredRoadConnectionDistance();
 			this.sqDistance = d * d;
 		}
 

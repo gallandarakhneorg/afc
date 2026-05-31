@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 
 /** Factory of geometric elements.
  *
@@ -40,11 +39,12 @@ import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface GeomFactory3afp<E extends PathElement3afp,
+public interface GeomFactory3afp<
+		E extends PathElement3afp,
 		P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		B extends AlignedBox3afp<?, ?, E, P, V, Q, B>>
+		B extends AlignedBox3afp<?, E, P, V, Q, B>>
 		extends GeomFactory3D<V, P, Q> {
 
 	/** Create an empty path with the given winding rule.
@@ -52,13 +52,13 @@ public interface GeomFactory3afp<E extends PathElement3afp,
 	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	Path3afp<?, ?, E, P, V, Q, B> newPath(PathWindingRule rule);
+	Path3afp<?, E, P, V, Q, B> newPath(PathWindingRule rule);
 
 	/** Create an empty multishape.
 	 *
 	 * @return the new multishape.
 	 */
-	MultiShape3afp<?, ?, ?, E, P, V, Q, B> newMultiShape();
+	MultiShape3afp<?, ?, E, P, V, Q, B> newMultiShape();
 
 	/** Create an empty bounding box.
 	 *
@@ -110,42 +110,44 @@ public interface GeomFactory3afp<E extends PathElement3afp,
 	 * @return the path element.
 	 */
 	E newClosePathElement(double lastPointX, double lastPointY, double lastPointZ, double firstPointX, double firstPointY,
-            double firstPointZ);
+			double firstPointZ);
 
-    /** Create a quadratic curve path element to the given point through the given control point.
-     *
-     * @param startX x coordinate of the start point.
-     * @param startY y coordinate of the start point.
-     * @param startZ z coordinate of the start point.
-     * @param controlX x coordinate of the control point.
-     * @param controlY y coordinate of the control point.
-     * @param controlZ z coordinate of the control point.
-     * @param targetX x coordinate of the target point.
-     * @param targetY y coordinate of the target point.
-     * @param targetZ z coordinate of the target point.
-     * @return the path element.
-     */
-    E newCurvePathElement(double startX, double startY, double startZ, double controlX, double controlY, double controlZ,
-            double targetX, double targetY, double targetZ);
+	/** Create a quadratic curve path element to the given point through the given control point.
+	 *
+	 * @param startX x coordinate of the start point.
+	 * @param startY y coordinate of the start point.
+	 * @param startZ z coordinate of the start point.
+	 * @param controlX x coordinate of the control point.
+	 * @param controlY y coordinate of the control point.
+	 * @param controlZ z coordinate of the control point.
+	 * @param targetX x coordinate of the target point.
+	 * @param targetY y coordinate of the target point.
+	 * @param targetZ z coordinate of the target point.
+	 * @return the path element.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	E newCurvePathElement(double startX, double startY, double startZ, double controlX, double controlY, double controlZ,
+			double targetX, double targetY, double targetZ);
 
-    /** Create a curve path element to the given point through the two given control points.
-     *
-     * @param startX x coordinate of the start point.
-     * @param startY y coordinate of the start point.
-     * @param startZ z coordinate of the start point.
-     * @param controlX1 x coordinate of the control point.
-     * @param controlY1 y coordinate of the control point.
-     * @param controlZ1 z coordinate of the control point.
-     * @param controlX2 x coordinate of the control point.
-     * @param controlY2 y coordinate of the control point.
-     * @param controlZ2 z coordinate of the control point.
-     * @param targetX x coordinate of the target point.
-     * @param targetY y coordinate of the target point.
-     * @param targetZ z coordinate of the target point.
-     * @return the path element.
-     */
-    E newCurvePathElement(double startX, double startY, double startZ, double controlX1, double controlY1, double controlZ1,
-            double controlX2, double controlY2, double controlZ2, double targetX, double targetY, double targetZ);
+	/** Create a curve path element to the given point through the two given control points.
+	 *
+	 * @param startX x coordinate of the start point.
+	 * @param startY y coordinate of the start point.
+	 * @param startZ z coordinate of the start point.
+	 * @param controlX1 x coordinate of the control point.
+	 * @param controlY1 y coordinate of the control point.
+	 * @param controlZ1 z coordinate of the control point.
+	 * @param controlX2 x coordinate of the control point.
+	 * @param controlY2 y coordinate of the control point.
+	 * @param controlZ2 z coordinate of the control point.
+	 * @param targetX x coordinate of the target point.
+	 * @param targetY y coordinate of the target point.
+	 * @param targetZ z coordinate of the target point.
+	 * @return the path element.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	E newCurvePathElement(double startX, double startY, double startZ, double controlX1, double controlY1, double controlZ1,
+			double controlX2, double controlY2, double controlZ2, double targetX, double targetY, double targetZ);
 
 	/** Create a segment.
 	 *
@@ -157,26 +159,26 @@ public interface GeomFactory3afp<E extends PathElement3afp,
 	 * @param z2 the z coordinate of the second point of the segment.
 	 * @return the new segment.
 	 */
-	Segment3afp<?, ?, ?, P, V, Q, B> newSegment(double x1, double y1, double z1, double x2, double y2, double z2);
+	Segment3afp<?, ?, E, P, V, Q, B> newSegment(double x1, double y1, double z1, double x2, double y2, double z2);
 
 	/** Create a segment.
 	 *
 	 * @return the new segment.
 	 */
-	Segment3afp<?, ?, ?, P, V, Q, B>  newSegment();
+	Segment3afp<?, ?, E, P, V, Q, B> newSegment();
 
 	/** Replies the {@link PathIterator3afp} that is corresponding to the given element.
-     *
-     * <p>If the given element is already a {@link PathIterator3afp}, returns {@code this}.
-     *
-     * @param iterator the iterator.
-     * @return the iterator.
-     */
-    default PathIterator3afp<?> convert(PathIterator3D<?> iterator) {
-        if (iterator instanceof PathIterator3afp) {
-            return (PathIterator3afp<?>) iterator;
-        }
-        assert iterator instanceof PathIterator3ai;
-        return new PathIteratorWrapper(this, (PathIterator3ai<?>) iterator);
-    }
+	 *
+	 * <p>If the given element is already a {@link PathIterator3afp}, returns {@code this}.
+	 *
+	 * @param iterator the iterator.
+	 * @return the iterator.
+	 */
+	default PathIterator3afp<?> convert(PathIterator3D<?> iterator) {
+		if (iterator instanceof PathIterator3afp it) {
+			return it;
+		}
+		assert iterator instanceof PathIterator3afp;
+		return new PathIteratorWrapper(this, (PathIterator3afp<?>) iterator);
+	}
 }

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,14 +32,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
-import java.util.List;
 
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.collection.AttributeCollection;
-import org.arakhne.afc.io.dbase.DBaseFileField;
 import org.arakhne.afc.io.dbase.DBaseFileReader;
-import org.arakhne.afc.io.dbase.DBaseFileRecord;
 
 /**
  * This class is a shape file reader.
@@ -144,12 +141,10 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected E readRecord(int recordIndex) throws EOFException, IOException {
-		E createdElement = null;
-
 		// Read the index of the element for the current record. The record numbers always
 		// begin at 1.
 		// Byte 0:		Integer		Big Endian
-		final int elementIndex = readBEInt();
+		final var elementIndex = readBEInt();
 		if (elementIndex - 1 != recordIndex) {
 			throw new ShapeFileFormatException();
 		}
@@ -158,17 +153,18 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		// 16-bit words. Each record, therefore, contributes (4 + content length) 16-bit words
 		// toward the total length of the file, as stored at Byte 24 in the file header.
 		// Byte 4:		Integer		Big Endian
-		int recordLength = readBEInt() + 4;
+		var recordLength = readBEInt() + 4;
 		// translate into byte count
 		recordLength = fromESRIWords(recordLength);
 
 		// Read the record type (Little Endian Integer)
-		final ShapeElementType recordType = ShapeElementType.fromESRIInteger(readLEInt());
+		final var recordType = ShapeElementType.fromESRIInteger(readLEInt());
 
 		if (recordType != ShapeElementType.NULL && recordType != this.expectedShapeType) {
 			throw new InvalidShapeTypeException(recordType.name());
 		}
 
+		E createdElement = null;
 		switch (recordType) {
 		//-----------------------------
 		// Null Shape
@@ -248,7 +244,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	 *
 	 * @param element_representation is the value returned by the reading function.
 	 * @return {@code true} if the object is assumed to be valid (ie. it will be replies by
-	 *     the reading function), otherwhise {@code false}.
+	 *     the reading function), otherwise {@code false}.
 	 * @throws IOException in case of error.
 	 */
 	protected boolean postShapeReadingStage(E element_representation) throws IOException {
@@ -278,14 +274,14 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	 *      This value will be passed to {@link #postRecordReadingStage(E)}.
 	 */
 	private E readPoint(int elementIndex, ShapeElementType type) throws IOException {
-		final boolean hasZ = type.hasZ();
-		final boolean hasM = type.hasM();
+		final var hasZ = type.hasZ();
+		final var hasM = type.hasM();
 
 		// Read coordinates
-		final double x = fromESRI_x(readLEDouble());
-		final double y = fromESRI_y(readLEDouble());
-		double z = 0;
-		double measure = Double.NaN;
+		final var x = fromESRI_x(readLEDouble());
+		final var y = fromESRI_y(readLEDouble());
+		var z = 0.;
+		var measure = Double.NaN;
 
 		if (hasZ) {
 			z = fromESRI_z(readLEDouble());
@@ -322,8 +318,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private E readPolyElement(int elementIndex, ShapeElementType type) throws IOException {
-		final boolean hasZ = type.hasZ();
-		final boolean hasM = type.hasM();
+		final var hasZ = type.hasZ();
+		final var hasM = type.hasM();
 
 		// Ignore the bounds stored inside the file
 		skipBytes(8 * 4);
@@ -338,21 +334,21 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		}
 
 		// Count of points
-		final int numPoints = readLEInt();
+		final var numPoints = readLEInt();
 
 		// Read the parts' indexes
-		final int[] parts = new int[numParts];
-		for (int idxParts = 0; idxParts < numParts; ++idxParts) {
+		final var parts = new int[numParts];
+		for (var idxParts = 0; idxParts < numParts; ++idxParts) {
 			parts[idxParts] = readLEInt();
 		}
 
 		// Read the points
-		final ESRIPoint[] points = new ESRIPoint[numPoints];
+		final var points = new ESRIPoint[numPoints];
 
-		for (int idxPoints = 0; idxPoints < numPoints; ++idxPoints) {
+		for (var idxPoints = 0; idxPoints < numPoints; ++idxPoints) {
 			// Read coordinates
-			final double x = fromESRI_x(readLEDouble());
-			final double y = fromESRI_y(readLEDouble());
+			final var x = fromESRI_x(readLEDouble());
+			final var y = fromESRI_y(readLEDouble());
 
 			// Create point
 			if (!Double.isNaN(x) && !Double.isNaN(y)) {
@@ -366,9 +362,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 			// Zmin and Zmax: 2*Double - ignored
 			skipBytes(2 * 8);
 			// Z array: numpoints*Double
-			double z;
-			for (int i = 0; i < numPoints; ++i) {
-				z = fromESRI_z(readLEDouble());
+			for (var i = 0; i < numPoints; ++i) {
+				final var z = fromESRI_z(readLEDouble());
 				if (!Double.isNaN(z)) {
 					points[i].setZ(z);
 				}
@@ -379,9 +374,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 			// Mmin and Mmax: 2*Double - ignored
 			skipBytes(2 * 8);
 			// M array: numpoints*Double
-			double measure;
-			for (int i = 0; i < numPoints; ++i) {
-				measure = fromESRI_m(readLEDouble());
+			for (var i = 0; i < numPoints; ++i) {
+				final var measure = fromESRI_m(readLEDouble());
 				if (!Double.isNaN(measure)) {
 					points[i].setM(measure);
 				}
@@ -441,30 +435,30 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		skipBytes(8 * 4);
 
 		// Read the part count
-		final int partCount = readLEInt();
+		final var partCount = readLEInt();
 
 		// Read the point count
-		final int pointCount = readLEInt();
+		final var pointCount = readLEInt();
 
 		// Read the parts' indexes
-		final int[] parts = new int[partCount];
-		for (int idxParts = 0; idxParts < partCount; ++idxParts) {
+		final var parts = new int[partCount];
+		for (var idxParts = 0; idxParts < partCount; ++idxParts) {
 			parts[idxParts] = readLEInt();
 		}
 
 		// Read the parts' types
-		final ShapeMultiPatchType[] partTypes = new ShapeMultiPatchType[partCount];
-		for (int idxParts = 0; idxParts < partCount; ++idxParts) {
+		final var partTypes = new ShapeMultiPatchType[partCount];
+		for (var idxParts = 0; idxParts < partCount; ++idxParts) {
 			partTypes[idxParts] = ShapeMultiPatchType.fromESRIInteger(readLEInt());
 		}
 
 		// Read the points
-		final ESRIPoint[] points = new ESRIPoint[pointCount];
+		final var points = new ESRIPoint[pointCount];
 
-		for (int idxPoints = 0; idxPoints < pointCount; ++idxPoints) {
+		for (var idxPoints = 0; idxPoints < pointCount; ++idxPoints) {
 			// Read coordinates
-			final double x = fromESRI_x(readLEDouble());
-			final double y = fromESRI_y(readLEDouble());
+			final var x = fromESRI_x(readLEDouble());
+			final var y = fromESRI_y(readLEDouble());
 
 			// Create point
 			if (!Double.isNaN(x) && !Double.isNaN(y)) {
@@ -479,9 +473,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		skipBytes(2 * 8);
 
 		// Z array: numpoints*Double
-		double z;
-		for (int i = 0; i < pointCount; ++i) {
-			z = fromESRI_z(readLEDouble());
+		for (var i = 0; i < pointCount; ++i) {
+			final var z = fromESRI_z(readLEDouble());
 			if (!Double.isNaN(z)) {
 				points[i].setZ(z);
 			}
@@ -491,9 +484,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		skipBytes(2 * 8);
 
 		// M array: numpoints*Double
-		double measure;
-		for (int i = 0; i < pointCount; ++i) {
-			measure = fromESRI_m(readLEDouble());
+		for (var i = 0; i < pointCount; ++i) {
+			final var measure = fromESRI_m(readLEDouble());
 			if (!Double.isNaN(measure)) {
 				points[i].setM(measure);
 			}
@@ -584,23 +576,23 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		// Read the DBF entry
 		if (this.dbfReader != null) {
 
-			final List<DBaseFileField> dbfColumns = this.dbfReader.getDBFFields();
+			final var dbfColumns = this.dbfReader.getDBFFields();
 
 			// Read the record even if the shape element was not inserted into
 			// the database. It is necessary to not have inconsistancy between
 			// the shape entries and the dbase entries.
-			final DBaseFileRecord record = this.dbfReader.readNextDBFRecord();
+			final var record = this.dbfReader.readNextDBFRecord();
 
 			if (record != null) {
 				// Add the dBase values
-				for (final DBaseFileField dbfColumn : dbfColumns) {
+				for (final var dbfColumn : dbfColumns) {
 					// Test if the column was marked as selected.
 					// A column was selected if the user want to import the column
 					// values into the database.
 					if (this.dbfReader.isColumnSelectable(dbfColumn)) {
 
-						final Object fieldValue = record.getFieldValue(dbfColumn.getColumnIndex());
-						final AttributeValueImpl attr = new AttributeValueImpl();
+						final var fieldValue = record.getFieldValue(dbfColumn.getColumnIndex());
+						final var attr = new AttributeValueImpl();
 						attr.castAndSet(dbfColumn.getAttributeType(), fieldValue);
 
 						putAttributeIn(created_element, dbfColumn.getName(), attr);
@@ -644,7 +636,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	public void seek(int recordIndex) throws IOException {
 		if (this.shxReader != null) {
 			this.shxReader.seek(recordIndex);
-			final ShapeFileIndexRecord shxRecord = this.shxReader.read();
+			final var shxRecord = this.shxReader.read();
 			if (shxRecord != null) {
 				assert shxRecord.getRecordIndex() == recordIndex;
 				readHeader();

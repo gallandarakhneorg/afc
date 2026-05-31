@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d2.ai;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
@@ -31,12 +30,14 @@ import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai.BresenhamLineIterator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D rectangle on a plane.
+/** Functional interface that represented a 2D rectangle on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -51,6 +52,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Rectangle2ai<
         ST extends Shape2ai<?, ?, IE, P, V, B>,
         IT extends Rectangle2ai<?, ?, IE, P, V, B>,
@@ -59,6 +61,11 @@ public interface Rectangle2ai<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2ai<?, ?, IE, P, V, B>>
         extends RectangularShape2ai<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.RECTANGLE;
+	}
 
     /** Replies if two rectangles are intersecting.
      *
@@ -71,14 +78,14 @@ public interface Rectangle2ai<
      * @param x4 is the second corner of the second rectangle.
      * @param y4 is the second corner of the second rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsRectangleRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
-        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
-        assert x3 <= x4 : AssertMessages.lowerEqualParameters(4, x3, 6, x4);
-        assert y3 <= y4 : AssertMessages.lowerEqualParameters(5, y3, 7, y4);
+        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(x1), 2, Double.valueOf(x2));
+        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(y1), 3, Double.valueOf(y2));
+        assert x3 <= x4 : AssertMessages.lowerEqualParameters(4, Double.valueOf(x3), 6, Double.valueOf(x4));
+        assert y3 <= y4 : AssertMessages.lowerEqualParameters(5, Double.valueOf(y3), 7, Double.valueOf(y4));
         return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4;
     }
 
@@ -99,15 +106,16 @@ public interface Rectangle2ai<
      * @param x4 is the second point of the segment.
      * @param y4 is the second point of the segment.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
+    @SuppressWarnings("checkstyle:cyclomaticcomplexity")
     static boolean intersectsRectangleSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
-        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
+        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(x1), 2, Double.valueOf(x2));
+        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(y1), 3, Double.valueOf(y2));
 
-        int c1 = MathUtil.getCohenSutherlandCode(x3, y3, x1, y1, x2, y2);
-        final int c2 = MathUtil.getCohenSutherlandCode(x4, y4, x1, y1, x2, y2);
+        var c1 = MathUtil.getCohenSutherlandCode(x3, y3, x1, y1, x2, y2);
+        final var c2 = MathUtil.getCohenSutherlandCode(x4, y4, x1, y1, x2, y2);
 
         if (c1 == MathConstants.COHEN_SUTHERLAND_INSIDE || c2 == MathConstants.COHEN_SUTHERLAND_INSIDE) {
             return true;
@@ -116,15 +124,14 @@ public interface Rectangle2ai<
             return false;
         }
 
-        int sx1 = x3;
-        int sy1 = y3;
-        final int sx2 = x4;
-        final int sy2 = y4;
+        var sx1 = x3;
+        var sy1 = y3;
+        final var sx2 = x4;
+        final var sy2 = y4;
 
         // Only for internal use
-        final Point2D<?, ?> pts = new InnerComputationPoint2ai();
-        final BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
-                new BresenhamLineIterator<>(
+        final var pts = new InnerComputationPoint2ai();
+        final var iterator = new BresenhamLineIterator<>(
                         InnerComputationGeomFactory.SINGLETON, sx1, sy1, sx2, sy2);
 
         while (iterator.hasNext() && c1 != MathConstants.COHEN_SUTHERLAND_INSIDE
@@ -188,16 +195,17 @@ public interface Rectangle2ai<
      * @param rmaxy2 the maximum y coordinate of the second rectangle.
      * @param closest is set with the closest point on the first rectangle.
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     static void findsClosestPointRectangleRectangle(
             int rx1, int ry1, int rmaxx1, int rmaxy1,
             int rx2, int ry2, int rmaxx2, int rmaxy2,
             Point2D<?, ?> closest) {
-        assert rmaxx1 >= rx1 : AssertMessages.lowerEqualParameters(0, rx1, 2, rmaxx1);
-        assert rmaxy1 >= ry1 : AssertMessages.lowerEqualParameters(1, ry1, 3, rmaxy1);
-        assert rmaxx2 >= rx2 : AssertMessages.lowerEqualParameters(4, rx2, 6, rmaxx2);
-        assert rmaxy2 >= ry2 : AssertMessages.lowerEqualParameters(5, ry2, 7, rmaxy2);
+        assert rmaxx1 >= rx1 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rmaxx1));
+        assert rmaxy1 >= ry1 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(rmaxy1));
+        assert rmaxx2 >= rx2 : AssertMessages.lowerEqualParameters(4, Double.valueOf(rx2), 6, Double.valueOf(rmaxx2));
+        assert rmaxy2 >= ry2 : AssertMessages.lowerEqualParameters(5, Double.valueOf(ry2), 7, Double.valueOf(rmaxy2));
         final int px;
-        final int cx = (rx2 + rmaxx2) / 2;
+        final var cx = (rx2 + rmaxx2) / 2;
         if (cx <= rx1) {
             px = rx1;
         } else if (cx >= rmaxx1) {
@@ -206,7 +214,7 @@ public interface Rectangle2ai<
             px = cx;
         }
         final int py;
-        final int cy = (ry2 + rmaxy2) / 2;
+        final var cy = (ry2 + rmaxy2) / 2;
         if (cy <= ry1) {
             py = ry1;
         } else if (cy >= rmaxy1) {
@@ -229,16 +237,17 @@ public interface Rectangle2ai<
      * @param sy2 the y coordinate of the second point of the segment.
      * @param closest is set with the closest point on the rectangle.
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     static void findsClosestPointRectangleSegment(
             int rx, int ry, int rmaxx, int rmaxy,
             int sx1, int sy1, int sx2, int sy2,
             Point2D<?, ?> closest) {
-        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
-        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
-        final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
-        final int code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
-        final Point2D<?, ?> tmp1 = new InnerComputationPoint2ai();
-        final int zone = Rectangle2ai.reducesCohenSutherlandZoneRectangleSegment(
+        assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx), 2, Double.valueOf(rmaxx));
+        assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry), 3, Double.valueOf(rmaxy));
+        final var code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
+        final var code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
+        final var tmp1 = new InnerComputationPoint2ai();
+        final var zone = Rectangle2ai.reducesCohenSutherlandZoneRectangleSegment(
                 rx, ry, rmaxx, rmaxy,
                 sx1, sy1, sx2, sy2,
                 code1, code2,
@@ -291,12 +300,12 @@ public interface Rectangle2ai<
      * @param result the closest point.
      */
     static void findsClosestPointRectanglePoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
-        assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 2, maxx);
-        assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 3, maxy);
+        assert minx <= maxx : AssertMessages.lowerEqualParameters(0, Double.valueOf(minx), 2, Double.valueOf(maxx));
+        assert miny <= maxy : AssertMessages.lowerEqualParameters(1, Double.valueOf(miny), 3, Double.valueOf(maxy));
         assert result != null : AssertMessages.notNullParameter(6);
 
         final int x;
-        int same = 0;
+        var same = 0;
         if (px < minx) {
             x = minx;
         } else if (px > maxx) {
@@ -332,8 +341,8 @@ public interface Rectangle2ai<
      * @param result the farthest point.
      */
     static void findsFarthestPointRectanglePoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
-        assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 2, maxx);
-        assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 3, maxy);
+        assert minx <= maxx : AssertMessages.lowerEqualParameters(0, Double.valueOf(minx), 2, Double.valueOf(maxx));
+        assert miny <= maxy : AssertMessages.lowerEqualParameters(1, Double.valueOf(miny), 3, Double.valueOf(maxy));
         assert result != null : AssertMessages.notNullParameter(6);
 
         final int x;
@@ -376,22 +385,23 @@ public interface Rectangle2ai<
      *     this parameter is ignored.
      * @param newSegmentP2 is set with the new coordinates of the segment second point. If {@code null},
      *     this parameter is ignored.
-     * @return the rectricted Cohen-Sutherland zone.
+     * @return the restricted Cohen-Sutherland zone.
      */
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:parameternumber"})
     static int reducesCohenSutherlandZoneRectangleSegment(int rx1, int ry1, int rx2, int ry2,
             int sx1, int sy1, int sx2, int sy2, int codePoint1, int codePoint2,
             Point2D<?, ?> newSegmentP1, Point2D<?, ?> newSegmentP2) {
-        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
-        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 2, Double.valueOf(rx2));
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 3, Double.valueOf(ry2));
         assert codePoint1 == MathUtil.getCohenSutherlandCode(sx1, sy1, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(8);
         assert codePoint2 == MathUtil.getCohenSutherlandCode(sx2, sy2, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(9);
-        int segmentX1 = sx1;
-        int segmentY1 = sy1;
-        int segmentX2 = sx2;
-        int segmentY2 = sy2;
+        var segmentX1 = sx1;
+        var segmentY1 = sy1;
+        var segmentX2 = sx2;
+        var segmentY2 = sy2;
 
-        int code1 = codePoint1;
-        int code2 = codePoint2;
+        var code1 = codePoint1;
+        var code2 = codePoint2;
 
         while (true) {
             if ((code1 | code2) == 0) {
@@ -418,10 +428,10 @@ public interface Rectangle2ai<
             // failed both tests, so calculate the line segment intersection
 
             // At least one endpoint is outside the clip rectangle; pick it.
-            int code3 = (code1 != 0) ? code1 : code2;
+            var code3 = code1 != 0 ? code1 : code2;
 
-            int x = 0;
-            int y = 0;
+            var x = 0;
+            var y = 0;
 
             // Now find the intersection point;
             // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
@@ -512,8 +522,8 @@ public interface Rectangle2ai<
     @Override
     default boolean intersects(PathIterator2ai<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2ai.calculatesCrossingsPathIteratorRectangleShadow(
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var crossings = Path2ai.calculatesCrossingsPathIteratorRectangleShadow(
                 0,
                 iterator,
                 getMinX(), getMinY(), getMaxX(), getMaxY(),
@@ -553,7 +563,7 @@ public interface Rectangle2ai<
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointRectanglePoint(getMinX(), getMinY(), getMaxX(), getMaxY(), pt.ix(), pt.iy(), point);
         return point;
     }
@@ -561,7 +571,7 @@ public interface Rectangle2ai<
     @Override
     default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointRectangleRectangle(getMinX(), getMinY(), getMaxX(), getMaxY(),
                 rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY(),
                 point);
@@ -577,7 +587,7 @@ public interface Rectangle2ai<
     @Override
     default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointRectangleSegment(
                 getMinX(), getMinY(), getMaxX(), getMaxY(),
                 segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(), point);
@@ -587,7 +597,7 @@ public interface Rectangle2ai<
     @Override
     default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2ai.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), point);
         return point;
     }
@@ -596,7 +606,7 @@ public interface Rectangle2ai<
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsFarthestPointRectanglePoint(getMinX(), getMinY(), getMaxX(), getMaxY(), pt.ix(), pt.iy(), point);
         return point;
     }
@@ -699,10 +709,10 @@ public interface Rectangle2ai<
      * This function does not change this rectangle.
      *
      * <p>It is equivalent to (where {@code ur} is the union):
-     * <pre>{@code 
+     * <pre><code>
      * Rectangle2f ur = new Rectangle2f(this);
      * ur.setUnion(r);
-     * }</pre>
+     * </code></pre>
      *
      * @param rect the rectangular shape.
      * @return the union of this rectangle and the given rectangle.
@@ -711,7 +721,7 @@ public interface Rectangle2ai<
     @Pure
     default B createUnion(RectangularShape2ai<?, ?, ?, ?, ?, ?> rect) {
         assert rect != null : AssertMessages.notNullParameter();
-        final B rr = getGeomFactory().newBox();
+        final var rr = getGeomFactory().newBox();
         rr.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
         rr.setUnion(rect);
         return rr;
@@ -721,10 +731,10 @@ public interface Rectangle2ai<
      * This function does not change this rectangle.
      *
      * <p>It is equivalent to (where {@code ir} is the intersection):
-     * <pre>{@code 
+     * <pre><code>
      * Rectangle2f ir = new Rectangle2f(this);
      * ir.setIntersection(r);
-     * }</pre>
+     * </code></pre>
      *
      * @param rect the rectangular shape.
      * @return the union of this rectangle and the given rectangle.
@@ -733,11 +743,11 @@ public interface Rectangle2ai<
     @Pure
     default B createIntersection(RectangularShape2ai<?, ?, ?, ?, ?, ?> rect) {
         assert rect != null : AssertMessages.notNullParameter();
-        final B rr = getGeomFactory().newBox();
-        final int x1 = Math.max(getMinX(), rect.getMinX());
-        final int y1 = Math.max(getMinY(), rect.getMinY());
-        final int x2 = Math.min(getMaxX(), rect.getMaxX());
-        final int y2 = Math.min(getMaxY(), rect.getMaxY());
+        final var rr = getGeomFactory().newBox();
+        final var x1 = Math.max(getMinX(), rect.getMinX());
+        final var y1 = Math.max(getMinY(), rect.getMinY());
+        final var x2 = Math.min(getMaxX(), rect.getMaxX());
+        final var y2 = Math.min(getMaxY(), rect.getMaxY());
         if (x1 <= x2 && y1 <= y2) {
             rr.setFromCorners(x1, y1, x2, y2);
         } else {
@@ -772,10 +782,10 @@ public interface Rectangle2ai<
      */
     default void setIntersection(RectangularShape2ai<?, ?, ?, ?, ?, ?> rect) {
         assert rect != null : AssertMessages.notNullParameter();
-        final int x1 = Math.max(getMinX(), rect.getMinX());
-        final int y1 = Math.max(getMinY(), rect.getMinY());
-        final int x2 = Math.min(getMaxX(), rect.getMaxX());
-        final int y2 = Math.min(getMaxY(), rect.getMaxY());
+        final var x1 = Math.max(getMinX(), rect.getMinX());
+        final var y1 = Math.max(getMinY(), rect.getMinY());
+        final var x2 = Math.min(getMaxX(), rect.getMaxX());
+        final var y2 = Math.min(getMaxY(), rect.getMaxY());
         if (x1 <= x2 && y1 <= y2) {
             setFromCorners(x1, y1, x2, y2);
         } else {
@@ -788,6 +798,7 @@ public interface Rectangle2ai<
 	 * @return the Geogebra representation of the rectangle.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toPolygonDefinition(2,
 				getMinX(), getMinY(),
@@ -986,7 +997,7 @@ public interface Rectangle2ai<
 
         @Override
         public E next() {
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             switch (idx) {
             case 0:
@@ -1109,7 +1120,7 @@ public interface Rectangle2ai<
 
         @Override
         public E next() {
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             switch (idx) {
             case 0:

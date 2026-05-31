@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,9 @@ package org.arakhne.afc.vmutil;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class stores several information given by
@@ -90,7 +88,7 @@ public final class Android {
 	@Pure
 	public static Class<?> getContextClass() throws AndroidException {
 		try {
-			final ClassLoader loader = ClassLoaderFinder.findClassLoader();
+			final var loader = ClassLoaderFinder.findClassLoader();
 			return Class.forName("android.content.Context", true, loader); //$NON-NLS-1$
 		} catch (Throwable e) {
 			throw new AndroidException(e);
@@ -105,7 +103,7 @@ public final class Android {
 	@Pure
 	public static Class<?> getContextResolverClass() throws AndroidException {
 		try {
-			final ClassLoader loader = ClassLoaderFinder.findClassLoader();
+			final var loader = ClassLoaderFinder.findClassLoader();
 			return Class.forName("android.content.ContentResolver", true, loader); //$NON-NLS-1$
 		} catch (Throwable e) {
 			throw new AndroidException(e);
@@ -113,7 +111,7 @@ public final class Android {
 	}
 
 	private static Class<?> getInnerClass(String enclosingClassname, String innerClassname) throws AndroidException {
-		final ClassLoader loader = ClassLoaderFinder.findClassLoader();
+		final var loader = ClassLoaderFinder.findClassLoader();
 		final Throwable ex;
 		try {
 			return Class.forName(
@@ -123,8 +121,8 @@ public final class Android {
 			ex = e;
 		}
 		try {
-			final Class<?> enclosingClass = Class.forName(enclosingClassname, true, loader);
-			for (final Class<?> innerClass : enclosingClass.getClasses()) {
+			final var enclosingClass = Class.forName(enclosingClassname, true, loader);
+			for (final var innerClass : enclosingClass.getClasses()) {
 				if (innerClassname.equals(innerClass.getName())) {
 					return innerClass;
 				}
@@ -167,8 +165,8 @@ public final class Android {
 	public static void initialize(Object androidContext) throws AndroidException {
 		assert androidContext != null;
 		try {
-			final Class<?> contextType = androidContext.getClass();
-			final Class<?> contextClass = getContextClass();
+			final var contextType = androidContext.getClass();
+			final var contextClass = getContextClass();
 			if (!contextClass.isAssignableFrom(contextType)) {
 				throw new AndroidException(Locale.getString("E1", androidContext)); //$NON-NLS-1$
 			}
@@ -214,16 +212,16 @@ public final class Android {
 	@Pure
 	public static ClassLoader getContextClassLoader() throws AndroidException {
 		synchronized (Android.class) {
-			final ClassLoader cl = (contextClassLoader == null) ? null : contextClassLoader.get();
+			final var cl = (contextClassLoader == null) ? null : contextClassLoader.get();
 			if (cl != null) {
 				return cl;
 			}
 		}
 		final Object context = getContext();
 		try {
-			final Method method = context.getClass().getMethod("getClassLoader"); //$NON-NLS-1$
-			final Object classLoader = method.invoke(context);
-			final ClassLoader cl = (ClassLoader) classLoader;
+			final var method = context.getClass().getMethod("getClassLoader"); //$NON-NLS-1$
+			final var classLoader = method.invoke(context);
+			final var cl = (ClassLoader) classLoader;
 			synchronized (Android.class) {
 				contextClassLoader = new WeakReference<>(cl);
 			}
@@ -246,11 +244,11 @@ public final class Android {
 			resolver = (contextResolver == null) ? null : contextResolver.get();
 		}
 		if (resolver == null) {
-			final Object context = getContext();
+			final var context = getContext();
 			try {
-				final Class<?> resolverType = getContextResolverClass();
-				final Class<?> contextType = context.getClass();
-				final Method getContextResolverMethod = contextType.getMethod("getContentResolver"); //$NON-NLS-1$
+				final var resolverType = getContextResolverClass();
+				final var contextType = context.getClass();
+				final var getContextResolverMethod = contextType.getMethod("getContentResolver"); //$NON-NLS-1$
 				resolver = getContextResolverMethod.invoke(context);
 				resolver = resolverType.cast(resolver);
 				synchronized (Android.class) {

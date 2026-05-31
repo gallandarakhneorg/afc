@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path with 2 double precision floating-point numbers.
  *
@@ -37,6 +36,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public abstract class PathElement3d implements PathElement3afp {
 
 	private static final long serialVersionUID = -9217295344283468162L;
@@ -143,7 +143,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				final PathElement3afp elt = (PathElement3afp) obj;
+				final var elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -157,7 +157,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.ordinal();
 			bits = 31L * bits + Double.doubleToLongBits(getToX());
 			bits = 31L * bits + Double.doubleToLongBits(getToY());
@@ -288,7 +288,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				final PathElement3afp elt = (PathElement3afp) obj;
+				final var elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -305,7 +305,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.ordinal();
 			bits = 31L * bits + Double.doubleToLongBits(getToX());
 			bits = 31L * bits + Double.doubleToLongBits(getToY());
@@ -320,9 +320,9 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
 						&& MathUtil.isEpsilonEqual(this.fromY, this.toY)
-						&& MathUtil.isEpsilonEqual(this.fromZ, this.toZ);
+						&& MathUtil.isEpsilonEqual(this.fromZ, this.toZ));
 			}
 			return this.isEmpty.booleanValue();
 		}
@@ -457,7 +457,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				final PathElement3afp elt = (PathElement3afp) obj;
+				final var elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -477,7 +477,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.ordinal();
 			bits = 31L * bits + Double.doubleToLongBits(getToX());
 			bits = 31L * bits + Double.doubleToLongBits(getToY());
@@ -495,12 +495,12 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
 						&& MathUtil.isEpsilonEqual(this.fromY, this.toY)
 						&& MathUtil.isEpsilonEqual(this.fromZ, this.toZ)
 						&& MathUtil.isEpsilonEqual(this.ctrlX, this.toX)
 						&& MathUtil.isEpsilonEqual(this.ctrlY, this.toY)
-						&& MathUtil.isEpsilonEqual(this.ctrlZ, this.toZ);
+						&& MathUtil.isEpsilonEqual(this.ctrlZ, this.toZ));
 			}
 			return this.isEmpty.booleanValue();
 		}
@@ -621,22 +621,23 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		private Boolean isEmpty;
 
-	    /** Constructor.
-         * @param fromx x coordinate of the origin point.
-         * @param fromy y coordinate of the origin point.
-         * @param fromz z coordinate of the origin point.
-         * @param ctrlx1 x coordinate of the first control point.
-         * @param ctrly1 y coordinate of the first control point.
-         * @param ctrlz1 z coordinate of the first control point.
-         * @param ctrlx2 x coordinate of the second control point.
-         * @param ctrly2 y coordinate of the second control point.
-         * @param ctrlz2 z coordinate of the second control point.
-         * @param tox x coordinate of the target point.
-         * @param toy y coordinate of the target point.
-         * @param toz z coordinate of the target point.
-         */
-	    CurvePathElement3d(double fromx, double fromy, double fromz, double ctrlx1, double ctrly1, double ctrlz1, double ctrlx2,
-                double ctrly2, double ctrlz2, double tox, double toy, double toz) {
+		/** Constructor.
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param fromz z coordinate of the origin point.
+		 * @param ctrlx1 x coordinate of the first control point.
+		 * @param ctrly1 y coordinate of the first control point.
+		 * @param ctrlz1 z coordinate of the first control point.
+		 * @param ctrlx2 x coordinate of the second control point.
+		 * @param ctrly2 y coordinate of the second control point.
+		 * @param ctrlz2 z coordinate of the second control point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
+		 * @param toz z coordinate of the target point.
+		 */
+		@SuppressWarnings("checkstyle:parameternumber")
+		CurvePathElement3d(double fromx, double fromy, double fromz, double ctrlx1, double ctrly1, double ctrlz1, double ctrlx2,
+				double ctrly2, double ctrlz2, double tox, double toy, double toz) {
 			super(PathElementType.CURVE_TO, tox, toy, toz);
 			this.fromX = fromx;
 			this.fromY = fromy;
@@ -653,7 +654,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				final PathElement3afp elt = (PathElement3afp) obj;
+				final var elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -676,7 +677,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.ordinal();
 			bits = 31L * bits + Double.doubleToLongBits(getToX());
 			bits = 31L * bits + Double.doubleToLongBits(getToY());
@@ -695,9 +696,10 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Pure
 		@Override
+		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
 						&& MathUtil.isEpsilonEqual(this.fromY, this.toY)
 						&& MathUtil.isEpsilonEqual(this.fromZ, this.toZ)
 						&& MathUtil.isEpsilonEqual(this.ctrlX1, this.toX)
@@ -705,7 +707,7 @@ public abstract class PathElement3d implements PathElement3afp {
 						&& MathUtil.isEpsilonEqual(this.ctrlZ1, this.toZ)
 						&& MathUtil.isEpsilonEqual(this.ctrlX2, this.toX)
 						&& MathUtil.isEpsilonEqual(this.ctrlY2, this.toY)
-						&& MathUtil.isEpsilonEqual(this.ctrlZ2, this.toZ);
+						&& MathUtil.isEpsilonEqual(this.ctrlZ2, this.toZ));
 			}
 			return this.isEmpty.booleanValue();
 		}
@@ -749,8 +751,11 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Pure
 		@Override
 		public double[] toArray() {
-            return new double[] {this.ctrlX1, this.ctrlY1, this.ctrlZ1, this.ctrlX2, this.ctrlY2, this.ctrlZ2, this.toX,
-                                 this.toY, this.toZ};
+			return new double[] {
+				this.ctrlX1, this.ctrlY1, this.ctrlZ1,
+				this.ctrlX2, this.ctrlY2, this.ctrlZ2,
+				this.toX, this.toY, this.toZ,
+			};
 		}
 
 		@Override
@@ -822,13 +827,13 @@ public abstract class PathElement3d implements PathElement3afp {
 		private Boolean isEmpty;
 
 		/** Constructor.
-         * @param fromx x coordinate of the origin point.
-         * @param fromy y coordinate of the origin point.
-         * @param fromz z coordinate of the origin point.
-         * @param tox x coordinate of the target point.
-         * @param toy y coordinate of the target point.
-         * @param toz z coordinate of the target point.
-         */
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param fromz z coordinate of the origin point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
+		 * @param toz z coordinate of the target point.
+		 */
 		ClosePathElement3d(double fromx, double fromy, double fromz, double tox, double toy, double toz) {
 			super(PathElementType.CLOSE, tox, toy, toz);
 			this.fromX = fromx;
@@ -840,7 +845,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				final PathElement3afp elt = (PathElement3afp) obj;
+				final var elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -857,7 +862,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.ordinal();
 			bits = 31L * bits + Double.doubleToLongBits(getToX());
 			bits = 31L * bits + Double.doubleToLongBits(getToY());
@@ -872,9 +877,9 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
 						&& MathUtil.isEpsilonEqual(this.fromY, this.toY)
-						&& MathUtil.isEpsilonEqual(this.fromZ, this.toZ);
+						&& MathUtil.isEpsilonEqual(this.fromZ, this.toZ));
 			}
 			return this.isEmpty.booleanValue();
 		}
@@ -897,7 +902,7 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public void toArray(double[] array) {
 			assert array != null : AssertMessages.notNullParameter();
-            assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;

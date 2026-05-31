@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -40,6 +38,7 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.references.SoftValueTreeMap;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class implements an abstract attribute provider that use
@@ -63,7 +62,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Pure
 	@Override
 	public BufferedAttributeCollection clone() {
-		final BufferedAttributeCollection clone = (BufferedAttributeCollection) super.clone();
+		final var clone = (BufferedAttributeCollection) super.clone();
 		this.cache = new SoftValueTreeMap<>();
 		return clone;
 	}
@@ -98,7 +97,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 
 	/** Remove all the values from the data source.
 	 *
-	 * @return {@code true} on success, otherwhise {@code false}
+	 * @return {@code true} on success, otherwise {@code false}
 	 * @throws AttributeException on error
 	 */
 	protected abstract boolean removeAllValues() throws AttributeException;
@@ -148,11 +147,11 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Pure
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		final ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
-		for (final String name : getAllAttributeNames()) {
+		final var list = new ArrayList<Attribute>(getAttributeCount());
+		for (final var name : getAllAttributeNames()) {
 			if (name != null) {
 				try {
-					final  Attribute newAttr = new AttributeImpl(name, extractValueFor(name));
+					final var newAttr = new AttributeImpl(name, extractValueFor(name));
 					list.add(newAttr);
 				} catch (AttributeException exception) {
 					//
@@ -165,12 +164,12 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Pure
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
-		final Map<AttributeType, Collection<Attribute>> map = new TreeMap<>();
-		for (final String name : getAllAttributeNames()) {
+		final var map = new TreeMap<AttributeType, Collection<Attribute>>();
+		for (final var name : getAllAttributeNames()) {
 			if (name != null) {
 				try {
-					final Attribute newAttr = new AttributeImpl(name, extractValueFor(name));
-					Collection<Attribute> list = map.get(newAttr.getType());
+					final var newAttr = new AttributeImpl(name, extractValueFor(name));
+					var list = map.get(newAttr.getType());
 					if (list == null) {
 						list = new ArrayList<>();
 						map.put(newAttr.getType(), list);
@@ -187,7 +186,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Pure
 	@Override
 	public AttributeValue getAttribute(String name) {
-		final AttributeValue value = extractValueForSafe(name);
+		final var value = extractValueForSafe(name);
 		if (value != null) {
 			return new AttributeValueImpl(value);
 		}
@@ -197,7 +196,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Pure
 	@Override
 	public AttributeValue getAttribute(String name, AttributeValue defaultValue) {
-		final AttributeValue value = extractValueForSafe(name);
+		final var value = extractValueForSafe(name);
 		if (value != null) {
 			return new AttributeValueImpl(value);
 		}
@@ -207,7 +206,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Pure
 	@Override
 	public Attribute getAttributeObject(String name) {
-		final AttributeValue value = extractValueForSafe(name);
+		final var value = extractValueForSafe(name);
 		if (value != null) {
 			return new AttributeImpl(name, value);
 		}
@@ -239,7 +238,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 * @throws AttributeException on error.
 	 */
 	protected Attribute setAttributeFromRawValue(String name, AttributeType type, Object value) throws AttributeException {
-		AttributeValue oldValue = extractValueForSafe(name);
+		var oldValue = extractValueForSafe(name);
 		if (oldValue != null) {
 			if (oldValue.equals(value)) {
 				return null;
@@ -248,7 +247,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 			oldValue = new AttributeValueImpl(oldValue);
 		}
 
-		final Attribute attr = new AttributeImpl(name, type);
+		final var attr = new AttributeImpl(name, type);
 		attr.setValue(type.cast(value));
 
 		saveValue(name, attr);
@@ -266,14 +265,14 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 
 	@Override
 	public Attribute setAttributeType(String name, AttributeType type) throws AttributeException {
-		final AttributeValue oldValue = extractValueForSafe(name);
-		final AttributeType oldType = (oldValue == null) ? null : oldValue.getType();
+		final var oldValue = extractValueForSafe(name);
+		final var oldType = (oldValue == null) ? null : oldValue.getType();
 
 		if (oldValue == null || oldType == null || type == null || type == oldType) {
 			return null;
 		}
 
-		final Attribute attr = new AttributeImpl(name, oldValue.getValue());
+		final var attr = new AttributeImpl(name, oldValue.getValue());
 		attr.cast(type);
 
 		this.cache.put(name, attr);
@@ -423,7 +422,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	public boolean removeAttribute(String name) {
 		try {
 			if (hasAttribute(name)) {
-				final AttributeValue currentValue = extractValueFor(name);
+				final var currentValue = extractValueFor(name);
 				this.cache.remove(name);
 				removeValue(name);
 				fireAttributeRemovedEvent(name, currentValue);
@@ -454,24 +453,24 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Override
 	public boolean renameAttribute(String oldname, String newname, boolean overwrite) {
 		try {
-			final AttributeValue valueForOldName = extractValueForSafe(oldname);
+			final var valueForOldName = extractValueForSafe(oldname);
 			// The source attribute does not exist.
 			if (valueForOldName == null) {
 				return false;
 			}
 
-			final AttributeValue oldValueForNewName = extractValueForSafe(newname);
+			final var oldValueForNewName = extractValueForSafe(newname);
 			// Target attribute is existing and overwrite was disabled.
-			if ((!overwrite) && (oldValueForNewName != null)) {
+			if (!overwrite && oldValueForNewName != null) {
 				return false;
 			}
 
-			final AttributeValue oldValueCopyForNewName = new AttributeValueImpl(oldValueForNewName);
+			final var oldValueCopyForNewName = new AttributeValueImpl(oldValueForNewName);
 
 			removeValue(oldname);
 			this.cache.remove(oldname);
-			if (valueForOldName instanceof Attribute) {
-				((Attribute) valueForOldName).setName(newname);
+			if (valueForOldName instanceof Attribute attr) {
+				attr.setName(newname);
 			}
 			saveValue(newname, valueForOldName);
 			this.cache.put(newname, valueForOldName);

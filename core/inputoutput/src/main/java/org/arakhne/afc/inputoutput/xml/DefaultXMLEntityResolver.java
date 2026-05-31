@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,17 +23,16 @@ package org.arakhne.afc.inputoutput.xml;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
-
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.Resources;
 import org.arakhne.afc.vmutil.URISchemeType;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /** A class that permits to load an external XML resource.
  *
@@ -130,7 +129,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 	private static InputSource getInputSourceFromSystemUrl(URL systemUrl) {
 		if (systemUrl != null) {
 			try {
-				final InputStream systemIdStream = systemUrl.openStream();
+				final var systemIdStream = systemUrl.openStream();
 				if (systemIdStream != null) {
 					return new InputSource(systemIdStream);
 				}
@@ -143,17 +142,17 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 
 	private static InputSource getInputSourceFromResources(URL systemUrl, String systemId, URL containerPath) {
 		if (systemUrl != null && URISchemeType.getSchemeType(systemUrl).isFileBasedScheme()) {
-			final String file = systemUrl.getPath();
-			final InputStream systemIdStream = Resources.getResourceAsStream(file);
+			final var file = systemUrl.getPath();
+			final var systemIdStream = Resources.getResourceAsStream(file);
 			if (systemIdStream != null) {
 				return new InputSource(systemIdStream);
 			}
 		} else {
-			String id = systemId;
+			var id = systemId;
 			if (containerPath != null) {
 				id = FileSystem.join(containerPath, systemId).getPath();
 			}
-			final InputStream systemIdStream = Resources.getResourceAsStream(id);
+			final var systemIdStream = Resources.getResourceAsStream(id);
 			if (systemIdStream != null) {
 				return new InputSource(systemIdStream);
 			}
@@ -164,7 +163,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 	private static InputSource search(String systemId, URL containerPath) {
 		URL systemUrl = null;
 		try {
-			systemUrl = new URL(systemId);
+			systemUrl = new URI(systemId).toURL();
 			if (containerPath != null) {
 				systemUrl = FileSystem.makeAbsolute(containerPath, systemUrl);
 			}
@@ -172,7 +171,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 			//
 		}
 
-		final InputSource source = getInputSourceFromSystemUrl(systemUrl);
+		final var source = getInputSourceFromSystemUrl(systemUrl);
 		if (source != null) {
 			return source;
 		}
@@ -183,7 +182,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 	@Override
 	public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
 		if (systemId != null && !"".equals(systemId)) { //$NON-NLS-1$
-			InputSource is = search(systemId, null);
+			var is = search(systemId, null);
 			if (is != null) {
 				return is;
 			}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import java.io.Reader;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URI;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
@@ -108,7 +109,7 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
  * @component
  */
 @SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:classdataabstractioncoupling",
-				"checkstyle:methodcount"})
+	"checkstyle:methodcount"})
 public abstract class AbstractArakhneMojo extends AbstractMojo {
 
 	/**
@@ -209,7 +210,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 			String rawUrl = contributor.getUrl();
 			if (rawUrl != null && !EMPTY_STRING.equals(rawUrl)) {
 				try {
-					url = new URL(rawUrl);
+					url = new URI(rawUrl).toURL();
 				} catch (Throwable exception) {
 					url = null;
 				}
@@ -218,7 +219,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 				rawUrl = contributor.getEmail();
 				if (rawUrl != null && !EMPTY_STRING.equals(rawUrl)) {
 					try {
-						url = new URL("mailto:" + rawUrl); //$NON-NLS-1$
+						url = new URI("mailto:" + rawUrl).toURL(); //$NON-NLS-1$
 					} catch (Throwable exception) {
 						url = null;
 					}
@@ -451,11 +452,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the artifact handler manager.
 	 *
-	 * <p>It is an attribute defined as: <pre>{@code 
+	 * <p>It is an attribute defined as: <pre>><code>
 	 * <span>/</span>* <span>@</span>component
 	 * <span>*</span>/
 	 * private ArtifactHandlerManager manager;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return the artifact resolver.
 	 */
@@ -464,11 +465,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the output directory of the project. Basically it is {@code getRootDirectory()+"/target"}.
 	 *
-	 * <p>It is an attribute defined as: <pre>{@code 
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>parameter expression="&#36;{project.build.directory}"
 	 * <span>*</span>/
 	 * private File outputDirectory;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return the output directory.
 	 */
@@ -478,11 +479,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * Replies the root directory of the project. Basically it is the value stored inside the
 	 * Maven property named {@code project.basedir}.
 	 *
-	 * <p>It is an attribute defined as: <pre>{@code 
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>parameter expression="${project.basedir}"
 	 * <span>*</span>/
 	 * private File baseDirectory;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return the root directory.
 	 */
@@ -499,13 +500,13 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current maven session. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <pre>{@code 
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>component role="org.apache.maven.project.MavenProjectBuilder"
 	 * * <span>@</span>required
 	 * * <span>@</span>readonly
 	 * <span>*</span>/
 	 * private MavenProjectBuilder projectBuilder;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return the maven session
 	 */
@@ -514,12 +515,12 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current project builder. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <pre>{@code 
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>parameter expression="&#36;{session}"
 	 * * <span>@</span>required
 	 * <span>*</span>/
 	 * private MavenSession mvnSession;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return the maven session
 	 */
@@ -571,11 +572,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the project's remote repositories to use for the resolution of plugins and their dependencies..
 	 *
-	 * <p>It is an attribute defined as: <pre>{@code 
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>parameter default-value="&#36;{project.remoteProjectRepositories}"
 	 * <span>*</span>/
 	 * private List&lt;RemoteRepository&gt; remoteRepos;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return the repository system
 	 */
@@ -584,11 +585,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the repository system used by this maven instance. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <pre>{@code 
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>component
 	 * <span>*</span>/
 	 * private RepositorySystem repoSystem;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return the repository system
 	 */
@@ -597,12 +598,12 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current repository/network configuration of Maven..
 	 *
-	 * <p>It is an attribute defined as: <pre>{@code 
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>parameter default-value="&#36;{repositorySystemSession}"
 	 * <span>@</span>readonly
 	 * <span>*</span>/
 	 * private RepositorySystemSession repoSession;
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return the repository system
 	 */
@@ -789,7 +790,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 *            is the {@code pom.xml} file.
 	 * @return the artifact or {@code null}.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth", "deprecation"})
 	public final synchronized ExtendedArtifact readPomFile(File pomFile) {
 		String groupId;
 		final String artifactId;
@@ -922,8 +923,8 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 		String scmRevision = null;
 
 		try {
-			final SVNClientManager svnManager = getSVNClientManager();
-			final SVNInfo svnInfo = svnManager.getWCClient().doInfo(pomFile.getParentFile(), SVNRevision.UNDEFINED);
+			final SVNClientManager manager = getSVNClientManager();
+			final SVNInfo svnInfo = manager.getWCClient().doInfo(pomFile.getParentFile(), SVNRevision.UNDEFINED);
 			if (svnInfo != null) {
 				final SVNRevision revision = svnInfo.getRevision();
 				if (revision != null) {
@@ -1050,8 +1051,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 		if (obj instanceof CharSequence) {
 			return "s"; //$NON-NLS-1$
 		}
-		if (obj instanceof Array) {
-			final Array array = (Array) obj;
+		if (obj instanceof Array array) {
 			return array.getClass().getComponentType().getName() + "[]"; //$NON-NLS-1$
 		}
 		if (obj instanceof Set<?>) {
@@ -1075,6 +1075,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @param message
 	 *            is the message to put in the exception.
 	 * @param obj the object to test.
+	 * @throws AssertionError on error.
 	 */
 	protected final void assertNotNull(String message, Object obj) {
 		if (getLog().isDebugEnabled()) {
@@ -1287,6 +1288,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 */
 	private class DependencyIterator implements Iterator<MavenProject> {
 
+		@SuppressWarnings("deprecation")
 		private final List<ArtifactRepository> remoteRepositiories;
 
 		private final boolean isTransitive;

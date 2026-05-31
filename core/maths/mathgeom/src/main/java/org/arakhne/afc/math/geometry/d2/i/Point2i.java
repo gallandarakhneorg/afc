@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -29,6 +27,7 @@ import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Point with 2 integer numbers.
  *
@@ -110,8 +109,8 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 	 * @since 14.0
 	 */
 	public static Point2i convert(Tuple2D<?> tuple) {
-		if (tuple instanceof Point2i) {
-			return (Point2i) tuple;
+		if (tuple instanceof Point2i pt) {
+			return pt;
 		}
 		return new Point2i(tuple.getX(), tuple.getY());
 	}
@@ -120,8 +119,8 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 	@Override
 	public double getDistanceSquared(Point2D<?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		final double dx = this.x - point.getX();
-		final double dy = this.y - point.getY();
+		final var dx = this.x - point.getX();
+		final var dy = this.y - point.getY();
 		return dx * dx + dy * dy;
 	}
 
@@ -129,8 +128,8 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 	@Override
 	public double getDistance(Point2D<?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		final double dx = this.x - point.getX();
-		final double dy = this.y - point.getY();
+		final var dx = this.x - point.getX();
+		final var dy = this.y - point.getY();
 		return Math.hypot(dx, dy);
 	}
 
@@ -264,6 +263,7 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 			}
 
 			@Override
+			@SuppressWarnings("checkstyle:superclone")
 			public Point2i clone() {
 				return Point2i.this.getGeomFactory().newPoint(
 						Point2i.this.ix(),

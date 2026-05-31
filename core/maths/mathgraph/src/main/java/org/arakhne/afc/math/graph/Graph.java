@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	 * @param startingSegment is the first segment to iterate.
 	 * @param startingPoint is the starting point of the iterations.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the same
-	 *     segment, otherwhise {@code false}.
+	 *     segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -98,7 +98,7 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	 *     the {@code startingPoint}.
 	 * @param startingPoint is the starting point of the iterations.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the same
-	 *     segment, otherwhise {@code false}.
+	 *     segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -127,15 +127,15 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	 *     the {@code startingPoint}.
 	 * @param startingPoint is the starting point of the iterations.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the same
-	 *     segment, otherwhise {@code false}.
+	 *     segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
 	 *     the end points of a segment are not distinguished.
 	 * @param dynamicDepthUpdater if not {@code null}, it is a lambda that is used for dynamically updating the maximal depth.
 	 * @return the iterator.
-	 * @see #depthIterator(GraphSegment, double, double, GraphPoint, boolean, boolean)
 	 * @since 16.0
+	 * @see #depthIterator(GraphSegment, double, double, GraphPoint, boolean, boolean)
 	 */
 	@Pure
 	GraphIterator<ST, PT> depthIterator(ST startingSegment, double depth, double positionFromStartingPoint,

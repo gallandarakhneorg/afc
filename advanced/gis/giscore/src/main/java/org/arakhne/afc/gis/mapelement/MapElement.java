@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,17 +23,13 @@ package org.arakhne.afc.gis.mapelement;
 import java.io.Serializable;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.AttributeException;
-import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent;
 import org.arakhne.afc.attrs.collection.AttributeChangeListener;
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.primitive.AbstractBoundedGISElement;
 import org.arakhne.afc.gis.primitive.FlagContainer;
-import org.arakhne.afc.gis.primitive.GISContainer;
 import org.arakhne.afc.gis.primitive.GISContentElement;
 import org.arakhne.afc.gis.primitive.GISEditable;
 import org.arakhne.afc.gis.primitive.GISEditableChangeListener;
@@ -43,9 +39,9 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.util.ListenerCollection;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Abstract class for all the elements of a map inside a layer.
@@ -118,15 +114,15 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
 		if (getRawColor() != null) {
-			buffer.add("color", XMLUtil.toColor(getRawColor())); //$NON-NLS-1$
+			buffer.add("color", XMLUtil.toColor(getRawColor().intValue())); //$NON-NLS-1$
 		}
-		buffer.add("selected", hasFlag(FlagContainer.FLAG_SELECTED)); //$NON-NLS-1$
-		buffer.add("readOnly", hasFlag(FlagContainer.FLAG_READONLY)); //$NON-NLS-1$
+		buffer.add("selected", Boolean.valueOf(hasFlag(FlagContainer.FLAG_SELECTED))); //$NON-NLS-1$
+		buffer.add("readOnly", Boolean.valueOf(hasFlag(FlagContainer.FLAG_READONLY))); //$NON-NLS-1$
 		buffer.add("visualizationType", getVisualizationType()); //$NON-NLS-1$
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nofinalizer")
+	@SuppressWarnings({ "checkstyle:nofinalizer", "removal" })
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		getAttributeCollection().removeAttributeChangeListener(this.attributeListener);
@@ -140,7 +136,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	@Override
 	@Pure
 	public MapElement clone() {
-		final MapElement element = super.clone();
+		final var element = super.clone();
 		element.unsetFlag(FLAG_SELECTED);
 		element.listeners = null;
 		element.attributeListener = new AttributeListener();
@@ -161,8 +157,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 */
 	@Override
 	public final void setUUID(UUID id) {
-		final UUID oldId = getUUID();
-		if ((oldId != null && !oldId.equals(id)) || (oldId == null && id != null)) {
+		final var oldId = getUUID();
+		if (oldId != null && !oldId.equals(id) || oldId == null && id != null) {
 			super.setUUID(oldId);
 			fireElementChanged();
 		}
@@ -190,8 +186,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 */
 	protected final void fireElementChanged() {
 		if (this.listeners != null && isEventFirable()) {
-			final GISEditableChangeListener[] theListeners = this.listeners.getListeners(GISEditableChangeListener.class);
-			for (final GISEditableChangeListener listener : theListeners) {
+			final var theListeners = this.listeners.getListeners(GISEditableChangeListener.class);
+			for (final var listener : theListeners) {
 				listener.editableGISElementHasChanged(this);
 			}
 		}
@@ -221,7 +217,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 
 	@Override
 	public void setFlag(int flag) {
-		final int oldFlag = this.flag;
+		final var oldFlag = this.flag;
 		this.flag |= flag;
 		if (oldFlag != this.flag) {
 			if ((flag & FLAG_SELECTED) != 0) {
@@ -234,8 +230,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 
 	@Override
 	public void unsetFlag(int flagIndex) {
-		final int oldFlag = this.flag;
-		this.flag = this.flag & (~flagIndex);
+		final var oldFlag = this.flag;
+		this.flag = this.flag & ~flagIndex;
 		if (oldFlag != this.flag) {
 			if ((flagIndex & FLAG_SELECTED) != 0) {
 				fireGraphicalAttributeChanged();
@@ -301,7 +297,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 */
 	protected final void fireGraphicalAttributeChanged() {
 		if (isEventFirable()) {
-			final GISElementContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				container.onMapElementGraphicalAttributeChanged();
 			}
@@ -324,7 +320,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	protected final void fireShapeChanged() {
 		resetBoundingBox();
 		if (isEventFirable()) {
-			final GISElementContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				container.onMapElementGraphicalAttributeChanged();
 			}
@@ -334,7 +330,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	@Override
 	public void resetBoundingBox() {
 		super.resetBoundingBox();
-		final GISElementContainer<?> container = getContainer();
+		final var container = getContainer();
 		if (container != null) {
 			container.resetBoundingBox();
 		}
@@ -346,8 +342,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	@Pure
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public boolean equals(Object obj) {
-		if (obj instanceof MapElement) {
-			return equals((MapElement) obj);
+		if (obj instanceof MapElement elt) {
+			return equals(elt);
 		}
 		return false;
 	}
@@ -397,7 +393,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 *
 	 * @param point is a geo-referenced coordinate
 	 * @return {@code true} if this MapElement had an associated figure and
-	 *     the specified point was inside this bounds of this figure, otherwhise
+	 *     the specified point was inside this bounds of this figure, otherwise
 	 *     {@code false}
 	 */
 	@Pure
@@ -418,19 +414,19 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 */
 	@Pure
 	protected final boolean boundsContains(double x, double y, double delta) {
-		final Rectangle2d bounds = getBoundingBox();
+		final var bounds = getBoundingBox();
 		assert bounds != null;
-		double dlt = delta;
+		var dlt = delta;
 		if (dlt < 0) {
 			dlt = -dlt;
 		}
-		final Point2d p = new Point2d(x, y);
+		final var p = new Point2d(x, y);
 		if (dlt == 0) {
 			return bounds.contains(p);
 		}
 		p.subX(dlt);
 		p.subY(dlt);
-		final Point2d p2 = new Point2d(p.getX() + dlt, p.getY() + dlt);
+		final var p2 = new Point2d(p.getX() + dlt, p.getY() + dlt);
 		return bounds.contains(p) && bounds.contains(p2);
 	}
 
@@ -455,7 +451,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 */
 	@Pure
 	protected final boolean boundsIntersects(Shape2D<?, ?, ?, ?, ?, ? extends Rectangle2afp<?, ?, ?, ?, ?, ?>> rectangle) {
-		final Rectangle2d bounds = getBoundingBox();
+		final var bounds = getBoundingBox();
 		assert bounds != null;
 		return bounds.intersects(rectangle);
 	}
@@ -482,7 +478,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 */
 	@Pure
 	public boolean isContainerColorUsed() {
-		final AttributeValue val = getAttributeCollection().getAttribute(ATTR_USE_CONTAINER_COLOR);
+		final var val = getAttributeCollection().getAttribute(ATTR_USE_CONTAINER_COLOR);
 		if (val != null) {
 			try {
 				return val.getBoolean();
@@ -497,26 +493,26 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	@Pure
 	public int getColor() {
 		if (isContainerColorUsed()) {
-			final GISContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				return container.getColor();
 			}
 		}
-		Integer c = getRawColor();
+		final var c = getRawColor();
 		if (c == null) {
-			c = MapElementConstants.getPreferredColor();
+			return MapElementConstants.getPreferredColor();
 		}
-		return c;
+		return c.intValue();
 	}
 
 	@Override
 	@Pure
 	public Integer getRawColor() {
 		if (this.colorObject == null) {
-			final AttributeValue val = getAttributeCollection().getAttribute(ATTR_COLOR);
+			final var val = getAttributeCollection().getAttribute(ATTR_COLOR);
 			if (val != null) {
 				try {
-					this.colorObject = (int) val.getInteger();
+					this.colorObject = Integer.valueOf((int) val.getInteger());
 				} catch (AttributeException e) {
 					//
 				}
@@ -528,9 +524,9 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	@Override
 	public void setColor(int color) {
 		try {
-			final int c = getColor();
+			final var c = getColor();
 			if (c != color) {
-				this.colorObject = color;
+				this.colorObject = Integer.valueOf(color);
 				getAttributeCollection().setAttribute(ATTR_COLOR, new AttributeValueImpl(color));
 			}
 		} catch (AttributeException e) {
@@ -547,7 +543,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	@Pure
 	public VisualizationType getVisualizationType() {
 		if (this.vizualizationType == null) {
-			final AttributeValue val = getAttributeCollection().getAttribute(ATTR_VISUALIZATION_TYPE);
+			final var val = getAttributeCollection().getAttribute(ATTR_VISUALIZATION_TYPE);
 			if (val != null) {
 				try {
 					this.vizualizationType = val.getJavaObject();

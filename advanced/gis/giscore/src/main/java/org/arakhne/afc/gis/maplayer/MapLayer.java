@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@
 package org.arakhne.afc.gis.maplayer;
 
 import java.util.UUID;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeValue;
@@ -40,9 +38,9 @@ import org.arakhne.afc.gis.primitive.GISEditable;
 import org.arakhne.afc.gis.primitive.GISEditableChangeListener;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.util.ListenerCollection;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class represents a layer. A Layer is a container of map elements or other layers.
@@ -137,7 +135,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	@Override
 	@Pure
 	public MapLayer clone() {
-		final MapLayer layer = super.clone();
+		final var layer = super.clone();
 		layer.listeners = null;
 		return layer;
 	}
@@ -151,8 +149,8 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 */
 	@Override
 	public final void setUUID(UUID id) {
-		final UUID oldId = getUUID();
-		if ((oldId != null && !oldId.equals(id)) || (oldId == null && id != null)) {
+		final var oldId = getUUID();
+		if (oldId != null && !oldId.equals(id) || oldId == null && id != null) {
 			super.setUUID(oldId);
 			fireElementChanged();
 		}
@@ -219,9 +217,9 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 */
 	public void fireLayerHierarchyChangedEvent(MapLayerHierarchyEvent event) {
 		if (isEventFirable()) {
-			final MapLayerListener[] theListeners = getListeners();
+			final var theListeners = getListeners();
 			if (theListeners != null && theListeners.length > 0) {
-				for (final MapLayerListener listener : theListeners) {
+				for (final var listener : theListeners) {
 					listener.onMapLayerHierarchyChanged(event);
 				}
 			}
@@ -231,7 +229,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 				return;
 			}
 
-			final GISLayerContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				container.fireLayerHierarchyChangedEvent(event);
 			}
@@ -245,9 +243,9 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 */
 	public void fireLayerContentChangedEvent(MapLayerContentEvent event) {
 		if (isEventFirable()) {
-			final MapLayerListener[] theListeners = getListeners();
+			final var theListeners = getListeners();
 			if (theListeners != null && theListeners.length > 0) {
-				for (final MapLayerListener listener : theListeners) {
+				for (final var listener : theListeners) {
 					listener.onMapLayerContentChanged(event);
 				}
 			}
@@ -257,7 +255,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 				return;
 			}
 
-			final GISLayerContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				container.fireLayerContentChangedEvent(event);
 			}
@@ -292,7 +290,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 		fireLayerAttributeChangedEvent(new MapLayerAttributeChangeEvent(this, event));
 		fireElementChanged();
 		if (ATTR_VISIBLE.equals(event.getName())) {
-			final AttributeValue nValue = event.getValue();
+			final var nValue = event.getValue();
 			boolean cvalue;
 			try {
 				cvalue = nValue.getBoolean();
@@ -300,9 +298,9 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 				cvalue = isVisible();
 			}
 			if (cvalue) {
-				final GISLayerContainer<?> container = getContainer();
-				if (container instanceof GISBrowsable) {
-					((GISBrowsable) container).setVisible(cvalue, false);
+				final var container = getContainer();
+				if (container instanceof GISBrowsable brw) {
+					brw.setVisible(cvalue, false);
 				}
 			}
 		}
@@ -315,14 +313,14 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 */
 	public void fireLayerAttributeChangedEvent(MapLayerAttributeChangeEvent event) {
 		if (isEventFirable()) {
-			final MapLayerListener[] theListeners = getListeners();
+			final var theListeners = getListeners();
 			if (theListeners != null && theListeners.length > 0) {
-				for (final MapLayerListener listener : theListeners) {
+				for (final var listener : theListeners) {
 					listener.onMapLayerAttributeChanged(event);
 				}
 			}
 
-			final GISLayerContainer<?> container = getContainer();
+			final var container = getContainer();
 			if (container != null) {
 				container.fireLayerAttributeChangedEvent(event);
 			}
@@ -346,14 +344,14 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 			} else {
 				eType = AttributeChangeEvent.Type.VALUE_UPDATE;
 			}
-			final AttributeChangeEvent e = new AttributeChangeEvent(
+			final var e = new AttributeChangeEvent(
 					this,
 					eType,
 					attributeName,
 					new AttributeValueImpl(oldValue),
 					attributeName,
 					new AttributeValueImpl(newValue));
-			final MapLayerAttributeChangeEvent le = new MapLayerAttributeChangeEvent(this, e);
+			final var le = new MapLayerAttributeChangeEvent(this, e);
 			fireLayerAttributeChangedEvent(le);
 		}
 	}
@@ -364,7 +362,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	@Override
 	public void resetBoundingBox() {
 		super.resetBoundingBox();
-		final GISLayerContainer<?> parent = getContainer();
+		final var parent = getContainer();
 		if (parent != null) {
 			parent.resetBoundingBox();
 		}
@@ -372,7 +370,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 
 	@Override
 	public boolean setContainer(GISLayerContainer<?> parent) {
-		final GISLayerContainer<?> oldParent = getContainer();
+		final var oldParent = getContainer();
 		if (oldParent != parent) {
 			if (parent == null) {
 				if (super.setContainer(parent)) {
@@ -405,7 +403,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	@Pure
 	@Override
 	public String getParentName() {
-		final GISLayerContainer<?> c = getContainer();
+		final var c = getContainer();
 		if (c != null) {
 			return c.getName();
 		}
@@ -415,7 +413,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	@Override
 	@Pure
 	public GeoLocation getGeoLocation() {
-		final Shape2d<?> bounds = getBoundingBox();
+		final var bounds = getBoundingBox();
 		if (bounds != null) {
 			return new GeoLocationArea(bounds);
 		}
@@ -433,16 +431,16 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * @param delta is the geo-referenced distance that corresponds to a approximation
 	 *     distance in the screen coordinate system
 	 * @return {@code true} if this MapElement had an associated figure and
-	 *     the specified point was inside this bounds of this figure, otherwhise
-	 * {@code false}
+	 *     the specified point was inside this bounds of this figure, otherwise
+	 *     {@code false}
 	 */
 	@Pure
 	public boolean contains(Point2D<?, ?> point, double delta) {
-		final Rectangle2d bounds = getBoundingBox();
+		final var bounds = getBoundingBox();
 		if (bounds == null) {
 			return false;
 		}
-		double dlt = delta;
+		var dlt = delta;
 		if (dlt < 0) {
 			dlt = -dlt;
 		}
@@ -463,8 +461,8 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 *
 	 * @param point is a geo-referenced coordinate
 	 * @return {@code true} if this MapElement had an associated figure and
-	 *     the specified point was inside this bounds of this figure, otherwhise
-	 * {@code false}
+	 *     the specified point was inside this bounds of this figure, otherwise
+	 *     {@code false}
 	 */
 	@Pure
 	public final boolean contains(Point2D<?, ?> point) {
@@ -474,11 +472,11 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	/** Replies the index of this layer in its parent.
 	 *
 	 * @return the index of this layer in its parent, or
-	 * {@code -1} if not found.
+	 *     {@code -1} if not found.
 	 */
 	@Pure
 	public int indexInParent() {
-		final GISLayerContainer<?> container = getContainer();
+		final var container = getContainer();
 		if (container != null) {
 			return container.indexOf(this);
 		}
@@ -495,12 +493,12 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 *
 	 * @param rectangle the rectangle.
 	 * @return {@code true} if this MapElement has an associated figure and
-	 *     the specified rectangle intersecting the figure, otherwhise
-	 * {@code false}
+	 *     the specified rectangle intersecting the figure, otherwise
+	 *     {@code false}
 	 */
 	@Pure
 	public boolean intersects(Shape2d<?> rectangle) {
-		final Shape2d<?> bounds = getBoundingBox();
+		final var bounds = getBoundingBox();
 		if (bounds == null) {
 			return false;
 		}
@@ -529,7 +527,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 */
 	@Pure
 	public boolean isContainerColorUsed() {
-		final AttributeValue val = getAttributeProvider().getAttribute(ATTR_USE_CONTAINER_COLOR);
+		final var val = getAttributeProvider().getAttribute(ATTR_USE_CONTAINER_COLOR);
 		if (val != null) {
 			try {
 				return val.getBoolean();
@@ -543,11 +541,11 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	@Override
 	@Pure
 	public int getColor() {
-		final GISLayerContainer<?> container = getContainer();
+		final var container = getContainer();
 		if (container != null && isContainerColorUsed()) {
 			return container.getColor();
 		}
-		return getRawColor();
+		return getRawColor().intValue();
 	}
 
 	@Override
@@ -556,7 +554,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 		final AttributeValue val = getAttributeProvider().getAttribute(ATTR_COLOR);
 		if (val != null) {
 			try {
-				return (int) val.getInteger();
+				return Integer.valueOf((int) val.getInteger());
 			} catch (AttributeException e) {
 				//
 			}
@@ -593,7 +591,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 */
 	@Pure
 	public boolean isClickable() {
-		final AttributeValue val = getAttributeProvider().getAttribute(ATTR_CLICKABLE);
+		final var val = getAttributeProvider().getAttribute(ATTR_CLICKABLE);
 		if (val != null) {
 			try {
 				return val.getBoolean();
@@ -634,14 +632,13 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 */
 	@Pure
 	public final boolean isTemporaryLayer() {
-		MapLayer layer = this;
-		GISLayerContainer<?> container;
+		var layer = this;
 		while (layer != null) {
 			if (layer.isTemp) {
 				return true;
 			}
-			container = layer.getContainer();
-			layer = container instanceof MapLayer ? (MapLayer) container : null;
+			final var container = layer.getContainer();
+			layer = container instanceof MapLayer lay ? lay : null;
 		}
 		return false;
 	}
@@ -668,7 +665,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	@Override
 	@Pure
 	public boolean isVisible() {
-		final AttributeValue val = getAttributeProvider().getAttribute(ATTR_VISIBLE);
+		final var val = getAttributeProvider().getAttribute(ATTR_VISIBLE);
 		if (val != null) {
 			try {
 				return val.getBoolean();
@@ -709,7 +706,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 */
 	@Pure
 	public boolean isRemovable() {
-		final AttributeValue val = getAttributeProvider().getAttribute(ATTR_REMOVABLE);
+		final var val = getAttributeProvider().getAttribute(ATTR_REMOVABLE);
 		if (val != null) {
 			try {
 				return val.getBoolean();

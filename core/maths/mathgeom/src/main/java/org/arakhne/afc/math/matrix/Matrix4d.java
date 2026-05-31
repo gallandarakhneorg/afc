@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package org.arakhne.afc.math.matrix;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.GnuOctaveUtil;
 import org.arakhne.afc.math.MathUtil;
@@ -31,6 +30,7 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Is represented internally as a 4x4 floating point matrix. The mathematical
@@ -41,6 +41,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:methodcount"})
 public class Matrix4d implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 7216873052550769543L;
@@ -166,6 +167,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 * @param m33
 	 *            the [3][3] element
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	public Matrix4d(double m00, double m01, double m02, double m03,
 			double m10, double m11, double m12, double m13,
 			double m20, double m21, double m22, double m23,
@@ -324,10 +326,14 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the column number to be modified (zero indexed)
 	 * @param value
 	 *            the new value
+	 * @throws ArrayIndexOutOfBoundsException if invalid coordinates.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public final void setElement(int row, int column, double value) {
-		assert row >= 0 && row < 4 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 3);
-		assert column >= 0 && column < 4 : AssertMessages.outsideRangeInclusiveParameter(1, column, 0, 3);
+		assert row >= 0 && row < 4
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(3));
+		assert column >= 0 && column < 4
+				: AssertMessages.outsideRangeInclusiveParameter(1, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(3));
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -421,11 +427,15 @@ public class Matrix4d implements Serializable, Cloneable {
 	 * @param column
 	 *            the column number to be retrieved (zero indexed)
 	 * @return the value at the indexed element.
+	 * @throws ArrayIndexOutOfBoundsException if invalid coordinates.
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:returncount"})
 	@Pure
 	public final double getElement(int row, int column) {
-		assert row >= 0 && row < 4 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 3);
-		assert column >= 0 && column < 4 : AssertMessages.outsideRangeInclusiveParameter(1, column, 0, 3);
+		assert row >= 0 && row < 4
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(3));
+		assert column >= 0 && column < 4
+				: AssertMessages.outsideRangeInclusiveParameter(1, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(3));
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -500,9 +510,11 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the matrix row
 	 * @param v
 	 *            the array into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if invalid coordinates.
 	 */
 	public final void getRow(int row, double[] v) {
-		assert row >= 0 && row < 4 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 3);
+		assert row >= 0 && row < 4
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(3));
 		assert v != null : AssertMessages.notNullParameter(1);
 		assert v.length >= 4 : AssertMessages.tooSmallArrayParameter(1, v.length, 4);
 		if (row == 0) {
@@ -539,9 +551,11 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the matrix column
 	 * @param v
 	 *            the array into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if invalid coordinates.
 	 */
 	public final void getColumn(int column, double[] v) {
-		assert column >= 0 && column < 4 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 3);
+		assert column >= 0 && column < 4
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(3));
 		assert v != null : AssertMessages.notNullParameter(1);
 		assert v.length >= 4 : AssertMessages.tooSmallArrayParameter(1, v.length, 4);
 		if (column == 0) {
@@ -583,9 +597,11 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the third column element
 	 * @param value4
 	 *            the fourth column element
+	 * @throws ArrayIndexOutOfBoundsException if invalid coordinates.
 	 */
 	public final void setRow(int row, double value1, double value2, double value3, double value4) {
-		assert row >= 0 && row < 4 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 3);
+		assert row >= 0 && row < 4
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(3));
 		switch (row) {
 		case 0:
 			this.m00 = value1;
@@ -629,9 +645,11 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the row number to be modified (zero indexed)
 	 * @param v
 	 *            the replacement row
+	 * @throws ArrayIndexOutOfBoundsException if invalid coordinates.
 	 */
 	public final void setRow(int row, double[] v) {
-		assert row >= 0 && row < 4 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 3);
+		assert row >= 0 && row < 4
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(3));
 		assert v != null : AssertMessages.notNullParameter(1);
 		assert v.length >= 4 : AssertMessages.tooSmallArrayParameter(1, v.length, 4);
 		switch (row) {
@@ -683,9 +701,11 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the third row element
 	 * @param value4
 	 *            the fourth row element
+	 * @throws ArrayIndexOutOfBoundsException if invalid coordinates.
 	 */
 	public final void setColumn(int column, double value1, double value2, double value3, double value4) {
-		assert column >= 0 && column < 4 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 3);
+		assert column >= 0 && column < 4
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(3));
 		switch (column) {
 		case 0:
 			this.m00 = value1;
@@ -729,9 +749,11 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the column number to be modified (zero indexed)
 	 * @param v
 	 *            the replacement column
+	 * @throws ArrayIndexOutOfBoundsException if invalid coordinates.
 	 */
 	public final void setColumn(int column, double[] v) {
-		assert column >= 0 && column < 4 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 3);
+		assert column >= 0 && column < 4
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(3));
 		assert v != null : AssertMessages.notNullParameter(1);
 		assert v.length >= 4 : AssertMessages.tooSmallArrayParameter(1, v.length, 4);
 		switch (column) {
@@ -970,9 +992,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 * Sets the value of this matrix to its transpose.
 	 */
 	public final void transpose() {
-		double temp;
-
-		temp = this.m10;
+		var temp = this.m10;
 		this.m10 = this.m01;
 		this.m01 = temp;
 
@@ -1135,6 +1155,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 * @param m33
 	 *            the [3][3] element
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	public void set(double m00, double m01, double m02, double m03,
 			double m10, double m11, double m12, double m13,
 			double m20, double m21, double m22, double m23,
@@ -1169,12 +1190,12 @@ public class Matrix4d implements Serializable, Cloneable {
 	 */
 	@Pure
 	public final double determinant() {
-		final double det1 = this.m22 * this.m33 - this.m23 * this.m32;
-		final double det2 = this.m12 * this.m33 - this.m13 * this.m32;
-		final double det3 = this.m12 * this.m23 - this.m13 * this.m22;
-		final double det4 = this.m02 * this.m33 - this.m03 * this.m32;
-		final double det5 = this.m02 * this.m23 - this.m03 * this.m22;
-		final double det6 = this.m02 * this.m13 - this.m03 * this.m12;
+		final var det1 = this.m22 * this.m33 - this.m23 * this.m32;
+		final var det2 = this.m12 * this.m33 - this.m13 * this.m32;
+		final var det3 = this.m12 * this.m23 - this.m13 * this.m22;
+		final var det4 = this.m02 * this.m33 - this.m03 * this.m32;
+		final var det5 = this.m02 * this.m23 - this.m03 * this.m22;
+		final var det6 = this.m02 * this.m13 - this.m03 * this.m12;
 		return
 				this.m00 * (
 						this.m11 * det1
@@ -1271,25 +1292,25 @@ public class Matrix4d implements Serializable, Cloneable {
 	 */
 	public final void mul(Matrix4d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
-		final double m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20 + this.m03 * matrix.m30;
-		final double m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21 + this.m03 * matrix.m31;
-		final double m02 = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22 + this.m03 * matrix.m32;
-		final double m03 = this.m00 * matrix.m03 + this.m01 * matrix.m13 + this.m02 * matrix.m23 + this.m03 * matrix.m33;
+		final var m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20 + this.m03 * matrix.m30;
+		final var m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21 + this.m03 * matrix.m31;
+		final var m02 = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22 + this.m03 * matrix.m32;
+		final var m03 = this.m00 * matrix.m03 + this.m01 * matrix.m13 + this.m02 * matrix.m23 + this.m03 * matrix.m33;
 
-		final double m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10 + this.m12 * matrix.m20 + this.m13 * matrix.m30;
-		final double m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11 + this.m12 * matrix.m21 + this.m13 * matrix.m31;
-		final double m12 = this.m10 * matrix.m02 + this.m11 * matrix.m12 + this.m12 * matrix.m22 + this.m13 * matrix.m32;
-		final double m13 = this.m10 * matrix.m03 + this.m11 * matrix.m13 + this.m12 * matrix.m23 + this.m13 * matrix.m33;
+		final var m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10 + this.m12 * matrix.m20 + this.m13 * matrix.m30;
+		final var m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11 + this.m12 * matrix.m21 + this.m13 * matrix.m31;
+		final var m12 = this.m10 * matrix.m02 + this.m11 * matrix.m12 + this.m12 * matrix.m22 + this.m13 * matrix.m32;
+		final var m13 = this.m10 * matrix.m03 + this.m11 * matrix.m13 + this.m12 * matrix.m23 + this.m13 * matrix.m33;
 
-		final double m20 = this.m20 * matrix.m00 + this.m21 * matrix.m10 + this.m22 * matrix.m20 + this.m23 * matrix.m30;
-		final double m21 = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21 + this.m23 * matrix.m31;
-		final double m22 = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22 + this.m23 * matrix.m32;
-		final double m23 = this.m20 * matrix.m03 + this.m21 * matrix.m13 + this.m22 * matrix.m23 + this.m23 * matrix.m33;
+		final var m20 = this.m20 * matrix.m00 + this.m21 * matrix.m10 + this.m22 * matrix.m20 + this.m23 * matrix.m30;
+		final var m21 = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21 + this.m23 * matrix.m31;
+		final var m22 = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22 + this.m23 * matrix.m32;
+		final var m23 = this.m20 * matrix.m03 + this.m21 * matrix.m13 + this.m22 * matrix.m23 + this.m23 * matrix.m33;
 
-		final double m30 = this.m30 * matrix.m00 + this.m31 * matrix.m10 + this.m32 * matrix.m20 + this.m33 * matrix.m30;
-		final double m31 = this.m30 * matrix.m01 + this.m31 * matrix.m11 + this.m32 * matrix.m21 + this.m33 * matrix.m31;
-		final double m32 = this.m30 * matrix.m02 + this.m31 * matrix.m12 + this.m32 * matrix.m22 + this.m33 * matrix.m32;
-		final double m33 = this.m30 * matrix.m03 + this.m31 * matrix.m13 + this.m32 * matrix.m23 + this.m33 * matrix.m33;
+		final var m30 = this.m30 * matrix.m00 + this.m31 * matrix.m10 + this.m32 * matrix.m20 + this.m33 * matrix.m30;
+		final var m31 = this.m30 * matrix.m01 + this.m31 * matrix.m11 + this.m32 * matrix.m21 + this.m33 * matrix.m31;
+		final var m32 = this.m30 * matrix.m02 + this.m31 * matrix.m12 + this.m32 * matrix.m22 + this.m33 * matrix.m32;
+		final var m33 = this.m30 * matrix.m03 + this.m31 * matrix.m13 + this.m32 * matrix.m23 + this.m33 * matrix.m33;
 
 		this.m00 = m00;
 		this.m01 = m01;
@@ -1360,40 +1381,40 @@ public class Matrix4d implements Serializable, Cloneable {
 			this.m33 = matrix1.m30 * matrix2.m03 + matrix1.m31 * matrix2.m13
 					+ matrix1.m32 * matrix2.m23 + matrix1.m33 * matrix2.m33;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10
 					+ matrix1.m02 * matrix2.m20 + matrix1.m03 * matrix2.m30;
-			final double m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11
+			final var m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11
 					+ matrix1.m02 * matrix2.m21 + matrix1.m03 * matrix2.m31;
-			final double m02 = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12
+			final var m02 = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12
 					+ matrix1.m02 * matrix2.m22 + matrix1.m03 * matrix2.m32;
-			final double m03 = matrix1.m00 * matrix2.m03 + matrix1.m01 * matrix2.m13
+			final var m03 = matrix1.m00 * matrix2.m03 + matrix1.m01 * matrix2.m13
 					+ matrix1.m02 * matrix2.m23 + matrix1.m03 * matrix2.m33;
 
-			final double m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10
+			final var m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10
 					+ matrix1.m12 * matrix2.m20 + matrix1.m13 * matrix2.m30;
-			final double m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11
+			final var m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11
 					+ matrix1.m12 * matrix2.m21 + matrix1.m13 * matrix2.m31;
-			final double m12 = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12
+			final var m12 = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12
 					+ matrix1.m12 * matrix2.m22 + matrix1.m13 * matrix2.m32;
-			final double m13 = matrix1.m10 * matrix2.m03 + matrix1.m11 * matrix2.m13
+			final var m13 = matrix1.m10 * matrix2.m03 + matrix1.m11 * matrix2.m13
 					+ matrix1.m12 * matrix2.m23 + matrix1.m13 * matrix2.m33;
 
-			final double m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10
+			final var m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10
 					+ matrix1.m22 * matrix2.m20 + matrix1.m23 * matrix2.m30;
-			final double m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11
+			final var m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11
 					+ matrix1.m22 * matrix2.m21 + matrix1.m23 * matrix2.m31;
-			final double m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12
+			final var m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12
 					+ matrix1.m22 * matrix2.m22 + matrix1.m23 * matrix2.m32;
-			final double m23 = matrix1.m20 * matrix2.m03 + matrix1.m21 * matrix2.m13
+			final var m23 = matrix1.m20 * matrix2.m03 + matrix1.m21 * matrix2.m13
 					+ matrix1.m22 * matrix2.m23 + matrix1.m23 * matrix2.m33;
 
-			final double m30 = matrix1.m30 * matrix2.m00 + matrix1.m31 * matrix2.m10
+			final var m30 = matrix1.m30 * matrix2.m00 + matrix1.m31 * matrix2.m10
 					+ matrix1.m32 * matrix2.m20 + matrix1.m33 * matrix2.m30;
-			final double m31 = matrix1.m30 * matrix2.m01 + matrix1.m31 * matrix2.m11
+			final var m31 = matrix1.m30 * matrix2.m01 + matrix1.m31 * matrix2.m11
 					+ matrix1.m32 * matrix2.m21 + matrix1.m33 * matrix2.m31;
-			final double m32 = matrix1.m30 * matrix2.m02 + matrix1.m31 * matrix2.m12
+			final var m32 = matrix1.m30 * matrix2.m02 + matrix1.m31 * matrix2.m12
 					+ matrix1.m32 * matrix2.m22 + matrix1.m33 * matrix2.m32;
-			final double m33 = matrix1.m30 * matrix2.m03 + matrix1.m31 * matrix2.m13
+			final var m33 = matrix1.m30 * matrix2.m03 + matrix1.m31 * matrix2.m13
 					+ matrix1.m32 * matrix2.m23 + matrix1.m33 * matrix2.m33;
 
 			this.m00 = m00;
@@ -1459,7 +1480,7 @@ public class Matrix4d implements Serializable, Cloneable {
 			return true;
 		}
 		if (getClass().isInstance(t1)) {
-			final Matrix4d m2 = (Matrix4d) t1;
+			final var m2 = (Matrix4d) t1;
 			return this.m00 == m2.m00 && this.m01 == m2.m01
 					&& this.m02 == m2.m02 && this.m03 == m2.m03
 					&& this.m10 == m2.m10 && this.m11 == m2.m11
@@ -1485,12 +1506,12 @@ public class Matrix4d implements Serializable, Cloneable {
 	 * @return {@code true} if this matrix is equals to the specified matrix at epsilon.
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
+		"checkstyle:returncount"})
 	public boolean epsilonEquals(Matrix4d matrix, double epsilon) {
 		assert matrix != null : AssertMessages.notNullParameter();
 
-		double diff;
-
-		diff = this.m00 - matrix.m00;
+		var diff = this.m00 - matrix.m00;
 		if ((diff < 0 ? -diff : diff) > epsilon) {
 			return false;
 		}
@@ -1585,7 +1606,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1L;
+		var bits = 1L;
 		bits = 31L * bits + Double.hashCode(this.m00);
 		bits = 31L * bits + Double.hashCode(this.m01);
 		bits = 31L * bits + Double.hashCode(this.m02);
@@ -2091,7 +2112,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	/** Replies if the matrix is symmetric.
 	 *
 	 * @return {@code true} if the matrix is symmetric, otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	public boolean isSymmetric() {
@@ -2112,9 +2133,10 @@ public class Matrix4d implements Serializable, Cloneable {
 	 * @see MathUtil#isEpsilonEqual(double, double)
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 	public boolean isIdentity() {
 		if (this.isIdentity == null) {
-			this.isIdentity = MathUtil.isEpsilonEqual(this.m00, 1.)
+			this.isIdentity = Boolean.valueOf(MathUtil.isEpsilonEqual(this.m00, 1.)
 					&& MathUtil.isEpsilonZero(this.m01)
 					&& MathUtil.isEpsilonZero(this.m02)
 					&& MathUtil.isEpsilonZero(this.m03)
@@ -2129,9 +2151,9 @@ public class Matrix4d implements Serializable, Cloneable {
 					&& MathUtil.isEpsilonZero(this.m30)
 					&& MathUtil.isEpsilonZero(this.m31)
 					&& MathUtil.isEpsilonZero(this.m32)
-					&& MathUtil.isEpsilonEqual(this.m33, 1.);
+					&& MathUtil.isEpsilonEqual(this.m33, 1.));
 		}
-		return this.isIdentity;
+		return this.isIdentity.booleanValue();
 	}
 
 	/** Add the given matrix to this matrix: {@code this += matrix}.
@@ -2203,7 +2225,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("+")
 	public Matrix4d operator_plus(Matrix4d matrix) {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.add(this, matrix);
 		return result;
 	}
@@ -2224,7 +2246,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("+")
 	public Matrix4d operator_plus(double scalar) {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.add(scalar, this);
 		return result;
 	}
@@ -2242,7 +2264,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("-")
 	public Matrix4d operator_minus(Matrix4d matrix) {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.sub(this, matrix);
 		return result;
 	}
@@ -2263,7 +2285,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("-")
 	public Matrix4d operator_minus(double scalar) {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.add(-scalar, this);
 		return result;
 	}
@@ -2280,7 +2302,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("(-)")
 	public Matrix4d operator_minus() {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.negate(this);
 		return result;
 	}
@@ -2298,7 +2320,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("*")
 	public Matrix4d operator_multiply(Matrix4d matrix) {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.mul(this, matrix);
 		return result;
 	}
@@ -2319,7 +2341,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("*")
 	public Matrix4d operator_multiply(double scalar) {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.mul(scalar, this);
 		return result;
 	}
@@ -2340,7 +2362,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("/")
 	public Matrix4d operator_divide(double scalar) {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.mul(1. / scalar, this);
 		return result;
 	}
@@ -2382,7 +2404,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 */
 	@XtextOperator("!")
 	public Matrix4d operator_not() {
-		final Matrix4d result = new Matrix4d();
+		final var result = new Matrix4d();
 		result.transpose(this);
 		return result;
 	}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.vmutil.FileSystem;
 
 /** Interface that permits to build absolute paths from relative paths
  * and relative paths from absolute paths.
@@ -139,7 +138,7 @@ public interface PathBuilder {
 		if (filename == null || filename.length() == 0) {
 			return null;
 		}
-		final URL url = FileSystem.convertStringToURL(filename, true, false);
+		final var url = FileSystem.convertStringToURL(filename, true, false);
 		if (url != null) {
 			return makeAbsolute(url);
 		}
@@ -184,7 +183,7 @@ public interface PathBuilder {
 		if (filename == null || filename.length() == 0) {
 			return null;
 		}
-		final URL url = FileSystem.convertStringToURL(filename, true, false);
+		final var url = FileSystem.convertStringToURL(filename, true, false);
 		if (url != null) {
 			return makeRelative(url);
 		}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.MultiShape2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
  *
@@ -64,12 +64,17 @@ public interface MultiShape2afp<
 		extends Shape2afp<ST, IT, IE, P, V, B>,
 		MultiShape2D<ST, IT, CT, PathIterator2afp<IE>, P, V, B> {
 
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.MULTISHAPE;
+	}
+
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
 		assert ellipse != null : AssertMessages.notNullParameter();
 		if (ellipse.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(ellipse)) {
 					return true;
 				}
@@ -83,7 +88,7 @@ public interface MultiShape2afp<
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
 		assert circle != null : AssertMessages.notNullParameter();
 		if (circle.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(circle)) {
 					return true;
 				}
@@ -97,7 +102,7 @@ public interface MultiShape2afp<
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : AssertMessages.notNullParameter();
 		if (rectangle.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(rectangle)) {
 					return true;
 				}
@@ -111,7 +116,7 @@ public interface MultiShape2afp<
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		if (segment.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(segment)) {
 					return true;
 				}
@@ -125,7 +130,7 @@ public interface MultiShape2afp<
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null : AssertMessages.notNullParameter();
 		if (triangle.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(triangle)) {
 					return true;
 				}
@@ -138,7 +143,7 @@ public interface MultiShape2afp<
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
 		if (toBoundingBox().intersects(iterator)) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(iterator.restartIterations())) {
 					return true;
 				}
@@ -152,7 +157,7 @@ public interface MultiShape2afp<
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
 		assert orientedRectangle != null : AssertMessages.notNullParameter();
 		if (orientedRectangle.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(orientedRectangle)) {
 					return true;
 				}
@@ -166,7 +171,7 @@ public interface MultiShape2afp<
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
 		assert parallelogram != null : AssertMessages.notNullParameter();
 		if (parallelogram.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(parallelogram)) {
 					return true;
 				}
@@ -180,7 +185,7 @@ public interface MultiShape2afp<
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
 		assert roundRectangle != null : AssertMessages.notNullParameter();
 		if (roundRectangle.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.intersects(roundRectangle)) {
 					return true;
 				}
@@ -195,8 +200,8 @@ public interface MultiShape2afp<
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		if (multishape.toBoundingBox().intersects(toBoundingBox())) {
-			for (final CT shape1 : getBackendDataList()) {
-				for (final Shape2afp<?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
+			for (final var shape1 : getBackendDataList()) {
+				for (final var shape2 : multishape.getBackendDataList()) {
 					if (shape1.intersects(shape2)) {
 						return true;
 					}
@@ -210,7 +215,7 @@ public interface MultiShape2afp<
 	@Override
 	default boolean contains(double x, double y) {
 		if (toBoundingBox().contains(x, y)) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.contains(x, y)) {
 					return true;
 				}
@@ -224,7 +229,7 @@ public interface MultiShape2afp<
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : AssertMessages.notNullParameter();
 		if (rectangle.intersects(toBoundingBox())) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.contains(rectangle)) {
 					return true;
 				}
@@ -235,7 +240,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default void translate(double dx, double dy) {
-		for (final CT shape : getBackendDataList()) {
+		for (final var shape : getBackendDataList()) {
 			shape.translate(dx, dy);
 		}
 		onBackendDataChange();
@@ -246,7 +251,7 @@ public interface MultiShape2afp<
 	@Override
 	default ST createTransformedShape(Transform2D transform) {
 		final MultiShape2afp multishape = getGeomFactory().newMultiShape();
-		for (final CT shape : getBackendDataList()) {
+		for (final var shape : getBackendDataList()) {
 			multishape.add(shape.createTransformedShape(transform));
 		}
 		return (ST) multishape;
@@ -258,7 +263,7 @@ public interface MultiShape2afp<
 	default CT getFirstShapeIntersecting(ST shape) {
 		assert shape != null : AssertMessages.notNullParameter();
 		if (shape.intersects(toBoundingBox())) {
-			for (final CT innerShape : getBackendDataList()) {
+			for (final var innerShape : getBackendDataList()) {
 				if (innerShape.intersects(shape)) {
 					return innerShape;
 				}
@@ -272,9 +277,9 @@ public interface MultiShape2afp<
 	@Pure
 	default List<CT> getShapesIntersecting(ST shape) {
 		assert shape != null : AssertMessages.notNullParameter();
-		final List<CT> list = new ArrayList<>();
+		final var list = new ArrayList<CT>();
 		if (shape.intersects(toBoundingBox())) {
-			for (final CT subshape : getBackendDataList()) {
+			for (final var subshape : getBackendDataList()) {
 				if (subshape.intersects(shape)) {
 					list.add(subshape);
 				}
@@ -287,12 +292,12 @@ public interface MultiShape2afp<
 	@Override
 	default void toBoundingBox(B box) {
 		assert box != null : AssertMessages.notNullParameter();
-		final Iterator<CT> iterator = getBackendDataList().iterator();
+		final var iterator = getBackendDataList().iterator();
 		if (iterator.hasNext()) {
 			iterator.next().toBoundingBox(box);
-			final B subbounds = getGeomFactory().newBox();
+			final var subbounds = getGeomFactory().newBox();
 			while (iterator.hasNext()) {
-				final CT element = iterator.next();
+				final var element = iterator.next();
 				element.toBoundingBox(subbounds);
 				box.setUnion(subbounds);
 			}
@@ -325,13 +330,11 @@ public interface MultiShape2afp<
     @Override
 	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
 		assert circle != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(circle);
-			dist = circle.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(circle);
+			final var dist = circle.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -343,13 +346,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(segment);
-			dist = segment.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(segment);
+			final var dist = segment.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -361,13 +362,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(rectangle);
-			dist = rectangle.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(rectangle);
+			final var dist = rectangle.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -379,13 +378,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
 		assert roundRectangle != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(roundRectangle);
-			dist = roundRectangle.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(roundRectangle);
+			final var dist = roundRectangle.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -397,13 +394,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
 		assert ellipse != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(ellipse);
-			dist = ellipse.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(ellipse);
+			final var dist = ellipse.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -415,13 +410,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(triangle);
-			dist = triangle.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(triangle);
+			final var dist = triangle.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -433,13 +426,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
 		assert orientedRectangle != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(orientedRectangle);
-			dist = orientedRectangle.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(orientedRectangle);
+			final var dist = orientedRectangle.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -451,13 +442,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
 		assert parallelogram != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(parallelogram);
-			dist = parallelogram.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(parallelogram);
+			final var dist = parallelogram.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -469,13 +458,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(path);
-			dist = path.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(path);
+			final var dist = path.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -487,13 +474,11 @@ public interface MultiShape2afp<
 	@Override
 	default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
-		double min = Double.POSITIVE_INFINITY;
-		final P closest = getGeomFactory().newPoint();
-		P point;
-		double dist;
-		for (final CT innerShape : getBackendDataList()) {
-			point = innerShape.getClosestPointTo(multishape);
-			dist = multishape.getDistanceSquared(point);
+		var min = Double.POSITIVE_INFINITY;
+		final var closest = getGeomFactory().newPoint();
+		for (final var innerShape : getBackendDataList()) {
+			final var point = innerShape.getClosestPointTo(multishape);
+			final var dist = multishape.getDistanceSquared(point);
 			if (dist < min) {
 				min = dist;
 				closest.set(point);
@@ -555,8 +540,8 @@ public interface MultiShape2afp<
 				searchNext();
 			}
 			this.isMultiParts = list.size() > 1
-					|| (this.shapeIterator != null
-					&& this.shapeIterator.isMultiParts());
+					|| this.shapeIterator != null
+					&& this.shapeIterator.isMultiParts();
 			this.isPolygon = list.size() == 1
 					&& this.shapeIterator != null
 					&& this.shapeIterator.isPolygon();
@@ -583,7 +568,7 @@ public interface MultiShape2afp<
 		@Override
 		public IE next() {
 			assert this.next != null : AssertMessages.notNullParameter();
-			final IE elementToReturn = this.next;
+			final var elementToReturn = this.next;
 			searchNext();
 			return elementToReturn;
 		}

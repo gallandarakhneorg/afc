@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path with 2 double precision floating-point numbers.
  *
@@ -36,6 +35,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public abstract class PathElement2d implements PathElement2afp {
 
 	private static final long serialVersionUID = -9217295344283468162L;
@@ -175,7 +175,7 @@ public abstract class PathElement2d implements PathElement2afp {
 				return true;
 			}
 			if (getClass().isInstance(obj)) {
-				final PathElement2afp elt = (PathElement2afp) obj;
+				final var elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY();
@@ -186,7 +186,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.hashCode();
 			bits = 31L * bits + Double.hashCode(getToX());
 			bits = 31L * bits + Double.hashCode(getToY());
@@ -276,7 +276,7 @@ public abstract class PathElement2d implements PathElement2afp {
 				return true;
 			}
 			if (getClass().isInstance(obj)) {
-				final PathElement2afp elt = (PathElement2afp) obj;
+				final var elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -289,7 +289,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.hashCode();
 			bits = 31L * bits + Double.hashCode(getToX());
 			bits = 31L * bits + Double.hashCode(getToY());
@@ -302,8 +302,8 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
-						&& MathUtil.isEpsilonEqual(this.fromY, this.toY);
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
+						&& MathUtil.isEpsilonEqual(this.fromY, this.toY));
 			}
 			return this.isEmpty.booleanValue();
 		}
@@ -393,7 +393,7 @@ public abstract class PathElement2d implements PathElement2afp {
 				return true;
 			}
 			if (getClass().isInstance(obj)) {
-				final PathElement2afp elt = (PathElement2afp) obj;
+				final var elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -408,7 +408,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.hashCode();
 			bits = 31L * bits + Double.hashCode(getToX());
 			bits = 31L * bits + Double.hashCode(getToY());
@@ -423,10 +423,10 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
 						&& MathUtil.isEpsilonEqual(this.fromY, this.toY)
 						&& MathUtil.isEpsilonEqual(this.ctrlX, this.toX)
-						&& MathUtil.isEpsilonEqual(this.ctrlY, this.toY);
+						&& MathUtil.isEpsilonEqual(this.ctrlY, this.toY));
 			}
 			return this.isEmpty.booleanValue();
 		}
@@ -539,7 +539,7 @@ public abstract class PathElement2d implements PathElement2afp {
 				return true;
 			}
 			if (getClass().isInstance(obj)) {
-				final PathElement2afp elt = (PathElement2afp) obj;
+				final var elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -556,7 +556,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.hashCode();
 			bits = 31L * bits + Double.hashCode(getToX());
 			bits = 31L * bits + Double.hashCode(getToY());
@@ -573,12 +573,12 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
 						&& MathUtil.isEpsilonEqual(this.fromY, this.toY)
 						&& MathUtil.isEpsilonEqual(this.ctrlX1, this.toX)
 						&& MathUtil.isEpsilonEqual(this.ctrlY1, this.toY)
 						&& MathUtil.isEpsilonEqual(this.ctrlX2, this.toX)
-						&& MathUtil.isEpsilonEqual(this.ctrlY2, this.toY);
+						&& MathUtil.isEpsilonEqual(this.ctrlY2, this.toY));
 			}
 			return this.isEmpty.booleanValue();
 		}
@@ -688,7 +688,7 @@ public abstract class PathElement2d implements PathElement2afp {
 				return true;
 			}
 			if (getClass().isInstance(obj)) {
-				final PathElement2afp elt = (PathElement2afp) obj;
+				final var elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -701,7 +701,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.hashCode();
 			bits = 31L * bits + Double.hashCode(getToX());
 			bits = 31L * bits + Double.hashCode(getToY());
@@ -714,8 +714,8 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
-						&& MathUtil.isEpsilonEqual(this.fromY, this.toY);
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
+						&& MathUtil.isEpsilonEqual(this.fromY, this.toY));
 			}
 			return this.isEmpty.booleanValue();
 		}
@@ -823,7 +823,7 @@ public abstract class PathElement2d implements PathElement2afp {
                     return false;
                 }
 
-				final PathElement2afp elt = (PathElement2afp) obj;
+				final var elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -841,7 +841,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public int hashCode() {
-			long bits = 1L;
+			var bits = 1L;
 			bits = 31L * bits + this.type.hashCode();
 			bits = 31L * bits + Double.hashCode(getToX());
 			bits = 31L * bits + Double.hashCode(getToY());
@@ -857,8 +857,8 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
-						&& MathUtil.isEpsilonEqual(this.fromY, this.toY);
+				this.isEmpty = Boolean.valueOf(MathUtil.isEpsilonEqual(this.fromX, this.toX)
+						&& MathUtil.isEpsilonEqual(this.fromY, this.toY));
 			}
 			return this.isEmpty.booleanValue();
 		}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,9 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This is the generic implementation of a
  * tree for which each node has four children.
@@ -142,7 +141,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	 */
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		final N me = toN();
+		final var me = toN();
 		if (this.nNorthEast != null) {
 			this.nNorthEast.setParentNodeReference(me, false);
 		}
@@ -169,22 +168,22 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	@Override
 	public void clear() {
 		if (this.nNorthWest != null) {
-			final N child = this.nNorthWest;
+			final var child = this.nNorthWest;
 			setFirstChild(null);
 			child.clear();
 		}
 		if (this.nNorthEast != null) {
-			final N child = this.nNorthEast;
+			final var child = this.nNorthEast;
 			setSecondChild(null);
 			child.clear();
 		}
 		if (this.nSouthWest != null) {
-			final N child = this.nSouthWest;
+			final var child = this.nSouthWest;
 			setThirdChild(null);
 			child.clear();
 		}
 		if (this.nSouthEast != null) {
-			final N child = this.nSouthEast;
+			final var child = this.nSouthEast;
 			setFourthChild(null);
 			child.clear();
 		}
@@ -207,7 +206,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	@Override
 	@Pure
 	public N getChildAt(int index) throws IndexOutOfBoundsException {
-		final QuadTreeZone[] zones = QuadTreeZone.values();
+		final var zones = QuadTreeZone.values();
 		if (index >= 0 && index < zones.length) {
 			return getChildAt(zones[index]);
 		}
@@ -238,10 +237,10 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Set the first child of this node.
 	 *
 	 * @param newChild is the new child for the first zone
-	 * @return {@code true} on success, otherwhise {@code false}
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setFirstChild(N newChild) {
-		final N oldChild = this.nNorthWest;
+		final var oldChild = this.nNorthWest;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -253,7 +252,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -282,10 +281,10 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Set the second child of this node.
 	 *
 	 * @param newChild is the new child for the second zone
-	 * @return {@code true} on success, otherwhise {@code false}
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setSecondChild(N newChild) {
-		final N oldChild = this.nNorthEast;
+		final var oldChild = this.nNorthEast;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -297,7 +296,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -326,10 +325,10 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Set the third child of this node.
 	 *
 	 * @param newChild is the new child for the third zone
-	 * @return {@code true} on success, otherwhise {@code false}
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setThirdChild(N newChild) {
-		final N oldChild = this.nSouthWest;
+		final var oldChild = this.nSouthWest;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -341,7 +340,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -370,10 +369,10 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Set the Fourth child of this node.
 	 *
 	 * @param newChild is the new child for the fourth zone
-	 * @return {@code true} on success, otherwhise {@code false}
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setFourthChild(N newChild) {
-		final N oldChild = this.nSouthEast;
+		final var oldChild = this.nSouthEast;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -385,7 +384,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -439,7 +438,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
-		final QuadTreeZone[] zones = QuadTreeZone.values();
+		final var zones = QuadTreeZone.values();
 		if (index >= 0 && index < zones.length) {
 			return setChildAt(zones[index], newChild);
 		}
@@ -531,7 +530,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	@Override
 	@Pure
 	public int indexOf(N child) {
-		final QuadTreeZone zone = zoneOf(child);
+		final var zone = zoneOf(child);
 		if (zone == null) {
 			return -1;
 		}
@@ -563,7 +562,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	@Override
 	public void getChildren(Object[] array) {
 		if (array != null) {
-			final QuadTreeZone[] zones = QuadTreeZone.values();
+			final var zones = QuadTreeZone.values();
 			for (int i = 0; i < zones.length && i < array.length; ++i) {
 				array[i] = getChildAt(zones[i]);
 			}
@@ -645,7 +644,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 			if (index < 0) {
 				return null;
 			}
-			final QuadTreeZone[] nodes = values();
+			final var nodes = values();
 			if (index >= nodes.length) {
 				return null;
 			}

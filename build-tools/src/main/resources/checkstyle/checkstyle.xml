@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
-          "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
-          "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+          "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+          "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <!-- Checkstyle configuration that checks the AFC coding conventions. -->
-
 <module name="Checker">
 
-	<!-- Exclude module informatio file from the checked files. -->
+	<!-- Exclude module information file from the checked files. -->
 	<module name="BeforeExecutionExclusionFileFilter">
 	  <property name="fileNamePattern" value="module\-info\.java$"/>
 	</module>
@@ -29,9 +28,8 @@
 	</module>
 
 	<!-- Checks whether files end with a new line. -->
-	<module name="NewlineAtEndOfFile">
-		<property name="lineSeparator" value="lf_cr_crlf" />
-	</module>
+	<!-- Removed deprecated lineSeparator property; default behavior checks system line separator -->
+	<module name="NewlineAtEndOfFile" />
 
 	<!-- Checks that property files contain the same keys. -->
 	<module name="Translation" />
@@ -100,13 +98,13 @@
 		<!-- Allow documentation of RuntimeException exceptions that are not declared 
 			in throws. -->
 		<module name="JavadocMethod">
-			<property name="scope" value="package" />
+			<property name="accessModifiers" value="public, protected, package" />
 			<property name="validateThrows" value="true" />
 		</module>
 
 		<!-- Every public/protected/package fields must have a documentation. -->
 		<module name="JavadocVariable">
-			<property name="scope" value="package" />
+			<property name="accessModifiers" value="public, protected, package" />
 		</module>
 
 		<!-- All the @ clauses must be followed by a description. -->
@@ -116,12 +114,13 @@
 		<module name="JavadocTagContinuationIndentation" />
 
 		<!-- Enforce the first sentence of the javadoc. -->
-		<module name="SummaryJavadocCheck">
+		<!-- Renamed from SummaryJavadocCheck to SummaryJavadoc for Checkstyle 13.x -->
+		<module name="SummaryJavadoc">
 			<property name="forbiddenSummaryFragments"
 				value="^@return the *|^This method returns |^A [{]@code [a-zA-Z0-9]+[}]( is a )" />
 		</module>
 
-		<!-- Ensure every paragraphs is followed by a blank line. -->
+		<!-- Ensure every paragraph is followed by a blank line. -->
 		<module name="JavadocParagraph" />
 
 		<!-- Check the order of the @ clauses -->
@@ -250,7 +249,7 @@
 		<module name="CustomImportOrder">
 			<property name="customImportOrderRules"
 				value="STATIC###STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE###SPECIAL_IMPORTS" />
-			<property name="specialImportsRegExp" value="^org\.arakhne\." />
+			<property name="specialImportsRegExp" value="^org\.arakhnе\." />
 			<property name="sortImportsInGroupAlphabetically" value="true" />
 		</module>
 
@@ -262,17 +261,17 @@
 		</module>
 
 		<!-- Number of lines of code (not empty nor comments) in a method. -->
+		<!-- Removed deprecated countEmpty property -->
 		<module name="MethodLength">
 			<property name="tokens" value="METHOD_DEF" />
 			<property name="max" value="200" />
-			<property name="countEmpty" value="false" />
 		</module>
 
 		<!-- Number of lines of code (not empty nor comments) in a constructor. -->
+		<!-- Removed deprecated countEmpty property -->
 		<module name="MethodLength">
 			<property name="tokens" value="CTOR_DEF" />
 			<property name="max" value="60" />
-			<property name="countEmpty" value="false" />
 		</module>
 
 		<!-- Max number of parameters for a method. -->
@@ -318,7 +317,7 @@
 		<module name="NoWhitespaceBefore" />
 
 		<!-- In multiline operations (e.g. string concatenation), the operators 
-			are always at the begining of the lines. -->
+			are always at the beginning of the lines. -->
 		<module name="OperatorWrap" />
 
 		<!-- No space after a left parenthesis and before a right parenthesis. -->
@@ -400,7 +399,7 @@
 			as the following statement. -->
 		<module name="RightCurly" />
 
-		<!-- Braces are mandtory for literals (if-then, do, for, etc.) -->
+		<!-- Braces are mandatory for literals (if-then, do, for, etc.) -->
 		<module name="NeedBraces" />
 
 		<!-- *********************** *** Type Definition *** *********************** -->
@@ -408,7 +407,7 @@
 		<!-- Class with only private constructors must be final. -->
 		<module name="FinalClass" />
 
-		<!-- An interface must contains at least one method. Interface with only 
+		<!-- An interface must contain at least one method. Interface with only 
 			constants is forbidden. -->
 		<module name="InterfaceIsType" />
 
@@ -431,7 +430,7 @@
 		<module name="DeclarationOrder" />
 
 		<!-- If a function "equals(Something)" is defined, the function "equals(Object) 
-			must be overriden. -->
+			must be overridden. -->
 		<module name="CovariantEquals" />
 
 		<!-- If the equals() function is implemented; the hashCode() function must 
@@ -463,7 +462,7 @@
 		<!-- Only one statement per line. -->
 		<module name="OneStatementPerLine" />
 
-		<!-- Array definitions must have trailing comas. -->
+		<!-- Array definitions must have trailing commas. -->
 		<module name="ArrayTrailingComma" />
 
 		<!-- Assignment of the parameters is forbidden. -->
@@ -488,7 +487,7 @@
 			"fall through" is specified. -->
 		<module name="FallThrough" />
 
-		<!-- Default clause is switch statements is mandatory. -->
+		<!-- Default clause in switch statements is mandatory. -->
 		<module name="MissingSwitchDefault" />
 
 		<!-- Only one variable declaration per line (Java standards). -->
@@ -560,10 +559,10 @@
 		<!-- Ensure a package is declared for every type. -->
 		<module name="PackageDeclaration" />
 
-		<!-- Avoid unnecessray too complex boolean expressions. -->
+		<!-- Avoid unnecessarily too complex boolean expressions. -->
 		<module name="SimplifyBooleanExpression" />
 
-		<!-- Avoid unnecessray too complex boolean expressions in return statements. -->
+		<!-- Avoid unnecessarily too complex boolean expressions in return statements. -->
 		<module name="SimplifyBooleanReturn" />
 
 		<!-- Avoid the use of "==" and "!=" with String values. -->
@@ -628,7 +627,7 @@
 			<property name="max" value="6" />
 		</module>
 
-		<!-- Restrict the number of instanciation of other classes in a given type. -->
+		<!-- Restrict the number of instantiation of other classes in a given type. -->
 		<module name="ClassDataAbstractionCoupling">
 			<property name="max" value="15" />
 		</module>

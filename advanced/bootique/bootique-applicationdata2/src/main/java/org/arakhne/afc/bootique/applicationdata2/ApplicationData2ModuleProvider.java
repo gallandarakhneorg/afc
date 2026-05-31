@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,9 @@
 
 package org.arakhne.afc.bootique.applicationdata2;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import io.bootique.BQCoreModule;
-import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
 import io.bootique.di.BQModule;
-
 import org.arakhne.afc.bootique.applicationdata2.modules.ApplicationMetadata2Module;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Provider of a Bootique module for ApplicationData2.
  *
@@ -38,7 +31,10 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
+ * @deprecated since 18.0
  */
+@SuppressWarnings("removal")
+@Deprecated(since = "18.0")
 public class ApplicationData2ModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -46,7 +42,7 @@ public class ApplicationData2ModuleProvider implements BQModuleProvider {
 		return new ApplicationMetadata2Module();
 	}
 
-	@Override
+	/*@Override
 	public Collection<Class<? extends BQModule>> overrides() {
 		return Collections.singleton(BQCoreModule.class);
 	}
@@ -59,6 +55,6 @@ public class ApplicationData2ModuleProvider implements BQModuleProvider {
 				.providerName(name())
 				.configs(configs())
 				.description(Locale.getString("MODULE_DESCRIPTION")); //$NON-NLS-1$
-	}
+	}*/
 
 }

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,12 @@ package org.arakhne.afc.math.geometry.d3;
 
 import java.util.Collection;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Path.
  *
- * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @param <P> is the type of the points.
@@ -43,14 +41,13 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
  * @mavenartifactid $ArtifactId$
  */
 public interface Path3D<
-	ST extends Shape3D<?, ?, I, P, V, Q, B>,
-	IT extends Shape3D<?, ?, I, P, V, Q, B>,
+	IT extends Shape3D<?, I, P, V, Q, B>,
 	I extends PathIterator3D<?>,
 	P extends Point3D<? super P, ? super V, ? super Q>,
 	V extends Vector3D<? super V, ? super P, ? super Q>,
 	Q extends Quaternion<? super P, ? super V, ? super Q>,
-	B extends Shape3D<?, ?, I, P, V, Q, B>>
-	extends Shape3D<ST, IT, I, P, V, Q, B> {
+	B extends Shape3D<?, I, P, V, Q, B>>
+	extends Shape3D<IT, I, P, V, Q, B> {
 
 	/** Replies the winding rule for the path.
 	 *

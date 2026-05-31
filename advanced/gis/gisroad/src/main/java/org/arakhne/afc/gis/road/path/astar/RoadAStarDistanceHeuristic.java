@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,9 @@
 
 package org.arakhne.afc.gis.road.path.astar;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.graph.astar.AStarHeuristic;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class implements a euclidian distance heuristic
  * for the {@link RoadAStar A* algorithm}.
@@ -41,8 +39,8 @@ public class RoadAStarDistanceHeuristic implements AStarHeuristic<RoadConnection
 	@Pure
 	public double evaluate(RoadConnection p1, RoadConnection p2) {
 		assert p1 != null && p2 != null;
-		final Point2d position1 = p1.getWrappedRoadConnection().getPoint();
-		final Point2d position2 = p2.getWrappedRoadConnection().getPoint();
+		final var position1 = p1.getWrappedRoadConnection().getPoint();
+		final var position2 = p2.getWrappedRoadConnection().getPoint();
 		assert position1 != null && position2 != null;
 		return position1.getDistance(position2);
 	}

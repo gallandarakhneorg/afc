@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,6 @@ public interface Progression {
 	 */
 	int getMinimum();
 
-
 	/** Sets the model's minimum to <I>newMinimum</I>. The
 	 * other properties may be changed as well, to ensure
 	 * that:
@@ -63,7 +62,6 @@ public interface Progression {
 	 */
 	void setMinimum(int newMinimum);
 
-
 	/**
 	 * Returns the model's maximum.
 	 *
@@ -71,7 +69,6 @@ public interface Progression {
 	 * @see #setMaximum
 	 */
 	int getMaximum();
-
 
 	/**
 	 * Sets the model's maximum to <I>newMaximum</I>. The other
@@ -84,7 +81,6 @@ public interface Progression {
 	 * @see #getMaximum
 	 */
 	void setMaximum(int newMaximum);
-
 
 	/**
 	 * Returns the model's current value.  Note that the upper
@@ -157,7 +153,6 @@ public interface Progression {
 	 * @see #subTask(int)
 	 */
 	void setAdjusting(boolean adjusting);
-
 
 	/**
 	 * Returns true if the current changes to the value property are part
@@ -385,9 +380,9 @@ public interface Progression {
 	/** Increment the current value by the given amount.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * this.setValue(this.getValue()+amount);
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param amount is the amount to add to the current value.
 	 * @since 11.0
@@ -397,9 +392,9 @@ public interface Progression {
 	/** Increment the current value by the given amount.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * this.setValue(this.getValue()+amount, comment);
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param amount is the amount to add to the current value.
 	 * @param comment is the comment to display.
@@ -410,9 +405,9 @@ public interface Progression {
 	/** Increment the current value by 1.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * this.setValue(this.getValue()+1);
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @since 11.0
 	 */
@@ -421,9 +416,9 @@ public interface Progression {
 	/** Increment the current value by 1.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * this.setValue(this.getValue()+1, comment);
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param comment is the comment to display.
 	 * @since 11.0

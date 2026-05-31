@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /**
  * This interface describes an object that permits to classify intersection
  * between objects and planes.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -46,7 +46,7 @@ public interface PlaneClassifier {
 
 	/**
 	 * Classifies a point with respect to the plane.
-	 * 
+	 *
 	 * @param point the point to classify.
 	 * @return the classification
 	 */
@@ -58,7 +58,7 @@ public interface PlaneClassifier {
 
 	/**
 	 * Classifies a point with respect to the plane.
-	 * 
+	 *
 	 * @param x x component of the point.
 	 * @param y y component of the point.
 	 * @param z z component of the point.
@@ -69,7 +69,7 @@ public interface PlaneClassifier {
 
 	/**
 	 * Classifies a box with respect to the plane.
-	 * 
+	 *
 	 * @param lx x component of the minimum point of the box.
 	 * @param ly y component of the minimum point of the box.
 	 * @param lz z component of the minimum point of the box.
@@ -83,7 +83,7 @@ public interface PlaneClassifier {
 
 	/**
 	 * Classifies a sphere with respect to the plane.
-	 * 
+	 *
 	 * @param x x component of the sphere center.
 	 * @param y y component of the sphere center.
 	 * @param z z component of the sphere center.
@@ -106,7 +106,7 @@ public interface PlaneClassifier {
 
 	/**
 	 * Replies if the given point is intersecting the plane.
-	 * 
+	 *
 	 * @param point the point to test.
 	 * @return {@code true} if intersection, otherwise {@code false}
 	 */
@@ -117,7 +117,7 @@ public interface PlaneClassifier {
 
 	/**
 	 * Replies if the given point is intersecting the plane.
-	 * 
+	 *
 	 * @param x x component of the point.
 	 * @param y y component of the point.
 	 * @param z z component of the point.
@@ -130,7 +130,7 @@ public interface PlaneClassifier {
 
 	/**
 	 * Replies if the given box is intersecting the plane.
-	 * 
+	 *
 	 * @param lx x component of the minimum point of the box.
 	 * @param ly y component of the minimum point of the box.
 	 * @param lz z component of the minimum point of the box.
@@ -146,7 +146,7 @@ public interface PlaneClassifier {
 
 	/**
 	 * Replies if the given sphere is intersecting the plane.
-	 * 
+	 *
 	 * @param x x component of the sphere center.
 	 * @param y y component of the sphere center.
 	 * @param z z component of the sphere center.

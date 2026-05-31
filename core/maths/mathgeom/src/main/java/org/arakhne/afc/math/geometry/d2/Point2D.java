@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Point.
  *
@@ -108,8 +107,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
     @Pure
     @Inline(value = "(($1)-($3))*(($1)-($3)) + (($2)-($4))*(($2)-($4))")
     static double getDistanceSquaredPointPoint(double x1, double y1, double x2, double y2) {
-        final double dx = x1 - x2;
-        final double dy = y1 - y2;
+        final var dx = x1 - x2;
+        final var dy = y1 - y2;
         return dx * dx + dy * dy;
     }
 
@@ -419,6 +418,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      * @see #add(Vector2D)
      */
     @XtextOperator("+=")
+    @Inline("add($1)")
     default void operator_add(Vector2D<?, ?> v) {
         add(v);
     }
@@ -486,6 +486,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      * @see #sub(Vector2D)
      */
     @XtextOperator("-=")
+    @Inline("sub($1)")
     default void operator_remove(Vector2D<?, ?> v) {
         sub(v);
     }
@@ -502,6 +503,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @XtextOperator("==")
+    @Inline("equals($1)")
     default boolean operator_equals(Tuple2D<?> v) {
         return equals(v);
     }
@@ -534,6 +536,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @XtextOperator("..")
+    @Inline("getDistance($1)")
     default double operator_upTo(Point2D<?, ?> pt) {
         return getDistance(pt);
     }
@@ -599,6 +602,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @ScalaOperator("+")
+    @Inline("operator_plus($1)")
     default RP $plus(Vector2D<?, ?> v) {
         return operator_plus(v);
     }
@@ -618,6 +622,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @ScalaOperator("+")
+    @Inline("operator_plus($1)")
     default RP $plus(double scalar) {
         return operator_plus(scalar);
     }
@@ -633,6 +638,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @ScalaOperator("-")
+    @Inline("operator_minus($1)")
     default RP $minus(Vector2D<?, ?> v) {
         return operator_minus(v);
     }
@@ -652,6 +658,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @ScalaOperator("-")
+    @Inline("operator_minus($1)")
     default RP $minus(double scalar) {
         return operator_minus(scalar);
     }
@@ -667,6 +674,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @ScalaOperator("-")
+    @Inline("operator_minus($1)")
     default RV $minus(Point2D<?, ?> pt) {
         return operator_minus(pt);
     }
@@ -682,6 +690,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @ScalaOperator("&&")
+    @Inline("operator_and($1)")
     default boolean $amp$amp(Shape2D<?, ?, ?, ?, ?, ?> shape) {
         return operator_and(shape);
     }
@@ -717,10 +726,10 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     default void turn(double angle, Point2D<?, ?> pointToTurn) {
         assert pointToTurn != null : AssertMessages.notNullParameter(1);
-        final double sin = Math.sin(angle);
-        final double cos = Math.cos(angle);
-        final double x =  cos * pointToTurn.getX() - sin * pointToTurn.getY();
-        final double y =  sin * pointToTurn.getX() + cos * pointToTurn.getY();
+        final var sin = Math.sin(angle);
+        final var cos = Math.cos(angle);
+        final var x =  cos * pointToTurn.getX() - sin * pointToTurn.getY();
+        final var y =  sin * pointToTurn.getX() + cos * pointToTurn.getY();
         set(x, y);
     }
 
@@ -742,12 +751,12 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
     default void turn(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
         assert pointToTurn != null : AssertMessages.notNullParameter(1);
         assert origin != null : AssertMessages.notNullParameter(2);
-        final double sin = Math.sin(angle);
-        final double cos = Math.cos(angle);
-        final double vx = pointToTurn.getX() - origin.getX();
-        final double vy = pointToTurn.getY() - origin.getY();
-        final double x =  cos * vx - sin * vy;
-        final double y =  sin * vx + cos * vy;
+        final var sin = Math.sin(angle);
+        final var cos = Math.cos(angle);
+        final var vx = pointToTurn.getX() - origin.getX();
+        final var vy = pointToTurn.getY() - origin.getY();
+        final var x =  cos * vx - sin * vy;
+        final var y =  sin * vx + cos * vy;
         set(x + origin.getX(), y + origin.getY());
     }
 
@@ -781,8 +790,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     default void turnLeft(double angle, Point2D<?, ?> pointToTurn) {
         assert pointToTurn != null : AssertMessages.notNullParameter(1);
-        final double sin = Math.sin(angle);
-        final double cos = Math.cos(angle);
+        final var sin = Math.sin(angle);
+        final var cos = Math.cos(angle);
         final double x;
         final double y;
         if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
@@ -812,10 +821,10 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
     default void turnLeft(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
         assert pointToTurn != null : AssertMessages.notNullParameter(1);
         assert origin != null : AssertMessages.notNullParameter(2);
-        final double sin = Math.sin(angle);
-        final double cos = Math.cos(angle);
-        final double vx = pointToTurn.getX() - origin.getX();
-        final double vy = pointToTurn.getY() - origin.getY();
+        final var sin = Math.sin(angle);
+        final var cos = Math.cos(angle);
+        final var vx = pointToTurn.getX() - origin.getX();
+        final var vy = pointToTurn.getY() - origin.getY();
         final double x;
         final double y;
         if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {

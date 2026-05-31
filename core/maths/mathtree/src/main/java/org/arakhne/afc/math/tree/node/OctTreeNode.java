@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,9 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This is the generic implementation of a
  * tree for which each node has eight children.
@@ -165,7 +164,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		final N me = toN();
+		final var me = toN();
 		if (this.child1 != null) {
 			this.child1.setParentNodeReference(me, false);
 		}
@@ -205,42 +204,42 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	public void clear() {
 		if (this.child1 != null) {
-			final N child = this.child1;
+			final var child = this.child1;
 			setChildAt(0, null);
 			child.clear();
 		}
 		if (this.child2 != null) {
-			final N child = this.child2;
+			final var child = this.child2;
 			setChildAt(1, null);
 			child.clear();
 		}
 		if (this.child3 != null) {
-			final N child = this.child3;
+			final var child = this.child3;
 			setChildAt(2, null);
 			child.clear();
 		}
 		if (this.child4 != null) {
-			final N child = this.child4;
+			final var child = this.child4;
 			setChildAt(3, null);
 			child.clear();
 		}
 		if (this.child5 != null) {
-			final N child = this.child5;
+			final var child = this.child5;
 			setChildAt(4, null);
 			child.clear();
 		}
 		if (this.child6 != null) {
-			final N child = this.child6;
+			final var child = this.child6;
 			setChildAt(5, null);
 			child.clear();
 		}
 		if (this.child7 != null) {
-			final N child = this.child7;
+			final var child = this.child7;
 			setChildAt(6, null);
 			child.clear();
 		}
 		if (this.child8 != null) {
-			final N child = this.child8;
+			final var child = this.child8;
 			setChildAt(7, null);
 			child.clear();
 		}
@@ -298,8 +297,8 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 	 */
 	@Pure
 	public final OctTreeZone zoneOf(N child) {
-		final int idx = indexOf(child);
-		final OctTreeZone[] zones = OctTreeZone.values();
+		final var idx = indexOf(child);
+		final var zones = OctTreeZone.values();
 		if (idx < 0 || idx >= zones.length) {
 			return zones[idx];
 		}
@@ -405,7 +404,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 
 	@Override
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:magicnumber"})
+		"checkstyle:magicnumber"})
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		switch (index) {
 		case 0:
@@ -527,7 +526,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -561,7 +560,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -595,7 +594,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -629,7 +628,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -665,7 +664,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -701,7 +700,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -737,7 +736,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -773,7 +772,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -956,7 +955,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 			if (index < 0) {
 				return null;
 			}
-			final OctTreeZone[] nodes = values();
+			final var nodes = values();
 			if (index >= nodes.length) {
 				return null;
 			}

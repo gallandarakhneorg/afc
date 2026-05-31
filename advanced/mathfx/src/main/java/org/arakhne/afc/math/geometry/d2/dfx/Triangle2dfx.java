@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +26,12 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleObjectProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A triangle with 2 double precision floating-point FX properties.
  *
@@ -119,7 +118,7 @@ public class Triangle2dfx
 
 	@Override
 	public Triangle2dfx clone() {
-		final Triangle2dfx clone = super.clone();
+		final var clone = super.clone();
 		if (clone.p1 != null) {
 			clone.p1 = null;
 			clone.p1 = this.p1.clone();
@@ -140,14 +139,14 @@ public class Triangle2dfx
 	@Override
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(getX1());
 		bits = 31 * bits + Double.hashCode(getY1());
 		bits = 31 * bits + Double.hashCode(getX2());
 		bits = 31 * bits + Double.hashCode(getY2());
 		bits = 31 * bits + Double.hashCode(getX3());
 		bits = 31 * bits + Double.hashCode(getY3());
-        return bits ^ (bits >> 31);
+        return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
@@ -156,14 +155,14 @@ public class Triangle2dfx
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		final Point2dfx point = getGeomFactory().newPoint(getX1(), getY1());
+		final var point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
-		final double x1 = point.getX();
-		final double y1 = point.getY();
+		final var x1 = point.getX();
+		final var y1 = point.getY();
 		point.set(getX2(), getY2());
 		transform.transform(point);
-		final double x2 = point.getX();
-		final double y2 = point.getY();
+		final var x2 = point.getX();
+		final var y2 = point.getY();
 		point.set(getX3(), getY3());
 		transform.transform(point);
 		return getGeomFactory().newTriangle(x1, y1, x2, y2, point.getX(), point.getY());
@@ -298,7 +297,7 @@ public class Triangle2dfx
 		return ccwProperty().get();
 	}
 
-	/** Replies the property that indictes if the triangle's points are defined in a counter-clockwise order.
+	/** Replies the property that indicates if the triangle's points are defined in a counter-clockwise order.
 	 *
 	 * @return the ccw property.
 	 */
@@ -307,9 +306,9 @@ public class Triangle2dfx
 		if (this.ccw == null) {
 			this.ccw = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.CCW);
 			this.ccw.bind(Bindings.createBooleanBinding(() ->
-				Triangle2afp.isCCW(
+				Boolean.valueOf(Triangle2afp.isCCW(
 						getX1(), getY1(), getX2(), getY2(),
-						getX3(), getY3()),
+						getX3(), getY3())),
 					x1Property(), y1Property(),
 					x2Property(), y2Property(),
 					x3Property(), y3Property()));

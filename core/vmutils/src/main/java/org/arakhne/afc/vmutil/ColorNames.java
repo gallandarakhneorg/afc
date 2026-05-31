@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,13 @@ package org.arakhne.afc.vmutil;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Utilities for retrieving color values from a color name.
@@ -464,19 +461,15 @@ public final class ColorNames {
 
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static Map<String, Integer> initializeColors() {
-		final Map<String, Integer> map = new TreeMap<>();
-		final String colors = Locale.getString(ColorNames.class, "COLOR_MATCHES"); //$NON-NLS-1$
+		final var map = new TreeMap<String, Integer>();
+		final var colors = Locale.getString(ColorNames.class, "COLOR_MATCHES"); //$NON-NLS-1$
 		if (colors != null) {
-			final Pattern pattern = Pattern.compile(COLOR_DEFINITION_PATTERN);
-			for (final String definition : colors.split(EOL_PATTERN)) {
-				final Matcher matcher = pattern.matcher(definition);
+			final var pattern = Pattern.compile(COLOR_DEFINITION_PATTERN);
+			for (final var definition : colors.split(EOL_PATTERN)) {
+				final var matcher = pattern.matcher(definition);
 				if (matcher.matches()) {
 					map.put(matcher.group(1).toLowerCase(),
-							encodeRgbaColor(
-									Integer.parseInt(matcher.group(2)),
-									Integer.parseInt(matcher.group(3)),
-									Integer.parseInt(matcher.group(4)),
-									Integer.parseInt(matcher.group(5))));
+							encodeRgbaColor(matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5)));
 				}
 			}
 		}
@@ -504,11 +497,11 @@ public final class ColorNames {
 	}
 
 	@SuppressWarnings("checkstyle:magicnumber")
-	private static int encodeRgbaColor(int red, int green, int blue, int alpha) {
-		int col = (alpha & 0xFF) << 24;
-		col |= (red & 0xFF) << 16;
-		col |= (green & 0xFF) << 8;
-		col |= blue & 0xFF;
+	private static Integer encodeRgbaColor(String red, String green, String blue, String alpha) {
+		var col = (Integer.parseInt(alpha) & 0xFF) << 24;
+		col |= (Integer.parseInt(red) & 0xFF) << 16;
+		col |= (Integer.parseInt(green) & 0xFF) << 8;
+		col |= Integer.parseInt(blue) & 0xFF;
 		return Integer.valueOf(col);
 	}
 
@@ -540,7 +533,7 @@ public final class ColorNames {
 	 */
 	@Pure
 	public static int getColorFromName(String colorName, int defaultValue) {
-		final Integer value = COLOR_MATCHES.get(Strings.nullToEmpty(colorName).toLowerCase());
+		final var value = COLOR_MATCHES.get(Strings.nullToEmpty(colorName).toLowerCase());
 		if (value != null) {
 			return value.intValue();
 		}
@@ -568,8 +561,8 @@ public final class ColorNames {
 	 */
 	@Pure
 	public static String getColorNameFromValue(int colorValue) {
-		for (final Entry<String, Integer> entry : COLOR_MATCHES.entrySet()) {
-			final int knownValue = entry.getValue().intValue();
+		for (final var entry : COLOR_MATCHES.entrySet()) {
+			final var knownValue = entry.getValue().intValue();
 			if (colorValue == knownValue) {
 				return entry.getKey();
 			}

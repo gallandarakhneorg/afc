@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,15 +24,14 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Vector with 2 double precision floating-point FX properties.
  *
@@ -132,8 +131,8 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 	 * @since 14.0
 	 */
 	public static Vector2dfx convert(Tuple2D<?> tuple) {
-		if (tuple instanceof Vector2dfx) {
-			return (Vector2dfx) tuple;
+		if (tuple instanceof Vector2dfx tuple0) {
+			return tuple0;
 		}
 		return new Vector2dfx(tuple.getX(), tuple.getY());
 	}
@@ -152,7 +151,7 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 
 	@Override
 	public Vector2dfx clone() {
-		final Vector2dfx clone = super.clone();
+		final var clone = super.clone();
 		clone.lengthSquareProperty = null;
 		clone.lengthProperty = null;
 		return clone;
@@ -171,7 +170,7 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 		if (this.lengthProperty == null) {
 			this.lengthProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH);
 			this.lengthProperty.bind(Bindings.createDoubleBinding(() ->
-					Math.sqrt(lengthSquaredProperty().doubleValue()), lengthSquaredProperty()));
+					Double.valueOf(Math.sqrt(lengthSquaredProperty().doubleValue())), lengthSquaredProperty()));
 		}
 		return this.lengthProperty.getReadOnlyProperty();
 	}
@@ -189,8 +188,8 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 		if (this.lengthSquareProperty == null) {
 			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH_SQUARED);
 			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() ->
-				Vector2dfx.this.x.doubleValue() * Vector2dfx.this.x.doubleValue()
-						+ Vector2dfx.this.y.doubleValue() * Vector2dfx.this.y.doubleValue(), this.x, this.y));
+				Double.valueOf(Vector2dfx.this.x.doubleValue() * Vector2dfx.this.x.doubleValue()
+						+ Vector2dfx.this.y.doubleValue() * Vector2dfx.this.y.doubleValue()), this.x, this.y));
 		}
 		return this.lengthSquareProperty.getReadOnlyProperty();
 	}

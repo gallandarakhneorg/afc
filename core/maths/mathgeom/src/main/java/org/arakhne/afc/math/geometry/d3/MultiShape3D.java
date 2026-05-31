@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,16 +26,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
  *
  * <p>The coordinates of the shapes inside the multishape are global. They are not relative to the multishape.
  *
- * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this multishape.
  * @param <CT> is the type of the shapes that are inside this multishape.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
@@ -50,14 +48,14 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  */
 public interface MultiShape3D<
-ST extends Shape3D<?, ?, I, P, V, Q, B>,
-IT extends MultiShape3D<?, ?, CT, I, P, V, Q, B>,
-CT extends Shape3D<?, ?, I, P, V, Q, B>,
-I extends PathIterator3D<?>,
-P extends Point3D<? super P, ? super V, ? super Q>,
-V extends Vector3D<? super V, ? super P, ? super Q>,
-Q extends Quaternion<? super P, ? super V, ? super Q>,
-B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, List<CT> {
+		IT extends MultiShape3D<?, CT, I, P, V, Q, B>,
+		CT extends Shape3D<?, I, P, V, Q, B>,
+		I extends PathIterator3D<?>,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends Shape3D<?, I, P, V, Q, B>>
+	extends Shape3D<IT, I, P, V, Q, B>, List<CT> {
 
 	/** Get the first shape in this multishape that is containing the given point.
 	 *
@@ -68,7 +66,7 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	default CT getFirstShapeContaining(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		if (toBoundingBox().contains(point)) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.contains(point)) {
 					return shape;
 				}
@@ -86,9 +84,9 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	@Unefficient
 	default List<CT> getShapesContaining(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		final List<CT> list = new ArrayList<>();
+		final var list = new ArrayList<CT>();
 		if (toBoundingBox().contains(point)) {
-			for (final CT shape : getBackendDataList()) {
+			for (final var shape : getBackendDataList()) {
 				if (shape.contains(point)) {
 					list.add(shape);
 				}
@@ -103,7 +101,7 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	 * @return the shape, or {@code null} if no shape intersecting the given shape.
 	 */
 	@Pure
-	CT getFirstShapeIntersecting(ST shape);
+	CT getFirstShapeIntersecting(Shape3D<?, ?, ?, ?, ?, ?> shape);
 
 	/** Get the shapes in this multishape that are intersecting the given shape.
 	 *
@@ -111,7 +109,7 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	 * @return the shapes, or an empty list.
 	 */
 	@Pure
-	List<CT> getShapesIntersecting(ST shape);
+	List<CT> getShapesIntersecting(Shape3D<?, ?, ?, ?, ?, ?> shape);
 
 	/** Replies the list that contains the backend data.
 	 *
@@ -132,7 +130,7 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	@Override
 	default void set(IT multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
-		final List<CT> backend = getBackendDataList();
+		final var backend = getBackendDataList();
 		backend.clear();
 		backend.addAll(multishape.getBackendDataList());
 		onBackendDataChange();
@@ -140,7 +138,7 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 
 	@Override
 	default CT set(int index, CT element) {
-		final CT old = getBackendDataList().set(index, element);
+		final var old = getBackendDataList().set(index, element);
 		onBackendDataChange();
 		return old;
 	}
@@ -173,10 +171,10 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	@Override
 	default P getClosestPointTo(Point3D<?, ?, ?> point) {
 		P closestPoint = null;
-		double minDist = Double.POSITIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final P close = shape.getClosestPointTo(point);
-			final double dist = close.getDistanceSquared(point);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var close = shape.getClosestPointTo(point);
+			final var dist = close.getDistanceSquared(point);
 			if (dist < minDist) {
 				minDist = dist;
 				closestPoint = close;
@@ -189,10 +187,10 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?, ?> point) {
 		P farthestPoint = null;
-		double maxDist = Double.NEGATIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final P far = shape.getFarthestPointTo(point);
-			final double dist = far.getDistanceSquared(point);
+		var maxDist = Double.NEGATIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var far = shape.getFarthestPointTo(point);
+			final var dist = far.getDistanceSquared(point);
 			if (dist > maxDist) {
 				maxDist = dist;
 				farthestPoint = far;
@@ -204,9 +202,9 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	@Pure
 	@Override
 	default double getDistanceSquared(Point3D<?, ?, ?> point) {
-		double minDist = Double.POSITIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final double dist = shape.getDistanceSquared(point);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var dist = shape.getDistanceSquared(point);
 			if (dist < minDist) {
 				minDist = dist;
 			}
@@ -217,9 +215,9 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?, ?> point) {
-		double minDist = Double.POSITIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final double dist = shape.getDistanceL1(point);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var dist = shape.getDistanceL1(point);
 			if (dist < minDist) {
 				minDist = dist;
 			}
@@ -230,9 +228,9 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?, ?> point) {
-		double minDist = Double.POSITIVE_INFINITY;
-		for (final CT shape : getBackendDataList()) {
-			final double dist = shape.getDistanceLinf(point);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : getBackendDataList()) {
+			final var dist = shape.getDistanceLinf(point);
 			if (dist < minDist) {
 				minDist = dist;
 			}
@@ -295,7 +293,7 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 
 	@Override
 	default CT remove(int index) {
-		final CT removed = getBackendDataList().remove(index);
+		final var removed = getBackendDataList().remove(index);
 		onBackendDataChange();
 		return removed;
 	}
@@ -382,11 +380,12 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	 * @return the Geogebra representation of the multishape.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
-		final StringBuilder geogebra = new StringBuilder();
-		for (final CT shape : this) {
+		final var geogebra = new StringBuilder();
+		for (final var shape : this) {
 			if (geogebra.length() > 0) {
-				geogebra.append("\n");
+				geogebra.append("\n"); //$NON-NLS-1$
 			}
 			geogebra.append(shape.toGeogebra());
 		}
@@ -402,9 +401,9 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class BackendIterator<CT extends Shape3D<?, ?, ?, ?, ?, ?, ?>> implements ListIterator<CT> {
+	class BackendIterator<CT extends Shape3D<?, ?, ?, ?, ?, ?>> implements ListIterator<CT> {
 
-		private final MultiShape3D<?, ?, CT, ?, ?, ?, ?, ?> backend;
+		private final MultiShape3D<?, CT, ?, ?, ?, ?, ?> backend;
 
 		private final ListIterator<CT> iterator;
 
@@ -412,7 +411,7 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 		 * @param backend the associated backend.
 		 * @param iterator the original iterator.
 		 */
-		public BackendIterator(MultiShape3D<?, ?, CT, ?, ?, ?, ?, ?> backend, ListIterator<CT> iterator) {
+		public BackendIterator(MultiShape3D<?, CT, ?, ?, ?, ?, ?> backend, ListIterator<CT> iterator) {
 			assert backend != null : AssertMessages.notNullParameter();
 			assert iterator != null : AssertMessages.notNullParameter();
 			this.backend = backend;
@@ -482,9 +481,9 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class BackendList<CT extends Shape3D<?, ?, ?, ?, ?, ?, ?>> implements List<CT> {
+	class BackendList<CT extends Shape3D<?, ?, ?, ?, ?, ?>> implements List<CT> {
 
-		private final MultiShape3D<?, ?, CT, ?, ?, ?, ?, ?> backend;
+		private final MultiShape3D<?, CT, ?, ?, ?, ?, ?> backend;
 
 		private final List<CT> list;
 
@@ -492,7 +491,7 @@ B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, 
 		 * @param backend the associated backend.
 		 * @param list the original list.
 		 */
-		public BackendList(MultiShape3D<?, ?, CT, ?, ?, ?, ?, ?> backend, List<CT> list) {
+		public BackendList(MultiShape3D<?, CT, ?, ?, ?, ?, ?> backend, List<CT> list) {
 			assert backend != null : AssertMessages.notNullParameter();
 			assert list != null : AssertMessages.notNullParameter();
 			this.backend = backend;

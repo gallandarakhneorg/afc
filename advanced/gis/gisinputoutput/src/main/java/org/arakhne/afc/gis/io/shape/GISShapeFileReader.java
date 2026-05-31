@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,9 @@ import static org.arakhne.afc.gis.io.shape.GISShapeFileConstants.UUID_ATTR;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.util.UUID;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeNotInitializedException;
@@ -46,7 +43,6 @@ import org.arakhne.afc.gis.mapelement.MapMultiPoint;
 import org.arakhne.afc.gis.mapelement.MapPoint;
 import org.arakhne.afc.gis.mapelement.MapPolygon;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
-import org.arakhne.afc.gis.mapelement.PointFusionValidator;
 import org.arakhne.afc.io.dbase.DBaseFileReader;
 import org.arakhne.afc.io.dbase.attr.DBaseFileAttributePool;
 import org.arakhne.afc.io.shape.AbstractShapeFileReader;
@@ -55,6 +51,7 @@ import org.arakhne.afc.io.shape.ShapeElementType;
 import org.arakhne.afc.io.shape.ShapeFileIndexReader;
 import org.arakhne.afc.io.shape.ShapeMultiPatchType;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Reader of GIS elements from an ESRi shapefile.
  *
@@ -712,9 +709,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	 * @return the uuid if found or {@code null} if none.
 	 */
 	protected static UUID extractUUID(AttributeProvider provider) {
-		AttributeValue value;
-
-		value = provider.getAttribute(UUID_ATTR);
+		var value = provider.getAttribute(UUID_ATTR);
 		if (value != null) {
 			try {
 				return value.getUUID();
@@ -744,7 +739,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 		if (this.dbaseURL != null) {
 			// The argument has values in [1;size]
 			// The Dbase attribute pool uses indexes in [0;size)
-			final int dbIndex = elementIndex - 1;
+			final var dbIndex = elementIndex - 1;
 			return DBaseFileAttributePool.getCollection(this.dbaseURL, dbIndex);
 		}
 		return new HeapAttributeCollection();
@@ -754,13 +749,13 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	private <TT extends MapElement> TT createObjectInstance(UUID id,
 			AttributeCollection provider, Class<TT> type) {
 		MapElement elt = null;
-		final Class<? extends MapElement> elementType = getMapElementType();
+		final var elementType = getMapElementType();
 		if (elementType != null) {
 			if (!type.isAssignableFrom(elementType)) {
 				throw new RuntimeException("unable to create an instance of " + type.getName()); //$NON-NLS-1$
 			}
 			try {
-				final Constructor<? extends MapElement> cons = elementType.getConstructor(UUID.class,
+				final var cons = elementType.getConstructor(UUID.class,
 						AttributeCollection.class);
 				elt = cons.newInstance(id, provider);
 			} catch (Throwable exception) {
@@ -768,7 +763,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 			}
 			if (elt == null) {
 				try {
-					final Constructor<? extends MapElement> cons = elementType.getConstructor(AttributeCollection.class);
+					final var cons = elementType.getConstructor(AttributeCollection.class);
 					elt = cons.newInstance(provider);
 				} catch (Throwable exception) {
 					//
@@ -776,7 +771,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 			}
 			if (elt == null) {
 				try {
-					final Constructor<? extends MapElement> cons = elementType.getConstructor(UUID.class);
+					final var cons = elementType.getConstructor(UUID.class);
 					elt = cons.newInstance(id);
 				} catch (Throwable exception) {
 					//
@@ -798,11 +793,11 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 
 	private void doProjection(ESRIPoint point, Point2d proj) {
 		assert this.mapProjection != null;
-		final MapMetricProjection def = MapMetricProjection.getDefault();
+		final var def = MapMetricProjection.getDefault();
 		proj.setX(point.getX());
 		proj.setY(point.getY());
 		if (this.mapProjection != def) {
-			final Point2d c = this.mapProjection.convertTo(def, proj);
+			final var c = this.mapProjection.convertTo(def, proj);
 			if (c != proj) {
 				proj.setX(c.getX());
 				proj.setY(c.getY());
@@ -812,13 +807,13 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 
 	@Override
 	protected MapElement createMultiPoint(AttributeCollection provider, int shapeIndex, ESRIPoint[] points, boolean hasZ) {
-		final UUID id = extractUUID(provider);
-		MapMultiPoint elt = createObjectInstance(id, provider, MapMultiPoint.class);
+		final var id = extractUUID(provider);
+		var elt = createObjectInstance(id, provider, MapMultiPoint.class);
 		if (elt == null) {
 			elt = new MapMultiPoint(id, provider);
 		}
-		final Point2d proj = new Point2d();
-		for (final ESRIPoint p : points) {
+		final var proj = new Point2d();
+		for (final var p : points) {
 			doProjection(p, proj);
 			elt.addPoint(proj.getX(), proj.getY());
 		}
@@ -827,9 +822,9 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 
 	@Override
 	protected MapElement createPoint(AttributeCollection provider, int shape_index, ESRIPoint point) {
-		final UUID id = extractUUID(provider);
-		MapPoint elt = createObjectInstance(id, provider, MapPoint.class);
-		final Point2d proj = new Point2d();
+		final var id = extractUUID(provider);
+		var elt = createObjectInstance(id, provider, MapPoint.class);
+		final var proj = new Point2d();
 		doProjection(point, proj);
 		if (elt == null) {
 			elt = new MapPoint(id, provider, proj.getX(), proj.getY());
@@ -842,26 +837,26 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	@Override
 	protected MapElement createPolygon(AttributeCollection provider, int shapeIndex, int[] parts,
 			ESRIPoint[] points, boolean hasZ) {
-		final UUID id = extractUUID(provider);
-		MapPolygon elt = createObjectInstance(id, provider, MapPolygon.class);
+		final var id = extractUUID(provider);
+		var elt = createObjectInstance(id, provider, MapPolygon.class);
 		if (elt == null) {
 			elt = new MapPolygon(id, provider);
 		}
 
-		final PointFusionValidator validator = elt.getPointFusionValidator();
+		final var validator = elt.getPointFusionValidator();
 
-		final Point2d proj = new Point2d();
+		final var proj = new Point2d();
 
-		for (int i = 0; i < parts.length; ++i) {
-			final int start = parts[i];
-			final int end = (i == (parts.length - 1) ? points.length : parts[i + 1]) - 1;
+		for (var i = 0; i < parts.length; ++i) {
+			final var start = parts[i];
+			final var end = (i == (parts.length - 1) ? points.length : parts[i + 1]) - 1;
 
 			doProjection(points[start], proj);
-			double lastx = proj.getX();
-			double lasty = proj.getY();
+			var lastx = proj.getX();
+			var lasty = proj.getY();
 			elt.addGroup(proj.getX(), proj.getY());
 
-			for (int j = parts[i] + 1; j <= end; ++j) {
+			for (var j = parts[i] + 1; j <= end; ++j) {
 				doProjection(points[j], proj);
 				if (!validator.isSame(lastx, lasty, proj.getX(), proj.getY())) {
 					elt.addPoint(proj.getX(), proj.getY());
@@ -882,31 +877,31 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	@Override
 	protected MapElement createPolyline(AttributeCollection provider, int shapeIndex, int[] parts,
 			ESRIPoint[] points, boolean hasZ) {
-		final UUID id = extractUUID(provider);
-		MapPolyline elt = createObjectInstance(id, provider, MapPolyline.class);
+		final var id = extractUUID(provider);
+		var elt = createObjectInstance(id, provider, MapPolyline.class);
 		if (elt == null) {
 			elt = new MapPolyline(id, provider);
 		}
 
-		final PointFusionValidator validator = elt.getPointFusionValidator();
+		final var validator = elt.getPointFusionValidator();
 
-		final Point2d proj = new Point2d();
+		final var proj = new Point2d();
 
-		for (int i = 0; i < parts.length; ++i) {
-			final int start = parts[i];
+		for (var i = 0; i < parts.length; ++i) {
+			final var start = parts[i];
 
-			final int end = (i == (parts.length - 1) ? points.length : parts[i + 1]) - 1;
+			final var end = (i == (parts.length - 1) ? points.length : parts[i + 1]) - 1;
 
 			assert start >= 0 && start < points.length;
 			assert end >= 0 && end < points.length;
 			assert start <= end;
 
 			doProjection(points[start], proj);
-			double lastx = proj.getX();
-			double lasty = proj.getY();
+			var lastx = proj.getX();
+			var lasty = proj.getY();
 			elt.addGroup(proj.getX(), proj.getY());
 
-			for (int j = start + 1; j <= end; ++j) {
+			for (var j = start + 1; j <= end; ++j) {
 				assert points[j] != null;
 				doProjection(points[j], proj);
 				if (!validator.isSame(lastx, lasty, proj.getX(), proj.getY())) {

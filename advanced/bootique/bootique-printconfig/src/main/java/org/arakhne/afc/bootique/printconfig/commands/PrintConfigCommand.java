@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.config.ConfigMetadataNode;
 import io.bootique.meta.module.ModulesMetadata;
 import joptsimple.OptionSpec;
-
 import org.arakhne.afc.bootique.printconfig.configs.Configs;
 import org.arakhne.afc.vmutil.locale.Locale;
 
@@ -52,7 +51,10 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
+ * @deprecated since 18.0
  */
+@SuppressWarnings("removal")
+@Deprecated(since = "18.0")
 public class PrintConfigCommand extends CommandWithMetadata {
 
 	private static final String CLI_NAME = "printconfig"; //$NON-NLS-1$

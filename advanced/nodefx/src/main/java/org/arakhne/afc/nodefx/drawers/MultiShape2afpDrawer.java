@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@
  */
 
 package org.arakhne.afc.nodefx.drawers;
-
-import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
 import org.arakhne.afc.nodefx.Drawer;
@@ -43,13 +41,12 @@ public class MultiShape2afpDrawer implements Drawer<MultiShape2afp> {
 		return MultiShape2afp.class;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(ZoomableGraphicsContext gc, MultiShape2afp element) {
-		final Iterator<Object> iterator = element.iterator();
+		final var iterator = element.iterator();
 		while (iterator.hasNext()) {
-			final Object shape = iterator.next();
-			final Drawer drawer = Drawers.getDrawerFor(shape);
+			final var shape = iterator.next();
+			final var drawer = Drawers.getDrawerFor(shape);
 			if (drawer != null) {
 				drawer.draw(gc, shape);
 			}

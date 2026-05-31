@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,6 +112,7 @@ public enum DBaseCodePage {
 	MACINTOSH_GREEK(0x98, "x-MacGreek"); //$NON-NLS-1$
 
 	private final byte languageCode;
+
 	private final String charSet;
 
 	/** Constructor.
@@ -158,7 +159,7 @@ public enum DBaseCodePage {
 	 */
 	@Pure
 	public static DBaseCodePage fromLanguageCode(byte code) {
-		for (final DBaseCodePage cp : values()) {
+		for (final var cp : values()) {
 			if (cp.languageCode == code) {
 				return cp;
 			}
@@ -174,7 +175,7 @@ public enum DBaseCodePage {
 	@Pure
 	public static DBaseCodePage fromCharset(Charset charset) {
 		assert charset != null;
-		for (final DBaseCodePage cp : values()) {
+		for (final var cp : values()) {
 			if (cp.charSet != null && cp.charSet.equalsIgnoreCase(charset.name())) {
 				return cp;
 			}
@@ -190,7 +191,7 @@ public enum DBaseCodePage {
 	@Pure
 	public static DBaseCodePage fromCharset(String charset) {
 		assert charset != null;
-		for (final DBaseCodePage cp : values()) {
+		for (final var cp : values()) {
 			if (cp.charSet != null && cp.charSet.equalsIgnoreCase(charset)) {
 				return cp;
 			}

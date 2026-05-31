@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,10 @@ package org.arakhne.afc.gis.location;
 
 import java.util.Arrays;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.coordinate.GISCoordinates;
 import org.arakhne.afc.gis.coordinate.GeodesicPosition;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Describes a geo-localized feature.
  *
@@ -55,8 +54,8 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 			assert (points.length % 2) == 0;
 			this.pts = new float[points.length];
 
-			if ((points[0] < points[points.length - 2])
-					|| ((points[0] == points[points.length - 2]) && (points[1] <= points[points.length - 1]))) {
+			if (points[0] < points[points.length - 2]
+					|| points[0] == points[points.length - 2] && points[1] <= points[points.length - 1]) {
 				for (int i = 0; i < points.length; ++i) {
 					this.pts[i] = GeoLocationUtil.castDistance(points[i]);
 				}
@@ -72,8 +71,8 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 	@Override
 	@Pure
 	public GeoId toGeoId() {
-		final Rectangle2d bounds = new Rectangle2d();
-		final String id = GeoLocationUtil.makeInternalId(this.pts, bounds);
+		final var bounds = new Rectangle2d();
+		final var id = GeoLocationUtil.makeInternalId(this.pts, bounds);
 
 		if (!bounds.isEmpty()) {
 			return new GeoId(
@@ -127,11 +126,11 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 	@Pure
 	public Rectangle2d toBounds2D() {
 		if (this.bounds == null && this.pts != null) {
-			double x1 = Double.MAX_VALUE;
-			double y1 = Double.MAX_VALUE;
-			double x2 = Double.MIN_VALUE;
-			double y2 = Double.MIN_VALUE;
-			for (int i = 0; i < this.pts.length; i += 2) {
+			var x1 = Double.MAX_VALUE;
+			var y1 = Double.MAX_VALUE;
+			var x2 = Double.MIN_VALUE;
+			var y2 = Double.MIN_VALUE;
+			for (var i = 0; i < this.pts.length; i += 2) {
 				if (this.pts[i] < x1) {
 					x1 = this.pts[i];
 				}
@@ -154,7 +153,7 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 	@Override
 	@Pure
 	public GeodesicPosition toGeodesicPosition() {
-		final Rectangle2d b = toBounds2D().toBoundingBox();
+		final var b = toBounds2D().toBoundingBox();
 		if (b == null) {
 			return null;
 		}

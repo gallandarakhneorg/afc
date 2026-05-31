@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber"})
 public class Matrix3d implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -7386754038391115819L;
@@ -224,10 +225,13 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @param row the row number to be modified (zero indexed)
 	 * @param column the column number to be modified (zero indexed)
 	 * @param value the new value
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void setElement(int row, int column, double value) {
-		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
-		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(1, column, 0, 2);
+		assert row >= 0 && row < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(2));
+		assert column >= 0 && column < 3
+				: AssertMessages.outsideRangeInclusiveParameter(1, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(2));
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -291,11 +295,14 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @param row the row number to be retrieved (zero indexed)
 	 * @param column the column number to be retrieved (zero indexed)
 	 * @return the value at the indexed element.
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	@Pure
 	public double getElement(int row, int column) {
-		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
-		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(1, column, 0, 2);
+		assert row >= 0 && row < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(2));
+		assert column >= 0 && column < 3
+				: AssertMessages.outsideRangeInclusiveParameter(1, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(2));
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -347,9 +354,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @param row the matrix row
 	 * @param vector the vector into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void getRow(int row, Vector3D<?, ?, ?> vector) {
-		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert row >= 0 && row < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(2));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		if (row == 0) {
 			vector.set(this.m00, this.m01, this.m02);
@@ -368,9 +377,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @param row the matrix row
 	 * @param vector the array into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void getRow(int row, double[] vector) {
-		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert row >= 0 && row < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(2));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		assert vector.length >= 3 : AssertMessages.tooSmallArrayParameter(vector.length, 3);
 		if (row == 0) {
@@ -397,9 +408,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @param column the matrix column
 	 * @param vector the vector into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void getColumn(int column, Vector3D<?, ?, ?> vector) {
-		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert column >= 0 && column < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(2));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		if (column == 0) {
 			vector.set(this.m00, this.m10, this.m20);
@@ -419,9 +432,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @param column the matrix column
 	 * @param vector the array into which the matrix row values will be copied
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void getColumn(int column, double[] vector) {
-		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert column >= 0 && column < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(2));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		assert vector.length >= 3 : AssertMessages.tooSmallArrayParameter(vector.length, 3);
 		if (column == 0) {
@@ -449,9 +464,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @param x the first column element
 	 * @param y the second column element
 	 * @param z the third column element
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void setRow(int row, double x, double y, double z) {
-		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert row >= 0 && row < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(2));
 		switch (row) {
 		case 0:
 			this.m00 = x;
@@ -483,9 +500,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @param row the row number to be modified (zero indexed)
 	 * @param vector the replacement row
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void setRow(int row, Vector3D<?, ?, ?> vector) {
-		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert row >= 0 && row < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(2));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		switch (row) {
 		case 0:
@@ -518,9 +537,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @param row the row number to be modified (zero indexed)
 	 * @param vector the replacement row
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void setRow(int row, double[] vector) {
-		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert row >= 0 && row < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(row), Integer.valueOf(0), Integer.valueOf(2));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		assert vector.length >= 3 : AssertMessages.tooSmallArrayParameter(vector.length, 3);
 		switch (row) {
@@ -556,9 +577,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @param x the first row element
 	 * @param y the second row element
 	 * @param z the third row element
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void setColumn(int column, double x, double y, double z) {
-		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert column >= 0 && column < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(2));
 		switch (column) {
 		case 0:
 			this.m00 = x;
@@ -590,9 +613,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @param column the column number to be modified (zero indexed)
 	 * @param vector the replacement column
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void setColumn(int column, Vector3D<?, ?, ?> vector) {
-		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert column >= 0 && column < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(2));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		switch (column) {
 		case 0:
@@ -625,9 +650,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @param column the column number to be modified (zero indexed)
 	 * @param vector the replacement column
+	 * @throws ArrayIndexOutOfBoundsException if coordinates are out of bounds
 	 */
 	public void setColumn(int column, double[] vector) {
-		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert column >= 0 && column < 3
+				: AssertMessages.outsideRangeInclusiveParameter(0, Integer.valueOf(column), Integer.valueOf(0), Integer.valueOf(2));
 		assert vector != null : AssertMessages.notNullParameter(1);
 		assert vector.length >= 3 : AssertMessages.tooSmallArrayParameter(vector.length, 3);
 		switch (column) {
@@ -799,9 +826,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * Sets the value of this matrix to its transpose.
 	 */
 	public void transpose() {
-		double temp;
-
-		temp = this.m10;
+		var temp = this.m10;
 		this.m10 = this.m01;
 		this.m01 = temp;
 
@@ -903,6 +928,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @param m21 the [2][1] element
 	 * @param m22 the [2][2] element
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	public void set(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
 		this.m00 = m00;
 		this.m01 = m01;
@@ -946,11 +972,11 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * allocating a little bit of garbage.
 	 */
 	private void invertGeneral(Matrix3d matrix) {
-		// Use LU decomposition and backsubstitution code specifically
+		// Use LU decomposition and back substitution code specifically
 		// for floating-point 3x3 matrices.
 
 		// Copy source matrix to t1tmp
-		final double[] tmp = new double[9];
+		final var tmp = new double[9];
 		tmp[0] = matrix.m00;
 		tmp[1] = matrix.m01;
 		tmp[2] = matrix.m02;
@@ -964,14 +990,14 @@ public class Matrix3d implements Serializable, Cloneable {
 		tmp[8] = matrix.m22;
 
 		// Calculate LU decomposition: Is the matrix singular?
-		final int[] rowPerm = new int[3];
+		final var rowPerm = new int[3];
 		if (!luDecomposition(tmp, rowPerm)) {
 			throw new SingularMatrixException(Locale.getString("NOT_INVERTABLE_MATRIX")); //$NON-NLS-1$
 		}
 
 		// Perform back substitution on the identity matrix
-		final double[] result = new double[9];
-		for (int i = 0; i < 9; ++i) {
+		final var result = new double[9];
+		for (var i = 0; i < 9; ++i) {
 			result[i] = 0.;
 		}
 		result[0] = 1.;
@@ -1008,6 +1034,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *
 	 * @return true if the matrix is nonsingular, or false otherwise.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	private static boolean luDecomposition(double[] matrix0, int[] rowPerm) {
 		//
 		// Reference: Press, Flannery, Teukolsky, Vetterling,
@@ -1018,19 +1045,19 @@ public class Matrix3d implements Serializable, Cloneable {
 		// Determine implicit scaling information by looping over rows
 		//double big, temp;
 
-		int ptr = 0;
-		int rs = 0;
+		var ptr = 0;
+		var rs = 0;
 
 		// For each row ...
-		final double[] rowScale = new double[3];
-		int i = 3;
+		final var rowScale = new double[3];
+		var i = 3;
 		while (i-- != 0) {
-			double big = 0.;
+			var big = 0.;
 
 			// For each column, find the largest element in the row
-			int j = 3;
+			var j = 3;
 			while (j-- != 0) {
-				double temp = matrix0[ptr++];
+				var temp = matrix0[ptr++];
 				temp = Math.abs(temp);
 				if (temp > big) {
 					big = temp;
@@ -1044,19 +1071,19 @@ public class Matrix3d implements Serializable, Cloneable {
 			rowScale[rs++] = 1. / big;
 		}
 
-		final int mtx = 0;
+		final var mtx = 0;
 
 		// For all columns, execute Crout's method
-		for (int j = 0; j < 3; ++j) {
+		for (var j = 0; j < 3; ++j) {
 			int imax;
 
 			// Determine elements of upper diagonal matrix U
 			for (i = 0; i < j; ++i) {
-				final int target = mtx + (3 * i) + j;
-				double sum = matrix0[target];
-				int k = i;
-				int p1 = mtx + (3 * i);
-				int p2 = mtx + j;
+				final var target = mtx + (3 * i) + j;
+				var sum = matrix0[target];
+				var k = i;
+				var p1 = mtx + (3 * i);
+				var p2 = mtx + j;
 				while (k-- != 0) {
 					sum -= matrix0[p1] * matrix0[p2];
 					++p1;
@@ -1067,14 +1094,14 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// Search for largest pivot element and calculate
 			// intermediate elements of lower diagonal matrix L.
-			double big = 0.;
+			var big = 0.;
 			imax = -1;
 			for (i = j; i < 3; ++i) {
-				final int target = mtx + (3 * i) + j;
-				double sum = matrix0[target];
-				int k = j;
-				int p1 = mtx + (3 * i);
-				int p2 = mtx + j;
+				final var target = mtx + (3 * i) + j;
+				var sum = matrix0[target];
+				var k = j;
+				var p1 = mtx + (3 * i);
+				var p2 = mtx + j;
 				while (k-- != 0) {
 					sum -= matrix0[p1] * matrix0[p2];
 					++p1;
@@ -1083,7 +1110,7 @@ public class Matrix3d implements Serializable, Cloneable {
 				matrix0[target] = sum;
 
 				// Is this the best pivot so far?
-				final double temp = rowScale[i] * Math.abs(sum);
+				final var temp = rowScale[i] * Math.abs(sum);
 				if (temp >= big) {
 					big = temp;
 					imax = i;
@@ -1097,11 +1124,11 @@ public class Matrix3d implements Serializable, Cloneable {
 			// Is a row exchange necessary?
 			if (j != imax) {
 				// Yes: exchange rows
-				int k = 3;
-				int p1 = mtx + (3 * imax);
-				int p2 = mtx + (3 * j);
+				var k = 3;
+				var p1 = mtx + (3 * imax);
+				var p2 = mtx + (3 * j);
 				while (k-- != 0) {
-					final double temp = matrix0[p1];
+					final var temp = matrix0[p1];
 					matrix0[p1++] = matrix0[p2];
 					matrix0[p2++] = temp;
 				}
@@ -1120,7 +1147,7 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// Divide elements of lower diagonal matrix L by pivot
 			if (j != (3 - 1)) {
-				final double temp = 1. / (matrix0[mtx + 3 * j + j]);
+				final var temp = 1. / (matrix0[mtx + 3 * j + j]);
 				int target = mtx + 3 * (j + 1) + j;
 				i = 2 - j;
 				while (i-- != 0) {
@@ -1156,23 +1183,23 @@ public class Matrix3d implements Serializable, Cloneable {
 		//
 
 		// rp = row_perm;
-		final int rp = 0;
+		final var rp = 0;
 
 		// For each column vector of matrix2 ...
-		for (int k = 0; k < 3; ++k) {
+		for (var k = 0; k < 3; ++k) {
 			// cv = &(matrix2[0][k]);
-			final int cv = k;
-			int ii = -1;
+			final var cv = k;
+			var ii = -1;
 
 			// Forward substitution
-			for (int i = 0; i < 3; ++i) {
-				final int ip = rowPerm[rp + i];
-				double sum = matrix2[cv + 3 * ip];
+			for (var i = 0; i < 3; ++i) {
+				final var ip = rowPerm[rp + i];
+				var sum = matrix2[cv + 3 * ip];
 				matrix2[cv + 3 * ip] = matrix2[cv + 3 * i];
 				if (ii >= 0) {
 					// rv = &(matrix1[i][0]);
-					final int rv = i * 3;
-					for (int j = ii; j <= i - 1; ++j) {
+					final var rv = i * 3;
+					for (var j = ii; j <= i - 1; ++j) {
 						sum -= matrix1[rv + j] * matrix2[cv + 3 * j];
 					}
 				} else if (sum != 0.) {
@@ -1183,7 +1210,7 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// Backsubstitution
 			// rv = &(matrix1[3][0]);
-			int rv = 2 * 3;
+			var rv = 2 * 3;
 			matrix2[cv + 3 * 2] /= matrix1[rv + 2];
 
 			rv -= 3;
@@ -1271,17 +1298,17 @@ public class Matrix3d implements Serializable, Cloneable {
 	public void mul(Matrix3d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
 
-		final double m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20;
-		final double m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21;
-		final double m02 = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22;
+		final var m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20;
+		final var m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21;
+		final var m02 = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22;
 
-		final double m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10 + this.m12 * matrix.m20;
-		final double m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11 + this.m12 * matrix.m21;
-		final double m12 = this.m10 * matrix.m02 + this.m11 * matrix.m12 + this.m12 * matrix.m22;
+		final var m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10 + this.m12 * matrix.m20;
+		final var m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11 + this.m12 * matrix.m21;
+		final var m12 = this.m10 * matrix.m02 + this.m11 * matrix.m12 + this.m12 * matrix.m22;
 
-		final double m20 = this.m20 * matrix.m00 + this.m21 * matrix.m10 + this.m22 * matrix.m20;
-		final double m21 = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21;
-		final double m22 = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22;
+		final var m20 = this.m20 * matrix.m00 + this.m21 * matrix.m10 + this.m22 * matrix.m20;
+		final var m21 = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21;
+		final var m22 = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22;
 
 		this.m00 = m00;
 		this.m01 = m01;
@@ -1319,17 +1346,17 @@ public class Matrix3d implements Serializable, Cloneable {
 			this.m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21;
 			this.m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20;
-			final double m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21;
-			final double m02 = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12 + matrix1.m02 * matrix2.m22;
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20;
+			final var m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21;
+			final var m02 = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12 + matrix1.m02 * matrix2.m22;
 
-			final double m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m12 * matrix2.m20;
-			final double m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m21;
-			final double m12 = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m12 * matrix2.m22;
+			final var m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m12 * matrix2.m20;
+			final var m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m21;
+			final var m12 = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m12 * matrix2.m22;
 
-			final double m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10 + matrix1.m22 * matrix2.m20;
-			final double m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21;
-			final double m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22;
+			final var m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10 + matrix1.m22 * matrix2.m20;
+			final var m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21;
+			final var m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -1398,17 +1425,17 @@ public class Matrix3d implements Serializable, Cloneable {
 			this.m21 = matrix1.m02 * matrix2.m01 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m21;
 			this.m22 = matrix1.m02 * matrix2.m02 + matrix1.m12 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10 + matrix1.m20 * matrix2.m20;
-			final double m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m21;
-			final double m02 = matrix1.m00 * matrix2.m02 + matrix1.m10 * matrix2.m12 + matrix1.m20 * matrix2.m22;
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10 + matrix1.m20 * matrix2.m20;
+			final var m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m21;
+			final var m02 = matrix1.m00 * matrix2.m02 + matrix1.m10 * matrix2.m12 + matrix1.m20 * matrix2.m22;
 
-			final double m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m21 * matrix2.m20;
-			final double m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m21 * matrix2.m21;
-			final double m12 = matrix1.m01 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m21 * matrix2.m22;
+			final var m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m21 * matrix2.m20;
+			final var m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m21 * matrix2.m21;
+			final var m12 = matrix1.m01 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m21 * matrix2.m22;
 
-			final double m20 = matrix1.m02 * matrix2.m00 + matrix1.m12 * matrix2.m10 + matrix1.m22 * matrix2.m20;
-			final double m21 = matrix1.m02 * matrix2.m01 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m21;
-			final double m22 = matrix1.m02 * matrix2.m02 + matrix1.m12 * matrix2.m12 + matrix1.m22 * matrix2.m22;
+			final var m20 = matrix1.m02 * matrix2.m00 + matrix1.m12 * matrix2.m10 + matrix1.m22 * matrix2.m20;
+			final var m21 = matrix1.m02 * matrix2.m01 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m21;
+			final var m22 = matrix1.m02 * matrix2.m02 + matrix1.m12 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -1434,9 +1461,9 @@ public class Matrix3d implements Serializable, Cloneable {
 	public void mulNormalize(Matrix3d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
 
-		final double[] tmp = new double[9];
-		final double[] tmpRot = new double[9];
-		final double[] tmpScale = new double[3];
+		final var tmp = new double[9];
+		final var tmpRot = new double[9];
+		final var tmpScale = new double[3];
 
 		tmp[0] = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20;
 		tmp[1] = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21;
@@ -1478,9 +1505,9 @@ public class Matrix3d implements Serializable, Cloneable {
 		assert matrix1 != null : AssertMessages.notNullParameter(0);
 		assert matrix2 != null : AssertMessages.notNullParameter(1);
 
-		final double[] tmp = new double[9];
-		final double[] tmpRot = new double[9];
-		final double[] tmpScale = new double[3];
+		final var tmp = new double[9];
+		final var tmpRot = new double[9];
+		final var tmpScale = new double[3];
 
 		tmp[0] = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20;
 		tmp[1] = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21;
@@ -1534,17 +1561,17 @@ public class Matrix3d implements Serializable, Cloneable {
 			this.m21 = matrix1.m02 * matrix2.m10 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m12;
 			this.m22 = matrix1.m02 * matrix2.m20 + matrix1.m12 * matrix2.m21 + matrix1.m22 * matrix2.m22;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01 + matrix1.m20 * matrix2.m02;
-			final double m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m12;
-			final double m02 = matrix1.m00 * matrix2.m20 + matrix1.m10 * matrix2.m21 + matrix1.m20 * matrix2.m22;
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01 + matrix1.m20 * matrix2.m02;
+			final var m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m12;
+			final var m02 = matrix1.m00 * matrix2.m20 + matrix1.m10 * matrix2.m21 + matrix1.m20 * matrix2.m22;
 
-			final double m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01 + matrix1.m21 * matrix2.m02;
-			final double m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11 + matrix1.m21 * matrix2.m12;
-			final double m12 = matrix1.m01 * matrix2.m20 + matrix1.m11 * matrix2.m21 + matrix1.m21 * matrix2.m22;
+			final var m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01 + matrix1.m21 * matrix2.m02;
+			final var m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11 + matrix1.m21 * matrix2.m12;
+			final var m12 = matrix1.m01 * matrix2.m20 + matrix1.m11 * matrix2.m21 + matrix1.m21 * matrix2.m22;
 
-			final double m20 = matrix1.m02 * matrix2.m00 + matrix1.m12 * matrix2.m01 + matrix1.m22 * matrix2.m02;
-			final double m21 = matrix1.m02 * matrix2.m10 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m12;
-			final double m22 = matrix1.m02 * matrix2.m20 + matrix1.m12 * matrix2.m21 + matrix1.m22 * matrix2.m22;
+			final var m20 = matrix1.m02 * matrix2.m00 + matrix1.m12 * matrix2.m01 + matrix1.m22 * matrix2.m02;
+			final var m21 = matrix1.m02 * matrix2.m10 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m12;
+			final var m22 = matrix1.m02 * matrix2.m20 + matrix1.m12 * matrix2.m21 + matrix1.m22 * matrix2.m22;
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -1583,17 +1610,17 @@ public class Matrix3d implements Serializable, Cloneable {
 			this.m21 = matrix1.m20 * matrix2.m10 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m12;
 			this.m22 = matrix1.m20 * matrix2.m20 + matrix1.m21 * matrix2.m21 + matrix1.m22 * matrix2.m22;
 		} else {
-			final double m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01 + matrix1.m02 * matrix2.m02;
-			final double m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m12;
-			final double m02 = matrix1.m00 * matrix2.m20 + matrix1.m01 * matrix2.m21 + matrix1.m02 * matrix2.m22;
+			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01 + matrix1.m02 * matrix2.m02;
+			final var m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m12;
+			final var m02 = matrix1.m00 * matrix2.m20 + matrix1.m01 * matrix2.m21 + matrix1.m02 * matrix2.m22;
 
-			final double m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01 + matrix1.m12 * matrix2.m02;
-			final double m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m12;
-			final double m12 = matrix1.m10 * matrix2.m20 + matrix1.m11 * matrix2.m21 + matrix1.m12 * matrix2.m22;
+			final var m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01 + matrix1.m12 * matrix2.m02;
+			final var m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m12;
+			final var m12 = matrix1.m10 * matrix2.m20 + matrix1.m11 * matrix2.m21 + matrix1.m12 * matrix2.m22;
 
-			final double m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m01 + matrix1.m22 * matrix2.m02;
-			final double m21 = matrix1.m20 * matrix2.m10 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m12;
-			final double m22 = matrix1.m20 * matrix2.m20 + matrix1.m21 * matrix2.m21 + matrix1.m22 * matrix2.m22;
+			final var m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m01 + matrix1.m22 * matrix2.m02;
+			final var m21 = matrix1.m20 * matrix2.m10 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m12;
+			final var m22 = matrix1.m20 * matrix2.m20 + matrix1.m21 * matrix2.m21 + matrix1.m22 * matrix2.m22;
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -1618,9 +1645,9 @@ public class Matrix3d implements Serializable, Cloneable {
 	public void normalize(Matrix3d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
 
-		final double[] tmp = new double[9];
-		final double[] tmpRot = new double[9];
-		final double[] tmpScale = new double[3];
+		final var tmp = new double[9];
+		final var tmpRot = new double[9];
+		final var tmpScale = new double[3];
 
 		tmp[0] = matrix.m00;
 		tmp[1] = matrix.m01;
@@ -1655,8 +1682,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * Performs singular value decomposition normalization of this matrix.
 	 */
 	public void normalize() {
-		final double[] tmpRot = new double[9];
-		final double[] tmpScale = new double[3];
+		final var tmpRot = new double[9];
+		final var tmpScale = new double[3];
 
 		getScaleRotate3x3(tmpScale, tmpRot);
 
@@ -1680,7 +1707,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 */
 
 	public void normalizeCP() {
-		double mag = 1. / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20);
+		var mag = 1. / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20);
 		this.m00 = this.m00 * mag;
 		this.m10 = this.m10 * mag;
 		this.m20 = this.m20 * mag;
@@ -1705,7 +1732,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 */
 	public void normalizeCP(Matrix3d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
-		double mag = 1. / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10 + matrix.m20
+		var mag = 1. / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10 + matrix.m20
 				* matrix.m20);
 		this.m00 = matrix.m00 * mag;
 		this.m10 = matrix.m10 * mag;
@@ -1759,7 +1786,7 @@ public class Matrix3d implements Serializable, Cloneable {
 			return true;
 		}
 		if (getClass().isInstance(object)) {
-			final Matrix3d m2 = (Matrix3d) object;
+			final var m2 = (Matrix3d) object;
 			return this.m00 == m2.m00 && this.m01 == m2.m01
 					&& this.m02 == m2.m02 && this.m10 == m2.m10
 					&& this.m11 == m2.m11 && this.m12 == m2.m12
@@ -1783,11 +1810,10 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @return {@code true} if this matrix is equals to the specified matrix at epsilon.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public boolean epsilonEquals(Matrix3d matrix, double epsilon) {
 		assert matrix != null : AssertMessages.notNullParameter();
-		double diff;
-
-		diff = this.m00 - matrix.m00;
+		var diff = this.m00 - matrix.m00;
 		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon)) {
 			return false;
 		}
@@ -1847,7 +1873,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1L;
+		var bits = 1L;
 		bits = 31L * bits + Double.hashCode(this.m00);
 		bits = 31L * bits + Double.hashCode(this.m01);
 		bits = 31L * bits + Double.hashCode(this.m02);
@@ -1948,6 +1974,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @param outScale is set with the scaling factors.
 	 * @param outRot is set with the rotation factors.
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:methodlength"})
 	protected static void computeSVD(double[] matrix, double[] outScale, double[] outRot) {
 		assert matrix != null : AssertMessages.notNullParameter(0);
 		assert matrix.length >= 9 : AssertMessages.tooSmallArrayParameter(0, matrix.length, 9);
@@ -1955,19 +1982,19 @@ public class Matrix3d implements Serializable, Cloneable {
 		assert outScale.length >= 3 : AssertMessages.tooSmallArrayParameter(1, outScale.length, 3);
 		assert outRot != null : AssertMessages.notNullParameter(2);
 		assert outRot.length >= 9 : AssertMessages.tooSmallArrayParameter(2, outRot.length, 9);
-		final double[] u1 = new double[9];
-		final double[] v1 = new double[9];
-		final double[] t1 = new double[9];
-		final double[] t2 = new double[9];
+		final var u1 = new double[9];
+		final var v1 = new double[9];
+		final var t1 = new double[9];
+		final var t2 = new double[9];
 
-		final double[] tmp = t1;
-		final double[] singleValues = t2;
+		final var tmp = t1;
+		final var singleValues = t2;
 
-		final double[] rot = new double[9];
-		final double[] e = new double[3];
-		final double[] scales = new double[3];
+		final var rot = new double[9];
+		final var e = new double[3];
+		final var scales = new double[3];
 
-		for (int i = 0; i < 9; ++i) {
+		for (var i = 0; i < 9; ++i) {
 			rot[i] = matrix[i];
 		}
 
@@ -2006,9 +2033,9 @@ public class Matrix3d implements Serializable, Cloneable {
 			u1[7] = 0.;
 			u1[8] = 1.;
 		} else {
-			final double g = 1. / Math.sqrt(matrix[0] * matrix[0] + matrix[3] * matrix[3]);
-			final double c1 = matrix[0] * g;
-			final double s1 = matrix[3] * g;
+			final var g = 1. / Math.sqrt(matrix[0] * matrix[0] + matrix[3] * matrix[3]);
+			final var c1 = matrix[0] * g;
+			final var s1 = matrix[3] * g;
 			tmp[0] = c1 * matrix[0] + s1 * matrix[3];
 			tmp[1] = c1 * matrix[1] + s1 * matrix[4];
 			tmp[2] = c1 * matrix[2] + s1 * matrix[5];
@@ -2061,9 +2088,9 @@ public class Matrix3d implements Serializable, Cloneable {
 			u1[7] = -tmp[1];
 			u1[8] = -tmp[2];
 		} else {
-			final double g = 1. / Math.sqrt(matrix[0] * matrix[0] + matrix[6] * matrix[6]);
-			final double c2 = matrix[0] * g;
-			final double s2 = matrix[6] * g;
+			final var g = 1. / Math.sqrt(matrix[0] * matrix[0] + matrix[6] * matrix[6]);
+			final var c2 = matrix[0] * g;
+			final var s2 = matrix[6] * g;
 			tmp[0] = c2 * matrix[0] + s2 * matrix[6];
 			tmp[1] = c2 * matrix[1] + s2 * matrix[7];
 			tmp[2] = c2 * matrix[2] + s2 * matrix[8];
@@ -2123,9 +2150,9 @@ public class Matrix3d implements Serializable, Cloneable {
 			v1[7] = 1.;
 			v1[8] = 0.;
 		} else {
-			final double g = 1. / Math.sqrt(matrix[1] * matrix[1] + matrix[2] * matrix[2]);
-			final double c3 = matrix[1] * g;
-			final double s3 = matrix[2] * g;
+			final var g = 1. / Math.sqrt(matrix[1] * matrix[1] + matrix[2] * matrix[2]);
+			final var c3 = matrix[1] * g;
+			final var s3 = matrix[2] * g;
 			// can assign to m[1]?
 			tmp[1] = c3 * matrix[1] + s3 * matrix[2];
 			// zero
@@ -2183,9 +2210,9 @@ public class Matrix3d implements Serializable, Cloneable {
 			u1[8] = -tmp[5];
 
 		} else {
-			final double g = 1. / Math.sqrt(matrix[4] * matrix[4] + matrix[7] * matrix[7]);
-			final double c4 = matrix[4] * g;
-			final double s4 = matrix[7] * g;
+			final var g = 1. / Math.sqrt(matrix[4] * matrix[4] + matrix[7] * matrix[7]);
+			final var c4 = matrix[4] * g;
+			final var s4 = matrix[7] * g;
 			tmp[3] = c4 * matrix[3] + s4 * matrix[6];
 			// zero
 			matrix[6] = -s4 * matrix[3] + c4 * matrix[6];
@@ -2235,19 +2262,19 @@ public class Matrix3d implements Serializable, Cloneable {
 				&& MathUtil.isEpsilonEqual(Math.abs(scales[2]), 1.)) {
 			// System.out.println("Scale components almost to 1.");
 
-			int negCnt = 0;
-			for (int i = 0; i < 3; ++i) {
+			var negCnt = 0;
+			for (var i = 0; i < 3; ++i) {
 				if (scales[i] < 0.) {
 					++negCnt;
 				}
 			}
 
-			if ((negCnt == 0) || (negCnt == 2)) {
+			if (negCnt == 0 || negCnt == 2) {
 				// System.out.println("Optimize!!");
 				outScale[0] = 1.;
 				outScale[1] = 1.;
 				outScale[2] = 1.;
-				for (int i = 0; i < 9; ++i) {
+				for (var i = 0; i < 9; ++i) {
 					outRot[i] = rot[i];
 				}
 
@@ -2288,23 +2315,23 @@ public class Matrix3d implements Serializable, Cloneable {
 			t2[8] = -t2[8];
 		}
 
-		final double[] rot = new double[9];
+		final var rot = new double[9];
 
 		matMul(t1, t2, rot);
 
 		// check for equal scales case and do not reorder
 		if (MathUtil.isEpsilonEqual(Math.abs(scales[0]), Math.abs(scales[1]))
 				&& MathUtil.isEpsilonEqual(Math.abs(scales[1]), Math.abs(scales[2]))) {
-			for (int i = 0; i < 9; ++i) {
+			for (var i = 0; i < 9; ++i) {
 				outRot[i] = rot[i];
 			}
-			for (int i = 0; i < 3; ++i) {
+			for (var i = 0; i < 3; ++i) {
 				outScale[i] = scales[i];
 			}
 
 		} else {
 
-			final int[] out = new int[3];
+			final var out = new int[3];
 
 			// sort the order of the results of SVD
 			if (scales[0] > scales[1]) {
@@ -2349,7 +2376,7 @@ public class Matrix3d implements Serializable, Cloneable {
 			}
 
 			// sort the order of the input matrix
-			final double[] mag = new double[3];
+			final var mag = new double[3];
 			mag[0] = matrix[0] * matrix[0] + matrix[1] * matrix[1] + matrix[2] * matrix[2];
 			mag[1] = matrix[3] * matrix[3] + matrix[4] * matrix[4] + matrix[5] * matrix[5];
 			mag[2] = matrix[6] * matrix[6] + matrix[7] * matrix[7] + matrix[8] * matrix[8];
@@ -2399,7 +2426,7 @@ public class Matrix3d implements Serializable, Cloneable {
 				}
 			}
 
-			int index = out[in0];
+			var index = out[in0];
 			outScale[0] = scales[index];
 
 			index = out[in1];
@@ -2438,25 +2465,25 @@ public class Matrix3d implements Serializable, Cloneable {
 	}
 
 	private static int computeGr(double[] sValue, double[] eValue, double[] uValue, double[] vValue) {
-		final double[] cosl = new double[2];
-		final double[] cosr = new double[2];
-		final double[] sinl = new double[2];
-		final double[] sinr = new double[2];
-		final double[] m = new double[9];
+		final var cosl = new double[2];
+		final var cosr = new double[2];
+		final var sinl = new double[2];
+		final var sinr = new double[2];
+		final var m = new double[9];
 
-		final int maxInteractions = 10;
-		final double convergeTol = 4.89E-15;
-		final double cb48 = 1.;
+		final var maxInteractions = 10;
+		final var convergeTol = 4.89E-15;
+		final var cb48 = 1.;
 
-		boolean converged = false;
+		var converged = false;
 		if (Math.abs(eValue[1]) < convergeTol || Math.abs(eValue[0]) < convergeTol) {
 			converged = true;
 		}
 
-		for (int k = 0; k < maxInteractions && !converged; ++k) {
-			final double shift = computeShift(sValue[1], eValue[1], sValue[2]);
-			double fvalue = (Math.abs(sValue[0]) - shift) * (dSign(cb48, sValue[0]) + shift / sValue[0]);
-			double gvalue = eValue[0];
+		for (var k = 0; k < maxInteractions && !converged; ++k) {
+			final var shift = computeShift(sValue[1], eValue[1], sValue[2]);
+			var fvalue = (Math.abs(sValue[0]) - shift) * (dSign(cb48, sValue[0]) + shift / sValue[0]);
+			var gvalue = eValue[0];
 
 			computeRot(fvalue, gvalue, sinr, cosr, 0);
 			fvalue = cosr[0] * sValue[0] + sinr[0] * eValue[0];
@@ -2464,9 +2491,7 @@ public class Matrix3d implements Serializable, Cloneable {
 			gvalue = sinr[0] * sValue[1];
 			sValue[1] = cosr[0] * sValue[1];
 
-			double rvalue;
-
-			rvalue = computeRot(fvalue, gvalue, sinl, cosl, 0);
+			var rvalue = computeRot(fvalue, gvalue, sinl, cosl, 0);
 			sValue[0] = rvalue;
 			fvalue = cosl[0] * eValue[0] + sinl[0] * sValue[1];
 			sValue[1] = cosl[0] * sValue[1] - sinl[0] * eValue[0];
@@ -2487,7 +2512,7 @@ public class Matrix3d implements Serializable, Cloneable {
 			eValue[1] = fvalue;
 
 			// update u matrices
-			double utemp = uValue[0];
+			var utemp = uValue[0];
 			uValue[0] = cosl[0] * utemp + sinl[0] * uValue[3];
 			uValue[3] = -sinl[0] * utemp + cosl[0] * uValue[3];
 			utemp = uValue[1];
@@ -2509,7 +2534,7 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// update v matrices
 
-			double vtemp = vValue[0];
+			var vtemp = vValue[0];
 			vValue[0] = cosr[0] * vtemp + sinr[0] * vValue[1];
 			vValue[1] = -sinr[0] * vtemp + cosr[0] * vValue[1];
 			vtemp = vValue[3];
@@ -2547,7 +2572,7 @@ public class Matrix3d implements Serializable, Cloneable {
 		if (Math.abs(eValue[1]) < convergeTol) {
 			compute2X2(sValue[0], eValue[0], sValue[1], sValue, sinl, cosl, sinr, cosr, 0);
 
-			double utemp = uValue[0];
+			var utemp = uValue[0];
 			uValue[0] = cosl[0] * utemp + sinl[0] * uValue[3];
 			uValue[3] = -sinl[0] * utemp + cosl[0] * uValue[3];
 			utemp = uValue[1];
@@ -2559,7 +2584,7 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// update v matrices
 
-			double vtemp = vValue[0];
+			var vtemp = vValue[0];
 			vValue[0] = cosr[0] * vtemp + sinr[0] * vValue[1];
 			vValue[1] = -sinr[0] * vtemp + cosr[0] * vValue[1];
 			vtemp = vValue[3];
@@ -2571,7 +2596,7 @@ public class Matrix3d implements Serializable, Cloneable {
 		} else {
 			compute2X2(sValue[1], eValue[1], sValue[2], sValue, sinl, cosl, sinr, cosr, 1);
 
-			double utemp = uValue[3];
+			var utemp = uValue[3];
 			uValue[3] = cosl[0] * utemp + sinl[0] * uValue[6];
 			uValue[6] = -sinl[0] * utemp + cosl[0] * uValue[6];
 			utemp = uValue[4];
@@ -2583,7 +2608,7 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// update v matrices
 
-			double vtemp = vValue[1];
+			var vtemp = vValue[1];
 			vValue[1] = cosr[0] * vtemp + sinr[0] * vValue[2];
 			vValue[2] = -sinr[0] * vtemp + cosr[0] * vValue[2];
 			vtemp = vValue[4];
@@ -2599,17 +2624,17 @@ public class Matrix3d implements Serializable, Cloneable {
 
 	@Pure
 	private static double dSign(double value1, double value2) {
-		final double x = value1 >= 0 ? value1 : -value1;
+		final var x = value1 >= 0 ? value1 : -value1;
 		return value2 >= 0 ? x : -x;
 	}
 
 	@Pure
 	private static double computeShift(double fval, double gval, double hval) {
-		final double fa = Math.abs(fval);
-		final double ga = Math.abs(gval);
-		final double ha = Math.abs(hval);
-		final double fhmn = Math.min(fa, ha);
-		final double fhmx = Math.max(fa, ha);
+		final var fa = Math.abs(fval);
+		final var ga = Math.abs(gval);
+		final var ha = Math.abs(hval);
+		final var fhmn = Math.min(fa, ha);
+		final var fhmx = Math.max(fa, ha);
 		double ssmin;
 		if (fhmn == 0.) {
 			ssmin = 0.;
@@ -2619,22 +2644,22 @@ public class Matrix3d implements Serializable, Cloneable {
 			}*/
 		} else {
 			if (ga < fhmx) {
-				final double as = fhmn / fhmx + 1.;
-				final double at = (fhmx - fhmn) / fhmx;
-				final double d1 = ga / fhmx;
-				final double au = d1 * d1;
-				final double c = 2. / (Math.sqrt(as * as + au) + Math.sqrt(at * at + au));
+				final var as = fhmn / fhmx + 1.;
+				final var at = (fhmx - fhmn) / fhmx;
+				final var d1 = ga / fhmx;
+				final var au = d1 * d1;
+				final var c = 2. / (Math.sqrt(as * as + au) + Math.sqrt(at * at + au));
 				ssmin = fhmn * c;
 			} else {
-				final double au = fhmx / ga;
+				final var au = fhmx / ga;
 				if (au == 0.) {
 					ssmin = fhmn * fhmx / ga;
 				} else {
-					final double as = fhmn / fhmx + 1.;
-					final double at = (fhmx - fhmn) / fhmx;
-					final double d1 = as * au;
-					final double d2 = at * au;
-					final double c = 1. / (Math.sqrt(d1 * d1 + 1.) + Math.sqrt(d2
+					final var as = fhmn / fhmx + 1.;
+					final var at = (fhmx - fhmn) / fhmx;
+					final var d1 = as * au;
+					final var d2 = at * au;
+					final var c = 1. / (Math.sqrt(d1 * d1 + 1.) + Math.sqrt(d2
 							* d2 + 1.));
 					ssmin = fhmn * c * au;
 					ssmin += ssmin;
@@ -2645,27 +2670,30 @@ public class Matrix3d implements Serializable, Cloneable {
 		return ssmin;
 	}
 
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:parameternumber",
+		"checkstyle:cyclomaticcomplexity", "checkstyle:parametername",
+		"checkstyle:localvariablename", "checkstyle:nestedifdepth"})
 	private static int compute2X2(double f, double g, double h,
 			double[] singleValues, double[] snl, double[] csl, double[] snr,
 			double[] csr, int index) {
 
-		final double cb3 = 2.;
-		final double cb4 = 1.;
+		final var cb3 = 2.;
+		final var cb4 = 1.;
 
-		double ssmax = singleValues[0];
-		double ssmin = singleValues[1];
-		double clt = 0.;
-		double crt = 0.;
-		double slt = 0.;
-		double srt = 0.;
-		double tsign = 0.;
+		var ssmax = singleValues[0];
+		var ssmin = singleValues[1];
+		var clt = 0.;
+		var crt = 0.;
+		var slt = 0.;
+		var srt = 0.;
+		var tsign = 0.;
 
-		double ft = f;
-		double fa = Math.abs(ft);
-		double ht = h;
-		double ha = Math.abs(h);
+		var ft = f;
+		var fa = Math.abs(ft);
+		var ht = h;
+		var ha = Math.abs(h);
 
-		int pmax = 1;
+		var pmax = 1;
 		final boolean swap;
 		if (ha > fa) {
 			swap = true;
@@ -2675,7 +2703,7 @@ public class Matrix3d implements Serializable, Cloneable {
 
 		if (swap) {
 			pmax = 3;
-			double temp = ft;
+			var temp = ft;
 			ft = ht;
 			ht = temp;
 			temp = fa;
@@ -2683,14 +2711,14 @@ public class Matrix3d implements Serializable, Cloneable {
 			ha = temp;
 
 		}
-		final double gt = g;
-		final double ga = Math.abs(gt);
+		final var gt = g;
+		final var ga = Math.abs(gt);
 		if (ga == 0.) {
 
 			singleValues[1] = ha;
 			singleValues[0] = fa;
 		} else {
-			boolean gasmal = true;
+			var gasmal = true;
 
 			if (ga > fa) {
 				pmax = 2;
@@ -2711,26 +2739,20 @@ public class Matrix3d implements Serializable, Cloneable {
 			}
 			if (gasmal) {
 
-				double d = fa - ha;
+				var d = fa - ha;
 				double l;
 				if (d == fa) {
-
 					l = 1.;
 				} else {
 					l = d / fa;
 				}
 
-				double m = gt / ft;
+				var m = gt / ft;
 
-				double t = 2. - l;
+				var t = 2. - l;
 
-				double mm = m * m;
-				double tt = t * t;
-				final double s;
-
-				final double r;
-
-				final double a;
+				var mm = m * m;
+				var tt = t * t;
 
 				if (ga > fa) {
 					pmax = 2;
@@ -2765,15 +2787,16 @@ public class Matrix3d implements Serializable, Cloneable {
 
 					mm = m * m;
 					tt = t * t;
-					s = Math.sqrt(tt + mm);
+					final var s = Math.sqrt(tt + mm);
 
+					final double r;
 					if (l == 0.) {
 						r = Math.abs(m);
 					} else {
 						r = Math.sqrt(l * l + mm);
 					}
 
-					a = (s + r) * .5;
+					final var a = (s + r) * .5;
 
 					ssmin = ha / a;
 					ssmax = fa * a;
@@ -2819,16 +2842,17 @@ public class Matrix3d implements Serializable, Cloneable {
 						* dSign(cb4, h);
 			}
 			singleValues[index] = dSign(ssmax, tsign);
-			final double d1 = tsign * dSign(cb4, f) * dSign(cb4, h);
+			final var d1 = tsign * dSign(cb4, f) * dSign(cb4, h);
 			singleValues[index + 1] = dSign(ssmin, d1);
 
 		}
 		return 0;
 	}
 
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:localvariablename"})
 	private static double computeRot(double f, double g, double[] sin, double[] cos, int index) {
-		final double safmn2 = 2.002083095183101E-146;
-		final double safmx2 = 4.994797680505588E+145;
+		final var safmn2 = 2.002083095183101E-146;
+		final var safmx2 = 4.994797680505588E+145;
 		double cs;
 		double sn;
 		double r;
@@ -2842,11 +2866,11 @@ public class Matrix3d implements Serializable, Cloneable {
 			sn = 1.;
 			r = g;
 		} else {
-			double f1 = f;
-			double g1 = g;
-			double scale = Math.max(Math.abs(f1), Math.abs(g1));
+			var f1 = f;
+			var g1 = g;
+			var scale = Math.max(Math.abs(f1), Math.abs(g1));
 			if (scale >= safmx2) {
-				int count = 0;
+				var count = 0;
 				while (scale >= safmx2) {
 					++count;
 					f1 *= safmn2;
@@ -2856,11 +2880,11 @@ public class Matrix3d implements Serializable, Cloneable {
 				r = Math.sqrt(f1 * f1 + g1 * g1);
 				cs = f1 / r;
 				sn = g1 / r;
-				for (int i = 1; i <= count; ++i) {
+				for (var i = 1; i <= count; ++i) {
 					r *= safmx2;
 				}
 			} else if (scale <= safmn2) {
-				int count = 0;
+				var count = 0;
 				while (scale <= safmn2) {
 					++count;
 					f1 *= safmx2;
@@ -2870,7 +2894,7 @@ public class Matrix3d implements Serializable, Cloneable {
 				r = Math.sqrt(f1 * f1 + g1 * g1);
 				cs = f1 / r;
 				sn = g1 / r;
-				for (int i = 1; i <= count; ++i) {
+				for (var i = 1; i <= count; ++i) {
 					r *= safmn2;
 				}
 			} else {
@@ -2890,7 +2914,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	}
 
 	private static void matMul(double[] m1, double[] m2, double[] m3) {
-		final double[] tmp = new double[9];
+		final var tmp = new double[9];
 
 		tmp[0] = m1[0] * m2[0] + m1[1] * m2[3] + m1[2] * m2[6];
 		tmp[1] = m1[0] * m2[1] + m1[1] * m2[4] + m1[2] * m2[7];
@@ -2904,7 +2928,7 @@ public class Matrix3d implements Serializable, Cloneable {
 		tmp[7] = m1[6] * m2[1] + m1[7] * m2[4] + m1[8] * m2[7];
 		tmp[8] = m1[6] * m2[2] + m1[7] * m2[5] + m1[8] * m2[8];
 
-		for (int i = 0; i < 9; ++i) {
+		for (var i = 0; i < 9; ++i) {
 			m3[i] = tmp[i];
 		}
 	}
@@ -3132,7 +3156,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @param rots the rotation factors.
 	 */
 	private void getScaleRotate3x3(double[] scales, double[] rots) {
-		final double[] tmp = new double[9];
+		final var tmp = new double[9];
 
 		tmp[0] = this.m00;
 		tmp[1] = this.m01;
@@ -3189,8 +3213,8 @@ public class Matrix3d implements Serializable, Cloneable {
 
 		// Compute the mean m and set result with it.
 		result.set(0, 0, 0);
-		int count = 0;
-		for (final Tuple3D<?> p : tuples) {
+		var count = 0;
+		for (final var p : tuples) {
 			result.add(p.getX(), p.getY(), p.getZ());
 			++count;
 		}
@@ -3204,7 +3228,7 @@ public class Matrix3d implements Serializable, Cloneable {
 		// Compute the covariance term [Gottshalk2000]
 		// c_ij = sum(p'_i * p'_j) / n
 		// c_ij = sum((p_i - m_i) * (p_j - m_j)) / n
-		for (final Tuple3D<?> p : tuples) {
+		for (final var p : tuples) {
 			this.m00 += (p.getX() - result.getX()) * (p.getX() - result.getX());
 			this.m01 += (p.getX() - result.getX()) * (p.getY() - result.getY());
 			this.m02 += (p.getX() - result.getX()) * (p.getZ() - result.getZ());
@@ -3234,7 +3258,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	/** Replies if the matrix is symmetric.
 	 *
 	 * @return {@code true} if the matrix is symmetric, otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
 	public boolean isSymmetric() {
@@ -3323,21 +3347,22 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @return the eigenvalues which are corresponding to the {@code eigenVectors} columns.
 	 * @see "Mathematics for 3D Game Programming and Computer Graphics, 2nd edition; pp.437."
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public double[] eigenVectorsOfSymmetricMatrix(Matrix3d eigenVectors) {
 		assert eigenVectors != null : AssertMessages.notNullParameter();
 		// Copy values up to the diagonal
-		double m11 = getElement(0, 0);
-		double m12 = getElement(0, 1);
-		double m13 = getElement(0, 2);
-		double m22 = getElement(1, 1);
-		double m23 = getElement(1, 2);
-		double m33 = getElement(2, 2);
+		var m11 = getElement(0, 0);
+		var m12 = getElement(0, 1);
+		var m13 = getElement(0, 2);
+		var m22 = getElement(1, 1);
+		var m23 = getElement(1, 2);
+		var m33 = getElement(2, 2);
 
 		eigenVectors.setIdentity();
 
-		boolean sweepsConsumed = true;
+		var sweepsConsumed = true;
 
-		for (int a = 0; a < JACOBI_MAX_SWEEPS; ++a) {
+		for (var a = 0; a < JACOBI_MAX_SWEEPS; ++a) {
 
 			// Exit loop if off-diagonal entries are small enough
 			if ((MathUtil.isEpsilonZero(m12))
@@ -3349,9 +3374,9 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// Annihilate (1, 2) entry
 			if (m12 != 0.) {
-				final double u = (m22 - m11) * .5 / m12;
-				final double u2 = u * u;
-				final double u2p1 = u2 + 1.;
+				final var u = (m22 - m11) * .5 / m12;
+				final var u2 = u * u;
+				final var u2p1 = u2 + 1.;
 
 				final double t;
 				if (u2p1 != u2) {
@@ -3360,20 +3385,20 @@ public class Matrix3d implements Serializable, Cloneable {
 					t = .5 / u;
 				}
 
-				final double c = 1. / Math.sqrt(t * t + 1);
-				final double s = c * t;
+				final var c = 1. / Math.sqrt(t * t + 1);
+				final var s = c * t;
 
 				m11 -= t * m12;
 				m22 += t * m12;
 				m12 = 0.;
 
-				final double tmp = c * m13 - s * m23;
+				final var tmp = c * m13 - s * m23;
 				m23 = s * m13 + c * m23;
 				m13 = tmp;
 
 				for (int i = 0; i < 3; ++i) {
-					final double ri0 = eigenVectors.getElement(i, 0);
-					final double ri1 = eigenVectors.getElement(i, 1);
+					final var ri0 = eigenVectors.getElement(i, 0);
+					final var ri1 = eigenVectors.getElement(i, 1);
 					eigenVectors.setElement(i, 0, c * ri0 - s * ri1);
 					eigenVectors.setElement(i, 1, s * ri0 + c * ri1);
 				}
@@ -3381,9 +3406,9 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// Annihilate (1, 3) entry
 			if (m13 != 0.) {
-				final double u = (m33 - m11) * .5 / m13;
-				final double u2 = u * u;
-				final double u2p1 = u2 + 1.;
+				final var u = (m33 - m11) * .5 / m13;
+				final var u2 = u * u;
+				final var u2p1 = u2 + 1.;
 
 				final double t;
 				if (u2p1 != u2) {
@@ -3392,20 +3417,20 @@ public class Matrix3d implements Serializable, Cloneable {
 					t = .5 / u;
 				}
 
-				final double c = 1. / Math.sqrt(t * t + 1);
-				final double s = c * t;
+				final var c = 1. / Math.sqrt(t * t + 1);
+				final var s = c * t;
 
 				m11 -= t * m13;
 				m33 += t * m13;
 				m13 = 0.;
 
-				final double tmp = c * m12 - s * m23;
+				final var tmp = c * m12 - s * m23;
 				m23 = s * m12 + c * m23;
 				m12 = tmp;
 
 				for (int i = 0; i < 3; ++i) {
-					final double ri0 = eigenVectors.getElement(i, 0);
-					final double ri2 = eigenVectors.getElement(i, 2);
+					final var ri0 = eigenVectors.getElement(i, 0);
+					final var ri2 = eigenVectors.getElement(i, 2);
 					eigenVectors.setElement(i, 0, c * ri0 - s * ri2);
 					eigenVectors.setElement(i, 2, s * ri0 + c * ri2);
 				}
@@ -3413,9 +3438,9 @@ public class Matrix3d implements Serializable, Cloneable {
 
 			// Annihilate (2, 3) entry
 			if (m23 != 0.) {
-				final double u = (m33 - m22) * .5 / m23;
-				final double u2 = u * u;
-				final double u2p1 = u2 + 1.;
+				final var u = (m33 - m22) * .5 / m23;
+				final var u2 = u * u;
+				final var u2p1 = u2 + 1.;
 
 				final double t;
 				if (u2p1 != u2) {
@@ -3424,20 +3449,20 @@ public class Matrix3d implements Serializable, Cloneable {
 					t = .5 / u;
 				}
 
-				final double c = 1. / Math.sqrt(t * t + 1);
-				final double s = c * t;
+				final var c = 1. / Math.sqrt(t * t + 1);
+				final var s = c * t;
 
 				m22 -= t * m23;
 				m33 += t * m23;
 				m23 = 0.;
 
-				final double tmp = c * m12 - s * m13;
+				final var tmp = c * m12 - s * m13;
 				m13 = s * m12 + c * m13;
 				m12 = tmp;
 
 				for (int i = 0; i < 3; ++i) {
-					final double ri1 = eigenVectors.getElement(i, 1);
-					final double ri2 = eigenVectors.getElement(i, 2);
+					final var ri1 = eigenVectors.getElement(i, 1);
+					final var ri2 = eigenVectors.getElement(i, 2);
 					eigenVectors.setElement(i, 1, c * ri1 - s * ri2);
 					eigenVectors.setElement(i, 2, s * ri1 + c * ri2);
 				}
@@ -3459,9 +3484,10 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @see MathUtil#isEpsilonEqual(double, double)
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 	public boolean isIdentity() {
 		if (this.isIdentity == null) {
-			this.isIdentity = MathUtil.isEpsilonEqual(this.m00, 1.)
+			this.isIdentity = Boolean.valueOf(MathUtil.isEpsilonEqual(this.m00, 1.)
 					&& MathUtil.isEpsilonZero(this.m01)
 					&& MathUtil.isEpsilonZero(this.m02)
 					&& MathUtil.isEpsilonZero(this.m10)
@@ -3469,7 +3495,7 @@ public class Matrix3d implements Serializable, Cloneable {
 					&& MathUtil.isEpsilonZero(this.m12)
 					&& MathUtil.isEpsilonZero(this.m20)
 					&& MathUtil.isEpsilonZero(this.m21)
-					&& MathUtil.isEpsilonEqual(this.m22, 1.);
+					&& MathUtil.isEpsilonEqual(this.m22, 1.));
 		}
 		return this.isIdentity.booleanValue();
 	}
@@ -3502,7 +3528,7 @@ public class Matrix3d implements Serializable, Cloneable {
 		add(scalar);
 	}
 
-	/** Substract the given matrix to this matrix: {@code this -= matrix}.
+	/** Subtract the given matrix to this matrix: {@code this -= matrix}.
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
@@ -3516,7 +3542,7 @@ public class Matrix3d implements Serializable, Cloneable {
 		sub(matrix);
 	}
 
-	/** Substract the given scalar to this matrix: {@code this -= scalar}.
+	/** Subtract the given scalar to this matrix: {@code this -= scalar}.
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
@@ -3543,7 +3569,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("+")
 	public Matrix3d operator_plus(Matrix3d matrix) {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.add(this, matrix);
 		return result;
 	}
@@ -3564,7 +3590,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("+")
 	public Matrix3d operator_plus(double scalar) {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.add(scalar, this);
 		return result;
 	}
@@ -3582,7 +3608,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("-")
 	public Matrix3d operator_minus(Matrix3d matrix) {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.sub(this, matrix);
 		return result;
 	}
@@ -3603,7 +3629,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("-")
 	public Matrix3d operator_minus(double scalar) {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.add(-scalar, this);
 		return result;
 	}
@@ -3620,7 +3646,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("(-)")
 	public Matrix3d operator_minus() {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.negate(this);
 		return result;
 	}
@@ -3638,7 +3664,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("*")
 	public Matrix3d operator_multiply(Matrix3d matrix) {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.mul(this, matrix);
 		return result;
 	}
@@ -3659,7 +3685,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("*")
 	public Matrix3d operator_multiply(double scalar) {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.mul(scalar, this);
 		return result;
 	}
@@ -3680,7 +3706,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@XtextOperator("/")
 	public Matrix3d operator_divide(double scalar) {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.mul(1. / scalar, this);
 		return result;
 	}
@@ -3722,7 +3748,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 */
 	@XtextOperator("!")
 	public Matrix3d operator_not() {
-		final Matrix3d result = new Matrix3d();
+		final var result = new Matrix3d();
 		result.transpose(this);
 		return result;
 	}

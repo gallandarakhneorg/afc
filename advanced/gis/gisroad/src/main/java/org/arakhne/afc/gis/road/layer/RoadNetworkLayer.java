@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.MapElement;
@@ -43,6 +41,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to display a road network.
@@ -106,13 +105,13 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nofinalizer")
+	@SuppressWarnings({ "checkstyle:nofinalizer", "removal" })
 	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		this.roadNetwork.removeRoadNetworkListener(this.listener);
-		for (final RoadSegment segment : this.roadNetwork) {
-			if (segment instanceof MapPolyline) {
-				((MapPolyline) segment).setContainer(null);
+		for (final var segment : this.roadNetwork) {
+			if (segment instanceof MapPolyline polyline) {
+				polyline.setContainer(null);
 			}
 		}
 		this.roadNetwork.setContainer(null);
@@ -126,8 +125,8 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 			@SuppressWarnings("synthetic-access")
 			public void onRoadSegmentAdded(RoadNetwork theNetwork, RoadSegment newSegment) {
 				if (theNetwork == RoadNetworkLayer.this.roadNetwork) {
-					if (newSegment instanceof MapPolyline) {
-						((MapPolyline) newSegment).setContainer(RoadNetworkLayer.this);
+					if (newSegment instanceof MapPolyline polyline) {
+						polyline.setContainer(RoadNetworkLayer.this);
 					}
 					RoadNetworkLayer.this.fireLayerContentChangedEvent();
 				}
@@ -137,8 +136,8 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 			@SuppressWarnings("synthetic-access")
 			public void onRoadSegmentChanged(RoadNetwork theNetwork, RoadSegment changedSegment) {
 				if (theNetwork == RoadNetworkLayer.this.roadNetwork) {
-					if (changedSegment instanceof MapPolyline) {
-						((MapPolyline) changedSegment).setContainer(RoadNetworkLayer.this);
+					if (changedSegment instanceof MapPolyline polyline) {
+						polyline.setContainer(RoadNetworkLayer.this);
 					}
 					RoadNetworkLayer.this.fireLayerContentChangedEvent();
 				}
@@ -148,8 +147,8 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 			@SuppressWarnings("synthetic-access")
 			public void onRoadSegmentRemoved(RoadNetwork theNetwork, RoadSegment newSegment) {
 				if (theNetwork == RoadNetworkLayer.this.roadNetwork) {
-					if (newSegment instanceof MapPolyline) {
-						((MapPolyline) newSegment).setContainer(null);
+					if (newSegment instanceof MapPolyline polyline) {
+						polyline.setContainer(null);
 					}
 					RoadNetworkLayer.this.fireLayerContentChangedEvent();
 				}
@@ -158,9 +157,9 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 
 		this.roadNetwork = network;
 		this.roadNetwork.setContainer(this);
-		for (final RoadSegment segment : network) {
-			if (segment instanceof MapPolyline) {
-				((MapPolyline) segment).setContainer(this);
+		for (final var segment : network) {
+			if (segment instanceof MapPolyline polyline) {
+				polyline.setContainer(this);
 			}
 		}
 		this.roadNetwork.addRoadNetworkListener(this.listener);
@@ -209,7 +208,7 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 	@Override
 	@Pure
 	public RoadNetworkLayer clone() {
-		final RoadNetworkLayer clone = (RoadNetworkLayer) super.clone();
+		final var clone = (RoadNetworkLayer) super.clone();
 
 		StandardRoadNetwork clonedNetwork = null;
 		if (this.roadNetwork != null) {
@@ -226,8 +225,8 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 	@Override
 	@Pure
 	public RoadPolyline getMapElementAt(int index) {
-		final Iterator<RoadSegment> segments = this.roadNetwork.iterator();
-		for (int i = 0; i < index - 1 && segments.hasNext(); ++i) {
+		final var segments = this.roadNetwork.iterator();
+		for (var i = 0; i < index - 1 && segments.hasNext(); ++i) {
 			segments.next();
 		}
 		if (segments.hasNext()) {
@@ -275,7 +274,7 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 	@Override
 	@Pure
 	public String getName() {
-		String name = this.roadNetwork.getName();
+		var name = this.roadNetwork.getName();
 		if (name != null && !"".equals(name)) { //$NON-NLS-1$
 			return name;
 		}
@@ -311,8 +310,8 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 
 	@Override
 	public boolean addMapElements(Collection<? extends RoadPolyline> segments) {
-		boolean changed = false;
-		for (final RoadPolyline segment : segments) {
+		var changed = false;
+		for (final var segment : segments) {
 			try {
 				this.roadNetwork.addRoadSegment(segment);
 				segment.setContainer(this);
@@ -344,8 +343,8 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 
 	@Override
 	public boolean removeMapElement(MapElement segment) {
-		if (segment instanceof RoadPolyline) {
-			if (this.roadNetwork.removeRoadSegment((RoadPolyline) segment)) {
+		if (segment instanceof RoadPolyline polyline) {
+			if (this.roadNetwork.removeRoadSegment(polyline)) {
 				segment.setContainer(null);
 				resetBoundingBox();
 				fireLayerContentChangedEvent();
@@ -358,14 +357,11 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 	@Override
 	public boolean removeAllMapElements() {
 		if (!this.roadNetwork.isEmpty()) {
-			final Iterator<RoadSegment> iterator = this.roadNetwork.iterator();
-			RoadSegment segment;
-			RoadPolyline road;
-			boolean hasChanged = false;
+			final var iterator = this.roadNetwork.iterator();
+			var hasChanged = false;
 			while (iterator.hasNext()) {
-				segment = iterator.next();
-				if (segment instanceof RoadPolyline) {
-					road = (RoadPolyline) segment;
+				final var segment = iterator.next();
+				if (segment instanceof RoadPolyline road) {
 					road.setContainer(null);
 					iterator.remove();
 					hasChanged = true;
@@ -429,7 +425,7 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void remove() {
-			final RoadPolyline removed = this.lastReplied;
+			final var removed = this.lastReplied;
 			this.lastReplied = null;
 			this.iterator.remove();
 			if (removed == null) {

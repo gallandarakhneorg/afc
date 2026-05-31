@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -51,36 +52,31 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import com.google.common.base.Strings;
+import org.arakhne.afc.inputoutput.xml.XMLResources.Entry;
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
+import org.arakhne.afc.vmutil.ColorNames;
+import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import org.arakhne.afc.inputoutput.xml.XMLResources.Entry;
-import org.arakhne.afc.vmutil.ClassLoaderFinder;
-import org.arakhne.afc.vmutil.ColorNames;
-import org.arakhne.afc.vmutil.FileSystem;
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * Utility class for manipulating XML data and files.
@@ -200,7 +196,7 @@ public final class XMLUtil {
 
 	private static double decodeDouble(String colorString) {
 		try {
-			final Double dblval = Double.valueOf(colorString);
+			final var dblval = Double.valueOf(colorString);
 			return dblval.doubleValue();
 		} catch (Throwable exception) {
 			return 0.;
@@ -220,7 +216,7 @@ public final class XMLUtil {
 
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static int encodeRgbaColor(int red, int green, int blue, int alpha) {
-		int col = (alpha & 0xFF) << 24;
+		var col = (alpha & 0xFF) << 24;
 		col |= (red & 0xFF) << 16;
 		col |= (green & 0xFF) << 8;
 		col |= blue & 0xFF;
@@ -238,8 +234,8 @@ public final class XMLUtil {
 			green = lightness;
 			blue = lightness;
 		} else {
-			final double q = lightness < .5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
-			final double p = 2 * lightness - q;
+			final var q = lightness < .5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
+			final var p = 2 * lightness - q;
 			red = hue2rgb(p, q, hue + 1. / 3.);
 			green = hue2rgb(p, q, hue);
 			blue = hue2rgb(p, q, hue - 1. / 3.);
@@ -249,7 +245,7 @@ public final class XMLUtil {
 
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static double hue2rgb(double p0, double q0, double t0) {
-		double t = t0;
+		var t = t0;
 		if (t < 0.) {
 			t += 1.;
 		}
@@ -317,7 +313,7 @@ public final class XMLUtil {
 	public static Boolean getAttributeBooleanWithDefault(Node document, boolean caseSensitive,
 			Boolean defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v == null || v.isEmpty()) {
 			return defaultValue;
 		}
@@ -382,10 +378,10 @@ public final class XMLUtil {
 	public static Class<?> getAttributeClassWithDefault(Node document, boolean caseSensitive,
 			Class<?> defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !v.isEmpty()) {
 			try {
-				final ClassLoader loader = ClassLoaderFinder.findClassLoader();
+				final var loader = ClassLoaderFinder.findClassLoader();
 				return loader.loadClass(v);
 			} catch (Throwable e) {
 				//
@@ -455,7 +451,7 @@ public final class XMLUtil {
 	public static Integer getAttributeColorWithDefault(Node document, boolean caseSensitive, Integer defaultValue,
 			String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !"".equals(v)) { //$NON-NLS-1$
 			try {
 				return parseColor(v);
@@ -532,7 +528,7 @@ public final class XMLUtil {
 	@Pure
 	public static Date getAttributeDateWithDefault(Node document, boolean caseSensitive, Date defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null) {
 			try {
 				return parseDate(v);
@@ -610,7 +606,7 @@ public final class XMLUtil {
 	public static Double getAttributeDoubleWithDefault(Node document, boolean caseSensitive, Double defaultValue,
 			String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null) {
 			try {
 				return Double.parseDouble(v);
@@ -682,11 +678,11 @@ public final class XMLUtil {
 			boolean caseSensitive, T defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		assert type != null : AssertMessages.notNullParameter(1);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !v.isEmpty()) {
 			if (caseSensitive) {
 				try {
-					final T value = Enum.valueOf(type, v);
+					final var value = Enum.valueOf(type, v);
 					if (value != null) {
 						return value;
 					}
@@ -694,7 +690,7 @@ public final class XMLUtil {
 					//
 				}
 			} else {
-				for (final T value : type.getEnumConstants()) {
+				for (final var value : type.getEnumConstants()) {
 					if (v.equalsIgnoreCase(value.name())) {
 						return value;
 					}
@@ -768,7 +764,7 @@ public final class XMLUtil {
 	@Pure
 	public static Float getAttributeFloatWithDefault(Node document, boolean caseSensitive, Float defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null) {
 			try {
 				return Float.parseFloat(v);
@@ -844,7 +840,7 @@ public final class XMLUtil {
 	@Pure
 	public static Integer getAttributeIntWithDefault(Node document, boolean caseSensitive, Integer defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null) {
 			try {
 				return Integer.parseInt(v);
@@ -919,7 +915,7 @@ public final class XMLUtil {
 	@Pure
 	public static Long getAttributeLongWithDefault(Node document, boolean caseSensitive, Long defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null) {
 			try {
 				return Long.parseLong(v);
@@ -996,9 +992,9 @@ public final class XMLUtil {
 	@Pure
 	public static URL getAttributeURLWithDefault(Node document, boolean caseSensitive, URL defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !v.isEmpty()) {
-			final URL url = FileSystem.convertStringToURL(v, true);
+			final var url = FileSystem.convertStringToURL(v, true);
 			if (url != null) {
 				return url;
 			}
@@ -1071,10 +1067,10 @@ public final class XMLUtil {
 	@Pure
 	public static List<UUID> getAttributeUUIDs(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final List<UUID> ids = new ArrayList<>();
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var ids = new ArrayList<UUID>();
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !v.isEmpty()) {
-			for (final String id : v.split(COLUMN_SEPARATOR)) {
+			for (final var id : v.split(COLUMN_SEPARATOR)) {
 				try {
 					ids.add(UUID.fromString(id));
 				} catch (Exception e) {
@@ -1116,10 +1112,10 @@ public final class XMLUtil {
 	@Pure
 	public static UUID getAttributeUUIDWithDefault(Node document, boolean caseSensitive, UUID defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !v.isEmpty()) {
 			try {
-				final UUID id = UUID.fromString(v);
+				final var id = UUID.fromString(v);
 				if (id != null) {
 					return id;
 				}
@@ -1167,35 +1163,34 @@ public final class XMLUtil {
 		assert path != null && (path.length - idxStart) >= 0 : AssertMessages.invalidValue(2);
 
 		if ((path.length - idxStart) > 1) {
-			final NodeList nodes = document.getChildNodes();
-			final int len = nodes.getLength();
-			for (int i = 0; i < len; ++i) {
-				final Node node = nodes.item(i);
+			final var nodes = document.getChildNodes();
+			final var len = nodes.getLength();
+			for (var i = 0; i < len; ++i) {
+				final var node = nodes.item(i);
 				if (node != null) {
-					final String name = node.getNodeName();
+					final var name = node.getNodeName();
 					if (name != null
-							&& ((caseSensitive && name.equals(path[idxStart]))
-									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
-						final String value = getAttributeValue(node, caseSensitive, idxStart + 1, path);
+							&& caseSensitive && name.equals(path[idxStart])
+									|| !caseSensitive && name.equalsIgnoreCase(path[idxStart])) {
+						final var value = getAttributeValue(node, caseSensitive, idxStart + 1, path);
 						if (value != null) {
 							return value;
 						}
 					}
 				}
 			}
-		} else if (document instanceof Element) {
+		} else if (document instanceof Element doc) {
 			if (caseSensitive) {
-				return ((Element) document).getAttribute(path[idxStart]);
+				return doc.getAttribute(path[idxStart]);
 			}
-			final NamedNodeMap map = ((Element) document).getAttributes();
-			final int len = map.getLength();
-			for (int i = 0; i < len; ++i) {
-				final Node node = map.item(i);
-				if (node instanceof Attr) {
-					final Attr attr = (Attr) node;
-					final String name = attr.getName();
+			final var map = doc.getAttributes();
+			final var len = map.getLength();
+			for (var i = 0; i < len; ++i) {
+				final var node = map.item(i);
+				if (node instanceof Attr attr) {
+					final var name = attr.getName();
 					if (name != null && name.equalsIgnoreCase(path[idxStart])) {
-						final String value = attr.getValue();
+						final var value = attr.getValue();
 						if (value != null) {
 							return value;
 						}
@@ -1203,15 +1198,15 @@ public final class XMLUtil {
 				}
 			}
 		} else {
-			final NamedNodeMap attrs = document.getAttributes();
+			final var attrs = document.getAttributes();
 			if (attrs != null) {
-				final int len = attrs.getLength();
-				for (int idxAttr = 0; idxAttr < len; ++idxAttr) {
-					final Node node = attrs.item(idxAttr);
-					final String name = node.getNodeName();
+				final var len = attrs.getLength();
+				for (var idxAttr = 0; idxAttr < len; ++idxAttr) {
+					final var node = attrs.item(idxAttr);
+					final var name = node.getNodeName();
 					if (name != null
-							&& ((caseSensitive && name.equals(path[idxStart]))
-									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+							&& (caseSensitive && name.equals(path[idxStart])
+									|| !caseSensitive && name.equalsIgnoreCase(path[idxStart]))) {
 						return node.getNodeValue();
 					}
 				}
@@ -1270,7 +1265,7 @@ public final class XMLUtil {
 	public static String getAttributeValueWithDefault(Node document, boolean caseSensitive, String defaultValue,
 			String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final String v = getAttributeValue(document, caseSensitive, 0, path);
+		final var v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !v.isEmpty()) {
 			return v;
 		}
@@ -1305,10 +1300,10 @@ public final class XMLUtil {
 	public static <T extends Node> T getChild(Node parent, Class<T> type) {
 		assert parent != null : AssertMessages.notNullParameter(0);
 		assert type != null : AssertMessages.notNullParameter(1);
-		final NodeList children = parent.getChildNodes();
-		final int len = children.getLength();
-		for (int i = 0; i < len; ++i) {
-			final Node child = children.item(i);
+		final var children = parent.getChildNodes();
+		final var len = children.getLength();
+		for (var i = 0; i < len; ++i) {
+			final var child = children.item(i);
 			if (type.isInstance(child)) {
 				return type.cast(child);
 			}
@@ -1326,8 +1321,8 @@ public final class XMLUtil {
 	public static Document getDocumentFor(Node node) {
 		Node localnode = node;
 		while (localnode != null) {
-			if (localnode instanceof Document) {
-				return (Document) localnode;
+			if (localnode instanceof Document doc) {
+				return doc;
 			}
 			localnode = localnode.getParentNode();
 		}
@@ -1350,17 +1345,16 @@ public final class XMLUtil {
 	private static Element getElementFromPath(Node document, boolean caseSensitive, int idxStart, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		if (path != null && (path.length - idxStart) >= 1) {
-			final NodeList nodes = document.getChildNodes();
-			final int len = nodes.getLength();
-			for (int i = 0; i < len; ++i) {
-				final Node node = nodes.item(i);
-				if (node instanceof Element) {
-					final Element element = (Element) node;
-					final String name = node.getNodeName();
+			final var nodes = document.getChildNodes();
+			final var len = nodes.getLength();
+			for (var i = 0; i < len; ++i) {
+				final var node = nodes.item(i);
+				if (node instanceof Element element) {
+					final var name = node.getNodeName();
 					if (name != null
-							&& ((caseSensitive && name.equals(path[idxStart]))
-									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
-						final Element nd = (path.length - idxStart) == 1
+							&& (caseSensitive && name.equals(path[idxStart])
+									|| !caseSensitive && name.equalsIgnoreCase(path[idxStart]))) {
+						final var nd = (path.length - idxStart) == 1
 								? element : getElementFromPath(node, caseSensitive, idxStart + 1, path);
 						if (nd != null) {
 							return nd;
@@ -1419,7 +1413,7 @@ public final class XMLUtil {
 	public static Element getElementMatching(Node document, XMLConstraint constraint, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		assert constraint != null : AssertMessages.notNullParameter(1);
-		for (final Element element : getElementsFromPath(document, caseSensitive, path)) {
+		for (final var element : getElementsFromPath(document, caseSensitive, path)) {
 			if (constraint.isValidElement(element)) {
 				return element;
 			}
@@ -1459,16 +1453,15 @@ public final class XMLUtil {
 			List<Element> result, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		if (path != null && (path.length - idxStart) >= 1) {
-			final NodeList nodes = document.getChildNodes();
-			final int len = nodes.getLength();
-			for (int i = 0; i < len; ++i) {
-				final Node node = nodes.item(i);
-				if (node instanceof Element) {
-					final Element element = (Element) node;
-					final String name = element.getNodeName();
+			final var nodes = document.getChildNodes();
+			final var len = nodes.getLength();
+			for (var i = 0; i < len; ++i) {
+				final var node = nodes.item(i);
+				if (node instanceof Element element) {
+					final var name = element.getNodeName();
 					if (name != null
-							&& ((caseSensitive && name.equals(path[idxStart]))
-									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+							&& (caseSensitive && name.equals(path[idxStart])
+									|| !caseSensitive && name.equalsIgnoreCase(path[idxStart]))) {
 						if  ((path.length - idxStart) == 1) {
 							result.add(element);
 						} else {
@@ -1493,7 +1486,7 @@ public final class XMLUtil {
 	@Pure
 	public static List<Element> getElementsFromPath(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final List<Element> list = new ArrayList<>();
+		final var list = new ArrayList<Element>();
 		getElementsFromPath(document, caseSensitive, 0, list, path);
 		return list;
 	}
@@ -1511,7 +1504,7 @@ public final class XMLUtil {
 	@Pure
 	public static List<Element> getElementsFromPath(Node document, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final List<Element> list = new ArrayList<>();
+		final var list = new ArrayList<Element>();
 		getElementsFromPath(document, true, 0, list, path);
 		return list;
 	}
@@ -1532,16 +1525,16 @@ public final class XMLUtil {
 	private static Node getNodeFromPath(Node document, boolean caseSensitive, int idxStart, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		if (path != null && (path.length - idxStart) >= 1) {
-			final NodeList nodes = document.getChildNodes();
-			final int len = nodes.getLength();
-			for (int i = 0; i < len; ++i) {
-				final Node node = nodes.item(i);
+			final var nodes = document.getChildNodes();
+			final var len = nodes.getLength();
+			for (var i = 0; i < len; ++i) {
+				final var node = nodes.item(i);
 				if (node != null) {
-					final String name = node.getNodeName();
+					final var name = node.getNodeName();
 					if (name != null
-							&& ((caseSensitive && name.equals(path[idxStart]))
-									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
-						final Node nd = (path.length - idxStart) == 1
+							&& (caseSensitive && name.equals(path[idxStart])
+									|| !caseSensitive && name.equalsIgnoreCase(path[idxStart]))) {
+						final var nd = (path.length - idxStart) == 1
 								? node : getNodeFromPath(node, caseSensitive, idxStart + 1, path);
 						if (nd != null) {
 							return nd;
@@ -1601,15 +1594,15 @@ public final class XMLUtil {
 	private static void getNodesFromPath(Node document, boolean caseSensitive, int idxStart, List<Node> result, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		if (path != null && (path.length - idxStart) >= 1) {
-			final NodeList nodes = document.getChildNodes();
-			final int len = nodes.getLength();
-			for (int i = 0; i < len; ++i) {
-				final Node node = nodes.item(i);
+			final var nodes = document.getChildNodes();
+			final var len = nodes.getLength();
+			for (var i = 0; i < len; ++i) {
+				final var node = nodes.item(i);
 				if (node != null) {
-					final String name = node.getNodeName();
+					final var name = node.getNodeName();
 					if (name != null
-							&& ((caseSensitive && name.equals(path[idxStart]))
-									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+							&& (caseSensitive && name.equals(path[idxStart])
+									|| !caseSensitive && name.equalsIgnoreCase(path[idxStart]))) {
 						if  ((path.length - idxStart) == 1) {
 							result.add(node);
 						} else {
@@ -1635,7 +1628,7 @@ public final class XMLUtil {
 	@Pure
 	public static List<Node> getNodesFromPath(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final List<Node> list = new ArrayList<>();
+		final var list = new ArrayList<Node>();
 		getNodesFromPath(document, caseSensitive, 0, list, path);
 		return list;
 	}
@@ -1654,7 +1647,7 @@ public final class XMLUtil {
 	@Pure
 	public static List<Node> getNodesFromPath(Node document, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		final List<Node> list = new ArrayList<>();
+		final var list = new ArrayList<Node>();
 		getNodesFromPath(document, true, 0, list, path);
 		return list;
 	}
@@ -1673,17 +1666,17 @@ public final class XMLUtil {
 	@Pure
 	public static String getText(Node document, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		Node parentNode = getNodeFromPath(document, path);
+		var parentNode = getNodeFromPath(document, path);
 		if (parentNode == null) {
 			parentNode = document;
 		}
-		final StringBuilder text = new StringBuilder();
-		final NodeList children = parentNode.getChildNodes();
-		final int len = children.getLength();
-		for (int i = 0; i < len; ++i) {
-			final Node child = children.item(i);
-			if (child instanceof Text) {
-				text.append(((Text) child).getWholeText());
+		final var text = new StringBuilder();
+		final var children = parentNode.getChildNodes();
+		final var len = children.getLength();
+		for (var i = 0; i < len; ++i) {
+			final var child = children.item(i);
+			if (child instanceof Text txt) {
+				text.append(txt.getWholeText());
 			}
 		}
 		if (text.length() > 0) {
@@ -1723,7 +1716,7 @@ public final class XMLUtil {
 	 * @return the color.
 	 * @throws ColorFormatException if the color has invalid format.
 	 * @see #toColor(int, int, int, int)
-	 * see {@link ColorNames}
+	 * @see ColorNames
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
@@ -1733,7 +1726,7 @@ public final class XMLUtil {
 		}
 		if (xmlColor.startsWith("#")) { //$NON-NLS-1$
 			try {
-				final String str = xmlColor.substring(1);
+				final var str = xmlColor.substring(1);
 				if (str.length() == 6) {
 					return 0xFF000000 | decodeHexInteger(str.toString());
 				}
@@ -1742,37 +1735,37 @@ public final class XMLUtil {
 				throw new ColorFormatException(xmlColor);
 			}
 		}
-		Matcher matcher = HTML_RGB_PATTERN.matcher(xmlColor);
+		var matcher = HTML_RGB_PATTERN.matcher(xmlColor);
 		if (matcher.find()) {
-			final int red = decodeDecInteger(matcher.group(1));
-			final int green = decodeDecInteger(matcher.group(2));
-			final int blue = decodeDecInteger(matcher.group(3));
+			final var red = decodeDecInteger(matcher.group(1));
+			final var green = decodeDecInteger(matcher.group(2));
+			final var blue = decodeDecInteger(matcher.group(3));
 			return encodeRgbaColor(red, green, blue, 0xFF);
 		}
 		matcher = HTML_RGBA_PATTERN.matcher(xmlColor);
 		if (matcher.find()) {
-			final int red = decodeDecInteger(matcher.group(1));
-			final int green = decodeDecInteger(matcher.group(2));
-			final int blue = decodeDecInteger(matcher.group(3));
-			final int alpha = decodeDecInteger(matcher.group(4));
+			final var red = decodeDecInteger(matcher.group(1));
+			final var green = decodeDecInteger(matcher.group(2));
+			final var blue = decodeDecInteger(matcher.group(3));
+			final var alpha = decodeDecInteger(matcher.group(4));
 			return encodeRgbaColor(red, green, blue, alpha);
 		}
 		matcher = HTML_HSL_PATTERN.matcher(xmlColor);
 		if (matcher.find()) {
-			final double hue = decodeFactor(matcher.group(1));
-			final double saturation = decodeFactor(matcher.group(2));
-			final double lightness = decodeFactor(matcher.group(3));
+			final var hue = decodeFactor(matcher.group(1));
+			final var saturation = decodeFactor(matcher.group(2));
+			final var lightness = decodeFactor(matcher.group(3));
 			return encodeHslaColor(hue, saturation, lightness, 0xFF);
 		}
 		matcher = HTML_HSLA_PATTERN.matcher(xmlColor);
 		if (matcher.find()) {
-			final double hue = decodeFactor(matcher.group(1));
-			final double saturation = decodeFactor(matcher.group(2));
-			final double lightness = decodeFactor(matcher.group(3));
-			final int alpha = decodeDecInteger(matcher.group(4));
+			final var hue = decodeFactor(matcher.group(1));
+			final var saturation = decodeFactor(matcher.group(2));
+			final var lightness = decodeFactor(matcher.group(3));
+			final var alpha = decodeDecInteger(matcher.group(4));
 			return encodeHslaColor(hue, saturation, lightness, alpha);
 		}
-		final Integer color = ColorNames.getColorFromName(xmlColor);
+		final var color = ColorNames.getColorFromName(xmlColor);
 		if (color != null) {
 			return color.intValue();
 		}
@@ -1791,7 +1784,7 @@ public final class XMLUtil {
 		if (xmlDate == null || xmlDate.isEmpty()) {
 			return null;
 		}
-		final SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
+		final var format = new SimpleDateFormat(DATE_FORMAT);
 		try {
 			return format.parse(xmlDate);
 		} catch (Exception e) {
@@ -1810,8 +1803,8 @@ public final class XMLUtil {
 	@Pure
 	public static Object parseObject(String xmlSerializedObject) throws IOException, ClassNotFoundException {
 		assert xmlSerializedObject != null : AssertMessages.notNullParameter(0);
-		try (ByteArrayInputStream bais = new ByteArrayInputStream(Base64.getDecoder().decode(xmlSerializedObject))) {
-			final ObjectInputStream ois = new ObjectInputStream(bais);
+		try (var bais = new ByteArrayInputStream(Base64.getDecoder().decode(xmlSerializedObject))) {
+			final var ois = new ObjectInputStream(bais);
 			return ois.readObject();
 		}
 	}
@@ -1854,7 +1847,7 @@ public final class XMLUtil {
 	 */
 	public static Document readXML(File file) throws IOException, SAXException, ParserConfigurationException {
 		assert file != null : AssertMessages.notNullParameter();
-		try (FileInputStream fis = new FileInputStream(file)) {
+		try (var fis = new FileInputStream(file)) {
 			return readXML(fis);
 		}
 	}
@@ -1871,8 +1864,8 @@ public final class XMLUtil {
 	public static Document readXML(InputStream stream) throws IOException, SAXException, ParserConfigurationException {
 		assert stream != null : AssertMessages.notNullParameter();
 		try {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder builder = factory.newDocumentBuilder();
+			final var factory = DocumentBuilderFactory.newInstance();
+			final var builder = factory.newDocumentBuilder();
 			return builder.parse(stream);
 		} finally {
 			stream.close();
@@ -1891,8 +1884,8 @@ public final class XMLUtil {
 	public static Document readXML(Reader reader) throws IOException, SAXException, ParserConfigurationException {
 		assert reader != null : AssertMessages.notNullParameter();
 		try {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder builder = factory.newDocumentBuilder();
+			final var factory = DocumentBuilderFactory.newInstance();
+			final var builder = factory.newDocumentBuilder();
 			return builder.parse(new InputSource(reader));
 		} finally {
 			reader.close();
@@ -1910,7 +1903,7 @@ public final class XMLUtil {
 	 */
 	public static Document readXML(String file) throws IOException, SAXException, ParserConfigurationException {
 		assert file != null : AssertMessages.notNullParameter();
-		try (FileInputStream fis = new FileInputStream(file)) {
+		try (var fis = new FileInputStream(file)) {
 			return readXML(fis);
 		}
 	}
@@ -1960,7 +1953,7 @@ public final class XMLUtil {
 	public static DocumentFragment readXMLFragment(File file, boolean skipRoot)
 			throws IOException, SAXException, ParserConfigurationException {
 		assert file != null : AssertMessages.notNullParameter();
-		try (FileInputStream fis = new FileInputStream(file)) {
+		try (var fis = new FileInputStream(file)) {
 			return readXMLFragment(fis, skipRoot);
 		}
 	}
@@ -1998,25 +1991,25 @@ public final class XMLUtil {
 			SAXException, ParserConfigurationException {
 		assert stream != null : AssertMessages.notNullParameter();
 		try {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder builder = factory.newDocumentBuilder();
-			final Document doc = builder.parse(stream);
+			final var factory = DocumentBuilderFactory.newInstance();
+			final var builder = factory.newDocumentBuilder();
+			final var doc = builder.parse(stream);
 
-			final DocumentFragment fragment = doc.createDocumentFragment();
+			final var fragment = doc.createDocumentFragment();
 			if (skipRoot) {
-				final NodeList root = doc.getChildNodes();
+				final var root = doc.getChildNodes();
 				if (root.getLength() == 0) {
 					return fragment;
 				}
-				final NodeList children = root.item(0).getChildNodes();
-				final int len = children.getLength();
-				for (int i = 0; i < len; ++i) {
+				final var children = root.item(0).getChildNodes();
+				final var len = children.getLength();
+				for (var i = 0; i < len; ++i) {
 					fragment.appendChild(children.item(0));
 				}
 			} else {
-				final NodeList children = doc.getChildNodes();
-				final int len = children.getLength();
-				for (int i = 0; i < len; ++i) {
+				final var children = doc.getChildNodes();
+				final var len = children.getLength();
+				for (var i = 0; i < len; ++i) {
 					fragment.appendChild(children.item(i));
 				}
 			}
@@ -2059,24 +2052,24 @@ public final class XMLUtil {
 			ParserConfigurationException {
 		assert reader != null : AssertMessages.notNullParameter();
 		try {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			final DocumentBuilder builder = factory.newDocumentBuilder();
-			final Document doc = builder.parse(new InputSource(reader));
-			final DocumentFragment fragment = doc.createDocumentFragment();
+			final var factory = DocumentBuilderFactory.newInstance();
+			final var builder = factory.newDocumentBuilder();
+			final var doc = builder.parse(new InputSource(reader));
+			final var fragment = doc.createDocumentFragment();
 			if (skipRoot) {
-				final NodeList root = doc.getChildNodes();
+				final var root = doc.getChildNodes();
 				if (root.getLength() == 0) {
 					return fragment;
 				}
-				final NodeList children = root.item(0).getChildNodes();
-				final int len = children.getLength();
-				for (int i = 0; i < len; ++i) {
+				final var children = root.item(0).getChildNodes();
+				final var len = children.getLength();
+				for (var i = 0; i < len; ++i) {
 					fragment.appendChild(children.item(0));
 				}
 			} else {
-				final NodeList children = doc.getChildNodes();
-				final int len = children.getLength();
-				for (int i = 0; i < len; ++i) {
+				final var children = doc.getChildNodes();
+				final var len = children.getLength();
+				for (var i = 0; i < len; ++i) {
 					fragment.appendChild(children.item(i));
 				}
 			}
@@ -2117,7 +2110,7 @@ public final class XMLUtil {
 	public static DocumentFragment readXMLFragment(String file, boolean skipRoot)
 			throws IOException, SAXException, ParserConfigurationException {
 		assert file != null : AssertMessages.notNullParameter();
-		try (FileInputStream fis = new FileInputStream(file)) {
+		try (var fis = new FileInputStream(file)) {
 			return readXMLFragment(fis, skipRoot);
 		}
 	}
@@ -2171,14 +2164,14 @@ public final class XMLUtil {
 		assert document != null : AssertMessages.notNullParameter(0);
 		assert type != null : AssertMessages.notNullParameter(1);
 		if (value != null) {
-			final String[] thePath = Arrays.copyOf(path, path.length - 1);
-			final String attrName = path[path.length - 1];
+			final var thePath = Arrays.copyOf(path, path.length - 1);
+			final var attrName = path[path.length - 1];
 			if (attrName != null && !attrName.isEmpty()) {
 				Element node = null;
 				if (thePath != null && thePath.length > 0) {
 					node = getElementFromPath(document, caseSensitive, 0, thePath);
-				} else if (document instanceof Element) {
-					node = (Element) document;
+				} else if (document instanceof Element element) {
+					node = element;
 				}
 				if (node != null) {
 					node.setAttribute(attrName, value.name());
@@ -2217,7 +2210,7 @@ public final class XMLUtil {
 		if (!Strings.isNullOrEmpty(code)) {
 			return code;
 		}
-		final StringBuilder s = new StringBuilder("#"); //$NON-NLS-1$
+		final var s = new StringBuilder("#"); //$NON-NLS-1$
 		s.append(Integer.toHexString(rgba));
 		while (s.length() < 7) {
 			s.insert(1, '0');
@@ -2276,7 +2269,7 @@ public final class XMLUtil {
 	@Pure
 	public static String toString(Node node) {
 		assert node != null : AssertMessages.notNullParameter(0);
-		try (StringWriter writer = new StringWriter()) {
+		try (var writer = new StringWriter()) {
 			writeXML(node, writer);
 			return writer.toString();
 		} catch (Exception e) {
@@ -2294,8 +2287,8 @@ public final class XMLUtil {
 	@Pure
 	public static String toString(Serializable object) throws IOException {
 		assert object != null : AssertMessages.notNullParameter(0);
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			final ObjectOutputStream oos = new ObjectOutputStream(baos);
+		try (var baos = new ByteArrayOutputStream()) {
+			final var oos = new ObjectOutputStream(baos);
 			oos.writeObject(object);
 			return new String(Base64.getEncoder().encode(baos.toByteArray()));
 		}
@@ -2305,14 +2298,14 @@ public final class XMLUtil {
 		assert node != null : AssertMessages.notNullParameter(0);
 		assert stream != null : AssertMessages.notNullParameter(1);
 		try {
-			final TransformerFactory transFactory = TransformerFactory.newInstance();
+			final var transFactory = TransformerFactory.newInstance();
 			transFactory.setAttribute(INDENT_NUMBER, Integer.valueOf(2));
-			final Transformer trans = transFactory.newTransformer();
+			final var trans = transFactory.newTransformer();
 			trans.setParameter(OutputKeys.INDENT, CONSTANT_YES);
 
-			final DOMSource source = new DOMSource(node);
-			try (PrintStream flot = new PrintStream(stream)) {
-				final StreamResult xmlStream = new StreamResult(flot);
+			final var source = new DOMSource(node);
+			try (var flot = new PrintStream(stream)) {
+				final var xmlStream = new StreamResult(flot);
 				trans.transform(source, xmlStream);
 			}
 		} catch (Exception e) {
@@ -2324,14 +2317,14 @@ public final class XMLUtil {
 		assert node != null : AssertMessages.notNullParameter(0);
 		assert writer != null : AssertMessages.notNullParameter(1);
 		try {
-			final TransformerFactory transFactory = TransformerFactory.newInstance();
+			final var transFactory = TransformerFactory.newInstance();
 			transFactory.setAttribute(INDENT_NUMBER, Integer.valueOf(2));
-			final Transformer trans = transFactory.newTransformer();
+			final var trans = transFactory.newTransformer();
 			trans.setParameter(OutputKeys.INDENT, CONSTANT_YES);
 
-			final DOMSource source = new DOMSource(node);
-			try (PrintWriter flot = new PrintWriter(writer)) {
-				final StreamResult xmlStream = new StreamResult(flot);
+			final var source = new DOMSource(node);
+			try (var flot = new PrintWriter(writer)) {
+				final var xmlStream = new StreamResult(flot);
 				trans.transform(source, xmlStream);
 			}
 		} catch (Exception e) {
@@ -2349,7 +2342,7 @@ public final class XMLUtil {
 	public static void writeXML(Document xmldocument, File file) throws ParserConfigurationException, IOException {
 		assert xmldocument != null : AssertMessages.notNullParameter();
 		assert file != null : AssertMessages.notNullParameter();
-		try (FileOutputStream fos = new FileOutputStream(file)) {
+		try (var fos = new FileOutputStream(file)) {
 			writeNode(xmldocument, fos);
 		}
 	}
@@ -2375,7 +2368,7 @@ public final class XMLUtil {
 	 */
 	public static void writeXML(Document xmldocument, String file) throws ParserConfigurationException, IOException {
 		assert file != null : AssertMessages.notNullParameter();
-		try (FileOutputStream fos = new FileOutputStream(file)) {
+		try (var fos = new FileOutputStream(file)) {
 			writeNode(xmldocument, fos);
 		}
 	}
@@ -2402,7 +2395,7 @@ public final class XMLUtil {
 	public static void writeXML(DocumentFragment fragment, File file) throws ParserConfigurationException, IOException {
 		assert fragment != null : AssertMessages.notNullParameter(0);
 		assert file != null : AssertMessages.notNullParameter(1);
-		try (FileOutputStream fos = new FileOutputStream(file)) {
+		try (var fos = new FileOutputStream(file)) {
 			writeNode(fragment, fos);
 		}
 	}
@@ -2429,7 +2422,7 @@ public final class XMLUtil {
 	public static void writeXML(DocumentFragment fragment, String file) throws ParserConfigurationException, IOException {
 		assert fragment != null : AssertMessages.notNullParameter(0);
 		assert file != null : AssertMessages.notNullParameter(1);
-		try (FileOutputStream fos = new FileOutputStream(file)) {
+		try (var fos = new FileOutputStream(file)) {
 			writeNode(fragment, fos);
 		}
 	}
@@ -2475,23 +2468,23 @@ public final class XMLUtil {
 	 */
 	public static void writeResources(Element node, XMLResources resources, XMLBuilder builder) {
 		if (resources != null) {
-			final Element resourcesNode = builder.createElement(NODE_RESOURCES);
-			for (final java.util.Map.Entry<Long, Entry> pair : resources.getPairs().entrySet()) {
+			final var resourcesNode = builder.createElement(NODE_RESOURCES);
+			for (final var pair : resources.getPairs().entrySet()) {
 				final Entry e = pair.getValue();
 				if (e.isURL()) {
-					final Element resourceNode = builder.createElement(NODE_RESOURCE);
+					final var resourceNode = builder.createElement(NODE_RESOURCE);
 					resourceNode.setAttribute(ATTR_ID, XMLResources.getStringIdentifier(pair.getKey()));
 					resourceNode.setAttribute(ATTR_URL, e.getURL().toExternalForm());
 					resourceNode.setAttribute(ATTR_MIMETYPE, e.getMimeType());
 					resourcesNode.appendChild(resourceNode);
 				} else if (e.isFile()) {
-					final Element resourceNode = builder.createElement(NODE_RESOURCE);
+					final var resourceNode = builder.createElement(NODE_RESOURCE);
 					resourceNode.setAttribute(ATTR_ID, XMLResources.getStringIdentifier(pair.getKey()));
-					final File file = e.getFile();
-					final StringBuilder url = new StringBuilder();
+					final var file = e.getFile();
+					final var url = new StringBuilder();
 					url.append("file:"); //$NON-NLS-1$
-					boolean addSlash = false;
-					for (final String elt : FileSystem.split(file)) {
+					var addSlash = false;
+					for (final var elt : FileSystem.split(file)) {
 						try {
 							if (addSlash) {
 								url.append("/"); //$NON-NLS-1$
@@ -2506,11 +2499,11 @@ public final class XMLUtil {
 					resourceNode.setAttribute(ATTR_MIMETYPE, e.getMimeType());
 					resourcesNode.appendChild(resourceNode);
 				} else if (e.isEmbeddedData()) {
-					final Element resourceNode = builder.createElement(NODE_RESOURCE);
+					final var resourceNode = builder.createElement(NODE_RESOURCE);
 					resourceNode.setAttribute(ATTR_ID, XMLResources.getStringIdentifier(pair.getKey()));
 					resourceNode.setAttribute(ATTR_MIMETYPE, e.getMimeType());
-					final byte[] data = e.getEmbeddedData();
-					final CDATASection cdata = builder.createCDATASection(toString(data));
+					final var data = e.getEmbeddedData();
+					final var cdata = builder.createCDATASection(toString(data));
 					resourceNode.appendChild(cdata);
 					resourcesNode.appendChild(resourceNode);
 				}
@@ -2535,27 +2528,27 @@ public final class XMLUtil {
 	 */
 	@SuppressWarnings({"checkstyle:nestedifdepth"})
 	public static int readResources(Element node, XMLResources resources) throws IOException {
-		int nb = 0;
+		var nb = 0;
 		if (resources != null) {
-			for (final Element resourceNode : getElementsFromPath(node, NODE_RESOURCES, NODE_RESOURCE)) {
+			for (final var resourceNode : getElementsFromPath(node, NODE_RESOURCES, NODE_RESOURCE)) {
 				try {
-					final String sid = getAttributeValue(resourceNode, ATTR_ID);
-					final long id = XMLResources.getNumericalIdentifier(sid);
-					final String mimeType = getAttributeValue(resourceNode, ATTR_MIMETYPE);
-					String ssource = getAttributeValue(resourceNode, ATTR_URL);
+					final var sid = getAttributeValue(resourceNode, ATTR_ID);
+					final var id = XMLResources.getNumericalIdentifier(sid);
+					final var mimeType = getAttributeValue(resourceNode, ATTR_MIMETYPE);
+					var ssource = getAttributeValue(resourceNode, ATTR_URL);
 					if (ssource != null && !"".equals(ssource)) { //$NON-NLS-1$
 						// Read URL resource
-						resources.add(id, new URL(ssource), mimeType);
+						resources.add(id, new URI(ssource).toURL(), mimeType);
 						++nb;
 					} else {
 						ssource = getAttributeValue(resourceNode, ATTR_FILE);
 						if (ssource != null && !"".equals(ssource)) { //$NON-NLS-1$
 							// Read File resource
-							final URL url = new URL(ssource);
-							final String path = url.getPath();
-							final StringBuilder b = new StringBuilder();
-							boolean addSlash = false;
-							for (final String elt : path.split("[/]")) { //$NON-NLS-1$
+							final var url = new URI(ssource).toURL();
+							final var path = url.getPath();
+							final var b = new StringBuilder();
+							var addSlash = false;
+							for (final var elt : path.split("[/]")) { //$NON-NLS-1$
 								try {
 									if (addSlash) {
 										b.append(File.separator);
@@ -2570,9 +2563,9 @@ public final class XMLUtil {
 							++nb;
 						} else {
 							// Read embedded resource
-							final CDATASection rawData = getChild(resourceNode, CDATASection.class);
+							final var rawData = getChild(resourceNode, CDATASection.class);
 							if (rawData != null) {
-								final byte[] data = parseString(rawData.getData());
+								final var data = parseString(rawData.getData());
 								if (data != null) {
 									resources.add(id, data, mimeType);
 									++nb;
@@ -2603,10 +2596,10 @@ public final class XMLUtil {
 	 */
 	@Pure
 	public static URL readResourceURL(Element node, XMLResources resources, String... path) {
-		final String stringValue = getAttributeValue(node, path);
+		final var stringValue = getAttributeValue(node, path);
 		if (XMLResources.isStringIdentifier(stringValue)) {
 			try {
-				final long id = XMLResources.getNumericalIdentifier(stringValue);
+				final var id = XMLResources.getNumericalIdentifier(stringValue);
 				return resources.getResourceURL(id);
 			} catch (Throwable exception) {
 				//
@@ -2653,7 +2646,7 @@ public final class XMLUtil {
 
 		@Override
 		public Node next() {
-			final Node child = this.next;
+			final var child = this.next;
 			if (child == null) {
 				throw new NoSuchElementException();
 			}
@@ -2664,7 +2657,7 @@ public final class XMLUtil {
 		private void searchNode() {
 			this.next = null;
 			while (this.index < this.list.getLength()) {
-				final Node child = this.list.item(this.index);
+				final var child = this.list.item(this.index);
 				++this.index;
 				if (this.nodeName.equals(child.getNodeName())) {
 					this.next = child;

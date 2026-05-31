@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import com.google.common.collect.Iterators;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.progress.Progression;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an abstract reader for all the ESRI Shape file formats.
@@ -273,8 +272,8 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		if (!this.headerWasread) {
 			preReadingStage();
 
-			final ByteBuffer hbuffer = ByteBuffer.allocate(100);
-			final int read = this.stream.read(hbuffer);
+			final var hbuffer = ByteBuffer.allocate(100);
+			final var read = this.stream.read(hbuffer);
 			if (read < 0) {
 				throw new EOFException();
 			}
@@ -284,20 +283,20 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 			hbuffer.order(ByteOrder.BIG_ENDIAN);
 
 			// File Code (Big endian)
-			final int fileType = hbuffer.getInt();
+			final var fileType = hbuffer.getInt();
 			if (fileType != SHAPE_FILE_CODE) {
 				throw new NotShapeFileException();
 			}
 
 			hbuffer.position(24);
 			// File Length in 16-bit words (Big endian)
-			final int streamFileSize = hbuffer.getInt();
+			final var streamFileSize = hbuffer.getInt();
 			this.fileSize = fromESRIWords(streamFileSize);
 
 			hbuffer.order(ByteOrder.LITTLE_ENDIAN);
 
 			// Version (Little endian)
-			final int version = hbuffer.getInt();
+			final var version = hbuffer.getInt();
 			if (version != SHAPE_FILE_VERSION) {
 				throw new InvalidShapeFileVersionException(version, SHAPE_FILE_VERSION);
 			}
@@ -320,28 +319,28 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 			if (!Double.isNaN(this.minx) && !Double.isNaN(this.maxx)
 					&& this.maxx < this.minx) {
-				final double t = this.maxx;
+				final var t = this.maxx;
 				this.maxx = this.minx;
 				this.minx = t;
 			}
 
 			if (!Double.isNaN(this.miny) && !Double.isNaN(this.maxy)
 					&& this.maxy < this.miny) {
-				final double t = this.maxy;
+				final var t = this.maxy;
 				this.maxy = this.miny;
 				this.miny = t;
 			}
 
 			if (!Double.isNaN(this.minz) && !Double.isNaN(this.maxz)
 					&& this.maxz < this.minz) {
-				final double t = this.maxz;
+				final var t = this.maxz;
 				this.maxz = this.minz;
 				this.minz = t;
 			}
 
 			if (!Double.isNaN(this.minm) && !Double.isNaN(this.maxm)
 					&& this.maxm < this.minm) {
-				final double t = this.maxm;
+				final var t = this.maxm;
 				this.maxm = this.minm;
 				this.minm = t;
 			}
@@ -367,7 +366,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	private void initializeContentBuffer() throws IOException {
 		if (this.seekEnabled) {
 			this.buffer = ByteBuffer.allocate(this.fileSize - HEADER_BYTES);
-			final int read = this.stream.read(this.buffer);
+			final var read = this.stream.read(this.buffer);
 			if (read < 0) {
 				throw new EOFException();
 			}
@@ -376,7 +375,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 			this.bufferPosition = HEADER_BYTES;
 		} else {
 			this.buffer = ByteBuffer.allocate(BLOCK_SIZE);
-			final int read = this.stream.read(this.buffer);
+			final var read = this.stream.read(this.buffer);
 			if (read < 0) {
 				throw new EOFException();
 			}
@@ -426,7 +425,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 * @throws IOException in case of error.
 	 */
 	public E read() throws IOException {
-		boolean status = false;
+		var status = false;
 		try {
 
 			// Read header if not already read
@@ -496,7 +495,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	/** Called after all the entries was read.
 	 *
 	 * @param success is {@code true} is the reading was successfull,
-	 *     otherwhise {@code false}.
+	 *     otherwise {@code false}.
 	 * @throws IOException in case of error.
 	 */
 	protected void postReadingStage(boolean success) throws IOException {
@@ -508,7 +507,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 *
 	 * @param element_representation is the value returned by the reading function.
 	 * @return {@code true} if the object is assumed to be valid (ie. replies by
-	 *     the reading function, otherwhise {@code false}.
+	 *     the reading function, otherwise {@code false}.
 	 * @throws IOException in case of error.
 	 */
 	protected boolean postRecordReadingStage(E element_representation) throws IOException {
@@ -639,8 +638,8 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		if (!this.seekEnabled && amount > this.buffer.remaining()) {
 			this.bufferPosition += this.buffer.position();
 			this.buffer.compact();
-			int limit = this.buffer.position();
-			final int read = this.stream.read(this.buffer);
+			var limit = this.buffer.position();
+			final var read = this.stream.read(this.buffer);
 			if (read < 0) {
 				if (limit == 0) {
 					throw new EOFException();
@@ -740,7 +739,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 		@Override
 		public E next() {
-			final E toReply = this.nextElement;
+			final var toReply = this.nextElement;
 			if (toReply == null) {
 				throw new NoSuchElementException();
 			}

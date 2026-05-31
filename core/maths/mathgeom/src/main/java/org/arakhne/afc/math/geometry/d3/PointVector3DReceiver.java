@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d3;
 
 /**
  * Receiver of a 3D point and a 3D vector.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -40,8 +40,8 @@ public interface PointVector3DReceiver {
 	 * @param py y coordinate of the point.
 	 * @param pz z coordinate of the point.
 	 * @param vx x coordinate of the vector.
-	 * @param v2 y coordinate of the vector.
-	 * @param z2 z coordinate of the v.
+	 * @param vy y coordinate of the vector.
+	 * @param vz z coordinate of the v.
 	 */
 	void set(double px, double py, double pz, double vx, double vy, double vz);
 

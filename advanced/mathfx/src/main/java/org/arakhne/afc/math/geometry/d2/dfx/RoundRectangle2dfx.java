@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,12 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Round rectangle with 2 double precision floating-point FX properties.
  *
@@ -91,7 +90,7 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 
 	@Override
 	public RoundRectangle2dfx clone() {
-		final RoundRectangle2dfx clone = super.clone();
+		final var clone = super.clone();
 		if (clone.arcWidth != null) {
 			clone.arcWidth = null;
 			clone.arcWidthProperty().set(getArcWidth());
@@ -107,10 +106,10 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	@Override
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = super.hashCode();
+		var bits = (long) super.hashCode();
 		bits = 31 * bits + Double.hashCode(getArcWidth());
 		bits = 31 * bits + Double.hashCode(getArcHeight());
-        return bits ^ (bits >> 31);
+        return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
@@ -129,11 +128,11 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 					this, MathFXAttributeNames.ARC_WIDTH, widthProperty()) {
 				@Override
 				protected void invalidated(ReadOnlyDoubleProperty dependency) {
-					final double value = get();
+					final var value = get();
 					if (value < 0.) {
 						set(0.);
 					} else {
-						final double maxArcWidth = dependency.get() / 2.;
+						final var maxArcWidth = dependency.get() / 2.;
 						if (value > maxArcWidth) {
 							set(maxArcWidth);
 						}
@@ -160,11 +159,11 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 					this, MathFXAttributeNames.ARC_HEIGHT, heightProperty()) {
 				@Override
 				protected void invalidated(ReadOnlyDoubleProperty dependency) {
-					final double value = get();
+					final var value = get();
 					if (value < 0.) {
 						set(0.);
 					} else {
-						final double maxArcHeight = dependency.get() / 2.;
+						final var maxArcHeight = dependency.get() / 2.;
 						if (value > maxArcHeight) {
 							set(maxArcHeight);
 						}

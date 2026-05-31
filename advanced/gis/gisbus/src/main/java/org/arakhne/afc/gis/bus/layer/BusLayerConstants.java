@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,9 +77,9 @@ public final class BusLayerConstants {
 	 */
 	@Pure
 	public static BusLayerDrawerType getPreferredLineDrawAlgorithm() {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
-			final String algo = prefs.get("DRAWING_ALGORITHM", null); //$NON-NLS-1$
+			final var algo = prefs.get("DRAWING_ALGORITHM", null); //$NON-NLS-1$
 			if (algo != null && algo.length() > 0) {
 				try {
 					return BusLayerDrawerType.valueOf(algo);
@@ -97,7 +97,7 @@ public final class BusLayerConstants {
 	 * @param algorithm indicates if the drawing algorithm.
 	 */
 	public static void setPreferredLineDrawingAlgorithm(BusLayerDrawerType algorithm) {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			if (algorithm == null) {
 				prefs.remove("DRAWING_ALGORITHM"); //$NON-NLS-1$
@@ -136,12 +136,12 @@ public final class BusLayerConstants {
 	 */
 	@Pure
 	public static int getSelectionColor() {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
-			final String str = prefs.get("SELECTION_COLOR", null); //$NON-NLS-1$
+			final var str = prefs.get("SELECTION_COLOR", null); //$NON-NLS-1$
 			if (str != null) {
 				try {
-					return Integer.valueOf(str);
+					return Integer.parseInt(str);
 				} catch (Throwable exception) {
 					//
 				}
@@ -155,9 +155,9 @@ public final class BusLayerConstants {
 	 * @param color is the default color for selection.
 	 */
 	public static void setSelectionColor(Integer color) {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
-			if (color == null || color == DEFAULT_SELECTION_COLOR) {
+			if (color == null || color.intValue() == DEFAULT_SELECTION_COLOR) {
 				prefs.remove("SELECTION_COLOR"); //$NON-NLS-1$
 			} else {
 				prefs.put("SELECTION_COLOR", color.toString()); //$NON-NLS-1$
@@ -178,7 +178,7 @@ public final class BusLayerConstants {
 	 */
 	@Pure
 	public static boolean isBusStopDrawable() {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			return prefs.getBoolean("DRAW_BUS_STOPS", DEFAULT_BUS_STOP_DRAWING); //$NON-NLS-1$
 		}
@@ -192,7 +192,7 @@ public final class BusLayerConstants {
 	 *      if the default value must be restored.
 	 */
 	public static void setBusStopDrawable(Boolean isDrawable) {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			if (isDrawable == null) {
 				prefs.remove("DRAW_BUS_STOPS"); //$NON-NLS-1$
@@ -214,7 +214,7 @@ public final class BusLayerConstants {
 	 */
 	@Pure
 	public static boolean isBusStopNamesDrawable() {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			return prefs.getBoolean("DRAW_BUS_STOPS_NAMES", DEFAULT_BUS_STOP_NAMES_DRAWING); //$NON-NLS-1$
 		}
@@ -228,7 +228,7 @@ public final class BusLayerConstants {
 	 *     if the default value must be restored.
 	 */
 	public static void setBusStopNamesDrawable(Boolean isNamesDrawable) {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			if (isNamesDrawable == null) {
 				prefs.remove("DRAW_BUS_STOPS_NAMES"); //$NON-NLS-1$
@@ -251,7 +251,7 @@ public final class BusLayerConstants {
 	 */
 	@Pure
 	public static boolean isBusStopNoHaltBindingDrawable() {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			return prefs.getBoolean("DRAW_NO_BUS_HALT_BIND", DEFAULT_NO_BUS_HALT_BIND); //$NON-NLS-1$
 		}
@@ -266,7 +266,7 @@ public final class BusLayerConstants {
 	 *     if the default value must be restored.
 	 */
 	public static void setBusStopNoHaltBindingDrawable(Boolean isDrawable) {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			if (isDrawable == null) {
 				prefs.remove("DRAW_NO_BUS_HALT_BIND"); //$NON-NLS-1$
@@ -289,7 +289,7 @@ public final class BusLayerConstants {
 	 */
 	@Pure
 	public static boolean isBusStopNoHaltBindingNamesDrawable() {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			return prefs.getBoolean("DRAW_NO_BUS_HALT_BIND_NAMES", DEFAULT_NO_BUS_HALT_BIND_NAMES); //$NON-NLS-1$
 		}
@@ -304,7 +304,7 @@ public final class BusLayerConstants {
 	 *     if the default value must be restored.
 	 */
 	public static void setBusStopNoHaltBindingNamesDrawable(Boolean isDrawable) {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			if (isDrawable == null) {
 				prefs.remove("DRAW_NO_BUS_HALT_BIND_NAMES"); //$NON-NLS-1$
@@ -330,7 +330,7 @@ public final class BusLayerConstants {
 	 */
 	@Pure
 	public static boolean isAttributeExhibitable() {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			return prefs.getBoolean("EXHIBIT_ATTRIBUTES", DEFAULT_ATTRIBUTE_EXHIBITION); //$NON-NLS-1$
 		}
@@ -348,7 +348,7 @@ public final class BusLayerConstants {
 	 *     if the default value must be restored.
 	 */
 	public static void setAttributeExhibitable(Boolean isExhibit) {
-		final Preferences prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
+		final var prefs = Preferences.userNodeForPackage(BusLayerConstants.class);
 		if (prefs != null) {
 			if (isExhibit == null) {
 				prefs.remove("EXHIBIT_ATTRIBUTES"); //$NON-NLS-1$

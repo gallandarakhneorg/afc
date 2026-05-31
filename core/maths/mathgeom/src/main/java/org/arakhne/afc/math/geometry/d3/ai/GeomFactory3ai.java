@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
  */
 public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>, Q extends Quaternion<? super P, ? super V, ? super Q>,
-		B extends AlignedBox3ai<?, ?, E, P, V, Q, B>>
+		B extends AlignedBox3ai<?, E, P, V, Q, B>>
 		extends GeomFactory3D<V, P, Q> {
 
 	/** Create an empty path with the given winding rule.
@@ -51,7 +51,7 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	Path3ai<?, ?, E, P, V, Q, B> newPath(PathWindingRule rule);
+	Path3ai<?, E, P, V, Q, B> newPath(PathWindingRule rule);
 
 	/** Create a segment.
 	 *
@@ -63,7 +63,7 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * @param z2 the y coordinate of the second point of the segment.
 	 * @return the new segment.
 	 */
-	Segment3ai<?, ?, E, P, V, Q, B> newSegment(int x1, int y1, int z1, int x2, int y2, int z2);
+	Segment3ai<?, E, P, V, Q, B> newSegment(int x1, int y1, int z1, int x2, int y2, int z2);
 
 	/** Create an empty bounding box.
 	 *
@@ -87,7 +87,7 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 *
 	 * @return the box.
 	 */
-	MultiShape3ai<?, ?, ?, E, P, V, Q, B> newMultiShape();
+	MultiShape3ai<?, ?, E, P, V, Q, B> newMultiShape();
 
 	/** Create a move-to path element to the given point.
 	 *
@@ -135,8 +135,9 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * @param targetZ z coordinate of the target point.
 	 * @return the path element.
 	 */
-    E newCurvePathElement(int startX, int startY, int startZ, int controlX, int controlY, int controlZ, int targetX, int targetY,
-            int targetZ);
+	@SuppressWarnings("checkstyle:parameternumber")
+	E newCurvePathElement(int startX, int startY, int startZ, int controlX, int controlY, int controlZ, int targetX, int targetY,
+			int targetZ);
 
 	/** Create a curve path element to the given point through the two given control points.
 	 *
@@ -154,21 +155,22 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * @param targetZ z coordinate of the target point.
 	 * @return the path element.
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	E newCurvePathElement(int startX, int startY, int startZ, int controlX1, int controlY1, int controlZ1,
 			int controlX2, int controlY2, int controlZ2, int targetX, int targetY, int targetZ);
 
-    /** Replies the {@link PathIterator3ai} that is corresponding to the given element.
-     *
-     * <p>If the given element is already a {@link PathIterator3ai}, returns {@code this}.
-     *
-     * @param iterator the iterator.
-     * @return the iterator.
-     */
-    default PathIterator3ai<?> convert(PathIterator3D<?> iterator) {
-        if (iterator instanceof PathIterator3ai) {
-            return (PathIterator3ai<?>) iterator;
-        }
-        assert iterator instanceof PathIterator3afp;
-        return new PathIteratorWrapper(this, (PathIterator3afp<?>) iterator);
-    }
+	/** Replies the {@link PathIterator3ai} that is corresponding to the given element.
+	 *
+	 * <p>If the given element is already a {@link PathIterator3ai}, returns {@code this}.
+	 *
+	 * @param iterator the iterator.
+	 * @return the iterator.
+	 */
+	default PathIterator3ai<?> convert(PathIterator3D<?> iterator) {
+		if (iterator instanceof PathIterator3ai it) {
+			return it;
+		}
+		assert iterator instanceof PathIterator3afp;
+		return new PathIteratorWrapper(this, (PathIterator3afp<?>) iterator);
+	}
 }

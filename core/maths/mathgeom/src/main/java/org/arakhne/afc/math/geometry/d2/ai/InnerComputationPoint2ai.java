@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A point that is used for internal computations.
  *
@@ -120,15 +119,15 @@ public class InnerComputationPoint2ai implements Point2D<InnerComputationPoint2a
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
         return objectDescription.toString();
 	}
 
 	@Override
 	public void toJson(JsonBuffer buffer) {
-		buffer.add("x", getX()); //$NON-NLS-1$
-		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("x", Double.valueOf(getX())); //$NON-NLS-1$
+		buffer.add("y", Double.valueOf(getY())); //$NON-NLS-1$
 	}
 
 }

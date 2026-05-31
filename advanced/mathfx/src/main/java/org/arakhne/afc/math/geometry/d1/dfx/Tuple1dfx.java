@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.GeomFactory1D;
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
@@ -37,6 +35,7 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 1.5D tuple with 2 double precision floating-point FX properties.
  *
@@ -209,7 +208,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 	@Override
 	public RT clone() {
 		try {
-			final RT clone = (RT) super.clone();
+			final var clone = (RT) super.clone();
 			if (clone.segment != null) {
 				clone.segment = null;
 				clone.segmentProperty().set(new WeakReference<>(getSegment()));
@@ -275,8 +274,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 	@Override
 	public void set(Tuple2D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter();
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(tuple.getX());
 		prop = yProperty();
 		prop.set(tuple.getY());
@@ -284,8 +282,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void set(int x, int y) {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(x);
 		prop = yProperty();
 		prop.set(y);
@@ -293,8 +290,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void set(double x, double y) {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(x);
 		prop = yProperty();
 		prop.set(y);
@@ -304,8 +300,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 	public void set(int[] tuple) {
 		assert tuple != null : AssertMessages.notNullParameter();
 		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(tuple[0]);
 		prop = yProperty();
 		prop.set(tuple[1]);
@@ -315,8 +310,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 	public void set(double[] tuple) {
 		assert tuple != null : AssertMessages.notNullParameter();
 		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(tuple[0]);
 		prop = yProperty();
 		prop.set(tuple[1]);
@@ -328,16 +322,13 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 		if (object == this) {
 			return true;
 		}
-		if (object instanceof Vector1D<?, ?, ?>) {
-			final Point1D<?, ?, ?> tuple = (Point1D<?, ?, ?>) object;
+		if (object instanceof Vector1D tuple) {
 			return tuple.getSegment() == getSegment() && tuple.getX() == getX() && tuple.getY() == getY();
 		}
-		if (object instanceof Point1D<?, ?, ?>) {
-			final Point1D<?, ?, ?> tuple = (Point1D<?, ?, ?>) object;
+		if (object instanceof Point1D tuple) {
 			return tuple.getSegment() == getSegment() && tuple.getX() == getX() && tuple.getY() == getY();
 		}
-		if (object instanceof Tuple2D<?>) {
-			final Tuple2D<?> tuple = (Tuple2D<?>) object;
+		if (object instanceof Tuple2D tuple) {
 			return tuple.getX() == getX() && tuple.getY() == getY();
 		}
 		return false;
@@ -346,25 +337,25 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	@Override
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Objects.hashCode(getSegment());
 		bits = 31 * bits + Double.hashCode(getX());
 		bits = 31 * bits + Double.hashCode(getY());
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
         return objectDescription.toString();
 	}
 
 	@Override
 	public void toJson(JsonBuffer buffer) {
-		buffer.add("x", getX()); //$NON-NLS-1$
-		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("x", Double.valueOf(getX())); //$NON-NLS-1$
+		buffer.add("y", Double.valueOf(getY())); //$NON-NLS-1$
 	}
 
 	@Override
@@ -410,11 +401,11 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 	@Override
 	public void absolute() {
 		if (this.x != null) {
-			final DoubleProperty prop = xProperty();
+			final var prop = xProperty();
 			prop.set(Math.abs(prop.get()));
 		}
 		if (this.y != null) {
-			final DoubleProperty prop = yProperty();
+			final var prop = yProperty();
 			prop.set(Math.abs(prop.get()));
 		}
 	}
@@ -427,8 +418,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void add(int x, int y) {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(prop.get() + x);
 		prop = yProperty();
 		prop.set(prop.get() + y);
@@ -436,8 +426,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void add(double x, double y) {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(prop.get() + x);
 		prop = yProperty();
 		prop.set(prop.get() + y);
@@ -445,25 +434,25 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void addX(int x) {
-		final DoubleProperty prop = xProperty();
+		final var prop = xProperty();
 		prop.set(prop.get() + x);
 	}
 
 	@Override
 	public void addX(double x) {
-		final DoubleProperty prop = xProperty();
+		final var prop = xProperty();
 		prop.set(prop.get() + x);
 	}
 
 	@Override
 	public void addY(int y) {
-		final DoubleProperty prop = yProperty();
+		final var prop = yProperty();
 		prop.set(prop.get() + y);
 	}
 
 	@Override
 	public void addY(double y) {
-		final DoubleProperty prop = yProperty();
+		final var prop = yProperty();
 		prop.set(prop.get() + y);
 	}
 
@@ -479,8 +468,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void negate() {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(-prop.get());
 		prop = yProperty();
 		prop.set(-prop.get());
@@ -489,8 +477,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 	@Override
 	public void scale(int scale, Tuple2D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter(1);
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(scale * tuple.getX());
 		prop = yProperty();
 		prop.set(scale * tuple.getY());
@@ -499,8 +486,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 	@Override
 	public void scale(double scale, Tuple2D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter(1);
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(scale * tuple.getX());
 		prop = yProperty();
 		prop.set(scale * tuple.getY());
@@ -508,8 +494,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void scale(int scale) {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(scale * prop.get());
 		prop = yProperty();
 		prop.set(scale * prop.get());
@@ -517,8 +502,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void scale(double scale) {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(scale * prop.get());
 		prop = yProperty();
 		prop.set(scale * prop.get());
@@ -526,8 +510,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void sub(int x, int y) {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(prop.get() - x);
 		prop = yProperty();
 		prop.set(prop.get() - y);
@@ -535,8 +518,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void sub(double x, double y) {
-		DoubleProperty prop;
-		prop = xProperty();
+		var prop = xProperty();
 		prop.set(prop.get() - x);
 		prop = yProperty();
 		prop.set(prop.get() - y);
@@ -544,25 +526,25 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 
 	@Override
 	public void subX(int x) {
-		final DoubleProperty prop = xProperty();
+		final var prop = xProperty();
 		prop.set(prop.get() - x);
 	}
 
 	@Override
 	public void subX(double x) {
-		final DoubleProperty prop = xProperty();
+		final var prop = xProperty();
 		prop.set(prop.get() - x);
 	}
 
 	@Override
 	public void subY(int y) {
-		final DoubleProperty prop = yProperty();
+		final var prop = yProperty();
 		prop.set(prop.get() - y);
 	}
 
 	@Override
 	public void subY(double y) {
-		final DoubleProperty prop = yProperty();
+		final var prop = yProperty();
 		prop.set(prop.get() - y);
 	}
 

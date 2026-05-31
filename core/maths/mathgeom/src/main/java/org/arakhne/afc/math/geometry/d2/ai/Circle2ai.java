@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,19 +25,20 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2iComparator;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D circle on a plane.
+/** Functional interface that represented a 2D circle on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -52,6 +53,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Circle2ai<
         ST extends Shape2ai<?, ?, IE, P, V, B>,
         IT extends Circle2ai<?, ?, IE, P, V, B>,
@@ -60,6 +62,11 @@ public interface Circle2ai<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2ai<?, ?, IE, P, V, B>>
         extends Shape2ai<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.CIRCLE;
+	}
 
     /** Replies if the given point is inside the circle.
      *
@@ -74,13 +81,13 @@ public interface Circle2ai<
     static boolean containsCirclePoint(int cx, int cy, int cr, int x, int y) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
 
-        final int vx = x - cx;
-        final int vy = y - cy;
+        final var vx = x - cx;
+        final var vy = y - cy;
 
         if (vx >= -cr && vx <= cr && vy >= -cr && vy <= cr) {
             final int octant;
-            final boolean xpos = vx >= 0;
-            final boolean ypos = vy >= 0;
+            final var xpos = vx >= 0;
+            final var ypos = vy >= 0;
             if (xpos) {
                 if (ypos) {
                     octant = 0;
@@ -95,25 +102,24 @@ public interface Circle2ai<
                 }
             }
 
-            boolean allNull = true;
-            final CirclePerimeterIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
-                    new CirclePerimeterIterator<>(
+            var allNull = true;
+            final var iterator = new CirclePerimeterIterator<>(
                             InnerComputationGeomFactory.SINGLETON,
                             cx, cy, cr, octant, octant + 2, false);
 
             while (iterator.hasNext()) {
-                final Point2D<?, ?> p = iterator.next();
+                final var p = iterator.next();
 
                 // Trivial case
                 if (p.ix() == x && p.iy() == y) {
                     return true;
                 }
 
-                final int px = cy - p.iy();
-                final int py = p.ix() - cx;
-                final int cpx = x - p.ix();
-                final int cpy = y - p.iy();
-                final int ccw = cpx * py - cpy * px;
+                final var px = cy - p.iy();
+                final var py = p.ix() - cx;
+                final var cpx = x - p.ix();
+                final var cpy = y - p.iy();
+                final var ccw = cpx * py - cpy * px;
 
                 if (ccw > 0) {
                     return false;
@@ -154,15 +160,16 @@ public interface Circle2ai<
     @Pure
     static boolean containsCircleQuadrantPoint(int cx, int cy, int cr, int quadrant, int x, int y) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        assert quadrant >= 0 && quadrant <= 3 : AssertMessages.outsideRangeInclusiveParameter(3, quadrant, 0, 3);
+        assert quadrant >= 0 && quadrant <= 3
+        		: AssertMessages.outsideRangeInclusiveParameter(3, Double.valueOf(quadrant), Double.valueOf(0), Double.valueOf(3));
 
-        final int vx = x - cx;
-        final int vy = y - cy;
+        final var vx = x - cx;
+        final var vy = y - cy;
 
         if (vx >= -cr && vx <= cr && vy >= -cr && vy <= cr) {
             final int octant;
-            final boolean xpos = vx >= 0;
-            final boolean ypos = vy >= 0;
+            final var xpos = vx >= 0;
+            final var ypos = vy >= 0;
             if (xpos) {
                 if (ypos) {
                     octant = 0;
@@ -181,18 +188,17 @@ public interface Circle2ai<
                 return false;
             }
 
-            final CirclePerimeterIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
-                    new CirclePerimeterIterator<>(
+            final var iterator = new CirclePerimeterIterator<>(
                             InnerComputationGeomFactory.SINGLETON,
                             cx, cy, cr, octant, octant + 2, false);
 
             while (iterator.hasNext()) {
-                final Point2D<?, ?> p = iterator.next();
-                final int px = cy - p.iy();
-                final int py = p.ix() - cx;
-                final int cpx = x - p.ix();
-                final int cpy = y - p.iy();
-                final int ccw = cpx * py - cpy * px;
+                final var p = iterator.next();
+                final var px = cy - p.iy();
+                final var py = p.ix() - cx;
+                final var cpx = x - p.ix();
+                final var cpy = y - p.iy();
+                final var ccw = cpx * py - cpy * px;
 
                 if (ccw > 0) {
                     return false;
@@ -213,25 +219,26 @@ public interface Circle2ai<
 
     @Pure
     @Override
+    @SuppressWarnings("checkstyle:booleanexpressioncomplexity")
     default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
         assert box != null : AssertMessages.notNullParameter();
-        final int cx = getX();
-        final int cy = getY();
-        final int radius = getRadius();
-        final int vx1 = box.getMinX() - cx;
-        final int vy1 = box.getMinY() - cy;
-        final int vx2 = box.getMaxX() - cx;
-        final int vy2 = box.getMaxY() - cy;
+        final var cx = getX();
+        final var cy = getY();
+        final var radius = getRadius();
+        final var vx1 = box.getMinX() - cx;
+        final var vy1 = box.getMinY() - cy;
+        final var vx2 = box.getMaxX() - cx;
+        final var vy2 = box.getMaxY() - cy;
 
         if (vx1 >= -radius && vx1 <= radius && vy1 >= -radius && vy1 <= radius
                 && vx2 >= -radius && vx2 <= radius && vy2 >= -radius && vy2 <= radius) {
-            final int[] quadrants = new int[4];
-            final int[] x = new int[] {vx1, vx2, vx2, vx1};
-            final int[] y = new int[] {vy1, vy1, vy2, vy2};
-            for (int i = 0; i < 4; ++i) {
-                final int xcoord = x[i];
-                final int ycoord = y[i];
-                final int flag = 1 << i;
+            final var quadrants = new int[4];
+            final var x = new int[] {vx1, vx2, vx2, vx1};
+            final var y = new int[] {vy1, vy1, vy2, vy2};
+            for (var i = 0; i < 4; ++i) {
+                final var xcoord = x[i];
+                final var ycoord = y[i];
+                final var flag = 1 << i;
                 if (xcoord > 0) {
                     if (ycoord > 0) {
                         quadrants[0] |= flag;
@@ -247,21 +254,20 @@ public interface Circle2ai<
                 }
             }
 
-            for (int i = 0; i < quadrants.length; ++i) {
+            for (var i = 0; i < quadrants.length; ++i) {
                 if (quadrants[i] != 0) {
-                    final int didx = i * 2;
-                    final CirclePerimeterIterator<P, V> iterator = new CirclePerimeterIterator<>(
-                            getGeomFactory(), cx, cy, radius, didx, didx + 2, false);
+                    final var didx = i * 2;
+                    final var iterator = new CirclePerimeterIterator<>(getGeomFactory(), cx, cy, radius, didx, didx + 2, false);
                     while (iterator.hasNext()) {
-                        final Point2D<?, ?> p = iterator.next();
-                        final int px = cy - p.iy();
-                        final int py = p.ix() - cx;
+                        final var p = iterator.next();
+                        final var px = cy - p.iy();
+                        final var py = p.ix() - cx;
 
-                        for (int j = 0; j < 4; ++j) {
+                        for (var j = 0; j < 4; ++j) {
                             if ((quadrants[i] & (1 << j)) != 0) {
-                                final int cpx = x[j] - p.ix();
-                                final int cpy = y[j] - p.iy();
-                                final int ccw = cpx * py - cpy * px;
+                                final var cpx = x[j] - p.ix();
+                                final var cpy = y[j] - p.iy();
+                                final var ccw = cpx * py - cpy * px;
                                 if (ccw > 0) {
                                     return false;
                                 }
@@ -293,12 +299,12 @@ public interface Circle2ai<
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert result != null : AssertMessages.notNullParameter(5);
 
-        final int vx = x - cx;
-        final int vy = y - cy;
+        final var vx = x - cx;
+        final var vy = y - cy;
 
         final int octant;
-        final boolean xpos = vx >= 0;
-        final boolean ypos = vy >= 0;
+        final var xpos = vx >= 0;
+        final var ypos = vy >= 0;
         if (xpos) {
             if (ypos) {
                 octant = 0;
@@ -313,25 +319,24 @@ public interface Circle2ai<
             }
         }
 
-        final CirclePerimeterIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
-                new CirclePerimeterIterator<>(
+        final var iterator = new CirclePerimeterIterator<>(
                         InnerComputationGeomFactory.SINGLETON,
                         cx, cy, cr, octant, octant + 2, false);
 
-        boolean isInside = true;
-        int minDist = Integer.MAX_VALUE;
+        var isInside = true;
+        var minDist = Integer.MAX_VALUE;
 
         while (iterator.hasNext()) {
-            final Point2D<?, ?> p = iterator.next();
-            final int px = cy - p.iy();
-            final int py = p.ix() - cx;
-            final int cpx = x - p.ix();
-            final int cpy = y - p.iy();
-            final int ccw = cpx * py - cpy * px;
+            final var p = iterator.next();
+            final var px = cy - p.iy();
+            final var py = p.ix() - cx;
+            final var cpx = x - p.ix();
+            final var cpy = y - p.iy();
+            final var ccw = cpx * py - cpy * px;
             if (ccw >= 0) {
                 isInside = false;
-                // Mahantan distance
-                final int d = Math.abs(cpx) + Math.abs(cpy);
+                // Manhattan distance
+                final var d = Math.abs(cpx) + Math.abs(cpy);
                 if (d < minDist) {
                     minDist = d;
                     result.set(p);
@@ -360,12 +365,12 @@ public interface Circle2ai<
     static void findsFarthestPointCirclePoint(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
 
-        final int vx = x - cx;
-        final int vy = y - cy;
+        final var vx = x - cx;
+        final var vy = y - cy;
 
         final int octant;
-        final boolean xpos = vx >= 0;
-        final boolean ypos = vy >= 0;
+        final var xpos = vx >= 0;
+        final var ypos = vy >= 0;
         if (xpos) {
             if (ypos) {
                 octant = 4;
@@ -380,23 +385,22 @@ public interface Circle2ai<
             }
         }
 
-        final CirclePerimeterIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
-                new CirclePerimeterIterator<>(
+        final var iterator = new CirclePerimeterIterator<>(
                         InnerComputationGeomFactory.SINGLETON,
                         cx, cy, cr, octant, octant + 2, false);
 
-        int maxL1Dist = Integer.MIN_VALUE;
-        int maxLinfDist = Integer.MIN_VALUE;
+        var maxL1Dist = Integer.MIN_VALUE;
+        var maxLinfDist = Integer.MIN_VALUE;
         result.set(x, y);
 
         while (iterator.hasNext()) {
-            final Point2D<?, ?> p = iterator.next();
-            final int cpx = Math.abs(p.ix() - x);
-            final int cpy = Math.abs(p.iy() - y);
-            // Mahantan distance
-            final int l1 = cpx + cpy;
-            final int linfinv = Math.min(cpx, cpy);
-            if (l1 > maxL1Dist || (l1 == maxL1Dist && linfinv < maxLinfDist)) {
+            final var p = iterator.next();
+            final var cpx = Math.abs(p.ix() - x);
+            final var cpy = Math.abs(p.iy() - y);
+            // Manhattan distance
+            final var l1 = cpx + cpy;
+            final var linfinv = Math.min(cpx, cpy);
+            if (l1 > maxL1Dist || l1 == maxL1Dist && linfinv < maxLinfDist) {
                 maxL1Dist = l1;
                 maxLinfDist = linfinv;
                 result.set(p);
@@ -413,13 +417,13 @@ public interface Circle2ai<
      * @param y2 is the center of the second circle
      * @param radius2 is the radius of the second circle
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
         assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert radius2 >= 0 : AssertMessages.positiveOrZeroParameter(5);
-        final Point2D<?, ?> point = new InnerComputationPoint2ai();
+        final var point = new InnerComputationPoint2ai();
         findsClosestPointCirclePoint(x1, y1, radius1, x2, y2, point);
         return containsCirclePoint(x2, y2, radius2, point.ix(), point.iy());
     }
@@ -434,12 +438,12 @@ public interface Circle2ai<
      * @param x3 is the second corner of the rectangle.
      * @param y3 is the second corner of the rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        final Point2D<?, ?> point = new InnerComputationPoint2ai();
+        final var point = new InnerComputationPoint2ai();
         Rectangle2ai.findsClosestPointRectanglePoint(x2, y2, x3, y3, x1, y1, point);
         return containsCirclePoint(x1, y1, radius, point.ix(), point.iy());
     }
@@ -454,12 +458,12 @@ public interface Circle2ai<
      * @param x3 is the second point of the segment.
      * @param y3 is the second point of the segment.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *      {@code false}
      */
     @Pure
     static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        final Point2D<?, ?> point = new InnerComputationPoint2ai();
+        final var point = new InnerComputationPoint2ai();
         Segment2ai.findsClosestPointSegmentPoint(x2, y2, x3, y3, x1, y1, point);
         return containsCirclePoint(x1, y1, radius, point.ix(), point.iy());
     }
@@ -482,9 +486,8 @@ public interface Circle2ai<
             GeomFactory2ai<?, P, V, ?> factory) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert firstOctantIndex >= 0 && firstOctantIndex < 8
-                : AssertMessages.outsideRangeInclusiveParameter(3, firstOctantIndex, 0, 7);
-        int maxOctant;
-        maxOctant = Math.min(8, firstOctantIndex + nbOctants);
+                : AssertMessages.outsideRangeInclusiveParameter(3, Double.valueOf(firstOctantIndex), Double.valueOf(0), Double.valueOf(7));
+        var maxOctant = Math.min(8, firstOctantIndex + nbOctants);
         if (maxOctant > 8) {
             maxOctant = 8;
         }
@@ -544,7 +547,7 @@ public interface Circle2ai<
      *
      * @param x the x coordinate of the center.
      * @param y the y coordinate of the center.
-     * @param radius  the radiusof the center.
+     * @param radius  the radius of the center.
      */
     void set(int x, int y, int radius);
 
@@ -634,9 +637,9 @@ public interface Circle2ai<
     @Override
     default void toBoundingBox(B box) {
         assert box != null : AssertMessages.notNullParameter();
-        final int centerX = getX();
-        final int centerY = getY();
-        final int radius = getRadius();
+        final var centerX = getX();
+        final var centerY = getY();
+        final var radius = getRadius();
         box.setFromCorners(
                 centerX - radius,
                 centerY - radius,
@@ -648,7 +651,7 @@ public interface Circle2ai<
     @Override
     default double getDistanceSquared(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P c = getClosestPointTo(pt);
+        final var c = getClosestPointTo(pt);
         return c.getDistanceSquared(pt);
     }
 
@@ -656,14 +659,14 @@ public interface Circle2ai<
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P c = getClosestPointTo(pt);
+        final var c = getClosestPointTo(pt);
         return c.getDistanceL1(pt);
     }
 
     @Pure
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
-        final P c = getClosestPointTo(pt);
+        final var c = getClosestPointTo(pt);
         return c.getDistanceLinf(pt);
     }
 
@@ -671,7 +674,7 @@ public interface Circle2ai<
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsClosestPointCirclePoint(getX(), getY(), getRadius(), pt.ix(), pt.iy(), point);
         return point;
     }
@@ -679,28 +682,28 @@ public interface Circle2ai<
     @Override
     default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = rectangle.getClosestPointTo(getCenter());
+        final var point = rectangle.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
     @Override
     default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
         assert circle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = circle.getClosestPointTo(getCenter());
+        final var point = circle.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
     @Override
     default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = segment.getClosestPointTo(getCenter());
+        final var point = segment.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
     @Override
     default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = path.getClosestPointTo(getCenter());
+        final var point = path.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -708,7 +711,7 @@ public interface Circle2ai<
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         findsFarthestPointCirclePoint(getX(), getY(), getRadius(), pt.ix(), pt.iy(), point);
         return point;
     }
@@ -746,8 +749,8 @@ public interface Circle2ai<
     @Override
     default boolean intersects(PathIterator2ai<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2ai.calculatesCrossingsPathIteratorCircleShadow(
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var crossings = Path2ai.calculatesCrossingsPathIteratorCircleShadow(
                 0,
                 iterator,
                 getX(), getY(), getRadius(),
@@ -797,6 +800,7 @@ public interface Circle2ai<
 	 * @return the Geogebra representation of the circle.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toCircleDefinition(2, getX(), getY(), getRadius());
 	}
@@ -948,11 +952,11 @@ public interface Circle2ai<
             if (this.index > 5) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             if (idx == 0) {
-                final int dr = 2 * this.radius;
-                final double[] ctrls = CTRL_PTS[3];
+                final var dr = 2 * this.radius;
+                final var ctrls = CTRL_PTS[3];
                 this.movex = (int) (this.x + ctrls[4] * dr);
                 this.movey = (int) (this.y + ctrls[5] * dr);
                 this.lastx = this.movex;
@@ -960,10 +964,10 @@ public interface Circle2ai<
                 return getGeomFactory().newMovePathElement(
                         this.lastx, this.lasty);
             } else if (idx < 5) {
-                final int dr = 2 * this.radius;
-                final double[] ctrls = CTRL_PTS[idx - 1];
-                final int ppx = this.lastx;
-                final int ppy = this.lasty;
+                final var dr = 2 * this.radius;
+                final var ctrls = CTRL_PTS[idx - 1];
+                final var ppx = this.lastx;
+                final var ppy = this.lasty;
                 this.lastx = (int) (this.x + ctrls[4] * dr);
                 this.lasty = (int) (this.y + ctrls[5] * dr);
                 return getGeomFactory().newCurvePathElement(
@@ -974,8 +978,8 @@ public interface Circle2ai<
                         (int) (this.y + ctrls[3] * dr),
                         this.lastx, this.lasty);
             }
-            final int ppx = this.lastx;
-            final int ppy = this.lasty;
+            final var ppx = this.lastx;
+            final var ppy = this.lasty;
             this.lastx = this.movex;
             this.lasty = this.movey;
             return getGeomFactory().newClosePathElement(
@@ -1051,11 +1055,11 @@ public interface Circle2ai<
             if (this.index > 5) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             if (idx == 0) {
-                final int dr = 2 * this.radius;
-                final double[] ctrls = CTRL_PTS[3];
+                final var dr = 2 * this.radius;
+                final var ctrls = CTRL_PTS[3];
                 this.movex = (int) (this.x + ctrls[4] * dr);
                 this.movey = (int) (this.y + ctrls[5] * dr);
                 this.p2.set(this.movex, this.movey);
@@ -1063,8 +1067,8 @@ public interface Circle2ai<
                 return getGeomFactory().newMovePathElement(
                         this.p2.ix(), this.p2.iy());
             } else if (idx < 5) {
-                final int dr = 2 * this.radius;
-                final double[] ctrls = CTRL_PTS[idx - 1];
+                final var dr = 2 * this.radius;
+                final var ctrls = CTRL_PTS[idx - 1];
                 this.p1.set(this.p2);
                 this.p2.set(
                         this.x + ctrls[4] * dr,
@@ -1149,9 +1153,10 @@ public interface Circle2ai<
             assert factory != null : AssertMessages.notNullParameter(0);
             assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
             assert initialOctant >= 0 && initialOctant < 8
-                    : AssertMessages.outsideRangeInclusiveParameter(4, initialOctant, 0, 7);
+                    : AssertMessages.outsideRangeInclusiveParameter(4, Double.valueOf(initialOctant), Double.valueOf(0), Double.valueOf(7));
             assert lastOctant > initialOctant && lastOctant <= 8
-                    : AssertMessages.outsideRangeInclusiveParameter(5, lastOctant, initialOctant + 1, 8);
+                    : AssertMessages.outsideRangeInclusiveParameter(5, Double.valueOf(lastOctant),
+                    		Double.valueOf(initialOctant + 1), Double.valueOf(8));
             this.factory = factory;
             this.cx = centerX;
             this.cy = centerY;
@@ -1230,26 +1235,26 @@ public interface Circle2ai<
                     ++this.x;
 
                     if (this.x > this.y) {
-                        // The octant is finished.
-                        // Save the junction.
-                        boolean cont = this.junctionPoint.contains(this.next);
-                        if (!cont) {
-                            final P point = this.factory.newPoint();
-                            point.set(this.next.ix(), this.next.iy());
-                            this.junctionPoint.add(point);
-                        }
-                        // Goto next.
-                        ++this.currentOctant;
-                        reset();
-                        if (this.currentOctant >= this.maxOctant) {
-                            if (cont) {
-                                this.next = null;
-                            }
-                            cont = false;
-                        }
-                        if (!cont) {
-                            return;
-                        }
+                    	// The octant is finished.
+                    	// Save the junction.
+                    	var cont = this.junctionPoint.contains(this.next);
+                    	if (!cont) {
+                    		final var point = this.factory.newPoint();
+                    		point.set(this.next.ix(), this.next.iy());
+                    		this.junctionPoint.add(point);
+                    	}
+                    	// Goto next.
+                    	++this.currentOctant;
+                    	reset();
+                    	if (this.currentOctant >= this.maxOctant) {
+                    		if (cont) {
+                    			this.next = null;
+                    		}
+                    		cont = false;
+                    	}
+                    	if (!cont) {
+                    		return;
+                    	}
                     } else {
                         return;
                     }
@@ -1259,7 +1264,7 @@ public interface Circle2ai<
 
         @Override
         public P next() {
-            final P pixel = this.next;
+            final var pixel = this.next;
             if (pixel == null) {
                 throw new NoSuchElementException();
             }

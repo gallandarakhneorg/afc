@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOError;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -40,14 +37,11 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.maplayer.GISLayerContainer;
 import org.arakhne.afc.gis.maplayer.MapElementLayer;
-import org.arakhne.afc.gis.maplayer.MapLayer;
 import org.arakhne.afc.gis.maplayer.MultiMapLayer;
 import org.arakhne.afc.gis.maplayer.TreeMapElementLayer;
 import org.arakhne.afc.gis.primitive.FlagContainer;
@@ -59,7 +53,6 @@ import org.arakhne.afc.gis.road.primitive.RoadNetworkException;
 import org.arakhne.afc.gis.ui.GisPane;
 import org.arakhne.afc.inputoutput.filefilter.FileFilter;
 import org.arakhne.afc.io.dbase.DBaseFileFilter;
-import org.arakhne.afc.io.shape.ESRIBounds;
 import org.arakhne.afc.io.shape.ShapeElementType;
 import org.arakhne.afc.io.shape.ShapeFileFilter;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -68,6 +61,7 @@ import org.arakhne.afc.text.TextUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Application for viewing GIS primitives.
@@ -89,7 +83,7 @@ public class SimpleViewer extends Application {
 			StandardRoadNetwork network = null;
 			MapElementLayer<MapElement> layer = null;
 
-			final File dbfFile = FileSystem.replaceExtension(file, DBaseFileFilter.EXTENSION_DBASE_FILE);
+			final var dbfFile = FileSystem.replaceExtension(file, DBaseFileFilter.EXTENSION_DBASE_FILE);
 			final URL dbfUrl;
 			if (dbfFile.canRead()) {
 				dbfUrl = dbfFile.toURI().toURL();
@@ -97,11 +91,11 @@ public class SimpleViewer extends Application {
 				dbfUrl = null;
 			}
 
-			try (InputStream is = new FileInputStream(file)) {
+			try (var is = new FileInputStream(file)) {
 				assert is != null;
-				try (GISShapeFileReader reader = new GISShapeFileReader(is, null, dbfUrl)) {
-					final Rectangle2d worldRect = new Rectangle2d();
-					final ESRIBounds esriBounds = reader.getBoundsFromHeader();
+				try (var reader = new GISShapeFileReader(is, null, dbfUrl)) {
+					final var worldRect = new Rectangle2d();
+					final var esriBounds = reader.getBoundsFromHeader();
 					worldRect.setFromCorners(
 							esriBounds.getMinX(),
 							esriBounds.getMinY(),
@@ -115,11 +109,10 @@ public class SimpleViewer extends Application {
 					MapElement element;
 
 					while ((element = reader.read()) != null) {
-						if (element instanceof RoadPolyline) {
+						if (element instanceof RoadPolyline sgmt) {
 							if (network == null) {
 								network = new StandardRoadNetwork(worldRect);
 							}
-							final RoadPolyline sgmt = (RoadPolyline) element;
 							try {
 								network.addRoadSegment(sgmt);
 							} catch (RoadNetworkException e) {
@@ -139,7 +132,7 @@ public class SimpleViewer extends Application {
 				}
 			}
 			if (network != null) {
-				final RoadNetworkLayer networkLayer = new RoadNetworkLayer(network);
+				final var networkLayer = new RoadNetworkLayer(network);
 				return networkLayer;
 			}
 			return layer;
@@ -162,16 +155,16 @@ public class SimpleViewer extends Application {
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:regexp", "checkstyle:npathcomplexity",
 		"checkstyle:nestedifdepth", "rawtypes", "unchecked"})
 	public void start(Stage primaryStage) {
-		final FileChooser fileChooser = new FileChooser();
+		final var fileChooser = new FileChooser();
 		fileChooser.setTitle(Locale.getString(SimpleViewer.class, "OPEN_WINDOW_TITLE")); //$NON-NLS-1$
 		fileChooser.getExtensionFilters().add(
 				toJavaFX(new ShapeFileFilter()));
-		final List<File> shapeFiles = fileChooser.showOpenMultipleDialog(primaryStage);
+		final var shapeFiles = fileChooser.showOpenMultipleDialog(primaryStage);
 		if (shapeFiles != null && !shapeFiles.isEmpty()) {
-			final List<MapElementLayer> containers = new ArrayList<>();
-			final StringBuilder filename = new StringBuilder();
-			for (final File shapeFile : shapeFiles) {
-				final MapElementLayer loadedResource = loadShapeFile(shapeFile);
+			final var containers = new ArrayList<MapElementLayer>();
+			final var filename = new StringBuilder();
+			for (final var shapeFile : shapeFiles) {
+				final var loadedResource = loadShapeFile(shapeFile);
 				if (loadedResource != null) {
 					containers.add(loadedResource);
 					if (filename.length() > 0) {
@@ -189,24 +182,24 @@ public class SimpleViewer extends Application {
 			if (containers.size() == 1) {
 				container = containers.get(0);
 			} else {
-				final MultiMapLayer layer = new MultiMapLayer<>();
-				for (final MapLayer child : containers) {
+				final var layer = new MultiMapLayer<>();
+				for (final var child : containers) {
 					layer.addMapLayer(child);
 				}
 				container = layer;
 			}
 
-			final BorderPane root = new BorderPane();
+			final var root = new BorderPane();
 
-			final Label messageBar = new Label(""); //$NON-NLS-1$
+			final var messageBar = new Label(""); //$NON-NLS-1$
 			messageBar.setTextAlignment(TextAlignment.CENTER);
 
-			final GisPane scrollPane = new GisPane(container);
+			final var scrollPane = new GisPane(container);
 
-			final String mouseLocationPattern = Locale.getString(SimpleViewer.class, "MOUSE_POSITION"); //$NON-NLS-1$
+			final var mouseLocationPattern = Locale.getString(SimpleViewer.class, "MOUSE_POSITION"); //$NON-NLS-1$
 
 			scrollPane.setOnMouseMoved(event -> {
-				final Point2d mousePosition = scrollPane.toDocumentPosition(event.getX(), event.getY());
+				final var mousePosition = scrollPane.toDocumentPosition(event.getX(), event.getY());
 				messageBar.setText(MessageFormat.format(mouseLocationPattern,
 						TextUtil.formatDouble(event.getX(), 1),
 						TextUtil.formatDouble(event.getY(), 1),
@@ -216,7 +209,7 @@ public class SimpleViewer extends Application {
 
 			scrollPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
 				this.dragging = true;
-				final Point2d mousePosition = scrollPane.toDocumentPosition(event.getX(), event.getY());
+				final var mousePosition = scrollPane.toDocumentPosition(event.getX(), event.getY());
 				messageBar.setText(MessageFormat.format(mouseLocationPattern,
 						TextUtil.formatDouble(event.getX(), 1),
 						TextUtil.formatDouble(event.getY(), 1),
@@ -226,12 +219,12 @@ public class SimpleViewer extends Application {
 
 			scrollPane.setOnMouseReleased(event -> {
 				if (!this.dragging) {
-					final MapElement select1 = this.selectedRoad;
+					final var select1 = this.selectedRoad;
 					this.selectedRoad = null;
 					if (select1 != null) {
 						select1.unsetFlag(FlagContainer.FLAG_SELECTED);
 					}
-					final MapElement select2 = getElementUnderMouse(scrollPane, event.getX(), event.getY());
+					final var select2 = getElementUnderMouse(scrollPane, event.getX(), event.getY());
 					if (select2 != select1) {
 						if (select2 != null) {
 							select2.setFlag(FlagContainer.FLAG_SELECTED);
@@ -252,7 +245,7 @@ public class SimpleViewer extends Application {
 			root.setCenter(scrollPane);
 			root.setBottom(messageBar);
 
-			final Scene scene = new Scene(root, 1024, 768);
+			final var scene = new Scene(root, 1024, 768);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm()); //$NON-NLS-1$
 
 			primaryStage.setTitle(Locale.getString(SimpleViewer.class, "WINDOW_TITLE", filename.toString())); //$NON-NLS-1$
@@ -272,33 +265,31 @@ public class SimpleViewer extends Application {
 	 * @return the element.
 	 * @since 15.0
 	 */
-	@SuppressWarnings({ "rawtypes" })
 	public MapElement getElementUnderMouse(GisPane<?> pane, double x, double y) {
-		final GISContainer model = pane.getDocumentModel();
-		final Point2d mousePosition = pane.toDocumentPosition(x, y);
-		final Rectangle2d selectionArea = pane.toDocumentRect(x - 2, y - 2, 5, 5);
+		final var model = pane.getDocumentModel();
+		final var mousePosition = pane.toDocumentPosition(x, y);
+		final var selectionArea = pane.toDocumentRect(x - 2, y - 2, 5, 5);
 		return getElementUnderMouse(model, mousePosition, selectionArea);
 	}
 
-	@SuppressWarnings({ "rawtypes" })
 	private MapElement getElementUnderMouse(Object model, Point2d mousePosition, Rectangle2d selectionArea) {
-		if (model instanceof GISElementContainer<?>) {
-			return getElementUnderMouse((GISElementContainer) model, mousePosition, selectionArea);
+		if (model instanceof GISElementContainer elt) {
+			return getElementUnderMouse(elt, mousePosition, selectionArea);
 		}
-		if (model instanceof GISLayerContainer<?>) {
-			return getElementUnderMouse((GISLayerContainer) model, mousePosition, selectionArea);
+		if (model instanceof GISLayerContainer elt) {
+			return getElementUnderMouse(elt, mousePosition, selectionArea);
 		}
 		return null;
 	}
 
 	@SuppressWarnings({ "static-method" })
 	private MapElement getElementUnderMouse(GISElementContainer<?> model, Point2d mousePosition, Rectangle2d selectionArea) {
-		final Iterator<? extends MapElement> iterator = model.iterator(selectionArea);
-		double dist = Double.MAX_VALUE;
+		final var iterator = model.iterator(selectionArea);
+		var dist = Double.MAX_VALUE;
 		MapElement select = null;
 		while (iterator.hasNext()) {
-			final MapElement road = iterator.next();
-			final double distance = Math.abs(road.getDistance(mousePosition));
+			final var road = iterator.next();
+			final var distance = Math.abs(road.getDistance(mousePosition));
 			if (distance < dist) {
 				dist = distance;
 				select = road;
@@ -308,11 +299,11 @@ public class SimpleViewer extends Application {
 	}
 
 	private MapElement getElementUnderMouse(GISLayerContainer<?> model, Point2d mousePosition, Rectangle2d selectionArea) {
-		final Iterator<? extends MapLayer> iterator = model.iterator();
+		final var iterator = model.iterator();
 		while (iterator.hasNext()) {
-			final MapLayer layer = iterator.next();
+			final var layer = iterator.next();
 			if (layer.isVisible() && layer.isClickable()) {
-				final MapElement selected = getElementUnderMouse(layer, mousePosition, selectionArea);
+				final var selected = getElementUnderMouse(layer, mousePosition, selectionArea);
 				if (selected != null) {
 					return selected;
 				}

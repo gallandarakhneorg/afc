@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d3.ai;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
@@ -32,14 +31,15 @@ import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
+import org.arakhne.afc.math.geometry.d3.Shape3DType;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai.BresenhamLineIterator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 3D aligned box.
+/** Functional interface that represented a 3D aligned box.
  *
- * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
@@ -53,15 +53,20 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface AlignedBox3ai<
-		ST extends Shape3ai<?, ?, IE, P, V, Q, B>,
-		IT extends AlignedBox3ai<?, ?, IE, P, V, Q, B>,
+		IT extends AlignedBox3ai<?, IE, P, V, Q, B>,
 		IE extends PathElement3ai,
 		P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		B extends AlignedBox3ai<?, ?, IE, P, V, Q, B>>
-		extends Box3ai<ST, IT, IE, P, V, Q, B> {
+		B extends AlignedBox3ai<?, IE, P, V, Q, B>>
+		extends Box3ai<IT, IE, P, V, Q, B> {
+
+	@Override
+	default Shape3DType getType() {
+		return Shape3DType.ALIGNED_BOX;
+	}
 
 	/** Replies if two aligned boxs are intersecting.
 	 *
@@ -78,17 +83,18 @@ public interface AlignedBox3ai<
 	 * @param y4 is the second corner of the second aligned box.
 	 * @param z4 is the second corner of the second aligned box.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
-    static boolean intersectsAlignedBoxAlignedBox(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3,
-            int x4, int y4, int z4) {
-		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 3, x2);
-		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 4, y2);
-		assert z1 <= z2 : AssertMessages.lowerEqualParameters(2, y1, 5, z2);
-		assert x3 <= x4 : AssertMessages.lowerEqualParameters(6, x3, 9, x4);
-		assert y3 <= y4 : AssertMessages.lowerEqualParameters(7, y3, 10, y4);
-		assert z3 <= z4 : AssertMessages.lowerEqualParameters(8, z3, 11, z4);
+	@SuppressWarnings("checkstyle:parameternumber")
+	static boolean intersectsAlignedBoxAlignedBox(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3,
+			int x4, int y4, int z4) {
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(x1), 3, Double.valueOf(x2));
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(y1), 4, Double.valueOf(y2));
+		assert z1 <= z2 : AssertMessages.lowerEqualParameters(2, Double.valueOf(y1), 5, Double.valueOf(z2));
+		assert x3 <= x4 : AssertMessages.lowerEqualParameters(6, Double.valueOf(x3), 9, Double.valueOf(x4));
+		assert y3 <= y4 : AssertMessages.lowerEqualParameters(7, Double.valueOf(y3), 10, Double.valueOf(y4));
+		assert z3 <= z4 : AssertMessages.lowerEqualParameters(8, Double.valueOf(z3), 11, Double.valueOf(z4));
 		return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4 && z2  > z3 && z1 < z4;
 	}
 
@@ -113,17 +119,18 @@ public interface AlignedBox3ai<
 	 * @param y4 is the second point of the segment.
 	 * @param z4 is the second point of the segment.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 * {@code false}
+	 *     {@code false}
 	 */
 	@Pure
-    static boolean intersectsAlignedBoxSegment(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3,
-            int x4, int y4, int z4) {
-		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 3, x2);
-		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 4, y2);
-		assert z1 <= z2 : AssertMessages.lowerEqualParameters(2, y1, 5, z2);
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static boolean intersectsAlignedBoxSegment(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3,
+			int x4, int y4, int z4) {
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(x1), 3, Double.valueOf(x2));
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(y1), 4, Double.valueOf(y2));
+		assert z1 <= z2 : AssertMessages.lowerEqualParameters(2, Double.valueOf(y1), 5, Double.valueOf(z2));
 
-		int c1 = MathUtil.getCohenSutherlandCode3D(x3, y3, z3, x1, y1, z1, x2, y2, z2);
-		final int c2 = MathUtil.getCohenSutherlandCode3D(x4, y4, z4, x1, y1, z1, x2, y2, z2);
+		var c1 = MathUtil.getCohenSutherlandCode3D(x3, y3, z3, x1, y1, z1, x2, y2, z2);
+		final var c2 = MathUtil.getCohenSutherlandCode3D(x4, y4, z4, x1, y1, z1, x2, y2, z2);
 
 		// 0x32; //COHEN_SUTHERLAND_BACK
 		// 0x16; //COHEN_SUTHERLAND_FRONT
@@ -133,23 +140,22 @@ public interface AlignedBox3ai<
 		// 0x1; //COHEN_SUTHERLAND_TOP
 
 		if (c1 == MathConstants.COHEN_SUTHERLAND_INSIDE || c2 == MathConstants.COHEN_SUTHERLAND_INSIDE) {
-		    return true;
+			return true;
 		}
 		if ((c1 & c2) != 0) {
 			return false;
 		}
 
-		int sx1 = x3;
-		int sy1 = y3;
-		final int sz1 = z3;
-		final int sx2 = x4;
-		final int sy2 = y4;
-		final int sz2 = z4;
+		var sx1 = x3;
+		var sy1 = y3;
+		final var sz1 = z3;
+		final var sx2 = x4;
+		final var sy2 = y4;
+		final var sz2 = z4;
 
 		// Only for internal use
-		final Point3D<?, ?, ?> pts = new InnerComputationPoint3ai();
-		final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
-				new BresenhamLineIterator<>(
+		final var pts = new InnerComputationPoint3ai();
+		final var iterator = new BresenhamLineIterator<>(
 						InnerComputationGeomFactory.SINGLETON, sx1, sy1, sz1, sx2, sy2, sz2);
 
 		while (iterator.hasNext() && c1 != MathConstants.COHEN_SUTHERLAND_INSIDE
@@ -160,45 +166,45 @@ public interface AlignedBox3ai<
 					sy1 = pts.iy();
 				}
 				while (iterator.hasNext() && sy1 != y2);
-                if (sy1 != y2) {
-                    return false;
-                }
+				if (sy1 != y2) {
+					return false;
+				}
 				sx1 = pts.ix();
 			} else if ((c1 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
 				do {
 					iterator.next(pts);
 					sy1 = pts.iy();
 				}
-                while (iterator.hasNext() && sy1 != y1);
-                if (sy1 != y1) {
-                    return false;
-                }
+				while (iterator.hasNext() && sy1 != y1);
+				if (sy1 != y1) {
+					return false;
+				}
 				sx1 = pts.ix();
 			} else if ((c1 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
 				do {
 					iterator.next(pts);
 					sx1 = pts.ix();
 				}
-                while (iterator.hasNext() && sx1 != x2);
-                if (sx1 != x2) {
-                    return false;
-                }
+				while (iterator.hasNext() && sx1 != x2);
+				if (sx1 != x2) {
+					return false;
+				}
 				sy1 = pts.iy();
 			} else {
 				do {
 					iterator.next(pts);
 					sx1 = pts.ix();
 				}
-                while (iterator.hasNext() && sx1 != x1);
-                if (sx1 != x1) {
-                    return false;
-                }
+				while (iterator.hasNext() && sx1 != x1);
+				if (sx1 != x1) {
+					return false;
+				}
 				sy1 = pts.iy();
 			}
 			c1 = MathUtil.getCohenSutherlandCode(sx1, sy1, x1, y1, x2, y2);
 		}
 
-        return c1 == MathConstants.COHEN_SUTHERLAND_INSIDE || c2 == MathConstants.COHEN_SUTHERLAND_INSIDE;
+		return c1 == MathConstants.COHEN_SUTHERLAND_INSIDE || c2 == MathConstants.COHEN_SUTHERLAND_INSIDE;
 	}
 
 	/** Compute the closest point on the aligned box from the given point.
@@ -215,11 +221,12 @@ public interface AlignedBox3ai<
 	 * @param result the closest point.
 	 */
 	@Pure
-    static void computeClosestPoint(int minx, int miny, int minz, int maxx, int maxy, int maxz, int px, int py, int pz,
-            Point3D<?, ?, ?> result) {
-		assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 3, maxx);
-		assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 4, maxy);
-		assert minz <= maxz : AssertMessages.lowerEqualParameters(2, minz, 5, maxz);
+	@SuppressWarnings("checkstyle:parameternumber")
+	static void computeClosestPoint(int minx, int miny, int minz, int maxx, int maxy, int maxz, int px, int py, int pz,
+			Point3D<?, ?, ?> result) {
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(0, Double.valueOf(minx), 3, Double.valueOf(maxx));
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(1, Double.valueOf(miny), 4, Double.valueOf(maxy));
+		assert minz <= maxz : AssertMessages.lowerEqualParameters(2, Double.valueOf(minz), 5, Double.valueOf(maxz));
 		assert result != null : AssertMessages.notNullParameter(9);
 
 		final int x;
@@ -271,11 +278,12 @@ public interface AlignedBox3ai<
 	 * @param result the farthest point.
 	 */
 	@Pure
-    static void computeFarthestPoint(int minx, int miny, int minz, int maxx, int maxy, int maxz, int px, int py, int pz,
-            Point3D<?, ?, ?> result) {
-		assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 3, maxx);
-		assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 4, maxy);
-		assert minz <= maxz : AssertMessages.lowerEqualParameters(2, minz, 5, maxz);
+	@SuppressWarnings("checkstyle:parameternumber")
+	static void computeFarthestPoint(int minx, int miny, int minz, int maxx, int maxy, int maxz, int px, int py, int pz,
+			Point3D<?, ?, ?> result) {
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(0, Double.valueOf(minx), 3, Double.valueOf(maxx));
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(1, Double.valueOf(miny), 4, Double.valueOf(maxy));
+		assert minz <= maxz : AssertMessages.lowerEqualParameters(2, Double.valueOf(minz), 5, Double.valueOf(maxz));
 		assert result != null : AssertMessages.notNullParameter(9);
 
 		final int x;
@@ -299,142 +307,143 @@ public interface AlignedBox3ai<
 		result.set(x, y, z);
 	}
 
-    /** Update the given Cohen-Sutherland code that corresponds to the given segment in order
-     * to obtain a segment restricted to a single Cohen-Sutherland zone.
-     * This function is at the heart of the
-     * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
-     *
-     * <p>The result of this function may be: <ul>
-     * <li>the code for a single zone, or</li>
-     * <li>the code that corresponds to a single column, or </li>
-     * <li>the code that corresponds to a single row.</li>
-     * </ul>
-     *
-     * @param rx1 is the first corner of the aligned box.
-     * @param ry1 is the first corner of the aligned box.
-     * @param rz1 is the first corner of the aligned box.
-     * @param rx2 is the second corner of the aligned box.
-     * @param ry2 is the second corner of the aligned box.
-     * @param rz2 is the second corner of the aligned box.
-     * @param sx1 is the first point of the segment.
-     * @param sy1 is the first point of the segment.
-     * @param sz1 is the first point of the segment.
-     * @param sx2 is the second point of the segment.
-     * @param sy2 is the second point of the segment.
-     * @param sz2 is the second point of the segment.
-     * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
-     * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
-     * @param newSegmentP1 is set with the new coordinates of the segment first point. If {@code null},
-     *     this parameter is ignored.
-     * @param newSegmentP2 is set with the new coordinates of the segment second point. If {@code null},
-     *     this parameter is ignored.
-     * @return the rectricted Cohen-Sutherland zone.
-     */
-    @Pure
-    static int reduceCohenSutherlandZoneAlignedBoxSegment(int rx1, int ry1, int rz1, int rx2, int ry2, int rz2,
-            int sx1, int sy1, int sz1, int sx2, int sy2, int sz2, int codePoint1, int codePoint2,
-            Point3D<?, ?, ?> newSegmentP1, Point3D<?, ?, ?> newSegmentP2) {
-        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 3, rx2);
-        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 4, ry2);
-        assert rz1 <= rz2 : AssertMessages.lowerEqualParameters(2, ry1, 5, ry2);
-        assert codePoint1 == MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rx1, ry1, rz1, rx2, ry2, rz2) : AssertMessages
-                .invalidValue(8);
-        assert codePoint2 == MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz2, rx1, ry1, rz1, rx2, ry2, rz2) : AssertMessages
-                .invalidValue(9);
-        int segmentX1 = sx1;
-        int segmentY1 = sy1;
-        int segmentZ1 = sz1;
-        int segmentX2 = sx2;
-        int segmentY2 = sy2;
-        int segmentZ2 = sz2;
+	/** Update the given Cohen-Sutherland code that corresponds to the given segment in order
+	 * to obtain a segment restricted to a single Cohen-Sutherland zone.
+	 * This function is at the heart of the
+	 * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
+	 *
+	 * <p>The result of this function may be: <ul>
+	 * <li>the code for a single zone, or</li>
+	 * <li>the code that corresponds to a single column, or </li>
+	 * <li>the code that corresponds to a single row.</li>
+	 * </ul>
+	 *
+	 * @param rx1 is the first corner of the aligned box.
+	 * @param ry1 is the first corner of the aligned box.
+	 * @param rz1 is the first corner of the aligned box.
+	 * @param rx2 is the second corner of the aligned box.
+	 * @param ry2 is the second corner of the aligned box.
+	 * @param rz2 is the second corner of the aligned box.
+	 * @param sx1 is the first point of the segment.
+	 * @param sy1 is the first point of the segment.
+	 * @param sz1 is the first point of the segment.
+	 * @param sx2 is the second point of the segment.
+	 * @param sy2 is the second point of the segment.
+	 * @param sz2 is the second point of the segment.
+	 * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
+	 * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
+	 * @param newSegmentP1 is set with the new coordinates of the segment first point. If {@code null},
+	 *     this parameter is ignored.
+	 * @param newSegmentP2 is set with the new coordinates of the segment second point. If {@code null},
+	 *     this parameter is ignored.
+	 * @return the restricted Cohen-Sutherland zone.
+	 */
+	@Pure
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static int reduceCohenSutherlandZoneAlignedBoxSegment(int rx1, int ry1, int rz1, int rx2, int ry2, int rz2,
+			int sx1, int sy1, int sz1, int sx2, int sy2, int sz2, int codePoint1, int codePoint2,
+			Point3D<?, ?, ?> newSegmentP1, Point3D<?, ?, ?> newSegmentP2) {
+		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 3, Double.valueOf(rx2));
+		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 4, Double.valueOf(ry2));
+		assert rz1 <= rz2 : AssertMessages.lowerEqualParameters(2, Double.valueOf(ry1), 5, Double.valueOf(ry2));
+		assert codePoint1 == MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rx1, ry1, rz1, rx2, ry2, rz2) : AssertMessages
+				.invalidValue(8);
+		assert codePoint2 == MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz2, rx1, ry1, rz1, rx2, ry2, rz2) : AssertMessages
+				.invalidValue(9);
+		var segmentX1 = sx1;
+		var segmentY1 = sy1;
+		var segmentZ1 = sz1;
+		var segmentX2 = sx2;
+		var segmentY2 = sy2;
+		var segmentZ2 = sz2;
 
-        int code1 = codePoint1;
-        int code2 = codePoint2;
+		var code1 = codePoint1;
+		var code2 = codePoint2;
 
-        while (true) {
-            if ((code1 | code2) == 0) {
-                // Bitwise OR is 0. Trivially accept and get out of loop
-                if (newSegmentP1 != null) {
-                    newSegmentP1.set(segmentX1, segmentY1, segmentZ1);
-                }
-                if (newSegmentP2 != null) {
-                    newSegmentP2.set(segmentX2, segmentY2, segmentZ2);
-                }
-                return 0;
-            }
-            if ((code1 & code2) != 0) {
-                // Bitwise AND is not 0. Trivially reject and get out of loop
-                if (newSegmentP1 != null) {
-                    newSegmentP1.set(segmentX1, segmentY1, segmentZ1);
-                }
-                if (newSegmentP2 != null) {
-                    newSegmentP2.set(segmentX2, segmentY2, segmentZ2);
-                }
-                return code1 & code2;
-            }
+		while (true) {
+			if ((code1 | code2) == 0) {
+				// Bitwise OR is 0. Trivially accept and get out of loop
+				if (newSegmentP1 != null) {
+					newSegmentP1.set(segmentX1, segmentY1, segmentZ1);
+				}
+				if (newSegmentP2 != null) {
+					newSegmentP2.set(segmentX2, segmentY2, segmentZ2);
+				}
+				return 0;
+			}
+			if ((code1 & code2) != 0) {
+				// Bitwise AND is not 0. Trivially reject and get out of loop
+				if (newSegmentP1 != null) {
+					newSegmentP1.set(segmentX1, segmentY1, segmentZ1);
+				}
+				if (newSegmentP2 != null) {
+					newSegmentP2.set(segmentX2, segmentY2, segmentZ2);
+				}
+				return code1 & code2;
+			}
 
-            // failed both tests, so calculate the line segment intersection
+			// failed both tests, so calculate the line segment intersection
 
-            // At least one endpoint is outside the clip aligned box; pick it.
-            int code3 = (code1 != 0) ? code1 : code2;
+			// At least one endpoint is outside the clip aligned box; pick it.
+			var code3 = (code1 != 0) ? code1 : code2;
 
-            int x = 0;
-            int y = 0;
-            int z = 0;
+			var x = 0;
+			var y = 0;
+			var z = 0;
 
-            // Now find the intersection point;
-            // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
-            if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
-                // point is above the clip aligned box
-                x = segmentX1 + (segmentX2 - segmentX1) * (ry2 - segmentY1) / (segmentY2 - segmentY1);
-                y = ry2;
-                z = rz2;
-            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
-                // point is below the clip aligned box
-                x = segmentX1 + (segmentX2 - segmentX1) * (ry1 - segmentY1) / (segmentY2 - segmentY1);
-                y = ry1;
-                z = rz1;
-            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
-                // point is to the right of clip aligned box
-                y = segmentY1 + (segmentY2 - segmentY1) * (rx2 - segmentX1) / (segmentX2 - segmentX1);
-                x = rx2;
-                z = rz2;
-            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
-                // point is to the left of clip aligned box
-                y = segmentY1 + (segmentY2 - segmentY1) * (rx1 - segmentX1) / (segmentX2 - segmentX1);
-                x = rx1;
-                z = rz1;
-            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
-                // point is to the front of clip aligned box
-                z = segmentZ1 + (segmentZ2 - segmentZ1) * (rz2 - segmentZ1) / (segmentZ2 - segmentZ1);
-                x = rx2;
-                y = ry2;
-            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
-                // point is to the back of clip aligned box
-                z = segmentZ1 + (segmentZ2 - segmentZ1) * (rz1 - segmentZ1) / (segmentZ2 - segmentZ1);
-                x = rx1;
-                y = ry1;
-            } else {
-                code3 = 0;
-            }
+			// Now find the intersection point;
+			// use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
+			if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+				// point is above the clip aligned box
+				x = segmentX1 + (segmentX2 - segmentX1) * (ry2 - segmentY1) / (segmentY2 - segmentY1);
+				y = ry2;
+				z = rz2;
+			} else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+				// point is below the clip aligned box
+				x = segmentX1 + (segmentX2 - segmentX1) * (ry1 - segmentY1) / (segmentY2 - segmentY1);
+				y = ry1;
+				z = rz1;
+			} else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
+				// point is to the right of clip aligned box
+				y = segmentY1 + (segmentY2 - segmentY1) * (rx2 - segmentX1) / (segmentX2 - segmentX1);
+				x = rx2;
+				z = rz2;
+			} else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+				// point is to the left of clip aligned box
+				y = segmentY1 + (segmentY2 - segmentY1) * (rx1 - segmentX1) / (segmentX2 - segmentX1);
+				x = rx1;
+				z = rz1;
+			} else if ((code3 & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
+				// point is to the front of clip aligned box
+				z = segmentZ1 + (segmentZ2 - segmentZ1) * (rz2 - segmentZ1) / (segmentZ2 - segmentZ1);
+				x = rx2;
+				y = ry2;
+			} else if ((code3 & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
+				// point is to the back of clip aligned box
+				z = segmentZ1 + (segmentZ2 - segmentZ1) * (rz1 - segmentZ1) / (segmentZ2 - segmentZ1);
+				x = rx1;
+				y = ry1;
+			} else {
+				code3 = 0;
+			}
 
-            if (code3 != 0) {
-                // Now we move outside point to intersection point to clip
-                // and get ready for next pass.
-                if (code3 == code1) {
-                    segmentX1 = x;
-                    segmentY1 = y;
-                    segmentZ1 = z;
-                    code1 = MathUtil.getCohenSutherlandCode3D(segmentX1, segmentY1, segmentZ1, rx1, ry1, rz1, rx2, ry2, rz2);
-                } else {
-                    segmentX2 = x;
-                    segmentY2 = y;
-                    segmentZ2 = z;
-                    code2 = MathUtil.getCohenSutherlandCode3D(segmentX2, segmentY2, segmentZ2, rx1, ry1, rz1, rx2, ry2, rz2);
-                }
-            }
-        }
-    }
+			if (code3 != 0) {
+				// Now we move outside point to intersection point to clip
+				// and get ready for next pass.
+				if (code3 == code1) {
+					segmentX1 = x;
+					segmentY1 = y;
+					segmentZ1 = z;
+					code1 = MathUtil.getCohenSutherlandCode3D(segmentX1, segmentY1, segmentZ1, rx1, ry1, rz1, rx2, ry2, rz2);
+				} else {
+					segmentX2 = x;
+					segmentY2 = y;
+					segmentZ2 = z;
+					code2 = MathUtil.getCohenSutherlandCode3D(segmentX2, segmentY2, segmentZ2, rx1, ry1, rz1, rx2, ry2, rz2);
+				}
+			}
+		}
+	}
 
 	@Pure
 	@Override
@@ -446,16 +455,16 @@ public interface AlignedBox3ai<
 			return true;
 		}
 		return getMinX() == shape.getMinX()
-			&& getMinY() == shape.getMinY()
-			&& getMinZ() == shape.getMinZ()
-			&& getMaxX() == shape.getMaxX()
-			&& getMaxY() == shape.getMaxY()
-			&& getMaxZ() == shape.getMaxZ();
+				&& getMinY() == shape.getMinY()
+				&& getMinZ() == shape.getMinZ()
+				&& getMaxX() == shape.getMaxX()
+				&& getMaxY() == shape.getMaxY()
+				&& getMaxZ() == shape.getMaxZ();
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+	default boolean intersects(AlignedBox3ai<?, ?, ?, ?, ?, ?> AlignedBox) {
 		assert AlignedBox != null : AssertMessages.notNullParameter();
 		return intersectsAlignedBoxAlignedBox(
 				getMinX(), getMinY(), getMinZ(),
@@ -466,7 +475,7 @@ public interface AlignedBox3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?, ?> sphere) {
+	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return Sphere3ai.intersectsSphereAlignedBox(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
@@ -477,7 +486,7 @@ public interface AlignedBox3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
+	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsAlignedBoxSegment(
 				getMinX(), getMinY(), getMinZ(),
@@ -489,19 +498,19 @@ public interface AlignedBox3ai<
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = Path3ai.computeCrossingsFromRect(
+		final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = Path3ai.computeCrossingsFromRect(
 				0,
 				iterator,
 				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
+	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
@@ -514,7 +523,7 @@ public interface AlignedBox3ai<
 
 	@Pure
 	@Override
-	default boolean contains(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> box) {
+	default boolean contains(AlignedBox3ai<?, ?, ?, ?, ?, ?> box) {
 		assert box != null : AssertMessages.notNullParameter();
 		return box.getMinX() >= getMinX() && box.getMaxX() <= getMaxX()
 				&& box.getMinY() >= getMinY() && box.getMaxY() <= getMaxY()
@@ -524,49 +533,49 @@ public interface AlignedBox3ai<
 	@Override
 	default void set(IT AlignedBox) {
 		assert AlignedBox != null : AssertMessages.notNullParameter();
-        setFromCorners(AlignedBox.getMinX(), AlignedBox.getMinY(), AlignedBox.getMinZ(),
-                AlignedBox.getMaxX(), AlignedBox.getMaxY(), AlignedBox.getMaxZ());
+		setFromCorners(AlignedBox.getMinX(), AlignedBox.getMinY(), AlignedBox.getMinZ(),
+				AlignedBox.getMaxX(), AlignedBox.getMaxY(), AlignedBox.getMaxZ());
 	}
 
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		computeClosestPoint(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
 	}
 
-    @Override
-    default P getClosestPointTo(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> box) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	default P getClosestPointTo(AlignedBox3ai<?, ?, ?, ?, ?, ?> box) {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?, ?> circle) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?, ?> path) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+		throw new UnsupportedOperationException();
+	}
 
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		computeFarthestPoint(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
 	}
@@ -576,30 +585,30 @@ public interface AlignedBox3ai<
 	default double getDistanceSquared(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
-        if (pt.ix() < getMinX()) {
+		if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
-        } else if (pt.ix() > getMaxX()) {
+		} else if (pt.ix() > getMaxX()) {
 			dx = pt.ix() - getMaxX();
 		} else {
 			dx = 0;
 		}
 		final int dy;
-        if (pt.iy() < getMinY()) {
+		if (pt.iy() < getMinY()) {
 			dy = getMinY() - pt.iy();
-        } else if (pt.iy() > getMaxY()) {
+		} else if (pt.iy() > getMaxY()) {
 			dy = pt.iy() - getMaxY();
 		} else {
 			dy = 0;
 		}
 		final int dz;
-        if (pt.iz() < getMinZ()) {
+		if (pt.iz() < getMinZ()) {
 			dz = getMinZ() - pt.iz();
-        } else if (pt.iz() > getMaxZ()) {
+		} else if (pt.iz() > getMaxZ()) {
 			dz = pt.iz() - getMaxZ();
 		} else {
 			dz = 0;
 		}
-        return dx * dx + dy * dy + dz * dz;
+		return dx * dx + dy * dy + dz * dz;
 	}
 
 	@Pure
@@ -607,25 +616,25 @@ public interface AlignedBox3ai<
 	default double getDistanceL1(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
-        if (pt.ix() < getMinX()) {
+		if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
-        } else if (pt.ix() > getMaxX()) {
+		} else if (pt.ix() > getMaxX()) {
 			dx = pt.ix() - getMaxX();
 		} else {
 			dx = 0;
 		}
 		final int dy;
-        if (pt.iy() < getMinY()) {
+		if (pt.iy() < getMinY()) {
 			dy = getMinY() - pt.iy();
-        } else if (pt.iy() > getMaxY()) {
+		} else if (pt.iy() > getMaxY()) {
 			dy = pt.iy() - getMaxY();
 		} else {
 			dy = 0;
 		}
 		final int dz;
-        if (pt.iz() < getMinZ()) {
+		if (pt.iz() < getMinZ()) {
 			dz = getMinZ() - pt.iz();
-        } else if (pt.iy() > getMaxY()) {
+		} else if (pt.iy() > getMaxY()) {
 			dz = pt.iz() - getMaxZ();
 		} else {
 			dz = 0;
@@ -638,25 +647,25 @@ public interface AlignedBox3ai<
 	default double getDistanceLinf(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
-        if (pt.ix() < getMinX()) {
+		if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
-        } else if (pt.ix() > getMaxX()) {
+		} else if (pt.ix() > getMaxX()) {
 			dx = pt.ix() - getMaxX();
 		} else {
 			dx = 0;
 		}
 		final int dy;
-        if (pt.iy() < getMinY()) {
+		if (pt.iy() < getMinY()) {
 			dy = getMinY() - pt.iy();
-        } else if (pt.iy() > getMaxY()) {
+		} else if (pt.iy() > getMaxY()) {
 			dy = pt.iy() - getMaxY();
 		} else {
 			dy = 0;
 		}
 		final int dz;
-        if (pt.iz() < getMinZ()) {
+		if (pt.iz() < getMinZ()) {
 			dz = getMinZ() - pt.iz();
-        } else if (pt.iz() > getMaxZ()) {
+		} else if (pt.iz() > getMaxZ()) {
 			dz = pt.iz() - getMaxZ();
 		} else {
 			dz = 0;
@@ -681,60 +690,52 @@ public interface AlignedBox3ai<
 		return new AlignedBoxSideIterator<>(this, startingBorder);
 	}
 
-	@Override
-	default PathIterator3ai<IE> getPathIterator(Transform3D transform) {
-		if (transform == null || transform.isIdentity()) {
-			return new AlignedBoxPathIterator<>(this);
-		}
-		return new TransformedAlignedBoxPathIterator<>(this, transform);
-	}
-
 	/** Compute and replies the union of this rectangular prism and the given prism.
 	 * This function does not change this rectangular prism.
 	 *
 	 *<p>It is equivalent to (where {@code ur} is the union):
-	 * <pre>{@code 
+	 * <pre><code>
 	 * AlignedBox3d ur = new AlignedBox3d(this);
 	 * ur.setUnion(r);
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param prism the prism
 	 * @return the union of this aligned box and the given aligned box.
 	 * @see #setUnion(Box3ai)
 	 */
 	@Pure
-	default B createUnion(Box3ai<?, ?, ?, ?, ?, ?, ?> prism) {
+	default B createUnion(Box3ai<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
-		final B rr = getGeomFactory().newBox();
+		final var rr = getGeomFactory().newBox();
 		rr.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 		rr.setUnion(prism);
 		return rr;
 	}
 
 	/** Compute and replies the intersection of this rectangular prism and the given prism.
-     * This function does not change this rectangular prism.
-     *
-     *<p>It is equivalent to (where {@code ir} is the union):
-     * <pre>{@code 
-     * AlignedBox3d ir = new AlignedBox3d(this);
-     * ur.setIntersection(r);
-     * }</pre>
+	 * This function does not change this rectangular prism.
+	 *
+	 *<p>It is equivalent to (where {@code ir} is the union):
+	 * <pre><code>
+	 * AlignedBox3d ir = new AlignedBox3d(this);
+	 * ur.setIntersection(r);
+	 * </code></pre>
 	 *
 	 * @param prism the prism
 	 * @return the intersection of this aligned box and the given aligned box.
 	 * @see #setIntersection(Box3ai)
 	 */
 	@Pure
-	default B createIntersection(Box3ai<?, ?, ?, ?, ?, ?, ?> prism) {
+	default B createIntersection(Box3ai<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
-		final B rr = getGeomFactory().newBox();
-		final int x1 = Math.max(getMinX(), prism.getMinX());
-		final int y1 = Math.max(getMinY(), prism.getMinY());
-		final int z1 = Math.max(getMinZ(), prism.getMinZ());
-		final int x2 = Math.min(getMaxX(), prism.getMaxX());
-		final int y2 = Math.min(getMaxY(), prism.getMaxY());
-		final int z2 = Math.min(getMaxZ(), prism.getMaxZ());
-        if (x1 <= x2 && y1 <= y2 && z1 <= z2) {
+		final var rr = getGeomFactory().newBox();
+		final var x1 = Math.max(getMinX(), prism.getMinX());
+		final var y1 = Math.max(getMinY(), prism.getMinY());
+		final var z1 = Math.max(getMinZ(), prism.getMinZ());
+		final var x2 = Math.min(getMaxX(), prism.getMaxX());
+		final var y2 = Math.min(getMaxY(), prism.getMaxY());
+		final var z2 = Math.min(getMaxZ(), prism.getMaxZ());
+		if (x1 <= x2 && y1 <= y2 && z1 <= z2) {
 			rr.setFromCorners(x1, y1, z1, x2, y2, z2);
 		} else {
 			rr.clear();
@@ -748,7 +749,7 @@ public interface AlignedBox3ai<
 	 * @param prism the prism
 	 * @see #createUnion(Box3ai)
 	 */
-	default void setUnion(Box3ai<?, ?, ?, ?, ?, ?, ?> prism) {
+	default void setUnion(Box3ai<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
 		setFromCorners(
 				Math.min(getMinX(), prism.getMinX()),
@@ -768,15 +769,15 @@ public interface AlignedBox3ai<
 	 * @see #createIntersection(Box3ai)
 	 * @see #clear()
 	 */
-	default void setIntersection(Box3ai<?, ?, ?, ?, ?, ?, ?> prism) {
+	default void setIntersection(Box3ai<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
-		final int x1 = Math.max(getMinX(), prism.getMinX());
-		final int y1 = Math.max(getMinY(), prism.getMinY());
-		final int z1 = Math.max(getMinZ(), prism.getMinZ());
-		final int x2 = Math.min(getMaxX(), prism.getMaxX());
-		final int y2 = Math.min(getMaxY(), prism.getMaxY());
-		final int z2 = Math.min(getMaxZ(), prism.getMaxZ());
-        if (x1 <= x2 && y1 <= y2 && z1 <= z2) {
+		final var x1 = Math.max(getMinX(), prism.getMinX());
+		final var y1 = Math.max(getMinY(), prism.getMinY());
+		final var z1 = Math.max(getMinZ(), prism.getMinZ());
+		final var x2 = Math.min(getMaxX(), prism.getMaxX());
+		final var y2 = Math.min(getMaxY(), prism.getMaxY());
+		final var z2 = Math.min(getMaxZ(), prism.getMaxZ());
+		if (x1 <= x2 && y1 <= y2 && z1 <= z2) {
 			setFromCorners(x1, y1, z1, x2, y2, z2);
 		} else {
 			clear();
@@ -788,6 +789,7 @@ public interface AlignedBox3ai<
 	 * @return the Geogebra representation of the aligned box.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toPrismDefinition(3,
 				getMinX(), getMinY(), getMinZ(),
@@ -866,7 +868,7 @@ public interface AlignedBox3ai<
 		 * @param box is the aligned box to iterate.
 		 * @param firstSide the first side to iterate on.
 		 */
-		public AlignedBoxSideIterator(AlignedBox3ai<?, ?, ?, P, V, Q, ?> box, Side firstSide) {
+		public AlignedBoxSideIterator(AlignedBox3ai<?, ?, P, V, Q, ?> box, Side firstSide) {
 			assert box != null : AssertMessages.notNullParameter(0);
 			assert firstSide != null : AssertMessages.notNullParameter(1);
 			this.factory = box.getGeomFactory();
@@ -884,77 +886,77 @@ public interface AlignedBox3ai<
 		@Pure
 		@Override
 		public boolean hasNext() {
-            return this.currentSide != null;
+			return this.currentSide != null;
 		}
 
 		// TODO : integrate z coordinate
 		@Override
 		public P next() {
-			int x = 0;
-			int y = 0;
-			final int z = 0;
+			var x = 0;
+			var y = 0;
+			final var z = 0;
 
-            switch (this.currentSide) {
-            case TOP:
-                x = this.x0 + this.index;
-                y = this.y0;
-                break;
-            case RIGHT:
-                x = this.x1;
-                y = this.y0 + this.index + 1;
-                break;
-            case BOTTOM:
-                x = this.x1 - this.index - 1;
-                y = this.y1;
-                break;
-            case LEFT:
-                x = this.x0;
-                y = this.y1 - this.index - 1;
-                break;
-            case FRONT:
-            case BACK:
-                break;
-            default:
-                throw new NoSuchElementException();
-            }
+			switch (this.currentSide) {
+			case TOP:
+				x = this.x0 + this.index;
+				y = this.y0;
+				break;
+			case RIGHT:
+				x = this.x1;
+				y = this.y0 + this.index + 1;
+				break;
+			case BOTTOM:
+				x = this.x1 - this.index - 1;
+				y = this.y1;
+				break;
+			case LEFT:
+				x = this.x0;
+				y = this.y1 - this.index - 1;
+				break;
+			case FRONT:
+			case BACK:
+				break;
+			default:
+				throw new NoSuchElementException();
+			}
 
-            ++this.index;
-            Side newSide = null;
+			++this.index;
+			Side newSide = null;
 
-            switch (this.currentSide) {
-            case TOP:
-                if (x >= this.x1) {
-                    newSide = Side.RIGHT;
-                    this.index = 0;
-                }
-                break;
-            case RIGHT:
-                if (y >= this.y1) {
-                    newSide = Side.BOTTOM;
-                    this.index = 0;
-                }
-                break;
-            case BOTTOM:
-                if (x <= this.x0) {
-                    newSide = Side.LEFT;
-                    this.index = 0;
-                }
-                break;
-            case LEFT:
-                if (y <= this.y0 + 1) {
+			switch (this.currentSide) {
+			case TOP:
+				if (x >= this.x1) {
+					newSide = Side.RIGHT;
+					this.index = 0;
+				}
+				break;
+			case RIGHT:
+				if (y >= this.y1) {
+					newSide = Side.BOTTOM;
+					this.index = 0;
+				}
+				break;
+			case BOTTOM:
+				if (x <= this.x0) {
+					newSide = Side.LEFT;
+					this.index = 0;
+				}
+				break;
+			case LEFT:
+				if (y <= this.y0 + 1) {
 					newSide = Side.TOP;
 					this.index = 0;
 				}
 				break;
 			case FRONT:
 			case BACK:
-			    break;
+				break;
 			default:
 				throw new NoSuchElementException();
 			}
 
-            if (newSide != null) {
-                this.currentSide = (this.firstSide == newSide) ? null : newSide;
+			if (newSide != null) {
+				this.currentSide = (this.firstSide == newSide) ? null : newSide;
 			}
 
 			return this.factory.newPoint(x, y, z);
@@ -978,7 +980,7 @@ public interface AlignedBox3ai<
 	 */
 	class AlignedBoxPathIterator<E extends PathElement3ai> implements PathIterator3ai<E> {
 
-		private final AlignedBox3ai<?, ?, E, ?, ?, ?, ?> box;
+		private final AlignedBox3ai<?, E, ?, ?, ?, ?> box;
 
 		private int x1;
 
@@ -997,7 +999,7 @@ public interface AlignedBox3ai<
 		/** Constructor.
 		 * @param box is the aligned box to iterate.
 		 */
-		public AlignedBoxPathIterator(AlignedBox3ai<?, ?, E, ?, ?, ?, ?> box) {
+		public AlignedBoxPathIterator(AlignedBox3ai<?, E, ?, ?, ?, ?> box) {
 			assert box != null : AssertMessages.notNullParameter();
 			this.box = box;
 			if (box.isEmpty()) {
@@ -1025,9 +1027,9 @@ public interface AlignedBox3ai<
 
 		@Override
 		public E next() {
-			final int idx = this.index;
+			final var idx = this.index;
 			++this.index;
-            switch (idx) {
+			switch (idx) {
 			case 0:
 				return this.box.getGeomFactory().newMovePathElement(
 						this.x1, this.y1, this.z1);
@@ -1114,7 +1116,7 @@ public interface AlignedBox3ai<
 	 */
 	class TransformedAlignedBoxPathIterator<E extends PathElement3ai> implements PathIterator3ai<E> {
 
-		private final AlignedBox3ai<?, ?, E, ?, ?, ?, ?> box;
+		private final AlignedBox3ai<?, E, ?, ?, ?, ?> box;
 
 		private final Transform3D transform;
 
@@ -1142,7 +1144,7 @@ public interface AlignedBox3ai<
 		 * @param box is the aligned box to iterate.
 		 * @param transform the transformation to apply on the aligned box.
 		 */
-		public TransformedAlignedBoxPathIterator(AlignedBox3ai<?, ?, E, ?, ?, ?, ?> box, Transform3D transform) {
+		public TransformedAlignedBoxPathIterator(AlignedBox3ai<?, E, ?, ?, ?, ?> box, Transform3D transform) {
 			assert box != null : AssertMessages.notNullParameter(0);
 			assert transform != null : AssertMessages.notNullParameter(1);
 			this.box = box;
@@ -1175,70 +1177,70 @@ public interface AlignedBox3ai<
 
 		@Override
 		public E next() {
-            final int idx = this.index;
-            ++this.index;
-            switch (idx) {
-            case 0:
-                this.p2.set(this.x1, this.y1, this.z1);
-                if (this.transform != null) {
-                    this.transform.transform(this.p2);
-                }
-                this.move.set(this.p2);
-                if (this.transform != null) {
-                    this.transform.transform(this.p2);
-                }
-                return this.box.getGeomFactory().newMovePathElement(this.p2.ix(), this.p2.iy(), this.p2.iz());
-            case 1:
-                this.p1.set(this.p2);
-                this.p2.set(this.x1, this.y1, this.z2);
-                if (this.transform != null) {
-                    this.transform.transform(this.p2);
-                }
-                return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
-                        this.p2.iy(), this.p2.iz());
-            case 2:
-                this.p1.set(this.p2);
-                this.p2.set(this.x1, this.y2, this.z2);
-                if (this.transform != null) {
-                    this.transform.transform(this.p2);
-                }
-                return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
-                        this.p2.iy(), this.p2.iz());
-            case 3:
-                this.p1.set(this.p2);
-                if (this.transform != null) {
-                    this.transform.transform(this.p2);
-                }
-                this.transform.transform(this.p2);
-                return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
-                        this.p2.iy(), this.p2.iz());
-            case 4:
-                this.p1.set(this.p2);
-                if (this.transform != null) {
-                    this.transform.transform(this.p2);
-                }
-                this.transform.transform(this.p2);
-                return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
-                        this.p2.iy(), this.p2.iz());
-            case 5:
-                this.p1.set(this.p2);
-                this.p2.set(this.x2, this.y2, this.z2);
-                if (this.transform != null) {
-                    this.transform.transform(this.p2);
-                }
-                return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
-                        this.p2.iy(), this.p2.iz());
-            case 6:
-                this.p1.set(this.p2);
-                this.p2.set(this.x2, this.y1, this.z2);
-                if (this.transform != null) {
-                    this.transform.transform(this.p2);
-                }
-                return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
-                        this.p2.iy(), this.p2.iz());
-            case 7:
-                return this.box.getGeomFactory().newClosePathElement(this.p2.ix(), this.p2.iy(), this.p2.iz(),
-                        this.move.ix(), this.move.iy(), this.move.iz());
+			final var idx = this.index;
+			++this.index;
+			switch (idx) {
+			case 0:
+				this.p2.set(this.x1, this.y1, this.z1);
+				if (this.transform != null) {
+					this.transform.transform(this.p2);
+				}
+				this.move.set(this.p2);
+				if (this.transform != null) {
+					this.transform.transform(this.p2);
+				}
+				return this.box.getGeomFactory().newMovePathElement(this.p2.ix(), this.p2.iy(), this.p2.iz());
+			case 1:
+				this.p1.set(this.p2);
+				this.p2.set(this.x1, this.y1, this.z2);
+				if (this.transform != null) {
+					this.transform.transform(this.p2);
+				}
+				return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
+						this.p2.iy(), this.p2.iz());
+			case 2:
+				this.p1.set(this.p2);
+				this.p2.set(this.x1, this.y2, this.z2);
+				if (this.transform != null) {
+					this.transform.transform(this.p2);
+				}
+				return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
+						this.p2.iy(), this.p2.iz());
+			case 3:
+				this.p1.set(this.p2);
+				if (this.transform != null) {
+					this.transform.transform(this.p2);
+				}
+				this.transform.transform(this.p2);
+				return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
+						this.p2.iy(), this.p2.iz());
+			case 4:
+				this.p1.set(this.p2);
+				if (this.transform != null) {
+					this.transform.transform(this.p2);
+				}
+				this.transform.transform(this.p2);
+				return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
+						this.p2.iy(), this.p2.iz());
+			case 5:
+				this.p1.set(this.p2);
+				this.p2.set(this.x2, this.y2, this.z2);
+				if (this.transform != null) {
+					this.transform.transform(this.p2);
+				}
+				return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
+						this.p2.iy(), this.p2.iz());
+			case 6:
+				this.p1.set(this.p2);
+				this.p2.set(this.x2, this.y1, this.z2);
+				if (this.transform != null) {
+					this.transform.transform(this.p2);
+				}
+				return this.box.getGeomFactory().newLinePathElement(this.p1.ix(), this.p1.iy(), this.p1.iz(), this.p2.ix(),
+						this.p2.iy(), this.p2.iz());
+			case 7:
+				return this.box.getGeomFactory().newClosePathElement(this.p2.ix(), this.p2.iy(), this.p2.iz(),
+						this.move.ix(), this.move.iy(), this.move.iz());
 			default:
 				throw new NoSuchElementException();
 			}

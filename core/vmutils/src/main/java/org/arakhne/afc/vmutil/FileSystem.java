@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -51,10 +48,9 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import com.google.common.base.Strings;
+import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /** An utility class that permits to deal with filenames.
  *
@@ -67,10 +63,10 @@ import org.arakhne.afc.vmutil.locale.Locale;
 public final class FileSystem {
 
 	static {
-		final String validChars = "[^\\\\/:*?\"<>|]"; //$NON-NLS-1$
-		final String bslashChar = "\\\\"; //$NON-NLS-1$
+		final var validChars = "[^\\\\/:*?\"<>|]"; //$NON-NLS-1$
+		final var bslashChar = "\\\\"; //$NON-NLS-1$
 
-		final StringBuilder pattern = new StringBuilder();
+		final var pattern = new StringBuilder();
 		pattern.append("^"); //$NON-NLS-1$
 		pattern.append("(([a-zA-Z][:|]"); //$NON-NLS-1$
 		pattern.append(validChars);
@@ -148,6 +144,34 @@ public final class FileSystem {
 		//
 	}
 
+	@SuppressWarnings("deprecation")
+	private static URL newURL(String url) throws MalformedURLException {
+		return new URL(url);
+	}
+
+	@SuppressWarnings("deprecation")
+	private static URL newURL(String protocol, String host, String path) throws MalformedURLException {
+		return new URL(protocol, host, path);
+	}
+
+	@SuppressWarnings("deprecation")
+	private static URL newURL(String protocol, String host, int port, String path) throws MalformedURLException {
+		return new URL(protocol, host, port, path);
+	}
+
+	private static URL newURL(String protocol, String userInfo, String host, int port, String path) throws MalformedURLException {
+		return newURL(protocol, userInfo, host, port, path, null, null);
+	}
+
+	private static URL newURL(String scheme, String userInfo, String host, int port, String path, String query,
+			String fragment) throws MalformedURLException {
+		try {
+			return new URI(scheme, userInfo, host, port, path, query, fragment).toURL();
+		} catch (URISyntaxException ex) {
+			throw new MalformedURLException(ex.getLocalizedMessage());
+		}
+	}
+
 	/** Replace the HTML entities by the current charset characters.
 	 *
 	 * @param string the string to decode.
@@ -213,8 +237,9 @@ public final class FileSystem {
 			isFileCompatibleWithURL = Boolean.valueOf(
 					URL_PATH_SEPARATOR.equals(File.separator));
 		}
-		String filePath = file;
-		if (!isFileCompatibleWithURL) {
+		assert isFileCompatibleWithURL != null;
+		var filePath = file;
+		if (!isFileCompatibleWithURL.booleanValue()) {
 			filePath = filePath.replaceAll(
 					Pattern.quote(File.separator),
 					Matcher.quoteReplacement(URL_PATH_SEPARATOR));
@@ -251,13 +276,13 @@ public final class FileSystem {
 		if (!isJarURL(url)) {
 			return null;
 		}
-		String path = url.getPath();
+		var path = url.getPath();
 		final int idx = path.lastIndexOf(JAR_URL_FILE_ROOT);
 		if (idx >= 0) {
 			path = path.substring(0, idx);
 		}
 		try {
-			return new URL(path);
+			return newURL(path);
 		} catch (MalformedURLException exception) {
 			return null;
 		}
@@ -275,8 +300,8 @@ public final class FileSystem {
 	@Pure
 	public static File getJarFile(URL url) {
 		if (isJarURL(url)) {
-			final String path = url.getPath();
-			final int idx = path.lastIndexOf(JAR_URL_FILE_ROOT);
+			final var path = url.getPath();
+			final var idx = path.lastIndexOf(JAR_URL_FILE_ROOT);
 			if (idx >= 0) {
 				return new File(decodeHTMLEntities(path.substring(idx + 1)));
 			}
@@ -351,17 +376,17 @@ public final class FileSystem {
 		if (jarFile == null || insideFile == null) {
 			return null;
 		}
-		final StringBuilder buf = new StringBuilder();
+		final var buf = new StringBuilder();
 		buf.append("jar:"); //$NON-NLS-1$
 		buf.append(jarFile.toExternalForm());
 		buf.append(JAR_URL_FILE_ROOT);
-		final String path = fromFileStandardToURLStandard(insideFile);
+		final var path = fromFileStandardToURLStandard(insideFile);
 		if (path.startsWith(URL_PATH_SEPARATOR)) {
 			buf.append(path.substring(URL_PATH_SEPARATOR.length()));
 		} else {
 			buf.append(path);
 		}
-		return new URL(buf.toString());
+		return newURL(buf.toString());
 	}
 
 	/** Replies if the current operating system uses case-sensitive filename.
@@ -412,19 +437,19 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		String parent = fromFileStandardToURLStandard(filename.getParent());
+		var parent = fromFileStandardToURLStandard(filename.getParent());
 		try {
 			if (parent == null || "".equals(parent)) { //$NON-NLS-1$
 				if (filename.isAbsolute()) {
 					return null;
 				}
-				return new URL(URISchemeType.FILE.name(), "", CURRENT_DIRECTORY); //$NON-NLS-1$
+				return newURL(URISchemeType.FILE.name(), "", CURRENT_DIRECTORY); //$NON-NLS-1$
 			}
 			// Treat Windows specific.
 			if (Pattern.matches("^" + URL_PATH_SEPARATOR + "?[a-zA-Z][:|]$", parent)) { //$NON-NLS-1$ //$NON-NLS-2$
 				parent += URL_PATH_SEPARATOR;
 			}
-			return new URL(URISchemeType.FILE.name(), "", parent); //$NON-NLS-1$
+			return newURL(URISchemeType.FILE.name(), "", parent); //$NON-NLS-1$
 		} catch (MalformedURLException exception) {
 			return null;
 		}
@@ -459,7 +484,7 @@ public final class FileSystem {
 			return null;
 		}
 
-		int idx = path.lastIndexOf(URL_PATH_SEPARATOR_CHAR);
+		var idx = path.lastIndexOf(URL_PATH_SEPARATOR_CHAR);
 		if (idx == path.length() - 1) {
 			idx = path.lastIndexOf(URL_PATH_SEPARATOR_CHAR, path.length() - 2);
 		}
@@ -478,19 +503,17 @@ public final class FileSystem {
 			if (prefix != null) {
 				return toJarURL(prefix, path);
 			}
-			return new URI(filename.getProtocol(),
+			return newURL(filename.getProtocol(),
 					filename.getUserInfo(),
 					filename.getHost(),
 					filename.getPort(),
-					decodeHTMLEntities(path),
-					null,
-					null).toURL();
+					decodeHTMLEntities(path));
 		} catch (Throwable exception) {
 			//
 		}
 
 		try {
-			return new URL(
+			return newURL(
 					filename.getProtocol(),
 					filename.getHost(),
 					path);
@@ -517,11 +540,11 @@ public final class FileSystem {
 		}
 
 		try {
-			return largeBasename(new URL(filename));
+			return largeBasename(newURL(filename));
 		} catch (Exception exception) {
 			// No log
 		}
-		int end = filename.length();
+		var end = filename.length();
 		int idx;
 		do {
 			end--;
@@ -561,10 +584,10 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String fullPath = filename.getPath();
+		final var fullPath = filename.getPath();
 		assert !isWindowsNativeFilename(fullPath);
 		int idx;
-		int end = fullPath.length();
+		var end = fullPath.length();
 		do {
 			end--;
 			idx = fullPath.lastIndexOf(URL_PATH_SEPARATOR_CHAR, end);
@@ -602,11 +625,11 @@ public final class FileSystem {
 		}
 
 		try {
-			return basename(new URL(filename));
+			return basename(newURL(filename));
 		} catch (Exception exception) {
 			// No log
 		}
-		int end = filename.length();
+		var end = filename.length();
 		int idx;
 		do {
 			end--;
@@ -644,8 +667,8 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String largeBasename = filename.getName();
-		final int idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
+		final var largeBasename = filename.getName();
+		final var idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
 		if (idx <= 0) {
 			return largeBasename;
 		}
@@ -668,7 +691,7 @@ public final class FileSystem {
 		}
 		final String largeBasename = filename.getPath();
 		assert !isWindowsNativeFilename(largeBasename);
-		int end = largeBasename.length();
+		var end = largeBasename.length();
 		int idx;
 		do {
 			end--;
@@ -709,13 +732,13 @@ public final class FileSystem {
 		}
 
 		try {
-			return shortBasename(new URL(filename));
+			return shortBasename(newURL(filename));
 		} catch (Exception exception) {
 			// No log
 		}
-		final String normalizedFilename = fromFileStandardToURLStandard(filename);
+		final var normalizedFilename = fromFileStandardToURLStandard(filename);
 		int idx;
-		int end = normalizedFilename.length();
+		var end = normalizedFilename.length();
 		do {
 			end--;
 			idx = normalizedFilename.lastIndexOf(URL_PATH_SEPARATOR_CHAR, end);
@@ -748,8 +771,8 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String largeBasename = filename.getName();
-		final int idx = largeBasename.indexOf(getFileExtensionCharacter());
+		final var largeBasename = filename.getName();
+		final var idx = largeBasename.indexOf(getFileExtensionCharacter());
 		if (idx < 0) {
 			return largeBasename;
 		}
@@ -766,10 +789,10 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String largeBasename = filename.getPath();
+		final var largeBasename = filename.getPath();
 		assert !isWindowsNativeFilename(largeBasename);
 		int idx;
-		int end = largeBasename.length();
+		var end = largeBasename.length();
 		do {
 			end--;
 			idx = largeBasename.lastIndexOf(URL_PATH_SEPARATOR_CHAR, end);
@@ -808,8 +831,8 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String largeBasename = largeBasename(filename);
-		final int idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
+		final var largeBasename = largeBasename(filename);
+		final var idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
 		if (idx <= 0) {
 			return ""; //$NON-NLS-1$
 		}
@@ -832,8 +855,8 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String largeBasename = largeBasename(filename);
-		final int idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
+		final var largeBasename = largeBasename(filename);
+		final var idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
 		if (idx <= 0) {
 			return ""; //$NON-NLS-1$
 		}
@@ -855,8 +878,8 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String largeBasename = largeBasename(filename);
-		final int idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
+		final var largeBasename = largeBasename(filename);
+		final var idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
 		if (idx <= 0) {
 			return ""; //$NON-NLS-1$
 		}
@@ -873,12 +896,12 @@ public final class FileSystem {
 		if (filename == null) {
 			return new String[0];
 		}
-		final String largeBasename = largeBasename(filename);
-		final String[] parts = largeBasename.split(Pattern.quote(Character.toString(getFileExtensionCharacter())));
+		final var largeBasename = largeBasename(filename);
+		final var parts = largeBasename.split(Pattern.quote(Character.toString(getFileExtensionCharacter())));
 		if (parts.length <= 1) {
 			return new String[0];
 		}
-		final String[] result = new String[parts.length - 1];
+		final var result = new String[parts.length - 1];
 		System.arraycopy(parts, 1, result, 0, result.length);
 		return result;
 	}
@@ -894,12 +917,12 @@ public final class FileSystem {
 		if (filename == null) {
 			return new String[0];
 		}
-		final String largeBasename = largeBasename(filename);
-		final String[] parts = largeBasename.split(Pattern.quote(Character.toString(getFileExtensionCharacter())));
+		final var largeBasename = largeBasename(filename);
+		final var parts = largeBasename.split(Pattern.quote(Character.toString(getFileExtensionCharacter())));
 		if (parts.length <= 1) {
 			return new String[0];
 		}
-		final String[] result = new String[parts.length - 1];
+		final var result = new String[parts.length - 1];
 		System.arraycopy(parts, 1, result, 0, result.length);
 		return result;
 	}
@@ -914,13 +937,13 @@ public final class FileSystem {
 		if (filename == null) {
 			return new String[0];
 		}
-		final String largeBasename = largeBasename(filename);
-		final String[] parts = largeBasename.split(Pattern.quote(Character.toString(getFileExtensionCharacter())));
+		final var largeBasename = largeBasename(filename);
+		final var parts = largeBasename.split(Pattern.quote(Character.toString(getFileExtensionCharacter())));
 		if (parts.length <= 1) {
 			return new String[0];
 		}
-		final String[] result = new String[parts.length - 1];
-		for (int i = 0; i < result.length; ++i) {
+		final var result = new String[parts.length - 1];
+		for (var i = 0; i < result.length; ++i) {
 			result[i] = decodeHTMLEntities(parts[i + 1]);
 		}
 		return result;
@@ -958,15 +981,15 @@ public final class FileSystem {
 		if (isJarURL(filename)) {
 			return split(getJarFile(filename));
 		}
-		final String path = filename.getPath();
-		String[] tab = path.split(Pattern.quote(URL_PATH_SEPARATOR));
+		final var path = filename.getPath();
+		var tab = path.split(Pattern.quote(URL_PATH_SEPARATOR));
 		if (tab.length >= 2 && "".equals(tab[0]) && Pattern.matches("^[a-zA-Z][:|]$", tab[1])) { //$NON-NLS-1$ //$NON-NLS-2$
 			tab = Arrays.copyOfRange(tab, 1, tab.length);
-			for (int i = 1; i < tab.length; ++i) {
+			for (var i = 1; i < tab.length; ++i) {
 				tab[i] = decodeHTMLEntities(tab[i]);
 			}
 		} else {
-			for (int i = 0; i < tab.length; ++i) {
+			for (var i = 0; i < tab.length; ++i) {
 				tab[i] = decodeHTMLEntities(tab[i]);
 			}
 		}
@@ -984,10 +1007,9 @@ public final class FileSystem {
 		if (fileBase == null) {
 			return null;
 		}
-		final StringBuilder buf = new StringBuilder(fileBase.getPath());
-		boolean empty;
+		final var buf = new StringBuilder(fileBase.getPath());
 		for (final String elt : elements) {
-			empty = elt == null || elt.length() == 0;
+			final var empty = elt == null || elt.length() == 0;
 			if (!empty) {
 				assert elt != null;
 				if (!elt.startsWith(File.separator)
@@ -1012,8 +1034,8 @@ public final class FileSystem {
 		if (fileBase == null) {
 			return null;
 		}
-		final StringBuilder buf = new StringBuilder(fileBase.getPath());
-		for (final File elt : elements) {
+		final var buf = new StringBuilder(fileBase.getPath());
+		for (final var elt : elements) {
 			if (!elt.isAbsolute() && buf.length() >= 0 && buf.charAt(buf.length() - 1) != File.separatorChar) {
 				buf.append(File.separatorChar);
 			}
@@ -1033,11 +1055,10 @@ public final class FileSystem {
 		if (urlBase == null) {
 			return null;
 		}
-		final StringBuilder buf = new StringBuilder(decodeHTMLEntities(urlBase.getPath().replaceFirst(
+		final var buf = new StringBuilder(decodeHTMLEntities(urlBase.getPath().replaceFirst(
 				Pattern.quote(URL_PATH_SEPARATOR) + "+$", "")));  //$NON-NLS-1$//$NON-NLS-2$
-		boolean empty;
-		for (final String elt : elements) {
-			empty = elt == null || elt.length() == 0;
+		for (final var elt : elements) {
+			final var empty = elt == null || elt.length() == 0;
 			if (!empty) {
 				assert elt != null;
 				if (!elt.startsWith(File.separator)
@@ -1050,25 +1071,25 @@ public final class FileSystem {
 		}
 		try {
 			if (isJarURL(urlBase)) {
-				return new URL(
+				return newURL(
 						urlBase.getProtocol(),
 						urlBase.getHost(),
 						urlBase.getPort(),
 						buf.toString());
 			}
-			return new URI(
+			return newURL(
 					urlBase.getProtocol(),
 					urlBase.getUserInfo(),
 					urlBase.getHost(),
 					urlBase.getPort(),
 					buf.toString(),
 					decodeHTMLEntities(urlBase.getQuery()),
-					urlBase.getRef()).toURL();
+					urlBase.getRef());
 		} catch (Throwable exception) {
 			//
 		}
 		try {
-			return new URL(
+			return newURL(
 					urlBase.getProtocol(),
 					urlBase.getHost(),
 					buf.toString());
@@ -1088,8 +1109,8 @@ public final class FileSystem {
 		if (urlBase == null) {
 			return null;
 		}
-		final StringBuilder buf = new StringBuilder(urlBase.getPath());
-		for (final File elt : elements) {
+		final var buf = new StringBuilder(urlBase.getPath());
+		for (final var elt : elements) {
 			if (!elt.isAbsolute() && (buf.length() == 0 || buf.charAt(buf.length() - 1) != URL_PATH_SEPARATOR_CHAR)) {
 				buf.append(URL_PATH_SEPARATOR_CHAR);
 			}
@@ -1097,25 +1118,25 @@ public final class FileSystem {
 		}
 		try {
 			if (isJarURL(urlBase)) {
-				return new URL(
+				return newURL(
 						urlBase.getProtocol(),
 						urlBase.getHost(),
 						urlBase.getPort(),
 						buf.toString());
 			}
-			return new URI(
+			return newURL(
 					urlBase.getProtocol(),
 					urlBase.getUserInfo(),
 					urlBase.getHost(),
 					urlBase.getPort(),
 					decodeHTMLEntities(buf.toString()),
 					decodeHTMLEntities(urlBase.getQuery()),
-					urlBase.getRef()).toURL();
+					urlBase.getRef());
 		} catch (Throwable exception) {
 			//
 		}
 		try {
-			return new URL(
+			return newURL(
 					urlBase.getProtocol(),
 					urlBase.getHost(),
 					buf.toString());
@@ -1139,11 +1160,11 @@ public final class FileSystem {
 			return false;
 		}
 		assert extension != null;
-		String extent = extension;
+		var extent = extension;
 		if (!"".equals(extent) && !extent.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
 			extent = EXTENSION_SEPARATOR + extent;
 		}
-		final String ext = extension(filename);
+		final var ext = extension(filename);
 		if (ext == null) {
 			return false;
 		}
@@ -1169,11 +1190,11 @@ public final class FileSystem {
 			return false;
 		}
 		assert extension != null;
-		String extent = extension;
+		var extent = extension;
 		if (!"".equals(extent) && !extent.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
 			extent = EXTENSION_SEPARATOR + extent;
 		}
-		final String ext = extension(filename);
+		final var ext = extension(filename);
 		if (ext == null) {
 			return false;
 		}
@@ -1198,11 +1219,11 @@ public final class FileSystem {
 			return false;
 		}
 		assert extension != null;
-		String extent = extension;
+		var extent = extension;
 		if (!"".equals(extent) && !extent.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
 			extent = EXTENSION_SEPARATOR + extent;
 		}
-		final String ext = extension(filename);
+		final var ext = extension(filename);
 		if (ext == null) {
 			return false;
 		}
@@ -1222,9 +1243,9 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final File dir = filename.getParentFile();
-		final String name = filename.getName();
-		final int idx = name.lastIndexOf(getFileExtensionCharacter());
+		final var dir = filename.getParentFile();
+		final var name = filename.getName();
+		final var idx = name.lastIndexOf(getFileExtensionCharacter());
 		if (idx < 0) {
 			return filename;
 		}
@@ -1241,12 +1262,11 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String path = filename.getPath().replaceFirst(Pattern.quote(URL_PATH_SEPARATOR)
+		final var path = filename.getPath().replaceFirst(Pattern.quote(URL_PATH_SEPARATOR)
 				+ "+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		int idx = path.lastIndexOf(URL_PATH_SEPARATOR);
-		final StringBuilder buf = new StringBuilder((idx < 0) ? "" : //$NON-NLS-1$
-				decodeHTMLEntities(path.substring(0, idx + 1)));
-		final String largeBasename = decodeHTMLEntities(path.substring(idx + 1));
+		var idx = path.lastIndexOf(URL_PATH_SEPARATOR);
+		final var buf = new StringBuilder((idx < 0) ? "" : decodeHTMLEntities(path.substring(0, idx + 1))); //$NON-NLS-1$
+		final var largeBasename = decodeHTMLEntities(path.substring(idx + 1));
 		idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
 		if (idx < 0) {
 			return filename;
@@ -1254,27 +1274,27 @@ public final class FileSystem {
 		buf.append(largeBasename.substring(0, idx));
 		try {
 			if (isJarURL(filename)) {
-				return new URL(
+				return newURL(
 						filename.getProtocol(),
 						filename.getHost(),
 						filename.getPort(),
 						buf.toString());
 			}
-			return new URI(
+			return newURL(
 					filename.getProtocol(),
 					filename.getUserInfo(),
 					filename.getHost(),
 					filename.getPort(),
 					buf.toString(),
 					decodeHTMLEntities(filename.getQuery()),
-					filename.getRef()).toURL();
+					filename.getRef());
 		} catch (AssertionError e) {
 			throw e;
 		} catch (Throwable exception) {
 			//
 		}
 		try {
-			return new URL(
+			return newURL(
 					filename.getProtocol(),
 					filename.getHost(),
 					buf.toString());
@@ -1300,10 +1320,10 @@ public final class FileSystem {
 		if (extension == null) {
 			return filename;
 		}
-		final File dir = filename.getParentFile();
-		final String name = filename.getName();
-		final int idx = name.lastIndexOf(getFileExtensionCharacter());
-		final StringBuilder n = new StringBuilder();
+		final var dir = filename.getParentFile();
+		final var name = filename.getName();
+		final var idx = name.lastIndexOf(getFileExtensionCharacter());
+		final var n = new StringBuilder();
 		if (idx < 0) {
 			n.append(name);
 		} else {
@@ -1332,13 +1352,12 @@ public final class FileSystem {
 		if (extension == null) {
 			return filename;
 		}
-		String path = filename.getPath().replaceFirst(Pattern.quote(URL_PATH_SEPARATOR)
+		var path = filename.getPath().replaceFirst(Pattern.quote(URL_PATH_SEPARATOR)
 				+ "+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		if (!path.isEmpty()) {
-			int idx = path.lastIndexOf(URL_PATH_SEPARATOR);
-			final StringBuilder buf = new StringBuilder((idx < 0) ? "" : //$NON-NLS-1$
-					decodeHTMLEntities(path.substring(0, idx + 1)));
-			final String largeBasename = decodeHTMLEntities(path.substring(idx + 1));
+			var idx = path.lastIndexOf(URL_PATH_SEPARATOR);
+			final var buf = new StringBuilder((idx < 0) ? "" : decodeHTMLEntities(path.substring(0, idx + 1))); //$NON-NLS-1$
+			final var largeBasename = decodeHTMLEntities(path.substring(idx + 1));
 			idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
 			if (idx < 0) {
 				buf.append(largeBasename);
@@ -1353,27 +1372,27 @@ public final class FileSystem {
 		}
 		try {
 			if (isJarURL(filename)) {
-				return new URL(
+				return newURL(
 						filename.getProtocol(),
 						filename.getHost(),
 						filename.getPort(),
 						path);
 			}
-			return new URI(
+			return newURL(
 					filename.getProtocol(),
 					filename.getUserInfo(),
 					filename.getHost(),
 					filename.getPort(),
 					path,
 					encodeHTMLEntities(filename.getQuery()),
-					filename.getRef()).toURL();
+					filename.getRef());
 		} catch (AssertionError e) {
 			throw e;
 		} catch (Throwable exception) {
 			//
 		}
 		try {
-			return new URL(
+			return newURL(
 					filename.getProtocol(),
 					filename.getHost(),
 					path);
@@ -1396,7 +1415,7 @@ public final class FileSystem {
 	@Pure
 	public static File addExtension(File filename, String extension) {
 		if (filename != null && !hasExtension(filename, extension)) {
-			String extent = extension;
+			var extent = extension;
 			if (!"".equals(extent) && !extent.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
 				extent = EXTENSION_SEPARATOR + extent;
 			}
@@ -1417,39 +1436,39 @@ public final class FileSystem {
 	@Pure
 	public static URL addExtension(URL filename, String extension) {
 		if (filename != null && !hasExtension(filename, extension)) {
-			final String basename = largeBasename(filename);
+			final var basename = largeBasename(filename);
 			if (!basename.isEmpty()) {
-				final StringBuilder buf = new StringBuilder(decodeHTMLEntities(
+				final var buf = new StringBuilder(decodeHTMLEntities(
 						filename.getPath()).replaceFirst(Pattern.quote(URL_PATH_SEPARATOR)
 						+ "+$", "")); //$NON-NLS-1$ //$NON-NLS-2$
 				if (!"".equals(extension) && !extension.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
 					buf.append(EXTENSION_SEPARATOR);
 				}
 				buf.append(extension);
-				final String path = buf.toString();
+				final var path = buf.toString();
 				try {
 					if (isJarURL(filename)) {
-						return new URL(
+						return newURL(
 								filename.getProtocol(),
 								filename.getHost(),
 								filename.getPort(),
 								path);
 					}
-					return new URI(
+					return newURL(
 							filename.getProtocol(),
 							filename.getUserInfo(),
 							filename.getHost(),
 							filename.getPort(),
 							path,
 							encodeHTMLEntities(filename.getQuery()),
-							filename.getRef()).toURL();
+							filename.getRef());
 				} catch (AssertionError e) {
 					throw e;
 				} catch (Throwable exception) {
 					//
 				}
 				try {
-					return new URL(
+					return newURL(
 							filename.getProtocol(),
 							filename.getHost(),
 							path);
@@ -1476,17 +1495,15 @@ public final class FileSystem {
 	 */
 	public static void delete(File file) throws IOException {
 		if (file != null) {
-			final LinkedList<File> candidates = new LinkedList<>();
+			final var candidates = new LinkedList<File>();
 			candidates.add(file);
-			File fl;
-			File[] children;
 			while (!candidates.isEmpty()) {
-				fl = candidates.getFirst();
+				final var fl = candidates.getFirst();
 				if (fl.isDirectory()) {
-					children = fl.listFiles();
+					final var children = fl.listFiles();
 					if (children != null && children.length > 0) {
 						// Non empty directory
-						for (final File c : children) {
+						for (final var c : children) {
 							candidates.push(c);
 						}
 					} else {
@@ -1558,13 +1575,13 @@ public final class FileSystem {
 		assert in != null;
 		assert out != null;
 
-		File outFile = out;
+		var outFile = out;
 		if (out.isDirectory()) {
 			outFile = new File(out, largeBasename(in));
 		}
 
-		try (FileInputStream fis = new FileInputStream(in)) {
-			try (FileOutputStream fos = new FileOutputStream(outFile)) {
+		try (var fis = new FileInputStream(in)) {
+			try (var fos = new FileOutputStream(outFile)) {
 				copy(fis, (int) in.length(), fos);
 			}
 		}
@@ -1587,13 +1604,13 @@ public final class FileSystem {
 		assert in != null;
 		assert out != null;
 
-		File outFile = out;
+		var outFile = out;
 		if (out.isDirectory()) {
 			outFile = new File(out, largeBasename(in));
 		}
 
-		final URLConnection connection = in.openConnection();
-		try (FileOutputStream fos = new FileOutputStream(outFile)) {
+		final var connection = in.openConnection();
+		try (var fos = new FileOutputStream(outFile)) {
 			copy(
 					connection.getInputStream(),
 					connection.getContentLength(),
@@ -1617,15 +1634,15 @@ public final class FileSystem {
 	public static void copy(InputStream in, int inSize, FileOutputStream out) throws IOException {
 		assert in != null;
 		assert out != null;
-		try (ReadableByteChannel inChannel = Channels.newChannel(in)) {
-			try (FileChannel outChannel = out.getChannel()) {
+		try (var inChannel = Channels.newChannel(in)) {
+			try (var outChannel = out.getChannel()) {
 				// apparently has trouble copying large files on Windows
 				if (inSize < 0 || OperatingSystem.WIN.isCurrentOS()) {
 					// magic number for Windows, 64Mb - 32Kb
-					final int maxCount = (64 * 1024 * 1024) - (32 * 1024);
-					long position = 0;
-					long copied = 1;
-					while ((inSize >= 0 && position < inSize) || (inSize < 0 && copied > 0)) {
+					final var maxCount = (64 * 1024 * 1024) - (32 * 1024);
+					var position = 0L;
+					var copied = 1L;
+					while (inSize >= 0 && position < inSize || inSize < 0 && copied > 0) {
 						copied = outChannel.transferFrom(inChannel, position, maxCount);
 						position += copied;
 					}
@@ -1643,9 +1660,9 @@ public final class FileSystem {
 	 */
 	@Pure
 	public static File getUserHomeDirectory() throws FileNotFoundException {
-		final String userHome = System.getProperty("user.home"); //$NON-NLS-1$
+		final var userHome = System.getProperty("user.home"); //$NON-NLS-1$
 		if (userHome != null && !userHome.isEmpty()) {
-			final File file = new File(userHome);
+			final var file = new File(userHome);
 			if (file.isDirectory()) {
 				return file;
 			}
@@ -1662,7 +1679,7 @@ public final class FileSystem {
 	 */
 	@Pure
 	public static String getUserHomeDirectoryName() {
-		final String userHome = System.getProperty("user.home"); //$NON-NLS-1$
+		final var userHome = System.getProperty("user.home"); //$NON-NLS-1$
 		if ((userHome == null || userHome.isEmpty()) && (OperatingSystem.ANDROID.isCurrentOS())) {
 			return join(File.listRoots()[0], Android.HOME_DIRECTORY).toString();
 		}
@@ -1690,15 +1707,15 @@ public final class FileSystem {
 			throw new IllegalArgumentException();
 		}
 		try {
-			final File userHome = getUserHomeDirectory();
-			final OperatingSystem os = OperatingSystem.getCurrentOS();
+			final var userHome = getUserHomeDirectory();
+			final var os = OperatingSystem.getCurrentOS();
 			if (os == OperatingSystem.ANDROID) {
 				return join(userHome, "Android", Android.DATA_DIRECTORY, //$NON-NLS-1$
 						Android.makeAndroidApplicationName(software));
 			} else if (os.isUnixCompliant()) {
 				return new File(new File(userHome, ".config"), software); //$NON-NLS-1$
 			} else if (os == OperatingSystem.WIN) {
-				final String userName = System.getProperty("user.name"); //$NON-NLS-1$
+				final var userName = System.getProperty("user.name"); //$NON-NLS-1$
 				if (userName != null && !"".equals(userName)) { //$NON-NLS-1$
 					return join(
 							new File("C:"), //$NON-NLS-1$
@@ -1731,7 +1748,7 @@ public final class FileSystem {
 	 */
 	@Pure
 	public static String getUserConfigurationDirectoryNameFor(String software) {
-		final File directory = getUserConfigurationDirectoryFor(software);
+		final var directory = getUserConfigurationDirectoryFor(software);
 		if (directory != null) {
 			return directory.getAbsolutePath();
 		}
@@ -1756,17 +1773,16 @@ public final class FileSystem {
 		if (software == null || "".equals(software)) { //$NON-NLS-1$
 			throw new IllegalArgumentException();
 		}
-		final OperatingSystem os = OperatingSystem.getCurrentOS();
+		final var os = OperatingSystem.getCurrentOS();
 		if (os == OperatingSystem.ANDROID) {
 			return join(File.listRoots()[0], Android.CONFIGURATION_DIRECTORY,
 					Android.makeAndroidApplicationName(software));
 		} else if (os.isUnixCompliant()) {
-			final File[] roots = File.listRoots();
+			final var roots = File.listRoots();
 			return join(roots[0], "etc", software); //$NON-NLS-1$
 		} else if (os == OperatingSystem.WIN) {
-			File pfDirectory;
-			for (final File root : File.listRoots()) {
-				pfDirectory = new File(root, "Program Files"); //$NON-NLS-1$
+			for (final var root : File.listRoots()) {
+				final var pfDirectory = new File(root, "Program Files"); //$NON-NLS-1$
 				if (pfDirectory.isDirectory()) {
 					return new File(root, software);
 				}
@@ -1789,7 +1805,7 @@ public final class FileSystem {
 	 */
 	@Pure
 	public static String getSystemConfigurationDirectoryNameFor(String software) {
-		final File directory = getSystemConfigurationDirectoryFor(software);
+		final var directory = getSystemConfigurationDirectoryFor(software);
 		if (directory != null) {
 			return directory.getAbsolutePath();
 		}
@@ -1814,17 +1830,16 @@ public final class FileSystem {
 		if (software == null || "".equals(software)) { //$NON-NLS-1$
 			throw new IllegalArgumentException();
 		}
-		final OperatingSystem os = OperatingSystem.getCurrentOS();
+		final var os = OperatingSystem.getCurrentOS();
 		if (os == OperatingSystem.ANDROID) {
 			return join(File.listRoots()[0], Android.DATA_DIRECTORY,
 					Android.makeAndroidApplicationName(software));
 		} else if (os.isUnixCompliant()) {
-			final File[] roots = File.listRoots();
+			final var roots = File.listRoots();
 			return join(roots[0], "usr", "lib", software); //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (os == OperatingSystem.WIN) {
-			File pfDirectory;
-			for (final File root : File.listRoots()) {
-				pfDirectory = new File(root, "Program Files"); //$NON-NLS-1$
+			for (final var root : File.listRoots()) {
+				final var pfDirectory = new File(root, "Program Files"); //$NON-NLS-1$
 				if (pfDirectory.isDirectory()) {
 					return new File(root, software);
 				}
@@ -1847,7 +1862,7 @@ public final class FileSystem {
 	 */
 	@Pure
 	public static String getSystemSharedLibraryDirectoryNameFor(String software) {
-		final File f = getSystemSharedLibraryDirectoryFor(software);
+		final var f = getSystemSharedLibraryDirectoryFor(software);
 		if (f == null) {
 			return null;
 		}
@@ -1886,7 +1901,7 @@ public final class FileSystem {
 	@Pure
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static File convertURLToFile(URL url) {
-		URL theUrl = url;
+		var theUrl = url;
 		if (theUrl == null) {
 			return null;
 		}
@@ -1924,8 +1939,8 @@ public final class FileSystem {
 
 		}
 		if (uri != null && URISchemeType.FILE.isURI(uri)) {
-			final String auth = uri.getAuthority();
-			String path = uri.getPath();
+			final var auth = uri.getAuthority();
+			var path = uri.getPath();
 			if (path == null) {
 				path = uri.getRawPath();
 			}
@@ -2042,7 +2057,7 @@ public final class FileSystem {
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-			"checkstyle:nestedifdepth"})
+		"checkstyle:nestedifdepth"})
 	static URL convertStringToURL(String urlDescription, boolean allowResourceSearch,
 			boolean repliesFileURL, boolean supportWindowsPaths) {
 		URL url = null;
@@ -2050,7 +2065,7 @@ public final class FileSystem {
 		if (urlDescription != null && urlDescription.length() > 0)  {
 
 			if (supportWindowsPaths && isWindowsNativeFilename(urlDescription)) {
-				final File file = normalizeWindowsNativeFilename(urlDescription);
+				final var file = normalizeWindowsNativeFilename(urlDescription);
 				if (file != null) {
 					return convertFileToURL(file);
 				}
@@ -2058,19 +2073,19 @@ public final class FileSystem {
 
 			if (URISchemeType.RESOURCE.isScheme(urlDescription)) {
 				if (allowResourceSearch) {
-					final String resourceName = urlDescription.substring(9);
+					final var resourceName = urlDescription.substring(9);
 					url = Resources.getResource(resourceName);
 				}
 			} else if (URISchemeType.FILE.isScheme(urlDescription)) {
-				final File file = new File(URISchemeType.FILE.removeScheme(urlDescription));
+				final var file = new File(URISchemeType.FILE.removeScheme(urlDescription));
 				try {
-					url = new URL(URISchemeType.FILE.name(), "", fromFileStandardToURLStandard(file)); //$NON-NLS-1$
+					url = newURL(URISchemeType.FILE.name(), "", fromFileStandardToURLStandard(file)); //$NON-NLS-1$
 				} catch (MalformedURLException e) {
 					//
 				}
 			} else {
 				try {
-					url = new URL(urlDescription);
+					url = newURL(urlDescription);
 				} catch (MalformedURLException exception) {
 					// ignore error
 				}
@@ -2086,13 +2101,13 @@ public final class FileSystem {
 				}
 
 				if (url == null && repliesFileURL) {
-					final String urlPart = URISchemeType.removeAnyScheme(urlDescription);
+					final var urlPart = URISchemeType.removeAnyScheme(urlDescription);
 					// Try to parse a malformed JAR url:
 					// jar:{malformed-url}!/{entry}
 					if (URISchemeType.JAR.isScheme(urlDescription)) {
-						final int idx = urlPart.indexOf(JAR_URL_FILE_ROOT);
+						final var idx = urlPart.indexOf(JAR_URL_FILE_ROOT);
 						if (idx > 0) {
-							final URL jarURL = convertStringToURL(urlPart.substring(0, idx), allowResourceSearch);
+							final var jarURL = convertStringToURL(urlPart.substring(0, idx), allowResourceSearch);
 							if (jarURL != null) {
 								try {
 									url = toJarURL(jarURL, urlPart.substring(idx + 2));
@@ -2106,8 +2121,8 @@ public final class FileSystem {
 					// Standard local file
 					if (url == null) {
 						try {
-							final File file = new File(urlPart);
-							url = new URL(URISchemeType.FILE.name(), "", //$NON-NLS-1$
+							final var file = new File(urlPart);
+							url = newURL(URISchemeType.FILE.name(), "", //$NON-NLS-1$
 									fromFileStandardToURLStandard(file));
 						} catch (MalformedURLException e) {
 							// ignore error
@@ -2361,20 +2376,20 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final URISchemeType scheme = URISchemeType.getSchemeType(filename);
+		final var scheme = URISchemeType.getSchemeType(filename);
 		switch (scheme) {
 		case JAR:
 			try {
-				URL jarUrl = getJarURL(filename);
+				var jarUrl = getJarURL(filename);
 				jarUrl = makeAbsolute(jarUrl, current);
-				final File jarFile = getJarFile(filename);
+				final var jarFile = getJarFile(filename);
 				return toJarURL(jarUrl, jarFile);
 			} catch (MalformedURLException exception) {
 				// Ignore error
 			}
 			break;
 		case FILE:
-			final File file = new File(filename.getFile());
+			final var file = new File(filename.getFile());
 			if (!file.isAbsolute() && current != null) {
 				return join(current, file);
 			}
@@ -2454,7 +2469,7 @@ public final class FileSystem {
 				return join(current, filename);
 			}
 			try {
-				return new URL(URISchemeType.FILE.toString() + fromFileStandardToURLStandard(filename.getAbsolutePath()));
+				return newURL(URISchemeType.FILE.toString() + fromFileStandardToURLStandard(filename.getAbsolutePath()));
 			} catch (MalformedURLException exception) {
 				// ignore error
 			}
@@ -2474,13 +2489,13 @@ public final class FileSystem {
 		if (url == null) {
 			return url;
 		}
-		String path = url.getPath();
+		var path = url.getPath();
 		final String prefix;
 		final String parentStr;
 
 		switch (URISchemeType.getSchemeType(url)) {
 		case JAR:
-			final int index = path.indexOf(JAR_URL_FILE_ROOT);
+			final var index = path.indexOf(JAR_URL_FILE_ROOT);
 			assert index > 0;
 			prefix = path.substring(0, index + 1);
 			path = path.substring(index + 1);
@@ -2499,7 +2514,7 @@ public final class FileSystem {
 		if (path == null || "".equals(path)) { //$NON-NLS-1$
 			path = parentStr;
 		}
-		int index = path.lastIndexOf(URL_PATH_SEPARATOR_CHAR);
+		var index = path.lastIndexOf(URL_PATH_SEPARATOR_CHAR);
 		if (index == -1) {
 			path = parentStr;
 		} else if (index == path.length() - 1) {
@@ -2517,7 +2532,11 @@ public final class FileSystem {
 			path = prefix + path;
 		}
 
-		return new URL(url.getProtocol(), url.getHost(), url.getPort(), path);
+		return newURL(
+		        url.getProtocol(),
+		        url.getHost(),
+		        url.getPort(),
+		        path);
 	}
 
 	/** Test if the given filename is a local filename and extract
@@ -2532,15 +2551,15 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final int max = Math.min(FILE_PREFIX.length, filename.length());
-		final int inner = max - 2;
+		final var max = Math.min(FILE_PREFIX.length, filename.length());
+		final var inner = max - 2;
 		if (inner <= 0) {
 			return filename;
 		}
-		boolean foundInner = false;
-		boolean foundFull = false;
-		for (int i = 0; i < max; ++i) {
-			final char c = Character.toLowerCase(filename.charAt(i));
+		var foundInner = false;
+		var foundFull = false;
+		for (var i = 0; i < max; ++i) {
+			final var c = Character.toLowerCase(filename.charAt(i));
 			if (FILE_PREFIX[i] != c) {
 				foundFull = false;
 				foundInner = i >= inner;
@@ -2588,12 +2607,12 @@ public final class FileSystem {
 	 */
 	@Pure
 	public static boolean isWindowsNativeFilename(String filename) {
-		final String fn = extractLocalPath(filename);
+		final var fn = extractLocalPath(filename);
 		if (fn == null || fn.length() == 0) {
 			return false;
 		}
-		final Pattern pattern = Pattern.compile(WINDOW_NATIVE_FILENAME_PATTERN);
-		final Matcher matcher = pattern.matcher(fn);
+		final var pattern = Pattern.compile(WINDOW_NATIVE_FILENAME_PATTERN);
+		final var matcher = pattern.matcher(fn);
 		return matcher.matches();
 	}
 
@@ -2622,10 +2641,10 @@ public final class FileSystem {
 	 */
 	@Pure
 	public static File normalizeWindowsNativeFilename(String filename) {
-		final String fn = extractLocalPath(filename);
+		final var fn = extractLocalPath(filename);
 		if (fn != null && fn.length() > 0) {
-			final Pattern pattern = Pattern.compile(WINDOW_NATIVE_FILENAME_PATTERN);
-			final Matcher matcher = pattern.matcher(fn);
+			final var pattern = Pattern.compile(WINDOW_NATIVE_FILENAME_PATTERN);
+			final var matcher = pattern.matcher(fn);
 			if (matcher.find()) {
 				return new File(fn.replace(WINDOWS_SEPARATOR_CHAR, File.separatorChar));
 			}
@@ -2646,7 +2665,7 @@ public final class FileSystem {
 			return null;
 		}
 		try {
-			File thefile = file;
+			var thefile = file;
 			if (isWindowsNativeFilename(file.toString())) {
 				thefile = normalizeWindowsNativeFilename(file.toString());
 				if (thefile == null) {
@@ -2657,7 +2676,7 @@ public final class FileSystem {
 			if (thefile.isAbsolute()) {
 				url = thefile.toURI().toURL();
 			} else {
-				url = new URL(URISchemeType.FILE.name(), "", thefile.toString()); //$NON-NLS-1$
+				url = newURL(URISchemeType.FILE.name(), "", thefile.toString()); //$NON-NLS-1$
 			}
 			return toShortestURL(url);
 		} catch (MalformedURLException e) {
@@ -2666,17 +2685,17 @@ public final class FileSystem {
 	}
 
 	private static URL toShortestURL(String url, URLClassLoader classLoader) {
-		final String endPattern = URL_PATH_SEPARATOR + "$"; //$NON-NLS-1$
-		final URL[] classpath = classLoader.getURLs();
+		final var endPattern = URL_PATH_SEPARATOR + "$"; //$NON-NLS-1$
+		final var classpath = classLoader.getURLs();
 
-		for (final URL path : classpath) {
-			final String sp = path.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
+		for (final var path : classpath) {
+			final var sp = path.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
 			if (url.startsWith(sp)) {
-				final StringBuilder buffer = new StringBuilder("resource:"); //$NON-NLS-1$
+				final var buffer = new StringBuilder("resource:"); //$NON-NLS-1$
 				buffer.append(url.substring(sp.length()).replaceAll(
 						"^" + URL_PATH_SEPARATOR, "")); //$NON-NLS-1$ //$NON-NLS-2$
 				try {
-					return new URL(buffer.toString());
+					return newURL(buffer.toString());
 				} catch (MalformedURLException e) {
 					//
 				}
@@ -2694,32 +2713,30 @@ public final class FileSystem {
 	 *     the url cannot be computed.
 	 * @since 4.0
 	 */
-	@SuppressWarnings("resource")
 	@Pure
 	public static URL toShortestURL(URL url) {
 		if (url == null) {
 			return null;
 		}
 
-		final String endPattern = URL_PATH_SEPARATOR + "$"; //$NON-NLS-1$
-		final String shorterUrl = url.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
+		final var endPattern = URL_PATH_SEPARATOR + "$"; //$NON-NLS-1$
+		final var shorterUrl = url.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
 
-		final ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		if (cl instanceof URLClassLoader) {
-			final URLClassLoader ucl = (URLClassLoader) cl;
-			final URL surl = toShortestURL(shorterUrl, ucl);
+		final var cl = Thread.currentThread().getContextClassLoader();
+		if (cl instanceof URLClassLoader ucl) {
+			final var surl = toShortestURL(shorterUrl, ucl);
 			if (surl != null) {
 				return surl;
 			}
 		} else if (URISchemeType.FILE.isURL(url)) {
-			final URL surl = searchShortestURL(url);
+			final var surl = searchShortestURL(url);
 			if (surl != null) {
 				return surl;
 			}
 		}
 
 		try {
-			return new URL(shorterUrl);
+			return newURL(shorterUrl);
 		} catch (MalformedURLException e) {
 			return url;
 		}
@@ -2727,10 +2744,10 @@ public final class FileSystem {
 
 	private static URL searchShortestURL(URL url) {
 		// Search for the research based on the URL path components
-		String candidate = url.getPath();
-		URL resource = Resources.getResource(candidate);
+		var candidate = url.getPath();
+		var resource = Resources.getResource(candidate);
 		while (resource == null && candidate != null) {
-			final int idx = candidate.indexOf(URL_PATH_SEPARATOR_CHAR, 1);
+			final var idx = candidate.indexOf(URL_PATH_SEPARATOR_CHAR, 1);
 			if (idx > 0) {
 				candidate = candidate.substring(idx + 1);
 				if (!Strings.isNullOrEmpty(candidate)) {
@@ -2741,13 +2758,13 @@ public final class FileSystem {
 			}
 		}
 		if (resource != null && candidate != null) {
-			final StringBuilder buffer = new StringBuilder("resource:"); //$NON-NLS-1$
+			final var buffer = new StringBuilder("resource:"); //$NON-NLS-1$
 			if (candidate.startsWith(URL_PATH_SEPARATOR)) {
 				candidate = candidate.substring(URL_PATH_SEPARATOR.length());
 			}
 			buffer.append(candidate);
 			try {
-				return new URL(buffer.toString());
+				return newURL(buffer.toString());
 			} catch (MalformedURLException e) {
 				//
 			}
@@ -2792,13 +2809,13 @@ public final class FileSystem {
 			return filenameToMakeRelative;
 		}
 
-		final File root = rootPath.getCanonicalFile();
-		final File dir = filenameToMakeRelative.getParentFile().getCanonicalFile();
+		final var root = rootPath.getCanonicalFile();
+		final var dir = filenameToMakeRelative.getParentFile().getCanonicalFile();
 
-		final String[] parts1 = split(dir);
-		final String[] parts2 = split(root);
+		final var parts1 = split(dir);
+		final var parts2 = split(root);
 
-		final String relPath = makeRelative(parts1, parts2, filenameToMakeRelative.getName());
+		final var relPath = makeRelative(parts1, parts2, filenameToMakeRelative.getName());
 
 		if (appendCurrentDirectorySymbol) {
 			return new File(CURRENT_DIRECTORY, relPath);
@@ -2826,12 +2843,12 @@ public final class FileSystem {
 			return filenameToMakeRelative;
 		}
 
-		final File dir = filenameToMakeRelative.getParentFile().getCanonicalFile();
+		final var dir = filenameToMakeRelative.getParentFile().getCanonicalFile();
 
-		final String[] parts1 = split(dir);
-		final String[] parts2 = split(rootPath);
+		final var parts1 = split(dir);
+		final var parts2 = split(rootPath);
 
-		final String relPath = makeRelative(parts1, parts2, filenameToMakeRelative.getName());
+		final var relPath = makeRelative(parts1, parts2, filenameToMakeRelative.getName());
 
 		return new File(CURRENT_DIRECTORY, relPath);
 	}
@@ -2852,40 +2869,40 @@ public final class FileSystem {
 			throw new IllegalArgumentException();
 		}
 
-		final String basename = largeBasename(filenameToMakeRelative);
-		final URL dir = dirname(filenameToMakeRelative);
+		final var basename = largeBasename(filenameToMakeRelative);
+		final var dir = dirname(filenameToMakeRelative);
 
-		final String[] parts1 = split(dir);
-		final String[] parts2 = split(rootPath);
+		final var parts1 = split(dir);
+		final var parts2 = split(rootPath);
 
-		final String relPath = makeRelative(parts1, parts2, basename);
+		final var relPath = makeRelative(parts1, parts2, basename);
 
 		return new File(CURRENT_DIRECTORY, relPath);
 	}
 
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	private static String makeRelative(String[] parts1, String[] parts2, String basename) {
-		int firstDiff = -1;
+		var firstDiff = -1;
 
-		for (int i = 0; firstDiff < 0 && i < parts1.length && i < parts2.length; ++i) {
+		for (var i = 0; firstDiff < 0 && i < parts1.length && i < parts2.length; ++i) {
 			if (!parts1[i].equals(parts2[i])) {
 				firstDiff = i;
 			}
 		}
 
-		final StringBuilder result = new StringBuilder();
+		final var result = new StringBuilder();
 		if (firstDiff < 0) {
 			firstDiff = Math.min(parts1.length, parts2.length);
 		}
 
-		for (int i = firstDiff; i < parts2.length; ++i) {
+		for (var i = firstDiff; i < parts2.length; ++i) {
 			if (result.length() > 0) {
 				result.append(File.separator);
 			}
 			result.append(PARENT_DIRECTORY);
 		}
 
-		for (int i = firstDiff; i < parts1.length; ++i) {
+		for (var i = firstDiff; i < parts1.length; ++i) {
 			if (result.length() > 0) {
 				result.append(File.separator);
 			}
@@ -2913,10 +2930,10 @@ public final class FileSystem {
 	@Pure
 	public static URL makeCanonicalURL(URL url) {
 		if (url != null) {
-			final String[] pathComponents = url.getPath().split(Pattern.quote(URL_PATH_SEPARATOR));
+			final var pathComponents = url.getPath().split(Pattern.quote(URL_PATH_SEPARATOR));
 
-			final List<String> canonicalPath = new LinkedList<>();
-			for (final String component : pathComponents) {
+			final var canonicalPath = new LinkedList<String>();
+			for (final var component : pathComponents) {
 				if (!CURRENT_DIRECTORY.equals(component)) {
 					if (PARENT_DIRECTORY.equals(component)) {
 						if (!canonicalPath.isEmpty()) {
@@ -2930,9 +2947,9 @@ public final class FileSystem {
 				}
 			}
 
-			final StringBuilder newPathBuffer = new StringBuilder();
-			boolean isFirst = true;
-			for (final String component : canonicalPath) {
+			final var newPathBuffer = new StringBuilder();
+			var isFirst = true;
+			for (final var component : canonicalPath) {
 				if (!isFirst) {
 					newPathBuffer.append(URL_PATH_SEPARATOR_CHAR);
 				} else {
@@ -2942,20 +2959,20 @@ public final class FileSystem {
 			}
 
 			try {
-				return new URI(
+				return newURL(
 						url.getProtocol(),
 						url.getUserInfo(),
 						url.getHost(),
 						url.getPort(),
 						newPathBuffer.toString(),
 						url.getQuery(),
-						url.getRef()).toURL();
-			} catch (MalformedURLException | URISyntaxException exception) {
+						url.getRef());
+			} catch (MalformedURLException exception) {
 				//
 			}
 
 			try {
-				return new URL(
+				return newURL(
 						url.getProtocol(),
 						url.getHost(),
 						newPathBuffer.toString());
@@ -2975,7 +2992,7 @@ public final class FileSystem {
 	 * @since 6.2
 	 */
 	public static void zipFile(File input, File output) throws IOException {
-		try (FileOutputStream fos = new FileOutputStream(output)) {
+		try (var fos = new FileOutputStream(output)) {
 			zipFile(input, fos);
 		}
 	}
@@ -2994,24 +3011,23 @@ public final class FileSystem {
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static void zipFile(File input, OutputStream output) throws IOException {
 
-		try (ZipOutputStream zos = new ZipOutputStream(output)) {
+		try (var zos = new ZipOutputStream(output)) {
 			if (input == null) {
 				return;
 			}
 
-			final LinkedList<File> candidates = new LinkedList<>();
+			final var candidates = new LinkedList<File>();
 			candidates.add(input);
 
-			final byte[] buffer = new byte[BUFFER_SIZE];
+			final var buffer = new byte[BUFFER_SIZE];
 			int len;
-			File file;
 			File relativeFile;
 			String zipFilename;
 
 			final File rootDirectory = (input.isDirectory()) ? input : input.getParentFile();
 
 			while (!candidates.isEmpty()) {
-				file = candidates.removeFirst();
+				final var file = candidates.removeFirst();
 				assert file != null;
 
 				if (file.getAbsoluteFile().equals(rootDirectory.getAbsoluteFile())) {
@@ -3023,15 +3039,15 @@ public final class FileSystem {
 				if (file.isDirectory()) {
 					if (relativeFile != null) {
 						zipFilename = fromFileStandardToURLStandard(relativeFile) + URL_PATH_SEPARATOR;
-						final ZipEntry zipEntry = new ZipEntry(zipFilename);
+						final var zipEntry = new ZipEntry(zipFilename);
 						zos.putNextEntry(zipEntry);
 						zos.closeEntry();
 					}
 					candidates.addAll(Arrays.asList(file.listFiles()));
 				} else if (relativeFile != null) {
-					try (FileInputStream fis = new FileInputStream(file)) {
+					try (var fis = new FileInputStream(file)) {
 						zipFilename = fromFileStandardToURLStandard(relativeFile);
-						final ZipEntry zipEntry = new ZipEntry(zipFilename);
+						final var zipEntry = new ZipEntry(zipFilename);
 						zos.putNextEntry(zipEntry);
 						while ((len = fis.read(buffer)) > 0) {
 							zos.write(buffer, 0, len);
@@ -3062,13 +3078,13 @@ public final class FileSystem {
 			throw new IOException(Locale.getString("E3", output)); //$NON-NLS-1$
 		}
 
-		try (ZipInputStream zis = new ZipInputStream(input)) {
-			final byte[] buffer = new byte[BUFFER_SIZE];
+		try (var zis = new ZipInputStream(input)) {
+			final var buffer = new byte[BUFFER_SIZE];
 			int len;
-			ZipEntry zipEntry = zis.getNextEntry();
+			var zipEntry = zis.getNextEntry();
 			while (zipEntry != null) {
-				final String name = zipEntry.getName();
-				final File outFile = new File(output, name).getCanonicalFile();
+				final var name = zipEntry.getName();
+				final var outFile = new File(output, name).getCanonicalFile();
 				if (zipEntry.isDirectory()) {
 					outFile.mkdirs();
 				} else {
@@ -3093,7 +3109,7 @@ public final class FileSystem {
 	 * @since 6.2
 	 */
 	public static void unzipFile(File input, File output) throws IOException {
-		try (FileInputStream fis = new FileInputStream(input)) {
+		try (var fis = new FileInputStream(input)) {
 			unzipFile(fis, output);
 		}
 	}
@@ -3192,9 +3208,9 @@ public final class FileSystem {
 			throw new NullPointerException();
 		}
 		if (prefix.length() < 3) {
-			throw new IllegalArgumentException(Locale.getString("E4", 3, prefix)); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString("E4", Integer.valueOf(3), prefix)); //$NON-NLS-1$
 		}
-		final String string = (suffix == null) ? ".tmp" : suffix; //$NON-NLS-1$
+		final var string = (suffix == null) ? ".tmp" : suffix; //$NON-NLS-1$
 		final File targetDirectory;
 		if (directory == null) {
 			targetDirectory = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
@@ -3203,14 +3219,14 @@ public final class FileSystem {
 		}
 		File filename;
 		do {
-			long index = RANDOM.nextLong();
+			var index = RANDOM.nextLong();
 			if (index == Long.MIN_VALUE) {
 				// corner case
 				index = 0;
 			} else {
 				index = Math.abs(index);
 			}
-			final StringBuilder buffer = new StringBuilder();
+			final var buffer = new StringBuilder();
 			buffer.append(prefix);
 			buffer.append(Long.toString(index));
 			buffer.append(string);
@@ -3242,7 +3258,7 @@ public final class FileSystem {
 		public void run() {
 			synchronized (this) {
 				if (this.filesToDelete != null) {
-					for (final File f : this.filesToDelete) {
+					for (final var f : this.filesToDelete) {
 						try {
 							delete(f);
 						} catch (IOException e) {

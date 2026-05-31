@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d1;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -31,6 +28,8 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 1.5D Point.
  *
@@ -53,17 +52,17 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 		if (point == null) {
 			return -1;
 		}
-		final Segment1D<?, ?> mySegment = getSegment();
-		final Segment1D<?, ?> otherSegment = point.getSegment();
+		final var mySegment = getSegment();
+		final var otherSegment = point.getSegment();
 		if (mySegment == otherSegment) {
-			final int cmp = Double.compare(getX(), point.getX());
+			final var cmp = Double.compare(getX(), point.getX());
 			if (cmp == 0) {
 				return Double.compare(getY(), point.getY());
 			}
 			return cmp;
 		}
-		final int h1 = mySegment != null ? mySegment.hashCode() : 0;
-		final int h2 = otherSegment != null ? otherSegment.hashCode() : 0;
+		final var h1 = mySegment != null ? mySegment.hashCode() : 0;
+		final var h2 = otherSegment != null ? otherSegment.hashCode() : 0;
 		return h1 - h2;
 	}
 
@@ -76,14 +75,14 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 *     is equal to zero it mean that the coordinate was not clamped.
 	 */
 	default double clamp() {
-		double clamped = 0.;
-		double curv = getX();
+		var clamped = 0.;
+		var curv = getX();
 		if (curv < 0.) {
 			clamped = curv;
 			curv = 0.;
 		} else {
-			double length = 0.;
-			final Segment1D<?, ?> sgmt = getSegment();
+			var length = 0.;
+			final var sgmt = getSegment();
 			if (sgmt != null) {
 				length = sgmt.getLength();
 			}
@@ -107,10 +106,10 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	default boolean isOnSegment() {
-		final double curv = getX();
+		final var curv = getX();
 		if (curv >= 0.) {
-			double length = 0.;
-			final Segment1D<?, ?> sgmt = getSegment();
+			var length = 0.;
+			final var sgmt = getSegment();
 			if (sgmt != null) {
 				length = sgmt.getLength();
 			}
@@ -164,8 +163,8 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	default boolean epsilonEquals(Point1D<?, ?, ?> tuple, double epsilon) {
 		assert tuple != null : AssertMessages.notNullParameter(0);
 		if (getSegment() == tuple.getSegment()) {
-			final double dx = getX() - tuple.getX();
-			final double dy = getY() - tuple.getY();
+			final var dx = getX() - tuple.getX();
+			final var dy = getY() - tuple.getY();
 			return (dx * dx + dy * dy) <= (epsilon * epsilon);
 		}
 		return false;
@@ -208,8 +207,8 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	@Pure
 	default double getDistanceSquared(Point1D<?, ?, ?> p1) {
 		if (isOnSameSegment(p1)) {
-			final double a = getX() - p1.getX();
-			final double b = getY() - p1.getY();
+			final var a = getX() - p1.getX();
+			final var b = getY() - p1.getY();
 			return a * a + b * b;
 		}
 		return Double.POSITIVE_INFINITY;
@@ -226,8 +225,8 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	@Pure
 	default double getDistance(Point1D<?, ?, ?> p1) {
 		if (isOnSameSegment(p1)) {
-			final double a = getX() - p1.getX();
-			final double b = getY() - p1.getY();
+			final var a = getX() - p1.getX();
+			final var b = getY() - p1.getY();
 			return Math.hypot(a, b);
 		}
 		return Double.POSITIVE_INFINITY;
@@ -557,7 +556,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@XtextOperator("..")
-	@Inline("value = getDistance($1)")
+	@Inline("getDistance($1)")
 	default double operator_upTo(Point1D<?, ?, ?> pt) {
 		return getDistance(pt);
 	}
@@ -591,6 +590,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default RP $plus(Vector2D<?, ?> v) {
 		return operator_plus(v);
 	}
@@ -609,6 +609,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default RP $plus(double scalar) {
 		return operator_plus(scalar);
 	}
@@ -623,6 +624,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RP $minus(Vector2D<?, ?> v) {
 		return operator_minus(v);
 	}
@@ -641,6 +643,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RP $minus(double scalar) {
 		return operator_minus(scalar);
 	}
@@ -655,6 +658,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RV $minus(Point2D<?, ?> pt) {
 		return operator_minus(pt);
 	}

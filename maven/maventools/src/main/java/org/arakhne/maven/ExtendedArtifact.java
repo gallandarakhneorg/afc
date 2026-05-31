@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +77,7 @@ public final class ExtendedArtifact implements Artifact {
 
 	private final List<? extends License> licenses;
 
+	@SuppressWarnings("deprecation")
 	private Map<Object, ArtifactMetadata> metadataMap;
 
 	/** Constructor.
@@ -327,6 +328,7 @@ public final class ExtendedArtifact implements Artifact {
 		return this.original.getId();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public ArtifactRepository getRepository() {
 		return this.original.getRepository();
@@ -433,7 +435,7 @@ public final class ExtendedArtifact implements Artifact {
 	}
 
 	@Override
-	public void setRepository(ArtifactRepository remoteRepository) {
+	public void setRepository(@SuppressWarnings("deprecation") ArtifactRepository remoteRepository) {
 		this.original.setRepository(remoteRepository);
 	}
 
@@ -463,7 +465,7 @@ public final class ExtendedArtifact implements Artifact {
 	}
 
 	@Override
-	public void updateVersion(String version, ArtifactRepository localRepository) {
+	public void updateVersion(String version, @SuppressWarnings("deprecation") ArtifactRepository localRepository) {
 		this.original.updateVersion(version, localRepository);
 	}
 
@@ -495,6 +497,7 @@ public final class ExtendedArtifact implements Artifact {
 		return this.scmRevision;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void addMetadata(ArtifactMetadata metadata) {
 		if (this.metadataMap == null) {
@@ -509,6 +512,7 @@ public final class ExtendedArtifact implements Artifact {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Collection<ArtifactMetadata> getMetadataList() {
 		if (this.metadataMap == null) {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 	@Override
 	@SuppressWarnings({"unchecked", "checkstyle:npathcomplexity"})
 	public int compareTo(Object obj) {
-		final Object oth = (obj instanceof Reference) ? ((Reference<?>) obj).get() : obj;
+		final var oth = obj instanceof Reference ref ? ref.get() : obj;
 		final T cur = get();
 
 		if (oth == null && cur == null) {
@@ -83,9 +83,9 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 			return -1;
 		}
 
-		if (cur instanceof Comparable) {
+		if (cur instanceof Comparable cmp) {
 			try {
-				return ((Comparable<Object>) cur).compareTo(oth);
+				return cmp.compareTo(oth);
 			} catch (AssertionError e) {
 				throw e;
 			} catch (Throwable exception) {
@@ -93,9 +93,9 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 			}
 		}
 
-		if (oth instanceof Comparable) {
+		if (oth instanceof Comparable cmp) {
 			try {
-				return -((Comparable<Object>) oth).compareTo(cur);
+				return -cmp.compareTo(cur);
 			} catch (AssertionError e) {
 				throw e;
 			} catch (Throwable exception) {
@@ -109,9 +109,9 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
+		final var buffer = new StringBuilder();
 		buffer.append('{');
-		final T obj = get();
+		final var obj = get();
 		if (obj == null) {
 			buffer.append("#null#"); //$NON-NLS-1$
 		} else {

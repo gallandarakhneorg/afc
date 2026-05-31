@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.MessageFormat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
@@ -46,6 +47,7 @@ public class LocaleTest {
 	private static final String P3 = "P3";  //$NON-NLS-1$
 	
 	@Test
+	@DisplayName("getStringWithDefaultFrom(String, String, String, String...)")
     public void getStringWithDefaultFromStringStringStringStringArray() {
     	assert(this.tmp!=null);
     	assertEquals(
@@ -73,6 +75,7 @@ public class LocaleTest {
     }
 
 	@Test
+	@DisplayName("getStringWithDefaultFrom(ClassLoader, String, String, String, String...)")
     public void getStringWithDefaultFromClassLoaderStringStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	assertEquals(
@@ -97,6 +100,7 @@ public class LocaleTest {
     }
 
 	@Test
+	@DisplayName("getStringFrom(String, String, Object...)")
     public void getStringFromStringStringObjectArray() {
     	assertEquals(NOKEY,
     			Locale.getStringFrom(RESOURCE1,NOKEY,P1,P2,P3));
@@ -121,6 +125,7 @@ public class LocaleTest {
     }
     
 	@Test
+	@DisplayName("getStringFrom(ClassLoader, String, String, Object...)")
     public void getStringFromClassLoaderStringStringObjectArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
@@ -148,7 +153,8 @@ public class LocaleTest {
 	}
 
 	@Test
-    public void getStringClassStringStringArray() {
+	@DisplayName("getString(Class, String, Object...)")
+    public void getStringClassStringObjectArray() {
     	assertEquals(NOKEY,
     			Locale.getString(LocaleTest.class,NOKEY,P1,P2,P3));
     	assertEquals(
@@ -170,7 +176,8 @@ public class LocaleTest {
     }
     
 	@Test
-    public void getStringClassLoaderClassStringStringArray() {
+	@DisplayName("getString(ClassLoader, Class, String, Object...)")
+    public void getStringClassLoaderClassStringObjectArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(NOKEY,
@@ -194,7 +201,8 @@ public class LocaleTest {
     }
 
 	@Test
-    public void getStringWithDefaultClassStringStringStringArray() {
+	@DisplayName("getStringWithDefault(Class, String, String, Object...)")
+    public void getStringWithDefaultClassStringStringObjectArray() {
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefault(LocaleTest.class,NOKEY,DEFAULT,P1,P2,P3));
@@ -217,7 +225,8 @@ public class LocaleTest {
     }
 
 	@Test
-    public void getStringWithDefaultClassLoaderClassStringStringStringArray() {
+	@DisplayName("getStringWithDefault(ClassLoader, Class, String, String, Object...)")
+    public void getStringWithDefaultClassLoaderClassStringStringObjectArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -242,7 +251,8 @@ public class LocaleTest {
     }
 
 	@Test
-    public void getStringStringStringArray() {
+	@DisplayName("getString(String, Object...)")
+    public void getStringStringObjectArray() {
     	assertEquals(
     			NOKEY,
     			Locale.getString(NOKEY,P1,P2,P3));
@@ -265,7 +275,8 @@ public class LocaleTest {
     }
     
 	@Test
-    public void getStringClassLoaderStringStringArray() {
+	@DisplayName("getString(ClassLoader, String, Object...)")
+    public void getStringClassLoaderStringObjectArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -290,7 +301,8 @@ public class LocaleTest {
     }
 
 	@Test
-    public void getStringWithDefaultStringStringStringArray() {
+	@DisplayName("getStringWithDefault(String, String, Object...)")
+    public void getStringWithDefaultStringStringObjectArray() {
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefault(NOKEY,DEFAULT,P1,P2,P3));
@@ -313,7 +325,8 @@ public class LocaleTest {
     }
 
 	@Test
-    public void getStringWithDefaultClassLoaderStringStringStringArray() {
+	@DisplayName("getStringWithDefault(ClassLoader, String, String, Object...)")
+    public void getStringWithDefaultClassLoaderStringStringObjectArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -338,6 +351,7 @@ public class LocaleTest {
     }
     
 	@Test
+	@DisplayName("getString(\"{0} {0,number,raw}\", Object...)")
     public void getStringWithRawFormatStyle() {
     	Number data;
     	String raw, localized;
@@ -414,6 +428,7 @@ public class LocaleTest {
     }
     
 	@Test
+	@DisplayName("getString(\"{0,number,raw,#}\", Object...)")
     public void getStringWithRawFormatStyleWithFormat1() {
     	Number data;
     	
@@ -479,6 +494,7 @@ public class LocaleTest {
     }
  
 	@Test
+	@DisplayName("getString(\"{0,number,raw,#.}\", Object...)")
     public void getStringWithRawFormatStyleWithFormat2() {
     	Number data;
     	
@@ -544,6 +560,7 @@ public class LocaleTest {
     }
    
 	@Test
+	@DisplayName("getString(\"{0,number,raw,#.#}\", Object...)")
     public void getStringWithRawFormatStyleWithFormat3() {
     	Number data;
     	
@@ -609,6 +626,7 @@ public class LocaleTest {
     }
 
 	@Test
+	@DisplayName("getString(\"{0,number,raw,0.0#}\", Object...)")
     public void getStringWithRawFormatStyleWithFormat4() {
     	Number data;
     	
@@ -674,6 +692,7 @@ public class LocaleTest {
     }
     
 	@Test
+	@DisplayName("getString(\"{0,number,raw,#.###}\", Object...)")
     public void getStringWithRawFormatStyleWithFormat5() {
     	Number data;
     	
@@ -739,6 +758,7 @@ public class LocaleTest {
     }
     
 	@Test
+	@DisplayName("getString(\"{0,number,raw,#0.}\", Object...)")
     public void getStringWithRawFormatStyleWithFormat6() {
     	Number data;
     	
@@ -804,6 +824,7 @@ public class LocaleTest {
     }
     
 	@Test
+	@DisplayName("getString(\"{0,number,raw,#0}\", Object...)")
     public void getStringWithRawFormatStyleWithFormat7() {
     	Number data;
     	
@@ -869,6 +890,7 @@ public class LocaleTest {
     }
 
 	@Test
+	@DisplayName("decodeString(byte[])")
 	public void decodeStringByteArray() {
 		byte[] bytes = new byte[] {80, 104, 111, 116, 111, 103, 114, 97, 109, 109, -126, 116, 114,
 				105, 101, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};

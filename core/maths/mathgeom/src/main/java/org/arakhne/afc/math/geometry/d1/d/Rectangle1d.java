@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,10 @@
 
 package org.arakhne.afc.math.geometry.d1.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.afp.Rectangle1afp;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle with 2 double precision floating-point numbers.
  *
@@ -176,13 +175,14 @@ public class Rectangle1d extends AbstractShape1d<Rectangle1d>
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(this.minx);
 		bits = 31 * bits + Double.hashCode(this.miny);
 		bits = 31 * bits + Double.hashCode(this.maxx);
 		bits = 31 * bits + Double.hashCode(this.maxy);
-        return bits ^ (bits >> 31);
+        return (int) (bits ^ (bits >> 31));
 	}
 
 }

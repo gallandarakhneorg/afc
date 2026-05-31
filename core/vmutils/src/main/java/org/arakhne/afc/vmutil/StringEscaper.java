@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** String Escaper.
 *
@@ -95,7 +94,7 @@ public class StringEscaper {
 		assert toEscapeCharacter.length() > 0 : AssertMessages.invalidValue(0);
 		assert escapeCharacters != null : AssertMessages.notNullParameter(1);
 		assert escapeCharacters.length > 0 : AssertMessages.tooSmallArrayParameter(escapeCharacters.length, 1);
-		for (final CharSequence c : escapeCharacters) {
+		for (final var c : escapeCharacters) {
 			this.escapeCharacters.add(c.toString());
 		}
 		this.toEscapeCharacter = toEscapeCharacter.toString();
@@ -114,7 +113,7 @@ public class StringEscaper {
 	public void setSpecialChars(String[][] chars) {
 		assert chars != null : AssertMessages.notNullParameter();
 		this.specialChars.clear();
-		for (final String[] pair : chars) {
+		for (final var pair : chars) {
 			assert pair != null;
 			assert pair.length == 2;
 			assert pair[0].length() > 0;
@@ -149,18 +148,18 @@ public class StringEscaper {
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
 	public String escape(CharSequence text) {
-		final StringBuilder result = new StringBuilder();
+		final var result = new StringBuilder();
 
-		for (int i = 0; i < text.length(); ++i) {
-			final char c = text.charAt(i);
-			final String cs = Character.toString(c);
+		for (var i = 0; i < text.length(); ++i) {
+			final var c = text.charAt(i);
+			final var cs = Character.toString(c);
 			if (this.escapeCharacters.contains(cs)) {
 				// Escape protected elements
 				result.append(this.toEscapeCharacter);
 				result.append(cs);
 			} else {
 				// Escape special characters
-				final String special = this.specialChars.get(cs);
+				final var special = this.specialChars.get(cs);
 				if (special != null) {
 					result.append(special);
 				} else if (c < this.minValidChar || c > this.maxValidChar) {
@@ -185,7 +184,7 @@ public class StringEscaper {
 	 */
 	@Pure
 	public static String formatHex(int amount, int digits) {
-		final StringBuffer hex = new StringBuffer(Integer.toHexString(amount));
+		final var hex = new StringBuffer(Integer.toHexString(amount));
 		while (hex.length() < digits) {
 			hex.insert(0, "0"); //$NON-NLS-1$
 		}

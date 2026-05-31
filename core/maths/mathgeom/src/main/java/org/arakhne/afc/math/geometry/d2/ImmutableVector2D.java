@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,8 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Immutable vector 2D.
@@ -62,12 +61,10 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	@Pure
 	@Override
 	public boolean equals(Object object) {
-
 		if (object == this) {
 			return true;
 		}
-		if (object instanceof Tuple2D<?>) {
-			final Tuple2D<?> tuple = (Tuple2D<?>) object;
+		if (object instanceof Tuple2D tuple) {
 			return tuple.getX() == getX() && tuple.getY() == getY();
 		}
 		return false;
@@ -81,25 +78,25 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(this.x);
 		bits = 31 * bits + Double.hashCode(this.y);
-		final int b = (int) bits;
+		final var b = (int) bits;
 		return b ^ (b >> 31);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
         return objectDescription.toString();
 	}
 
 	@Override
 	public void toJson(JsonBuffer buffer) {
-		buffer.add("x", getX()); //$NON-NLS-1$
-		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("x", Double.valueOf(getX())); //$NON-NLS-1$
+		buffer.add("y", Double.valueOf(getY())); //$NON-NLS-1$
 	}
 
 	@Override
@@ -138,7 +135,7 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	@Pure
 	@Override
 	public ImmutableVector2D toUnitVector() {
-		final double length = getLength();
+		final var length = getLength();
 		if (length == 0.) {
 			return new ImmutableVector2D(0, 0);
 		}

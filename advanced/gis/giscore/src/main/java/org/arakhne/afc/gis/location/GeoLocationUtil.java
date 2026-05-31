@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ package org.arakhne.afc.gis.location;
 
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
@@ -32,6 +30,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.text.Encryption;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Some geo-location functions.
@@ -80,10 +79,10 @@ public class GeoLocationUtil {
 	 * @throws IllegalArgumentException if the argument is not between 0 and 1.
 	 */
 	public static double setDistanceEpsilon(double newPrecisionValue) {
-		if ((newPrecisionValue >= 1) || (newPrecisionValue <= 0)) {
+		if (newPrecisionValue >= 1 || newPrecisionValue <= 0) {
 			throw new IllegalArgumentException();
 		}
-		final double old = distancePrecision;
+		final var old = distancePrecision;
 		distancePrecision = newPrecisionValue;
 		return old;
 	}
@@ -107,8 +106,8 @@ public class GeoLocationUtil {
 	 * @return {@code true} if both points are equal, otherwise {@code false}
 	 */
 	@Pure
-	public static boolean epsilonEqualsDistance(Point3D<?, ?> p1, Point3D<?, ?> p2) {
-		final double distance = p1.getDistance(p2);
+	public static boolean epsilonEqualsDistance(Point3D<?, ?, ?> p1, Point3D<?, ?, ?> p2) {
+		final var distance = p1.getDistance(p2);
 		return distance >= -distancePrecision && distance <= distancePrecision;
 	}
 
@@ -121,7 +120,7 @@ public class GeoLocationUtil {
 	 */
 	@Pure
 	public static boolean epsilonEqualsDistance(Point2D<?, ?> p1, Point2D<?, ?> p2) {
-		final double distance = p1.getDistance(p2);
+		final var distance = p1.getDistance(p2);
 		return distance >= -distancePrecision && distance <= distancePrecision;
 	}
 
@@ -177,8 +176,8 @@ public class GeoLocationUtil {
 	 */
 	@Pure
 	public static int epsilonCompareToDistance(double distance1, double distance2) {
-		final double min = distance2 - distancePrecision;
-		final double max = distance2 + distancePrecision;
+		final var min = distance2 - distancePrecision;
+		final var max = distance2 + distancePrecision;
 		if (distance1 >= min && distance1 <= max) {
 			return 0;
 		}
@@ -241,14 +240,14 @@ public class GeoLocationUtil {
 
 		assert l1 != null && l2 != null;
 
-		final Rectangle2d b1 = l1.toBounds2D().toBoundingBox();
-		final Rectangle2d b2 = l2.toBounds2D().toBoundingBox();
+		final var b1 = l1.toBounds2D().toBoundingBox();
+		final var b2 = l2.toBounds2D().toBoundingBox();
 
 		assert b1 != null && b2 != null;
 
 		if (b1.isEmpty() && b2.isEmpty()) {
-			final GeoId id1 = l1.toGeoId();
-			final GeoId id2 = l2.toGeoId();
+			final var id1 = l1.toGeoId();
+			final var id2 = l2.toGeoId();
 			assert id1 != null && id2 != null;
 			return id1.compareTo(id2);
 		}
@@ -264,7 +263,7 @@ public class GeoLocationUtil {
 
 		assert !b1.isEmpty() && !b2.isEmpty();
 
-		int cmp = MathUtil.compareEpsilon(b1.getMinX(), b2.getMinX());
+		var cmp = MathUtil.compareEpsilon(b1.getMinX(), b2.getMinX());
 		if (cmp != 0) {
 			return cmp;
 		}
@@ -290,15 +289,15 @@ public class GeoLocationUtil {
 	 */
 	@Pure
 	public static String makeInternalId(float[] coordinates, Rectangle2d bounds) {
-		final StringBuilder buf = new StringBuilder("points"); //$NON-NLS-1$
-		float minx = Float.NaN;
-		float miny = Float.NaN;
-		float maxx = Float.NaN;
-		float maxy = Float.NaN;
+		final var buf = new StringBuilder("points"); //$NON-NLS-1$
+		var minx = Float.NaN;
+		var miny = Float.NaN;
+		var maxx = Float.NaN;
+		var maxy = Float.NaN;
 		if (bounds != null) {
 			bounds.clear();
 		}
-		for (int idx = 0; idx < coordinates.length - 1; idx += 2) {
+		for (var idx = 0; idx < coordinates.length - 1; idx += 2) {
 			if (idx > 0) {
 				buf.append('-');
 			}
@@ -343,7 +342,7 @@ public class GeoLocationUtil {
 	 */
 	@Pure
 	public static String makeInternalId(float x, float y) {
-		final StringBuilder buf = new StringBuilder("point"); //$NON-NLS-1$
+		final var buf = new StringBuilder("point"); //$NON-NLS-1$
 		buf.append(x);
 		buf.append(';');
 		buf.append(y);
@@ -359,7 +358,7 @@ public class GeoLocationUtil {
 	 */
 	@Pure
 	public static String makeInternalId(UUID uid) {
-		final StringBuilder buf = new StringBuilder("nowhere(?"); //$NON-NLS-1$
+		final var buf = new StringBuilder("nowhere(?"); //$NON-NLS-1$
 		buf.append(uid.toString());
 		buf.append("?)"); //$NON-NLS-1$
 		return Encryption.md5(buf.toString());
@@ -376,7 +375,7 @@ public class GeoLocationUtil {
 	 */
 	@Pure
 	public static String makeInternalId(float minx, float miny, float maxx, float maxy) {
-		final StringBuilder buf = new StringBuilder("rectangle"); //$NON-NLS-1$
+		final var buf = new StringBuilder("rectangle"); //$NON-NLS-1$
 		buf.append('(');
 		buf.append(minx);
 		buf.append(';');

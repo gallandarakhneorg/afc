@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,9 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This is the generic implementation of a ternary
@@ -137,7 +136,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 	 */
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		final N me = toN();
+		final var me = toN();
 		if (this.left != null) {
 			this.left.setParentNodeReference(me, false);
 		}
@@ -161,17 +160,17 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 	@Override
 	public void clear() {
 		if (this.left != null) {
-			final N child = this.left;
+			final var child = this.left;
 			setLeftChild(null);
 			child.clear();
 		}
 		if (this.middle != null) {
-			final N child = this.middle;
+			final var child = this.middle;
 			setMiddleChild(null);
 			child.clear();
 		}
 		if (this.right != null) {
-			final N child = this.right;
+			final var child = this.right;
 			setRightChild(null);
 			child.clear();
 		}
@@ -211,7 +210,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setLeftChild(N newChild) {
-		final N oldChild = this.left;
+		final var oldChild = this.left;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -223,7 +222,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -255,7 +254,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setMiddleChild(N newChild) {
-		final N oldChild = this.middle;
+		final var oldChild = this.middle;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -267,7 +266,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -299,7 +298,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setRightChild(N newChild) {
-		final N oldChild = this.right;
+		final var oldChild = this.right;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -311,7 +310,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -433,7 +432,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 	 */
 	@Pure
 	public boolean hasChild(N potentialChild) {
-		if ((this.left == potentialChild) || (this.middle == potentialChild) || (this.right == potentialChild)) {
+		if (this.left == potentialChild || this.middle == potentialChild || this.right == potentialChild) {
 			return true;
 		}
 		return false;

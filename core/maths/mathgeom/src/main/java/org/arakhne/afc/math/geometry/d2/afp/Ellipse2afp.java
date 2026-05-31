@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,19 +22,20 @@ package org.arakhne.afc.math.geometry.d2.afp;
 
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D ellipse on a plane.
+/** Functional interface that represented a 2D ellipse on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -48,6 +49,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Ellipse2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends Ellipse2afp<?, ?, IE, P, V, B>,
@@ -56,6 +58,11 @@ public interface Ellipse2afp<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends RectangularShape2afp<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.ELLIPSE;
+	}
 
     /**
      * Replies if the given point is inside the given ellipse.
@@ -67,7 +74,7 @@ public interface Ellipse2afp<
      * @param px is the point to test.
      * @param py is the point to test.
      * @return {@code true} if the point is inside the ellipse;
-     * {@code false} if not.
+     *     {@code false} if not.
      */
     @Pure
     static boolean containsEllipsePoint(double ellx, double elly, double ellw, double ellh, double px, double py) {
@@ -80,8 +87,8 @@ public interface Ellipse2afp<
         if (ellw <= 0. || ellh <= 0.) {
             return false;
         }
-        final double normx = (px - ellx) / ellw - 0.5;
-        final double normy = (py - elly) / ellh - 0.5;
+        final var normx = (px - ellx) / ellw - 0.5;
+        final var normy = (py - elly) / ellh - 0.5;
         return (normx * normx + normy * normy) <= 0.25;
     }
 
@@ -350,12 +357,12 @@ public interface Ellipse2afp<
             double rxmin, double rymin, double rxmax, double rymax) {
         assert ewidth >= 0. : AssertMessages.positiveOrZeroParameter(2);
         assert eheight >= 0. : AssertMessages.positiveOrZeroParameter(3);
-        assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(4, rxmin, 6, rxmax);
-        assert rymin <= rymax : AssertMessages.lowerEqualParameters(5, rymin, 7, rymax);
-        final double ecx = ex + ewidth / 2.;
-        final double ecy = ey + eheight / 2.;
-        final double rcx = (rxmin + rxmax) / 2.;
-        final double rcy = (rymin + rymax) / 2.;
+        assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(4, Double.valueOf(rxmin), 6, Double.valueOf(rxmax));
+        assert rymin <= rymax : AssertMessages.lowerEqualParameters(5, Double.valueOf(rymin), 7, Double.valueOf(rymax));
+        final var ecx = ex + ewidth / 2.;
+        final var ecy = ey + eheight / 2.;
+        final var rcx = (rxmin + rxmax) / 2.;
+        final var rcy = (rymin + rymax) / 2.;
         final double farX;
         if (ecx <= rcx) {
             farX = rxmax;
@@ -382,7 +389,7 @@ public interface Ellipse2afp<
      * @param width2 is the width of the second ellipse.
      * @param height2 is the height of the second ellipse.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     @Unefficient
@@ -397,13 +404,13 @@ public interface Ellipse2afp<
             return false;
         }
 
-        // Normalize coordinates for tranqforming the first ellipse to an origin-centric circle with radius 1.
-        final double radius1 = width1 / 2;
-        final double radius2 = height1 / 2;
-        final double transformedX = (x2 - x1) / radius1 - 1;
-        final double transformedY = (y2 - y1) / radius2 - 1;
-        final double transformedWidth = width2 / radius1;
-        final double transformedHeight = height2 / radius2;
+        // Normalize coordinates for transforming the first ellipse to an origin-centric circle with radius 1.
+        final var radius1 = width1 / 2;
+        final var radius2 = height1 / 2;
+        final var transformedX = (x2 - x1) / radius1 - 1;
+        final var transformedY = (y2 - y1) / radius2 - 1;
+        final var transformedWidth = width2 / radius1;
+        final var transformedHeight = height2 / radius2;
 
         // Use the standard ellipse-circle intersection test
         return intersectsEllipseCircle(transformedX, transformedY, transformedWidth, transformedHeight, 0, 0, 1);
@@ -419,7 +426,7 @@ public interface Ellipse2afp<
      * @param cy is the center of the circle.
      * @param cradius the radius of the circle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     @Unefficient
@@ -428,10 +435,10 @@ public interface Ellipse2afp<
         assert ewidth >= 0. : AssertMessages.positiveOrZeroParameter(2);
         assert eheight >= 0. : AssertMessages.positiveOrZeroParameter(3);
         assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
-        final Point2D<?, ?> p = new InnerComputationPoint2afp();
+        final var p = new InnerComputationPoint2afp();
         findsClosestPointSolidEllipsePoint(cx, cy, ex, ey, ewidth, eheight, p);
-        final double dx = p.getX() - cx;
-        final double dy = p.getY() - cy;
+        final var dx = p.getX() - cx;
+        final var dy = p.getY() - cy;
         return (dx * dx + dy * dy) < (cradius * cradius);
     }
 
@@ -446,7 +453,7 @@ public interface Ellipse2afp<
      * @param x2 is the second point of the line.
      * @param y2 is the second point of the line.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      * @see "http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx"
      */
     @Pure
@@ -460,31 +467,31 @@ public interface Ellipse2afp<
         }
 
         // Get the semimajor and semiminor axes.
-        final double a = ew / 2.;
-        final double b = eh / 2.;
+        final var a = ew / 2.;
+        final var b = eh / 2.;
 
         // Translate so the ellipse is centered at the origin.
-        final double ecx = ex + a;
-        final double ecy = ey + b;
-        final double px1 = x1 - ecx;
-        final double py1 = y1 - ecy;
-        final double px2 = x2 - ecx;
-        final double py2 = y2 - ecy;
+        final var ecx = ex + a;
+        final var ecy = ey + b;
+        final var px1 = x1 - ecx;
+        final var py1 = y1 - ecy;
+        final var px2 = x2 - ecx;
+        final var py2 = y2 - ecy;
 
-        final double sqA = a * a;
-        final double sqB = b * b;
-        final double vx = px2 - px1;
-        final double vy = py2 - py1;
+        final var sqA = a * a;
+        final var sqB = b * b;
+        final var vx = px2 - px1;
+        final var vy = py2 - py1;
 
         assert sqA != 0 && sqB != 0;
 
         // Calculate the quadratic parameters.
-        final double aParam = vx * vx / sqA + vy * vy / sqB;
-        final double bParam = 2 * px1 * vx / sqA + 2 * py1 * vy / sqB;
-        final double cParam = px1 * px1 / sqA + py1 * py1 / sqB - 1.;
+        final var aParam = vx * vx / sqA + vy * vy / sqB;
+        final var bParam = 2 * px1 * vx / sqA + 2 * py1 * vy / sqB;
+        final var cParam = px1 * px1 / sqA + py1 * py1 / sqB - 1.;
 
-        // Calculate the discriminant.
-        final double discriminant = bParam * bParam - 4. * aParam * cParam;
+        // Calculate the discriminent.
+        final var discriminant = bParam * bParam - 4. * aParam * cParam;
         return discriminant >= 0.;
     }
 
@@ -501,10 +508,11 @@ public interface Ellipse2afp<
      * @param intersectsWhenTouching indicates if there is an intersection if the segment is touching
      *     the ellipse at one point.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      * @see "http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx"
      */
     @Pure
+    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsEllipseSegment(double ex, double ey, double ew, double eh,
             double x1, double y1, double x2, double y2, boolean intersectsWhenTouching) {
         assert ew >= 0. : AssertMessages.positiveOrZeroParameter(2);
@@ -515,31 +523,31 @@ public interface Ellipse2afp<
         }
 
         // Get the semimajor and semiminor axes.
-        final double a = ew / 2.;
-        final double b = eh / 2.;
+        final var a = ew / 2.;
+        final var b = eh / 2.;
 
         // Translate so the ellipse is centered at the origin.
-        final double ecx = ex + a;
-        final double ecy = ey + b;
-        final double px1 = x1 - ecx;
-        final double py1 = y1 - ecy;
-        final double px2 = x2 - ecx;
-        final double py2 = y2 - ecy;
+        final var ecx = ex + a;
+        final var ecy = ey + b;
+        final var px1 = x1 - ecx;
+        final var py1 = y1 - ecy;
+        final var px2 = x2 - ecx;
+        final var py2 = y2 - ecy;
 
-        final double sqA = a * a;
-        final double sqB = b * b;
-        final double vx = px2 - px1;
-        final double vy = py2 - py1;
+        final var sqA = a * a;
+        final var sqB = b * b;
+        final var vx = px2 - px1;
+        final var vy = py2 - py1;
 
         assert sqA != 0 && sqB != 0;
 
         // Calculate the quadratic parameters.
-        final double aParam = vx * vx / sqA + vy * vy / sqB;
-        final double bParam = 2 * px1 * vx / sqA + 2 * py1 * vy / sqB;
-        final double cParam = px1 * px1 / sqA + py1 * py1 / sqB - 1;
+        final var aParam = vx * vx / sqA + vy * vy / sqB;
+        final var bParam = 2 * px1 * vx / sqA + 2 * py1 * vy / sqB;
+        final var cParam = px1 * px1 / sqA + py1 * py1 / sqB - 1;
 
-        // Calculate the discriminant.
-        final double discriminant = bParam * bParam - 4 * aParam * cParam;
+        // Calculate the discriminent.
+        final var discriminant = bParam * bParam - 4 * aParam * cParam;
         if (discriminant < 0.) {
             // No solution
             return false;
@@ -548,8 +556,8 @@ public interface Ellipse2afp<
         if (discriminant == 0.) {
             // One real solution.
             if (intersectsWhenTouching) {
-                final double t = -bParam / 2 / aParam;
-                return (t >= 0.) && (t <= 1.);
+                final var t = -bParam / 2 / aParam;
+                return t >= 0. && t <= 1.;
             }
             return false;
         }
@@ -557,8 +565,8 @@ public interface Ellipse2afp<
         assert discriminant > 0;
 
         // Two real solutions.
-        final double t1 = (-bParam + Math.sqrt(discriminant)) / 2 / aParam;
-        final double t2 = (-bParam - Math.sqrt(discriminant)) / 2 / aParam;
+        final var t1 = (-bParam + Math.sqrt(discriminant)) / 2 / aParam;
+        final var t2 = (-bParam - Math.sqrt(discriminant)) / 2 / aParam;
 
         return (t1 >= 0 || t2 >= 0) && (t1 <= 1 || t2 <= 1);
     }
@@ -574,7 +582,7 @@ public interface Ellipse2afp<
      * @param x4 is the second corner of the second rectangle.
      * @param y4 is the second corner of the second rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsEllipseRectangle(double ex, double ey, double ewidth, double eheight,
@@ -583,8 +591,8 @@ public interface Ellipse2afp<
         assert eheight >= 0. : AssertMessages.positiveOrZeroParameter(3);
         // From AWT Ellipse2D
 
-        final double rectw = Math.abs(x4 - x3);
-        final double recth = Math.abs(y4 - y3);
+        final var rectw = Math.abs(x4 - x3);
+        final var recth = Math.abs(y4 - y3);
 
         if (rectw <= 0 || recth <= 0) {
             return false;
@@ -595,10 +603,10 @@ public interface Ellipse2afp<
 
         // Normalize the rectangular coordinates compared to the ellipse
         // having a center at 0, 0 and a radius of 0.5.
-        final double normx0 = (x3 - ex) / ewidth - 0.5;
-        final double normx1 = normx0 + rectw / ewidth;
-        final double normy0 = (y3 - ey) / eheight - 0.5;
-        final double normy1 = normy0 + recth / eheight;
+        final var normx0 = (x3 - ex) / ewidth - 0.5;
+        final var normx1 = normx0 + rectw / ewidth;
+        final var normy0 = (y3 - ey) / eheight - 0.5;
+        final var normy1 = normy0 + recth / eheight;
 
         // find nearest x (left edge, right edge, 0.0)
         // find nearest y (top edge, bottom edge, 0.0)
@@ -645,7 +653,7 @@ public interface Ellipse2afp<
     @Override
     default double getDistanceSquared(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> r = getClosestPointTo(pt);
+        final var r = getClosestPointTo(pt);
         return r.getDistanceSquared(pt);
     }
 
@@ -653,7 +661,7 @@ public interface Ellipse2afp<
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> r = getClosestPointTo(pt);
+        final var r = getClosestPointTo(pt);
         return r.getDistanceL1(pt);
     }
 
@@ -661,7 +669,7 @@ public interface Ellipse2afp<
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> r = getClosestPointTo(pt);
+        final var r = getClosestPointTo(pt);
         return r.getDistanceLinf(pt);
     }
 
@@ -771,8 +779,8 @@ public interface Ellipse2afp<
     @Override
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.calculatesCrossingsPathIteratorEllipseShadow(
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var crossings = Path2afp.calculatesCrossingsPathIteratorEllipseShadow(
                 0,
                 iterator,
                 getMinX(), getMinY(), getWidth(), getHeight(),
@@ -815,7 +823,7 @@ public interface Ellipse2afp<
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Ellipse2afp.findsClosestPointSolidEllipsePoint(
                 pt.getX(), pt.getY(),
                 getMinX(), getMinY(),
@@ -834,7 +842,7 @@ public interface Ellipse2afp<
     @Unefficient
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
-        final P pointOnSecondEllipse = getGeomFactory().newPoint();
+        final var pointOnSecondEllipse = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(
                 ellipse.getFlatteningPathIterator(),
                 getPathIterator(), pointOnSecondEllipse);
@@ -845,7 +853,7 @@ public interface Ellipse2afp<
     @Unefficient
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> pointOnRectangle = rectangle.getClosestPointTo(this);
+        final var pointOnRectangle = rectangle.getClosestPointTo(this);
         return getClosestPointTo(pointOnRectangle);
     }
 
@@ -853,7 +861,7 @@ public interface Ellipse2afp<
     @Unefficient
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> pointOnSegment = segment.getClosestPointTo(this);
+        final var pointOnSegment = segment.getClosestPointTo(this);
         return getClosestPointTo(pointOnSegment);
     }
 
@@ -861,7 +869,7 @@ public interface Ellipse2afp<
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> pointOnTriangle = triangle.getClosestPointTo(this);
+        final var pointOnTriangle = triangle.getClosestPointTo(this);
         return getClosestPointTo(pointOnTriangle);
     }
 
@@ -869,7 +877,7 @@ public interface Ellipse2afp<
     @Unefficient
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         assert orientedRectangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> pointOnRectangle = orientedRectangle.getClosestPointTo(this);
+        final var pointOnRectangle = orientedRectangle.getClosestPointTo(this);
         return getClosestPointTo(pointOnRectangle);
     }
 
@@ -877,7 +885,7 @@ public interface Ellipse2afp<
     @Unefficient
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         assert parallelogram != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> pointOnParallelogram = parallelogram.getClosestPointTo(this);
+        final var pointOnParallelogram = parallelogram.getClosestPointTo(this);
         return getClosestPointTo(pointOnParallelogram);
     }
 
@@ -885,7 +893,7 @@ public interface Ellipse2afp<
     @Unefficient
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         assert roundRectangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> pointOnRectangle = roundRectangle.getClosestPointTo(this);
+        final var pointOnRectangle = roundRectangle.getClosestPointTo(this);
         return getClosestPointTo(pointOnRectangle);
     }
 
@@ -893,7 +901,7 @@ public interface Ellipse2afp<
     @Unefficient
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Path2afp.findsClosestPointPathIteratorPathIterator(
                 getFlatteningPathIterator(),
                 path.getPathIterator(), point);
@@ -903,7 +911,7 @@ public interface Ellipse2afp<
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
+        final var point = getGeomFactory().newPoint();
         Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                 pt.getX(), pt.getY(),
                 getMinX(), getMinY(),
@@ -937,18 +945,18 @@ public interface Ellipse2afp<
      * @return the focus point.
      */
     default P getMinFocusPoint() {
-        final double radius1 = getHorizontalRadius();
-        final double radius2 = getVerticalRadius();
-        final double squaredRadius1 = radius1 * radius1;
-        final double squaredRadius2 = radius2 * radius2;
-        final double centerX = getCenterX();
-        final double centerY = getCenterY();
-        final GeomFactory2afp<?, P, V, ?> factory = getGeomFactory();
+        final var radius1 = getHorizontalRadius();
+        final var radius2 = getVerticalRadius();
+        final var squaredRadius1 = radius1 * radius1;
+        final var squaredRadius2 = radius2 * radius2;
+        final var centerX = getCenterX();
+        final var centerY = getCenterY();
+        final var factory = getGeomFactory();
         if (radius1 >= radius2) {
-            final double focusDistance = Math.sqrt(squaredRadius1 - squaredRadius2);
+            final var focusDistance = Math.sqrt(squaredRadius1 - squaredRadius2);
             return factory.newPoint(centerX - focusDistance, centerY);
         }
-        final double focusDistance = Math.sqrt(squaredRadius2 - squaredRadius1);
+        final var focusDistance = Math.sqrt(squaredRadius2 - squaredRadius1);
         return factory.newPoint(centerX, centerY - focusDistance);
     }
 
@@ -961,18 +969,18 @@ public interface Ellipse2afp<
      * @return the focus point.
      */
     default P getMaxFocusPoint() {
-        final double radius1 = getHorizontalRadius();
-        final double radius2 = getVerticalRadius();
-        final double squaredRadius1 = radius1 * radius1;
-        final double squaredRadius2 = radius2 * radius2;
-        final double centerX = getCenterX();
-        final double centerY = getCenterY();
-        final GeomFactory2afp<?, P, V, ?> factory = getGeomFactory();
+        final var radius1 = getHorizontalRadius();
+        final var radius2 = getVerticalRadius();
+        final var squaredRadius1 = radius1 * radius1;
+        final var squaredRadius2 = radius2 * radius2;
+        final var centerX = getCenterX();
+        final var centerY = getCenterY();
+        final var factory = getGeomFactory();
         if (radius1 >= radius2) {
-            final double focusDistance = Math.sqrt(squaredRadius1 - squaredRadius2);
+            final var focusDistance = Math.sqrt(squaredRadius1 - squaredRadius2);
             return factory.newPoint(centerX + focusDistance, centerY);
         }
-        final double focusDistance = Math.sqrt(squaredRadius2 - squaredRadius1);
+        final var focusDistance = Math.sqrt(squaredRadius2 - squaredRadius1);
         return factory.newPoint(centerX, centerY + focusDistance);
     }
 
@@ -981,12 +989,13 @@ public interface Ellipse2afp<
 	 * @return the Geogebra representation of the ellipse.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
-		final P focus1 = getMinFocusPoint();
-		final P focus2 = getMaxFocusPoint();
-		final double r1 = getHorizontalRadius();
-		final double r2 = getVerticalRadius();
-		final double r = Math.max(r1, r2);
+		final var focus1 = getMinFocusPoint();
+		final var focus2 = getMaxFocusPoint();
+		final var r1 = getHorizontalRadius();
+		final var r2 = getVerticalRadius();
+		final var r = Math.max(r1, r2);
 		return GeogebraUtil.toEllipseDefinition(2,
 				focus1.getX(), focus2.getY(),
 				focus2.getX(), focus2.getY(),
@@ -1138,11 +1147,11 @@ public interface Ellipse2afp<
             if (this.index >= NUMBER_ELEMENTS) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
 
             if (idx < 0) {
-                final double[] ctrls = BEZIER_CONTROL_POINTS[3];
+                final var ctrls = BEZIER_CONTROL_POINTS[3];
                 this.lastX = this.x + ctrls[4] * this.width;
                 this.lastY = this.y + ctrls[5] * this.height;
                 return getGeomFactory().newMovePathElement(
@@ -1150,9 +1159,9 @@ public interface Ellipse2afp<
             }
 
             if (idx < (NUMBER_ELEMENTS - 1)) {
-                final double[] ctrls = BEZIER_CONTROL_POINTS[idx];
-                final double ix = this.lastX;
-                final double iy = this.lastY;
+                final var ctrls = BEZIER_CONTROL_POINTS[idx];
+                final var ix = this.lastX;
+                final var iy = this.lastY;
                 this.lastX = this.x + ctrls[4] * this.width;
                 this.lastY = this.y + ctrls[5] * this.height;
                 return getGeomFactory().newCurvePathElement(
@@ -1238,11 +1247,11 @@ public interface Ellipse2afp<
             if (this.index > 5) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
 
             if (idx == 0) {
-                final double[] ctrls = BEZIER_CONTROL_POINTS[3];
+                final var ctrls = BEZIER_CONTROL_POINTS[3];
                 this.lastPoint.set(
                         this.x1 + ctrls[4] * this.width,
                         this.y1 + ctrls[5] * this.height);
@@ -1250,9 +1259,9 @@ public interface Ellipse2afp<
                 return getGeomFactory().newMovePathElement(
                         this.lastPoint.getX(), this.lastPoint.getY());
             } else if (idx < 5) {
-                final double[] ctrls = BEZIER_CONTROL_POINTS[idx - 1];
-                final double ix = this.lastPoint.getX();
-                final double iy = this.lastPoint.getY();
+                final var ctrls = BEZIER_CONTROL_POINTS[idx - 1];
+                final var ix = this.lastPoint.getX();
+                final var iy = this.lastPoint.getY();
                 this.lastPoint.set(
                         this.x1 + ctrls[4] * this.width,
                         this.y1 + ctrls[5] * this.height);
@@ -1272,8 +1281,8 @@ public interface Ellipse2afp<
                         this.lastPoint.getX(), this.lastPoint.getY());
             }
 
-            final double ix = this.lastPoint.getX();
-            final double iy = this.lastPoint.getY();
+            final var ix = this.lastPoint.getX();
+            final var iy = this.lastPoint.getY();
             return getGeomFactory().newClosePathElement(
                     ix, iy,
                     ix, iy);
@@ -1299,18 +1308,18 @@ public interface Ellipse2afp<
 
         @Unefficient
         private static double getClosestNormalPointRoot(double r0, double zx, double zy, double gval) {
-            final double n0 = r0 * zx;
-            double s0 = zy - 1;
-            double localG = gval;
-            double s1 = (localG < 0) ? 0 : Math.hypot(n0, zy) - 1.;
-            double result = Double.NaN;
-            for (int i = 0; i < MAX_ITERATIONS; ++i) {
+            final var n0 = r0 * zx;
+            var s0 = zy - 1;
+            var localG = gval;
+            var s1 = (localG < 0) ? 0 : Math.hypot(n0, zy) - 1.;
+            var result = Double.NaN;
+            for (var i = 0; i < MAX_ITERATIONS; ++i) {
                 result = (s0 + s1) / 2.;
                 if (result == s0 || result == s1) {
                     return result;
                 }
-                final double ratio0 = n0 / (result + r0);
-                final double ratio1 = zy / (result + 1.);
+                final var ratio0 = n0 / (result + r0);
+                final var ratio1 = zy / (result + 1.);
                 localG = ratio0 * ratio0 + ratio1 * ratio1 - 1.;
                 if (localG > 0) {
                     s0 = result;
@@ -1326,17 +1335,17 @@ public interface Ellipse2afp<
         /** Compute the closest point to a shallow ellipse centered on (0, 0) and in the positive quadrant.
          * The coordinates of the point must be positive.
          *
-         * <p>The mathematrical definition of the algorithm is explained in:
+         * <p>The mathematical definition of the algorithm is explained in:
          * <a href="./doc-files/DistancePointEllipseEllipsoid.pdf">DistancePointEllipseEllipsoid.pdf</a>
          * (source: <a href="http://www.geometrictools.com/">geometrictools.com</a>).
          *
-         * @param px the x coordinate of the point. It must be positive or nul.
-         * @param py the y coordinate of the point. It must be positive or nul.
+         * @param px the x coordinate of the point. It must be positive or null.
+         * @param py the y coordinate of the point. It must be positive or null.
          * @param horizontalRadius the horizontal radius.
          * @param verticalRadius the vertical radius.
-         * @param computeDistance indicates if the distance musst be computed and replied.
+         * @param computeDistance indicates if the distance must be computed and replied.
          * @return the triplet (closest point x, closest point y, distance to closest point) if
-         * {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
+         *     {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
          */
         @Unefficient
         public static double[] computeClosestPointOnShallowEllipseInPositiveQuadrant(
@@ -1348,22 +1357,22 @@ public interface Ellipse2afp<
             assert horizontalRadius >= 0 : AssertMessages.positiveOrZeroParameter(2);
             assert verticalRadius >= 0 : AssertMessages.positiveOrZeroParameter(3);
             assert verticalRadius <= horizontalRadius
-                    : AssertMessages.lowerEqualParameters(3, verticalRadius, 2, horizontalRadius);
+                    : AssertMessages.lowerEqualParameters(3, Double.valueOf(verticalRadius), 2, Double.valueOf(horizontalRadius));
             final double closeX;
             final double closeY;
             double distance = 0;
             if (py > 0) {
                 if (px > 0) {
-                    final double zx = px / horizontalRadius;
-                    final double zy = py / verticalRadius;
-                    final double g = zx * zx + zy * zy - 1.;
+                    final var zx = px / horizontalRadius;
+                    final var zy = py / verticalRadius;
+                    final var g = zx * zx + zy * zy - 1.;
                     // g > 0, then point is outside ellipse
                     // g = 0, then point is on ellipse
                     // g < 0, then point is inside ellipse
                     if (g != 0) {
-                        double r0 = horizontalRadius / verticalRadius;
+                    	var r0 = horizontalRadius / verticalRadius;
                         r0 = r0 * r0;
-                        final double sbar = getClosestNormalPointRoot(r0, zx, zy, g);
+                        final var sbar = getClosestNormalPointRoot(r0, zx, zy, g);
                         closeX = r0 * px / (sbar + r0);
                         closeY = py / (sbar + 1.);
                         if (computeDistance) {
@@ -1383,10 +1392,10 @@ public interface Ellipse2afp<
                 }
             } else {
                 // py == 0
-                final double numer0 = horizontalRadius * px;
-                final double denom0 = horizontalRadius * horizontalRadius - verticalRadius * verticalRadius;
+                final var numer0 = horizontalRadius * px;
+                final var denom0 = horizontalRadius * horizontalRadius - verticalRadius * verticalRadius;
                 if (numer0 < denom0) {
-                    final double xde0 = numer0 / denom0;
+                    final var xde0 = numer0 / denom0;
                     closeX = horizontalRadius * xde0;
                     closeY = verticalRadius * Math.sqrt(1. - xde0 * xde0);
                     if (computeDistance) {
@@ -1409,17 +1418,17 @@ public interface Ellipse2afp<
         /** Compute the closest point to a solid ellipse centered on (0, 0) and in the positive quadrant.
          * The coordinates of the point must be positive.
          *
-         * <p>The mathematrical definition of the algorithm is explained in:
+         * <p>The mathematical definition of the algorithm is explained in:
          * <a href="./doc-files/DistancePointEllipseEllipsoid.pdf">DistancePointEllipseEllipsoid.pdf</a>
          * (source: <a href="http://www.geometrictools.com/">geometrictools.com</a>).
          *
-         * @param px the x coordinate of the point. It must be positive or nul.
-         * @param py the y coordinate of the point. It must be positive or nul.
+         * @param px the x coordinate of the point. It must be positive or null.
+         * @param py the y coordinate of the point. It must be positive or null.
          * @param horizontalRadius the horizontal radius.
          * @param verticalRadius the vertical radius.
-         * @param computeDistance indicates if the distance musst be computed and replied.
+         * @param computeDistance indicates if the distance must be computed and replied.
          * @return the triplet (closest point x, closest point y, distance to closest point) if
-         * {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
+         *     {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
          */
         @Unefficient
         public static double[] computeClosestPointOnSolidEllipseInPositiveQuadrant(
@@ -1431,22 +1440,22 @@ public interface Ellipse2afp<
             assert horizontalRadius >= 0 : AssertMessages.positiveOrZeroParameter(2);
             assert verticalRadius >= 0 : AssertMessages.positiveOrZeroParameter(3);
             assert verticalRadius <= horizontalRadius
-                    : AssertMessages.lowerEqualParameters(3, verticalRadius, 2, horizontalRadius);
+                    : AssertMessages.lowerEqualParameters(3, Double.valueOf(verticalRadius), 2, Double.valueOf(horizontalRadius));
             final double closeX;
             final double closeY;
-            double distance = 0;
+            var distance = 0.;
             if (py > 0) {
                 if (px > 0) {
-                    final double zx = px / horizontalRadius;
-                    final double zy = py / verticalRadius;
-                    final double g = zx * zx + zy * zy - 1;
+                    final var zx = px / horizontalRadius;
+                    final var zy = py / verticalRadius;
+                    final var g = zx * zx + zy * zy - 1;
                     // g > 0, then point is outside ellipse
                     // g = 0, then point is on ellipse
                     // g < 0, then point is inside ellipse
                     if (g > 0) {
-                        double r0 = horizontalRadius / verticalRadius;
+                    	var r0 = horizontalRadius / verticalRadius;
                         r0 = r0 * r0;
-                        final double sbar = getClosestNormalPointRoot(r0, zx, zy, g);
+                        final var sbar = getClosestNormalPointRoot(r0, zx, zy, g);
                         closeX = r0 * px / (sbar + r0);
                         closeY = py / (sbar + 1);
                         if (computeDistance) {
@@ -1474,10 +1483,10 @@ public interface Ellipse2afp<
                     closeX = px;
                     closeY = py;
                 } else {
-                    final double numer0 = horizontalRadius * px;
-                    final double denom0 = horizontalRadius * horizontalRadius - verticalRadius * verticalRadius;
+                    final var numer0 = horizontalRadius * px;
+                    final var denom0 = horizontalRadius * horizontalRadius - verticalRadius * verticalRadius;
                     if (numer0 < denom0) {
-                        final double xde0 = numer0 / denom0;
+                        final var xde0 = numer0 / denom0;
                         closeX = horizontalRadius * xde0;
                         closeY = verticalRadius * Math.sqrt(1 - xde0 * xde0);
                         if (computeDistance) {
@@ -1501,19 +1510,19 @@ public interface Ellipse2afp<
         @Unefficient
         private static double getFarthestNormalPointRoot(double r0, double e0, double e1, double zx, double zy) {
             double localG;
-            double s0 = -Math.hypot(zx, r0 * zy) - 1.;
-            double s1 = zx - 1;
-            double result = Double.NaN;
-            final double v0 = e1 * e1;
-            final double v1 = v0 * zy;
-            final double v2 = e0 * e0;
-            for (int i = 0; i < MAX_ITERATIONS; ++i) {
+            var s0 = -Math.hypot(zx, r0 * zy) - 1.;
+            var s1 = zx - 1;
+            var result = Double.NaN;
+            final var v0 = e1 * e1;
+            final var v1 = v0 * zy;
+            final var v2 = e0 * e0;
+            for (var i = 0; i < MAX_ITERATIONS; ++i) {
                 result = (s0 + s1) / 2.;
                 if (result == s0 || result == s1) {
                     return result;
                 }
-                final double ratio0 = zx / (result + 1.);
-                final double ratio1 = v1 / (result * v2  + v1);
+                final var ratio0 = zx / (result + 1.);
+                final var ratio1 = v1 / (result * v2  + v1);
                 localG = ratio0 * ratio0 + ratio1 * ratio1 - 1.;
                 if (localG > 0) {
                     s1 = result;
@@ -1529,17 +1538,17 @@ public interface Ellipse2afp<
         /** Compute the farthest point to a shallow ellipse centered on (0, 0) and in the positive quadrant.
          * The coordinates of the point must be negative.
          *
-         * <p>This function is an adaptation of the mathematrical definition that is explained in:
+         * <p>This function is an adaptation of the mathematical definition that is explained in:
          * <a href="./doc-files/DistancePointEllipseEllipsoid.pdf">DistancePointEllipseEllipsoid.pdf</a>
          * (source: <a href="http://www.geometrictools.com/">geometrictools.com</a>).
          *
-         * @param px the x coordinate of the point. It must be positive or nul.
-         * @param py the y coordinate of the point. It must be positive or nul.
+         * @param px the x coordinate of the point. It must be positive or null.
+         * @param py the y coordinate of the point. It must be positive or null.
          * @param horizontalRadius the horizontal radius.
          * @param verticalRadius the vertical radius.
-         * @param computeDistance indicates if the distance musst be computed and replied.
+         * @param computeDistance indicates if the distance must be computed and replied.
          * @return the triplet (closest point x, closest point y, distance to closest point) if
-         * {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
+         *     {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
          */
         @Unefficient
         public static double[] computeFarthestPointOnShallowEllipseInPositiveQuadrant(
@@ -1551,23 +1560,23 @@ public interface Ellipse2afp<
             assert horizontalRadius >= 0 : AssertMessages.positiveOrZeroParameter(2);
             assert verticalRadius >= 0 : AssertMessages.positiveOrZeroParameter(3);
             assert verticalRadius <= horizontalRadius
-                    : AssertMessages.lowerEqualParameters(3, verticalRadius, 2, horizontalRadius);
+                    : AssertMessages.lowerEqualParameters(3, Double.valueOf(verticalRadius), 2, Double.valueOf(horizontalRadius));
             final double farX;
             final double farY;
-            double distance = 0;
+            var distance = 0.;
 
             if (py < 0) {
                 if (px < 0) {
-                    final double zx = px / horizontalRadius;
-                    final double zy = py / verticalRadius;
-                    final double g = zx * zx + zy * zy - 1.;
+                    final var zx = px / horizontalRadius;
+                    final var zy = py / verticalRadius;
+                    final var g = zx * zx + zy * zy - 1.;
                     // g > 0, then point is outside ellipse
                     // g = 0, then point is on ellipse
                     // g < 0, then point is inside ellipse
                     if (g != 0) {
-                        double r0 = verticalRadius / horizontalRadius;
+                    	var r0 = verticalRadius / horizontalRadius;
                         r0 = r0 * r0;
-                        final double sbar = getFarthestNormalPointRoot(r0, horizontalRadius, verticalRadius, zx, zy);
+                        final var sbar = getFarthestNormalPointRoot(r0, horizontalRadius, verticalRadius, zx, zy);
                         farX = px / (sbar + 1.);
                         farY = r0 * py / (sbar + r0);
                         if (computeDistance) {
@@ -1579,9 +1588,9 @@ public interface Ellipse2afp<
                     }
                 } else {
                     // px == 0
-                    final double psquare = py * py;
-                    final double d1 = psquare + horizontalRadius * horizontalRadius;
-                    final double d2 = psquare + 2 * Math.abs(py) * verticalRadius * verticalRadius;
+                    final var psquare = py * py;
+                    final var d1 = psquare + horizontalRadius * horizontalRadius;
+                    final var d2 = psquare + 2 * Math.abs(py) * verticalRadius * verticalRadius;
                     if (d1 > d2) {
                         farX = horizontalRadius;
                         farY = 0;
@@ -1598,9 +1607,9 @@ public interface Ellipse2afp<
                 }
             } else {
                 // py == 0
-                final double psquare = px * px;
-                final double d1 = psquare + verticalRadius * verticalRadius;
-                final double d2 = psquare + 2 * Math.abs(px) * horizontalRadius * horizontalRadius;
+                final var psquare = px * px;
+                final var d1 = psquare + verticalRadius * verticalRadius;
+                final var d2 = psquare + 2 * Math.abs(px) * horizontalRadius * horizontalRadius;
                 if (d1 > d2) {
                     farX = 0;
                     farY = verticalRadius;

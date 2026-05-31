@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.util.InformedArrayList;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class represents a layer that contains map elements
@@ -139,11 +138,10 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 	@Override
 	@Pure
 	public ArrayMapElementLayer<E> clone() {
-		final ArrayMapElementLayer<E> layer = (ArrayMapElementLayer<E>) super.clone();
+		final var layer = (ArrayMapElementLayer<E>) super.clone();
 		layer.mapElements = new InformedArrayList<>();
-		E cloneElt;
-		for (final E elt : this.mapElements) {
-			cloneElt = (E) elt.clone();
+		for (final var elt : this.mapElements) {
+			final var cloneElt = (E) elt.clone();
 			layer.addMapElement(cloneElt);
 		}
 		resetBoundingBox();
@@ -158,11 +156,10 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		final Rectangle2d r = new Rectangle2d();
-		boolean first = true;
-		Rectangle2d subBounds;
-		for (final  E mapelement : this.mapElements) {
-			subBounds = mapelement.getBoundingBox();
+		final var r = new Rectangle2d();
+		var first = true;
+		for (final var mapelement : this.mapElements) {
+			final var subBounds = mapelement.getBoundingBox();
 			if (subBounds != null && !subBounds.isEmpty()) {
 				if (first) {
 					first = false;
@@ -196,7 +193,7 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 	@Override
 	public boolean addMapElements(Collection<? extends E> elements) {
 		if (this.mapElements.addAll(elements)) {
-			for (final E e : elements) {
+			for (final var e : elements) {
 				e.setContainer(this);
 			}
 			resetBoundingBox();
@@ -231,7 +228,7 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 	@Override
 	public boolean removeAllMapElements() {
 		if (!this.mapElements.isEmpty()) {
-			for (final MapElement e : this.mapElements) {
+			for (final var e : this.mapElements) {
 				e.setContainer(null);
 			}
 			this.mapElements.clear();
@@ -298,8 +295,8 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 		private void detectNext() {
 			this.next = null;
 			while (this.iterator.hasNext()) {
-				final E n = this.iterator.next();
-				final Rectangle2afp<?, ?, ?, ?, ?, ?> nBounds = n.getBoundingBox();
+				final var n = this.iterator.next();
+				final var nBounds = n.getBoundingBox();
 				if (nBounds != null && nBounds.intersects(this.bounds)) {
 					this.next = n;
 					return;
@@ -315,7 +312,7 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 
 		@Override
 		public E next() {
-			final E toReply = this.next;
+			final var toReply = this.next;
 			detectNext();
 			return toReply;
 		}
@@ -352,7 +349,7 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 				throw new NoSuchElementException();
 			}
 
-			final E toReply = ArrayMapElementLayer.this.getMapElementAt(this.index);
+			final var toReply = ArrayMapElementLayer.this.getMapElementAt(this.index);
 			if (toReply == null) {
 				throw new ConcurrentModificationException();
 			}
@@ -365,7 +362,7 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 		@Override
 		public void remove() {
 			try {
-				final E elt = ArrayMapElementLayer.this.getMapElementAt(this.index - 1);
+				final var elt = ArrayMapElementLayer.this.getMapElementAt(this.index - 1);
 				removeMapElement(elt);
 				--this.index;
 			} catch (IndexOutOfBoundsException exception) {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,9 @@ package org.arakhne.afc.attrs.collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class implements an abstract object with attributes.
@@ -62,7 +61,7 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	@Pure
 	@Override
 	public AttributeCollection clone() {
-		final AbstractAttributeCollection clone = (AbstractAttributeCollection) super.clone();
+		final var clone = (AbstractAttributeCollection) super.clone();
 		clone.listenerList = null;
 		return clone;
 	}
@@ -74,16 +73,16 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	 */
 	protected synchronized void fireAttributeAddedEvent(String name, AttributeValue attr) {
 		if (this.listenerList != null && isEventFirable()) {
-			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+			final var list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					this,
 					Type.ADDITION,
 					null,
 					null,
 					name,
 					attr);
-			for (final AttributeChangeListener listener : list) {
+			for (final var listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -97,16 +96,16 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	 */
 	protected synchronized void fireAttributeChangedEvent(String name, AttributeValue oldValue, AttributeValue currentValue) {
 		if (this.listenerList != null && isEventFirable()) {
-			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+			final var list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					this,
 					Type.VALUE_UPDATE,
 					name,
 					oldValue,
 					name,
 					currentValue);
-			for (final AttributeChangeListener listener : list) {
+			for (final var listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -116,16 +115,16 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	 */
 	protected synchronized void fireAttributeClearedEvent() {
 		if (this.listenerList != null && isEventFirable()) {
-			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+			final var list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					this,
 					Type.REMOVE_ALL,
 					null,
 					null,
 					null,
 					null);
-			for (final AttributeChangeListener listener : list) {
+			for (final var listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -138,16 +137,16 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	 */
 	protected synchronized void fireAttributeRemovedEvent(String name, AttributeValue oldValue) {
 		if (this.listenerList != null && isEventFirable()) {
-			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+			final var list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					this,
 					Type.REMOVAL,
 					name,
 					oldValue,
 					name,
 					oldValue);
-			for (final AttributeChangeListener listener : list) {
+			for (final var listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -161,16 +160,16 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	 */
 	protected synchronized void fireAttributeRenamedEvent(String oldName, String newName, AttributeValue attr) {
 		if (this.listenerList != null && isEventFirable()) {
-			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+			final var list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			final AttributeChangeEvent event = new AttributeChangeEvent(
+			final var event = new AttributeChangeEvent(
 					this,
 					Type.RENAME,
 					oldName,
 					attr,
 					newName,
 					attr);
-			for (final AttributeChangeListener listener : list) {
+			for (final var listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}

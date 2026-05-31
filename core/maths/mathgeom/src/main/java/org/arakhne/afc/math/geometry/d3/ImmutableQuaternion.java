@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public final class ImmutableQuaternion implements UnmodifiableQuaternion<Immutab
 	 */
 	public ImmutableQuaternion(AxisAngle axisangle) {
 		assert axisangle != null;
-		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(axisangle.x(), axisangle.y(), axisangle.z(), axisangle.angle());
+		final var comps = Quaternion.computeWithAxisAngle(axisangle.x(), axisangle.y(), axisangle.z(), axisangle.angle());
 		this.x = comps.x();
 		this.y = comps.y();
 		this.z = comps.z();
@@ -86,8 +86,11 @@ public final class ImmutableQuaternion implements UnmodifiableQuaternion<Immutab
 	@Override
 	public boolean equals(Object object) {
 		try {
-			final Quaternion<?, ?, ?> tuple = (Quaternion<?, ?, ?>) object;
-			return tuple.getX() == getX() && tuple.getY() == getY() && tuple.getZ() == getZ ()&& tuple.getW() == getW();
+			final var tuple = (Quaternion<?, ?, ?>) object;
+			return tuple.getX() == getX()
+					&& tuple.getY() == getY()
+					&& tuple.getZ() == getZ()
+					&& tuple.getW() == getW();
         } catch (AssertionError e) {
             throw e;
         } catch (Throwable e2) {
@@ -103,19 +106,19 @@ public final class ImmutableQuaternion implements UnmodifiableQuaternion<Immutab
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.doubleToLongBits(this.x);
 		bits = 31 * bits + Double.doubleToLongBits(this.y);
 		bits = 31 * bits + Double.doubleToLongBits(this.z);
 		bits = 31 * bits + Double.doubleToLongBits(this.w);
-		final int b = (int) bits;
+		final var b = (int) bits;
 		return b ^ (b >> 31);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
         return objectDescription.toString();
 	}

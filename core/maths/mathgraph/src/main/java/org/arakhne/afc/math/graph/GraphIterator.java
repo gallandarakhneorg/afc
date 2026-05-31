@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package org.arakhne.afc.math.graph;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -30,9 +29,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.collect.Iterables;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a graph.
@@ -86,7 +84,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
 	 * @param allowManyReplies1 may be {@code true} to allow to reply many times
-	 *     the same segment, otherwhise {@code false}.
+	 *     the same segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments1 may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -105,7 +103,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
 	 * @param allowManyReplies1 may be {@code true} to allow to reply many times the
-	 *     same segment, otherwhise {@code false}.
+	 *     same segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments1 may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -125,7 +123,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the
-	 *     same segment, otherwhise {@code false}.
+	 *     same segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -144,7 +142,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
 		this.graph = new WeakReference<>(graph1);
 		this.dynamicDepthUpdater = dynamicDepthUpdater;
-		GraphCourseModel<ST, PT> courseM = courseModel;
+		var courseM = courseModel;
 		if (courseM == null) {
 			courseM = new BreadthFirstGraphCourseModel<>();
 		}
@@ -153,7 +151,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 		this.allowManyReplies = allowManyReplies;
 		this.assumeOrientedSegments = assumeOrientedSegments;
 
-		final GraphIterationElement<ST, PT> firstElement = newIterationElement(
+		final var firstElement = newIterationElement(
 				null, segment, point,
 				segment.getBeginPoint().equals(point),
 				(distanceToReachStartingPoint > 0) ? 0 : distanceToReachStartingPoint,
@@ -161,7 +159,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 
 		this.courseModel.addIterationElement(firstElement);
 		if (!this.allowManyReplies) {
-			final Comparator<GraphIterationElement<ST, PT>> comparator = createVisitedSegmentComparator(
+			final var comparator = createVisitedSegmentComparator(
 					this.assumeOrientedSegments);
 			assert comparator != null;
 			this.visited = new TreeSet<>(comparator);
@@ -208,6 +206,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param avoid_visited_segments is {@code true} to avoid to reply already visited segments, otherwise {@code false}
 	 * @param element is the element from which the next segments must be replied.
 	 * @return the list of the following segments
+	 * @throws NoSuchElementException element not found
 	 * @see #next()
 	 */
 	@SuppressWarnings("checkstyle:nestedifdepth")
@@ -215,29 +214,29 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 			GraphIterationElement<ST, PT> element) {
 		assert this.allowManyReplies || this.visited != null;
 		if (element != null) {
-			final ST segment = element.getSegment();
-			final PT point = element.getPoint();
-			if ((segment != null) && (point != null)) {
-				final PT pts = segment.getOtherSidePoint(point);
+			final var segment = element.getSegment();
+			final var point = element.getPoint();
+			if (segment != null && point != null) {
+				final var pts = segment.getOtherSidePoint(point);
 				if (pts != null) {
-					final double distanceToReach = element.getDistanceToReachSegment() + segment.getLength();
-					final double restToConsume = element.getDistanceToConsume() - segment.getLength();
+					final var distanceToReach = element.getDistanceToReachSegment() + segment.getLength();
+					final var restToConsume = element.getDistanceToConsume() - segment.getLength();
 					final Iterable<? extends GraphPointConnection<PT, ST>> source;
 					if (this.courseModel.isReversedRestitution()) {
 						source = pts.getConnectionsStartingFromInReverseOrder(segment);
 					} else {
 						source = pts.getConnectionsStartingFrom(segment);
 					}
-					final Iterable<? extends GraphPointConnection<PT, ST>> filteredSegments = Iterables.filter(
+					final var filteredSegments = Iterables.filter(
 						source, it -> !it.getGraphSegment().equals(segment));
-					final Iterable<GraphIterationElement<ST, PT>> candidates = Iterables.transform(filteredSegments,
+					final var candidates = Iterables.transform(filteredSegments,
 						it ->  newIterationElement(
 								segment,
 								it.getGraphSegment(),
 								pts,
 								it.isSegmentStartConnected(),
 								distanceToReach, restToConsume));
-					final Iterable<GraphIterationElement<ST, PT>> filteredCandidates = Iterables.filter(candidates,
+					final var filteredCandidates = Iterables.filter(candidates,
 						it -> {
 							if (this.assumeOrientedSegments && !it.fromStartPoint) {
 								return false;
@@ -277,8 +276,8 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 
 	@Override
 	public final ST next() {
-		final GraphIterationElement<ST, PT> theElement = nextElement();
-		final ST sgmt = theElement.getSegment();
+		final var theElement = nextElement();
+		final var sgmt = theElement.getSegment();
 		if (sgmt != null) {
 			return sgmt;
 		}
@@ -289,19 +288,20 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	/** Replies the next segment.
 	 *
 	 * @return the next segment
+	 * @throws NoSuchElementException element not found
 	 */
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	public final GraphIterationElement<ST, PT> nextElement() {
 		if (!this.courseModel.isEmpty()) {
-			final GraphIterationElement<ST, PT> theElement = this.courseModel.removeNextIterationElement();
+			final var theElement = this.courseModel.removeNextIterationElement();
 			if (theElement != null) {
-				final Iterable<GraphIterationElement<ST, PT>> list = getNextSegments(true, theElement);
-				final Iterator<GraphIterationElement<ST, PT>> iterator = list.iterator();
-				boolean hasFollowingSegments = false;
+				final var list = getNextSegments(true, theElement);
+				final var iterator = list.iterator();
+				var hasFollowingSegments = false;
 				if (isOrientedSegmentSupportEnabled()) {
-					final Collection<GraphIterationElement<ST, PT>> tmpVisited = new ArrayList<>();
+					final var tmpVisited = new ArrayList<GraphIterationElement<ST, PT>>();
 					while (iterator.hasNext()) {
-						final GraphIterationElement<ST, PT> elt = iterator.next();
+						final var elt = iterator.next();
 						if (canGotoIntoElement(elt)) {
 							hasFollowingSegments = true;
 							this.courseModel.addIterationElement(elt);
@@ -316,7 +316,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 					}
 				} else {
 					while (iterator.hasNext()) {
-						final GraphIterationElement<ST, PT> elt = iterator.next();
+						final var elt = iterator.next();
 						if (canGotoIntoElement(elt)) {
 							hasFollowingSegments = true;
 							this.courseModel.addIterationElement(elt);
@@ -385,7 +385,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param element the reference element.
 	 */
 	public void ignoreElementsAfter(GraphIterationElement<ST, PT> element) {
-		final Iterable<GraphIterationElement<ST, PT>> nexts = getNextSegments(false, element);
+		final var nexts = getNextSegments(false, element);
 		this.courseModel.removeIterationElements(nexts);
 	}
 

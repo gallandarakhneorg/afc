@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -197,7 +197,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static String getPreferredAttributeNameForRoadWidth() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			return prefs.get("ROAD_WIDTH_ATTR_NAME", DEFAULT_ATTR_ROAD_WIDTH); //$NON-NLS-1$
 		}
@@ -210,7 +210,7 @@ public final class RoadNetworkConstants {
 	 * @see #DEFAULT_ATTR_ROAD_WIDTH
 	 */
 	public static void setPreferredAttributeNameForRoadWidth(String name) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (name == null || "".equals(name) || DEFAULT_ATTR_ROAD_WIDTH.equalsIgnoreCase(name)) { //$NON-NLS-1$
 				prefs.remove("ROAD_WIDTH_ATTR_NAME"); //$NON-NLS-1$
@@ -227,7 +227,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static String getPreferredAttributeNameForLaneCount() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			return prefs.get("LANE_COUNT_ATTR_NAME", DEFAULT_ATTR_LANE_COUNT); //$NON-NLS-1$
 		}
@@ -240,7 +240,7 @@ public final class RoadNetworkConstants {
 	 * @see #DEFAULT_ATTR_LANE_COUNT
 	 */
 	public static void setPreferredAttributeNameForLaneCount(String name) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (name == null || "".equals(name) || DEFAULT_ATTR_LANE_COUNT.equalsIgnoreCase(name)) { //$NON-NLS-1$
 				prefs.remove("LANE_COUNT_ATTR_NAME"); //$NON-NLS-1$
@@ -257,7 +257,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static int getPreferredLaneCount() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			return prefs.getInt("LANE_COUNT", DEFAULT_LANE_COUNT); //$NON-NLS-1$
 		}
@@ -270,7 +270,7 @@ public final class RoadNetworkConstants {
 	 * @see #DEFAULT_LANE_COUNT
 	 */
 	public static void setPreferredLaneCount(int count) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (count < 0) {
 				prefs.remove("LANE_COUNT"); //$NON-NLS-1$
@@ -287,7 +287,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static double getPreferredLaneWidth() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			return prefs.getDouble("LANE_WIDTH", DEFAULT_LANE_WIDTH); //$NON-NLS-1$
 		}
@@ -300,7 +300,7 @@ public final class RoadNetworkConstants {
 	 * @see #DEFAULT_LANE_WIDTH
 	 */
 	public static void setPreferredLaneWidth(double width) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (width <= 0) {
 				prefs.remove("LANE_WIDTH"); //$NON-NLS-1$
@@ -316,7 +316,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static LegalTrafficSide getPreferredLegalTrafficSide() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		String name = null;
 		if (prefs != null) {
 			name = prefs.get("LEGAL_TRAFFIC_SIDE", null); //$NON-NLS-1$
@@ -340,7 +340,7 @@ public final class RoadNetworkConstants {
 	 * @param side is the preferred side of traffic for vehicles on road segments.
 	 */
 	public static void setPreferredLegalTrafficSide(LegalTrafficSide side) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (side == null) {
 				prefs.remove("LEGAL_TRAFFIC_SIDE"); //$NON-NLS-1$
@@ -357,7 +357,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static String getPreferredAttributeNameForTrafficDirection() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			return prefs.get("TRAFFIC_DIRECTION_ATTR_NAME", DEFAULT_ATTR_TRAFFIC_DIRECTION); //$NON-NLS-1$
 		}
@@ -370,7 +370,7 @@ public final class RoadNetworkConstants {
 	 * @see #DEFAULT_ATTR_TRAFFIC_DIRECTION
 	 */
 	public static void setPreferredAttributeNameForTrafficDirection(String name) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (name == null || "".equals(name) || DEFAULT_ATTR_TRAFFIC_DIRECTION.equalsIgnoreCase(name)) { //$NON-NLS-1$
 				prefs.remove("TRAFFIC_DIRECTION_ATTR_NAME"); //$NON-NLS-1$
@@ -390,9 +390,9 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static String getPreferredAttributeValueForTrafficDirection(TrafficDirection direction, int index) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
-			final StringBuilder b = new StringBuilder();
+			final var b = new StringBuilder();
 			b.append("TRAFFIC_DIRECTION_VALUE_"); //$NON-NLS-1$
 			b.append(direction.name());
 			b.append("_"); //$NON-NLS-1$
@@ -419,9 +419,9 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static List<String> getPreferredAttributeValuesForTrafficDirection(TrafficDirection direction) {
-		final List<String> array = new ArrayList<>();
-		int i = 0;
-		String value = getPreferredAttributeValueForTrafficDirection(direction, i);
+		final var array = new ArrayList<String>();
+		var i = 0;
+		var value = getPreferredAttributeValueForTrafficDirection(direction, i);
 		while (value != null) {
 			array.add(value);
 			value = getPreferredAttributeValueForTrafficDirection(direction, ++i);
@@ -525,9 +525,9 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static List<String> getSystemDefaults(TrafficDirection direction) {
-		final List<String> array = new ArrayList<>();
+		final var array = new ArrayList<String>();
 		try {
-			int i = 0;
+			var i = 0;
 			while (true) {
 				array.add(getSystemDefault(direction, i));
 				++i;
@@ -548,9 +548,9 @@ public final class RoadNetworkConstants {
 	 * @param value is the preferred name for the traffic direction on the roads.
 	 */
 	public static void setPreferredAttributeValueForTrafficDirection(TrafficDirection direction, int index, String value) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
-			final StringBuilder keyName = new StringBuilder();
+			final var keyName = new StringBuilder();
 			keyName.append("TRAFFIC_DIRECTION_VALUE_"); //$NON-NLS-1$
 			keyName.append(direction.name());
 			keyName.append("_"); //$NON-NLS-1$
@@ -562,7 +562,7 @@ public final class RoadNetworkConstants {
 				sysDef = null;
 			}
 			if (value == null || "".equals(value) //$NON-NLS-1$
-					|| (sysDef != null && sysDef.equalsIgnoreCase(value))) {
+					|| sysDef != null && sysDef.equalsIgnoreCase(value)) {
 				prefs.remove(keyName.toString());
 				return;
 			}
@@ -587,8 +587,8 @@ public final class RoadNetworkConstants {
 	 * @param values are the values for the given direction.
 	 */
 	public static void setPreferredAttributeValuesForTrafficDirection(TrafficDirection direction, List<String> values) {
-		int i = 0;
-		for (final String value : values) {
+		var i = 0;
+		for (final var value : values) {
 			setPreferredAttributeValueForTrafficDirection(direction, i, value);
 			++i;
 		}
@@ -601,7 +601,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static double getPreferredRoadConnectionDistance() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			return prefs.getDouble("ROAD_CONNECTION_DISTANCE", DEFAULT_ROAD_CONNECTION_DISTANCE); //$NON-NLS-1$
 		}
@@ -613,7 +613,7 @@ public final class RoadNetworkConstants {
 	 * @param distance is the preferred distance (in meters) below which roads may be connected.
 	 */
 	public static void setPreferredRoadConnectionDistance(double distance) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (distance <= 0.) {
 				prefs.remove("ROAD_CONNECTION_DISTANCE"); //$NON-NLS-1$
@@ -629,7 +629,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static RoadType getPreferredRoadType() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		String name = null;
 		if (prefs != null) {
 			name = prefs.get("ROAD_TYPE", null); //$NON-NLS-1$
@@ -653,7 +653,7 @@ public final class RoadNetworkConstants {
 	 * @param type is the preferred type of road segment.
 	 */
 	public static void setPreferredRoadType(RoadType type) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (type == null) {
 				prefs.remove("ROAD_TYPE"); //$NON-NLS-1$
@@ -683,7 +683,7 @@ public final class RoadNetworkConstants {
 	 * @see #DEFAULT_ATTR_ROAD_TYPE
 	 */
 	public static void setPreferredAttributeNameForRoadType(String name) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (name == null || "".equals(name) || DEFAULT_ATTR_ROAD_TYPE.equalsIgnoreCase(name)) { //$NON-NLS-1$
 				prefs.remove("ROAD_TYPE_ATTR_NAME"); //$NON-NLS-1$
@@ -701,9 +701,9 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static String getPreferredAttributeValueForRoadType(RoadType type) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
-			final String v = prefs.get("ROAD_TYPE_VALUE_" + type.name(), null); //$NON-NLS-1$
+			final var v = prefs.get("ROAD_TYPE_VALUE_" + type.name(), null); //$NON-NLS-1$
 			if (v != null && !"".equals(v)) { //$NON-NLS-1$
 				return v;
 			}
@@ -718,9 +718,9 @@ public final class RoadNetworkConstants {
 	 * @param value is the preferred name for the types of the roads.
 	 */
 	public static void setPreferredAttributeValueForRoadType(RoadType type, String value) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
-			final String sysDef = getSystemDefault(type);
+			final var sysDef = getSystemDefault(type);
 			if (value == null || "".equals(value) || sysDef.equalsIgnoreCase(value)) { //$NON-NLS-1$
 				prefs.remove("ROAD_TYPE_VALUE_" + type.name()); //$NON-NLS-1$
 			} else {
@@ -736,7 +736,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static String getPreferredAttributeNameForRoadName() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			return prefs.get("ROAD_NAME_ATTR_NAME", DEFAULT_ATTR_ROAD_NAME); //$NON-NLS-1$
 		}
@@ -749,7 +749,7 @@ public final class RoadNetworkConstants {
 	 * @see #DEFAULT_ATTR_ROAD_NAME
 	 */
 	public static void setPreferredAttributeNameForRoadName(String name) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (name == null || "".equals(name) || DEFAULT_ATTR_ROAD_NAME.equalsIgnoreCase(name)) { //$NON-NLS-1$
 				prefs.remove("ROAD_NAME_ATTR_NAME"); //$NON-NLS-1$
@@ -766,7 +766,7 @@ public final class RoadNetworkConstants {
 	 */
 	@Pure
 	public static String getPreferredAttributeNameForRoadNumber() {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			return prefs.get("ROAD_NUMBER_ATTR_NAME", DEFAULT_ATTR_ROAD_NUMBER); //$NON-NLS-1$
 		}
@@ -779,7 +779,7 @@ public final class RoadNetworkConstants {
 	 * @see #DEFAULT_ATTR_ROAD_NUMBER
 	 */
 	public static void setPreferredAttributeNameForRoadNumber(String name) {
-		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
+		final var prefs = Preferences.userNodeForPackage(RoadNetworkConstants.class);
 		if (prefs != null) {
 			if (name == null || "".equals(name) || DEFAULT_ATTR_ROAD_NUMBER.equalsIgnoreCase(name)) { //$NON-NLS-1$
 				prefs.remove("ROAD_NUMBER_ATTR_NAME"); //$NON-NLS-1$

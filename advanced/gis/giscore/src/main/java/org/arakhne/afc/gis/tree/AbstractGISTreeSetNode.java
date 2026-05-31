@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ package org.arakhne.afc.gis.tree;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -32,6 +30,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.tree.node.IcosepQuadTreeNode;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A node inside a {@link StandardGISTreeSet}.
@@ -221,7 +220,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	@Pure
 	void clearBounds() {
 		this.dataBounds = null;
-		final N parent = getParentNode();
+		final var parent = getParentNode();
 		if (parent != null) {
 			parent.clearBounds();
 		}
@@ -250,16 +249,14 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	 */
 	@Pure
 	protected Rectangle2d calcBounds() {
-		final Rectangle2d bb = new Rectangle2d();
-		boolean first = true;
-		Rectangle2afp<?, ?, ?, ?, ?, ?> b;
+		final var bb = new Rectangle2d();
+		var first = true;
 
 		// Child bounds
-		N child;
-		for (int i = 0; i < getChildCount(); ++i) {
-			child = getChildAt(i);
+		for (var i = 0; i < getChildCount(); ++i) {
+			final var child = getChildAt(i);
 			if (child != null) {
-				b = child.getBounds();
+				final var b = child.getBounds();
 				if (b != null) {
 					if (first) {
 						first = false;
@@ -276,14 +273,12 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 		}
 
 		// Data bounds
-		P primitive;
-		GeoLocation location;
-		for (int i = 0; i < getUserDataCount(); ++i) {
-			primitive = getUserDataAt(i);
+		for (var i = 0; i < getUserDataCount(); ++i) {
+			final var primitive = getUserDataAt(i);
 			if (primitive != null) {
-				location = primitive.getGeoLocation();
+				final var location = primitive.getGeoLocation();
 				if (location != null) {
-					b = location.toBounds2D();
+					final var b = location.toBounds2D();
 					if (b != null) {
 						if (first) {
 							first = false;
@@ -306,7 +301,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	@Override
 	@Pure
 	public boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rect) {
-		final Rectangle2afp<?, ?, ?, ?, ?, ?> b = getBounds();
+		final var b = getBounds();
 		return b != null && b.intersects(rect);
 	}
 
@@ -319,7 +314,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	@Override
 	@Pure
 	public boolean contains(Point2D<?, ?> point) {
-		final Rectangle2afp<?, ?, ?, ?, ?, ?> bounds = getBounds();
+		final var bounds = getBounds();
 		return bounds != null && bounds.contains(point);
 	}
 
@@ -334,13 +329,13 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 			return 0.;
 		}
 
-		final N parent = getParentNode();
+		final var parent = getParentNode();
 		if (parent == null) {
 			// Assuming that root nodes are enclosing the whole system area
 			return 0;
 		}
 
-		final int region = parent.indexOf((N) this);
+		final var region = parent.indexOf((N) this);
 
 		// Compute the positions of the other regions of the parent area
 		if (region >= IcosepQuadTreeZone.ICOSEP.ordinal()) {
@@ -356,7 +351,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 			return 0.;
 		}
 
-		int vertRegion = region + 2;
+		var vertRegion = region + 2;
 		if (vertRegion > 3) {
 			vertRegion -= 4;
 		}
@@ -366,8 +361,8 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 			return Math.abs(parent.horizontalSplit - y);
 		}
 
-		int horizRegion = -1;
-		int diagRegion = -1;
+		var horizRegion = -1;
+		var diagRegion = -1;
 		if (region == 0 || region == 2) {
 			horizRegion = region + 1;
 			diagRegion = region + 3;
@@ -395,9 +390,9 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	@Override
 	@Pure
 	public Rectangle2d getAreaBounds() {
-		final Rectangle2d b = new Rectangle2d();
-		final double dw = this.nodeWidth / 2.;
-		final double dh = this.nodeHeight / 2.;
+		final var b = new Rectangle2d();
+		final var dw = this.nodeWidth / 2.;
+		final var dh = this.nodeHeight / 2.;
 		b.setFromCorners(this.verticalSplit - dw, this.horizontalSplit - dh,
 				this.verticalSplit + dw, this.horizontalSplit + dh);
 		return b;
@@ -415,8 +410,8 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	@Override
 	@Pure
 	public Rectangle2d getObjectBounds() {
-		final Rectangle2d b = new Rectangle2d();
-		final Rectangle2afp<?, ?, ?, ?, ?, ?> bb = getBounds();
+		final var b = new Rectangle2d();
+		final var bb = getBounds();
 		if (bb != null && !bb.isEmpty()) {
 			b.set(bb.getMinX(), bb.getMinY(), bb.getWidth(), bb.getHeight());
 		}
@@ -429,7 +424,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 		if (getZone() == IcosepQuadTreeZone.ICOSEP) {
 			return true;
 		}
-		final N parent = getParentNode();
+		final var parent = getParentNode();
 		if (parent != null) {
 			return parent.isIcosepHeuristicArea();
 		}
@@ -440,7 +435,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		buffer.add("depth", getDepth()); //$NON-NLS-1$
+		buffer.add("depth", Integer.valueOf(getDepth())); //$NON-NLS-1$
 		buffer.add("zone", getZone()); //$NON-NLS-1$
 		buffer.add("areaBounds", getAreaBounds()); //$NON-NLS-1$
 		buffer.add("bounds", getBounds()); //$NON-NLS-1$

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -164,19 +164,19 @@ public class LinkedTree<D, N extends TreeNode<D, N>> extends AbstractTree<D, N> 
 	@Override
 	@Pure
 	public int getMinHeight() {
-		return (this.root != null) ? this.root.getMinHeight() : 0;
+		return this.root != null ? this.root.getMinHeight() : 0;
 	}
 
 	@Override
 	@Pure
 	public int getMaxHeight() {
-		return (this.root != null) ? this.root.getMaxHeight() : 0;
+		return this.root != null ? this.root.getMaxHeight() : 0;
 	}
 
 	@Override
 	@Pure
 	public int[] getHeights() {
-		return (this.root != null) ? this.root.getHeights() : new int[] {0};
+		return this.root != null ? this.root.getHeights() : new int[] {0};
 	}
 
 	/**
@@ -202,22 +202,22 @@ public class LinkedTree<D, N extends TreeNode<D, N>> extends AbstractTree<D, N> 
 
 		@Override
 		public void treeNodeChildAdded(TreeNodeAddedEvent event) {
-			final TreeNode<?, ?> childNode = event.getChild();
+			final var childNode = event.getChild();
 			LinkedTree.this.nodeCount += childNode.getDeepNodeCount();
 			LinkedTree.this.dataCount += childNode.getDeepUserDataCount();
 		}
 
 		@Override
 		public void treeNodeChildRemoved(TreeNodeRemovedEvent event) {
-			final TreeNode<?, ?> childNode = event.getChild();
+			final var childNode = event.getChild();
 			LinkedTree.this.nodeCount -= childNode.getDeepNodeCount();
 			LinkedTree.this.dataCount -= childNode.getDeepUserDataCount();
 		}
 
 		@Override
 		public void treeNodeDataChanged(TreeDataEvent event) {
-			final int oldCount = event.getRemovedValueCount();
-			final int newCount = event.getAddedValueCount();
+			final var oldCount = event.getRemovedValueCount();
+			final var newCount = event.getAddedValueCount();
 			if (oldCount < newCount) {
 				LinkedTree.this.dataCount += newCount - oldCount;
 			} else if (oldCount > newCount) {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,13 +56,13 @@ public class TreeDataEvent {
 	 * @param allValues1 is the list of all user data currently associated to the node
 	 */
 	public TreeDataEvent(TreeNode<?, ?> node1, Collection<?> oldValues1, Collection<?> newValues1, Collection<?> allValues1) {
-		int aCount = 0;
-		int rCount = 0;
+		var aCount = 0;
+		var rCount = 0;
 		this.node = node1;
 		if (oldValues1 == null) {
 			this.oldValues = null;
-		} else if (oldValues1 instanceof List<?>) {
-			this.oldValues = (List<?>) oldValues1;
+		} else if (oldValues1 instanceof List lst) {
+			this.oldValues = lst;
 			rCount = this.oldValues.size();
 		} else {
 			this.oldValues = new ArrayList<>(oldValues1);
@@ -70,8 +70,8 @@ public class TreeDataEvent {
 		}
 		if (newValues1 == null) {
 			this.newValues = null;
-		} else if (newValues1 instanceof List<?>) {
-			this.newValues = (List<?>) newValues1;
+		} else if (newValues1 instanceof List lst) {
+			this.newValues = lst;
 			aCount = this.newValues.size();
 		} else {
 			this.newValues = new ArrayList<>(newValues1);
@@ -79,8 +79,8 @@ public class TreeDataEvent {
 		}
 		if (allValues1 == null) {
 			this.allValues = null;
-		} else if (allValues1 instanceof List<?>) {
-			this.allValues = (List<?>) allValues1;
+		} else if (allValues1 instanceof List lst) {
+			this.allValues = lst;
 		} else {
 			this.allValues = new ArrayList<>(allValues1);
 		}
@@ -95,15 +95,15 @@ public class TreeDataEvent {
 	 * @param allValues1 is the list of all user data currently associated to the node
 	 */
 	public TreeDataEvent(TreeNode<?, ?> node1, int delta1, Collection<?> allValues1) {
-		final int aCount = 0;
-		final int rCount = 0;
+		final var aCount = 0;
+		final var rCount = 0;
 		this.node = node1;
 		this.oldValues = null;
 		this.newValues = null;
 		if (allValues1 == null) {
 			this.allValues = null;
-		} else if (allValues1 instanceof List<?>) {
-			this.allValues = (List<?>) allValues1;
+		} else if (allValues1 instanceof List lst) {
+			this.allValues = lst;
 		} else {
 			this.allValues = new ArrayList<>(allValues1);
 		}
@@ -125,7 +125,7 @@ public class TreeDataEvent {
 	 */
 	@Pure
 	public int getRemovedValueCount() {
-		return (this.oldValues == null) ? 0 : this.oldValues.size();
+		return this.oldValues == null ? 0 : this.oldValues.size();
 	}
 
 	/** Replies the count of added values.
@@ -134,7 +134,7 @@ public class TreeDataEvent {
 	 */
 	@Pure
 	public int getAddedValueCount() {
-		return (this.newValues == null) ? 0 : this.newValues.size();
+		return this.newValues == null ? 0 : this.newValues.size();
 	}
 
 	/** Replies the count of all associated values.
@@ -143,7 +143,7 @@ public class TreeDataEvent {
 	 */
 	@Pure
 	public int getCurrentValueCount() {
-		return (this.allValues == null) ? 0 : this.allValues.size();
+		return this.allValues == null ? 0 : this.allValues.size();
 	}
 
 	/** Replies the value removed from a node.

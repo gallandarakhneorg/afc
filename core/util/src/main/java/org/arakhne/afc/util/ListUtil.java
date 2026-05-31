@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,18 +53,18 @@ public final class ListUtil {
 	 * @param comparator is the comparator of elements.
 	 * @param data is the data to remove.
 	 * @return the index at which the element was removed in the list; or
-	 * {@code -1} if the element was not removed.
+	 *     {@code -1} if the element was not removed.
 	 */
 	public static <E> int remove(List<E> list, Comparator<? super E> comparator, E data) {
 		assert list != null;
 		assert comparator != null;
 		assert data != null;
-		int first = 0;
-		int last = list.size() - 1;
+		var first = 0;
+		var last = list.size() - 1;
 		while (last >= first) {
-			final int center = (first + last) / 2;
-			final E dt = list.get(center);
-			final int cmpR = comparator.compare(data, dt);
+			final var center = (first + last) / 2;
+			final var dt = list.get(center);
+			final var cmpR = comparator.compare(data, dt);
 			if (cmpR == 0) {
 				list.remove(center);
 				return center;
@@ -114,12 +114,12 @@ public final class ListUtil {
 		assert list != null;
 		assert comparator != null;
 		assert data != null;
-		int first = 0;
-		int last = list.size() - 1;
+		var first = 0;
+		var last = list.size() - 1;
 		while (last >= first) {
-			final int center = (first + last) / 2;
-			final E dt = list.get(center);
-			final int cmpR = comparator.compare(data, dt);
+			final var center = (first + last) / 2;
+			final var dt = list.get(center);
+			final var cmpR = comparator.compare(data, dt);
 			if (cmpR == 0 && !allowMultipleOccurencesOfSameValue) {
 				if (allowReplacement) {
 					list.set(center, data);
@@ -152,12 +152,12 @@ public final class ListUtil {
 		assert list != null;
 		assert comparator != null;
 		assert data != null;
-		int first = 0;
-		int last = list.size() - 1;
+		var first = 0;
+		var last = list.size() - 1;
 		while (last >= first) {
-			final int center = (first + last) / 2;
-			final E dt = list.get(center);
-			final int cmpR = comparator.compare(data, dt);
+			final var center = (first + last) / 2;
+			final var dt = list.get(center);
+			final var cmpR = comparator.compare(data, dt);
 			if (cmpR == 0) {
 				return true;
 			} else if (cmpR < 0) {
@@ -193,18 +193,17 @@ public final class ListUtil {
 				return -1;
 			}
 
-			int first = 0;
-			int last = list.size() - 1;
+			var first = 0;
+			var last = list.size() - 1;
 
 			while (last >= first) {
-				int center = (first + last) / 2;
-				final T indata = list.get(center);
-				final int cmp = comparator.compare(elt, indata);
+				var center = (first + last) / 2;
+				final var indata = list.get(center);
+				final var cmp = comparator.compare(elt, indata);
 				if (cmp == 0) {
 					do {
 						--center;
-					}
-					while (center >= 0 && comparator.compare(elt, list.get(center)) == 0);
+					} while (center >= 0 && comparator.compare(elt, list.get(center)) == 0);
 					return center + 1;
 				} else if (cmp < 0) {
 					last = center - 1;
@@ -244,18 +243,17 @@ public final class ListUtil {
 				return -1;
 			}
 
-			int first = 0;
-			int last = list.size() - 1;
+			var first = 0;
+			var last = list.size() - 1;
 
 			while (last >= first) {
-				int c = (first + last) / 2;
-				final T indata = list.get(c);
-				final int cmp = comparator.compare(elt, indata);
+				var c = (first + last) / 2;
+				final var indata = list.get(c);
+				final var cmp = comparator.compare(elt, indata);
 				if (cmp == 0) {
 					do {
 						++c;
-					}
-					while (c < list.size() && comparator.compare(elt, list.get(c)) == 0);
+					} while (c < list.size() && comparator.compare(elt, list.get(c)) == 0);
 					return c - 1;
 				} else if (cmp < 0) {
 					last = c - 1;
@@ -319,13 +317,13 @@ public final class ListUtil {
 				return -1;
 			}
 
-			int first = 0;
-			int last = list.size() - 1;
+			var first = 0;
+			var last = list.size() - 1;
 
 			while (last >= first) {
-				final int center = (first + last) / 2;
-				final T indata = list.get(center);
-				final int comparison = comparator.compare(elt, indata);
+				final var center = (first + last) / 2;
+				final var indata = list.get(center);
+				final var comparison = comparator.compare(elt, indata);
 				if (!allowMultiple && comparison == 0) {
 					return -1;
 				}
@@ -356,7 +354,7 @@ public final class ListUtil {
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the value to match.
 	 * @return the index of leastest element greater than or equal to {@code elt}, or
-	 * {@code -1} if there is no such element.
+	 *     {@code -1} if there is no such element.
 	 * @see NavigableSet#ceiling(Object)
 	 */
 	@Pure
@@ -367,18 +365,17 @@ public final class ListUtil {
 			if (elt == null) {
 				return -1;
 			}
-			int first = 0;
-			int last = list.size() - 1;
+			var first = 0;
+			var last = list.size() - 1;
 
 			while (last >= first) {
-				int c = (first + last) / 2;
-				final T indata = list.get(c);
-				final int cmp = comparator.compare(elt, indata);
+				var c = (first + last) / 2;
+				final var indata = list.get(c);
+				final var cmp = comparator.compare(elt, indata);
 				if (cmp == 0) {
 					do {
 						--c;
-					}
-					while (c >= 0 && comparator.compare(elt, list.get(c)) == 0);
+					} while (c >= 0 && comparator.compare(elt, list.get(c)) == 0);
 					return c + 1;
 				} else if (cmp < 0) {
 					last = c - 1;
@@ -410,7 +407,7 @@ public final class ListUtil {
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the value to match.
 	 * @return the index of greatest element less than or equal to {@code elt}, or
-	 * {@code -1} if there is no such element.
+	 *     {@code -1} if there is no such element.
 	 * @see NavigableSet#floor(Object)
 	 */
 	@Pure
@@ -421,18 +418,17 @@ public final class ListUtil {
 			if (elt == null) {
 				return -1;
 			}
-			int first = 0;
-			int last = list.size() - 1;
+			var first = 0;
+			var last = list.size() - 1;
 
 			while (last >= first) {
-				int center = (first + last) / 2;
-				final T indata = list.get(center);
-				final int cmp = comparator.compare(elt, indata);
+				var center = (first + last) / 2;
+				final var indata = list.get(center);
+				final var cmp = comparator.compare(elt, indata);
 				if (cmp == 0) {
 					do {
 						++center;
-					}
-					while (center < list.size() && comparator.compare(elt, list.get(center)) == 0);
+					} while (center < list.size() && comparator.compare(elt, list.get(center)) == 0);
 					return center - 1;
 				} else if (cmp < 0) {
 					last = center - 1;
@@ -461,7 +457,7 @@ public final class ListUtil {
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the value to match.
 	 * @return the index of least element strictly greater than to {@code elt}, or
-	 * {@code -1} if there is no such element.
+	 *     {@code -1} if there is no such element.
 	 * @see NavigableSet#higher(Object)
 	 */
 	@Pure
@@ -472,13 +468,13 @@ public final class ListUtil {
 			if (elt == null) {
 				return -1;
 			}
-			int first = 0;
-			int last = list.size() - 1;
+			var first = 0;
+			var last = list.size() - 1;
 
 			while (last >= first) {
-				final int center = (first + last) / 2;
-				final T indata = list.get(center);
-				final int cmp = comparator.compare(elt, indata);
+				final var center = (first + last) / 2;
+				final var indata = list.get(center);
+				final var cmp = comparator.compare(elt, indata);
 				if (cmp < 0) {
 					last = center - 1;
 				} else {
@@ -510,7 +506,7 @@ public final class ListUtil {
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the value to match.
 	 * @return the index of greater element strictly lower than to {@code elt}, or
-	 * {@code -1} if there is no such element.
+	 *     {@code -1} if there is no such element.
 	 * @see NavigableSet#lower(Object)
 	 */
 	@Pure
@@ -521,13 +517,13 @@ public final class ListUtil {
 			if (elt == null) {
 				return -1;
 			}
-			int first = 0;
-			int last = list.size() - 1;
+			var first = 0;
+			var last = list.size() - 1;
 
 			while (last >= first) {
-				final int center = (first + last) / 2;
-				final T indata = list.get(center);
-				final int cmp = comparator.compare(elt, indata);
+				final var center = (first + last) / 2;
+				final var indata = list.get(center);
+				final var cmp = comparator.compare(elt, indata);
 				if (cmp <= 0) {
 					last = center - 1;
 				} else {
@@ -565,7 +561,7 @@ public final class ListUtil {
 
 			@Override
 			public T next() {
-				final int n = this.next;
+				final var n = this.next;
 				--this.next;
 				try {
 					return list.get(n);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,12 +30,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * matrix mathematics.
  *
  * <p>The transformation matrix is:
- * <pre>{@code 
+ * <pre><code>
  * | r11 | r12 | r13 | Tx |
  * | r21 | r22 | r23 | Ty |
  * | r31 | r32 | r33 | Tz |
  * | 0   | 0   | 0   | 1  |
- * }</pre>
+ * </code></pre>
  *
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
@@ -87,6 +87,7 @@ public class Transform3D extends Matrix4d {
 	 * @param m23
 	 *            the [2][3] element
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	public Transform3D(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20,
 			double m21, double m22, double m23) {
 		super(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0., 0., 0., 1.);
@@ -252,11 +253,15 @@ public class Transform3D extends Matrix4d {
 	 * @param <V> the type of the vector.
 	 * @param <P> the type of the point.
 	 * @param <Q> the type of the quaternion.
+	 * @param factory the geometry factory to be used.
 	 * @return the translation vector.
 	 * @since 18.0
 	 */
 	@Pure
-	public <V extends Vector3D<? super V, ? super P, ? super Q>, P extends Point3D<? super P, ? super V, ? super Q>, Q extends Quaternion<? super P, ? super V, ? super Q>> V getTranslation(GeomFactory3D<V, P, Q> factory) {
+	public <V extends Vector3D<? super V, ? super P, ? super Q>,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>>
+		V getTranslation(GeomFactory3D<V, P, Q> factory) {
 		assert factory != null : AssertMessages.notNullParameter();
 		return factory.newVector(getTranslationX(), getTranslationY(), getTranslationZ());
 	}
@@ -266,18 +271,22 @@ public class Transform3D extends Matrix4d {
 	 * @param <V> the type of the vector.
 	 * @param <P> the type of the point.
 	 * @param <Q> the type of the quaternion.
+	 * @param factory the geometry factory to be used.
 	 * @return the quaternion.
 	 * @since 18.0
 	 */
 	@Pure
-	public <V extends Vector3D<? super V, ? super P, ? super Q>, P extends Point3D<? super P, ? super V, ? super Q>, Q extends Quaternion<? super P, ? super V, ? super Q>> Q getRotation(GeomFactory3D<V, P, Q> factory) {
+	public <V extends Vector3D<? super V, ? super P, ? super Q>,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>>
+		Q getRotation(GeomFactory3D<V, P, Q> factory) {
 		assert factory != null : AssertMessages.notNullParameter();
 
-		// Compute the numerators for each component from the matrix diagonal 
-		final double nw = getM00() + getM11() + getM22() + 1;
-		final double nx = getM00() - getM11() - getM22() + 1;
-		final double ny = -getM00() + getM11() - getM22() + 1;
-		final double nz = -getM00() - getM11() + getM22() + 1;
+		// Compute the numerators for each component from the matrix diagonal
+		final var nw = getM00() + getM11() + getM22() + 1;
+		final var nx = getM00() - getM11() - getM22() + 1;
+		final var ny = -getM00() + getM11() - getM22() + 1;
+		final var nz = -getM00() - getM11() + getM22() + 1;
 
 		// Select the largest numerator to minimize computation errors and computes the other components
 		final double x;
@@ -286,26 +295,26 @@ public class Transform3D extends Matrix4d {
 		final double w;
 		if (nw >= nx && nw >= ny && nw >= nz) {
 			w = Math.sqrt(nw) / 2.;
-			final double wwww = 4. * w;
+			final var wwww = 4. * w;
 			x = (getM12() - getM21()) / wwww;
 			y = (getM20() - getM02()) / wwww;
 			z = (getM01() - getM10()) / wwww;
 		} else if (nx >= nw && nx >= ny && nx >= nz) {
 			x = Math.sqrt(nx) / 2.;
-			final double xxxx = 4. * x;
+			final var xxxx = 4. * x;
 			w = (getM12() - getM21()) / xxxx;
 			y = (getM01() - getM10()) / xxxx;
 			z = (getM20() - getM02()) / xxxx;
 		} else if (ny >= nw && ny >= nx && ny >= nz) {
 			y = Math.sqrt(ny) / 2.;
-			final double yyyy = 4. * y;
+			final var yyyy = 4. * y;
 			w = (getM20() - getM02()) / yyyy;
 			x = (getM01() - getM10()) / yyyy;
 			z = (getM12() - getM21()) / yyyy;
 		} else {
 			assert nz >= nw && nz >= nx && nz >= ny;
 			z = Math.sqrt(nz) / 2.;
-			final double zzzz = 4. * z;
+			final var zzzz = 4. * z;
 			w = (getM01() - getM10()) / zzzz;
 			x = (getM21() - getM12()) / zzzz;
 			y = (getM12() - getM21()) / zzzz;
@@ -337,7 +346,7 @@ public class Transform3D extends Matrix4d {
 		assert rotation != null : AssertMessages.notNullParameter();
 		setRotation(rotation.getX(), rotation.getY(), rotation.getZ(), rotation.getW());
 	}
-	
+
 	/**
 	 * Set the rotation for the object but do not change the translation.
 	 *
@@ -392,7 +401,7 @@ public class Transform3D extends Matrix4d {
 	 * @param rotation the rotationi
 	 */
 	public void rotate(Quaternion<?, ?, ?> rotation) {
-		final Transform3D m = new Transform3D();
+		final var m = new Transform3D();
 		m.makeRotationMatrix(rotation);
 		mul(m);
 	}
@@ -512,13 +521,13 @@ public class Transform3D extends Matrix4d {
 	 * @since 18.0
 	 */
 	public void transform(Point3D<?, ?, ?> t) {
-		final double x = t.getX();
-		final double y = t.getY();
-		final double z = t.getZ();
-		
-		final double nx = this.m00 * x + this.m01 * y + this.m02 * z + this.m03;
-		final double ny = this.m10 * x + this.m11 * y + this.m12 * z + this.m13;
-		final double nz = this.m20 * x + this.m21 * y + this.m22 * z + this.m23;
+		final var x = t.getX();
+		final var y = t.getY();
+		final var z = t.getZ();
+
+		final var nx = this.m00 * x + this.m01 * y + this.m02 * z + this.m03;
+		final var ny = this.m10 * x + this.m11 * y + this.m12 * z + this.m13;
+		final var nz = this.m20 * x + this.m21 * y + this.m22 * z + this.m23;
 		t.set(nx, ny, nz);
 		this.isIdentity = null;
 	}
@@ -532,13 +541,13 @@ public class Transform3D extends Matrix4d {
 	 * @since 18.0
 	 */
 	public void transform(Vector3D<?, ?, ?> t) {
-		final double x = t.getX();
-		final double y = t.getY();
-		final double z = t.getZ();
-		
-		final double nx = this.m00 * x + this.m01 * y + this.m02 * z;
-		final double ny = this.m10 * x + this.m11 * y + this.m12 * z;
-		final double nz = this.m20 * x + this.m21 * y + this.m22 * z;
+		final var x = t.getX();
+		final var y = t.getY();
+		final var z = t.getZ();
+
+		final var nx = this.m00 * x + this.m01 * y + this.m02 * z;
+		final var ny = this.m10 * x + this.m11 * y + this.m12 * z;
+		final var nz = this.m20 * x + this.m21 * y + this.m22 * z;
 		t.set(nx, ny, nz);
 		this.isIdentity = null;
 	}
@@ -555,9 +564,9 @@ public class Transform3D extends Matrix4d {
 	 * @since 18.0
 	 */
 	public void transform(Point3D<?, ?, ?> t, Point3D<?, ?, ?> result) {
-		final double x = t.getX();
-		final double y = t.getY();
-		final double z = t.getZ();
+		final var x = t.getX();
+		final var y = t.getY();
+		final var z = t.getZ();
 		result.set(
 				this.m00 * x + this.m01 * y + this.m02 * z + this.m03,
 				this.m10 * x + this.m11 * y + this.m12 * z + this.m13,
@@ -576,9 +585,9 @@ public class Transform3D extends Matrix4d {
 	 * @since 18.0
 	 */
 	public void transform(Vector3D<?, ?, ?> t, Vector3D<?, ?, ?> result) {
-		final double x = t.getX();
-		final double y = t.getY();
-		final double z = t.getZ();
+		final var x = t.getX();
+		final var y = t.getY();
+		final var z = t.getZ();
 		result.set(
 				this.m00 * x + this.m01 * y + this.m02 * z,
 				this.m10 * x + this.m11 * y + this.m12 * z,
@@ -613,6 +622,7 @@ public class Transform3D extends Matrix4d {
 	 * @param m23
 	 *            the [2][3] element
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	public void set(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13,
 			double m20, double m21, double m22, double m23) {
 		set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0., 0., 0., 1.);

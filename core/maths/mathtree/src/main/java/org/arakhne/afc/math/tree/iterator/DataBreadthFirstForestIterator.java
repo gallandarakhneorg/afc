@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,9 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a forest that replies the user data.
@@ -61,11 +60,9 @@ public class DataBreadthFirstForestIterator<D> implements Iterator<D> {
 	 */
 	public DataBreadthFirstForestIterator(Iterator<Tree<D, ?>> iterator) {
 		assert iterator != null;
-		Tree<D, ?> tree;
-		TreeNode<D, ?> node;
 		while (iterator.hasNext()) {
-			tree = iterator.next();
-			node = tree.getRoot();
+			final var tree = iterator.next();
+			final var node = tree.getRoot();
 			if (node != null) {
 				this.availableNodes.offer(node);
 			}
@@ -73,7 +70,7 @@ public class DataBreadthFirstForestIterator<D> implements Iterator<D> {
 	}
 
 	private void startIterator() {
-		final TreeNode<D, ?> root = this.availableNodes.poll();
+		final var root = this.availableNodes.poll();
 		if (root != null) {
 			searchNext(root);
 		}
@@ -81,19 +78,19 @@ public class DataBreadthFirstForestIterator<D> implements Iterator<D> {
 	}
 
 	private void searchNext(TreeNode<D, ?> parent) {
-		TreeNode<D, ?> prt = parent;
+		var prt = parent;
 		while (prt != null) {
-			final int count = prt.getUserDataCount();
-			for (int i = 0; i < count; ++i) {
-				final D d = prt.getUserDataAt(i);
+			final var count = prt.getUserDataCount();
+			for (var i = 0; i < count; ++i) {
+				final var d = prt.getUserDataAt(i);
 				if (d != null) {
 					this.availableData.add(new DataPair<>(d, prt));
 				}
 			}
 
-			final int childCount = prt.getChildCount();
-			for (int i = 0; i < childCount; ++i) {
-				final TreeNode<D, ?> child = prt.getChildAt(i);
+			final var childCount = prt.getChildCount();
+			for (var i = 0; i < childCount; ++i) {
+				final var child = prt.getChildAt(i);
 				if (child != null) {
 					this.availableNodes.offer(child);
 				}
@@ -103,11 +100,11 @@ public class DataBreadthFirstForestIterator<D> implements Iterator<D> {
 			prt = null;
 
 			if ((this.availableData.isEmpty())
-					&& (!this.availableNodes.isEmpty())) {
+					&& !this.availableNodes.isEmpty()) {
 				do {
 					prt = this.availableNodes.poll();
 				}
-				while ((prt == null) && (!this.availableNodes.isEmpty()));
+				while (prt == null && !this.availableNodes.isEmpty());
 			}
 		}
 	}
@@ -134,8 +131,8 @@ public class DataBreadthFirstForestIterator<D> implements Iterator<D> {
 			assert this.lastlyReplied != null && this.lastlyReplied.getData() != null;
 
 			if ((this.availableData.isEmpty())
-					&& (!this.availableNodes.isEmpty())) {
-				final TreeNode<D, ?> newNode = this.availableNodes.poll();
+					&& !this.availableNodes.isEmpty()) {
+				final var newNode = this.availableNodes.poll();
 				if (newNode != null) {
 					searchNext(newNode);
 				}
@@ -149,7 +146,7 @@ public class DataBreadthFirstForestIterator<D> implements Iterator<D> {
 
 	@Override
 	public void remove() {
-		final DataPair<D> pair = this.lastlyReplied;
+		final var pair = this.lastlyReplied;
 		this.lastlyReplied = null;
 		if (pair == null) {
 			throw new NoSuchElementException();

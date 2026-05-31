@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.dfx;
 
 import javafx.beans.property.DoubleProperty;
-
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -118,8 +117,8 @@ public class Point2dfx extends Tuple2dfx<Point2dfx> implements Point2D<Point2dfx
 	 * @since 14.0
 	 */
 	public static Point2dfx convert(Tuple2D<?> tuple) {
-		if (tuple instanceof Point2dfx) {
-			return (Point2dfx) tuple;
+		if (tuple instanceof Point2dfx tuple0) {
+			return tuple0;
 		}
 		return new Point2dfx(tuple.getX(), tuple.getY());
 	}

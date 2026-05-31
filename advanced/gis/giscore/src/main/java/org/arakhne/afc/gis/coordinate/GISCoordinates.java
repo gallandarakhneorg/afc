@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
 
 package org.arakhne.afc.gis.coordinate;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Utilities to convert GIS coordinates.
  *
@@ -173,7 +172,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static GeodesicPosition EL2_WGS84(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2E_N,
 				LAMBERT_2E_C,
 				LAMBERT_2E_XS,
@@ -205,7 +204,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d EL2_L1(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2E_N,
 				LAMBERT_2E_C,
 				LAMBERT_2E_XS,
@@ -241,7 +240,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d EL2_L3(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2E_N,
 				LAMBERT_2E_C,
 				LAMBERT_2E_XS,
@@ -264,7 +263,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d EL2_L4(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2E_N,
 				LAMBERT_2E_C,
 				LAMBERT_2E_XS,
@@ -287,7 +286,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d EL2_L93(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2E_N,
 				LAMBERT_2E_C,
 				LAMBERT_2E_XS,
@@ -310,7 +309,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static GeodesicPosition L1_WGS84(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_1_N,
 				LAMBERT_1_C,
 				LAMBERT_1_XS,
@@ -342,7 +341,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L1_EL2(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_1_N,
 				LAMBERT_1_C,
 				LAMBERT_1_XS,
@@ -365,7 +364,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L1_L2(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_1_N,
 				LAMBERT_1_C,
 				LAMBERT_1_XS,
@@ -388,7 +387,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L1_L3(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_1_N,
 				LAMBERT_1_C,
 				LAMBERT_1_XS,
@@ -411,7 +410,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L1_L4(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_1_N,
 				LAMBERT_1_C,
 				LAMBERT_1_XS,
@@ -434,7 +433,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L1_L93(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_1_N,
 				LAMBERT_1_C,
 				LAMBERT_1_XS,
@@ -457,7 +456,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static GeodesicPosition L2_WGS84(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2_N,
 				LAMBERT_2_C,
 				LAMBERT_2_XS,
@@ -502,7 +501,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L2_L1(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2_N,
 				LAMBERT_2_C,
 				LAMBERT_2_XS,
@@ -525,7 +524,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L2_L3(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2_N,
 				LAMBERT_2_C,
 				LAMBERT_2_XS,
@@ -548,7 +547,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L2_L4(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2_N,
 				LAMBERT_2_C,
 				LAMBERT_2_XS,
@@ -571,7 +570,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L2_L93(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2_N,
 				LAMBERT_2_C,
 				LAMBERT_2_XS,
@@ -594,7 +593,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static GeodesicPosition L3_WGS84(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_3_N,
 				LAMBERT_3_C,
 				LAMBERT_3_XS,
@@ -626,7 +625,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L3_EL2(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_3_N,
 				LAMBERT_3_C,
 				LAMBERT_3_XS,
@@ -649,7 +648,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L3_L1(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_3_N,
 				LAMBERT_3_C,
 				LAMBERT_3_XS,
@@ -672,7 +671,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L3_L2(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_3_N,
 				LAMBERT_3_C,
 				LAMBERT_3_XS,
@@ -695,7 +694,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L3_L4(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_3_N,
 				LAMBERT_3_C,
 				LAMBERT_3_XS,
@@ -718,7 +717,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L3_L93(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_3_N,
 				LAMBERT_3_C,
 				LAMBERT_3_XS,
@@ -741,7 +740,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static GeodesicPosition L4_WGS84(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_4_N,
 				LAMBERT_4_C,
 				LAMBERT_4_XS,
@@ -773,7 +772,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L4_EL2(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_4_N,
 				LAMBERT_4_C,
 				LAMBERT_4_XS,
@@ -796,7 +795,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L4_L1(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_4_N,
 				LAMBERT_4_C,
 				LAMBERT_4_XS,
@@ -819,7 +818,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L4_L2(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_4_N,
 				LAMBERT_4_C,
 				LAMBERT_4_XS,
@@ -842,7 +841,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L4_L3(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_4_N,
 				LAMBERT_4_C,
 				LAMBERT_4_XS,
@@ -865,7 +864,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L4_L93(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_4_N,
 				LAMBERT_4_C,
 				LAMBERT_4_XS,
@@ -888,7 +887,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static GeodesicPosition L93_WGS84(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_93_N,
 				LAMBERT_93_C,
 				LAMBERT_93_XS,
@@ -920,7 +919,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L93_EL2(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_93_N,
 				LAMBERT_93_C,
 				LAMBERT_93_XS,
@@ -943,7 +942,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L93_L1(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_93_N,
 				LAMBERT_93_C,
 				LAMBERT_93_XS,
@@ -966,7 +965,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L93_L2(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_93_N,
 				LAMBERT_93_C,
 				LAMBERT_93_XS,
@@ -989,7 +988,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L93_L3(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_93_N,
 				LAMBERT_93_C,
 				LAMBERT_93_XS,
@@ -1012,7 +1011,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d L93_L4(double x, double y) {
-		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
+		final var ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_93_N,
 				LAMBERT_93_C,
 				LAMBERT_93_XS,
@@ -1040,31 +1039,31 @@ public final class GISCoordinates {
 	private static Point2d NTFLambert_NTFLambdaPhi(double x, double y, double n, double c, double Xs, double Ys) {
 		// Several constants from the IGN specifications
 		//Longitude in radians of Paris (2°20'14.025" E) from Greenwich
-		final double lambda_0 = 0.;
+		final var lambda_0 = 0.;
 
 		// Extended Lambert II (x,y) -> graphical coordinate NTF (lambda_ntf,phi_ntf)
 		// ALG0004
-		final double R = Math.hypot(x - Xs, y - Ys);
-		final double g = Math.atan((x - Xs) / (Ys - y));
-		final double lamdda_ntf = lambda_0 + (g / n);
-		final double L = -(1 / n) * Math.log(Math.abs(R / c));
-		final double phi0 = 2 * Math.atan(Math.exp(L)) - (Math.PI / 2.0);
-		double phiprec = phi0;
-		double phii = compute1(phiprec, L);
+		final var R = Math.hypot(x - Xs, y - Ys);
+		final var g = Math.atan((x - Xs) / (Ys - y));
+		final var lamdda_ntf = lambda_0 + (g / n);
+		final var L = -(1 / n) * Math.log(Math.abs(R / c));
+		final var phi0 = 2 * Math.atan(Math.exp(L)) - (Math.PI / 2.0);
+		var phiprec = phi0;
+		var phii = compute1(phiprec, L);
 
 		while (Math.abs(phii - phiprec) >= EPSILON) {
 			phiprec = phii;
 			phii = compute1(phiprec, L);
 		}
 
-		final double phi_ntf = phii;
+		final var phi_ntf = phii;
 
 		return new Point2d(lamdda_ntf, phi_ntf);
 	}
 
 	@SuppressWarnings({"checkstyle:parametername"})
 	private static double compute1(double phiprec, double L) {
-		final double pow = Math.pow(
+		final var pow = Math.pow(
 				(1. + NTF_E * Math.sin(phiprec)) / (1. - NTF_E * Math.sin(phiprec)),
 				DEMI_NTF_E);
 		return 2. * Math.atan(pow * Math.exp(L)) - MathConstants.DEMI_PI;
@@ -1083,39 +1082,39 @@ public final class GISCoordinates {
 		// Geographical coordinate NTF (lamda_ntf,phi_ntf)
 		// -> Cartesian coordinate NTF (x_ntf,y_ntf,z_ntf)
 		// ALG0009
-		double a = 6378249.2;
+		var a = 6378249.2;
 		// 100 meters
-		final double h = 100;
-		final double N = a / Math.pow(1. - (NTF_E * NTF_E) * (Math.sin(phi_ntf) * Math.sin(phi_ntf)), .5);
-		final double x_ntf = (N + h) * Math.cos(phi_ntf) * Math.cos(lambda_ntf);
-		final double y_ntf = (N + h) * Math.cos(phi_ntf) * Math.sin(lambda_ntf);
-		final double z_ntf = ((N * (1. - (NTF_E * NTF_E))) + h) * Math.sin(phi_ntf);
+		final var h = 100;
+		final var N = a / Math.pow(1. - (NTF_E * NTF_E) * (Math.sin(phi_ntf) * Math.sin(phi_ntf)), .5);
+		final var x_ntf = (N + h) * Math.cos(phi_ntf) * Math.cos(lambda_ntf);
+		final var y_ntf = (N + h) * Math.cos(phi_ntf) * Math.sin(lambda_ntf);
+		final var z_ntf = ((N * (1. - (NTF_E * NTF_E))) + h) * Math.sin(phi_ntf);
 
 		// Cartesian coordinate NTF (x_ntf,y_ntf,z_ntf)
 		// -> Cartesian coordinate WGS84 (x_w,y_w,z_w)
 		// ALG0013
 
 		// This is a simple translation.
-		final double x_w = x_ntf - 168.;
-		final double y_w = y_ntf - 60.;
-		final double z_w = z_ntf + 320;
+		final var x_w = x_ntf - 168.;
+		final var y_w = y_ntf - 60.;
+		final var z_w = z_ntf + 320;
 
 		// Cartesian coordinate WGS84 (x_w,y_w,z_w)
 		// -> Geographic coordinate WGS84 (lamda_w,phi_w)
 		// ALG0012
 
 		// 0.04079234433 to use the Greenwich meridian, 0 else
-		final double l840 = 0.04079234433;
+		final var l840 = 0.04079234433;
 		a = 6378137.0;
 
-		final double P = Math.hypot(x_w, y_w);
+		final var P = Math.hypot(x_w, y_w);
 
-		double lambda_w = l840 + Math.atan(y_w / x_w);
+		var lambda_w = l840 + Math.atan(y_w / x_w);
 
-		double phi0_w = Math.atan(z_w / (P * (1 - ((a * WGS84_E * WGS84_E))
+		var phi0_w = Math.atan(z_w / (P * (1 - ((a * WGS84_E * WGS84_E))
 				/ Math.sqrt((x_w * x_w) + (y_w * y_w) + (z_w * z_w)))));
 
-		double phi_w = Math.atan((z_w / P) / (1 - ((a * WGS84_E * WGS84_E * Math.cos(phi0_w))
+		var phi_w = Math.atan((z_w / P) / (1 - ((a * WGS84_E * WGS84_E * Math.cos(phi0_w))
 				/ (P * Math.sqrt(1 - NTF_E * NTF_E * (Math.sin(phi0_w) * Math.sin(phi0_w)))))));
 
 		while (Math.abs(phi_w - phi0_w) >= EPSILON) {
@@ -1142,7 +1141,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d WGS84_EL2(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
+		final var ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_2E_N,
@@ -1175,7 +1174,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d WGS84_L1(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
+		final var ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_1_N,
@@ -1208,7 +1207,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d WGS84_L2(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
+		final var ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_2_N,
@@ -1241,7 +1240,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d WGS84_L3(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
+		final var ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_3_N,
@@ -1274,7 +1273,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d WGS84_L4(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
+		final var ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_4_N,
@@ -1307,7 +1306,7 @@ public final class GISCoordinates {
 	 */
 	@Pure
 	public static Point2d WGS84_L93(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
+		final var ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_93_N,
@@ -1354,10 +1353,10 @@ public final class GISCoordinates {
 		// Ref:
 		//		http://www.ign.fr/telechargement/MPro/geodesie/CIRCE/NTG_80.pdf
 		//		http://support.esrifrance.fr/Documents/Generalites/Projections/Generalites/Generalites.htm#2
-		final double a_n = 6378249.2;
-		final double b_n = 6356515.0;
+		final var a_n = 6378249.2;
+		final var b_n = 6356515.0;
 		// then
-		final double e2_n = (a_n * a_n - b_n * b_n) / (a_n * a_n);
+		final var e2_n = (a_n * a_n - b_n * b_n) / (a_n * a_n);
 
 		//---------------------------------------------------------
 		// 4) Geographical coordinate NTF (phi_n,lambda_n)
@@ -1367,18 +1366,18 @@ public final class GISCoordinates {
 		// Ref:
 		//		http://www.ign.fr/telechargement/MPro/geodesie/CIRCE/NTG_71.pdf
 
-		final double e_n = Math.sqrt(e2_n);
+		final var e_n = Math.sqrt(e2_n);
 		// Let the longitude in radians of Paris (2°20'14.025" E) from the Greenwich meridian
-		final double lambda0 = 0.04079234433198;
+		final var lambda0 = 0.04079234433198;
 
 		// Compute the isometric latitude
-		final double L = Math.log(Math.tan(Math.PI / 4. + phi / 2.)
+		final var L = Math.log(Math.tan(Math.PI / 4. + phi / 2.)
 				* Math.pow((1. - e_n * Math.sin(phi)) / (1. + e_n * Math.sin(phi)),
 						e_n / 2.));
 
 		// Then do the projection according to extended Lambert II
-		final double X_l2e = Xs + c * Math.exp(-n * L) * Math.sin(n * (lambda - lambda0));
-		final double Y_l2e = Ys - c * Math.exp(-n * L) * Math.cos(n * (lambda - lambda0));
+		final var X_l2e = Xs + c * Math.exp(-n * L) * Math.sin(n * (lambda - lambda0));
+		final var Y_l2e = Ys - c * Math.exp(-n * L) * Math.cos(n * (lambda - lambda0));
 
 		return new Point2d(X_l2e, Y_l2e);
 	}
@@ -1395,8 +1394,8 @@ public final class GISCoordinates {
 	private static Point2d WGS84_NTFLamdaPhi(double lambda, double phi) {
 		//---------------------------------------------------------
 		// 0) degree -> radian
-		final double lambda_w = Math.toRadians(lambda);
-		final double phi_w = Math.toRadians(phi);
+		final var lambda_w = Math.toRadians(lambda);
+		final var phi_w = Math.toRadians(phi);
 
 		//---------------------------------------------------------
 		// 1) geographical coordinates WGS84 (phi_w,lambda_w)
@@ -1408,29 +1407,29 @@ public final class GISCoordinates {
 		// Ref:
 		// 	http://www.ign.fr/telechargement/MPro/geodesie/CIRCE/NTG_80.pdf
 		//  http://de.wikipedia.org/wiki/WGS84
-		final double a_w = 6378137.0;
-		final double b_w = 6356752.314;
+		final var a_w = 6378137.0;
+		final var b_w = 6356752.314;
 		// then
-		final double e2_w = (a_w * a_w - b_w * b_w) / (a_w * a_w);
+		final var e2_w = (a_w * a_w - b_w * b_w) / (a_w * a_w);
 		// then let the big normal of the WGS84 ellipsoide
-		final double N = a_w / Math.sqrt(1. - e2_w * Math.pow(Math.sin(phi_w), 2.));
+		final var N = a_w / Math.sqrt(1. - e2_w * Math.pow(Math.sin(phi_w), 2.));
 		// let the WGS84 cartesian coordinates:
-		final double X_w = N * Math.cos(phi_w) * Math.cos(lambda_w);
-		final double Y_w = N * Math.cos(phi_w) * Math.sin(lambda_w);
-		final double Z_w = N * (1 - e2_w) * Math.sin(phi_w);
+		final var X_w = N * Math.cos(phi_w) * Math.cos(lambda_w);
+		final var Y_w = N * Math.cos(phi_w) * Math.sin(lambda_w);
+		final var Z_w = N * (1 - e2_w) * Math.sin(phi_w);
 
 		//---------------------------------------------------------
 		// 2) cartesian coordinate WGS84 (X_w,Y_w,Z_w)
 		//    -> cartesian coordinate NTF (X_n,Y_n,Z_n)
 		//    Ref: http://support.esrifrance.fr/Documents/Generalites/Projections/Generalites/Generalites.htm#2
 		//    No convertion to be done.
-		final double dX = 168.0;
-		final double dY = 60.0;
-		final double dZ = -320.0;
+		final var dX = 168.0;
+		final var dY = 60.0;
+		final var dZ = -320.0;
 
-		final double X_n = X_w + dX;
-		final double Y_n = Y_w + dY;
-		final double Z_n = Z_w + dZ;
+		final var X_n = X_w + dX;
+		final var Y_n = Y_w + dY;
+		final var Z_n = Z_w + dZ;
 
 		//---------------------------------------------------------
 		// 3) cartesian coordinate NTF (X_n,Y_n,Z_n)
@@ -1441,16 +1440,16 @@ public final class GISCoordinates {
 		// Ref:
 		//		http://www.ign.fr/telechargement/MPro/geodesie/CIRCE/NTG_80.pdf
 		//		http://support.esrifrance.fr/Documents/Generalites/Projections/Generalites/Generalites.htm#2
-		final double a_n = 6378249.2;
-		final double b_n = 6356515.0;
+		final var a_n = 6378249.2;
+		final var b_n = 6356515.0;
 		// then
-		final double e2_n = (a_n * a_n - b_n * b_n) / (a_n * a_n);
+		final var e2_n = (a_n * a_n - b_n * b_n) / (a_n * a_n);
 		// let the convergence epsilon
-		final double epsilon = 1e-10;
+		final var epsilon = 1e-10;
 		// Then try to converge
-		double p0 = Math.atan(Z_n / Math.sqrt(X_n * X_n + Y_n * Y_n) * (1 - (a_n * e2_n) / (Math.sqrt(X_n * X_n + Y_n
+		var p0 = Math.atan(Z_n / Math.sqrt(X_n * X_n + Y_n * Y_n) * (1 - (a_n * e2_n) / (Math.sqrt(X_n * X_n + Y_n
 				* Y_n + Z_n * Z_n))));
-		double p1 = Math.atan((Z_n / Math.sqrt(X_n * X_n + Y_n * Y_n)) / (1 - (a_n * e2_n
+		var p1 = Math.atan((Z_n / Math.sqrt(X_n * X_n + Y_n * Y_n)) / (1 - (a_n * e2_n
 				* Math.cos(p0)) / (Math.sqrt((X_n * X_n + Y_n * Y_n) * (1 - e2_n * Math.pow(Math.sin(p0), 2))))));
 		while (Math.abs(p1 - p0) >= epsilon) {
 			p0 = p1;
@@ -1458,8 +1457,8 @@ public final class GISCoordinates {
 					/ (Math.sqrt((X_n * X_n + Y_n * Y_n) * (1 - e2_n * Math.pow(Math.sin(p0), 2))))));
 		}
 
-		final double phi_n = p1;
-		final double lambda_n = Math.atan(Y_n / X_n);
+		final var phi_n = p1;
+		final var lambda_n = Math.atan(Y_n / X_n);
 
 		return new Point2d(lambda_n, phi_n);
 	}

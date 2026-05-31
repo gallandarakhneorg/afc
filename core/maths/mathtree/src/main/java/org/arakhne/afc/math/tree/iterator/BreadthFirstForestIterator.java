@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,10 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a forest that replies the tree nodes.
@@ -58,11 +57,9 @@ public class BreadthFirstForestIterator<D>
 	 */
 	public BreadthFirstForestIterator(Iterator<Tree<D, ?>> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		Tree<D, ?> tree;
-		TreeNode<D, ?> node;
 		while (iterator.hasNext()) {
-			tree = iterator.next();
-			node = tree.getRoot();
+			final var tree = iterator.next();
+			final var node = tree.getRoot();
 			if (node != null) {
 				this.availableNodes.offer(node);
 			}
@@ -95,17 +92,17 @@ public class BreadthFirstForestIterator<D>
 			throw new NoSuchElementException();
 		}
 
-		final TreeNode<D, ?> current = this.availableNodes.poll();
+		final var current = this.availableNodes.poll();
 
 		if (current == null) {
 			throw new ConcurrentModificationException();
 		}
 
 		// Add the children of the polled element
-		final int childCount = current.getChildCount();
-		for (int i = 0; i < childCount; ++i) {
+		final var childCount = current.getChildCount();
+		for (var i = 0; i < childCount; ++i) {
 			try {
-				final TreeNode<D, ?> child = current.getChildAt(i);
+				final var child = current.getChildAt(i);
 				if (child != null) {
 					this.availableNodes.offer(child);
 				}

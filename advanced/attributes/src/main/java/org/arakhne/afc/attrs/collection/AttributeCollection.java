@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,11 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This interface representes an object that owns a
@@ -59,10 +58,10 @@ public interface AttributeCollection extends AttributeProvider {
 	 * Any previous content of this attribute collection will
 	 * be lost.
 	 * This function is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * this.removeAllAttributes();
 	 * this.addAttributes(content);
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param content is the content.
 	 * @see #addAttributes(Map)
@@ -73,10 +72,10 @@ public interface AttributeCollection extends AttributeProvider {
 	 * Any previous content of this attribute collection will
 	 * be lost.
 	 * This function is equivalent to:
-	 * <pre>{@code 
+	 * <pre><code>
 	 * this.removeAllAttributes();
 	 * this.addAttributes(content);
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param content is the content.
 	 * @throws AttributeException if one attribute from the content cannot be inserted.
@@ -249,7 +248,7 @@ public interface AttributeCollection extends AttributeProvider {
 	/** Remove the given attribute.
 	 *
 	 * @param name is the name of the attribute to remove.
-	 * @return {@code true} on success, otherwhise {@code false}
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	boolean removeAttribute(String name);
 

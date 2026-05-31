@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.gis.bus.network;
 
-import java.util.Iterator;
 import java.util.UUID;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
@@ -98,10 +97,9 @@ public abstract class AbstractBusContainer<CONTAINER extends BusContainer<?>, EL
 
 	@Override
 	public void revalidate() {
-		final Iterator<ELEMENT> iterator = iterator();
-		ELEMENT element;
+		final var iterator = iterator();
 		while (iterator.hasNext()) {
-			element = iterator.next();
+			final var element = iterator.next();
 			assert element != null;
 			element.revalidate();
 		}

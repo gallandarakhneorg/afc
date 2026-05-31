@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -68,7 +67,7 @@ public final class FileType {
 	 * @return the default content type manager.
 	 */
 	public static ContentFileTypeMap ensureContentTypeManager() {
-		FileTypeMap defaultMap = FileTypeMap.getDefaultFileTypeMap();
+		var defaultMap = FileTypeMap.getDefaultFileTypeMap();
 		if (!(defaultMap instanceof ContentFileTypeMap)) {
 			defaultMap = new ContentFileTypeMap(defaultMap);
 			FileTypeMap.setDefaultFileTypeMap(defaultMap);
@@ -81,7 +80,7 @@ public final class FileType {
 	 * @param magicNumber is the string that identify the type of the content.
 	 */
 	public static void addContentType(MagicNumber magicNumber) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		map.addContentType(magicNumber);
 	}
 
@@ -91,7 +90,7 @@ public final class FileType {
 	 * @return the MIME type of the given file.
 	 */
 	public static String getContentType(File filename) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.getContentType(filename);
 	}
 
@@ -101,7 +100,7 @@ public final class FileType {
 	 * @return the MIME type of the given file.
 	 */
 	public static String getContentType(String filename) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.getContentType(filename);
 	}
 
@@ -111,7 +110,7 @@ public final class FileType {
 	 * @return the MIME type of the given file.
 	 */
 	public static String getContentType(URL filename) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.getContentType(filename);
 	}
 
@@ -121,7 +120,7 @@ public final class FileType {
 	 * @return the format version for the given file.
 	 */
 	public static String getFormatVersion(File filename) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.getFormatVersion(filename);
 	}
 
@@ -131,7 +130,7 @@ public final class FileType {
 	 * @return the format version for the given file.
 	 */
 	public static String getFormatVersion(String filename) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.getFormatVersion(filename);
 	}
 
@@ -141,7 +140,7 @@ public final class FileType {
 	 * @return the format version for the given file.
 	 */
 	public static String getFormatVersion(URL filename) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.getFormatVersion(filename);
 	}
 
@@ -153,7 +152,7 @@ public final class FileType {
 	 */
 	public static boolean isImage(String mime) {
 		try {
-			final MimeType type = new MimeType(mime);
+			final var type = new MimeType(mime);
 			return IMAGE.equalsIgnoreCase(type.getPrimaryType());
 		} catch (MimeTypeParseException e) {
 			//
@@ -169,7 +168,7 @@ public final class FileType {
 	 *     otherwise {@code false}.
 	 */
 	public static boolean isContentType(File filename, String desiredMimeType) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.isContentType(filename, desiredMimeType);
 	}
 
@@ -181,7 +180,7 @@ public final class FileType {
 	 *     otherwise {@code false}.
 	 */
 	public static boolean isContentType(String filename, String desiredMimeType) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.isContentType(filename, desiredMimeType);
 	}
 
@@ -193,7 +192,7 @@ public final class FileType {
 	 *     otherwise {@code false}.
 	 */
 	public static boolean isContentType(URL filename, String desiredMimeType) {
-		final ContentFileTypeMap map = ensureContentTypeManager();
+		final var map = ensureContentTypeManager();
 		return map.isContentType(filename, desiredMimeType);
 	}
 
@@ -231,14 +230,14 @@ public final class FileType {
 				return null;
 			}
 			try {
-				final MimeType type = getMimeType(filename.toURI().toURL());
+				final var type = getMimeType(filename.toURI().toURL());
 				if (type != null) {
 					return type.toString();
 				}
 			} catch (Exception e) {
 				//
 			}
-			final FileTypeMap lparent = this.parent.get();
+			final var lparent = this.parent.get();
 			if (lparent != null) {
 				return lparent.getContentType(filename);
 			}
@@ -257,7 +256,7 @@ public final class FileType {
 		 */
 		public String getContentType(URL url) {
 			try {
-				final MimeType type = getMimeType(url);
+				final var type = getMimeType(url);
 				if (type != null) {
 					return type.toString();
 				}
@@ -281,16 +280,16 @@ public final class FileType {
 				return false;
 			}
 			try {
-				final MimeType mtype = new MimeType(mimeType);
+				final var mtype = new MimeType(mimeType);
 				if (isMimeType(filename.toURI().toURL(), mtype)) {
 					return true;
 				}
 			} catch (Exception e) {
 				// silently ignore errors
 			}
-			final FileTypeMap lparent = this.parent.get();
+			final var lparent = this.parent.get();
 			if (lparent != null) {
-				final String mime = lparent.getContentType(filename);
+				final var mime = lparent.getContentType(filename);
 				return mimeType.equalsIgnoreCase(mime);
 			}
 			return false;
@@ -318,7 +317,7 @@ public final class FileType {
 			assert filename != null : AssertMessages.notNullParameter(0);
 			assert mimeType != null && !mimeType.isEmpty() : AssertMessages.notNullParameter(1);
 			try {
-				final MimeType mType = new MimeType(mimeType);
+				final var mType = new MimeType(mimeType);
 				if (isMimeType(filename, mType)) {
 					return true;
 				}
@@ -329,8 +328,8 @@ public final class FileType {
 		}
 
 		private Set<MagicNumber> buildDecoderSet(String lowType) {
-			final Set<MagicNumber> allDecoders = new TreeSet<>();
-			final Collection<MagicNumber> magicNumbers = this.typedNumbers.get(lowType);
+			final var allDecoders = new TreeSet<MagicNumber>();
+			final var magicNumbers = this.typedNumbers.get(lowType);
 			if (magicNumbers != null) {
 				allDecoders.addAll(magicNumbers);
 			}
@@ -344,20 +343,20 @@ public final class FileType {
 		 */
 		private MimeType getMimeType(URL url) throws Exception {
 			assert url != null : AssertMessages.notNullParameter(0);
-			final URLConnection connection = url.openConnection();
-			String lowType = connection.getContentType();
+			final var connection = url.openConnection();
+			var lowType = connection.getContentType();
 
 			if (MimeName.MIME_UNKNOW.isMimeConstant(lowType)) {
 				lowType = MimeName.MIME_OCTET_STREAM.getMimeConstant();
 			}
 
 			boolean found;
-			InputStream stream = connection.getInputStream();
-			for (final MagicNumber magicNumber : buildDecoderSet(lowType)) {
+			var stream = connection.getInputStream();
+			for (final var magicNumber : buildDecoderSet(lowType)) {
 				try {
 					final MagicNumberStream mns;
 					if (stream == null) {
-						try (InputStream localstream = url.openStream()) {
+						try (var localstream = url.openStream()) {
 							mns = new MagicNumberStream(url, localstream);
 						}
 					} else {
@@ -394,11 +393,11 @@ public final class FileType {
 			assert url != null : AssertMessages.notNullParameter(0);
 			assert mimeType != null : AssertMessages.notNullParameter(1);
 
-			final String baseType = mimeType.getBaseType();
+			final var baseType = mimeType.getBaseType();
 			assert baseType != null && !baseType.isEmpty();
 
-			final URLConnection connection = url.openConnection();
-			String lowType = connection.getContentType();
+			final var connection = url.openConnection();
+			var lowType = connection.getContentType();
 			if (MimeName.MIME_UNKNOW.isMimeConstant(lowType)) {
 				lowType = MimeName.MIME_OCTET_STREAM.getMimeConstant();
 			}
@@ -406,14 +405,14 @@ public final class FileType {
 				return true;
 			}
 
-			InputStream stream = connection.getInputStream();
+			var stream = connection.getInputStream();
 			boolean found;
-			for (final MagicNumber magicNumber : buildDecoderSet(lowType)) {
+			for (final var magicNumber : buildDecoderSet(lowType)) {
 				if (baseType.equalsIgnoreCase(magicNumber.getMimeType().getBaseType())) {
 					try {
 						final MagicNumberStream mns;
 						if (stream == null) {
-							try (InputStream localstream = url.openStream()) {
+							try (var localstream = url.openStream()) {
 								mns = new MagicNumberStream(url, localstream);
 							}
 						} else {
@@ -447,7 +446,7 @@ public final class FileType {
 			String lowType;
 			InputStream stream;
 			try {
-				final URLConnection connection = url.openConnection();
+				final var connection = url.openConnection();
 				lowType = connection.getContentType();
 				stream = connection.getInputStream();
 			} catch (IOException e) {
@@ -459,11 +458,11 @@ public final class FileType {
 			}
 
 			boolean found;
-			for (final MagicNumber magicNumber : buildDecoderSet(lowType)) {
+			for (final var magicNumber : buildDecoderSet(lowType)) {
 				try {
 					final MagicNumberStream mns;
 					if (stream == null) {
-						try (InputStream localstream = url.openStream()) {
+						try (var localstream = url.openStream()) {
 							mns = new MagicNumberStream(url, localstream);
 						}
 					} else {
@@ -519,13 +518,13 @@ public final class FileType {
 		 */
 		public void addContentType(MagicNumber magicNumber) {
 			assert magicNumber != null : AssertMessages.notNullParameter();
-			boolean isTyped = false;
-			final MimeType[] types = magicNumber.getHostMimeTypes();
+			var isTyped = false;
+			final var types = magicNumber.getHostMimeTypes();
 			if (types != null) {
-				for (final MimeType type : types) {
+				for (final var type : types) {
 					if (type != null) {
-						final String m = type.getBaseType();
-						Collection<MagicNumber> col = this.typedNumbers.get(m);
+						final var m = type.getBaseType();
+						var col = this.typedNumbers.get(m);
 						if (col == null) {
 							col = new ArrayList<>();
 							this.typedNumbers.put(m, col);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,9 +34,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A <tt>Map</tt> implementation with <em>weak/soft values</em>. An entry in a
@@ -123,15 +122,16 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	 * @param it the in-progress iterator over this collection
 	 * @return array containing the elements in the given array, plus any
 	 *         further elements returned by the iterator, trimmed to size
+	 * @throws OutOfMemoryError if the maximum size is reached.
 	 */
 	@SuppressWarnings("unchecked")
 	static <T> T[] finishToArray(T[] array, Iterator<?> it) {
-		T[] rp = array;
-		int i = rp.length;
+		var rp = array;
+		var i = rp.length;
 		while (it.hasNext()) {
-			final int cap = rp.length;
+			final var cap = rp.length;
 			if (i == cap) {
-				int newCap = ((cap / 2) + 1) * 3;
+				var newCap = ((cap / 2) + 1) * 3;
 				if (newCap <= cap) {
 					// integer overflow
 					if (cap == Integer.MAX_VALUE) {
@@ -144,7 +144,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 			rp[++i] = (T) it.next();
 		}
 		// trim if overallocated
-		return (i == rp.length) ? rp : Arrays.copyOf(rp, i);
+		return i == rp.length ? rp : Arrays.copyOf(rp, i);
 	}
 
 	/** Clean the references that was marked as released inside
@@ -178,7 +178,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	 * @return the old value of this flag
 	 */
 	public final boolean setDeeplyExpurge(boolean deeplyExpurge) {
-		final boolean old = this.autoExpurge;
+		final var old = this.autoExpurge;
 		this.autoExpurge = deeplyExpurge;
 		return old;
 	}
@@ -189,8 +189,8 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	public final void expurgeQueuedReferences() {
 		Reference<? extends V> reference;
 		while ((reference = this.queue.poll()) != null) {
-			if (reference instanceof ReferencableValue<?, ?>) {
-				this.map.remove(((ReferencableValue<?, ?>) reference).getKey());
+			if (reference instanceof ReferencableValue ref) {
+				this.map.remove(ref.getKey());
 			}
 			reference.clear();
 		}
@@ -199,15 +199,15 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	/** Clean the references that was released.
 	 */
 	public final void expurge() {
-		final Iterator<Entry<K, ReferencableValue<K, V>>> iter = this.map.entrySet().iterator();
+		final var iter = this.map.entrySet().iterator();
 		Entry<K, ReferencableValue<K, V>> entry;
 		ReferencableValue<K, V> value;
 		while (iter.hasNext()) {
 			entry = iter.next();
 			if (entry != null) {
 				value = entry.getValue();
-				if ((value != null)
-						&& ((value.isEnqueued()) || (value.get() == null))) {
+				if (value != null
+						&& (value.isEnqueued() || value.get() == null)) {
 					value.enqueue();
 					value.clear();
 				}
@@ -215,8 +215,8 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 		}
 		Reference<? extends V> reference;
 		while ((reference = this.queue.poll()) != null) {
-			if (reference instanceof ReferencableValue<?, ?>) {
-				this.map.remove(((ReferencableValue<?, ?>) reference).getKey());
+			if (reference instanceof ReferencableValue ref) {
+				this.map.remove(ref.getKey());
 			}
 			reference.clear();
 		}
@@ -246,7 +246,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	@Override
 	public final V put(K key, V value) {
 		expurgeNow();
-		final ReferencableValue<K, V> ret = this.map.put(key, makeValue(key, value, this.queue));
+		final var ret = this.map.put(key, makeValue(key, value, this.queue));
 		if (ret == null) {
 			return null;
 		}
@@ -326,15 +326,15 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public final boolean add(java.util.Map.Entry<K, V> element) {
-			final K key = element.getKey();
-			final V value = element.getValue();
+			final var key = element.getKey();
+			final var value = element.getValue();
 			return AbstractReferencedValueMap.this.map.put(key, makeValue(key, value)) == null;
 		}
 
 		@Override
 		public final boolean addAll(Collection<? extends java.util.Map.Entry<K, V>> collection) {
-			boolean changed = true;
-			for (final java.util.Map.Entry<K, V> entry : collection) {
+			var changed = true;
+			for (final var entry : collection) {
 				changed = add(entry) || changed;
 			}
 			return changed;
@@ -347,10 +347,10 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public final boolean contains(Object element) {
-			if (element instanceof Entry<?, ?>) {
+			if (element instanceof Entry ent) {
 				try {
 					expurgeNow();
-					return AbstractReferencedValueMap.this.map.containsKey(((Entry<?, ?>) element).getKey());
+					return AbstractReferencedValueMap.this.map.containsKey(ent.getKey());
 				} catch (AssertionError e) {
 					throw e;
 				} catch (Throwable exception) {
@@ -364,11 +364,11 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 		public final boolean containsAll(Collection<?> collection) {
 			boolean ok;
 			expurgeNow();
-			for (final Object o : collection) {
+			for (final var o : collection) {
 				ok = false;
-				if (o instanceof Entry<?, ?>) {
+				if (o instanceof Entry ent) {
 					try {
-						ok = AbstractReferencedValueMap.this.map.containsKey(((Entry<?, ?>) o).getKey());
+						ok = AbstractReferencedValueMap.this.map.containsKey(ent.getKey());
 					} catch (AssertionError e) {
 						throw e;
 					} catch (Throwable exception) {
@@ -395,9 +395,9 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public final boolean remove(Object element) {
-			if (element instanceof Entry<?, ?>) {
+			if (element instanceof Entry ent) {
 				try {
-					return AbstractReferencedValueMap.this.map.remove(((Entry<?, ?>) element).getKey()) != null;
+					return AbstractReferencedValueMap.this.map.remove(ent.getKey()) != null;
 				} catch (AssertionError e) {
 					throw e;
 				} catch (Throwable exception) {
@@ -409,8 +409,8 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public final boolean removeAll(Collection<?> collection) {
-			boolean changed = true;
-			for (final Object o : collection) {
+			var changed = true;
+			for (final var o : collection) {
 				changed = remove(o) || changed;
 			}
 			return changed;
@@ -419,12 +419,11 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 		@Override
 		public final boolean retainAll(Collection<?> collection) {
 			expurgeNow();
-			final Collection<K> keys = AbstractReferencedValueMap.this.map.keySet();
-			final Iterator<K> iterator = keys.iterator();
-			K key;
-			boolean changed = false;
+			final var keys = AbstractReferencedValueMap.this.map.keySet();
+			final var iterator = keys.iterator();
+			var changed = false;
 			while (iterator.hasNext()) {
-				key = iterator.next();
+				final var key = iterator.next();
 				if (!collection.contains(key)) {
 					iterator.remove();
 					changed = true;
@@ -442,7 +441,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 		@Override
 		public final Object[] toArray() {
 			expurgeNow();
-			final Object[] tab = new Object[AbstractReferencedValueMap.this.map.size()];
+			final var tab = new Object[AbstractReferencedValueMap.this.map.size()];
 			return toArray(tab);
 		}
 
@@ -451,12 +450,12 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 		public final <T> T[] toArray(T[] array) {
 			expurgeNow();
 			// Estimate size of array; be prepared to see more or fewer elements
-			final int size = AbstractReferencedValueMap.this.map.size();
-			final T[] r = array.length >= size ? array
+			final var size = AbstractReferencedValueMap.this.map.size();
+			final var r = array.length >= size ? array
 				: (T[]) Array.newInstance(array.getClass().getComponentType(), size);
-			final Iterator<Entry<K, V>> it = iterator();
+			final var it = iterator();
 
-			for (int i = 0; i < r.length; ++i) {
+			for (var i = 0; i < r.length; ++i) {
 				if (!it.hasNext()) {
 					// fewer elements than expected
 					if (array != r) {
@@ -498,12 +497,10 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 			if (!this.nextSearchProceeded) {
 				this.nextSearchProceeded = true;
 				this.next = null;
-				Entry<K, ReferencableValue<K, V>> originalNext;
-				ReferencableValue<K, V> wvalue;
 				while (this.next == null && this.originalIterator.hasNext()) {
-					originalNext = this.originalIterator.next();
+					final var originalNext = this.originalIterator.next();
 					if (originalNext != null) {
-						wvalue = originalNext.getValue();
+						final var wvalue = originalNext.getValue();
 						if (wvalue != null) {
 							this.next = new InnerEntry(
 									originalNext.getKey(),
@@ -615,13 +612,13 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public String toString() {
-			final StringBuilder buffer = new StringBuilder();
+			final var buffer = new StringBuilder();
 			buffer.append('{');
-			final VKT key = getKey();
+			final var key = getKey();
 			buffer.append(key == null ? null : key.toString());
 			buffer.append('=');
 			buffer.append("P#"); //$NON-NLS-1$
-			final VVT v = getValue();
+			final var v = getValue();
 			buffer.append(v == null ? null : v.toString());
 			buffer.append('}');
 			return buffer.toString();
@@ -647,13 +644,11 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
             return Objects.hashCode(getKey()) ^ Objects.hashCode(getValue());
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public boolean equals(Object obj) {
-			if (obj instanceof Entry) {
-				final Entry<VKT, VVT> e = (Entry<VKT, VVT>) obj;
-				final Object e1val = getValue();
-				final Object e2val = e.getValue();
+			if (obj instanceof Entry e) {
+				final var e1val = getValue();
+				final var e2val = e.getValue();
 				return  (getKey() == null
 						? e.getKey() == null
 						: getKey().equals(e.getKey()))
@@ -690,13 +685,13 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public String toString() {
-			final StringBuilder buffer = new StringBuilder();
+			final var buffer = new StringBuilder();
 			buffer.append('{');
-			final VKT key = getKey();
+			final var key = getKey();
 			buffer.append(key == null ? null : key.toString());
 			buffer.append('=');
 			buffer.append("P#"); //$NON-NLS-1$
-			final VVT v = getValue();
+			final var v = getValue();
 			buffer.append(v == null ? null : v.toString());
 			buffer.append('}');
 			return buffer.toString();
@@ -722,13 +717,11 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
             return Objects.hashCode(getKey()) ^ Objects.hashCode(getValue());
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public boolean equals(Object obj) {
-			if (obj instanceof Entry) {
-				final Entry<VKT, VVT> e = (Entry<VKT, VVT>) obj;
-				final Object e1val = getValue();
-				final Object e2val = e.getValue();
+			if (obj instanceof Entry e) {
+				final var e1val = getValue();
+				final var e2val = e.getValue();
 				return  (getKey() == null
 						? e.getKey() == null : getKey().equals(e.getKey()))
 						&& (e1val == null ? e2val == null : e1val.equals(e2val));
@@ -764,13 +757,13 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public String toString() {
-			final StringBuilder buffer = new StringBuilder();
+			final var buffer = new StringBuilder();
 			buffer.append('{');
-			final VKT key = getKey();
+			final var key = getKey();
 			buffer.append(key == null ? null : key.toString());
 			buffer.append('=');
 			buffer.append("P#"); //$NON-NLS-1$
-			final VVT v = getValue();
+			final var v = getValue();
 			buffer.append(v == null ? null : v.toString());
 			buffer.append('}');
 			return buffer.toString();
@@ -796,13 +789,11 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 			return Objects.hashCode(getKey()) ^ Objects.hashCode(getValue());
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public boolean equals(Object obj) {
-			if (obj instanceof Entry) {
-				final Entry<VKT, VVT> e = (Entry<VKT, VVT>) obj;
-				final Object e1val = getValue();
-				final Object e2val = e.getValue();
+			if (obj instanceof Entry e) {
+				final var e1val = getValue();
+				final var e2val = e.getValue();
 				return  (getKey() == null
 						? e.getKey() == null : getKey().equals(e.getKey()))
 						&& (e1val == null ? e2val == null : e1val.equals(e2val));

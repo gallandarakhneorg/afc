@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ package org.arakhne.afc.gis.mapelement;
 
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -33,6 +31,7 @@ import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Class the permits to display a multi-point.
@@ -92,8 +91,8 @@ public class MapMultiPoint extends MapComposedElement {
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		buffer.add("doubleFramed", isDoubleFramed()); //$NON-NLS-1$
-		buffer.add("pointSize", getPointSize()); //$NON-NLS-1$
+		buffer.add("doubleFramed", Boolean.valueOf(isDoubleFramed())); //$NON-NLS-1$
+		buffer.add("pointSize", Double.valueOf(getPointSize())); //$NON-NLS-1$
 	}
 
 	/**
@@ -107,8 +106,8 @@ public class MapMultiPoint extends MapComposedElement {
 	@Pure
 	public boolean intersects(Shape2D<?, ?, ?, ?, ?, ? extends Rectangle2afp<?, ?, ?, ?, ?, ?>> rectangle) {
 		if (boundsIntersects(rectangle)) {
-			for (final PointGroup grp : groups()) {
-				for (final Point2d pts : grp) {
+			for (final var grp : groups()) {
+				for (final var pts : grp) {
 					if (rectangle.contains(pts)) {
 						return true;
 					}
@@ -128,9 +127,9 @@ public class MapMultiPoint extends MapComposedElement {
 	@Override
 	@Pure
 	public double getDistance(Point2D<?, ?> point) {
-		double mind = Double.MAX_VALUE;
-		for (final Point2d p : points()) {
-			final double d = p.getDistance(point);
+		var mind = Double.MAX_VALUE;
+		for (final var p : points()) {
+			final var d = p.getDistance(point);
 			if (d < mind) {
 				mind = d;
 			}
@@ -181,19 +180,19 @@ public class MapMultiPoint extends MapComposedElement {
 
 	@Override
 	public Shape2d<?> getShape() {
-		final Path2d path = new Path2d();
-		for (final Point2d pts : points()) {
+		final var path = new Path2d();
+		for (final var pts : points()) {
 			updateShape(path, pts);
 		}
 		return null;
 	}
 
 	private void updateShape(Path2d path, Point2d pts) {
-		double x = pts.getX();
-		double y = pts.getY();
+		var x = pts.getX();
+		var y = pts.getY();
 
-		final double w = this.doubleFramed ? this.pointSize * 2 : this.pointSize;
-		final double h = w;
+		final var w = this.doubleFramed ? this.pointSize * 2 : this.pointSize;
+		final var h = w;
 
 		x -= w / 2.;
 		y -= h / 2.;

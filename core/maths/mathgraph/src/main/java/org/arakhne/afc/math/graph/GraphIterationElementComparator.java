@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class GraphIterationElementComparator<ST extends GraphSegment<ST, PT>, PT
 		if (o1 == o2) {
 			return 0;
 		}
-		final int cmp = compareSegments(o1.getSegment(), o2.getSegment());
+		final var cmp = compareSegments(o1.getSegment(), o2.getSegment());
 		if (!this.assumeOrientedSegments || cmp != 0) {
 			return cmp;
 		}

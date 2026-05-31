@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import java.lang.module.ModuleDescriptor;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
@@ -93,6 +94,7 @@ public class CallerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@DisplayName("getCallerMethod()")
 	public void getCallerMethod() throws Exception {
     	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod());
@@ -102,6 +104,7 @@ public class CallerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@DisplayName("getCallerClass()")
 	public void getCallerClass() throws Exception {
     	assertEquals(InnerCallerTest.class, this.caller.innerinnerTestGetCallerClass());
 	}
@@ -110,6 +113,7 @@ public class CallerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@DisplayName("getCallerClass(int)")
 	public void getCallerClassInt() throws Exception {
     	assertEquals(CallerTest.class, this.caller.innerinnerTestGetCallerClass(0));
     	assertEquals(InnerCallerTest.class, this.caller.innerinnerTestGetCallerClass(1));
@@ -120,6 +124,7 @@ public class CallerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@DisplayName("getCallerMethod(int)")
 	public void getCallerMethodInt() throws Exception {
     	assertEquals("innerTestGetCallerMethod",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod(0));
@@ -130,6 +135,7 @@ public class CallerTest {
 	}
 
 	@Test
+	@DisplayName("Caller.class.getModule().name() == Caller.MODULE_NAME")
 	public void vmutilsModuleName() throws Exception {
 		final Module module = Caller.class.getModule();
 		if (module != null) {
@@ -146,6 +152,7 @@ public class CallerTest {
 	}
 
 	@Test
+	@DisplayName("findClassForFirstCallerOutsideVmutilModule()")
 	public void findClassForFirstCallerOutsideVmutilModule() throws Exception {
 		// Depending on the test framework (Junit with Maven, or Junit within Eclipse)
 		// The testing code is not (or is) considered as part of the module

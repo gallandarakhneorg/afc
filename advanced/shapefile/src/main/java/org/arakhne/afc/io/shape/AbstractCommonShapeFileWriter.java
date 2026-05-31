@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Collection;
 import java.util.Collections;
@@ -179,7 +178,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 	 */
 	protected void flush() throws IOException {
 		if (this.tempStream != null && this.buffer.position() > 0) {
-			final int pos = this.buffer.position();
+			final var pos = this.buffer.position();
 			this.buffer.rewind();
 			this.buffer.limit(pos);
 
@@ -347,8 +346,8 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 			// Copy the channels
 			if (this.buffer != null && this.tempFile != null) {
 				try {
-					try (ReadableByteChannel in = Channels.newChannel(new FileInputStream(this.tempFile))) {
-						final ByteBuffer hbuffer = ByteBuffer.allocate(100);
+					try (var in = Channels.newChannel(new FileInputStream(this.tempFile))) {
+						final var hbuffer = ByteBuffer.allocate(100);
 						in.read(hbuffer);
 
 						hbuffer.limit(100);
@@ -393,9 +392,10 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 	 *
 	 * @param elements are the elements to write down
 	 * @throws IOException in case of error.
+	 * @throws BoundsNotFoundException bounds not found in the Shapefile.
 	 */
 	public void write(Collection<? extends E> elements) throws IOException {
-		final Progression progressBar = getTaskProgression();
+		final var progressBar = getTaskProgression();
 		Progression subTask = null;
 
 		if (progressBar != null) {
@@ -415,7 +415,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 				subTask.setProperties(0, 0, elements.size(), false);
 			}
 
-			for (final E element : elements) {
+			for (final var element : elements) {
 
 				writeElement(this.recordIndex, element, this.elementType);
 

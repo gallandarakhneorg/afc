@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import java.lang.ref.WeakReference;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-
 import org.arakhne.afc.math.geometry.d1.AbstractGeomFactory1D;
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
@@ -63,7 +62,7 @@ public class GeomFactory1dfx extends AbstractGeomFactory1D<Vector1dfx, Point1dfx
 		assert vector != null : AssertMessages.notNullParameter();
 		Point1dfx pt;
 		try {
-			final Vector1dfx pp = (Vector1dfx) vector;
+			final var pp = (Vector1dfx) vector;
 			pt = new Point1dfx(pp.segmentProperty(), pp.xProperty(), pp.yProperty());
 		} catch (Throwable exception) {
 			pt = new Point1dfx(vector.getSegment(), vector.getX(), vector.getY());
@@ -76,7 +75,7 @@ public class GeomFactory1dfx extends AbstractGeomFactory1D<Vector1dfx, Point1dfx
 		assert pt != null : AssertMessages.notNullParameter();
 		Vector1dfx vector;
 		try {
-			final Point1dfx pp = (Point1dfx) pt;
+			final var pp = (Point1dfx) pt;
 			vector = new Vector1dfx(pp.segmentProperty(), pp.xProperty(), pp.yProperty());
 		} catch (Throwable exception) {
 			vector = new Vector1dfx(pt.getSegment(), pt.getX(), pt.getY());

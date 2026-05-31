@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,7 @@
 package org.arakhne.afc.gis.mapelement;
 
 import java.lang.ref.SoftReference;
-import java.util.Iterator;
 import java.util.UUID;
-
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.math.MathUtil;
@@ -44,6 +40,8 @@ import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Class the permits to display a polyline.
@@ -101,7 +99,7 @@ public class MapPolyline extends MapComposedElement {
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		buffer.add("wide", isWidePolyline()); //$NON-NLS-1$
+		buffer.add("wide", Boolean.valueOf(isWidePolyline())); //$NON-NLS-1$
 	}
 
 	/** Set if this polyline must be drawn with a wide height.
@@ -150,25 +148,19 @@ public class MapPolyline extends MapComposedElement {
 	 */
 	@Pure
 	public double distance(Point2D<?, ?> point, double width) {
-		double mind = Double.POSITIVE_INFINITY;
-		double dist;
-		double w = width;
+		var mind = Double.POSITIVE_INFINITY;
+		var w = width;
 		w = Math.abs(w) / 2.;
 
-		Point2d previousPoint;
-		Point2d currentPoint;
-		Iterator<Point2d> points;
-		boolean treatFirstPoint;
-
 		for (final PointGroup grp : groups()) {
-			previousPoint = null;
-			treatFirstPoint = false;
-			points = grp.iterator();
+			Point2d previousPoint = null;
+			var treatFirstPoint = false;
+			final var points = grp.iterator();
 			while (points.hasNext()) {
-				currentPoint = points.next();
+				final var currentPoint = points.next();
 				if (previousPoint != null) {
 					treatFirstPoint = true;
-					dist = Segment2afp.calculatesDistanceSegmentPoint(
+					final var dist = Segment2afp.calculatesDistanceSegmentPoint(
 							previousPoint.getX(), previousPoint.getY(),
 							currentPoint.getX(), currentPoint.getY(),
 							point.getX(), point.getY())
@@ -180,7 +172,7 @@ public class MapPolyline extends MapComposedElement {
 				previousPoint = currentPoint;
 			}
 			if (previousPoint != null && !treatFirstPoint) {
-				dist = previousPoint.getDistance(point);
+				final var dist = previousPoint.getDistance(point);
 				if (dist < mind) {
 					mind = dist;
 				}
@@ -211,10 +203,10 @@ public class MapPolyline extends MapComposedElement {
 	 */
 	@Pure
 	public double distanceToEnd(Point2D<?, ?> point, double width) {
-		final Point2d firstPoint = getPointAt(0);
-		final Point2d lastPoint = getPointAt(-1);
-		double d1 = firstPoint.getDistance(point);
-		double d2 = lastPoint.getDistance(point);
+		final var firstPoint = getPointAt(0);
+		final var lastPoint = getPointAt(-1);
+		var d1 = firstPoint.getDistance(point);
+		var d2 = lastPoint.getDistance(point);
 		d1 -= width;
 		if (d1 < 0) {
 			d1 = 0;
@@ -248,19 +240,19 @@ public class MapPolyline extends MapComposedElement {
 	 */
 	@Pure
 	public final int getNearestEndIndex(double x, double y, OutputParameter<Double> distance) {
-		final int count = getPointCount();
-		final Point2d firstPoint = getPointAt(0);
-		final Point2d lastPoint = getPointAt(count - 1);
-		final double d1 = Point2D.getDistancePointPoint(firstPoint.getX(), firstPoint.getY(), x, y);
-		final double d2 = Point2D.getDistancePointPoint(lastPoint.getX(), lastPoint.getY(), x, y);
+		final var count = getPointCount();
+		final var firstPoint = getPointAt(0);
+		final var lastPoint = getPointAt(count - 1);
+		final var d1 = Point2D.getDistancePointPoint(firstPoint.getX(), firstPoint.getY(), x, y);
+		final var d2 = Point2D.getDistancePointPoint(lastPoint.getX(), lastPoint.getY(), x, y);
 		if (d1 <= d2) {
 			if (distance != null) {
-				distance.set(d1);
+				distance.set(Double.valueOf(d1));
 			}
 			return 0;
 		}
 		if (distance != null) {
-			distance.set(d2);
+			distance.set(Double.valueOf(d2));
 		}
 		return count - 1;
 	}
@@ -291,15 +283,15 @@ public class MapPolyline extends MapComposedElement {
 	@Pure
 	public Point1d getNearestPosition(Point2D<?, ?> pos, double lateralDistance) {
 		Point2d pp = null;
-		final Vector2d v = new Vector2d();
-		double currentPosition = 0.;
-		double bestPosition = Double.NaN;
-		double bestDistance = Double.POSITIVE_INFINITY;
-		final double baseLateralDistance = -Math.abs(lateralDistance);
-		double bestLateralDistance = 0.;
-		for (final Point2d p : points()) {
+		final var v = new Vector2d();
+		var currentPosition = 0.;
+		var bestPosition = Double.NaN;
+		var bestDistance = Double.POSITIVE_INFINITY;
+		final var baseLateralDistance = -Math.abs(lateralDistance);
+		var bestLateralDistance = 0.;
+		for (final var p : points()) {
 			if (pp != null) {
-				final double rawPosition = Segment2afp.findsProjectedPointPointLine(
+				final var rawPosition = Segment2afp.findsProjectedPointPointLine(
 						pos.getX(), pos.getY(),
 						pp.getX(), pp.getY(),
 						p.getX(), p.getY());
@@ -336,7 +328,7 @@ public class MapPolyline extends MapComposedElement {
 					dist = Math.abs(dist);
 				}
 				v.sub(p, pp);
-				final double t = v.getLength();
+				final var t = v.getLength();
 				v.scale(position);
 				if (dist < bestDistance) {
 					bestDistance = dist;
@@ -377,9 +369,9 @@ public class MapPolyline extends MapComposedElement {
 	public double getLength() {
 		if (this.length < 0) {
 			double segmentLength = 0;
-			for (final PointGroup group : groups()) {
+			for (final var group : groups()) {
 				Point2d previousPts = null;
-				for (final Point2d pts : group.points()) {
+				for (final var pts : group.points()) {
 					if (previousPts != null) {
 						segmentLength += previousPts.getDistance(pts);
 					}
@@ -398,14 +390,15 @@ public class MapPolyline extends MapComposedElement {
 	 *
 	 * @param distance is position on the polyline (in {@code 0} to {@code getLength()}).
 	 * @return the point pair, never {@code null}.
+	 * @throws IllegalArgumentException invalid group structure.
 	 */
 	@Pure
 	public Segment1D<?, ?> getSubSegmentForDistance(double distance) {
-		final double rd = distance < 0. ? 0. : distance;
-		double onGoingDistance = 0.;
-		for (final PointGroup group : groups()) {
+		final var rd = distance < 0. ? 0. : distance;
+		var onGoingDistance = 0.;
+		for (final var group : groups()) {
 			Point2d previousPts = null;
-			for (final Point2d pts : group.points()) {
+			for (final var pts : group.points()) {
 				if (previousPts != null) {
 					onGoingDistance += previousPts.getDistance(pts);
 					if (rd <= onGoingDistance) {
@@ -455,23 +448,22 @@ public class MapPolyline extends MapComposedElement {
 			}
 
 			if (this.isWidePolyline) {
-				final Rectangle2afp<?, ?, ?, ?, ?, ?> box = rectangle.toBoundingBox();
-				final double rminX = box.getMinX();
-				final double rminY = box.getMinY();
-				final double rmaxX = box.getMaxX();
-				final double rmaxY = box.getMaxY();
+				final var box = rectangle.toBoundingBox();
+				final var rminX = box.getMinX();
+				final var rminY = box.getMinY();
+				final var rmaxX = box.getMaxX();
+				final var rmaxY = box.getMaxY();
 
-				final double width = getWidth();
+				final var width = getWidth();
 
-				boolean firstPoint;
-				double px = 0;
-				double py = 0;
+				var px = 0.;
+				var py = 0.;
 
-				for (final PointGroup grp : groups()) {
-					firstPoint = true;
-					for (final Point2d pts : grp) {
-						final double x = pts.getX();
-						final double y = pts.getY();
+				for (final var grp : groups()) {
+					var firstPoint = true;
+					for (final var pts : grp) {
+						final var x = pts.getX();
+						final var y = pts.getY();
 
 						if (firstPoint) {
 							firstPoint = false;
@@ -530,12 +522,11 @@ public class MapPolyline extends MapComposedElement {
 	@Pure
 	public final void toPath2D(Path2d path) {
 		// loop on parts and build the path to draw
-		boolean firstPoint;
-		for (final PointGroup grp : groups()) {
-			firstPoint = true;
-			for (final Point2d pts : grp) {
-				final double x = pts.getX();
-				final double y = pts.getY();
+		for (final var grp : groups()) {
+			var firstPoint = true;
+			for (final var pts : grp) {
+				final var x = pts.getX();
+				final var y = pts.getY();
 				if (firstPoint) {
 					path.moveTo(x, y);
 					firstPoint = false;
@@ -563,7 +554,7 @@ public class MapPolyline extends MapComposedElement {
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	@Pure
 	public final Path2d toPath2D(double startPosition, double endPosition) {
-		final Path2d path = new Path2d();
+		final var path = new Path2d();
 		toPath2D(path, startPosition, endPosition);
 		return path;
 	}
@@ -585,7 +576,7 @@ public class MapPolyline extends MapComposedElement {
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	@Pure
 	public final void toPath2D(Path2d path, double startPosition, double endPosition) {
-		final double length = getLength();
+		final var length = getLength();
 		// For performance purpose
 		if ((Double.isNaN(startPosition) || startPosition < 0f)
 				&&
@@ -595,12 +586,12 @@ public class MapPolyline extends MapComposedElement {
 		}
 
 		final double p1;
-		final double p2;
 		if (Double.isNaN(startPosition) || startPosition <= 0f) {
 			p1 = 0.;
 		} else {
 			p1 = startPosition;
 		}
+		final double p2;
 		if (Double.isNaN(endPosition) || endPosition >= length) {
 			p2 = length;
 		} else {
@@ -610,14 +601,13 @@ public class MapPolyline extends MapComposedElement {
 			return;
 		}
 
-		boolean firstDrawn;
-		double curvilinePosition = 0.;
-		double previousCurvilinePosition = 0.;
+		var curvilinePosition = 0.;
+		var previousCurvilinePosition = 0.;
 
-		for (final PointGroup grp : groups()) {
-			firstDrawn = true;
+		for (final var grp : groups()) {
+			var firstDrawn = true;
 			Point2d previous = null;
-			for (final Point2d pts : grp) {
+			for (final var pts : grp) {
 				if (p2 <= previousCurvilinePosition) {
 					return;
 				}
@@ -689,14 +679,14 @@ public class MapPolyline extends MapComposedElement {
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		final Rectangle2d bounds = super.calcBounds().toBoundingBox();
+		final var bounds = super.calcBounds().toBoundingBox();
 		if (bounds != null && isWidePolyline()) {
-			final double w = getWidth();
-			final double mx = bounds.getMinX();
-			final double my = bounds.getMinY();
-			final double xx = bounds.getMaxX();
-			final double xy = bounds.getMaxY();
-			final double dw = w / 2.;
+			final var w = getWidth();
+			final var mx = bounds.getMinX();
+			final var my = bounds.getMinY();
+			final var xx = bounds.getMaxX();
+			final var xy = bounds.getMaxY();
+			final var dw = w / 2.;
 			bounds.setFromCorners(mx - dw, my - dw, xx + dw, xy + dw);
 		}
 		return bounds;
@@ -725,26 +715,26 @@ public class MapPolyline extends MapComposedElement {
 	protected final void computeGeoLocationForDistance(double desired_distance, double shifting,
 			Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
 		assert geoLocation != null;
-		double desiredDistance = desired_distance;
-		for (final PointGroup group : groups()) {
+		var desiredDistance = desired_distance;
+		for (final var group : groups()) {
 			Point2d prevPoint = null;
 
-			for (final Point2d thepoint : group.points()) {
+			for (final var thepoint : group.points()) {
 				if (prevPoint != null) {
 					// Compute the length between the current point and the previous point
-					double vx = thepoint.getX() - prevPoint.getX();
-					double vy = thepoint.getY() - prevPoint.getY();
-					final double norm = Math.hypot(vx, vy);
+					var vx = thepoint.getX() - prevPoint.getX();
+					var vy = thepoint.getY() - prevPoint.getY();
+					final var norm = Math.hypot(vx, vy);
 					if (desiredDistance < norm && norm != 0) {
 						// The desired distance is on this part's segment
 						if (norm != 0) {
 
 							// Compute the vector and the new point
 							vx /= norm;
-							double px = vx * desiredDistance + prevPoint.getX();
+							var px = vx * desiredDistance + prevPoint.getX();
 
 							vy /= norm;
-							double py = vy * desiredDistance + prevPoint.getY();
+							var py = vy * desiredDistance + prevPoint.getY();
 
 							if (tangent != null) {
 								tangent.set(vx, vy);
@@ -753,7 +743,7 @@ public class MapPolyline extends MapComposedElement {
 							// Shift the point on the left or on the right depending on
 							// the sign of the shifting value
 							if (shifting != 0) {
-								final Vector2d perpend = new Vector2d(vx, vy);
+								final var perpend = new Vector2d(vx, vy);
 								perpend.makeOrthogonal();
 								perpend.scale(shifting);
 								px += perpend.getX();
@@ -776,16 +766,16 @@ public class MapPolyline extends MapComposedElement {
 			}
 		}
 		// The end of the segment was reached
-		final int ptsCount = getPointCount();
-		final Point2d p0 = getPointAt(ptsCount - 2);
-		final Point2d p1 = getPointAt(ptsCount - 1);
+		final var ptsCount = getPointCount();
+		final var p0 = getPointAt(ptsCount - 2);
+		final var p1 = getPointAt(ptsCount - 1);
 		if (tangent != null) {
 			// The tangent is colinear to the last segment
 			tangent.sub(p1, p0);
 			tangent.normalize();
 		}
 		if (shifting != 0.) {
-			final Vector2d perpend = new Vector2d(
+			final var perpend = new Vector2d(
 					p1.getX() - p0.getX(),
 					p1.getY() - p0.getY());
 			perpend.normalize();
@@ -836,7 +826,7 @@ public class MapPolyline extends MapComposedElement {
 		@Override
 		@Pure
 		public Vector2d getTangentAt(double positionOnSegment) {
-			final Vector2d tangent = new Vector2d();
+			final var tangent = new Vector2d();
 			computeGeoLocationForDistance(positionOnSegment, 0.,
 					null,
 					tangent);
@@ -858,7 +848,7 @@ public class MapPolyline extends MapComposedElement {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void projectsOnPlane(double positionOnSegment, Point2D position, Vector2D tangent) {
-			final Point2d gl = new Point2d();
+			final var gl = new Point2d();
 			computeGeoLocationForDistance(positionOnSegment, 0., gl, tangent);
 			if (position != null) {
 				position.set(gl);
@@ -868,7 +858,7 @@ public class MapPolyline extends MapComposedElement {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void projectsOnPlane(double positionOnSegment, double shiftDistance, Point2D position, Vector2D tangent) {
-			final Point2d gl = new Point2d();
+			final var gl = new Point2d();
 			computeGeoLocationForDistance(positionOnSegment, shiftDistance, gl, tangent);
 			if (position != null) {
 				position.set(gl);

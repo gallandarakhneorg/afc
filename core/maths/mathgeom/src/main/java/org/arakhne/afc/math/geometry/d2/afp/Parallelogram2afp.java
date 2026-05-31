@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,20 +23,21 @@ package org.arakhne.afc.math.geometry.d2.afp;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.matrix.Matrix2d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D parallelogram on a plane.
+/** Functional interface that represented a 2D parallelogram on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -50,6 +51,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber", "checkstyle:parameternumber"})
 public interface Parallelogram2afp<
 		ST extends Shape2afp<?, ?, IE, P, V, B>,
 		IT extends Parallelogram2afp<?, ?, IE, P, V, B>,
@@ -58,6 +60,11 @@ public interface Parallelogram2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Shape2afp<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.PARALLELOGRAM;
+	}
 
 	/**
 	 * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
@@ -73,11 +80,11 @@ public interface Parallelogram2afp<
 		assert raxis != null || saxis != null : AssertMessages.oneNotNullParameter(1, 2);
 		// Determining the covariance matrix of the points
 		// and set the center of the box
-		final Matrix2d cov = new Matrix2d();
+		final var cov = new Matrix2d();
 		cov.cov(raxis, points);
 		//Determining eigenvectors of covariance matrix and defines RS axes.
 		//eigenvectors
-		final Matrix2d rs = new Matrix2d();
+		final var rs = new Matrix2d();
 		cov.eigenVectorsOfSymmetricMatrix(rs);
 		if (raxis != null) {
 			rs.getColumn(0, raxis);
@@ -106,7 +113,7 @@ public interface Parallelogram2afp<
 	static double findsVectorProjectionRAxisPoint(double rx, double ry, double sx, double sy, double x,  double y) {
 		assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
 		assert Vector2D.isUnitVector(sx, sy) : AssertMessages.normalizedParameters(2, 3);
-		final double det = Vector2D.perpProduct(rx, ry, sx, sy);
+		final var det = Vector2D.perpProduct(rx, ry, sx, sy);
 		if (det == 0.) {
 			return Double.NaN;
 		}
@@ -132,7 +139,7 @@ public interface Parallelogram2afp<
 	static double findsVectorProjectionSAxisVector(double rx, double ry, double sx, double sy, double x,  double y) {
 		assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
 		assert Vector2D.isUnitVector(sx, sy) : AssertMessages.normalizedParameters(2, 3);
-		final double det = Vector2D.perpProduct(sx, sy, rx, ry);
+		final var det = Vector2D.perpProduct(sx, sy, rx, ry);
 		if (det == 0.) {
 			return Double.NaN;
 		}
@@ -166,19 +173,19 @@ public interface Parallelogram2afp<
 		assert center != null : AssertMessages.notNullParameter(3);
 		assert extents != null : AssertMessages.notNullParameter(4);
 
-		double minR = Double.POSITIVE_INFINITY;
-		double maxR = Double.NEGATIVE_INFINITY;
-		double minS = Double.POSITIVE_INFINITY;
-		double maxS = Double.NEGATIVE_INFINITY;
+		var minR = Double.POSITIVE_INFINITY;
+		var maxR = Double.NEGATIVE_INFINITY;
+		var minS = Double.POSITIVE_INFINITY;
+		var maxS = Double.NEGATIVE_INFINITY;
 
-		final double ux = raxis.getX();
-		final double uy = raxis.getY();
-		final double vx = saxis.getX();
-		final double vy = saxis.getY();
+		final var ux = raxis.getX();
+		final var uy = raxis.getY();
+		final var vx = saxis.getX();
+		final var vy = saxis.getY();
 
 		double projR;
 		double projS;
-		for (final Point2D<?, ?> tuple : points) {
+		for (final var tuple : points) {
 			projR = findsVectorProjectionRAxisPoint(ux, uy, vx, vy, tuple.getX(), tuple.getY());
 			projS = findsVectorProjectionSAxisVector(ux, uy, vx, vy, tuple.getX(), tuple.getY());
 			if (projR < minR) {
@@ -195,8 +202,8 @@ public interface Parallelogram2afp<
 			}
 		}
 
-		final double a = (maxR + minR) / 2.;
-		final double b = (maxS + minS) / 2.;
+		final var a = (maxR + minR) / 2.;
+		final var b = (maxS + minS) / 2.;
 
 		// Set the center of the OBR
 		center.set(
@@ -253,8 +260,8 @@ public interface Parallelogram2afp<
 		assert closest != null : AssertMessages.notNullParameter(10);
 
 		// Computation is done according to the parallelogram center
-		double dx = px - centerX;
-		double dy = py - centerY;
+		var dx = px - centerX;
+		var dy = py - centerY;
 
 		// The following algorithm is written for CCW axes. Swap axes if necessary.
 		final double a1x;
@@ -263,7 +270,7 @@ public interface Parallelogram2afp<
 		final double a2x;
 		final double a2y;
 		final double a2e;
-		final boolean isCCWAxes = Vector2D.isCCW(axis1X, axis1Y, axis2X, axis2Y);
+		final var isCCWAxes = Vector2D.isCCW(axis1X, axis1Y, axis2X, axis2Y);
 		if (isCCWAxes) {
 			a1x = axis1X;
 			a1y = axis1Y;
@@ -281,14 +288,14 @@ public interface Parallelogram2afp<
 		}
 
 		// Vectors to the points of the parallelogram
-		final double ux = a1e * a1x;
-		final double uy = a1e * a1y;
-		final double vx = a2e * a2x;
-		final double vy = a2e * a2y;
+		final var ux = a1e * a1x;
+		final var uy = a1e * a1y;
+		final var vx = a2e * a2x;
+		final var vy = a2e * a2y;
 
 		// Do the computation in the positive half-plane and use center symmetry for the other plane.
 		// Separation axis is (u - v)
-		final boolean isOnPositiveHalfPlane = Vector2D.perpProduct(ux - vx, uy - vy, dx, dy) >= 0.;
+		final var isOnPositiveHalfPlane = Vector2D.perpProduct(ux - vx, uy - vy, dx, dy) >= 0.;
 		//Vector2D.dotProduct(dx, dy, -uy + vy, ux - vx) >= 0.;
 		if (!isOnPositiveHalfPlane) {
 			dx = -dx;
@@ -302,14 +309,14 @@ public interface Parallelogram2afp<
 		// H: (c, d)
 
 		// Apex = (u + v)
-		final double apexx = ux + vx;
-		final double apexy = uy + vy;
+		final var apexx = ux + vx;
+		final var apexy = uy + vy;
 
-		final double apexpx = dx - apexx;
-		final double apexpy = dy - apexy;
+		final var apexpx = dx - apexx;
+		final var apexpy = dy - apexy;
 
-		final double xOnLeftSide = Vector2D.dotProduct(apexpx, apexpy, -a2x, -a2y);
-		final double xOnRightSide = Vector2D.dotProduct(apexpx, apexpy, -a1x, -a1y);
+		final var xOnLeftSide = Vector2D.dotProduct(apexpx, apexpy, -a2x, -a2y);
+		final var xOnRightSide = Vector2D.dotProduct(apexpx, apexpy, -a1x, -a1y);
 
 		if (xOnLeftSide <= 0. && xOnRightSide <= 0.) {
 			// Closest is Apex
@@ -397,33 +404,33 @@ public interface Parallelogram2afp<
 		assert farthest != null : AssertMessages.notNullParameter(10);
 
 		// Computation is done according to the parallelogram center
-		final double dx = px - centerX;
-		final double dy = py - centerY;
+		final var dx = px - centerX;
+		final var dy = py - centerY;
 
 		// Vectors to the points of the parallelogram
-		final double uex = axis1Extent * axis1X;
-		final double uey = axis1Extent * axis1Y;
-		final double vex = axis2Extent * axis2X;
-		final double vey = axis2Extent * axis2Y;
+		final var uex = axis1Extent * axis1X;
+		final var uey = axis1Extent * axis1Y;
+		final var vex = axis2Extent * axis2X;
+		final var vey = axis2Extent * axis2Y;
 
 		// Names of the points in the ggb diagram
 		// E: (-a, -b)
 		// F: (-c, -d)
 		// G: (a, b)
 		// H: (c, d)
-		final double a = uex + vex;
-		final double b = uey + vey;
-		final  double c = vex - uex;
-		final double d = vey - uey;
+		final var a = uex + vex;
+		final var b = uey + vey;
+		final var c = vex - uex;
+		final var d = vey - uey;
 
-		final double pEdist = Math.pow(dx + a, 2) + Math.pow(dy + b, 2);
-		final double pFdist = Math.pow(dx + c, 2) + Math.pow(dy + d, 2);
-		final double pGdist = Math.pow(dx - a, 2) + Math.pow(dy - b, 2);
-		final double pHdist = Math.pow(dx - c, 2) + Math.pow(dy - d, 2);
+		final var pEdist = Math.pow(dx + a, 2) + Math.pow(dy + b, 2);
+		final var pFdist = Math.pow(dx + c, 2) + Math.pow(dy + d, 2);
+		final var pGdist = Math.pow(dx - a, 2) + Math.pow(dy - b, 2);
+		final var pHdist = Math.pow(dx - c, 2) + Math.pow(dy - d, 2);
 
-		double max = pEdist;
-		double maxx = -a;
-		double maxy = -b;
+		var max = pEdist;
+		var maxx = -a;
+		var maxy = -b;
 
 		if (pFdist > max) {
 			max = pFdist;
@@ -483,10 +490,10 @@ public interface Parallelogram2afp<
 		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
 		assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
 
-		final double x = px - centerX;
-		final double y = py - centerY;
+		final var x = px - centerX;
+		final var y = py - centerY;
 
-		double coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
+		var coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
 		if (coordinate < -axis1Extent || coordinate > axis1Extent) {
 			return false;
 		}
@@ -526,6 +533,7 @@ public interface Parallelogram2afp<
 	 */
 	@Pure
 	@Unefficient
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	static boolean containsParallelogramRectangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -541,12 +549,12 @@ public interface Parallelogram2afp<
 		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(10);
 		assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(11);
 
-		final double basex = rx - centerX;
-		final double basey = ry - centerY;
+		final var basex = rx - centerX;
+		final var basey = ry - centerY;
 
-		double x = basex;
-		double y = basey;
-		double coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
+		var x = basex;
+		var y = basey;
+		var coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
 		if (coordinate < -axis1Extent || coordinate > axis1Extent) {
 			return false;
 		}
@@ -622,15 +630,15 @@ public interface Parallelogram2afp<
 		assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
 
 		// Changing Segment coordinate basis.
-		final double p1x = s1x - centerX;
-		final double p1y = s1y - centerY;
-		final double p2x = s2x - centerX;
-		final double p2y = s2y - centerY;
+		final var p1x = s1x - centerX;
+		final var p1y = s1y - centerY;
+		final var p2x = s2x - centerX;
+		final var p2y = s2y - centerY;
 
-		final double ax = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
-		final double ay = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
-		final double bx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
-		final double by = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
+		final var ax = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
+		final var ay = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
+		final var bx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
+		final var by = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
 
 		return Rectangle2afp.intersectsRectangleSegment(
 				-axis1Extent, -axis2Extent, axis1Extent, axis2Extent,
@@ -677,19 +685,19 @@ public interface Parallelogram2afp<
 		assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
 
 		// Changing Triangle coordinate basis.
-		final double p1x = tx1 - centerX;
-		final double p1y = ty1 - centerY;
-		final double p2x = tx2 - centerX;
-		final double p2y = ty2 - centerY;
-		final double p3x = tx3 - centerX;
-		final double p3y = ty3 - centerY;
+		final var p1x = tx1 - centerX;
+		final var p1y = ty1 - centerY;
+		final var p2x = tx2 - centerX;
+		final var p2y = ty2 - centerY;
+		final var p3x = tx3 - centerX;
+		final var p3y = ty3 - centerY;
 
-		final double ax = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
-		final double ay = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
-		final double bx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
-		final double by = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
-		final double cx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p3x, p3y);
-		final double cy = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p3x, p3y);
+		final var ax = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
+		final var ay = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
+		final var bx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
+		final var by = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
+		final var cx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p3x, p3y);
+		final var cy = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p3x, p3y);
 
 		return Triangle2afp.intersectsTriangleRectangle(
 				ax, ay,  bx,  by, cx, cy,
@@ -732,7 +740,7 @@ public interface Parallelogram2afp<
 		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
 		assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
 		assert circleRadius >= 0 : AssertMessages.positiveOrZeroParameter(10);
-		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
+		final var closest = new InnerComputationPoint2afp();
 		findsClosestPointPointParallelogram(
 				circleX, circleY,
 				centerX, centerY,
@@ -741,7 +749,7 @@ public interface Parallelogram2afp<
 				closest);
 		// Circle and parallelogram intersect if the (squared) distance from sphere
 		// center to point p is less than the (squared) sphere radius
-		final double squaredRadius = circleRadius * circleRadius;
+		final var squaredRadius = circleRadius * circleRadius;
 
 		return Point2D.getDistanceSquaredPointPoint(
 				circleX, circleY,
@@ -793,24 +801,24 @@ public interface Parallelogram2afp<
 		}
 
 		// Convert the parallelogram elements so that the ellipse is transformed to a circle centered at the origin.
-		final double a = ewidth / 2.;
-		final double b = eheight / 2.;
+		final var a = ewidth / 2.;
+		final var b = eheight / 2.;
 
-		final double translateX = ex + a;
-		final double translateY = ey + b;
+		final var translateX = ex + a;
+		final var translateY = ey + b;
 
-		final double transCenterX = (centerX - translateX) / a;
-		final double transCenterY = (centerY - translateY) / b;
+		final var transCenterX = (centerX - translateX) / a;
+		final var transCenterY = (centerY - translateY) / b;
 
-		double transAxis1X = axis1Extent * axis1X / a;
-		double transAxis1Y = axis1Extent * axis1Y / b;
-		final double length1 = Math.hypot(transAxis1X, transAxis1Y);
+		var transAxis1X = axis1Extent * axis1X / a;
+		var transAxis1Y = axis1Extent * axis1Y / b;
+		final var length1 = Math.hypot(transAxis1X, transAxis1Y);
 		transAxis1X /= length1;
 		transAxis1Y /= length1;
 
-		double transAxis2X = axis2Extent * axis2X / a;
-		double transAxis2Y = axis2Extent * axis2Y / b;
-		final double length2 = Math.hypot(transAxis2X, transAxis2Y);
+		var transAxis2X = axis2Extent * axis2X / a;
+		var transAxis2Y = axis2Extent * axis2Y / b;
+		final var length2 = Math.hypot(transAxis2X, transAxis2Y);
 		transAxis2X /= length2;
 		transAxis2Y /= length2;
 
@@ -866,25 +874,25 @@ public interface Parallelogram2afp<
 		assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
 		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(10);
 		assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(11);
-		final double rx2 = rx + rwidth;
-		final double ry2 = ry + rheight;
+		final var rx2 = rx + rwidth;
+		final var ry2 = ry + rheight;
 		// Test border intersections
-		final double px1 = centerX + axis1Extent * axis1X + axis2Extent * axis2X;
-		final double py1 = centerY + axis1Extent * axis1Y + axis2Extent * axis2Y;
-		final double px2 = centerX - axis1Extent * axis1X + axis2Extent * axis2X;
-		final double py2 = centerY - axis1Extent * axis1Y + axis2Extent * axis2Y;
+		final var px1 = centerX + axis1Extent * axis1X + axis2Extent * axis2X;
+		final var py1 = centerY + axis1Extent * axis1Y + axis2Extent * axis2Y;
+		final var px2 = centerX - axis1Extent * axis1X + axis2Extent * axis2X;
+		final var py2 = centerY - axis1Extent * axis1Y + axis2Extent * axis2Y;
 		if (Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2,
 				px1, py1, px2, py2)) {
 			return true;
 		}
-		final double px3 = centerX - axis1Extent * axis1X - axis2Extent * axis2X;
-		final double py3 = centerY - axis1Extent * axis1Y - axis2Extent * axis2Y;
+		final var px3 = centerX - axis1Extent * axis1X - axis2Extent * axis2X;
+		final var py3 = centerY - axis1Extent * axis1Y - axis2Extent * axis2Y;
 		if (Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2,
 				px2, py2, px3, py3)) {
 			return true;
 		}
-		final double px4 = centerX + axis1Extent * axis1X - axis2Extent * axis2X;
-		final double py4 = centerY + axis1Extent * axis1Y - axis2Extent * axis2Y;
+		final var px4 = centerX + axis1Extent * axis1X - axis2Extent * axis2X;
+		final var py4 = centerY + axis1Extent * axis1Y - axis2Extent * axis2Y;
 		if (Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2,
 				px3, py3, px4, py4)) {
 			return true;
@@ -969,17 +977,17 @@ public interface Parallelogram2afp<
 		assert Vector2D.isUnitVector(axis2X2, axis2Y2) : AssertMessages.normalizedParameters(13, 14);
 
 		// Project the second parallelogram into the local axes of the first parallelogram
-		final double x = centerX2 - centerX1;
-		final double y = centerY2 - centerY1;
-		final double projCenterX = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, x, y);
-		final double projCenterY = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, x, y);
-		double projAxis1X = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, axis1X2, axis1Y2);
-		double projAxis1Y = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, axis1X2, axis1Y2);
-		double length = Math.hypot(projAxis1X, projAxis1Y);
+		final var x = centerX2 - centerX1;
+		final var y = centerY2 - centerY1;
+		final var projCenterX = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, x, y);
+		final var projCenterY = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, x, y);
+		var projAxis1X = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, axis1X2, axis1Y2);
+		var projAxis1Y = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, axis1X2, axis1Y2);
+		var length = Math.hypot(projAxis1X, projAxis1Y);
 		projAxis1X /= length;
 		projAxis1Y /= length;
-		double projAxis2X = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, axis2X2, axis2Y2);
-		double projAxis2Y = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, axis2X2, axis2Y2);
+		var projAxis2X = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, axis2X2, axis2Y2);
+		var projAxis2Y = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, axis2X2, axis2Y2);
 		length = Math.hypot(projAxis2X, projAxis2Y);
 		projAxis2X /= length;
 		projAxis2Y /= length;
@@ -1026,6 +1034,7 @@ public interface Parallelogram2afp<
 	 */
 	@Pure
 	@Unefficient
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static boolean intersectsParallelogramRoundRectangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -1044,21 +1053,21 @@ public interface Parallelogram2afp<
 		assert rArcWidth >= 0 : AssertMessages.positiveOrZeroParameter(12);
 		assert rArcHeight >= 0 : AssertMessages.positiveOrZeroParameter(13);
 
-		final double rx2 = rx + rwidth;
-		final double ry2 = ry + rheight;
-		final double rxmin = rx + rArcWidth;
-		final double rxmax = rx2 - rArcWidth;
-		final double rymin = ry + rArcHeight;
-		final double rymax = ry2 - rArcHeight;
-		final double ew = rArcWidth * 2;
-		final double eh = rArcWidth * 2;
-		final double emaxx = rxmax - rArcWidth;
-		final double emaxy = rymax - rArcHeight;
+		final var rx2 = rx + rwidth;
+		final var ry2 = ry + rheight;
+		final var rxmin = rx + rArcWidth;
+		final var rxmax = rx2 - rArcWidth;
+		final var rymin = ry + rArcHeight;
+		final var rymax = ry2 - rArcHeight;
+		final var ew = rArcWidth * 2;
+		final var eh = rArcWidth * 2;
+		final var emaxx = rxmax - rArcWidth;
+		final var emaxy = rymax - rArcHeight;
 		// Test border intersections
-		final double px1 = centerX + axis1Extent * axis1X + axis2Extent * axis2X;
-		final double py1 = centerY + axis1Extent * axis1Y + axis2Extent * axis2Y;
-		final double px2 = centerX - axis1Extent * axis1X + axis2Extent * axis2X;
-		final double py2 = centerY - axis1Extent * axis1Y + axis2Extent * axis2Y;
+		final var px1 = centerX + axis1Extent * axis1X + axis2Extent * axis2X;
+		final var py1 = centerY + axis1Extent * axis1Y + axis2Extent * axis2Y;
+		final var px2 = centerX - axis1Extent * axis1X + axis2Extent * axis2X;
+		final var py2 = centerY - axis1Extent * axis1Y + axis2Extent * axis2Y;
 		if (Rectangle2afp.intersectsRectangleSegment(rxmin, ry, rxmax, ry2,
 				px1, py1, px2, py2)
 				|| Rectangle2afp.intersectsRectangleSegment(rx, rymin, rx2, rymax, px1, py1, px2, py2)
@@ -1068,8 +1077,8 @@ public interface Parallelogram2afp<
 				|| Ellipse2afp.intersectsEllipseSegment(emaxx, ry, ew, eh, px1, py1, px2, py2, false)) {
 			return true;
 		}
-		final double px3 = centerX - axis1Extent * axis1X - axis2Extent * axis2X;
-		final double py3 = centerY - axis1Extent * axis1Y - axis2Extent * axis2Y;
+		final var px3 = centerX - axis1Extent * axis1X - axis2Extent * axis2X;
+		final var py3 = centerY - axis1Extent * axis1Y - axis2Extent * axis2Y;
 		if (Rectangle2afp.intersectsRectangleSegment(rxmin, ry, rxmax, ry2,
 				px2, py2, px3, py3)
 				|| Rectangle2afp.intersectsRectangleSegment(rx, rymin, rx2, rymax, px2, py2, px3, py3)
@@ -1079,8 +1088,8 @@ public interface Parallelogram2afp<
 				|| Ellipse2afp.intersectsEllipseSegment(emaxx, ry, ew, eh, px2, py2, px3, py3, false)) {
 			return true;
 		}
-		final double px4 = centerX + axis1Extent * axis1X - axis2Extent * axis2X;
-		final double py4 = centerY + axis1Extent * axis1Y - axis2Extent * axis2Y;
+		final var px4 = centerX + axis1Extent * axis1X - axis2Extent * axis2X;
+		final var py4 = centerY + axis1Extent * axis1Y - axis2Extent * axis2Y;
 		if (Rectangle2afp.intersectsRectangleSegment(rxmin, ry, rxmax, ry2,
 				px3, py3, px4, py4)
 				|| Rectangle2afp.intersectsRectangleSegment(rx, rymin, rx2, rymax, px3, py3, px4, py4)
@@ -1144,12 +1153,11 @@ public interface Parallelogram2afp<
 		assert extent2 >= 0 : AssertMessages.positiveOrZeroParameter(7);
 		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
 		assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
-		final int mask = pathIterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final ProjectionToParallelogramLocalCoordinateSystemPathIterator<T> localIterator =
-				new ProjectionToParallelogramLocalCoordinateSystemPathIterator<>(
+		final var mask = pathIterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var localIterator = new ProjectionToParallelogramLocalCoordinateSystemPathIterator<>(
 						centerX, centerY, axis1X, axis1Y, axis2X, axis2Y,
 						pathIterator);
-		final int crossings = Path2afp.calculatesCrossingsPathIteratorRectangleShadow(
+		final var crossings = Path2afp.calculatesCrossingsPathIteratorRectangleShadow(
 				0,
 				localIterator,
 				-extent1, -extent2,
@@ -1161,6 +1169,7 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 	default boolean equalsToShape(IT shape) {
 		if (shape == null) {
 			return false;
@@ -1435,11 +1444,11 @@ public interface Parallelogram2afp<
 	 */
 	default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
 		assert pointCloud != null : AssertMessages.notNullParameter();
-		final Vector2D<?, ?> r = new InnerComputationVector2afp();
-		final Vector2D<?, ?> s = new InnerComputationVector2afp();
+		final var r = new InnerComputationVector2afp();
+		final var s = new InnerComputationVector2afp();
 		calculatesOrthogonalAxes(pointCloud, r, s);
-		final Point2D<?, ?> center = new InnerComputationPoint2afp();
-		final Vector2D<?, ?> extents = new InnerComputationVector2afp();
+		final var center = new InnerComputationPoint2afp();
+		final var extents = new InnerComputationVector2afp();
 		Parallelogram2afp.calculatesCenterPointAxisExtents(pointCloud, r, s, center, extents);
 		set(center.getX(), center.getY(),
 				r.getX(), r.getY(), extents.getX(),
@@ -1461,7 +1470,7 @@ public interface Parallelogram2afp<
 	default double getDistanceSquared(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		// Only for internal usage.
-		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
+		final var closest = new InnerComputationPoint2afp();
 		findsClosestPointPointParallelogram(
 				pt.getX(), pt.getY(),
 				getCenterX(), getCenterY(),
@@ -1476,7 +1485,7 @@ public interface Parallelogram2afp<
 	default double getDistanceL1(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		// Only for internal usage.
-		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
+		final var closest = new InnerComputationPoint2afp();
 		findsClosestPointPointParallelogram(
 				pt.getX(), pt.getY(),
 				getCenterX(), getCenterY(),
@@ -1491,7 +1500,7 @@ public interface Parallelogram2afp<
 	default double getDistanceLinf(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		// Only for internal usage.
-		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
+		final var closest = new InnerComputationPoint2afp();
 		findsClosestPointPointParallelogram(
 				pt.getX(), pt.getY(),
 				getCenterX(), getCenterY(),
@@ -1511,12 +1520,12 @@ public interface Parallelogram2afp<
 	 * @param angle the angle of rotation.
 	 */
 	default void rotate(double angle) {
-		final Vector2D<?, ?> axis1 = getFirstAxis();
-		final Vector2D<?, ?> newAxis1 = new InnerComputationVector2afp();
+		final var axis1 = getFirstAxis();
+		final var newAxis1 = new InnerComputationVector2afp();
 		newAxis1.turn(angle, axis1);
 		setFirstAxis(newAxis1);
-		final Vector2D<?, ?> axis2 = getSecondAxis();
-		final Vector2D<?, ?> newAxis2 = new InnerComputationVector2afp();
+		final var axis2 = getSecondAxis();
+		final var newAxis2 = new InnerComputationVector2afp();
 		newAxis2.turn(angle, axis2);
 		setSecondAxis(newAxis2);
 	}
@@ -1665,16 +1674,14 @@ public interface Parallelogram2afp<
 	@Override
 	default void toBoundingBox(B box) {
 		assert box != null : AssertMessages.notNullParameter();
-		final Point2D<?, ?> minCorner;
-		final Point2D<?, ?> maxCorner;
 
-		minCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
-		maxCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
+		final var minCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
+		final var maxCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
 
-		final double srx = getFirstAxisX() * getFirstAxisExtent();
-		final double sry = getFirstAxisY() * getFirstAxisExtent();
-		final double ssx = getSecondAxisX() * getSecondAxisExtent();
-		final double ssy = getSecondAxisY() * getSecondAxisExtent();
+		final var srx = getFirstAxisX() * getFirstAxisExtent();
+		final var sry = getFirstAxisY() * getFirstAxisExtent();
+		final var ssx = getSecondAxisX() * getSecondAxisExtent();
+		final var ssy = getSecondAxisY() * getSecondAxisExtent();
 
 		if (getFirstAxisX() >= 0.) {
 			if (getFirstAxisY() >= 0.) {
@@ -1700,7 +1707,7 @@ public interface Parallelogram2afp<
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		findsClosestPointPointParallelogram(
 				pt.getX(), pt.getY(),
 				getCenterX(), getCenterY(),
@@ -1720,7 +1727,7 @@ public interface Parallelogram2afp<
 	@Unefficient
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
 		assert ellipse != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), ellipse.getPathIterator(), point);
 		return point;
 	}
@@ -1729,7 +1736,7 @@ public interface Parallelogram2afp<
 	@Unefficient
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), rectangle.getPathIterator(), point);
 		return point;
 	}
@@ -1738,7 +1745,7 @@ public interface Parallelogram2afp<
 	@Unefficient
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), segment.getPathIterator(), point);
 		return point;
 	}
@@ -1747,7 +1754,7 @@ public interface Parallelogram2afp<
 	@Unefficient
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), triangle.getPathIterator(), point);
 		return point;
 	}
@@ -1756,7 +1763,7 @@ public interface Parallelogram2afp<
 	@Unefficient
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
 		assert orientedRectangle != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), orientedRectangle.getPathIterator(), point);
 		return point;
 	}
@@ -1765,7 +1772,7 @@ public interface Parallelogram2afp<
 	@Unefficient
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
 		assert parallelogram != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), parallelogram.getPathIterator(), point);
 		return point;
 	}
@@ -1774,7 +1781,7 @@ public interface Parallelogram2afp<
 	@Unefficient
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
 		assert roundRectangle != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), roundRectangle.getPathIterator(), point);
 		return point;
 	}
@@ -1783,7 +1790,7 @@ public interface Parallelogram2afp<
 	@Unefficient
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), point);
 		return point;
 	}
@@ -1792,7 +1799,7 @@ public interface Parallelogram2afp<
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		findsFarthestPointPointParallelogram(
 				pt.getX(), pt.getY(),
 				getCenterX(), getCenterY(),
@@ -1815,6 +1822,7 @@ public interface Parallelogram2afp<
 	 * @return the Geogebra representation of the parallelogram.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toPolygonDefinition(2,
 				getCenterX() - getFirstAxisExtent() * getFirstAxisX() - getSecondAxisExtent() * getSecondAxisX(),
@@ -1955,7 +1963,7 @@ public interface Parallelogram2afp<
 
 		@Override
 		public T next() {
-			final int idx = this.index;
+			final var idx = this.index;
 			++this.index;
 			if (idx < 0) {
 				this.moveX = this.x + this.raxis.getX() + this.saxis.getX();
@@ -1965,8 +1973,8 @@ public interface Parallelogram2afp<
 				return getGeomFactory().newMovePathElement(
 						this.moveX, this.moveY);
 			}
-			final double lx = this.lastX;
-			final double ly = this.lastY;
+			final var lx = this.lastX;
+			final var ly = this.lastY;
 			switch (idx) {
 			case 0:
 				this.lastX = this.x - this.raxis.getX() + this.saxis.getX();
@@ -2053,7 +2061,7 @@ public interface Parallelogram2afp<
 
 		@Override
 		public T next() {
-			final int idx = this.index;
+			final var idx = this.index;
 			++this.index;
 			if (idx < 0) {
 				this.move.set(this.x + this.raxis.getX() + this.saxis.getX(),
@@ -2063,8 +2071,8 @@ public interface Parallelogram2afp<
 				return getGeomFactory().newMovePathElement(
 						this.move.getX(), this.move.getY());
 			}
-			final double lx = this.last.getX();
-			final double ly = this.last.getY();
+			final var lx = this.last.getX();
+			final var ly = this.last.getY();
 			switch (idx) {
 			case 0:
 				this.last.set(this.x - this.raxis.getX() + this.saxis.getX(),

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, ?, B>,
-		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+public abstract class AbstractSphere3aiTest<T extends Sphere3ai<T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
 
 	protected static Quaternion4d newAxisAngleZ(double angle) {
 		final Quaternion4d q = new Quaternion4d();
@@ -88,16 +88,6 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, ?
 		assertTrue(this.shape.equals(createSphere(5, 8, 0, 5)));
 	}
 
-	@Override
-	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equals(createSphere(0, 0, 0, 5).getPathIterator()));
-		assertFalse(this.shape.equals(createSphere(5, 8, 0, 6).getPathIterator()));
-		assertFalse(this.shape.equals(createSegment(5, 8, 0, 6, 10, 0).getPathIterator()));
-		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		assertTrue(this.shape.equals(createSphere(5, 8, 0, 5).getPathIterator()));
-	}
-
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
@@ -108,17 +98,6 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, ?
 		assertFalse(this.shape.equalsToShape((T) createSphere(5, 8, 0, 6)));
 		assertTrue(this.shape.equalsToShape(this.shape));
 		assertTrue(this.shape.equalsToShape((T) createSphere(5, 8, 0, 5)));
-	}
-
-	@Override
-	public void equalsToPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
-		assertFalse(this.shape.equalsToPathIterator(createSphere(0, 0, 0, 5).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSphere(5, 8, 0, 6).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 0, 6, 10, 0).getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(createSphere(5, 8, 0, 5).getPathIterator()));
 	}
 
 	@ParameterizedTest(name = "{index} => {0}")
@@ -160,7 +139,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, ?
 	@Override
 	public void toBoundingBox(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> r1 = this.shape.toBoundingBox();
+		AlignedBox3ai<?, ?, ?, ?, ?, ?> r1 = this.shape.toBoundingBox();
 		assertEquals(0, r1.getMinX());
 		assertEquals(3, r1.getMinY());
 		assertEquals(-5, r1.getMinZ());
@@ -233,7 +212,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, ?
 	@EnumSource(CoordinateSystem3D.class)
 	public void getPointIterator_small(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Sphere3ai<?, ?, ?, ?, ?, ?, ?> circle = createSphere(4, 6, 0, 3);
+		Sphere3ai<?, ?, ?, ?, ?, ?> circle = createSphere(4, 6, 0, 3);
 		Iterator<? extends Point3D> iterator = circle.getPointIterator();
 		Point3D p;
 		
@@ -458,107 +437,6 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, ?
 		assertTrue(this.shape.intersects(createSphere(7,10, 0,1)));
 		assertFalse(this.shape.intersects(createSphere(16,0, 0,5)));
 		assertFalse(this.shape.intersects(createSphere(5,15, 0,1)));
-	}
-
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public void getPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		PathIterator3ai<?> pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 10,8);
-		assertElement(pi, PathElementType.CURVE_TO, 10,10, 7,13, 5,13);
-		assertElement(pi, PathElementType.CURVE_TO, 2,13, 0,10, 0,8);
-		assertElement(pi, PathElementType.CURVE_TO, 0,5, 2,3, 5,3);
-		assertElement(pi, PathElementType.CURVE_TO, 7,3, 10,5, 10,8);
-		assertElement(pi, PathElementType.CLOSE, 10, 8);
-		assertNoElement(pi);
-	}
-
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public void getPathIteratorTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		PathIterator3ai<?> pi;
-		
-		tr = new Transform3D();
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 10,8,0);
-		assertElement(pi, PathElementType.CURVE_TO, 10,10,0, 7,13,0, 5,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 2,13,0, 0,10,0, 0,8,0);
-		assertElement(pi, PathElementType.CURVE_TO, 0,5,0, 2,3,0, 5,3,0);
-		assertElement(pi, PathElementType.CURVE_TO, 7,3,0, 10,5,0, 10,8,0);
-		assertElement(pi, PathElementType.CLOSE, 10,8,0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4f, 4.5f, 0);
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 13,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 13,16,0, 11,18,0, 8,18,0);
-		assertElement(pi, PathElementType.CURVE_TO, 5,18,0, 3,16,0, 3,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 3,10,0, 5,8,0, 8,8,0);
-		assertElement(pi, PathElementType.CURVE_TO, 11,8,0, 13,10,0, 13,13,0);
-		assertElement(pi, PathElementType.CLOSE, 13,13,0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
-		
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 1,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, -1,15,0, -4,15,0, -6,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, -8,11,0, -8,8,0, -6,6,0);
-		assertElement(pi, PathElementType.CURVE_TO, -4,4,0, -1,4,0, 1,6,0);
-		assertElement(pi, PathElementType.CURVE_TO, 4,8,0, 4,11,0, 1,13,0);
-		assertElement(pi, PathElementType.CLOSE, 1,13,0);
-		assertNoElement(pi);
-	}
-
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public void createTransformedShape(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		PathIterator3ai<?> pi;
-		
-		tr = new Transform3D();
-		pi = this.shape.createTransformedShape(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 10,8,0);
-		assertElement(pi, PathElementType.CURVE_TO, 10,10,0, 7,13,0, 5,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 2,13,0, 0,10,0, 0,8,0);
-		assertElement(pi, PathElementType.CURVE_TO, 0,5,0, 2,3,0, 5,3,0);
-		assertElement(pi, PathElementType.CURVE_TO, 7,3,0, 10,5,0, 10,8,0);
-		assertElement(pi, PathElementType.CLOSE, 10,8,0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4f, 4.5f,0);
-		pi = this.shape.createTransformedShape(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 13,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 13,16,0, 11,18,0, 8,18,0);
-		assertElement(pi, PathElementType.CURVE_TO, 5,18,0, 3,16,0, 3,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 3,10,0, 5,8,0, 8,8,0);
-		assertElement(pi, PathElementType.CURVE_TO, 11,8,0, 13,10,0, 13,13,0);
-		assertElement(pi, PathElementType.CLOSE, 13,13,0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
-		pi = this.shape.createTransformedShape(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 1,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, -1,15,0, -4,15,0, -6,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, -8,11,0, -8,8,0, -6,6,0);
-		assertElement(pi, PathElementType.CURVE_TO, -4,4,0, -1,4,0, 1,6,0);
-		assertElement(pi, PathElementType.CURVE_TO, 4,8,0, 4,11,0, 1,13,0);
-		assertElement(pi, PathElementType.CLOSE, 1,13,0);
-		assertNoElement(pi);
 	}
 
 	@Override
@@ -946,45 +824,6 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, ?
 		assertEquals(2, r.getX());
 		assertEquals(4, r.getY());
 		assertEquals(5, r.getRadius());
-	}
-
-	@Override
-	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		PathIterator3ai<?> pi;
-		
-		tr = new Transform3D();
-		pi = this.shape.operator_multiply(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 10,8, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 10,10,0, 7,13,0, 5,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 2,13,0, 0,10,0, 0,8,0);
-		assertElement(pi, PathElementType.CURVE_TO, 0,5,0, 2,3,0, 5,3,0);
-		assertElement(pi, PathElementType.CURVE_TO, 7,3,0, 10,5,0, 10,8,0);
-		assertElement(pi, PathElementType.CLOSE, 10,8,0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4f, 4.5f,0);
-		pi = this.shape.operator_multiply(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 13,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 13,16,0, 11,18,0, 8,18,0);
-		assertElement(pi, PathElementType.CURVE_TO, 5,18,0, 3,16,0, 3,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, 3,10,0, 5,8,0, 8,8,0);
-		assertElement(pi, PathElementType.CURVE_TO, 11,8,0, 13,10,0, 13,13,0);
-		assertElement(pi, PathElementType.CLOSE, 13,13,0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
-		pi = this.shape.operator_multiply(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 1,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, -1,15,0, -4,15,0, -6,13,0);
-		assertElement(pi, PathElementType.CURVE_TO, -8,11,0, -8,8,0, -6,6,0);
-		assertElement(pi, PathElementType.CURVE_TO, -4,4,0, -1,4,0, 1,6,0);
-		assertElement(pi, PathElementType.CURVE_TO, 4,8,0, 4,11,0, 1,13,0);
-		assertElement(pi, PathElementType.CLOSE, 1,13,0);
-		assertNoElement(pi);
 	}
 
 	@Override

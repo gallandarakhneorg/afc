@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.vmutil;
 
-import java.io.InputStream;
 import java.util.regex.Pattern;
 
 /**
@@ -53,13 +52,13 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 	 */
 	protected static String runCommand(String... command) {
 		try {
-			final Process p = Runtime.getRuntime().exec(command);
+			final var p = Runtime.getRuntime().exec(command);
 			if (p == null) {
 				return null;
 			}
-			final StringBuilder bStr = new StringBuilder();
-			try (InputStream standardOutput = p.getInputStream()) {
-				final byte[] buffer = new byte[BUFFER_SIZE];
+			final var bStr = new StringBuilder();
+			try (var standardOutput = p.getInputStream()) {
+				final var buffer = new byte[BUFFER_SIZE];
 				int len;
 				while ((len = standardOutput.read(buffer)) > 0) {
 					bStr.append(new String(buffer, 0, len));
@@ -82,14 +81,12 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 		if (text == null || text.isEmpty()) {
 			return null;
 		}
-		final StringBuilder line = new StringBuilder();
-		final int textLength = text.length();
-		char c;
-		String string;
-		for (int i = 0; i < textLength; ++i) {
-			c = text.charAt(i);
+		final var line = new StringBuilder();
+		final var textLength = text.length();
+		for (var i = 0; i < textLength; ++i) {
+			final var c = text.charAt(i);
 			if (c == '\n' || c == '\r') {
-				string = line.toString();
+				final var string = line.toString();
 				if (string.contains(selector)) {
 					return string;
 				}
@@ -99,7 +96,7 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 			}
 		}
 		if (line.length() > 0) {
-			string = line.toString();
+			final var string = line.toString();
 			if (string.contains(selector)) {
 				return string;
 			}
@@ -118,7 +115,7 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 		if (lineText == null || lineText.isEmpty()) {
 			return null;
 		}
-		final String[] columns = lineText.split(Pattern.quote(delimiter));
+		final var columns = lineText.split(Pattern.quote(delimiter));
 		if (columns != null && column >= 0 && column < columns.length) {
 			return columns[column].trim();
 		}

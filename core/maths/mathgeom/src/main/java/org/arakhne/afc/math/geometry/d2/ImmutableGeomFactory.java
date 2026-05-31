@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,8 @@ public final class ImmutableGeomFactory extends AbstractGeomFactory2D<ImmutableV
 
 	@Override
 	public ImmutablePoint2D convertToPoint(Point2D<?, ?> pt) {
-		if (pt instanceof ImmutablePoint2D) {
-			return (ImmutablePoint2D) pt;
+		if (pt instanceof ImmutablePoint2D pt0) {
+			return pt0;
 		}
 		final double x;
 		final double y;
@@ -85,8 +85,8 @@ public final class ImmutableGeomFactory extends AbstractGeomFactory2D<ImmutableV
 
 	@Override
 	public ImmutableVector2D convertToVector(Vector2D<?, ?> v) {
-		if (v instanceof ImmutableVector2D) {
-			return (ImmutableVector2D) v;
+		if (v instanceof ImmutableVector2D v0) {
+			return v0;
 		}
 		final double x;
 		final double y;

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,18 +29,15 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.Caller;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This utility class permits a easier use of localized strings.
@@ -69,10 +66,9 @@ public final class Locale {
 	private static Charset[] decodingCharsets;
 
 	static {
-		final Charset def = Charset.defaultCharset();
-		final List<Charset> list = new ArrayList<>();
-		Charset c;
-		c = Charset.forName("IBM437"); //$NON-NLS-1$
+		final var def = Charset.defaultCharset();
+		final var list = new ArrayList<Charset>();
+		var c = Charset.forName("IBM437"); //$NON-NLS-1$
 		if (c != null && !def.equals(c)) {
 			list.add(c);
 		}
@@ -142,7 +138,7 @@ public final class Locale {
 		imported = {Locale.class, ClassLoaderFinder.class})
 	public static String getStringWithDefaultFrom(String resourcePath, String key, String defaultValue, Object... params) {
 		// This method try to use the plugin manager class loader
-		// if it exists, otherwhise, it use the default class loader
+		// if it exists, otherwise, it use the default class loader
 		return getStringWithDefaultFrom(
 				ClassLoaderFinder.findClassLoader(),
 				resourcePath, key, defaultValue, params);
@@ -275,15 +271,15 @@ public final class Locale {
 	 */
 	@Pure
 	public static String getString(ClassLoader classLoader, Class<?> resource, String key, Object... params) {
-		Class<?> res = detectResourceClass(resource);
+		var res = detectResourceClass(resource);
 		if (res == null) {
 			return key;
 		}
-		String val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
+		var val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
 		if (val == null && classLoader != resource.getClassLoader()) {
 			val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
 		}
-		while ((res != null) && (val == null)) {
+		while (res != null && val == null) {
 			res = res.getSuperclass();
 			if (res != null) {
 				val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
@@ -307,7 +303,7 @@ public final class Locale {
 	 * @return the text that corresponds to the specified resource
 	 */
 	public static String getString(String key, Object... params) {
-		final Class<?> resource = detectResourceClass(null);
+		final var resource = detectResourceClass(null);
 		return getString(ClassLoaderFinder.findClassLoader(), resource, key, params);
 	}
 
@@ -358,15 +354,15 @@ public final class Locale {
 	@Pure
 	public static String getStringWithDefault(ClassLoader classLoader, Class<?> resource, String key,
 			String defaultValue, Object... params) {
-		Class<?> res = detectResourceClass(resource);
+		var res = detectResourceClass(resource);
 		if (res == null) {
 			return defaultValue;
 		}
-		String val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
+		var val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
 		if (val == null && classLoader != resource.getClassLoader()) {
 			val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
 		}
-		while ((res != null) && (val == null)) {
+		while (res != null && val == null) {
 			res = res.getSuperclass();
 			if (res != null) {
 				val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
@@ -426,13 +422,13 @@ public final class Locale {
 	 */
 	@Pure
 	public static String decodeString(byte[] bytes) {
-		final Charset[] prior = getPriorizedDecodingCharsets();
+		final var prior = getPriorizedDecodingCharsets();
 
-		final String refBuffer = new String(bytes);
+		final var refBuffer = new String(bytes);
 
 		CharBuffer buffer = null;
 
-		for (final Charset charset : prior) {
+		for (final var charset : prior) {
 			buffer = decodeString(bytes, charset, refBuffer.length());
 			if (buffer != null) {
 				break;
@@ -441,7 +437,7 @@ public final class Locale {
 
 		if (buffer == null) {
 			// Decode until one of the available charset replied a value
-			for (final Charset charset : Charset.availableCharsets().values()) {
+			for (final var charset : Charset.availableCharsets().values()) {
 				buffer = decodeString(bytes, charset, refBuffer.length());
 				if (buffer != null) {
 					break;
@@ -467,14 +463,14 @@ public final class Locale {
 	private static CharBuffer decodeString(byte[] bytes, Charset charset, int referenceLength) {
 		try {
 			final Charset autodetectedCharset;
-			final CharsetDecoder decoder = charset.newDecoder();
-			final CharBuffer buffer = decoder.decode(ByteBuffer.wrap(bytes));
+			final var decoder = charset.newDecoder();
+			final var buffer = decoder.decode(ByteBuffer.wrap(bytes));
 			if ((decoder.isAutoDetecting())
 					&& (decoder.isCharsetDetected())) {
 				autodetectedCharset = decoder.detectedCharset();
 				if (charset.contains(autodetectedCharset)) {
 					buffer.position(0);
-					if ((referenceLength >= 0) && (buffer.remaining() == referenceLength)) {
+					if (referenceLength >= 0 && buffer.remaining() == referenceLength) {
 						return buffer;
 					}
 					return null;
@@ -482,11 +478,9 @@ public final class Locale {
 			}
 			// Apply a proprietary detection
 			buffer.position(0);
-			char c;
-			int type;
 			while (buffer.hasRemaining()) {
-				c = buffer.get();
-				type = Character.getType(c);
+				final var c = buffer.get();
+				final var type = Character.getType(c);
 				switch (type) {
 				case Character.UNASSIGNED:
 				case Character.CONTROL:
@@ -499,7 +493,7 @@ public final class Locale {
 				}
 			}
 			buffer.position(0);
-			if ((referenceLength >= 0) && (buffer.remaining() == referenceLength)) {
+			if (referenceLength >= 0 && buffer.remaining() == referenceLength) {
 				return buffer;
 			}
 		} catch (CharacterCodingException e) {
@@ -527,11 +521,11 @@ public final class Locale {
 	 * @throws IOException when the stream cannot be read.
 	 */
 	public static String decodeString(InputStream stream) throws IOException {
-		byte[] completeBuffer = new byte[0];
-		final byte[] buffer = new byte[BUFFER_SIZE];
+		var completeBuffer = new byte[0];
+		final var buffer = new byte[BUFFER_SIZE];
 		int read;
 		while ((read = stream.read(buffer)) > 0) {
-			final byte[] tmp = new byte[completeBuffer.length + read];
+			final var tmp = new byte[completeBuffer.length + read];
 			System.arraycopy(completeBuffer, 0, tmp, 0, completeBuffer.length);
 			System.arraycopy(buffer, 0, tmp, completeBuffer.length, read);
 			completeBuffer = tmp;
@@ -558,17 +552,17 @@ public final class Locale {
 	 * @param stream is the stream to decode.
 	 * @param lineArray is the array of lines to fill
 	 * @return {@code true} is the decoding was successful,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 * @throws IOException when the stream cannot be read.
 	 */
 	public static boolean decodeString(InputStream stream, List<String> lineArray) throws IOException {
 		// Read the complete file
-		byte[] completeBuffer = new byte[0];
-		final byte[] buffer = new byte[BUFFER_SIZE];
+		var completeBuffer = new byte[0];
+		final var buffer = new byte[BUFFER_SIZE];
 		int read;
 
 		while ((read = stream.read(buffer)) > 0) {
-			final byte[] tmp = new byte[completeBuffer.length + read];
+			final var tmp = new byte[completeBuffer.length + read];
 			System.arraycopy(completeBuffer, 0, tmp, 0, completeBuffer.length);
 			System.arraycopy(buffer, 0, tmp, completeBuffer.length, read);
 			completeBuffer = tmp;
@@ -576,11 +570,11 @@ public final class Locale {
 
 		// Get the two default charsets
 		//Charset oem_us = Charset.forName("IBM437");
-		final Charset westEuropean = Charset.forName("ISO-8859-1"); //$NON-NLS-1$
-		final Charset defaultCharset = Charset.defaultCharset();
+		final var westEuropean = Charset.forName("ISO-8859-1"); //$NON-NLS-1$
+		final var defaultCharset = Charset.defaultCharset();
 
 		// Decode with the current charset
-		boolean ok = decodeString(new ByteArrayInputStream(completeBuffer), lineArray, defaultCharset);
+		var ok = decodeString(new ByteArrayInputStream(completeBuffer), lineArray, defaultCharset);
 
 		// Decode with the default oem US charset
 		/*if ((!ok)&&(!default_charset.equals(oem_us))) {
@@ -588,13 +582,13 @@ public final class Locale {
     	}*/
 
 		// Decode with the default west european charset
-		if ((!ok) && (!defaultCharset.equals(westEuropean))) {
+		if (!ok && !defaultCharset.equals(westEuropean)) {
 			ok = decodeString(new ByteArrayInputStream(completeBuffer), lineArray, westEuropean);
 		}
 
 		// Decode until one of the available charset replied a value
 		if (!ok) {
-			for (final Entry<String, Charset> charset : Charset.availableCharsets().entrySet()) {
+			for (final var charset : Charset.availableCharsets().entrySet()) {
 				if (decodeString(new ByteArrayInputStream(completeBuffer), lineArray, charset.getValue())) {
 					return true;
 				}
@@ -615,12 +609,12 @@ public final class Locale {
 	 * @param lineArray is the array of lines to fill.
 	 * @param charset is the charset to use.
 	 * @return {@code true} is the decoding was successful,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 * @throws IOException when the stream cannot be read.
 	 */
 	private static boolean decodeString(InputStream stream, List<String> lineArray, Charset charset) throws IOException {
 		try {
-			final BufferedReader breader = new BufferedReader(
+			final var breader = new BufferedReader(
 					new InputStreamReader(stream, charset.newDecoder()));
 
 			lineArray.clear();

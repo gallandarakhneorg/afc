@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,18 +22,19 @@ package org.arakhne.afc.math.geometry.d2.afp;
 
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D circle on a plane.
+/** Functional interface that represented a 2D circle on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -48,6 +49,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Circle2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends Circle2afp<?, ?, IE, P, V, B>,
@@ -56,6 +58,11 @@ public interface Circle2afp<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends Ellipse2afp<ST, IT, IE, P, V, B> {
+
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.CIRCLE;
+	}
 
     /**
      * Replies if the given point is inside the given ellipse.
@@ -66,7 +73,7 @@ public interface Circle2afp<
      * @param cy is the center of the circle.
      * @param radius is the radius of the circle.
      * @return {@code true} if the point is inside the circle;
-     * {@code false} if not.
+     *     {@code false} if not.
      */
     @Pure
     static boolean containsCirclePoint(double cx, double cy, double radius, double px, double py) {
@@ -92,10 +99,10 @@ public interface Circle2afp<
     static boolean containsCircleRectangle(double cx, double cy, double radius, double rxmin,
             double rymin, double rxmax, double rymax) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, rxmin, 5, rxmax);
-        assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, rymin, 6, rymax);
-        final double rcx = (rxmin + rxmax) / 2;
-        final double rcy = (rymin + rymax) / 2;
+        assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, Double.valueOf(rxmin), 5, Double.valueOf(rxmax));
+        assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, Double.valueOf(rymin), 6, Double.valueOf(rymax));
+        final var rcx = (rxmin + rxmax) / 2;
+        final var rcy = (rymin + rymax) / 2;
         final double farX;
         if (cx <= rcx) {
             farX = rxmax;
@@ -120,13 +127,13 @@ public interface Circle2afp<
      * @param y2 is the center of the second circle
      * @param radius2 is the radius of the second circle
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsCircleCircle(double x1, double y1, double radius1, double x2, double y2, double radius2) {
         assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(5);
-        final double r = radius1 + radius2;
+        final var r = radius1 + radius2;
         return Point2D.getDistanceSquaredPointPoint(x1, y1, x2, y2) < (r * r);
     }
 
@@ -140,13 +147,13 @@ public interface Circle2afp<
      * @param x3 is the second corner of the rectangle.
      * @param y3 is the second corner of the rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsCircleRectangle(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        assert x2 <= x3 : AssertMessages.lowerEqualParameters(3, x2, 5, x3);
-        assert y2 <= y3 : AssertMessages.lowerEqualParameters(4, y2, 6, y3);
+        assert x2 <= x3 : AssertMessages.lowerEqualParameters(3, Double.valueOf(x2), 5, Double.valueOf(x3));
+        assert y2 <= y3 : AssertMessages.lowerEqualParameters(4, Double.valueOf(y2), 6, Double.valueOf(y3));
         final double dx;
         if (x1 < x2) {
             dx = x2 - x1;
@@ -176,12 +183,12 @@ public interface Circle2afp<
      * @param x3 is the second point of the line.
      * @param y3 is the second point of the line.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsCircleLine(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        final double d = Segment2afp.calculatesDistanceSquaredLinePoint(x2, y2, x3, y3, x1, y1);
+        final var d = Segment2afp.calculatesDistanceSquaredLinePoint(x2, y2, x3, y3, x1, y1);
         return d < (radius * radius);
     }
 
@@ -195,12 +202,12 @@ public interface Circle2afp<
      * @param x3 is the second point of the segment.
      * @param y3 is the second point of the segment.
      * @return {@code true} if the two shapes are intersecting; otherwise
-     * {@code false}
+     *     {@code false}
      */
     @Pure
     static boolean intersectsCircleSegment(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        final double d = Segment2afp.calculatesDistanceSquaredSegmentPoint(x2, y2, x3, y3, x1, y1);
+        final var d = Segment2afp.calculatesDistanceSquaredSegmentPoint(x2, y2, x3, y3, x1, y1);
         return d < (radius * radius);
     }
 
@@ -327,9 +334,9 @@ public interface Circle2afp<
     @Override
     default void toBoundingBox(B box) {
         assert box != null : AssertMessages.notNullParameter();
-        final double x = getX();
-        final double y = getY();
-        final double radius = getRadius();
+        final var x = getX();
+        final var y = getY();
+        final var radius = getRadius();
         box.setFromCorners(
                 x - radius, y - radius,
                 x + radius, y + radius);
@@ -344,7 +351,7 @@ public interface Circle2afp<
     @Override
     default double getDistance(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        double distance = Point2D.getDistancePointPoint(getX(), getY(), pt.getX(), pt.getY());
+        var distance = Point2D.getDistancePointPoint(getX(), getY(), pt.getX(), pt.getY());
         distance = distance - getRadius();
         return Math.max(0., distance);
     }
@@ -353,13 +360,13 @@ public interface Circle2afp<
     @Override
     default double getDistanceSquared(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final double x = getX();
-        final double y = getY();
-        final double radius = getRadius();
-        final double vx = pt.getX() - x;
-        final double vy = pt.getY() - y;
-        final double sqLength = vx * vx + vy * vy;
-        final double sqRadius = radius * radius;
+        final var x = getX();
+        final var y = getY();
+        final var radius = getRadius();
+        final var vx = pt.getX() - x;
+        final var vy = pt.getY() - y;
+        final var sqLength = vx * vx + vy * vy;
+        final var sqRadius = radius * radius;
         if (sqLength <= sqRadius) {
             return 0;
         }
@@ -370,7 +377,7 @@ public interface Circle2afp<
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> r = getClosestPointTo(pt);
+        final var r = getClosestPointTo(pt);
         return r.getDistanceL1(pt);
     }
 
@@ -378,7 +385,7 @@ public interface Circle2afp<
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> r = getClosestPointTo(pt);
+        final var r = getClosestPointTo(pt);
         return r.getDistanceLinf(pt);
     }
 
@@ -476,8 +483,8 @@ public interface Circle2afp<
     @Override
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
-        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.calculatesCrossingsPathIteratorCircleShadow(
+        final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        final var crossings = Path2afp.calculatesCrossingsPathIteratorCircleShadow(
                 0,
                 iterator,
                 getX(), getY(), getRadius(),
@@ -509,16 +516,16 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final double x = getX();
-        final double y = getY();
-        final double radius = getRadius();
-        final double vx = pt.getX() - x;
-        final double vy = pt.getY() - y;
-        final double sqLength = vx * vx + vy * vy;
+        final var x = getX();
+        final var y = getY();
+        final var radius = getRadius();
+        final var vx = pt.getX() - x;
+        final var vy = pt.getY() - y;
+        final var sqLength = vx * vx + vy * vy;
         if (sqLength <= (radius * radius)) {
             return getGeomFactory().convertToPoint(pt);
         }
-        final double s = radius / Math.sqrt(sqLength);
+        final var s = radius / Math.sqrt(sqLength);
         return getGeomFactory().newPoint(x + vx * s, y + vy * s);
     }
 
@@ -526,7 +533,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = ellipse.getClosestPointTo(getCenter());
+        final var point = ellipse.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -534,7 +541,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
         assert circle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = circle.getClosestPointTo(getCenter());
+        final var point = circle.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -542,7 +549,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = rectangle.getClosestPointTo(getCenter());
+        final var point = rectangle.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -550,7 +557,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = segment.getClosestPointTo(getCenter());
+        final var point = segment.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -558,7 +565,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = triangle.getClosestPointTo(getCenter());
+        final var point = triangle.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -566,7 +573,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = path.getClosestPointTo(getCenter());
+        final var point = path.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -574,7 +581,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         assert orientedRectangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = orientedRectangle.getClosestPointTo(getCenter());
+        final var point = orientedRectangle.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -582,7 +589,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         assert parallelogram != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = parallelogram.getClosestPointTo(getCenter());
+        final var point = parallelogram.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -590,7 +597,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         assert roundRectangle != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = roundRectangle.getClosestPointTo(getCenter());
+        final var point = roundRectangle.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -598,7 +605,7 @@ public interface Circle2afp<
     @Override
     default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> point = multishape.getClosestPointTo(getCenter());
+        final var point = multishape.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
@@ -606,16 +613,16 @@ public interface Circle2afp<
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        final double x = getX();
-        final double y = getY();
-        final double vx = x - pt.getX();
-        final double vy = y - pt.getY();
-        final double radius = getRadius();
-        final double sqLength = vx * vx + vy * vy;
+        final var x = getX();
+        final var y = getY();
+        final var vx = x - pt.getX();
+        final var vy = y - pt.getY();
+        final var radius = getRadius();
+        final var sqLength = vx * vx + vy * vy;
         if (sqLength <= 0.) {
             return getGeomFactory().newPoint(radius, 0);
         }
-        final double s = radius / Math.sqrt(sqLength);
+        final var s = radius / Math.sqrt(sqLength);
         return getGeomFactory().newPoint(x + vx * s, y + vy * s);
     }
 
@@ -648,8 +655,8 @@ public interface Circle2afp<
      */
     @Override
     default void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
-        final double demiWidth = Math.abs(cornerX - centerX);
-        final double demiHeight = Math.abs(cornerY - centerY);
+        final var demiWidth = Math.abs(cornerX - centerX);
+        final var demiHeight = Math.abs(cornerY - centerY);
         if (demiWidth <= demiHeight) {
             set(centerX, centerY, demiWidth);
         } else {
@@ -685,8 +692,8 @@ public interface Circle2afp<
      */
     @Override
     default void setMinX(double x) {
-        final double cx = (x + getX() + getRadius()) / 2.;
-        final double radius = Math.abs(cx - x);
+        final var cx = (x + getX() + getRadius()) / 2.;
+        final var radius = Math.abs(cx - x);
         set(cx, getY(), radius);
     }
 
@@ -707,8 +714,8 @@ public interface Circle2afp<
      */
     @Override
     default void setMaxX(double x) {
-        final double cx = (x + getX() - getRadius()) / 2.;
-        final double radius = Math.abs(cx - x);
+        final var cx = (x + getX() - getRadius()) / 2.;
+        final var radius = Math.abs(cx - x);
         set(cx, getY(), radius);
     }
 
@@ -729,8 +736,8 @@ public interface Circle2afp<
      */
     @Override
     default void setMinY(double y) {
-        final double cy = (y + getY() + getRadius()) / 2.;
-        final double radius = Math.abs(cy - y);
+        final var cy = (y + getY() + getRadius()) / 2.;
+        final var radius = Math.abs(cy - y);
         set(getX(), cy, radius);
     }
 
@@ -751,8 +758,8 @@ public interface Circle2afp<
      */
     @Override
     default void setMaxY(double y) {
-        final double cy = (y + getY() - getRadius()) / 2.;
-        final double radius = Math.abs(cy - y);
+        final var cy = (y + getY() - getRadius()) / 2.;
+        final var radius = Math.abs(cy - y);
         set(getX(), cy, radius);
     }
 
@@ -761,6 +768,7 @@ public interface Circle2afp<
 	 * @return the Geogebra representation of the circle.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toCircleDefinition(2, getCenterX(), getCenterY(), getRadius());
 	}
@@ -918,10 +926,10 @@ public interface Circle2afp<
             if (this.index >= NUMBER_ELEMENTS) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             if (idx < 0) {
-                final double[] ctrls = BEZIER_CONTROL_POINTS[3];
+                final var ctrls = BEZIER_CONTROL_POINTS[3];
                 this.movex = this.x + ctrls[4] * this.radius;
                 this.movey = this.y + ctrls[5] * this.radius;
                 this.lastx = this.movex;
@@ -930,9 +938,9 @@ public interface Circle2afp<
                         this.lastx, this.lasty);
             }
             if (idx < (NUMBER_ELEMENTS - 1)) {
-                final double[] ctrls = BEZIER_CONTROL_POINTS[idx];
-                final double ppx = this.lastx;
-                final double ppy = this.lasty;
+                final var ctrls = BEZIER_CONTROL_POINTS[idx];
+                final var ppx = this.lastx;
+                final var ppy = this.lasty;
                 this.lastx = this.x + ctrls[4] * this.radius;
                 this.lasty = this.y + ctrls[5] * this.radius;
                 return getGeomFactory().newCurvePathElement(
@@ -1016,10 +1024,10 @@ public interface Circle2afp<
             if (this.index >= NUMBER_ELEMENTS) {
                 throw new NoSuchElementException();
             }
-            final int idx = this.index;
+            final var idx = this.index;
             ++this.index;
             if (idx < 0) {
-                final double[] ctrls = BEZIER_CONTROL_POINTS[3];
+                final var ctrls = BEZIER_CONTROL_POINTS[3];
                 this.tmpPoint.set(this.x + ctrls[4] * this.radius, this.y + ctrls[5] * this.radius);
                 this.transform.transform(this.tmpPoint);
                 this.movex = this.tmpPoint.getX();
@@ -1030,17 +1038,17 @@ public interface Circle2afp<
                         this.lastx, this.lasty);
             }
             if (idx < (NUMBER_ELEMENTS - 1)) {
-                final double[] ctrls = BEZIER_CONTROL_POINTS[idx];
-                final double ppx = this.lastx;
-                final double ppy = this.lasty;
+                final var ctrls = BEZIER_CONTROL_POINTS[idx];
+                final var ppx = this.lastx;
+                final var ppy = this.lasty;
                 this.tmpPoint.set(this.x + ctrls[0] * this.radius, this.y + ctrls[1] * this.radius);
                 this.transform.transform(this.tmpPoint);
-                final double ctrlX1 = this.tmpPoint.getX();
-                final double ctrlY1 = this.tmpPoint.getY();
+                final var ctrlX1 = this.tmpPoint.getX();
+                final var ctrlY1 = this.tmpPoint.getY();
                 this.tmpPoint.set(this.x + ctrls[2] * this.radius, this.y + ctrls[3] * this.radius);
                 this.transform.transform(this.tmpPoint);
-                final double ctrlX2 = this.tmpPoint.getX();
-                final double ctrlY2 = this.tmpPoint.getY();
+                final var ctrlX2 = this.tmpPoint.getX();
+                final var ctrlY2 = this.tmpPoint.getY();
                 this.tmpPoint.set(this.x + ctrls[4] * this.radius, this.y + ctrls[5] * this.radius);
                 this.transform.transform(this.tmpPoint);
                 this.lastx = this.tmpPoint.getX();

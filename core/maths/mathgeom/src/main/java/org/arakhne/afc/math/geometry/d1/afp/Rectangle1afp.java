@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d1.afp;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
+import org.arakhne.afc.math.geometry.d1.Shape1DType;
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D rectangle on a plane.
+/** Functional interface that represented a 2D rectangle on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -51,6 +51,11 @@ public interface Rectangle1afp<
 		S extends Segment1D<?, ?>,
 		B extends Rectangle1afp<?, ?, P, V, S, B>>
 			extends RectangularShape1afp<ST, IT, P, V, S, B> {
+
+	@Override
+	default Shape1DType getType() {
+		return Shape1DType.RECTANGLE;
+	}
 
     @Pure
     @Override
@@ -168,7 +173,7 @@ public interface Rectangle1afp<
         if (rectangle.getSegment() != getSegment()) {
         	throw new IllegalStateException();
         }
-        final P point = getGeomFactory().newPoint(getSegment());
+        final var point = getGeomFactory().newPoint(getSegment());
         Rectangle2afp.findsClosestPointRectangleRectangle(getMinX(), getMinY(), getMaxX(), getMaxY(),
                 rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY(),
                 point);
@@ -217,9 +222,8 @@ public interface Rectangle1afp<
         if (segment != getSegment()) {
         	throw new IllegalStateException();
         }
-		return (x >= getMinX() && x <= getMaxX())
-                &&
-                (y >= getMinY() && y <= getMaxY());
+		return x >= getMinX() && x <= getMaxX()
+                && y >= getMinY() && y <= getMaxY();
 	}
 
 	@Pure

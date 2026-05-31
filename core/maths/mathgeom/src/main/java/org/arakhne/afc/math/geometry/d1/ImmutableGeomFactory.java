@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ final class ImmutableGeomFactory<S extends Segment1D<?, ?>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public ImmutablePoint1D<S> convertToPoint(Point1D<?, ?, ?> pt) {
-		if (pt instanceof ImmutablePoint1D<?>) {
-			return (ImmutablePoint1D<S>) pt;
+		if (pt instanceof ImmutablePoint1D pts) {
+			return pts;
 		}
 		final double x;
 		final double y;
@@ -57,33 +57,27 @@ final class ImmutableGeomFactory<S extends Segment1D<?, ?>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public ImmutablePoint1D<S> convertToPoint(Vector1D<?, ?, ?> v) {
-		final double x;
-		final double y;
-		x = v.getX();
-		y = v.getY();
+		final var x = v.getX();
+		final var y = v.getY();
 		return new ImmutablePoint1D<>((S) v.getSegment(), x, y);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public ImmutableVector1D<S> convertToVector(Point1D<?, ?, ?> pt) {
-		final double x;
-		final double y;
-		x = pt.getX();
-		y = pt.getY();
+		final var x = pt.getX();
+		final var y = pt.getY();
 		return new ImmutableVector1D<>((S) pt.getSegment(), x, y);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public ImmutableVector1D<S> convertToVector(Vector1D<?, ?, ?> v) {
-		if (v instanceof ImmutableVector1D<?>) {
-			return (ImmutableVector1D<S>) v;
+		if (v instanceof ImmutableVector1D pts) {
+			return pts;
 		}
-		final double x;
-		final double y;
-		x = v.getX();
-		y = v.getY();
+		final var x = v.getX();
+		final var y = v.getY();
 		return new ImmutableVector1D<>((S) v.getSegment(), x, y);
 	}
 

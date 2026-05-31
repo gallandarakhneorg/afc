@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ package org.arakhne.afc.gis.mapelement;
 
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
@@ -32,6 +30,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Class the permits to display a polygon.
@@ -99,25 +98,24 @@ public class MapPolygon extends MapComposedElement {
 	 */
 	@Pure
 	public double distance(Point2D<?, ?> point, double width) {
-		double mind = Double.MAX_VALUE;
-		double dist;
-		final Point2d pts1 = new Point2d();
-		final Point2d pts2 = new Point2d();
+		var mind = Double.MAX_VALUE;
+		final var pts1 = new Point2d();
+		final var pts2 = new Point2d();
 
-		double w = width;
+		var w = width;
 		w = Math.abs(w) / 2.;
 
-		for (final PointGroup grp : groups()) {
-			for (int idx = 0; idx < grp.size(); idx += 2) {
+		for (final var grp : groups()) {
+			for (var idx = 0; idx < grp.size(); idx += 2) {
 				if (grp.getMany(idx, pts1, pts2) > 1) {
-					dist = Segment2afp.calculatesDistanceSegmentPoint(
+					final var dist = Segment2afp.calculatesDistanceSegmentPoint(
 							pts1.getX(), pts1.getY(), pts2.getX(), pts2.getY(),
 							point.getX(), point.getY()) - w;
 					if (dist < mind) {
 						mind = dist;
 					}
 				} else {
-					dist = pts1.getDistance(point);
+					final var dist = pts1.getDistance(point);
 					if (dist < mind) {
 						mind = dist;
 					}
@@ -139,7 +137,7 @@ public class MapPolygon extends MapComposedElement {
 	@Pure
 	public boolean intersects(Shape2D<?, ?, ?, ?, ?, ? extends Rectangle2afp<?, ?, ?, ?, ?, ?>> rectangle) {
 		if (boundsIntersects(rectangle)) {
-			final Path2d p = toPath2D();
+			final var p = toPath2D();
 			return p.intersects(rectangle);
 		}
 		return false;
@@ -159,15 +157,14 @@ public class MapPolygon extends MapComposedElement {
 	@Pure
 	public final Path2d toPath2D() {
 		// this is the path to draw
-		final Path2d path = new Path2d();
+		final var path = new Path2d();
 
 		// loop on parts and build the path to draw
-		boolean firstPoint;
-		for (final PointGroup grp : groups()) {
-			firstPoint = true;
-			for (final Point2d pts : grp) {
-				final double x = pts.getX();
-				final double y = pts.getY();
+		for (final var grp : groups()) {
+			var firstPoint = true;
+			for (final var pts : grp) {
+				final var x = pts.getX();
+				final var y = pts.getY();
 				if (firstPoint) {
 					path.moveTo(x, y);
 					firstPoint = false;

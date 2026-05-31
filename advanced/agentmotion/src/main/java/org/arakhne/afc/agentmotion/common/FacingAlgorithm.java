@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,13 @@ package org.arakhne.afc.agentmotion.common;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.agentmotion.AligningMotionAlgorithm;
 import org.arakhne.afc.agentmotion.FacingMotionAlgorithm;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Agent is changing its orientation for facing the target point.
  *
@@ -65,7 +64,7 @@ public class FacingAlgorithm implements FacingMotionAlgorithm, Serializable, Clo
 			return true;
 		}
 		if (obj != null && obj.getClass() == getClass()) {
-			final FacingAlgorithm algo = (FacingAlgorithm) obj;
+			final var algo = (FacingAlgorithm) obj;
 			return algo.aligning.equals(this.aligning);
 		}
 		return false;
@@ -90,7 +89,7 @@ public class FacingAlgorithm implements FacingMotionAlgorithm, Serializable, Clo
 	@Override
 	public double calculate(Point2D<?, ?> position, Vector2D<?, ?> orientation, double angularSpeed, double maxAngular,
 			Point2D<?, ?> target) {
-		final Vector2d alignTarget = new Vector2d(
+		final var alignTarget = new Vector2d(
 				target.getX() - position.getX(),
 				target.getY() - position.getY());
 		return this.aligning.calculate(orientation, angularSpeed, maxAngular, alignTarget);

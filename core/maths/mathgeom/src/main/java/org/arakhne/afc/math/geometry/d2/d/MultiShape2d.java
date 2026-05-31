@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
  *
@@ -98,6 +97,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 
 	@Override
 	@Pure
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		return this.elements.hashCode();
 	}
@@ -145,7 +145,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 	@Override
 	public void translate(double dx, double dy) {
 		if (dx != 0 || dy != 0) {
-			final Rectangle2d box = this.bounds;
+			final var box = this.bounds;
 			MultiShape2afp.super.translate(dx, dy);
 			if (box != null) {
 				box.translate(dx, dy);
@@ -177,16 +177,16 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 		public void add(int index, T element) {
 			assert element != null;
 			this.delegate.add(index, element);
-			if (element instanceof AbstractShape2d<?>) {
-				((AbstractShape2d<?>) element).addShapeGeometryChangeListener(this);
+			if (element instanceof AbstractShape2d<?> shp) {
+				shp.addShapeGeometryChangeListener(this);
 			}
 		}
 
 		@Override
 		public T remove(int index) {
 			final T element = this.delegate.remove(index);
-			if (element instanceof AbstractShape2d<?>) {
-				((AbstractShape2d<?>) element).removeShapeGeometryChangeListener(this);
+			if (element instanceof AbstractShape2d<?> shp) {
+				shp.removeShapeGeometryChangeListener(this);
 			}
 			return element;
 		}
@@ -194,12 +194,12 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 		@Override
 		public T set(int index, T element) {
 			assert element != null;
-			final T oldElement = this.delegate.set(index, element);
-			if (oldElement instanceof AbstractShape2d<?>) {
-				((AbstractShape2d<?>) oldElement).removeShapeGeometryChangeListener(this);
+			final var oldElement = this.delegate.set(index, element);
+			if (oldElement instanceof AbstractShape2d shp) {
+				shp.removeShapeGeometryChangeListener(this);
 			}
-			if (element instanceof AbstractShape2d<?>) {
-				((AbstractShape2d<?>) element).addShapeGeometryChangeListener(this);
+			if (element instanceof AbstractShape2d shp) {
+				shp.addShapeGeometryChangeListener(this);
 			}
 			return oldElement;
 		}

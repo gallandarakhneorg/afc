@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,16 +29,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
@@ -51,7 +47,6 @@ import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadNetworkListener;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
-import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -64,6 +59,8 @@ import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.Triplet;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bus itinerary is a sequence of {@link RoadSegment road segments} which are followed
@@ -288,7 +285,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		if (busline == null) {
 			return null;
 		}
-		int nb = busline.getBusItineraryCount();
+		var nb = busline.getBusItineraryCount();
 		String name;
 		do {
 			++nb;
@@ -300,13 +297,13 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	@Override
 	public void rebuild(boolean fireEvents) {
-		final BusItineraryHalt[] tabV = new BusItineraryHalt[this.validHalts.size()];
+		final var tabV = new BusItineraryHalt[this.validHalts.size()];
 		this.validHalts.toArray(tabV);
-		final BusItineraryHalt[] tabI = new BusItineraryHalt[this.invalidHalts.size()];
+		final var tabI = new BusItineraryHalt[this.invalidHalts.size()];
 		this.invalidHalts.toArray(tabI);
 
 		// Revalidate valid halts
-		for (final BusItineraryHalt halt : tabV) {
+		for (final var halt : tabV) {
 			assert halt != null;
 			halt.rebuild();
 			if (!halt.isValidPrimitive() && !halt.isEventFirable()) {
@@ -316,7 +313,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		}
 
 		// Revalidate invalid halts
-		for (final BusItineraryHalt halt : tabI) {
+		for (final var halt : tabI) {
 			assert halt != null;
 			halt.rebuild();
 			if (halt.isValidPrimitive() && !halt.isEventFirable()) {
@@ -346,19 +343,19 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		// the invalid and valid collections
 		// has no impact of the iteration on
 		// the elements in this itinerary
-		final BusItineraryHalt[] tabV = new BusItineraryHalt[this.validHalts.size()];
+		final var tabV = new BusItineraryHalt[this.validHalts.size()];
 		this.validHalts.toArray(tabV);
-		final BusItineraryHalt[] tabI = new BusItineraryHalt[this.invalidHalts.size()];
+		final var tabI = new BusItineraryHalt[this.invalidHalts.size()];
 		this.invalidHalts.toArray(tabI);
 
 		// Revalidate valid halts
-		for (final BusItineraryHalt halt : tabV) {
+		for (final var halt : tabV) {
 			assert halt != null;
 			halt.revalidate();
 		}
 
 		// Revalidate invalid halts
-		for (final BusItineraryHalt halt : tabI) {
+		for (final var halt : tabI) {
 			assert halt != null;
 			halt.revalidate();
 		}
@@ -403,7 +400,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 					BusPrimitiveInvalidityType.INVALID_HALT_IN_ITINERARY,
 					null);
 		} else {
-			final BusNetwork busNetwork = getBusNetwork();
+			final var busNetwork = getBusNetwork();
 			if (busNetwork == null) {
 				invalidityReason = new BusPrimitiveInvalidity(
 						BusPrimitiveInvalidityType.NO_BUS_NETWORK,
@@ -415,12 +412,10 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 							BusPrimitiveInvalidityType.NO_ROAD_NETWORK,
 							null);
 				} else {
-					final Iterator<RoadSegment> segmentIterator = this.roadSegments.roadSegments();
-					RoadSegment segment;
-					RoadNetwork segmentNetwork;
+					final var segmentIterator = this.roadSegments.roadSegments();
 					while (segmentIterator.hasNext() && invalidityReason == null) {
-						segment = segmentIterator.next();
-						segmentNetwork = segment.getRoadNetwork();
+						final var segment = segmentIterator.next();
+						final var segmentNetwork = segment.getRoadNetwork();
 						if (!roadNetwork.equals(segmentNetwork)) {
 							invalidityReason = new BusPrimitiveInvalidity(
 									BusPrimitiveInvalidityType.SEGMENT_OUTSIDE_ROAD_NETWORK,
@@ -431,9 +426,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 					if (invalidityReason == null) {
 						BusItineraryHalt firstHalt = null;
 						BusItineraryHalt lastHalt = null;
-						final Iterator<BusItineraryHalt> iterator = this.validHalts.iterator();
-						int lastSegmentIndex = -1;
-						int idx;
+						final var iterator = this.validHalts.iterator();
+						var lastSegmentIndex = -1;
 						while (iterator.hasNext() && invalidityReason == null) {
 							lastHalt = iterator.next();
 							if (firstHalt == null) {
@@ -444,7 +438,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 										BusPrimitiveInvalidityType.INVALID_HALT_IN_ITINERARY,
 										lastHalt.getName());
 							} else {
-								idx = lastHalt.getRoadSegmentIndex();
+								final var idx = lastHalt.getRoadSegmentIndex();
 								if (idx >= lastSegmentIndex) {
 									lastSegmentIndex = idx;
 								} else {
@@ -498,7 +492,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	@Override
 	@Pure
 	public BusNetwork getBusNetwork() {
-		final BusLine line = getContainer();
+		final var line = getContainer();
 		if (line != null) {
 			return line.getBusNetwork();
 		}
@@ -518,12 +512,11 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	@Pure
 	protected Rectangle2d calcBounds() {
 		Rectangle2d sr;
-		final Rectangle2d r = new Rectangle2d();
-		boolean first = true;
-		final Iterator<RoadSegment> iterator = this.roadSegments.roadSegments();
-		RoadSegment segment;
+		final var r = new Rectangle2d();
+		var first = true;
+		final var iterator = this.roadSegments.roadSegments();
 		while (iterator.hasNext()) {
-			segment = iterator.next();
+			final var segment = iterator.next();
 			sr = segment.getBoundingBox();
 			if (sr != null) {
 				if (first) {
@@ -534,7 +527,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				}
 			}
 		}
-		for (final BusItineraryHalt halt : this.validHalts) {
+		for (final var halt : this.validHalts) {
 			sr = halt.getBoundingBox();
 			if (sr != null) {
 				if (first) {
@@ -545,7 +538,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				}
 			}
 		}
-		for (final BusItineraryHalt halt: this.invalidHalts) {
+		for (final var halt: this.invalidHalts) {
 			if (halt.getBusStop() != null && halt.getBusStop().getPosition2D() != null) {
 				sr = halt.getBoundingBox();
 				if (sr != null) {
@@ -606,26 +599,26 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	@Pure
 	public void toPath2D(Path2d path) {
 		if (isValidPrimitive()) {
-			final BusItineraryHalt startTerminus = getBusHaltAt(0);
-			final BusItineraryHalt endTerminus = getBusHaltAt(getValidBusHaltCount() - 1);
+			final var startTerminus = getBusHaltAt(0);
+			final var endTerminus = getBusHaltAt(getValidBusHaltCount() - 1);
 
 			if (startTerminus.getRoadSegmentIndex() == endTerminus.getRoadSegmentIndex()) {
 				// One segment to render
-				double p1 = startTerminus.getPositionOnSegment();
-				double p2 = endTerminus.getPositionOnSegment();
-				final RoadSegment segment = startTerminus.getRoadSegment();
+				var p1 = startTerminus.getPositionOnSegment();
+				var p2 = endTerminus.getPositionOnSegment();
+				final var segment = startTerminus.getRoadSegment();
 
 				if (p1 > p2) {
-					final double t = p1;
+					final var t = p1;
 					p1 = p2;
 					p2 = t;
 				}
 				// Caution: Assume that all given road segments are MapPolyline instances
 				segment.toPath2D(path, p1, p2);
 			} else {
-				RoadSegment seg = startTerminus.getRoadSegment();
+				var seg = startTerminus.getRoadSegment();
 				if (seg != null) {
-					final Direction1D d = getRoadSegmentDirection(startTerminus.getRoadSegmentIndex());
+					final var d = getRoadSegmentDirection(startTerminus.getRoadSegmentIndex());
 					final double p1;
 					final double p2;
 					if (d.isSegmentDirection()) {
@@ -640,13 +633,13 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 					seg.toPath2D(path, p1, p2);
 				}
 
-				for (int i = startTerminus.getRoadSegmentIndex() + 1; i < endTerminus.getRoadSegmentIndex(); ++i) {
+				for (var i = startTerminus.getRoadSegmentIndex() + 1; i < endTerminus.getRoadSegmentIndex(); ++i) {
 					getRoadSegmentAt(i).toPath2D(path);
 				}
 
 				seg = endTerminus.getRoadSegment();
 				if (seg != null) {
-					final Direction1D d = getRoadSegmentDirection(endTerminus.getRoadSegmentIndex());
+					final var d = getRoadSegmentDirection(endTerminus.getRoadSegmentIndex());
 					final double p1;
 					final double p2;
 					if (d.isSegmentDirection()) {
@@ -666,7 +659,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			// all the road segments covered by the itinerary should be
 			// drawn to indicate where the itinerary is.
 			// Moreover, bus halts are simply drawn.
-			for (final RoadSegment segment : roadSegments()) {
+			for (final var segment : roadSegments()) {
 				segment.toPath2D(path);
 			}
 		}
@@ -709,24 +702,24 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Their locations will be unchanged.
 	 */
 	public void invert() {
-		final boolean isEventFirable = isEventFirable();
+		final var isEventFirable = isEventFirable();
 		setEventFirable(false);
 		try {
-			final int count = this.roadSegments.getRoadSegmentCount();
+			final var count = this.roadSegments.getRoadSegmentCount();
 
 			// Invert the segments
 			this.roadSegments.invert();
 
 			// Invert the bus halts and their indexes.
-			final int middle = this.validHalts.size() / 2;
+			final var middle = this.validHalts.size() / 2;
 			for (int i = 0, j = this.validHalts.size() - 1; i < middle; ++i, --j) {
-				final BusItineraryHalt h1 = this.validHalts.get(i);
-				final BusItineraryHalt h2 = this.validHalts.get(j);
+				final var h1 = this.validHalts.get(i);
+				final var h2 = this.validHalts.get(j);
 
 				this.validHalts.set(i, h2);
 				this.validHalts.set(j, h1);
 
-				int idx = h1.getRoadSegmentIndex();
+				var idx = h1.getRoadSegmentIndex();
 				idx = count - idx - 1;
 				h1.setRoadSegmentIndex(idx);
 
@@ -736,7 +729,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			}
 
 			if (middle * 2 != this.validHalts.size()) {
-				final BusItineraryHalt h1 = this.validHalts.get(middle);
+				final var h1 = this.validHalts.get(middle);
 				int idx = h1.getRoadSegmentIndex();
 				idx = count - idx - 1;
 				h1.setRoadSegmentIndex(idx);
@@ -756,7 +749,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param segment is the segment to search on.
 	 * @return {@code true} if a bus halt was located on the segment,
-	 *     otherwhise {@code false}
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean hasBusHaltOnSegment(RoadSegment segment) {
@@ -764,15 +757,13 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			return false;
 		}
 
-		int cIdxSegment;
-		int lIdxSegment = -1;
-		RoadSegment cSegment;
+		var lIdxSegment = -1;
 
-		for (final BusItineraryHalt bushalt : this.validHalts) {
-			cIdxSegment = bushalt.getRoadSegmentIndex();
+		for (final var bushalt : this.validHalts) {
+			final var cIdxSegment = bushalt.getRoadSegmentIndex();
 			if (cIdxSegment >= 0 && cIdxSegment < this.roadSegments.getRoadSegmentCount()
 					&& cIdxSegment != lIdxSegment) {
-				cSegment = this.roadSegments.getRoadSegmentAt(cIdxSegment);
+				final var cSegment = this.roadSegments.getRoadSegmentAt(cIdxSegment);
 				lIdxSegment = cIdxSegment;
 				if (segment == cSegment) {
 					return true;
@@ -794,18 +785,16 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			return Collections.emptyList();
 		}
 
-		int cIdxSegment;
-		int lIdxSegment = -1;
-		int sIdxSegment = -1;
-		RoadSegment cSegment;
+		var lIdxSegment = -1;
+		var sIdxSegment = -1;
 
-		final List<BusItineraryHalt> halts = new ArrayList<>();
+		final var halts = new ArrayList<BusItineraryHalt>();
 
-		for (final BusItineraryHalt bushalt : this.validHalts) {
-			cIdxSegment = bushalt.getRoadSegmentIndex();
+		for (final var bushalt : this.validHalts) {
+			final var cIdxSegment = bushalt.getRoadSegmentIndex();
 			if (cIdxSegment >= 0 && cIdxSegment < this.roadSegments.getRoadSegmentCount()
 					&& cIdxSegment != lIdxSegment) {
-				cSegment = this.roadSegments.getRoadSegmentAt(cIdxSegment);
+				final var cSegment = this.roadSegments.getRoadSegmentAt(cIdxSegment);
 				lIdxSegment = cIdxSegment;
 				if (segment == cSegment) {
 					sIdxSegment = cIdxSegment;
@@ -841,11 +830,11 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			}
 			return elt1.getName().compareTo(elt2.getName());
 		};
-		final Map<BusItineraryHalt, Pair<Integer, Double>> haltBinding = new TreeMap<>(comp);
-		for (final BusItineraryHalt halt : busHalts()) {
+		final var haltBinding = new TreeMap<BusItineraryHalt, Pair<Integer, Double>>(comp);
+		for (final var halt : busHalts()) {
 			haltBinding.put(halt, new Pair<>(
-					halt.getRoadSegmentIndex(),
-					halt.getPositionOnSegment()));
+					Integer.valueOf(halt.getRoadSegmentIndex()),
+					Double.valueOf(halt.getPositionOnSegment())));
 		}
 		return haltBinding;
 	}
@@ -857,12 +846,11 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	public void setBusHaltBinding(Map<BusItineraryHalt, Pair<Integer, Float>> binding) {
 		if (binding != null) {
-			BusItineraryHalt halt;
-			boolean shapeChanged = false;
-			for (final Entry<BusItineraryHalt, Pair<Integer, Float>> entry : binding.entrySet()) {
-				halt = entry.getKey();
-				halt.setRoadSegmentIndex(entry.getValue().getKey());
-				halt.setPositionOnSegment(entry.getValue().getValue());
+			var shapeChanged = false;
+			for (final var entry : binding.entrySet()) {
+				final var halt = entry.getKey();
+				halt.setRoadSegmentIndex(entry.getValue().getKey().intValue());
+				halt.setPositionOnSegment(entry.getValue().getValue().doubleValue());
 				halt.checkPrimitiveValidity();
 				shapeChanged = true;
 			}
@@ -891,13 +879,13 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	@Pure
 	public double getLength() {
-		double length = this.roadSegments.getLength();
+		var length = this.roadSegments.getLength();
 		if (isValidPrimitive()) {
-			BusItineraryHalt halt = this.validHalts.get(0);
+			var halt = this.validHalts.get(0);
 			assert halt != null;
-			RoadSegment sgmt = halt.getRoadSegment();
+			var sgmt = halt.getRoadSegment();
 			assert sgmt != null;
-			Direction1D dir = this.roadSegments.getRoadSegmentDirectionAt(halt.getRoadSegmentIndex());
+			var dir = this.roadSegments.getRoadSegmentDirectionAt(halt.getRoadSegmentIndex());
 			assert dir != null;
 			if (dir == Direction1D.SEGMENT_DIRECTION) {
 				length -= halt.getPositionOnSegment();
@@ -942,19 +930,19 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			throw new ArrayIndexOutOfBoundsException(lasthaltIndex);
 		}
 
-		double length = 0;
+		var length = 0.;
 
-		final BusItineraryHalt b1 = this.validHalts.get(firsthaltIndex);
-		final BusItineraryHalt b2 = this.validHalts.get(lasthaltIndex);
-		final int firstSegment = b1.getRoadSegmentIndex();
-		final int lastSegment = b2.getRoadSegmentIndex();
+		final var b1 = this.validHalts.get(firsthaltIndex);
+		final var b2 = this.validHalts.get(lasthaltIndex);
+		final var firstSegment = b1.getRoadSegmentIndex();
+		final var lastSegment = b2.getRoadSegmentIndex();
 
-		for (int i = firstSegment + 1; i < lastSegment; ++i) {
-			final RoadSegment segment = this.roadSegments.getRoadSegmentAt(i);
+		for (var i = firstSegment + 1; i < lastSegment; ++i) {
+			final var segment = this.roadSegments.getRoadSegmentAt(i);
 			length += segment.getLength();
 		}
 
-		Direction1D direction = getRoadSegmentDirection(firstSegment);
+		var direction = getRoadSegmentDirection(firstSegment);
 		if (direction.isRevertedSegmentDirection()) {
 			length += b1.getPositionOnSegment();
 		} else {
@@ -1030,12 +1018,11 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	@Pure
 	public BusItineraryHalt getNearestBusHalt(double x, double y) {
-		double distance = Double.POSITIVE_INFINITY;
+		var distance = Double.POSITIVE_INFINITY;
 		BusItineraryHalt besthalt = null;
-		double dist;
 
-		for (final BusItineraryHalt halt : this.validHalts) {
-			dist = halt.distance(x, y);
+		for (final var halt : this.validHalts) {
+			final var dist = halt.distance(x, y);
 			if (dist < distance) {
 				distance = dist;
 				besthalt = halt;
@@ -1090,7 +1077,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @return the added bus halt, otherwise {@code null}
 	 */
 	BusItineraryHalt addBusHalt(UUID id, String name, BusItineraryHaltType type, int insertToIndex) {
-		String haltName = name;
+		var haltName = name;
 		if (haltName == null || "".equals(haltName)) { //$NON-NLS-1$
 			haltName = BusItineraryHalt.getFirstFreeBushaltName(this);
 			assert haltName != null && !"".equals(haltName); //$NON-NLS-1$
@@ -1196,8 +1183,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			return this.addBusHalt(id, name, type);
 		}
 
-		int haltIndex = -1;
-		int indexAfter = -1;
+		var haltIndex = -1;
+		var indexAfter = -1;
 		if (!afterHalt.isValidPrimitive()) {
 			haltIndex =  ListUtil.indexOf(this.invalidHalts, INVALID_HALT_COMPARATOR, afterHalt);
 			assert haltIndex != -1;
@@ -1207,18 +1194,17 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			assert haltIndex != -1;
 			indexAfter = this.validHalts.get(haltIndex).getInvalidListIndex();
 		}
-		BusItineraryHalt temp;
 		//decal insertion id invalid halts
-		for (int i = haltIndex + 1; i < this.invalidHalts.size(); ++i) {
-			temp = this.invalidHalts.get(i);
+		for (var i = haltIndex + 1; i < this.invalidHalts.size(); ++i) {
+			final var temp = this.invalidHalts.get(i);
 			if (temp.getInvalidListIndex() >= indexAfter + 1) {
 				temp.setInvalidListIndex(temp.getInvalidListIndex() + 1);
 			}
 		}
 		//decal insertion id valid halts
-		final Iterator<BusItineraryHalt> it = this.validHalts.iterator();
+		final var it = this.validHalts.iterator();
 		while (it.hasNext()) {
-			temp = it.next();
+			final var temp = it.next();
 			if (temp.getInvalidListIndex() >= indexAfter + 1) {
 				temp.setInvalidListIndex(temp.getInvalidListIndex() + 1);
 			}
@@ -1264,8 +1250,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		assert beforeHalt != null;
 		assert this.contains(beforeHalt);
 
-		int haltIndex = -1;
-		int indexBefore = -1;
+		var haltIndex = -1;
+		var indexBefore = -1;
 		if (!beforeHalt.isValidPrimitive()) {
 			haltIndex =  ListUtil.indexOf(this.invalidHalts, INVALID_HALT_COMPARATOR, beforeHalt);
 			assert haltIndex != -1;
@@ -1276,18 +1262,17 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			indexBefore = this.validHalts.get(haltIndex).getInvalidListIndex();
 		}
 
-		BusItineraryHalt temp;
 		//decal insertion id invalid halts
-		for (int i = haltIndex; i < this.invalidHalts.size(); ++i) {
-			temp = this.invalidHalts.get(i);
+		for (var i = haltIndex; i < this.invalidHalts.size(); ++i) {
+			final var temp = this.invalidHalts.get(i);
 			if (temp.getInvalidListIndex() >= indexBefore) {
 				temp.setInvalidListIndex(temp.getInvalidListIndex() + 1);
 			}
 		}
 		//decal insertion id valid halts
-		final Iterator<BusItineraryHalt> it = this.validHalts.iterator();
+		final var it = this.validHalts.iterator();
 		while (it.hasNext()) {
-			temp = it.next();
+			final var temp = it.next();
 			if (temp.getInvalidListIndex() >= indexBefore) {
 				temp.setInvalidListIndex(temp.getInvalidListIndex() + 1);
 			}
@@ -1300,19 +1285,19 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	public void removeAllBusHalts() {
 
-		for (final BusItineraryHalt bushalt : this.invalidHalts) {
+		for (final var bushalt : this.invalidHalts) {
 			bushalt.setContainer(null);
 			bushalt.setRoadSegmentIndex(-1);
 			bushalt.setPositionOnSegment(Float.NaN);
 			bushalt.checkPrimitiveValidity();
 		}
 
-		final BusItineraryHalt[] halts = new BusItineraryHalt[this.validHalts.size()];
+		final var halts = new BusItineraryHalt[this.validHalts.size()];
 		this.validHalts.toArray(halts);
 		this.validHalts.clear();
 		this.invalidHalts.clear();
 
-		for (final BusItineraryHalt bushalt : halts) {
+		for (final var bushalt : halts) {
 			bushalt.setContainer(null);
 			bushalt.setRoadSegmentIndex(-1);
 			bushalt.setPositionOnSegment(Float.NaN);
@@ -1337,7 +1322,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	public boolean removeBusHalt(BusItineraryHalt bushalt) {
 		try {
-			int index = ListUtil.indexOf(this.validHalts, VALID_HALT_COMPARATOR, bushalt);
+			var index = ListUtil.indexOf(this.validHalts, VALID_HALT_COMPARATOR, bushalt);
 			if (index >= 0) {
 				return removeBusHalt(index);
 			}
@@ -1359,11 +1344,10 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @return {@code true} if the bus halt was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusHalt(String name) {
-		Iterator<BusItineraryHalt> iterator = this.validHalts.iterator();
-		BusItineraryHalt bushalt;
-		int i = 0;
+		var iterator = this.validHalts.iterator();
+		var i = 0;
 		while (iterator.hasNext()) {
-			bushalt = iterator.next();
+			final var bushalt = iterator.next();
 			if (name.equals(bushalt.getName())) {
 				return removeBusHalt(i);
 			}
@@ -1373,7 +1357,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		iterator = this.invalidHalts.iterator();
 		i = 0;
 		while (iterator.hasNext()) {
-			bushalt = iterator.next();
+			final var bushalt = iterator.next();
 			if (name.equals(bushalt.getName())) {
 				return removeBusHalt(i);
 			}
@@ -1395,7 +1379,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			if (index < this.validHalts.size()) {
 				removedBushalt = this.validHalts.remove(index);
 			} else {
-				final int idx = index - this.validHalts.size();
+				final var idx = index - this.validHalts.size();
 				removedBushalt = this.invalidHalts.remove(idx);
 			}
 			removedBushalt.setContainer(null);
@@ -1456,7 +1440,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		if (bushalt.isValidPrimitive()) {
 			return ListUtil.indexOf(this.validHalts, VALID_HALT_COMPARATOR, bushalt);
 		}
-		int idx = ListUtil.indexOf(this.invalidHalts, INVALID_HALT_COMPARATOR, bushalt);
+		var idx = ListUtil.indexOf(this.invalidHalts, INVALID_HALT_COMPARATOR, bushalt);
 		if (idx >= 0) {
 			idx += this.validHalts.size();
 		}
@@ -1488,7 +1472,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	@Override
 	@Pure
 	public int indexInParent() {
-		final BusLine line = getContainer();
+		final var line = getContainer();
 		if (line == null) {
 			return -1;
 		}
@@ -1562,12 +1546,12 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		if (uuid == null) {
 			return null;
 		}
-		for (final BusItineraryHalt busHalt : this.validHalts) {
+		for (final var busHalt : this.validHalts) {
 			if (uuid.equals(busHalt.getUUID())) {
 				return busHalt;
 			}
 		}
-		for (final BusItineraryHalt busHalt : this.invalidHalts) {
+		for (final var busHalt : this.invalidHalts) {
 			if (uuid.equals(busHalt.getUUID())) {
 				return busHalt;
 			}
@@ -1587,13 +1571,13 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		if (name == null) {
 			return null;
 		}
-		final Comparator<String> cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
-		for (final BusItineraryHalt bushalt : this.validHalts) {
+		final var cmp = nameComparator == null ? BusNetworkUtilities.NAME_COMPARATOR : nameComparator;
+		for (final var bushalt : this.validHalts) {
 			if (cmp.compare(name, bushalt.getName()) == 0) {
 				return bushalt;
 			}
 		}
-		for (final BusItineraryHalt bushalt : this.invalidHalts) {
+		for (final var bushalt : this.invalidHalts) {
 			if (cmp.compare(name, bushalt.getName()) == 0) {
 				return bushalt;
 			}
@@ -1616,7 +1600,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	@Pure
 	public Iterable<BusItineraryHalt> busHalts() {
-		final MultiCollection<BusItineraryHalt> halts = new MultiCollection<>();
+		final var halts = new MultiCollection<BusItineraryHalt>();
 		halts.addCollection(this.validHalts);
 		halts.addCollection(this.invalidHalts);
 		return Collections.unmodifiableCollection(halts);
@@ -1629,13 +1613,13 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	@Pure
 	public BusItineraryHalt[] toBusHaltArray() {
-		final BusItineraryHalt[] tab = new BusItineraryHalt[this.validHalts.size() + this.invalidHalts.size()];
-		int i = 0;
-		for (final BusItineraryHalt h : this.validHalts) {
+		final var tab = new BusItineraryHalt[this.validHalts.size() + this.invalidHalts.size()];
+		var i = 0;
+		for (final var h : this.validHalts) {
 			tab[i] = h;
 			++i;
 		}
-		for (final BusItineraryHalt h : this.invalidHalts) {
+		for (final var h : this.invalidHalts) {
 			tab[i] = h;
 			++i;
 		}
@@ -1660,7 +1644,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	@Pure
 	public BusItineraryHalt[] toValidBusHaltArray() {
-		final BusItineraryHalt[] tab = new BusItineraryHalt[this.validHalts.size()];
+		final var tab = new BusItineraryHalt[this.validHalts.size()];
 		return this.validHalts.toArray(tab);
 	}
 
@@ -1702,11 +1686,10 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		assert point != null;
 		double distance = Double.MAX_VALUE;
 		RoadSegment nearestSegment = null;
-		final Iterator<RoadSegment> iterator = this.roadSegments.roadSegments();
-		RoadSegment segment;
+		final var iterator = this.roadSegments.roadSegments();
 		while (iterator.hasNext()) {
-			segment = iterator.next();
-			final double d = segment.distance(point);
+			final var segment = iterator.next();
+			final var d = segment.distance(point);
 			if (d < distance) {
 				distance = d;
 				nearestSegment = segment;
@@ -1817,20 +1800,18 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			return false;
 		}
 
-		BusItineraryHalt halt;
-		RoadSegment sgmt;
-		final Map<BusItineraryHalt, RoadSegment> haltMapping = new TreeMap<>((obj1, obj2) ->
+		final var haltMapping = new TreeMap<BusItineraryHalt, RoadSegment>((obj1, obj2) ->
 			Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
-		final Iterator<BusItineraryHalt> haltIterator = this.validHalts.iterator();
+		final var haltIterator = this.validHalts.iterator();
 		while (haltIterator.hasNext()) {
-			halt = haltIterator.next();
-			sgmt = this.roadSegments.getRoadSegmentAt(halt.getRoadSegmentIndex());
+			final var halt = haltIterator.next();
+			final var sgmt = this.roadSegments.getRoadSegmentAt(halt.getRoadSegmentIndex());
 			haltMapping.put(halt, sgmt);
 		}
 
-		final boolean isValidBefore = isValidPrimitive();
+		final var isValidBefore = isValidPrimitive();
 
-		final RoadPath changedPath = this.roadSegments.addAndGetPath(segments);
+		final var changedPath = this.roadSegments.addAndGetPath(segments);
 
 		if (changedPath != null) {
 
@@ -1838,27 +1819,26 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				autoLoop(isValidBefore, changedPath, segments);
 			}
 
-			int nIdx;
-			for (final Entry<BusItineraryHalt, RoadSegment> entry : haltMapping.entrySet()) {
-				halt = entry.getKey();
-				sgmt = entry.getValue();
-				nIdx = this.roadSegments.indexOf(sgmt);
+			for (final var entry : haltMapping.entrySet()) {
+				final var halt = entry.getKey();
+				final var sgmt = entry.getValue();
+				final var nIdx = this.roadSegments.indexOf(sgmt);
 				halt.setRoadSegmentIndex(nIdx);
 				halt.checkPrimitiveValidity();
 			}
 
-			final BusItineraryHalt[] tabV = new BusItineraryHalt[this.validHalts.size()];
+			final var tabV = new BusItineraryHalt[this.validHalts.size()];
 			this.validHalts.toArray(tabV);
 
 			this.validHalts.clear();
 
-			for (final BusItineraryHalt busHalt : tabV) {
+			for (final var busHalt : tabV) {
 				assert busHalt != null && busHalt.isValidPrimitive();
 				ListUtil.addIfAbsent(this.validHalts, VALID_HALT_COMPARATOR, busHalt);
 			}
 
 			if (this.roadNetwork == null) {
-				final RoadNetwork network = segments.getFirstSegment().getRoadNetwork();
+				final var network = segments.getFirstSegment().getRoadNetwork();
 				this.roadNetwork = new WeakReference<>(network);
 				network.addRoadNetworkListener(this);
 			}
@@ -1886,21 +1866,21 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	private void autoLoop(boolean isValidBefore, RoadPath changedPath, RoadPath originalSegments) {
-		for (final RoadPath path : this.roadSegments) {
+		for (final var path : this.roadSegments) {
 			if (path != changedPath) {
 				// Search for connection points in the path
 
 				// a is the first point of the changed segment
 				// b is the second point of the changed segment
 				// c is the end of
-				final Iterator<CrossRoad> crossRoadIterator = path.crossRoads();
+				final var crossRoadIterator = path.crossRoads();
 				CrossRoad a = null;
 				CrossRoad b = null;
 				CrossRoad c1 = null;
 				CrossRoad c2 = null;
-				boolean isDirectlyConnected = false;
+				var isDirectlyConnected = false;
 				while (crossRoadIterator.hasNext()) {
-					final CrossRoad crossRoad = crossRoadIterator.next();
+					final var crossRoad = crossRoadIterator.next();
 					if (!isDirectlyConnected
 							&& (originalSegments.getFirstPoint().equals(crossRoad.connectionPoint)
 									|| originalSegments.getLastPoint().equals(crossRoad.connectionPoint))) {
@@ -1925,8 +1905,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 				if (isDirectlyConnected && a != null && (!isValidBefore || b != null)) {
 					if (b != null) {
-						final RoadPath sharedPart = path.splitAt(a.exitingSegmentIndex);
-						final RoadPath rest = sharedPart.splitAt(b.exitingSegmentIndex - a.exitingSegmentIndex);
+						final var sharedPart = path.splitAt(a.exitingSegmentIndex);
+						final var rest = sharedPart.splitAt(b.exitingSegmentIndex - a.exitingSegmentIndex);
 						RoadPath.addPathToPath(path, sharedPart);
 						RoadPath.addPathToPath(path, changedPath);
 						RoadPath.addPathToPath(path, sharedPart);
@@ -1938,8 +1918,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 					assert b == null;
 					final CrossRoad c;
 					if (c1 != null && c2 != null) {
-						final double da1 = Math.abs(a.distance - c1.distance);
-						final double da2 = Math.abs(a.distance - c2.distance);
+						final var da1 = Math.abs(a.distance - c1.distance);
+						final var da2 = Math.abs(a.distance - c2.distance);
 						if (da1 < da2) {
 							c = c1;
 						} else {
@@ -1957,13 +1937,13 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 						// Only one end of the changed segment is on the path.
 						if (a.distance < c.distance) {
-							for (int i = c.enteringSegmentIndex; i >= a.exitingSegmentIndex; --i) {
+							for (var i = c.enteringSegmentIndex; i >= a.exitingSegmentIndex; --i) {
 								path.add(path.get(i));
 							}
 							RoadPath.addPathToPath(path, changedPath);
 							this.roadSegments.remove(changedPath);
 						} else {
-							for (int i = c.exitingSegmentIndex; i <= a.enteringSegmentIndex; ++i) {
+							for (var i = c.exitingSegmentIndex; i <= a.enteringSegmentIndex; ++i) {
 								path.add(path.get(i));
 							}
 							RoadPath.addPathToPath(path, changedPath);
@@ -1999,21 +1979,21 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	public void putInvalidHaltsOnRoads(BusItineraryHalt... restrictionList) {
 		// CAUTION: The connections must be buffered to avoid ConcurrentModificationException on this.invalidHalts
-		final List<Triplet<BusItineraryHalt, Integer, Double>> connectableHalts = new ArrayList<>();
+		final var connectableHalts = new ArrayList<Triplet<BusItineraryHalt, Integer, Double>>();
 
-		for (final BusItineraryHalt halt : this.invalidHalts) {
-			final BusStop stop = halt.getBusStop();
+		for (final var halt : this.invalidHalts) {
+			final var stop = halt.getBusStop();
 			if (stop != null && (restrictionList == null || restrictionList.length == 0
 					|| ArrayUtil.contains(halt, restrictionList))) {
-				final Point2d position = stop.getPosition2D();
+				final var position = stop.getPosition2D();
 				if (position != null) {
 					RoadSegment nearestSegment = null;
-					double smallerDistance = Double.POSITIVE_INFINITY;
-					int nearestSegmentIndex = -1;
-					for (int i = 0; i < this.roadSegments.getRoadSegmentCount(); ++i) {
-						final RoadSegment segment = this.roadSegments.getRoadSegmentAt(i);
+					var smallerDistance = Double.POSITIVE_INFINITY;
+					var nearestSegmentIndex = -1;
+					for (var i = 0; i < this.roadSegments.getRoadSegmentCount(); ++i) {
+						final var segment = this.roadSegments.getRoadSegmentAt(i);
 						assert segment != null;
-						final double distance = segment.distance(position);
+						final var distance = segment.distance(position);
 						if (distance < smallerDistance) {
 							smallerDistance = distance;
 							nearestSegment = segment;
@@ -2021,7 +2001,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 						}
 					}
 					if (nearestSegment != null) {
-						final Point1d pos = nearestSegment.getNearestPosition(position);
+						final var pos = nearestSegment.getNearestPosition(position);
 						if (pos != null) {
 							assert nearestSegmentIndex >= 0;
 							connectableHalts.add(new Triplet<>(
@@ -2034,11 +2014,10 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			}
 		}
 
-		BusItineraryHalt halt;
-		boolean shapeChanged = false;
+		var shapeChanged = false;
 
-		for (final Triplet<BusItineraryHalt, Integer, Double> triplet : connectableHalts) {
-			halt = triplet.getA();
+		for (final var triplet : connectableHalts) {
+			final var halt = triplet.getA();
 			halt.setRoadSegmentIndex(triplet.getB().intValue());
 			halt.setPositionOnSegment(triplet.getC().doubleValue());
 			halt.checkPrimitiveValidity();
@@ -2070,13 +2049,13 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	public boolean putHaltOnRoad(BusItineraryHalt halt, RoadSegment road) {
 		if (contains(halt)) {
-			final BusStop stop = halt.getBusStop();
+			final var stop = halt.getBusStop();
 			if (stop != null) {
-				final Point2d stopPosition = stop.getPosition2D();
+				final var stopPosition = stop.getPosition2D();
 				if (stopPosition != null) {
-					final int idx = indexOf(road);
+					final var idx = indexOf(road);
 					if (idx >= 0) {
-						final Point1d pos = road.getNearestPosition(stopPosition);
+						final var pos = road.getNearestPosition(stopPosition);
 						if (pos != null) {
 							halt.setRoadSegmentIndex(idx);
 							halt.setPositionOnSegment(pos.getCurvilineCoordinate());
@@ -2113,12 +2092,12 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	public boolean putHaltOnRoad(BusItineraryHalt halt, RoadSegment road, Point2D<?, ?> nearPoint) {
 		if (contains(halt)) {
-			final BusStop stop = halt.getBusStop();
+			final var stop = halt.getBusStop();
 			if (stop != null) {
 				if (nearPoint != null) {
-					final int idx = indexOf(road);
+					final var idx = indexOf(road);
 					if (idx >= 0) {
-						final Point1d pos = road.getNearestPosition(nearPoint);
+						final var pos = road.getNearestPosition(nearPoint);
 						if (pos != null) {
 							halt.setRoadSegmentIndex(idx);
 							halt.setPositionOnSegment(pos.getCurvilineCoordinate());
@@ -2147,22 +2126,22 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * <p>All the bus halts will also be removed.
 	 */
 	public void removeAllRoadSegments() {
-		for (final BusItineraryHalt halt : this.invalidHalts) {
+		for (final var halt : this.invalidHalts) {
 			halt.setRoadSegmentIndex(-1);
 			halt.setPositionOnSegment(Float.NaN);
 			halt.checkPrimitiveValidity();
 		}
 
-		final BusItineraryHalt[] halts = new BusItineraryHalt[this.validHalts.size()];
+		final var halts = new BusItineraryHalt[this.validHalts.size()];
 		this.validHalts.toArray(halts);
-		for (final BusItineraryHalt halt : halts) {
+		for (final var halt : halts) {
 			halt.setRoadSegmentIndex(-1);
 			halt.setPositionOnSegment(Float.NaN);
 			halt.checkPrimitiveValidity();
 		}
 
 		if (this.roadNetwork != null) {
-			final RoadNetwork network = this.roadNetwork.get();
+			final var network = this.roadNetwork.get();
 			if (network != null) {
 				network.removeRoadNetworkListener(this);
 			}
@@ -2189,21 +2168,21 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	public boolean removeRoadSegment(int segmentIndex) {
 		if (segmentIndex >= 0 && segmentIndex < this.roadSegments.getRoadSegmentCount()) {
-			final RoadSegment segment = this.roadSegments.getRoadSegmentAt(segmentIndex);
+			final var segment = this.roadSegments.getRoadSegmentAt(segmentIndex);
 			if (segment != null) {
 				//
 				// Invalidate the bus halts on the segment
 				//
-				final Map<BusItineraryHalt, RoadSegment> segmentMap = new TreeMap<>((obj1, obj2) ->
+				final var segmentMap = new TreeMap<BusItineraryHalt, RoadSegment>((obj1, obj2) ->
 					Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
-				final Iterator<BusItineraryHalt> haltIterator = this.validHalts.iterator();
+				final var haltIterator = this.validHalts.iterator();
 				while (haltIterator.hasNext()) {
-					final BusItineraryHalt halt = haltIterator.next();
-					final int sgmtIndex = halt.getRoadSegmentIndex();
+					final var halt = haltIterator.next();
+					final var sgmtIndex = halt.getRoadSegmentIndex();
 					if (sgmtIndex == segmentIndex) {
 						segmentMap.put(halt, null);
 					} else {
-						final RoadSegment sgmt = this.roadSegments.getRoadSegmentAt(sgmtIndex);
+						final var sgmt = this.roadSegments.getRoadSegmentAt(sgmtIndex);
 						segmentMap.put(halt, sgmt);
 					}
 				}
@@ -2216,16 +2195,16 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				//
 				// Force the road segment indexes
 				//
-				for (final Entry<BusItineraryHalt, RoadSegment> entry : segmentMap.entrySet()) {
-					final BusItineraryHalt halt = entry.getKey();
-					final RoadSegment sgmt = entry.getValue();
+				for (final var entry : segmentMap.entrySet()) {
+					final var halt = entry.getKey();
+					final var sgmt = entry.getValue();
 					if (sgmt == null) {
 						halt.setRoadSegmentIndex(-1);
 						halt.setPositionOnSegment(Float.NaN);
 						halt.checkPrimitiveValidity();
 					} else {
-						final int sgmtIndex = halt.getRoadSegmentIndex();
-						final int idx = this.roadSegments.indexOf(sgmt);
+						final var sgmtIndex = halt.getRoadSegmentIndex();
+						final var idx = this.roadSegments.indexOf(sgmt);
 						if (idx != sgmtIndex) {
 							halt.setRoadSegmentIndex(idx);
 							halt.checkPrimitiveValidity();
@@ -2237,7 +2216,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				// Change the road network reference
 				//
 				if (this.roadSegments.isEmpty() && this.roadNetwork != null) {
-					final RoadNetwork network = this.roadNetwork.get();
+					final var network = this.roadNetwork.get();
 					if (network != null) {
 						network.removeRoadNetworkListener(this);
 					}
@@ -2297,17 +2276,17 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public Set<Integer> removeRoadSegment(RoadSegment segment, boolean tryToReconnect) {
-		final IntegerList removedIndexes = new IntegerList();
+		final var removedIndexes = new IntegerList();
 		if (segment != null) {
-			final Map<BusItineraryHalt, RoadSegment> segmentMap = new TreeMap<>((obj1, obj2) ->
+			final var segmentMap = new TreeMap<BusItineraryHalt, RoadSegment>((obj1, obj2) ->
 				Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
 
 			// Save the segment-halt binding
-			final Iterator<BusItineraryHalt> haltIterator = this.validHalts.iterator();
+			final var haltIterator = this.validHalts.iterator();
 			while (haltIterator.hasNext()) {
-				final BusItineraryHalt halt = haltIterator.next();
-				final int sgmtIndex = halt.getRoadSegmentIndex();
-				final RoadSegment s = this.roadSegments.getRoadSegmentAt(sgmtIndex);
+				final var halt = haltIterator.next();
+				final var sgmtIndex = halt.getRoadSegmentIndex();
+				final var s = this.roadSegments.getRoadSegmentAt(sgmtIndex);
 				if (s.equals(segment)) {
 					segmentMap.put(halt, null);
 				} else {
@@ -2316,10 +2295,10 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			}
 
 			// Removed the segments
-			int segmentIndex = 0;
-			final Iterator<RoadSegment> segmentIterator = this.roadSegments.roadSegments();
+			var segmentIndex = 0;
+			final var segmentIterator = this.roadSegments.roadSegments();
 			while (segmentIterator.hasNext()) {
-				final RoadSegment s = segmentIterator.next();
+				final var s = segmentIterator.next();
 				if (s.equals(segment)) {
 					segmentIterator.remove();
 					removedIndexes.add(Integer.valueOf(segmentIndex));
@@ -2329,12 +2308,12 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 			// Try to reconnect the segments
 			if (tryToReconnect) {
-				for (int i = 0; i < this.roadSegments.size() - 1; ++i) {
-					final RoadPath p1 = this.roadSegments.getRoadPathAt(i);
-					int j = i + 1;
+				for (var i = 0; i < this.roadSegments.size() - 1; ++i) {
+					final var p1 = this.roadSegments.getRoadPathAt(i);
+					var j = i + 1;
 					while (j < this.roadSegments.size()) {
-						final RoadPath p2 = this.roadSegments.getRoadPathAt(j);
-						RoadSegment seg = p2.getConnectableSegmentToFirstPoint(p1);
+						final var p2 = this.roadSegments.getRoadPathAt(j);
+						var seg = p2.getConnectableSegmentToFirstPoint(p1);
 						final Iterator<RoadSegment> iterator;
 						if (seg != null) {
 							iterator = p2.iterator();
@@ -2349,7 +2328,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 						if (iterator != null) {
 							assert seg != null;
 							assert iterator.hasNext();
-							final RoadSegment sgmt = iterator.next();
+							final var sgmt = iterator.next();
 							// avoid to connect paths that cause to go back on the same segment.
 							if (!seg.equals(sgmt)) {
 								p1.add(sgmt);
@@ -2372,16 +2351,16 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				//
 				// Force the road segment indexes
 				//
-				for (final Entry<BusItineraryHalt, RoadSegment> entry : segmentMap.entrySet()) {
-					final BusItineraryHalt halt = entry.getKey();
-					final RoadSegment s = entry.getValue();
+				for (final var entry : segmentMap.entrySet()) {
+					final var halt = entry.getKey();
+					final var s = entry.getValue();
 					if (s == null) {
 						halt.setRoadSegmentIndex(-1);
 						halt.setPositionOnSegment(Float.NaN);
 						halt.checkPrimitiveValidity();
 					} else {
-						final int sgmtIndex = halt.getRoadSegmentIndex();
-						final int idx = this.roadSegments.indexOf(s);
+						final var sgmtIndex = halt.getRoadSegmentIndex();
+						final var idx = this.roadSegments.indexOf(s);
 						if (idx != sgmtIndex) {
 							halt.setRoadSegmentIndex(idx);
 							halt.checkPrimitiveValidity();
@@ -2393,7 +2372,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				// Change the road network reference
 				//
 				if (this.roadSegments.isEmpty() && this.roadNetwork != null) {
-					final RoadNetwork network = this.roadNetwork.get();
+					final var network = this.roadNetwork.get();
 					if (network != null) {
 						network.removeRoadNetworkListener(this);
 					}
@@ -2403,7 +2382,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				//
 				// Change the road network reference
 				//
-				for (final Integer index : removedIndexes) {
+				for (final var index : removedIndexes) {
 					fireShapeChanged(new BusChangeEvent(this,
 							BusChangeEventType.SEGMENT_REMOVED,
 							segment,
@@ -2507,8 +2486,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	private void onBusHaltChanged(BusItineraryHalt halt) {
 		if (halt.getContainer() == this) {
-			final boolean oldValidity = !ListUtil.contains(this.invalidHalts, INVALID_HALT_COMPARATOR, halt);
-			final boolean currentValidity = halt.isValidPrimitive();
+			final var oldValidity = !ListUtil.contains(this.invalidHalts, INVALID_HALT_COMPARATOR, halt);
+			final var currentValidity = halt.isValidPrimitive();
 			if (oldValidity != currentValidity) {
 				if (currentValidity) {
 					ListUtil.remove(this.invalidHalts, INVALID_HALT_COMPARATOR, halt);
@@ -2524,18 +2503,18 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	@Override
 	public void onBusPrimitiveChanged(BusChangeEvent event) {
-		final Object source = event.getSource();
-		if (source instanceof BusItineraryHalt) {
-			onBusHaltChanged((BusItineraryHalt) source);
+		final var source = event.getSource();
+		if (source instanceof BusItineraryHalt halt) {
+			onBusHaltChanged(halt);
 		}
 		super.onBusPrimitiveChanged(event);
 	}
 
 	@Override
 	public void onBusPrimitiveShapeChanged(BusChangeEvent event) {
-		final Object source = event.getSource();
-		if (source instanceof BusItineraryHalt) {
-			onBusHaltChanged((BusItineraryHalt) source);
+		final var source = event.getSource();
+		if (source instanceof BusItineraryHalt halt) {
+			onBusHaltChanged(halt);
 		}
 		super.onBusPrimitiveShapeChanged(event);
 	}
@@ -2601,19 +2580,19 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			assert o1 != null;
 			assert o2 != null;
 
-			final int s1 = o1.getRoadSegmentIndex();
+			final var s1 = o1.getRoadSegmentIndex();
 			assert s1 >= 0;
 
-			final int s2 = o2.getRoadSegmentIndex();
+			final var s2 = o2.getRoadSegmentIndex();
 			assert s2 >= 0;
 
-			final int cmp = s1 - s2;
+			final var cmp = s1 - s2;
 			if (cmp != 0) {
 				return cmp;
 			}
 
-			final double p1 = o1.getPositionOnSegment();
-			final double p2 = o2.getPositionOnSegment();
+			final var p1 = o1.getPositionOnSegment();
+			final var p2 = o2.getPositionOnSegment();
 			assert !Double.isNaN(p1) && !Double.isNaN(p2);
 			return Double.compare(p1, p2);
 		}

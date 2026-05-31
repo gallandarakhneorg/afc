@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.graph.GraphSegment;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class provides a simple implementation of a graph's segment
  * for a {@link SGraph}.
@@ -108,11 +107,11 @@ public class SGraphSegment implements GraphSegment<SGraphSegment, SGraphPoint> {
 		if (segment.getGraph() != getGraph()) {
 			throw new IllegalArgumentException();
 		}
-		final SGraphPoint point = new SGraphPoint(getGraph());
+		final var point = new SGraphPoint(getGraph());
 		setBegin(point);
 		segment.setBegin(point);
 
-		final SGraph g = getGraph();
+		final var g = getGraph();
 		assert g != null;
 		g.updatePointCount(-1);
 	}
@@ -128,11 +127,11 @@ public class SGraphSegment implements GraphSegment<SGraphSegment, SGraphPoint> {
 		if (segment.getGraph() != getGraph()) {
 			throw new IllegalArgumentException();
 		}
-		final SGraphPoint point = new SGraphPoint(getGraph());
+		final var point = new SGraphPoint(getGraph());
 		setBegin(point);
 		segment.setEnd(point);
 
-		final SGraph g = getGraph();
+		final var g = getGraph();
 		assert g != null;
 		g.updatePointCount(-1);
 	}
@@ -148,11 +147,11 @@ public class SGraphSegment implements GraphSegment<SGraphSegment, SGraphPoint> {
 		if (segment.getGraph() != getGraph()) {
 			throw new IllegalArgumentException();
 		}
-		final SGraphPoint point = new SGraphPoint(getGraph());
+		final var point = new SGraphPoint(getGraph());
 		setEnd(point);
 		segment.setBegin(point);
 
-		final SGraph g = getGraph();
+		final var g = getGraph();
 		assert g != null;
 		g.updatePointCount(-1);
 	}
@@ -168,11 +167,11 @@ public class SGraphSegment implements GraphSegment<SGraphSegment, SGraphPoint> {
 		if (segment.getGraph() != getGraph()) {
 			throw new IllegalArgumentException();
 		}
-		final SGraphPoint point = new SGraphPoint(getGraph());
+		final var point = new SGraphPoint(getGraph());
 		setEnd(point);
 		segment.setEnd(point);
 
-		final SGraph g = getGraph();
+		final var g = getGraph();
 		assert g != null;
 		g.updatePointCount(-1);
 	}
@@ -264,7 +263,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment, SGraphPoint> {
 	 */
 	@Pure
 	public int getUserDataCount() {
-		return (this.userData == null) ? 0 : this.userData.size();
+		return this.userData == null ? 0 : this.userData.size();
 	}
 
 	/** Replies the user data at the given index.

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,12 @@ package org.arakhne.afc.math.geometry.d3;
 
 import java.io.Serializable;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.GnuOctaveUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D tuple.
  *
@@ -142,10 +142,10 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(int min, int max) {
-		assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
-		final double x = MathUtil.clamp(getX(), min, max);
-		final double y = MathUtil.clamp(getY(), min, max);
-		final double z = MathUtil.clamp(getZ(), min, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
+		final var x = MathUtil.clamp(getX(), min, max);
+		final var y = MathUtil.clamp(getY(), min, max);
+		final var z = MathUtil.clamp(getZ(), min, max);
 		set(x, y, z);
 	}
 
@@ -157,11 +157,11 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clamp(int min, int max, Tuple3D<?> tuple)  {
-	    assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
+	    assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
 	    assert tuple != null : AssertMessages.notNullParameter();
-	    final double x = MathUtil.clamp(tuple.getX(), min, max);
-	    final double y = MathUtil.clamp(tuple.getY(), min, max);
-	    final double z = MathUtil.clamp(tuple.getZ(), min, max);
+	    final var x = MathUtil.clamp(tuple.getX(), min, max);
+	    final var y = MathUtil.clamp(tuple.getY(), min, max);
+	    final var z = MathUtil.clamp(tuple.getZ(), min, max);
 	    set(x, y, z);
 	}
 
@@ -171,10 +171,10 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(double min, double max) {
-		assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
-		final double x = MathUtil.clamp(getX(), min, max);
-		final double y = MathUtil.clamp(getY(), min, max);
-		final double z = MathUtil.clamp(getZ(), min, max);
+		assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
+		final var x = MathUtil.clamp(getX(), min, max);
+		final var y = MathUtil.clamp(getY(), min, max);
+		final var z = MathUtil.clamp(getZ(), min, max);
 		set(x, y, z);
 	}
 
@@ -186,11 +186,11 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
      *  @param tuple   the source tuple, which will not be modified
      */
     default void clamp(double min, double max, Tuple3D<?> tuple) {
-        assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
+        assert min <= max : AssertMessages.lowerEqualParameters(0, Double.valueOf(min), 1, Double.valueOf(max));
         assert tuple != null : AssertMessages.notNullParameter();
-        final double x = MathUtil.clamp(tuple.getX(), min, max);
-        final double y = MathUtil.clamp(tuple.getY(), min, max);
-        final double z = MathUtil.clamp(tuple.getZ(), min, max);
+        final var x = MathUtil.clamp(tuple.getX(), min, max);
+        final var y = MathUtil.clamp(tuple.getY(), min, max);
+        final var z = MathUtil.clamp(tuple.getZ(), min, max);
         set(x, y, z);
     }
 
@@ -199,9 +199,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param min   the lowest value in this tuple after clamping
 	 */
 	default void clampMin(int min) {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+		var x = getX();
+		var y = getY();
+		var z = getZ();
 		if (x < min) {
 			x = min;
 		}
@@ -219,9 +219,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param min   the lowest value in this tuple after clamping
 	 */
 	default void clampMin(double min) {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+		var x = getX();
+		var y = getY();
+		var z = getZ();
 		if (x < min) {
 			x = min;
 		}
@@ -242,9 +242,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
      */
     default void clampMin(int min, Tuple3D<?> tuple) {
         assert tuple != null : AssertMessages.notNullParameter();
-        double x = tuple.getX();
-        double y = tuple.getY();
-        double z = tuple.getY();
+        var x = tuple.getX();
+        var y = tuple.getY();
+        var z = tuple.getY();
         if (x < min) {
             x = min;
         }
@@ -265,9 +265,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
      */
     default void clampMin(double min, Tuple3D<?> tuple) {
         assert tuple != null : AssertMessages.notNullParameter();
-        double x = tuple.getX();
-        double y = tuple.getY();
-        double z = tuple.getY();
+        var x = tuple.getX();
+        var y = tuple.getY();
+        var z = tuple.getY();
         if (x < min) {
             x = min;
         }
@@ -285,9 +285,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param max   the highest value in the tuple after clamping
 	 */
 	default void clampMax(int max) {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+		var x = getX();
+		var y = getY();
+		var z = getZ();
 		if (x > max) {
 			x = max;
 		}
@@ -305,9 +305,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param max   the highest value in the tuple after clamping
 	 */
 	default void clampMax(double max) {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+		var x = getX();
+		var y = getY();
+		var z = getZ();
 		if (x > max) {
 			x = max;
 		}
@@ -328,9 +328,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 */
 	default void clampMax(int max, Tuple3D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter();
-		double x = tuple.getX();
-		double y = tuple.getY();
-		double z = tuple.getY();
+		var x = tuple.getX();
+		var y = tuple.getY();
+		var z = tuple.getY();
 		if (x > max) {
 			x = max;
 		}
@@ -351,9 +351,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 */
 	default void clampMax(double max, Tuple3D<?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter();
-		double x = tuple.getX();
-		double y = tuple.getY();
-		double z = tuple.getY();
+		var x = tuple.getX();
+		var y = tuple.getY();
+		var z = tuple.getY();
 		if (x > max) {
 			x = max;
 		}
@@ -684,7 +684,8 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	default void interpolate(Tuple3D<?> tuple1, Tuple3D<?> tuple2, double alpha) {
 		assert tuple1 != null : AssertMessages.normalizedParameter(0);
 		assert tuple2 != null : AssertMessages.normalizedParameter(1);
-		assert alpha >= 0. && alpha <= 1. : AssertMessages.outsideRangeInclusiveParameter(2, alpha, 0, 1);
+		assert alpha >= 0. && alpha <= 1.
+				: AssertMessages.outsideRangeInclusiveParameter(2, Double.valueOf(alpha), Double.valueOf(0), Double.valueOf(1));
 		set((1. - alpha) * tuple1.getX() + alpha * tuple2.getX(),
 			(1. - alpha) * tuple1.getY() + alpha * tuple2.getY(),
 			(1. - alpha) * tuple1.getZ() + alpha * tuple2.getZ());
@@ -741,9 +742,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	@Pure
 	default boolean epsilonEquals(Tuple3D<?> tuple, double epsilon) {
 		assert tuple != null : AssertMessages.notNullParameter();
-		final double dx = getX() - tuple.getX();
-		final double dy = getY() - tuple.getY();
-		final double dz = getZ() - tuple.getZ();
+		final var dx = getX() - tuple.getX();
+		final var dy = getY() - tuple.getY();
+		final var dz = getZ() - tuple.getZ();
 		return (dx * dx + dy * dy + dz * dz) <= (epsilon * epsilon);
 	}
 

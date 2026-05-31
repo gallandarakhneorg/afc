@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.GISSet;
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocation;
@@ -34,6 +32,7 @@ import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a grid that contains GIS primitives
@@ -95,7 +94,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	@SuppressWarnings("unchecked")
 	protected static <E> Class<? extends E> extractClassFrom(Collection<? extends E> collection) {
 		Class<? extends E> clazz = null;
-		for (final E elt : collection) {
+		for (final var elt : collection) {
 			clazz = (Class<? extends E>) ReflectionUtil.getCommonType(clazz, elt.getClass());
 		}
 		return clazz == null ? (Class<E>) Object.class : clazz;
@@ -145,7 +144,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	 */
 	@SuppressWarnings("unchecked")
 	protected final void updateComponentType(P newElement) {
-		final Class<? extends P> lclazz = (Class<? extends P>) newElement.getClass();
+		final var lclazz = (Class<? extends P>) newElement.getClass();
 		this.clazz = (Class<? extends P>) ReflectionUtil.getCommonType(this.clazz, lclazz);
 	}
 
@@ -156,7 +155,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	 */
 	@SuppressWarnings("unchecked")
 	protected final void updateComponentType(Collection<? extends P> newElements) {
-		final Class<? extends P> lclazz = extractClassFrom(newElements);
+		final var lclazz = extractClassFrom(newElements);
 		this.clazz = (Class<? extends P>) ReflectionUtil.getCommonType(this.clazz, lclazz);
 	}
 
@@ -189,12 +188,11 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	@Pure
 	public P get(GeoLocation location) {
 		if (location != null) {
-			final Rectangle2d objBounds = location.toBounds2D();
+			final var objBounds = location.toBounds2D();
 			if (objBounds != null) {
-				final Iterator<P> iterator = this.grid.iterator(objBounds);
-				P element;
+				final var iterator = this.grid.iterator(objBounds);
 				while (iterator.hasNext()) {
-					element = iterator.next();
+					final var element = iterator.next();
 					if (element.getGeoLocation().equals(location)) {
 						return element;
 					}
@@ -259,10 +257,10 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	@Override
 	@Pure
 	public Object[] toArray() {
-		final int count = this.grid.getElementCount();
-		final Object[] tab = new Object[count];
-		int i = 0;
-		for (final P element : this.grid) {
+		final var count = this.grid.getElementCount();
+		final var tab = new Object[count];
+		var i = 0;
+		for (final var element : this.grid) {
 			if (i >= count) {
 				break;
 			}
@@ -277,11 +275,11 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	@Pure
 	public <T> T[] toArray(T[] array) {
 		assert array != null;
-		final Class<T[]> clazz1 = (Class<T[]>) array.getClass();
-		final Class<? extends T> clazz2 = (Class<? extends T>) clazz1.getComponentType();
+		final var clazz1 = (Class<T[]>) array.getClass();
+		final var clazz2 = (Class<? extends T>) clazz1.getComponentType();
 
-		int count = this.grid.getElementCount();
-		T[] tab = array;
+		var count = this.grid.getElementCount();
+		var tab = array;
 
 		if (array.length > count) {
 			count = array.length;
@@ -290,8 +288,8 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 			tab = clazz1.cast(Array.newInstance(clazz2, count));
 		}
 
-		int i = 0;
-		for (final P element : this.grid) {
+		var i = 0;
+		for (final var element : this.grid) {
 			if (i >= count) {
 				break;
 			}
@@ -309,9 +307,9 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 			return false;
 		}
 		try {
-			final P primitive = (P) obj;
-			for (final GridCell<P> cell : this.grid.getGridCellsOn(primitive.getGeoLocation().toBounds2D())) {
-				for (final P data : cell) {
+			final var primitive = (P) obj;
+			for (final var cell : this.grid.getGridCellsOn(primitive.getGeoLocation().toBounds2D())) {
+				for (final var data : cell) {
 					if (data.equals(obj)) {
 						return true;
 					}
@@ -332,7 +330,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	@Override
 	@Pure
 	public boolean containsAll(Collection<?> col) {
-		for (final Object object : col) {
+		for (final var object : col) {
 			if (!contains(object)) {
 				return false;
 			}
@@ -350,8 +348,8 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 
 	@Override
 	public boolean removeAll(Collection<?> col) {
-		boolean changed = false;
-		for (final Object o : col) {
+		var changed = false;
+		for (final var o : col) {
 			if (remove(o)) {
 				changed = true;
 			}
@@ -370,8 +368,8 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 		if (col == null) {
 			return false;
 		}
-		boolean changed = false;
-		for (final P element : col) {
+		var changed = false;
+		for (final var element : col) {
 			if (add(element)) {
 				changed = true;
 			}
@@ -555,7 +553,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 			@Override
 			@SuppressWarnings("unchecked")
 			public P next() {
-				final P n = this.next;
+				final var n = this.next;
 				this.next = null;
 				while (this.it.hasNext()) {
 					try {
@@ -609,7 +607,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 
 		@Override
 		public Rectangle2afp<?, ?, ?, ?, ?, ?> next() {
-			final GridCell<?> node = this.iterator.next();
+			final var node = this.iterator.next();
 			return node.getBounds();
 		}
 

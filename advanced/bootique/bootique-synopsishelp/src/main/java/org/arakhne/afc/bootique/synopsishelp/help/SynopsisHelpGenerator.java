@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package org.arakhne.afc.bootique.synopsishelp.help;
 
 import java.lang.reflect.Method;
 
-import com.google.common.base.Strings;
 import io.bootique.help.ConsoleAppender;
 import io.bootique.help.DefaultHelpGenerator;
 import io.bootique.help.HelpAppender;
@@ -36,7 +35,10 @@ import io.bootique.meta.application.ApplicationMetadata;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
+ * @deprecated since 18.0
  */
+@SuppressWarnings("all")
+@Deprecated(since = "18.0")
 public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 
 	private static final String SYNOPSIS = "SYNOPSIS"; //$NON-NLS-1$
@@ -86,7 +88,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		return this.metadata;
 	}
 
-	@Override
+	/*@Override
 	public void append(Appendable out) {
 		final SynopsisHelpAppender appender = createAppender(out);
 		final ApplicationMetadata meta = getApplicationMetadata();
@@ -96,7 +98,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		printDetailedDescription(appender, this.detailedDescription);
 		printOptions(appender, collectOptions());
 		printEnvironment(appender, meta.getVariables());
-	}
+	}*/
 
 	/** Print the synopsis of the command.
 	 *
@@ -104,7 +106,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 	 * @param name the name of the command.
 	 * @param argumentSynopsis the synopsis of the arguments.
 	 */
-	@SuppressWarnings("static-method")
+	/*@SuppressWarnings("static-method")
 	protected void printSynopsis(HelpAppender out, String name, String argumentSynopsis) {
 		out.printSectionName(SYNOPSIS);
 
@@ -115,20 +117,20 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		} else {
 			out.printText(name, OPTION_SYNOPSIS, argumentSynopsis);
 		}
-	}
+	}*/
 
 	/** Print the detailed description of the command.
 	 *
 	 * @param out the output receiver.
 	 * @param detailedDescription the detailed description of the application.
 	 */
-	@SuppressWarnings("static-method")
+	/*@SuppressWarnings("static-method")
 	protected void printDetailedDescription(SynopsisHelpAppender out, String detailedDescription) {
 		if (!Strings.isNullOrEmpty(detailedDescription)) {
 			out.printSectionName(DETAILED_DESCRIPTION);
 			out.printLongDescription(detailedDescription.split("[\r\n\f]+")); //$NON-NLS-1$
 		}
-	}
+	}*/
 
 	/** Appender for the synopsis help.
 	 *

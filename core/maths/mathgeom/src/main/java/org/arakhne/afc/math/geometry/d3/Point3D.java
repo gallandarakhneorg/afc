@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Point.
  *
@@ -39,7 +38,9 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>, RV extends Vector3D<? super RV, ? super RP, ? super RQ>, RQ extends Quaternion<? super RP, ? super RV, ? super RQ>>
+public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
+		RV extends Vector3D<? super RV, ? super RP, ? super RQ>,
+		RQ extends Quaternion<? super RP, ? super RV, ? super RQ>>
         extends Tuple3D<RP> {
 
 	/**
@@ -70,20 +71,21 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean isCollinearPoints(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3) {
-		final double dx1 = x2 - x1;
-		final double dy1 = y2 - y1;
-		final double dz1 = z2 - z1;
-		final double dx2 = x3 - x1;
-		final double dy2 = y3 - y1;
-		final double dz2 = z3 - z1;
+		final var dx1 = x2 - x1;
+		final var dy1 = y2 - y1;
+		final var dz1 = z2 - z1;
+		final var dx2 = x3 - x1;
+		final var dy2 = y3 - y1;
+		final var dz2 = z3 - z1;
 
-		final double cx = dy1 * dz2 - dy2 * dz1;
-		final double cy = dx2 * dz1 - dx1 * dz2;
-		final double cz = dx1 * dy2 - dx2 * dy1;
+		final var cx = dy1 * dz2 - dy2 * dz1;
+		final var cy = dx2 * dz1 - dx1 * dz2;
+		final var cz = dx1 * dy2 - dx2 * dy1;
 
 		return MathUtil.isEpsilonZero(cx * cx + cy * cy + cz * cz);
 	}
@@ -104,9 +106,9 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	@Inline(value = "Math.sqrt(($1 - $4) * ($1 - $4) + ($2 - $5) * ($2 - $5) + ($3 - $6) * ($3 - $6))",
 			imported = {Math.class})
 	static double getDistancePointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
-		final double dx = x1 - x2;
-		final double dy = y1 - y2;
-		final double dz = z1 - z2;
+		final var dx = x1 - x2;
+		final var dy = y1 - y2;
+		final var dz = z1 - z2;
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
@@ -125,9 +127,9 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	@Pure
 	@Inline(value = "($1 - $4) * ($1 - $4) + ($2 - $5) * ($2 - $5) + ($3 - $6) * ($3 - $6)")
 	static double getDistanceSquaredPointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
-		final double dx = x1 - x2;
-		final double dy = y1 - y2;
-		final double dz = z1 - z2;
+		final var dx = x1 - x2;
+		final var dy = y1 - y2;
+		final var dz = z1 - z2;
         return dx * dx + dy * dy + dz * dz;
 	}
 
@@ -434,17 +436,18 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 * @see #add(Vector3D)
 	 */
 	@XtextOperator("+=")
+	@Inline("add($1)")
 	default void operator_add(Vector3D<?, ?, ?> v) {
 		add(v);
 	}
 
-	/** Substract the v vector to this point: {@code this - v}
+	/** Subtract the v vector to this point: {@code this - v}
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param v the vector to substract.
+	 * @param v the vector to Subtract.
 	 * @return the result.
 	 * @see #sub(Point3D, Vector3D)
 	 */
@@ -455,13 +458,13 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 		return getGeomFactory().newPoint(getX() - v.getX(), getY() - v.getY(), getZ() - v.getZ());
 	}
 
-	/** Substract the p point to this point: {@code this - p}
+	/** Subtract the p point to this point: {@code this - p}
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param pt the point to substract
+	 * @param pt the point to Subtract
 	 * @return the vector from the p to this.
 	 * @see Vector3D#sub(Point3D, Point3D)
 	 */
@@ -478,10 +481,11 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param v the vector to substract.
+	 * @param v the vector to Subtract.
 	 * @see #sub(Vector3D)
 	 */
 	@XtextOperator("-=")
+	@Inline("sub($1)")
 	default void operator_remove(Vector3D<?, ?, ?> v) {
 		sub(v);
 	}
@@ -498,6 +502,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 */
 	@Pure
 	@XtextOperator("==")
+	@Inline("equals($1)")
 	default boolean operator_equals(Tuple3D<?> v) {
 		return equals(v);
 	}
@@ -530,25 +535,26 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 */
 	@Pure
 	@XtextOperator("..")
+	@Inline("getDistance($1)")
 	default double operator_upTo(Point3D<?, ?, ?> pt) {
 		return getDistance(pt);
 	}
 
-    /** Replies the distance between this point and the given shape: {@code this .. s}
-     *
-     * <p>This function is an implementation of the ".." operator for
-     * the languages that defined or based on the
-     * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
-     *
-     * @param shape the shape to test.
-     * @return the distance.
-     * @see Shape3D#getDistance(Point3D)
-     */
-    @Pure
+	/** Replies the distance between this point and the given shape: {@code this .. s}
+	 *
+	 * <p>This function is an implementation of the ".." operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param shape the shape to test.
+	 * @return the distance.
+	 * @see Shape3D#getDistance(Point3D)
+	 */
+	@Pure
 	@XtextOperator("..")
-    default double operator_upTo(Shape3D<?, ?, ?, ?, ?, ?, ?> shape) {
-        return shape.getDistance(this);
-    }
+	default double operator_upTo(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+		return shape.getDistance(this);
+	}
 
 	/** If this point is epsilon equal to zero then reply p else reply this: {@code this ?: p}
 	 *
@@ -580,36 +586,54 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 */
 	@Pure
 	@XtextOperator("&&")
-	default boolean operator_and(Shape3D<?, ?, ?, ?, ?, ?, ?> shape) {
+	default boolean operator_and(Shape3D<?, ?, ?, ?, ?, ?> shape) {
 		return shape.contains(this);
 	}
 
-	/** Substract the p point to this point: {@code this - p}.
+	/** Replies if the this point is inside the given shape: {@code this && s}
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the <a href="http://scala-lang.org/">Scala Language</a>.
 	 *
-	 * @param pt the point to substract
+	 * @param shape the shape to test.
+	 * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
+	 * @see Shape3D#contains(Point3D)
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("operator_and($1)")
+	default boolean $amp$amp(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+		return operator_and(shape);
+	}
+
+	/** Subtract the p point to this point: {@code this - p}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param pt the point to Subtract
 	 * @return the vector from the p to this.
 	 * @see Vector3D#sub(Point3D, Point3D)
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RV $minus(Point3D<?, ?, ?> pt) {
 		return operator_minus(pt);
 	}
 
-	/** Substract the v vector to this point: {@code this - v}
+	/** Subtract the v vector to this point: {@code this - v}
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the <a href="http://scala-lang.org/">Scala Language</a>.
 	 *
-	 * @param v the vector to substract.
+	 * @param v the vector to Subtract.
 	 * @return the result.
 	 * @see #sub(Point3D, Vector3D)
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default RP $minus(Vector3D<?, ?, ?> v) {
 		return operator_minus(v);
 	}
@@ -625,10 +649,11 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default RP $plus(Vector3D<?, ?, ?> v) {
 		return operator_plus(v);
 	}
-	
+
 	/** Replies the projection of the given point on the plane: {@code this -> plane}.
 	 *
 	 * <p>This function is an implementation of the operator for
@@ -637,8 +662,8 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 *
 	 * @param plane the plane to project one.
 	 * @return the result of the projection.
-	 * @see Plane3D#getProjection(Point3D)
 	 * @since 18.0
+	 * @see Plane3D#getProjection(Point3D)
 	 */
 	@Pure
 	@XtextOperator("->")

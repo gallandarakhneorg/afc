@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,7 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import javafx.scene.shape.FillRule;
-
 import org.arakhne.afc.gis.mapelement.MapPolyline;
-import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
-import org.arakhne.afc.math.geometry.d2.d.PathElement2d;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Abstract drawer of a map polyline.
@@ -44,10 +41,11 @@ public abstract class AbstractMapPolylineDrawer<T extends MapPolyline> extends A
 	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
+	 * @throws IllegalStateException if the path is malformed.
 	 */
 	protected void definePath(ZoomableGraphicsContext gc, T element) {
 		gc.beginPath();
-		final PathIterator2afp<PathElement2d> pathIterator = element.toPath2D().getPathIterator();
+		final var pathIterator = element.toPath2D().getPathIterator();
 		switch (pathIterator.getWindingRule()) {
 		case EVEN_ODD:
 			gc.setFillRule(FillRule.EVEN_ODD);
@@ -59,7 +57,7 @@ public abstract class AbstractMapPolylineDrawer<T extends MapPolyline> extends A
 			throw new IllegalStateException();
 		}
 		while (pathIterator.hasNext()) {
-			final PathElement2d pelement = pathIterator.next();
+			final var pelement = pathIterator.next();
 			switch (pelement.getType()) {
 			case LINE_TO:
 				gc.lineTo(pelement.getToX(), pelement.getToY());

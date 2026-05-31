@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javafx.beans.InvalidationListener;
@@ -34,12 +33,11 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ModifiableObservableListBase;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.javafx.changes.SimpleListUpdateChange;
 import org.arakhne.afc.math.geometry.d2.ai.MultiShape2ai;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
  *
@@ -82,7 +80,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 	 */
 	public MultiShape2ifx(Iterable<? extends T> shapes) {
 		assert shapes != null : AssertMessages.notNullParameter();
-		for (final T element : shapes) {
+		for (final var element : shapes) {
 			add(element);
 		}
 	}
@@ -109,9 +107,9 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				final Rectangle2ifx box = getGeomFactory().newBox();
-				final Rectangle2ifx shapeBox = getGeomFactory().newBox();
-				final Iterator<T> iterator = elementsProperty().iterator();
+				final var box = getGeomFactory().newBox();
+				final var shapeBox = getGeomFactory().newBox();
+				final var iterator = elementsProperty().iterator();
 				if (iterator.hasNext()) {
 					iterator.next().toBoundingBox(shapeBox);
 					box.set(shapeBox);
@@ -129,10 +127,10 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 	@SuppressWarnings("unchecked")
 	@Override
 	public MultiShape2ifx<T> clone() {
-		final MultiShape2ifx<T> clone = super.clone();
+		final var clone = super.clone();
 		clone.elements = null;
 		if (this.elements != null) {
-			for (final T shape : this.elements) {
+			for (final var shape : this.elements) {
 				clone.elementsProperty().add((T) shape.clone());
 			}
 		}
@@ -180,13 +178,13 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 
 		private void bind(Shape2ifx<?> shape) {
 			assert shape != null;
-			final ObjectProperty<Rectangle2ifx> property = shape.boundingBoxProperty();
+			final var property = shape.boundingBoxProperty();
 			property.addListener(this);
 		}
 
 		private void unbind(Shape2ifx<?> shape) {
 			assert shape != null;
-			final ObjectProperty<Rectangle2ifx> property = shape.boundingBoxProperty();
+			final var property = shape.boundingBoxProperty();
 			property.removeListener(this);
 		}
 
@@ -210,7 +208,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 		@Override
 		protected T doSet(int index, T element) {
 			assert element != null : AssertMessages.notNullParameter(1);
-			final T old = this.internalList.set(index, element);
+			final var old = this.internalList.set(index, element);
 			unbind(old);
 			bind(element);
 			return old;
@@ -225,7 +223,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 
 		@Override
 		public void invalidated(Observable observable) {
-			final int position = indexOf(((Property<?>) observable).getBean());
+			final var position = indexOf(((Property<?>) observable).getBean());
 			if (position >= 0) {
 				fireChange(new SimpleListUpdateChange<>(position, this));
 			}
@@ -236,7 +234,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 			if (!super.equals(obj)) {
 				return false;
 			}
-			final InternalObservableList<?> lObj = (InternalObservableList<?>) obj;
+			final var lObj = (InternalObservableList<?>) obj;
 			if (this.internalList.equals(lObj.internalList)) {
 				return this.internalList.equals(lObj.internalList);
 			}
@@ -245,10 +243,9 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 
 		@Override
 		public int hashCode() {
-			int hash = 1;
-			final int prime = 31;
-			hash = hash * prime + this.internalList.hashCode();
-			return hash;
+			var hash = 1L;
+			hash = hash * 31 + this.internalList.hashCode();
+			return (int) hash;
 		}
 
 	}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -184,8 +184,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		}
 		catch(InvocationTargetException e) {
 			Throwable ex = e.getTargetException();
-			if (ex instanceof AssertionError) {
-				throw (AssertionError)ex;
+			if (ex instanceof AssertionError ex0) {
+				throw ex0;
 			}
 			if (ex instanceof AttributeException) {
 				//

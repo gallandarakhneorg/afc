@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	private int[] values;
 
-	/** This is the theorycal size of this list, ie. the count of integers.
+	/** This is the theoretic size of this list, ie. the count of integers.
 	 */
 	private int size;
 
@@ -80,10 +80,10 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 * @param end is the last initial value
 	 */
 	public IntegerList(int start, int end) {
-		int theStart = start;
-		int theEnd = end;
+		var theStart = start;
+		var theEnd = end;
 		if (theStart > theEnd) {
-			final int tmp = theStart;
+			final var tmp = theStart;
 			theStart = theEnd;
 			theEnd = tmp;
 		}
@@ -104,10 +104,10 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
+		final var buffer = new StringBuilder();
 		buffer.append('[');
 		if (this.values != null) {
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
 				if (idxStart > 0) {
 					buffer.append(',');
 				}
@@ -147,17 +147,17 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Pure
 	@Override
 	public SortedSet<Integer> headSet(Integer toElement) {
-		final SortedSet<Integer> theset = new TreeSet<>();
+		final var theset = new TreeSet<Integer>();
 		if (this.values != null) {
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
 				// The next segment is greater or equal to the given bound
-				if (this.values[idxStart] >= toElement) {
+				if (this.values[idxStart] >= toElement.intValue()) {
 					break;
 				}
 				// The given bound is inside the value segment
-				for (int intToAdd = this.values[idxStart]; (intToAdd < toElement)
-						&& (intToAdd <= this.values[idxStart + 1]); ++intToAdd) {
-					theset.add(intToAdd);
+				for (var intToAdd = this.values[idxStart];
+						intToAdd < toElement.intValue() && intToAdd <= this.values[idxStart + 1]; ++intToAdd) {
+					theset.add(Integer.valueOf(intToAdd));
 				}
 			}
 		}
@@ -170,13 +170,13 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		if (this.values == null) {
 			throw new NoSuchElementException();
 		}
-		return this.values[this.values.length - 1];
+		return Integer.valueOf(this.values[this.values.length - 1]);
 	}
 
 	@Pure
 	@Override
 	public SortedSet<Integer> subSet(Integer fromElement, Integer toElement) {
-		final SortedSet<Integer> theset = new TreeSet<>();
+		final var theset = new TreeSet<Integer>();
 		if (this.values != null) {
 
 			// Search for the first matching segment
@@ -184,25 +184,25 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			int max;
 			int firstSegment = -1;
 
-			for (int idxSegment = 0; firstSegment == -1 && idxSegment < this.values.length; idxSegment += 2) {
+			for (var idxSegment = 0; firstSegment == -1 && idxSegment < this.values.length; idxSegment += 2) {
 				max = this.values[idxSegment + 1];
-				if (fromElement.compareTo(max) <= 0) {
+				if (fromElement.compareTo(Integer.valueOf(max)) <= 0) {
 					firstSegment = idxSegment;
 				}
 			}
 
 			if (firstSegment != -1) {
 				// Go through the segments
-				for (int idxSegment = firstSegment; idxSegment < this.values.length; idxSegment += 2) {
+				for (var idxSegment = firstSegment; idxSegment < this.values.length; idxSegment += 2) {
 					min = this.values[idxSegment];
 					max = this.values[idxSegment + 1];
-					if (toElement.compareTo(min) <= 0) {
+					if (toElement.compareTo(Integer.valueOf(min)) <= 0) {
 						idxSegment = this.values.length;
 					} else {
-						for (int value = min; toElement.compareTo(value) > 0 && value <= max; ++value) {
-							assert toElement.compareTo(value) > 0;
-							if (fromElement.compareTo(value) <= 0) {
-								theset.add(value);
+						for (var value = min; toElement.compareTo(Integer.valueOf(value)) > 0 && value <= max; ++value) {
+							assert toElement.compareTo(Integer.valueOf(value)) > 0;
+							if (fromElement.compareTo(Integer.valueOf(value)) <= 0) {
+								theset.add(Integer.valueOf(value));
 							}
 						}
 					}
@@ -216,26 +216,26 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Pure
 	@Override
 	public SortedSet<Integer> tailSet(Integer fromElement) {
-		final SortedSet<Integer> theset = new TreeSet<>();
+		final var theset = new TreeSet<Integer>();
 		if (this.values != null) {
 
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
 				// The next segment is lower to the given bound
-				if (this.values[idxStart + 1] < fromElement) {
+				if (this.values[idxStart + 1] < fromElement.intValue()) {
 					continue;
 				}
 
 				// The given bound is inside the value segment
-				if (fromElement >= this.values[idxStart]) {
-					for (int intToAdd = fromElement; intToAdd <= this.values[idxStart + 1]; ++intToAdd) {
-						theset.add(intToAdd);
+				if (fromElement.intValue() >= this.values[idxStart]) {
+					for (var intToAdd = fromElement.intValue(); intToAdd <= this.values[idxStart + 1]; ++intToAdd) {
+						theset.add(Integer.valueOf(intToAdd));
 					}
 				}
 
 				// The given bound is inside the value segment
-				if (fromElement < this.values[idxStart]) {
-					for (int intToAdd = this.values[idxStart]; intToAdd <= this.values[idxStart + 1]; ++intToAdd) {
-						theset.add(intToAdd);
+				if (fromElement.intValue() < this.values[idxStart]) {
+					for (var intToAdd = this.values[idxStart]; intToAdd <= this.values[idxStart + 1]; ++intToAdd) {
+						theset.add(Integer.valueOf(intToAdd));
 					}
 				}
 			}
@@ -252,37 +252,37 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Override
 	public boolean add(Integer value) {
 		if (this.values == null) {
-			this.values = new int[] {value, value};
+			this.values = new int[] {value.intValue(), value.intValue()};
 			this.size = 1;
 		} else {
-			int first = 0;
-			int last = getSegmentCount() - 1;
+			var first = 0;
+			var last = getSegmentCount() - 1;
 
 			while (first <= last) {
-				final int center = (first + last) / 2;
-				final int min = this.values[center * 2];
-				final int max = this.values[center * 2 + 1];
+				final var center = (first + last) / 2;
+				final var min = this.values[center * 2];
+				final var max = this.values[center * 2 + 1];
 
-				if (value.compareTo(min) >= 0 && value.compareTo(max) <= 0) {
+				if (value.compareTo(Integer.valueOf(min)) >= 0 && value.compareTo(Integer.valueOf(max)) <= 0) {
 					return false;
 				}
 
-				if (value.compareTo(min) < 0) {
+				if (value.compareTo(Integer.valueOf(min)) < 0) {
 					last = center - 1;
 				} else {
 					first = center + 1;
 				}
 			}
 
-			final int index = first * 2;
-			final boolean mergeWithPrevious = index > 0 && value.compareTo(this.values[index - 1] + 1) == 0;
-			final boolean mergeWithNext = index < this.values.length && value.compareTo(this.values[index] - 1) == 0;
+			final var index = first * 2;
+			final var mergeWithPrevious = index > 0 && value.compareTo(Integer.valueOf(this.values[index - 1] + 1)) == 0;
+			final var mergeWithNext = index < this.values.length && value.compareTo(Integer.valueOf(this.values[index] - 1)) == 0;
 
 			++this.size;
 
 			if (mergeWithPrevious && mergeWithNext) {
 				this.values[index - 1] = this.values[index + 1];
-				final int[] nValues = new int[this.values.length - 2];
+				final var nValues = new int[this.values.length - 2];
 				System.arraycopy(this.values, 0, nValues, 0, index);
 				System.arraycopy(this.values, index + 2, nValues, index, this.values.length - index - 2);
 				this.values = nValues;
@@ -292,7 +292,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 				this.values[index] = value.intValue();
 			} else {
 				// Create a new segment
-				final int[] nValues = new int[this.values.length + 2];
+				final var nValues = new int[this.values.length + 2];
 				System.arraycopy(this.values, 0, nValues, 0, index);
 				nValues[index] = value.intValue();
 				nValues[index + 1] = nValues[index];
@@ -310,8 +310,8 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 	@Override
 	public boolean addAll(Collection<? extends Integer> collection) {
-		boolean changed = false;
-		for (final Integer value : collection) {
+		var changed = false;
+		for (final var value : collection) {
 			changed |= add(value);
 		}
 		return changed;
@@ -326,14 +326,14 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Pure
 	@Override
 	public boolean contains(Object obj) {
-		if ((this.values != null) && (obj instanceof Number)) {
-			final int e = ((Number) obj).intValue();
+		if (this.values != null && obj instanceof Number num) {
+			final var e = num.intValue();
 
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
 				if (e < this.values[idxStart]) {
 					return false;
 				}
-				if ((e >= this.values[idxStart]) && (e <= this.values[idxStart + 1])) {
+				if (e >= this.values[idxStart] && e <= this.values[idxStart + 1]) {
 					return true;
 				}
 			}
@@ -349,21 +349,23 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			return false;
 		}
 
-		final SortedSet<Integer> elements = new TreeSet<>();
-		for (final Object o : collection) {
-			if (o instanceof Number) {
-				elements.add(((Number) o).intValue());
+		final var elements = new TreeSet<Integer>();
+		for (final var o : collection) {
+			if (o instanceof Integer n) {
+				elements.add(n);
+			} else if (o instanceof Number n) {
+				elements.add(Integer.valueOf(n.intValue()));
 			}
 		}
 
-		int idxStart = 0;
+		var idxStart = 0;
 
-		for (final Integer e : elements) {
+		for (final var e : elements) {
 			for (; idxStart < this.values.length - 1; idxStart += 2) {
-				if (e < this.values[idxStart]) {
+				if (e.intValue() < this.values[idxStart]) {
 					return false;
 				}
-				if ((e >= this.values[idxStart]) && (e <= this.values[idxStart + 1])) {
+				if (e.intValue() >= this.values[idxStart] && e.intValue() <= this.values[idxStart + 1]) {
 					break;
 				}
 			}
@@ -404,9 +406,9 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 	@Override
 	public boolean remove(Object obj) {
-		if ((this.values != null) && (obj instanceof Number)) {
-			final int e = ((Number) obj).intValue();
-			final int segmentIndex = getSegmentIndexFor(e);
+		if (this.values != null && obj instanceof Number num) {
+			final var e = num.intValue();
+			final var segmentIndex = getSegmentIndexFor(e);
 			if (segmentIndex >= 0 && removeElementInSegment(segmentIndex, e)) {
 				return true;
 			}
@@ -420,16 +422,16 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			throw new IndexOutOfBoundsException(Integer.toString(index));
 		}
 
-		int firstIndex = 0;
+		var firstIndex = 0;
 
-		for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
-			final int endIndex = this.values[idxStart + 1] - this.values[idxStart] + firstIndex;
-			if ((index >= firstIndex) && (index <= endIndex)) {
-				final int elementToRemove = this.values[idxStart] + index - firstIndex;
+		for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+			final var endIndex = this.values[idxStart + 1] - this.values[idxStart] + firstIndex;
+			if (index >= firstIndex && index <= endIndex) {
+				final var elementToRemove = this.values[idxStart] + index - firstIndex;
 				if (!removeElementInSegment(idxStart, elementToRemove)) {
 					throw new IndexOutOfBoundsException(Integer.toString(index));
 				}
-				return elementToRemove;
+				return Integer.valueOf(elementToRemove);
 			}
 			firstIndex = endIndex + 1;
 		}
@@ -443,16 +445,16 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 * @param segmentIndex is the index of the segment from which the
 	 *     element must be removed.
 	 * @param element is the element to remove.
-	 * @return {@code true} if the element was removed, otherwhise {@code false}
+	 * @return {@code true} if the element was removed, otherwise {@code false}
 	 */
 	protected boolean removeElementInSegment(int segmentIndex, int element) {
-		if ((element == this.values[segmentIndex]) && (element == this.values[segmentIndex + 1])) {
+		if (element == this.values[segmentIndex] && element == this.values[segmentIndex + 1]) {
 			// Remove the segment
 			if (this.values.length == 2) {
 				this.values = null;
 				this.size = 0;
 			} else {
-				final int[] newTab = new int[this.values.length - 2];
+				final var newTab = new int[this.values.length - 2];
 				System.arraycopy(this.values, 0, newTab, 0, segmentIndex);
 				System.arraycopy(this.values, segmentIndex + 2, newTab, segmentIndex, newTab.length - segmentIndex);
 				this.values = newTab;
@@ -461,7 +463,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			return true;
 		}
 
-		if ((element >= this.values[segmentIndex]) && (element <= this.values[segmentIndex + 1])) {
+		if (element >= this.values[segmentIndex] && element <= this.values[segmentIndex + 1]) {
 			if (element == this.values[segmentIndex]) {
 				// Move the lower bound
 				++this.values[segmentIndex];
@@ -472,7 +474,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 				--this.size;
 			} else {
 				// Split the segment
-				final int[] newTab = new int[this.values.length + 2];
+				final var newTab = new int[this.values.length + 2];
 				System.arraycopy(this.values, 0, newTab, 0, segmentIndex + 1);
 				System.arraycopy(this.values, segmentIndex + 1, newTab, segmentIndex + 3, newTab.length - segmentIndex - 3);
 				newTab[segmentIndex + 1] = element - 1;
@@ -491,11 +493,10 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 * {@code segmentIndex}.
 	 *
 	 * @param segmentIndex is the index of the segment to remove.
-	 * @return {@code true} if the element was removed, otherwhise {@code false}
+	 * @return {@code true} if the element was removed, otherwise {@code false}
 	 */
 	protected boolean removeSegment(int segmentIndex) {
-		if ((this.values == null) || (segmentIndex < 0)
-				|| (segmentIndex >= this.values.length - 1)) {
+		if (this.values == null || segmentIndex < 0 || segmentIndex >= this.values.length - 1) {
 			return false;
 		}
 
@@ -503,8 +504,8 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			this.values = null;
 			this.size = 0;
 		} else {
-			final int count = this.values[segmentIndex + 1] - this.values[segmentIndex] + 1;
-			final int[] newTab = new int[this.values.length - 2];
+			final var count = this.values[segmentIndex + 1] - this.values[segmentIndex] + 1;
+			final var newTab = new int[this.values.length - 2];
 			System.arraycopy(this.values, 0, newTab, 0, segmentIndex);
 			System.arraycopy(this.values, segmentIndex + 2, newTab, segmentIndex, this.values.length - segmentIndex);
 			this.values = newTab;
@@ -516,8 +517,8 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 	@Override
 	public boolean removeAll(Collection<?> collection) {
-		boolean changed = false;
-		for (final Object o : collection) {
+		var changed = false;
+		for (final var o : collection) {
 			changed |= remove(o);
 		}
 		return changed;
@@ -525,8 +526,8 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 	@Override
 	public boolean retainAll(Collection<?> collection) {
-		final SortedSet<Integer> theset = toSortedSet();
-		final boolean changed = theset.retainAll(collection);
+		final var theset = toSortedSet();
+		final var changed = theset.retainAll(collection);
 		if (changed) {
 			set(theset);
 		}
@@ -535,7 +536,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 	@Override
 	public Integer set(int index, Integer element) {
-		final Integer oldValue = remove(index);
+		final var oldValue = remove(index);
 		add(element);
 		return oldValue;
 	}
@@ -548,17 +549,17 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		this.values = null;
 		this.size = 0;
 
-		for (final Number number : collection) {
-			final int e = number.intValue();
+		for (final var number : collection) {
+			final var e = number.intValue();
 
-			if ((this.values != null) && (e == this.values[this.values.length - 1] + 1)) {
+			if (this.values != null && e == this.values[this.values.length - 1] + 1) {
 				// Same group
 				++this.values[this.values.length - 1];
 				++this.size;
 			}
-			if ((this.values != null) && (e > this.values[this.values.length - 1] + 1)) {
+			if (this.values != null && e > this.values[this.values.length - 1] + 1) {
 				// Create a new group
-				final int[] newTab = new int[this.values.length + 2];
+				final var newTab = new int[this.values.length + 2];
 				System.arraycopy(this.values, 0, newTab, 0, this.values.length);
 				newTab[newTab.length - 2] = e;
 				newTab[newTab.length - 1] = newTab[newTab.length - 2];
@@ -593,6 +594,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 *
 	 * @param idxSegment is the index of the segment. It must be a multiple of 2.
 	 * @return the last value in the segment.
+	 * @throws IndexOutOfBoundsException if the given index is out the bounds.
 	 */
 	protected int getLastValueOnSegment(int idxSegment) {
 		assert idxSegment % 2 == 0;
@@ -607,6 +609,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 *
 	 * @param idxSegment is the index of the segment. It must be a multiple of 2.
 	 * @return the first value in the segment
+	 * @throws IndexOutOfBoundsException if the given index is out the bounds.
 	 */
 	protected int getFirstValueOnSegment(int idxSegment) {
 		assert idxSegment % 2 == 0;
@@ -624,13 +627,13 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	protected int getSegmentIndexFor(int value) {
 		if (this.values != null) {
-			int first = 0;
-			int last = getSegmentCount() - 1;
+			var first = 0;
+			var last = getSegmentCount() - 1;
 
 			while (first <= last) {
-				final int center = (first + last) / 2;
-				final int min = this.values[center * 2];
-				final int max = this.values[center * 2 + 1];
+				final var center = (first + last) / 2;
+				final var min = this.values[center * 2];
+				final var max = this.values[center * 2 + 1];
 
 				if (value >= min && value <= max) {
 					return center * 2;
@@ -654,12 +657,12 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			throw new IndexOutOfBoundsException(Integer.toString(index));
 		}
 
-		int firstIndex = 0;
+		var firstIndex = 0;
 
-		for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
-			final int endIndex = this.values[idxStart + 1] - this.values[idxStart] + firstIndex;
-			if ((index >= firstIndex) && (index <= endIndex)) {
-				return this.values[idxStart] + index - firstIndex;
+		for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+			final var endIndex = this.values[idxStart + 1] - this.values[idxStart] + firstIndex;
+			if (index >= firstIndex && index <= endIndex) {
+				return Integer.valueOf(this.values[idxStart] + index - firstIndex);
 			}
 			firstIndex = endIndex + 1;
 		}
@@ -681,9 +684,9 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	protected boolean get(int offset, int[] tofill) {
 		if (this.values != null) {
-			int idxTab = 0;
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
-				for (int n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
+			var idxTab = 0;
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+				for (var n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
 					if (offset == idxTab) {
 						tofill[0] = idxStart;
 						tofill[1] = n;
@@ -701,12 +704,12 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Override
 	@Pure
 	public Object[] toArray() {
-		final Object[] tab = new Object[this.size];
+		final var tab = new Object[this.size];
 		if (this.values != null) {
-			int idxTab = 0;
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
-				for (int n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
-					tab[idxTab++] = n;
+			var idxTab = 0;
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+				for (var n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
+					tab[idxTab++] = Integer.valueOf(n);
 				}
 			}
 		}
@@ -716,19 +719,19 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T[] toArray(T[] array) {
-		final Class<T> clazz = (Class<T>) array.getClass().getComponentType();
+		final var clazz = (Class<T>) array.getClass().getComponentType();
 		if (!clazz.isAssignableFrom(Integer.class)) {
 			throw new ArrayStoreException();
 		}
-		T[] tab = array;
+		var tab = array;
 		if (tab.length < this.size) {
 			tab = (T[]) Array.newInstance(clazz, this.size);
 		}
 
 		if (this.values != null) {
-			int idxTab = 0;
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
-				for (int n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
+			var idxTab = 0;
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+				for (var n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
 					tab[idxTab++] = (T) Integer.valueOf(n);
 				}
 			}
@@ -755,11 +758,11 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	@Pure
 	public int[] toIntArray() {
-		final int[] tab = new int[this.size];
+		final var tab = new int[this.size];
 		if (this.values != null) {
-			int idxTab = 0;
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
-				for (int n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
+			var idxTab = 0;
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+				for (var n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
 					tab[idxTab++] = n;
 				}
 			}
@@ -773,11 +776,11 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	@Pure
 	public SortedSet<Integer> toSortedSet() {
-		final SortedSet<Integer> theset = new TreeSet<>();
+		final var theset = new TreeSet<Integer>();
 		if (this.values != null) {
-			for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
-				for (int n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
-					theset.add(n);
+			for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+				for (var n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
+					theset.add(Integer.valueOf(n));
 				}
 			}
 		}
@@ -787,14 +790,14 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Pure
 	@Override
 	public int indexOf(Object obj) {
-		if (obj instanceof Number) {
-			final int e = ((Number) obj).intValue();
+		if (obj instanceof Number num) {
+			final var e = num.intValue();
 
 			if (this.values != null) {
-				int idx = 0;
+				var idx = 0;
 
-				for (int idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
-					for (int n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
+				for (var idxStart = 0; idxStart < this.values.length - 1; idxStart += 2) {
+					for (var n = this.values[idxStart]; n <= this.values[idxStart + 1]; ++n) {
 						if (n == e) {
 							return idx;
 						}
@@ -814,14 +817,14 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Pure
 	@Override
 	public int lastIndexOf(Object obj) {
-		if (obj instanceof Number) {
-			final int e = ((Number) obj).intValue();
+		if (obj instanceof Number num) {
+			final var e = num.intValue();
 
 			if (this.values != null) {
-				int idx = this.size - 1;
+				var idx = this.size - 1;
 
-				for (int idxStart = this.values.length - 2; idxStart >= 0; idxStart -= 2) {
-					for (int n = this.values[idxStart + 1]; n >= this.values[idxStart]; --n) {
+				for (var idxStart = this.values.length - 2; idxStart >= 0; idxStart -= 2) {
+					for (var n = this.values[idxStart + 1]; n >= this.values[idxStart]; --n) {
 						if (n == e) {
 							return idx;
 						}
@@ -853,17 +856,17 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Pure
 	@Override
 	public List<Integer> subList(int fromIndex, int toIndex) {
-		final List<Integer> theList = new ArrayList<>();
+		final var theList = new ArrayList<Integer>();
 		if (this.values != null) {
 
 			// Search for the first matching segment
-			int firstSegment = -1;
-			int idxValue = 0;
+			var firstSegment = -1;
+			var idxValue = 0;
 
-			for (int idxSegment = 0; firstSegment == -1 && idxSegment < this.values.length; idxSegment += 2) {
-				final int min = this.values[idxSegment];
-				final int max = this.values[idxSegment + 1];
-				final int nb = max - min + 1;
+			for (var idxSegment = 0; firstSegment == -1 && idxSegment < this.values.length; idxSegment += 2) {
+				final var min = this.values[idxSegment];
+				final var max = this.values[idxSegment + 1];
+				final var nb = max - min + 1;
 				if (fromIndex < (idxValue + nb)) {
 					firstSegment = idxSegment;
 				} else {
@@ -873,15 +876,15 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 			if (firstSegment != -1) {
 				// Go through the segments
-				for (int idxSegment = firstSegment; idxSegment < this.values.length; idxSegment += 2) {
-					final int min = this.values[idxSegment];
-					final int max = this.values[idxSegment + 1];
+				for (var idxSegment = firstSegment; idxSegment < this.values.length; idxSegment += 2) {
+					final var min = this.values[idxSegment];
+					final var max = this.values[idxSegment + 1];
 					if (toIndex <= idxValue) {
 						idxSegment = this.values.length;
 					} else {
-						for (int value = min; idxValue < toIndex && value <= max; ++value) {
+						for (var value = min; idxValue < toIndex && value <= max; ++value) {
 							if (fromIndex <= idxValue) {
-								theList.add(value);
+								theList.add(Integer.valueOf(value));
 							}
 							++idxValue;
 						}
@@ -897,6 +900,41 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Override
 	public Spliterator<Integer> spliterator() {
 		return SortedSet.super.spliterator();
+	}
+
+	@Override
+	public IntegerList reversed() {
+		return new IntegerList(this);
+	}
+
+	@Override
+	public Integer getFirst() {
+		return SortedSet.super.getFirst();
+	}
+
+	@Override
+	public Integer getLast() {
+		return SortedSet.super.getLast();
+	}
+
+	@Override
+	public void addFirst(Integer element) {
+		SortedSet.super.addFirst(element);
+	}
+
+	@Override
+	public void addLast(Integer element) {
+		SortedSet.super.addLast(element);
+	}
+
+	@Override
+	public Integer removeFirst() {
+		return SortedSet.super.removeFirst();
+	}
+
+	@Override
+	public Integer removeLast() {
+		return SortedSet.super.removeLast();
 	}
 
 	/** This class represents an iterator on lists of integers.
@@ -922,10 +960,10 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		 */
 		IntegerListIterator(int startingIndex) {
 			this.offset = startingIndex;
-			final int lsize = size();
-			if ((startingIndex >= 0) && (startingIndex < lsize)) {
+			final var lsize = size();
+			if (startingIndex >= 0 && startingIndex < lsize) {
 				this.tabIndex = startingIndex;
-				final int[] tab = new int[2];
+				final var tab = new int[2];
 				get(startingIndex, tab);
 				this.segmentIndex = tab[0];
 				this.number = tab[1];
@@ -951,13 +989,13 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 		@Override
 		public boolean hasNext() {
-			return (this.tabIndex >= this.offset) && (this.tabIndex < size());
+			return this.tabIndex >= this.offset && this.tabIndex < size();
 		}
 
 		@Override
 		public int nextIndex() {
-			final int lsize = size();
-			if ((this.tabIndex >= this.offset) && (this.tabIndex < lsize)) {
+			final var lsize = size();
+			if (this.tabIndex >= this.offset && this.tabIndex < lsize) {
 				return this.tabIndex;
 			}
 			return lsize;
@@ -965,15 +1003,15 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 		@Override
 		public Integer next() {
-			if ((this.tabIndex < this.offset) || (this.tabIndex >= size())) {
+			if (this.tabIndex < this.offset || this.tabIndex >= size()) {
 				throw new NoSuchElementException();
 			}
 
-			final int n = this.number;
-			final int lsize = size();
+			final var n = this.number;
+			final var lsize = size();
 
 			++this.tabIndex;
-			if ((this.tabIndex >= this.offset) && (this.tabIndex < lsize)) {
+			if (this.tabIndex >= this.offset && this.tabIndex < lsize) {
 				if (this.number == getLastValueOnSegment(this.segmentIndex)) {
 					this.segmentIndex += 2;
 					this.number = getFirstValueOnSegment(this.segmentIndex);
@@ -982,33 +1020,33 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 				}
 			}
 
-			return n;
+			return Integer.valueOf(n);
 		}
 
 		@Override
 		public boolean hasPrevious() {
-			final int idx = this.tabIndex - 1;
-			return (idx >= this.offset) && (idx < size());
+			final var idx = this.tabIndex - 1;
+			return idx >= this.offset && idx < size();
 		}
 
 		@Override
 		public int previousIndex() {
-			final int idx = this.tabIndex - 1;
-			return ((idx >= this.offset) && (idx < size())) ? idx : -1;
+			final var idx = this.tabIndex - 1;
+			return (idx >= this.offset && idx < size()) ? idx : -1;
 		}
 
 		@Override
 		public Integer previous() {
-			final int idx = this.tabIndex - 1;
-			if ((idx < this.offset) || (idx >= size())) {
+			final var idx = this.tabIndex - 1;
+			if (idx < this.offset || idx >= size()) {
 				throw new NoSuchElementException();
 			}
 
-			final int n = get(idx);
-			final int lsize = size();
+			final var n = get(idx);
+			final var lsize = size();
 
 			--this.tabIndex;
-			if ((this.tabIndex >= this.offset) && (this.tabIndex < lsize)) {
+			if (this.tabIndex >= this.offset && this.tabIndex < lsize) {
 				if (this.number == getFirstValueOnSegment(this.segmentIndex)) {
 					this.segmentIndex -= 2;
 					this.number = getLastValueOnSegment(this.segmentIndex);
@@ -1022,10 +1060,10 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 		@Override
 		public void add(Integer value) {
-			if (value == this.number) {
+			if (value.intValue() == this.number) {
 				return;
 			}
-			if (IntegerList.this.add(value) && value < this.number) {
+			if (IntegerList.this.add(value) && value.intValue() < this.number) {
 				++this.tabIndex;
 				this.segmentIndex = getSegmentIndexFor(this.number);
 			}
@@ -1038,8 +1076,8 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 		@Override
 		public void remove() {
-			final int lsize = size();
-			if ((this.tabIndex > 1) && (this.tabIndex < lsize)) {
+			final var lsize = size();
+			if (this.tabIndex > 1 && this.tabIndex < lsize) {
 				IntegerList.this.remove(this.tabIndex - 1);
 				--this.tabIndex;
 				this.segmentIndex = getSegmentIndexFor(this.number);
@@ -1126,8 +1164,8 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			}
 
 			try {
-				final int first = IntegerList.this.values[this.index];
-				final int last = IntegerList.this.values[this.index + 1];
+				final var first = IntegerList.this.values[this.index];
+				final var last = IntegerList.this.values[this.index + 1];
 				this.index += 2;
 				this.removable = true;
 				return new IntegerSegment(first, last);
@@ -1139,7 +1177,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		@Override
 		public void remove() {
 			if (this.removable) {
-				final int idx = this.index - 2;
+				final var idx = this.index - 2;
 				if (idx < 0 || idx >= IntegerList.this.values.length) {
 					throw new ConcurrentModificationException();
 				}

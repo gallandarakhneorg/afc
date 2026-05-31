@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This enumeration describes a classification from a plane.
+ *
  * <p>
  * The operation intersection is not commutative. So,
  * {@code classifies(A,B)} could not provides the
  * same intersection classification as
  * {@code classifies(B,A)}.
+ *
  * <p>
  * The call {@code classify(A,B)} replies the following values:
  * <ul>
@@ -39,7 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <li>{@code BEHIND}
  * <li>{@code COINCIDENT}
  * </ul>
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -128,18 +130,13 @@ public enum PlaneClassification {
 
 	/** Invert the intersection classification.
 	 *
-	 * <p><table border="1" width="100%" summary="Plane Classification">
+	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>t</var></td><td>result</td></tr>
-	 * 
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code BEHIND}</td></tr>
-	 * 
 	 * <tr><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td></tr>
-	 * 
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
-	 * 
 	 * </table>
-	 * 
-	 * @param t
+	 *
 	 * @return the inverted classification.
 	 */
 	@Pure
@@ -150,24 +147,20 @@ public enum PlaneClassification {
 	 * that is composed of two sub objects for which we have the classification
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
-	 * <p>
+	 *
 	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>this</var></td><td><var>f2</var></td><td>result</td></tr>
-	 * 
 	 * <tr><td>{@code BEHIND}</td><td>{@code BEHIND}</td><td>{@code BEHIND}</td></tr>
 	 * <tr><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
-	 * 
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
-	 * 
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
-	 *  
 	 * </table>
-	 * 
+	 *
 	 * @param f2 is the classification of E against F2.
 	 * @return the classification of E against the whole object composed of F1 and F2.
 	 */
@@ -177,25 +170,21 @@ public enum PlaneClassification {
 	/** Compute the AND-combinaison of two classification types.
 	 * It could be used to compute the intersection type of a global 2D object
 	 * when we know the classification against each of the two sides of the global 2D object.
-	 * <p>
+	 *
 	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>this</var></td><td><var>f2</var></td><td>result</td></tr>
-	 * 
 	 * <tr><td>{@code BEHIND}</td><td>{@code BEHIND}</td><td>{@code BEHIND}</td></tr>
 	 * <tr><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
-	 * 
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
-	 * 
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
-	 * 
 	 * </table>
-	 * 
-	 * @param f2
+	 *
+	 * @param f2 the right operand of the intersection operator.
 	 * @return the result of the intersection.
 	 */
 	@Pure
@@ -206,24 +195,20 @@ public enum PlaneClassification {
 	 * that is composed of two sub objects for which we have the classification
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
-	 * <p>
+	 *
 	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>this</var></td><td><var>f2</var></td><td>result</td></tr>
-	 * 
 	 * <tr><td>{@code BEHIND}</td><td>{@code BEHIND}</td><td>{@code BEHIND}</td></tr>
 	 * <tr><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
-	 * 
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
-	 * 
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
-	 *  
 	 * </table>
-	 * 
+	 *
 	 * @param f2 is the classification of E against F2.
 	 * @return the classification of E against the whole object composed of F1 and F2.
 	 */
@@ -234,34 +219,94 @@ public enum PlaneClassification {
 		return or(f2);
 	}
 
-	/** Compute the AND-combinaison of two classification types.
-	 * It could be used to compute the intersection type of a global 2D object
-	 * when we know the classification against each of the two sides of the global 2D object.
-	 * <p>
+	/** Compute the OR-combinaison of two classification types.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * <p>It could be used to compute the intersection type of a global object
+	 * that is composed of two sub objects for which we have the classification
+	 * respectively. This operator replies a positive intersection if at least
+	 * one of the sub object intersections is positive.
+	 *
 	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>this</var></td><td><var>f2</var></td><td>result</td></tr>
-	 * 
 	 * <tr><td>{@code BEHIND}</td><td>{@code BEHIND}</td><td>{@code BEHIND}</td></tr>
 	 * <tr><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
-	 * <tr><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
-	 * 
+	 * <tr><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code COINCIDENT}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
-	 * 
+	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td></tr>
+	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
+	 * </table>
+	 *
+	 * @param f2 is the classification of E against F2.
+	 * @return the classification of E against the whole object composed of F1 and F2.
+	 */
+	@Pure
+	@ScalaOperator("||")
+	@Inline("or($1)")
+	public PlaneClassification $bar$bar(PlaneClassification f2) {
+		return or(f2);
+	}
+
+	/** Compute the AND-combinaison of two classification types.
+	 * It could be used to compute the intersection type of a global 2D object
+	 * when we know the classification against each of the two sides of the global 2D object.
+	 *
+	 * <table border="1" width="100%" summary="Plane Classification">
+	 * <tr><td><var>this</var></td><td><var>f2</var></td><td>result</td></tr>
+	 * <tr><td>{@code BEHIND}</td><td>{@code BEHIND}</td><td>{@code BEHIND}</td></tr>
+	 * <tr><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code COINCIDENT}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code COINCIDENT}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
 	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
-	 * 
 	 * </table>
-	 * 
-	 * @param f2
+	 *
+	 * @param f2 the right operand of the intersection operator.
 	 * @return the result of the intersection.
 	 */
 	@Pure
 	@XtextOperator("&&")
 	@Inline("and($1)")
 	public PlaneClassification operator_and(PlaneClassification f2) {
+		return and(f2);
+	}
+
+	/** Compute the AND-combinaison of two classification types.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * <p>It could be used to compute the intersection type of a global 2D object
+	 * when we know the classification against each of the two sides of the global 2D object.
+	 *
+	 * <table border="1" width="100%" summary="Plane Classification">
+	 * <tr><td><var>this</var></td><td><var>f2</var></td><td>result</td></tr>
+	 * <tr><td>{@code BEHIND}</td><td>{@code BEHIND}</td><td>{@code BEHIND}</td></tr>
+	 * <tr><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code BEHIND}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code COINCIDENT}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code COINCIDENT}</td><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code BEHIND}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code COINCIDENT}</td><td>{@code COINCIDENT}</td></tr>
+	 * <tr><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td><td>{@code IN_FRONT_OF}</td></tr>
+	 * </table>
+	 *
+	 * @param f2 right operand of the intersection operator.
+	 * @return the result of the intersection.
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("and($1)")
+	public PlaneClassification $amp$amp(PlaneClassification f2) {
 		return and(f2);
 	}
 
@@ -291,6 +336,7 @@ public enum PlaneClassification {
 	 */
 	@Pure
 	@ScalaOperator("!")
+	@Inline("invert()")
 	public PlaneClassification $bang() {
 		return invert();
 	}

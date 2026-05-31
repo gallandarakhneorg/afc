@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,10 @@ package org.arakhne.afc.gis.io.xml;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
 import com.google.common.base.Strings;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import org.arakhne.afc.attrs.xml.XMLAttributeUtil;
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
@@ -53,10 +47,11 @@ import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.inputoutput.path.PathBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLResources;
-import org.arakhne.afc.inputoutput.xml.XMLResources.Entry;
 import org.arakhne.afc.inputoutput.xml.XMLUtil;
 import org.arakhne.afc.io.dbase.DBaseFileReader;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * This class provides tools to create an XML representation of map elements
@@ -155,15 +150,12 @@ public final class XMLGISElementUtil {
 	public static Element writeMapElement(MapElement primitive, String primitiveNodeName,
 			XMLBuilder builder, XMLResources resources) throws IOException {
 		Element primitiveNode = null;
-		if (primitive instanceof MapPonctualElement) {
-			final MapPonctualElement mpe = (MapPonctualElement) primitive;
-			if (mpe instanceof MapPoint) {
-				final MapPoint mp = (MapPoint) mpe;
+		if (primitive instanceof MapPonctualElement mpe) {
+			if (mpe instanceof MapPoint mp) {
 				primitiveNode = builder.createElement(primitiveNodeName != null ? primitiveNodeName : NODE_POINT);
 				primitiveNode.setAttribute(ATTR_DOUBLEFRAME, Boolean.toString(mp.isDoubleFramed()));
 				primitiveNode.setAttribute(ATTR_SIZE, Double.toString(mp.getPointSize()));
-			} else if (mpe instanceof MapCircle) {
-				final MapCircle mc = (MapCircle) mpe;
+			} else if (mpe instanceof MapCircle mc) {
 				primitiveNode = builder.createElement(primitiveNodeName != null ? primitiveNodeName : NODE_CIRCLE);
 				primitiveNode.setAttribute(ATTR_RADIUS, Double.toString(mc.getRadius()));
 			} else {
@@ -171,15 +163,12 @@ public final class XMLGISElementUtil {
 			}
 			primitiveNode.setAttribute(ATTR_X, Double.toString(mpe.getX()));
 			primitiveNode.setAttribute(ATTR_Y, Double.toString(mpe.getY()));
-		} else if (primitive instanceof MapComposedElement) {
-			final MapComposedElement mce = (MapComposedElement) primitive;
-			if (mce instanceof MapPolyline) {
-				final MapPolyline mp = (MapPolyline) mce;
+		} else if (primitive instanceof MapComposedElement mce) {
+			if (mce instanceof MapPolyline mp) {
 				primitiveNode = builder.createElement(primitiveNodeName != null ? primitiveNodeName : NODE_POLYLINE);
 				primitiveNode.setAttribute(ATTR_WIDE, Boolean.toString(mp.isWidePolyline()));
 				primitiveNode.setAttribute(ATTR_WIDTH, Double.toString(mp.getWidth()));
-			} else if (mce instanceof MapMultiPoint) {
-				final MapMultiPoint mmp = (MapMultiPoint) mce;
+			} else if (mce instanceof MapMultiPoint mmp) {
 				primitiveNode = builder.createElement(primitiveNodeName != null ? primitiveNodeName : NODE_MULTIPOINT);
 				primitiveNode.setAttribute(ATTR_DOUBLEFRAME, Boolean.toString(mmp.isDoubleFramed()));
 				primitiveNode.setAttribute(ATTR_SIZE, Double.toString(mmp.getPointSize()));
@@ -189,10 +178,10 @@ public final class XMLGISElementUtil {
 				throw new IOException("unsupported MapElement type: " + mce.getClass()); //$NON-NLS-1$
 			}
 
-			final Element pointsNode = builder.createElement(NODE_POINTS);
-			for (int idxPoint = 0; idxPoint < mce.getPointCount(); ++idxPoint) {
-				final Element pointNode = builder.createElement(NODE_POINT);
-				final Point2d p = mce.getPointAt(idxPoint);
+			final var pointsNode = builder.createElement(NODE_POINTS);
+			for (var idxPoint = 0; idxPoint < mce.getPointCount(); ++idxPoint) {
+				final var pointNode = builder.createElement(NODE_POINT);
+				final var p = mce.getPointAt(idxPoint);
 				pointNode.setAttribute(ATTR_X, Double.toString(p.getX()));
 				pointNode.setAttribute(ATTR_Y, Double.toString(p.getY()));
 				pointsNode.appendChild(pointNode);
@@ -200,11 +189,11 @@ public final class XMLGISElementUtil {
 			if (pointsNode.getChildNodes().getLength() > 0) {
 				primitiveNode.appendChild(pointsNode);
 			}
-			final Element groupsNode = builder.createElement(NODE_GROUPS);
-			for (int idxGroup = 0; idxGroup < mce.getGroupCount(); ++idxGroup) {
-				final Element groupNode = builder.createElement(NODE_GROUP);
-				final int idx1 = mce.getFirstPointIndexInGroup(idxGroup);
-				final int idx2 = mce.getLastPointIndexInGroup(idxGroup);
+			final var groupsNode = builder.createElement(NODE_GROUPS);
+			for (var idxGroup = 0; idxGroup < mce.getGroupCount(); ++idxGroup) {
+				final var groupNode = builder.createElement(NODE_GROUP);
+				final var idx1 = mce.getFirstPointIndexInGroup(idxGroup);
+				final var idx2 = mce.getLastPointIndexInGroup(idxGroup);
 				groupNode.setAttribute(ATTR_FIRSTPOINTINDEX, Integer.toString(idx1));
 				groupNode.setAttribute(ATTR_LASTPOINTINDEX, Integer.toString(idx2));
 				groupsNode.appendChild(groupNode);
@@ -217,9 +206,9 @@ public final class XMLGISElementUtil {
 		assert primitiveNode != null;
 
 		writeGISElementAttributes(primitiveNode, primitive, builder, resources);
-		final Integer color = primitive.getRawColor();
+		final var color = primitive.getRawColor();
 		if (color != null) {
-			primitive.setAttribute(XMLUtil.ATTR_COLOR, XMLUtil.toColor(color));
+			primitive.setAttribute(XMLUtil.ATTR_COLOR, XMLUtil.toColor(color.intValue()));
 		}
 
 		return primitiveNode;
@@ -230,7 +219,7 @@ public final class XMLGISElementUtil {
 	 * @param element is the XML node to read.
 	 * @param elementNodeName is the name of the XML node that should contains the map element data.
 	 *     It must be one of {@link #NODE_POINT}, {@link #NODE_CIRCLE}, {@link #NODE_POLYGON}, {@link #NODE_POLYLINE},
-	 * {@link #NODE_MULTIPOINT}, or {@code null} for the XML node name itself.
+	 *     {@link #NODE_MULTIPOINT}, or {@code null} for the XML node name itself.
 	 * @param pathBuilder is the tool to make paths absolute.
 	 * @param resources is the tool that permits to gather the resources.
 	 * @return the map element.
@@ -247,7 +236,7 @@ public final class XMLGISElementUtil {
 	 * @param element is the XML node to read.
 	 * @param elementNodeName is the name of the XML node that should contains the map element data.
 	 *     It must be one of {@link #NODE_POINT}, {@link #NODE_CIRCLE}, {@link #NODE_POLYGON}, {@link #NODE_POLYLINE},
-	 * {@link #NODE_MULTIPOINT}, or {@code null} for the XML node name itself.
+	 *     {@link #NODE_MULTIPOINT}, or {@code null} for the XML node name itself.
 	 * @param type is the type of the element to create, or {@code null} to use the default.
 	 * @param pathBuilder is the tool to make paths absolute.
 	 * @param resources is the tool that permits to gather the resources.
@@ -257,28 +246,29 @@ public final class XMLGISElementUtil {
 	@SuppressWarnings({"unchecked", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static <T extends MapElement> T readMapElement(Element element, String elementNodeName,
 			Class<T> type, PathBuilder pathBuilder, XMLResources resources) throws IOException {
-		final UUID id = XMLUtil.getAttributeUUIDWithDefault(element, null, XMLUtil.ATTR_ID);
+		final var id = XMLUtil.getAttributeUUIDWithDefault(element, null, XMLUtil.ATTR_ID);
 
-		String nn = elementNodeName;
+		var nn = elementNodeName;
 
 		if (nn == null || nn.length() == 0) {
 			nn = element.getNodeName();
 		}
 
 		if (NODE_POINT.equals(nn)) {
-			final double x = XMLUtil.getAttributeDouble(element, ATTR_X);
-			final double y = XMLUtil.getAttributeDouble(element, ATTR_Y);
-			final boolean doubleFrame = XMLUtil.getAttributeBooleanWithDefault(element, false, ATTR_DOUBLEFRAME);
-			final double size = XMLUtil.getAttributeDoubleWithDefault(element, GeoLocationUtil.GIS_POINT_SIZE, ATTR_SIZE);
+			final var x = XMLUtil.getAttributeDouble(element, ATTR_X);
+			final var y = XMLUtil.getAttributeDouble(element, ATTR_Y);
+			final var doubleFrame = XMLUtil.getAttributeBooleanWithDefault(element, Boolean.FALSE, ATTR_DOUBLEFRAME).booleanValue();
+			final var size = XMLUtil.getAttributeDoubleWithDefault(element,
+					Double.valueOf(GeoLocationUtil.GIS_POINT_SIZE), ATTR_SIZE).doubleValue();
 			final MapPoint point;
 			if (type != null && MapPoint.class.isAssignableFrom(type)) {
 				try {
 					if (id != null) {
-						final Constructor<T> cons = type.getConstructor(UUID.class, double.class, double.class);
-						point = (MapPoint) cons.newInstance(id, x, y);
+						final var cons = type.getConstructor(UUID.class, double.class, double.class);
+						point = (MapPoint) cons.newInstance(id, Double.valueOf(x), Double.valueOf(y));
 					} else {
-						final Constructor<T> cons = type.getConstructor(double.class, double.class);
-						point = (MapPoint) cons.newInstance(x, y);
+						final var cons = type.getConstructor(double.class, double.class);
+						point = (MapPoint) cons.newInstance(Double.valueOf(x), Double.valueOf(y));
 					}
 				} catch (AssertionError e) {
 					throw e;
@@ -294,28 +284,28 @@ public final class XMLGISElementUtil {
 			point.setPointSize(size);
 
 			readGISElementAttributes(element, point, pathBuilder, resources);
-			final Integer color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
+			final var color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
 			if (color != null) {
-				point.setColor(color);
+				point.setColor(color.intValue());
 			}
 
 			return (T) point;
 		}
 
 		if (NODE_CIRCLE.equals(nn)) {
-			final double x = XMLUtil.getAttributeDouble(element, ATTR_X);
-			final double y = XMLUtil.getAttributeDouble(element, ATTR_Y);
-			final double radius = XMLUtil.getAttributeDoubleWithDefault(element,
-					MapElementConstants.getPreferredRadius(), ATTR_RADIUS);
+			final var x = XMLUtil.getAttributeDouble(element, ATTR_X);
+			final var y = XMLUtil.getAttributeDouble(element, ATTR_Y);
+			final var radius = XMLUtil.getAttributeDoubleWithDefault(element,
+					Double.valueOf(MapElementConstants.getPreferredRadius()), ATTR_RADIUS).doubleValue();
 			final MapCircle circle;
 			if (type != null && MapCircle.class.isAssignableFrom(type)) {
 				try {
 					if (id != null) {
-						final Constructor<T> cons = type.getConstructor(UUID.class, double.class, double.class);
-						circle = (MapCircle) cons.newInstance(id, x, y);
+						final var cons = type.getConstructor(UUID.class, double.class, double.class);
+						circle = (MapCircle) cons.newInstance(id, Double.valueOf(x), Double.valueOf(y));
 					} else {
-						final Constructor<T> cons = type.getConstructor(double.class, double.class);
-						circle = (MapCircle) cons.newInstance(x, y);
+						final var cons = type.getConstructor(double.class, double.class);
+						circle = (MapCircle) cons.newInstance(Double.valueOf(x), Double.valueOf(y));
 					}
 				} catch (AssertionError e) {
 					throw e;
@@ -330,20 +320,20 @@ public final class XMLGISElementUtil {
 			circle.setRadius(radius);
 
 			readGISElementAttributes(element, circle, pathBuilder, resources);
-			final Integer color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
+			final var color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
 			if (color != null) {
-				circle.setColor(color);
+				circle.setColor(color.intValue());
 			}
 
 			return (T) circle;
 		}
 		if (NODE_POLYLINE.equals(nn)) {
-			final boolean isWide = XMLUtil.getAttributeBooleanWithDefault(element, false, ATTR_WIDE);
+			final var isWide = XMLUtil.getAttributeBooleanWithDefault(element, Boolean.FALSE, ATTR_WIDE).booleanValue();
 			final MapPolyline polyline;
 			if (type != null && MapPolyline.class.isAssignableFrom(type)) {
 				try {
 					if (id != null) {
-						final Constructor<T> cons = type.getConstructor(UUID.class);
+						final var cons = type.getConstructor(UUID.class);
 						polyline = (MapPolyline) cons.newInstance(id);
 					} else {
 						polyline = (MapPolyline) type.getDeclaredConstructor().newInstance();
@@ -362,9 +352,9 @@ public final class XMLGISElementUtil {
 			readMapComposedElementPoints(element, polyline);
 
 			readGISElementAttributes(element, polyline, pathBuilder, resources);
-			final Integer color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
+			final var color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
 			if (color != null) {
-				polyline.setColor(color);
+				polyline.setColor(color.intValue());
 			}
 
 			return (T) polyline;
@@ -374,7 +364,7 @@ public final class XMLGISElementUtil {
 			if (type != null && MapPolygon.class.isAssignableFrom(type)) {
 				try {
 					if (id != null) {
-						final Constructor<T> cons = type.getConstructor(UUID.class);
+						final var cons = type.getConstructor(UUID.class);
 						polygon = (MapPolygon) cons.newInstance(id);
 					} else {
 						polygon = (MapPolygon) type.getDeclaredConstructor().newInstance();
@@ -392,21 +382,22 @@ public final class XMLGISElementUtil {
 			readMapComposedElementPoints(element, polygon);
 
 			readGISElementAttributes(element, polygon, pathBuilder, resources);
-			final Integer color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
+			final var color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
 			if (color != null) {
-				polygon.setColor(color);
+				polygon.setColor(color.intValue());
 			}
 
 			return (T) polygon;
 		}
 		if (NODE_MULTIPOINT.equals(nn)) {
-			final boolean doubleFrame = XMLUtil.getAttributeBooleanWithDefault(element, false, ATTR_DOUBLEFRAME);
-			final double size = XMLUtil.getAttributeDoubleWithDefault(element, GeoLocationUtil.GIS_POINT_SIZE, ATTR_SIZE);
+			final var doubleFrame = XMLUtil.getAttributeBooleanWithDefault(element, Boolean.FALSE, ATTR_DOUBLEFRAME).booleanValue();
+			final var size = XMLUtil.getAttributeDoubleWithDefault(element,
+					Double.valueOf(GeoLocationUtil.GIS_POINT_SIZE), ATTR_SIZE).doubleValue();
 			final MapMultiPoint multipoint;
 			if (type != null && MapMultiPoint.class.isAssignableFrom(type)) {
 				try {
 					if (id != null) {
-						final Constructor<T> cons = type.getConstructor(UUID.class);
+						final var cons = type.getConstructor(UUID.class);
 						multipoint = (MapMultiPoint) cons.newInstance(id);
 					} else {
 						multipoint = (MapMultiPoint) type.getDeclaredConstructor().newInstance();
@@ -426,9 +417,9 @@ public final class XMLGISElementUtil {
 			readMapComposedElementPoints(element, multipoint);
 
 			readGISElementAttributes(element, multipoint, pathBuilder, resources);
-			final Integer color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
+			final var color = XMLUtil.getAttributeColorWithDefault(element, null, XMLUtil.ATTR_COLOR);
 			if (color != null) {
-				multipoint.setColor(color);
+				multipoint.setColor(color.intValue());
 			}
 
 			return (T) multipoint;
@@ -461,10 +452,10 @@ public final class XMLGISElementUtil {
 	}
 
 	private static void readMapComposedElementPoints(Node element, MapComposedElement mapElement) {
-		final Node pointNode = XMLUtil.getNodeFromPath(element, NODE_POINTS);
-		final Node groupNode = XMLUtil.getNodeFromPath(element, NODE_GROUPS);
+		final var pointNode = XMLUtil.getNodeFromPath(element, NODE_POINTS);
+		final var groupNode = XMLUtil.getNodeFromPath(element, NODE_GROUPS);
 		if (pointNode != null && groupNode != null) {
-			final Point2d[] points = readPoints(pointNode);
+			final var points = readPoints(pointNode);
 			if (points.length > 0) {
 				readGroups(groupNode, points, mapElement);
 			}
@@ -472,24 +463,23 @@ public final class XMLGISElementUtil {
 	}
 
 	private static Point2d[] readPoints(Node element) {
-		final List<Element> children = XMLUtil.getElementsFromPath(element, NODE_POINT);
-		final Point2d[] points = new Point2d[children.size()];
-		Element child;
-		for (int i = 0; i < points.length; ++i) {
-			child = children.get(i);
-			final double x = XMLUtil.getAttributeDouble(child, ATTR_X);
-			final double y = XMLUtil.getAttributeDouble(child, ATTR_Y);
+		final var children = XMLUtil.getElementsFromPath(element, NODE_POINT);
+		final var points = new Point2d[children.size()];
+		for (var i = 0; i < points.length; ++i) {
+			final var child = children.get(i);
+			final var x = XMLUtil.getAttributeDouble(child, ATTR_X);
+			final var y = XMLUtil.getAttributeDouble(child, ATTR_Y);
 			points[i] = new Point2d(x, y);
 		}
 		return points;
 	}
 
 	private static void readGroups(Node element, Point2d[] points, MapComposedElement mapElement) {
-		for (final Node group : XMLUtil.getNodesFromPath(element, NODE_GROUP)) {
-			final int start = XMLUtil.getAttributeInt(group, ATTR_FIRSTPOINTINDEX);
-			final int end = XMLUtil.getAttributeInt(group, ATTR_LASTPOINTINDEX);
+		for (final var group : XMLUtil.getNodesFromPath(element, NODE_GROUP)) {
+			final var start = XMLUtil.getAttributeInt(group, ATTR_FIRSTPOINTINDEX);
+			final var end = XMLUtil.getAttributeInt(group, ATTR_LASTPOINTINDEX);
 			mapElement.addGroup(points[start]);
-			for (int idxPts = start + 1; idxPts <= end; ++idxPts) {
+			for (var idxPts = start + 1; idxPts <= end; ++idxPts) {
 				mapElement.addPoint(points[idxPts]);
 			}
 		}
@@ -522,17 +512,16 @@ public final class XMLGISElementUtil {
 	 */
 	public static void writeGISElementContainer(Element xmlNode, GISElementContainer<?> primitive,
 			String elementNodeName, XMLBuilder builder, PathBuilder pathBuilder, XMLResources resources) throws IOException {
-		URL url;
-		boolean saveElements = true;
+		var saveElements = true;
 
-		url = primitive.getElementGeometrySourceURL();
+		var url = primitive.getElementGeometrySourceURL();
 		if (url != null) {
 			xmlNode.setAttribute(MapElementLayer.ATTR_ELEMENT_GEOMETRY_URL,
 					resources.add(url, MimeName.MIME_SHAPE_FILE.getMimeConstant()));
 			saveElements = false;
 		}
 
-		MapMetricProjection mapProjection = primitive.getElementGeometrySourceProjection();
+		var mapProjection = primitive.getElementGeometrySourceProjection();
 		if (mapProjection == null) {
 			mapProjection = MapMetricProjection.getDefault();
 		}
@@ -545,9 +534,9 @@ public final class XMLGISElementUtil {
 		}
 
 		if (saveElements) {
-			final Element elementList = builder.createElement(NODE_ELEMENTS);
-			for (final MapElement element : primitive) {
-				final Element e = XMLGISElementUtil.writeMapElement(element, elementNodeName, builder, resources);
+			final var elementList = builder.createElement(NODE_ELEMENTS);
+			for (final var element : primitive) {
+				final var e = XMLGISElementUtil.writeMapElement(element, elementNodeName, builder, resources);
 				if (e != null) {
 					elementList.appendChild(e);
 				}
@@ -590,11 +579,11 @@ public final class XMLGISElementUtil {
 		// Build the reader for the attributes
 		DBaseFileReader attrReader = null;
 		URL attrSourceURL = null;
-		String sattr = XMLUtil.getAttributeValueWithDefault(xmlNode, null, MapElementLayer.ATTR_ELEMENT_ATTRIBUTES_URL);
+		var sattr = XMLUtil.getAttributeValueWithDefault(xmlNode, null, MapElementLayer.ATTR_ELEMENT_ATTRIBUTES_URL);
 		if (sattr != null && sattr.length() > 0) {
 			if (XMLResources.isStringIdentifier(sattr)) {
-				final long id = XMLResources.getNumericalIdentifier(sattr);
-				final Entry resource = resources.getResource(id);
+				final var id = XMLResources.getNumericalIdentifier(sattr);
+				final var resource = resources.getResource(id);
 				if (resource != null) {
 					if (resource.isURL()) {
 						attrSourceURL = pathBuilder.makeAbsolute(resource.getURL());
@@ -607,7 +596,7 @@ public final class XMLGISElementUtil {
 							attrReader = new DBaseFileReader(attrSourceURL);
 						}
 					} else if (resource.isEmbeddedData()) {
-						final ByteArrayInputStream bais = new ByteArrayInputStream(resource.getEmbeddedData());
+						final var bais = new ByteArrayInputStream(resource.getEmbeddedData());
 						attrReader = new DBaseFileReader(bais);
 					} else {
 						throw new IOException("unsupported resource type: " + sattr); //$NON-NLS-1$
@@ -626,7 +615,7 @@ public final class XMLGISElementUtil {
 		}
 
 		// Retrieve the map projection
-		final MapMetricProjection mapProjection = XMLUtil.getAttributeEnumWithDefault(xmlNode, MapMetricProjection.class,
+		final var mapProjection = XMLUtil.getAttributeEnumWithDefault(xmlNode, MapMetricProjection.class,
 				MapMetricProjection.getDefault(), MapElementLayer.ATTR_ELEMENT_GEOMETRY_PROJECTION);
 
 		// Build the reader for the shapes
@@ -635,8 +624,8 @@ public final class XMLGISElementUtil {
 		sattr = XMLUtil.getAttributeValueWithDefault(xmlNode, null, MapElementLayer.ATTR_ELEMENT_GEOMETRY_URL);
 		if (sattr != null && sattr.length() > 0) {
 			if (XMLResources.isStringIdentifier(sattr)) {
-				final long id = XMLResources.getNumericalIdentifier(sattr);
-				final Entry resource = resources.getResource(id);
+				final var id = XMLResources.getNumericalIdentifier(sattr);
+				final var resource = resources.getResource(id);
 				if (resource != null) {
 					if (resource.isURL()) {
 						shapeSourceURL = pathBuilder.makeAbsolute(resource.getURL());
@@ -651,7 +640,7 @@ public final class XMLGISElementUtil {
 									attrSourceURL, mapProjection);
 						}
 					} else if (resource.isEmbeddedData()) {
-						final ByteArrayInputStream bais = new ByteArrayInputStream(resource.getEmbeddedData());
+						final var bais = new ByteArrayInputStream(resource.getEmbeddedData());
 						shapeReader = createShapeReader(bais, primitive.getElementType(), attrReader,
 								attrSourceURL, mapProjection);
 					} else {
@@ -677,7 +666,7 @@ public final class XMLGISElementUtil {
 		primitive.setElementAttributeSourceURL(attrSourceURL);
 
 		if (shapeReader != null) {
-			final Iterator<? extends T> iterator = shapeReader.iterator(primitive.getElementType());
+			final var iterator = shapeReader.iterator(primitive.getElementType());
 			while (iterator.hasNext()) {
 				primitive.addMapElement(iterator.next());
 			}
@@ -686,15 +675,14 @@ public final class XMLGISElementUtil {
 
 		// Read embedded elements
 		final String enm;
-		final String enmDefault = getDefaultMapElementNodeName(primitive.getElementType());
+		final var enmDefault = getDefaultMapElementNodeName(primitive.getElementType());
 		if (Strings.isNullOrEmpty(elementNodeName)) {
 			enm = enmDefault;
 		} else {
 			enm = elementNodeName;
 		}
-		T mapElement;
-		for (final Element elementNode : XMLUtil.getElementsFromPath(xmlNode, NODE_ELEMENTS, enm)) {
-			mapElement = XMLGISElementUtil.readMapElement(elementNode,
+		for (final var elementNode : XMLUtil.getElementsFromPath(xmlNode, NODE_ELEMENTS, enm)) {
+			final var mapElement = XMLGISElementUtil.readMapElement(elementNode,
 					enmDefault, primitive.getElementType(), pathBuilder, resources);
 			if (mapElement != null) {
 				primitive.addMapElement(mapElement);

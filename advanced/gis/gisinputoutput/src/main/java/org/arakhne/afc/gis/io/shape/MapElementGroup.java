@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.mapelement.MapMultiPoint;
 import org.arakhne.afc.gis.mapelement.MapPoint;
@@ -35,7 +33,7 @@ import org.arakhne.afc.gis.mapelement.MapPolygon;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.io.shape.ESRIBounds;
 import org.arakhne.afc.io.shape.ShapeElementType;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Group of map elements.
  *
@@ -78,7 +76,7 @@ public class MapElementGroup {
 	 */
 	@Pure
 	public static ShapeElementType classifiesElement(MapElement element) {
-		final Class<? extends MapElement> type = element.getClass();
+		final var type = element.getClass();
 		if (MapMultiPoint.class.isAssignableFrom(type)) {
 			return ShapeElementType.MULTIPOINT;
 		}
@@ -111,7 +109,7 @@ public class MapElementGroup {
 	 */
 	@Pure
 	public static Map<ShapeElementType, MapElementGroup> classifiesElements(Iterator<? extends MapElement> elements) {
-		final Map<ShapeElementType, MapElementGroup> classification = new TreeMap<>();
+		final var classification = new TreeMap<ShapeElementType, MapElementGroup>();
 		classifiesElements(classification, elements);
 		return classification;
 	}
@@ -133,14 +131,11 @@ public class MapElementGroup {
 	 */
 	public static void classifiesElements(Map<ShapeElementType, MapElementGroup> classification,
 			Iterator<? extends MapElement> elements) {
-		ShapeElementType type;
-		MapElementGroup group;
-		MapElement element;
 		while (elements.hasNext()) {
-			element = elements.next();
-			type = classifiesElement(element);
+			final var element = elements.next();
+			final var type = classifiesElement(element);
 			if (type != ShapeElementType.UNSUPPORTED) {
-				group = classification.get(type);
+				var group = classification.get(type);
 				if (group == null) {
 					group = new MapElementGroup();
 					classification.put(type, group);
@@ -150,13 +145,12 @@ public class MapElementGroup {
 		}
 	}
 
-
 	/** Add the given element into the group.
 	 *
 	 * @param element the element to add.
 	 */
 	void add(MapElement element) {
-		final Rectangle2d r = element.getBoundingBox();
+		final var r = element.getBoundingBox();
 		if (r != null) {
 			if (Double.isNaN(this.minx) || this.minx > r.getMinX()) {
 				this.minx = r.getMinX();

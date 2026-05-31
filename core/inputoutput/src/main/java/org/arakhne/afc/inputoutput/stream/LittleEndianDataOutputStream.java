@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class LittleEndianDataOutputStream extends DataOutputStream {
 	 * @throws IOException on error.
 	 */
 	public void writeBEInt(int value) throws IOException {
-		for (final byte b : EndianNumbers.parseBEInt(value)) {
+		for (final var b : EndianNumbers.parseBEInt(value)) {
 			writeByte(b);
 		}
 	}
@@ -82,7 +82,7 @@ public class LittleEndianDataOutputStream extends DataOutputStream {
 	 * @throws IOException on error.
 	 */
 	public void writeBELong(long value) throws IOException {
-		for (final byte b : EndianNumbers.parseBELong(value)) {
+		for (final var b : EndianNumbers.parseBELong(value)) {
 			writeByte(b);
 		}
 	}
@@ -94,7 +94,7 @@ public class LittleEndianDataOutputStream extends DataOutputStream {
 	 * @throws IOException on error.
 	 */
 	public void writeBEShort(short value) throws IOException {
-		for (final byte b : EndianNumbers.parseBEShort(value)) {
+		for (final var b : EndianNumbers.parseBEShort(value)) {
 			writeByte(b);
 		}
 	}
@@ -125,7 +125,7 @@ public class LittleEndianDataOutputStream extends DataOutputStream {
 	 * @throws IOException on error.
 	 */
 	public void writeLEInt(int value) throws IOException {
-		for (final byte b : EndianNumbers.parseLEInt(value)) {
+		for (final var b : EndianNumbers.parseLEInt(value)) {
 			writeByte(b);
 		}
 	}
@@ -137,7 +137,7 @@ public class LittleEndianDataOutputStream extends DataOutputStream {
 	 * @throws IOException on error.
 	 */
 	public void writeLELong(long value) throws IOException {
-		for (final byte b : EndianNumbers.parseLELong(value)) {
+		for (final var b : EndianNumbers.parseLELong(value)) {
 			writeByte(b);
 		}
 	}
@@ -149,7 +149,7 @@ public class LittleEndianDataOutputStream extends DataOutputStream {
 	 * @throws IOException on error.
 	 */
 	public void writeLEShort(short value) throws IOException {
-		for (final byte b : EndianNumbers.parseLEShort(value)) {
+		for (final var b : EndianNumbers.parseLEShort(value)) {
 			writeByte(b);
 		}
 	}

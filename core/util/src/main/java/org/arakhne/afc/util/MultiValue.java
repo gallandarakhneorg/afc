@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.util;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Utilities class that permits to represent a collection of values
  * and indicating if they are all the same or not.
@@ -169,20 +168,19 @@ public class MultiValue<T> implements Serializable {
 	@Pure
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof MultiValue<?>) {
-			final MultiValue<?> v = (MultiValue<?>) obj;
+		if (obj instanceof MultiValue<?> v) {
 			if (this.isSet != v.isSet || this.isMultiple != v.isMultiple) {
 				return false;
 			}
 		}
-		return (this.object == obj)
-				|| (this.object != null && this.object.equals(obj));
+		return this.object == obj
+				|| this.object != null && this.object.equals(obj);
 	}
 
 	@Pure
 	@Override
 	public int hashCode() {
-		int hash = Boolean.hashCode(this.isSet);
+		var hash = Boolean.hashCode(this.isSet);
 		hash = 31 * hash + Boolean.hashCode(this.isMultiple);
 		if (this.object != null) {
 			hash = 31 * hash + Objects.hashCode(this.object);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,10 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.eclipse.xtext.xbase.lib.Functions.Function0;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Functions.Function0;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Abstract implementation of a stochastic law that
@@ -69,7 +68,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 	 */
 	@Pure
 	protected static double paramDouble(String paramName, double defaultValue, Map<String, String> parameters) {
-		final String svalue = parameters.get(paramName);
+		final var svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
 				return Float.parseFloat(svalue);
@@ -93,7 +92,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 	@Pure
 	protected static double paramDouble(String paramName, Function0<? extends Double> defaultValue, Map<String, String> parameters) {
 		assert defaultValue != null;
-		final String svalue = parameters.get(paramName);
+		final var svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
 				return Float.parseFloat(svalue);
@@ -103,7 +102,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 				//
 			}
 		}
-		return defaultValue.apply();
+		return defaultValue.apply().doubleValue();
 	}
 
 	/** Extract a parameter value from a map of parameters.
@@ -116,7 +115,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 	@Pure
 	protected static double paramDouble(String paramName, Map<String, String> parameters)
 			throws LawParameterNotFoundException {
-		final String svalue = parameters.get(paramName);
+		final var svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
 				return Float.parseFloat(svalue);
@@ -139,7 +138,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 	 */
 	@Pure
 	protected static boolean paramBoolean(String paramName, boolean defaultValue, Map<String, String> parameters) {
-		final String svalue = parameters.get(paramName);
+		final var svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
 				return Boolean.parseBoolean(svalue);
@@ -163,7 +162,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 	@Pure
 	protected static boolean paramBoolean(String paramName, Function0<? extends Boolean> defaultValue, Map<String, String> parameters) {
 		assert defaultValue != null;
-		final String svalue = parameters.get(paramName);
+		final var svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
 				return Boolean.parseBoolean(svalue);
@@ -173,7 +172,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 				//
 			}
 		}
-		return defaultValue.apply();
+		return defaultValue.apply().booleanValue();
 	}
 
 	/** Extract a parameter value from a map of parameters.
@@ -186,7 +185,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 	@Pure
 	protected static boolean paramBoolean(String paramName, Map<String, String> parameters)
 			throws LawParameterNotFoundException {
-		final String svalue = parameters.getOrDefault(paramName, null);
+		final var svalue = parameters.getOrDefault(paramName, null);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
 				return Boolean.parseBoolean(svalue);
@@ -236,7 +235,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 	@Pure
 	@Override
 	public final String toString() {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		toJson(buffer);
 		return buffer.toString();
 	}

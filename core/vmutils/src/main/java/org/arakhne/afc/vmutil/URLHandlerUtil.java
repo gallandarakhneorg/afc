@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -52,59 +51,61 @@ public final class URLHandlerUtil {
 	 * @param protocol the protocol.
 	 * @return the iterator.
 	 * @since 7.2
+	 * @deprecated since 17.0, no replacement.
 	 */
 	@Pure
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static Iterator<Class<? extends URLStreamHandler>> getHandlersFor(String protocol) {
 		return new HandlerIterator(protocol);
 	}
 
 	private static void install(String... packageNames) {
-		final List<String> array = new LinkedList<>();
+		final var array = new LinkedList<String>();
 
-		final String str = System.getProperty(HANDLER_PACKAGES);
+		final var str = System.getProperty(HANDLER_PACKAGES);
 		if (str != null && !"".equals(str)) { //$NON-NLS-1$
 			array.addAll(Arrays.asList(str.split("\\|"))); //$NON-NLS-1$
 		}
 
-		for (final String packageName : packageNames) {
+		for (final var packageName : packageNames) {
 			if (!array.contains(packageName)) {
 				array.add(0, packageName);
 			}
 		}
 
-		final StringBuilder buffer = new StringBuilder();
-		for (final String s : array) {
+		final var buffer = new StringBuilder();
+		for (final var s : array) {
 			if (buffer.length() > 0) {
 				buffer.append('|');
 			}
 			buffer.append(s);
 		}
 
-		final String nstr = buffer.toString();
+		final var nstr = buffer.toString();
 		if (!nstr.equals(str)) {
 			System.setProperty(HANDLER_PACKAGES, nstr);
 		}
 	}
 
 	private static void uninstall(String... packageNames) {
-		final List<String> array = new LinkedList<>();
+		final var array = new LinkedList<String>();
 
-		final String str = System.getProperty(HANDLER_PACKAGES);
+		final var str = System.getProperty(HANDLER_PACKAGES);
 		if (str != null && !"".equals(str)) { //$NON-NLS-1$
 			array.addAll(Arrays.asList(str.split("\\|"))); //$NON-NLS-1$
 		}
 
 		array.removeAll(Arrays.asList(packageNames));
 
-		final StringBuilder buffer = new StringBuilder();
-		for (final String s : array) {
+		final var buffer = new StringBuilder();
+		for (final var s : array) {
 			if (buffer.length() > 0) {
 				buffer.append('|');
 			}
 			buffer.append(s);
 		}
 
-		final String nstr = buffer.toString();
+		final var nstr = buffer.toString();
 		if (!nstr.equals(str)) {
 			System.setProperty(HANDLER_PACKAGES, nstr);
 		}
@@ -119,7 +120,9 @@ public final class URLHandlerUtil {
 	 * </ul>
 	 *
 	 * @see #uninstallArakhneHandlers()
+	 * @deprecated since 17.0, no replacement.
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void installArakhneHandlers() {
 		install(URLHandlerUtil.class.getPackage().getName());
 	}
@@ -133,7 +136,9 @@ public final class URLHandlerUtil {
 	 * </ul>
 	 *
 	 * @see #installArakhneHandlers()
+	 * @deprecated since 17.0, no replacement.
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void uninstallArakhneHandlers() {
 		uninstall(URLHandlerUtil.class.getPackage().getName());
 	}
@@ -162,7 +167,7 @@ public final class URLHandlerUtil {
 		 */
 		HandlerIterator(String protocol) {
 			this.protocol = protocol;
-			final String str = System.getProperty(HANDLER_PACKAGES);
+			final var str = System.getProperty(HANDLER_PACKAGES);
 			if (str == null) {
 				this.packages = new String[0];
 			} else {
@@ -175,12 +180,12 @@ public final class URLHandlerUtil {
 		@SuppressWarnings("unchecked")
 		private void searchNext() {
 			this.next = null;
-			final ClassLoader clsLoader = getClass().getClassLoader();
+			final var clsLoader = getClass().getClassLoader();
 			while (this.next == null && this.position < this.packages.length) {
-				final String typename = this.packages[this.position++];
+				final var typename = this.packages[this.position++];
 
 				try {
-					final Class<?> type = clsLoader.loadClass(typename + "." //$NON-NLS-1$
+					final var type = clsLoader.loadClass(typename + "." //$NON-NLS-1$
 							+ this.protocol + ".Handler"); //$NON-NLS-1$
 					if (type != null && URLStreamHandler.class.isAssignableFrom(type)) {
 						this.next = (Class<? extends URLStreamHandler>) type;
@@ -198,7 +203,7 @@ public final class URLHandlerUtil {
 
 		@Override
 		public Class<? extends URLStreamHandler> next() {
-			final Class<? extends URLStreamHandler> n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}

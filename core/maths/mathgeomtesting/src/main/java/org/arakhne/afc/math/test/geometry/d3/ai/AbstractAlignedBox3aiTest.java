@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractAlignedBox3aiTest<T extends AlignedBox3ai<?, T, ?, ?, ?, ?, T>>
-		extends AbstractPrism3aiTest<T, T> {
+public abstract class AbstractAlignedBox3aiTest<T extends AlignedBox3ai<T, ?, ?, ?, ?, T>>
+		extends AbstractBox3aiTest<T, T> {
 
 	protected static Quaternion4d newAxisAngleZ(double angle) {
 		final Quaternion4d q = new Quaternion4d();
@@ -90,18 +90,6 @@ public abstract class AbstractAlignedBox3aiTest<T extends AlignedBox3ai<?, T, ?,
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
-	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equals(createAlignedBox(0, 0, 0, 5, 5, 0).getPathIterator()));
-		assertFalse(this.shape.equals(createAlignedBox(5, 8, 0, 10, 6, 0).getPathIterator()));
-		assertFalse(this.shape.equals(createSegment(5, 8, 0, 10, 5, 0).getPathIterator()));
-		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		assertTrue(this.shape.equals(createAlignedBox(5, 8, 0, 10, 5, 0).getPathIterator()));
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
 	public void equalsToShape(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equalsToShape(null));
@@ -109,19 +97,6 @@ public abstract class AbstractAlignedBox3aiTest<T extends AlignedBox3ai<?, T, ?,
 		assertFalse(this.shape.equalsToShape(createAlignedBox(5, 8, 0, 10, 6, 0)));
 		assertTrue(this.shape.equalsToShape(this.shape));
 		assertTrue(this.shape.equalsToShape(createAlignedBox(5, 8, 0, 10, 5, 0)));
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public void equalsToPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
-		assertFalse(this.shape.equalsToPathIterator(createAlignedBox(0, 0, 0, 5, 5, 0).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createAlignedBox(5, 8, 0, 10, 6, 0).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 0, 10, 5, 0).getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(createAlignedBox(5, 8, 0, 10, 5, 0).getPathIterator()));
 	}
 
 	@Override
@@ -587,100 +562,6 @@ public abstract class AbstractAlignedBox3aiTest<T extends AlignedBox3ai<?, T, ?,
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Override
-	@Disabled
-	public void getPathIterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		PathIterator3ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 5,8, 0);
-		assertElement(pi, PathElementType.LINE_TO, 15,8, 0);
-		assertElement(pi, PathElementType.LINE_TO, 15,13, 0);
-		assertElement(pi, PathElementType.LINE_TO, 5,13, 0);
-		assertElement(pi, PathElementType.CLOSE, 5,8, 0);
-		assertNoElement(pi);
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	@Disabled
-	public void getPathIteratorTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		PathIterator3ai pi;
-		
-		tr = new Transform3D();
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 5,8, 0);
-		assertElement(pi, PathElementType.LINE_TO, 15,8, 0);
-		assertElement(pi, PathElementType.LINE_TO, 15,13, 0);
-		assertElement(pi, PathElementType.LINE_TO, 5,13, 0);
-		assertElement(pi, PathElementType.CLOSE, 5,8, 0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4f, 4.5f, 0);
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 8,13, 0);
-		assertElement(pi, PathElementType.LINE_TO, 18,13, 0);
-		assertElement(pi, PathElementType.LINE_TO, 18,18, 0);
-		assertElement(pi, PathElementType.LINE_TO, 8,18, 0);
-		assertElement(pi, PathElementType.CLOSE, 8,13, 0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
-		
-		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, -2,9, 0);
-		assertElement(pi, PathElementType.LINE_TO, 5,16, 0);
-		assertElement(pi, PathElementType.LINE_TO, 1,20, 0);
-		assertElement(pi, PathElementType.LINE_TO, -6,13, 0);
-		assertElement(pi, PathElementType.CLOSE, -2,9, 0);
-		assertNoElement(pi);
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	@Disabled
-	public void createTransformedShape(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		PathIterator3ai pi;
-		
-		tr = new Transform3D();
-		pi = this.shape.createTransformedShape(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 5,8);
-		assertElement(pi, PathElementType.LINE_TO, 15,8);
-		assertElement(pi, PathElementType.LINE_TO, 15,13);
-		assertElement(pi, PathElementType.LINE_TO, 5,13);
-		assertElement(pi, PathElementType.CLOSE, 5,8);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4f, 4.5f, 0);
-		pi = this.shape.createTransformedShape(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 8,13);
-		assertElement(pi, PathElementType.LINE_TO, 18,13);
-		assertElement(pi, PathElementType.LINE_TO, 18,18);
-		assertElement(pi, PathElementType.LINE_TO, 8,18);
-		assertElement(pi, PathElementType.CLOSE, 8,13);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));		
-		pi = this.shape.createTransformedShape(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, -2,9);
-		assertElement(pi, PathElementType.LINE_TO, 5,16);
-		assertElement(pi, PathElementType.LINE_TO, 1,20);
-		assertElement(pi, PathElementType.LINE_TO, -6,13);
-		assertElement(pi, PathElementType.CLOSE, -2,9);
-		assertNoElement(pi);
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
 	public void setIT(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		this.shape.set(createAlignedBox(10, 12, 0, 14, 16, 0));
@@ -982,42 +863,6 @@ public abstract class AbstractAlignedBox3aiTest<T extends AlignedBox3ai<?, T, ?,
 		assertEquals(4, r.getMinY());
 		assertEquals(12, r.getMaxX());
 		assertEquals(9, r.getMaxY());
-	}
-
-	@Override
-	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Transform3D tr;
-		PathIterator3ai pi;
-		
-		tr = new Transform3D();
-		pi = this.shape.operator_multiply(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 5,8, 0);
-		assertElement(pi, PathElementType.LINE_TO, 15,8, 0);
-		assertElement(pi, PathElementType.LINE_TO, 15,13, 0);
-		assertElement(pi, PathElementType.LINE_TO, 5,13, 0);
-		assertElement(pi, PathElementType.CLOSE, 5,8, 0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4f, 4.5f, 0);
-		pi = this.shape.operator_multiply(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 8,13, 0);
-		assertElement(pi, PathElementType.LINE_TO, 18,13, 0);
-		assertElement(pi, PathElementType.LINE_TO, 18,18, 0);
-		assertElement(pi, PathElementType.LINE_TO, 8,18, 0);
-		assertElement(pi, PathElementType.CLOSE, 8,13, 0);
-		assertNoElement(pi);
-
-		tr = new Transform3D();
-		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));		
-		pi = this.shape.operator_multiply(tr).getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, -2,9, 0);
-		assertElement(pi, PathElementType.LINE_TO, 5,16, 0);
-		assertElement(pi, PathElementType.LINE_TO, 1,20, 0);
-		assertElement(pi, PathElementType.LINE_TO, -6,13, 0);
-		assertElement(pi, PathElementType.CLOSE, -2,9, 0);
-		assertNoElement(pi);
 	}
 
 	@Override

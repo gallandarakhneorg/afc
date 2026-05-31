@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package org.arakhne.afc.math.tree.iterator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.Tree;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a forest data.
@@ -97,7 +96,7 @@ public class DataDepthFirstForestIterator<D>
 
 	@Override
 	public void remove() {
-		final DataPair<D> pair = this.lastlyReplied;
+		final var pair = this.lastlyReplied;
 		this.lastlyReplied = null;
 		if (pair == null) {
 			throw new NoSuchElementException();

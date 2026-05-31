@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.references.ComparableWeakReference;
 import org.arakhne.afc.references.WeakArrayList;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A subgraph.
@@ -96,7 +95,7 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 			GraphIterationElementComparator<ST, PT> orientedIterator,
 			GraphIterationElementComparator<ST, PT> notOrientedIterator) {
 		this(
-				new WeakArrayList<ST>(),
+				new WeakArrayList<>(),
 				0,
 				orientedIterator,
 				notOrientedIterator);
@@ -146,20 +145,18 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 	public final void build(GraphIterator<ST, PT> iterator, SubGraphBuildListener<ST, PT> listener) {
 		assert iterator != null;
 		final Set<ComparableWeakReference<PT>> reachedPoints = new TreeSet<>();
-		GraphIterationElement<ST, PT> element;
-		ST segment;
-		PT point;
-		PT firstPoint = null;
 
 		this.parentGraph = new WeakReference<>(iterator.getGraph());
 		this.segments.clear();
 		this.pointNumber = 0;
 		this.terminalPoints.clear();
 
+		PT firstPoint = null;
+
 		while (iterator.hasNext()) {
-			element = iterator.nextElement();
-			point = element.getPoint();
-			segment = element.getSegment();
+			final var element = iterator.nextElement();
+			var point = element.getPoint();
+			final var segment = element.getSegment();
 
 			// First reached segment
 			if (this.segments.isEmpty()) {
@@ -173,7 +170,7 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 
 			// Register terminal points
 			point = segment.getOtherSidePoint(point);
-			final ComparableWeakReference<PT> ref = new ComparableWeakReference<>(point);
+			final var ref = new ComparableWeakReference<>(point);
 			if (element.isTerminalSegment()) {
 				if (!reachedPoints.contains(ref)) {
 					this.terminalPoints.add(ref);
@@ -191,7 +188,7 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		}
 
 		if (firstPoint != null) {
-			final ComparableWeakReference<PT> ref = new ComparableWeakReference<>(firstPoint);
+			final var ref = new ComparableWeakReference<>(firstPoint);
 			if (!reachedPoints.contains(ref)) {
 				this.terminalPoints.add(ref);
 			}
@@ -473,8 +470,8 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		@Override
 		public PT getPoint() {
 			if (this.wrappedPoint == null) {
-				boolean isTerminal = false;
-				ST sgmt = this.previousSegment;
+				var isTerminal = false;
+				var sgmt = this.previousSegment;
 				if (sgmt == null) {
 					sgmt = this.currentSegment;
 					isTerminal = true;

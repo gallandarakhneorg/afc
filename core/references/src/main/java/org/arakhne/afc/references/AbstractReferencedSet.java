@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A <tt>Set</tt> implementation with {@link SoftReference soft values}
@@ -109,7 +108,7 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 	 * @return the old value of this flag
 	 */
 	public final boolean setDeeplyExpurge(boolean deeplyExpurge) {
-		final boolean old = this.autoExpurge;
+		final var old = this.autoExpurge;
 		this.autoExpurge = deeplyExpurge;
 		return old;
 	}
@@ -132,12 +131,12 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 	public final void expurge() {
 		Reference<? extends E> obj;
 
-		final Iterator<R> iter = this.theSet.iterator();
+		final var iter = this.theSet.iterator();
 		R reference;
 		while (iter.hasNext()) {
 			reference = iter.next();
 			if (reference != null
-					&& (reference.refersTo(null) || (reference.get() == null))) {
+					&& (reference.refersTo(null) || reference.get() == null)) {
 				reference.enqueue();
 				reference.clear();
 			}
@@ -211,12 +210,10 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 			if (!this.nextSearchProceeded) {
 				this.nextSearchProceeded = true;
 				this.next = null;
-				R originalNext;
-				E wvalue;
 				while (this.next == null && this.originalIterator.hasNext()) {
-					originalNext = this.originalIterator.next();
+					final var originalNext = this.originalIterator.next();
 					if (originalNext != null) {
-						wvalue = originalNext.get();
+						final var wvalue = originalNext.get();
 						if (wvalue != null) {
 							this.next = wvalue;
 							return;
@@ -240,7 +237,7 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 		public E next() {
 			searchNext();
 			assert this.nextSearchProceeded;
-			final E cnext = this.next;
+			final var cnext = this.next;
 
 			// Reset the research flags
 			this.next = null;

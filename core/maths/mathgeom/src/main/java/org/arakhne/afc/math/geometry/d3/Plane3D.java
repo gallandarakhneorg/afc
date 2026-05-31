@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,20 +44,20 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 18.0
  */
 public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
-		S extends Shape3D<?, ?, ?, P, V, Q, ?>,
+		S extends Shape3D<?, ?, P, V, Q, ?>,
 		P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>>
 	extends PlaneClassifier, Serializable, Cloneable, JsonableObject {
 
 	/** Reset this shape to be equivalent to
-	 * an just-created instance of this shape type. 
+	 * an just-created instance of this shape type.
 	 */
 	void clear();
 
 	/**
 	 * Returns the normal to this plane.
-	 * 
+	 *
 	 * @return the normal of the plane.
 	 */
 	@Pure
@@ -67,7 +67,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 
 	/**
 	 * Returns the x component of the normal to this plane.
-	 * 
+	 *
 	 * @return x component of the normal of the plane.
 	 */
 	@Pure
@@ -75,7 +75,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 
 	/**
 	 * Returns the y component of the normal to this plane.
-	 * 
+	 *
 	 * @return y component of the normal of the plane.
 	 */
 	@Pure
@@ -83,7 +83,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 
 	/**
 	 * Returns the z component of the normal to this plane.
-	 * 
+	 *
 	 * @return z component of the normal of the plane.
 	 */
 	@Pure
@@ -92,7 +92,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	/**
 	 * Replies the component a of the plane equation.
 	 * It is usually the x component of the normal vector.
-	 * 
+	 *
 	 * @return the component a of the plane equation.
 	 */
 	@Pure
@@ -101,7 +101,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	/**
 	 * Replies the component b of the plane equation.
 	 * It is usually the y component of the normal vector.
-	 * 
+	 *
 	 * @return the component b of the plane equation.
 	 */
 	@Pure
@@ -110,7 +110,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	/**
 	 * Replies the component c of the plane equation.
 	 * It is usually the z component of the normal vector.
-	 * 
+	 *
 	 * @return the component c of the plane equation.
 	 */
 	@Pure
@@ -120,7 +120,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * Replies the component d of the plane equation.
 	 * It is usually equal to the scalar vector colinear to the plane normal vector and that points to the
 	 * plane that contains the point {@code (0,0,0)}.
-	 * 
+	 *
 	 * @return the component d of the plane equation.
 	 */
 	@Pure
@@ -139,13 +139,13 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 
 	/**
 	 * Normalizes this plane (i.e. the vector (a,b,c) becomes unit length).
-	 * 
+	 *
 	 * @return this plane
 	 */
 	PT normalize();
 
 	/** Set the equation of the plane according to the specified plane.
-	 * 
+	 *
 	 * @param plane is the plane to copy.
 	 */
 	default void set(Plane3D<?, ?, ?, ?, ?> plane) {
@@ -155,16 +155,17 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 
 	/** Set the equation of the plane according to be colinear (if possible)
 	 * to the specified plane.
-	 * 
+	 *
 	 * @param a the a component of the plane equation.
 	 * @param b the b component of the plane equation.
 	 * @param c the c component of the plane equation.
 	 * @param d the d component of the plane equation.
 	 */
+	@SuppressWarnings("checkstyle:parametername")
 	void set(double a, double b, double c, double d);
 
 	/** Set this plane to be coplanar with all the three specified points.
-	 * 
+	 *
 	 * @param p1x is the first point on the plane.
 	 * @param p1y is the first point on the plane.
 	 * @param p1z is the first point on the plane.
@@ -175,10 +176,11 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param p3y is the third point on the plane.
 	 * @param p3z is the third point on the plane.
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	void set(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z);
 
 	/** Set this plane to be coplanar with all the three specified points.
-	 * 
+	 *
 	 * @param p1 is the first point.
 	 * @param p2 is the second point.
 	 * @param p3 is the third point.
@@ -191,7 +193,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	}
 
 	/** Set this plane to contain the point and have the two vectors to be form the plane.
-	 * 
+	 *
 	 * @param pivot is the point in the plane.
 	 * @param vector1 is the first vector that represents a direction of tha plane.
 	 * @param vector2 is the second vector that represents a direction of tha plane.
@@ -199,14 +201,14 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	void set(Point3D<?, ?, ?> pivot, Vector3D<?, ?, ?> vector1, Vector3D<?, ?, ?> vector2);
 
 	/** Set this plane to contain the point and have the given normal vector.
-	 * 
+	 *
 	 * @param pivot is the point in the plane.
 	 * @param normal the normal of the plane.
 	 */
 	void set(Point3D<?, ?, ?> pivot, Vector3D<?, ?, ?> normal);
 
 	/** Replies a clone of this plane.
-	 * 
+	 *
 	 * @return a clone.
 	 */
 	@Pure
@@ -217,9 +219,9 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 *
 	 * @param point is the point.
 	 * @return the distance from the plane to the point.
-	 * It will be positive if the point is on the side of the
-	 * plane pointed to by the normal Vec3f, negative otherwise.
-	 * If the result is 0, the point is on the plane.
+	 *     It will be positive if the point is on the side of the
+	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     If the result is 0, the point is on the plane.
 	 */
 	@Pure
 	default double getDistanceTo(Point3D<?, ?, ?> point) {
@@ -234,9 +236,9 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param y y coordinate of the point.
 	 * @param z z coordinate of the point.
 	 * @return the distance from the plane to the point.
-	 * It will be positive if the point is on the side of the
-	 * plane pointed to by the normal Vec3f, negative otherwise.
-	 * If the result is 0, the point is on the plane.
+	 *     It will be positive if the point is on the side of the
+	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     If the result is 0, the point is on the plane.
 	 */
 	@Pure
 	double getDistanceTo(double x, double y, double z);
@@ -246,43 +248,49 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 *
 	 * @param plane the plane.
 	 * @return the distance from the plane to the parallel plane.
-	 * It will be positive if the plane is on the side of the
-	 * plane pointed to by the normal Vec3f, negative otherwise.
-	 * If the result is 0, the planes are the same. 
-	 * If the result is NaN, the planes aren't colinear.
+	 *     It will be positive if the plane is on the side of the
+	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     If the result is 0, the planes are the same.
+	 *     If the result is NaN, the planes aren't colinear.
 	 */
 	@Pure
 	default double getDistanceTo(Plane3D<?, ?, ?, ?, ?> plane) {
 		assert plane != null : AssertMessages.notNullParameter();
-		return getDistanceTo(plane.getEquationComponentA(), plane.getEquationComponentB(), plane.getEquationComponentC(), plane.getEquationComponentD());
+		return getDistanceTo(plane.getEquationComponentA(), plane.getEquationComponentB(),
+				plane.getEquationComponentC(), plane.getEquationComponentD());
 	}
 
 	/**
 	 * Replies the distance between this plane and the given parallel plane.
 	 *
-	 * @param p the plane.
+	 * @param a the a component of the plane equation.
+	 * @param b the b component of the plane equation.
+	 * @param c the c component of the plane equation.
+	 * @param d the d component of the plane equation.
 	 * @return the distance from the plane to the parallel plane.
-	 * It will be positive if the plane is on the side of the
-	 * plane pointed to by the normal Vec3f, negative otherwise.
-	 * If the result is 0, the planes are the same. 
-	 * If the result is NaN, the planes aren't colinear.
+	 *     It will be positive if the plane is on the side of the
+	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     If the result is 0, the planes are the same.
+	 *     If the result is NaN, the planes aren't colinear.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parametername")
 	double getDistanceTo(double a, double b, double c, double d);
 
 	/** Replies the intersection between this plane and the specified one.
-	 * 
+	 *
 	 * @param plane is used to compute the intersection.
 	 * @return the intersection segment or {@code null}
 	 */
 	@Pure
 	default S getIntersection(Plane3D<?, ?, ?, ?, ?> plane) {
 		assert plane != null : AssertMessages.notNullParameter();
-		return getIntersection(plane.getEquationComponentA(), plane.getEquationComponentB(), plane.getEquationComponentC(), plane.getEquationComponentD());
+		return getIntersection(plane.getEquationComponentA(), plane.getEquationComponentB(),
+				plane.getEquationComponentC(), plane.getEquationComponentD());
 	}
 
 	/** Replies the intersection between this plane and the specified one.
-	 * 
+	 *
 	 * @param a the a component of the plane equation.
 	 * @param b the b component of the plane equation.
 	 * @param c the c component of the plane equation.
@@ -290,10 +298,11 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @return the intersection segment or {@code null}
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parametername")
 	S getIntersection(double a, double b, double c, double d);
 
 	/** Replies the projection of the given point on the plane.
-	 * 
+	 *
 	 * @param point the point to project on the plane.
 	 * @return the projection point never {@code null}
 	 */
@@ -304,7 +313,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	}
 
 	/** Replies the projection of the given point on the plane.
-	 * 
+	 *
 	 * @param x x coordinate of the point to project on the plane.
 	 * @param y y coordinate of the point to project on the plane.
 	 * @param z z coordinate of the point to project on the plane.
@@ -314,7 +323,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	P getProjection(double x, double y, double z);
 
 	/** Set point that lies on the plane and is used a pivot point.
-	 * 
+	 *
 	 * @param x x component of the pivot point.
 	 * @param y y component of the pivot point.
 	 * @param z z component of the pivot point.
@@ -322,7 +331,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	void setPivot(double x, double y, double z);
 
 	/** Set point that lies on the plane and is used a pivot point.
-	 * 
+	 *
 	 * @param point the new pivot point.
 	 */
 	default void setPivot(Point3D<?, ?, ?> point) {
@@ -331,13 +340,13 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	}
 
 	/** Replies the point that lies on the plane and is used a pivot point.
-	 * 
+	 *
 	 * @return the pivot point.
 	 */
 	P getPivot();
 
 	/** Translate this plane about the given vector.
-	 * 
+	 *
 	 * @param x x component of the translation vector.
 	 * @param y y component of the translation vector.
 	 * @param z z component of the translation vector.
@@ -345,7 +354,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	void translate(double x, double y, double z);
 
 	/** Translate this plane about the given vector.
-	 * 
+	 *
 	 * @param vector the translation vector.
 	 */
 	default void translate(Vector3D<?, ?, ?> vector) {
@@ -355,7 +364,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 
 	/** Translate this plane along the plane normal direction with the given distance.
 	 * This function change the {@code d} component of the plane equation: {@code a.x + b.y + c.z + d = 0}.
-	 * 
+	 *
 	 * @param distance the positive or negative distance to add to the {@code d} component of the plane equation.
 	 * @since 18.0
 	 */
@@ -376,7 +385,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	default void rotate(Vector3D<?, ?, ?> axis, double angle) {
 		assert axis != null : AssertMessages.notNullParameter(0);
-		final Quaternion<?, ?, ?> q = getGeomFactory().newQuaternionFromAxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle);
+		final var q = getGeomFactory().newQuaternionFromAxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle);
 		rotate(q, null);
 	}
 
@@ -389,7 +398,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param angle the rotation angle.
 	 */
 	default void rotate(double axisx, double axisy, double axisz, double angle) {
-		final Quaternion<?, ?, ?> q = getGeomFactory().newQuaternionFromAxisAngle(axisx, axisy, axisz, angle);
+		final var q = getGeomFactory().newQuaternionFromAxisAngle(axisx, axisy, axisz, angle);
 		rotate(q, null);
 	}
 
@@ -402,7 +411,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	default void rotate(Vector3D<?, ?, ?> axis, double angle, Point3D<?, ?, ?> pivot) {
 		assert axis != null : AssertMessages.notNullParameter(0);
-		final Quaternion<?, ?, ?> q = getGeomFactory().newQuaternionFromAxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle);
+		final var q = getGeomFactory().newQuaternionFromAxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle);
 		rotate(q, pivot);
 	}
 
@@ -459,7 +468,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	@Pure
 	@XtextOperator("+")
 	default PT operator_plus(Vector3D<?, ?, ?> v) {
-		final PT clone = clone();
+		final var clone = clone();
 		clone.translate(v);
 		return clone;
 	}
@@ -478,7 +487,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	@Pure
 	@XtextOperator("+")
 	default PT operator_plus(double distance) {
-		final PT clone = clone();
+		final var clone = clone();
 		clone.translate(distance);
 		return clone;
 	}
@@ -494,6 +503,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default PT $plus(Vector3D<?, ?, ?> v) {
 		return operator_plus(v);
 	}
@@ -510,10 +520,9 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("+")
+	@Inline("operator_plus($1)")
 	default PT $plus(double distance) {
-		final PT clone = clone();
-		clone.translate(distance);
-		return clone;
+		return operator_plus(distance);
 	}
 
 	/** Create a new plane by translating this plane of the given vector: {@code this - v}
@@ -530,8 +539,25 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	@XtextOperator("-")
 	default PT operator_minus(Vector3D<?, ?, ?> v) {
 		assert v != null : AssertMessages.notNullParameter();
+		final var clone = clone();
+		clone.translate(-v.getX(), -v.getY(), -v.getZ());
+		return clone;
+	}
+
+	/** Negation of this plane: {@code -this}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the result.
+	 * @see #negate()
+	 */
+	@Pure
+	@XtextOperator("(-)")
+	default PT operator_minus() {
 		final PT clone = clone();
-		clone.translate(-v.getX(), -v.getY(), v.getZ());
+		clone.negate();
 		return clone;
 	}
 
@@ -549,7 +575,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	@Pure
 	@XtextOperator("-")
 	default PT operator_minus(double distance) {
-		final PT clone = clone();
+		final var clone = clone();
 		clone.translate(-distance);
 		return clone;
 	}
@@ -565,8 +591,24 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default PT $minus(Vector3D<?, ?, ?> v) {
 		return operator_minus(v);
+	}
+
+	/** Negation of this plane: {@code -this}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @return the result.
+	 * @see #negate()
+	 */
+	@Pure
+	@ScalaOperator("(-)")
+	@Inline("operator_minus($1)")
+	default PT $minus() {
+		return operator_minus();
 	}
 
 	/** Create a new plane by translating this plane of the given distance along the plane normal
@@ -581,6 +623,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("-")
+	@Inline("operator_minus($1)")
 	default PT $minus(double distance) {
 		return operator_minus(distance);
 	}
@@ -649,31 +692,16 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param q the rotation quaternion
+	 * @param quaternion the rotation quaternion
 	 * @return the transformed shape.
 	 * @see #rotate(Quaternion)
 	 */
 	@Pure
 	@XtextOperator("*")
-	default PT operator_multiply(Quaternion<?, ?, ?> q) {
-		final PT clone = clone();
-		clone.rotate(q);
+	default PT operator_multiply(Quaternion<?, ?, ?> quaternion) {
+		final var clone = clone();
+		clone.rotate(quaternion);
 		return clone;
-	}
-
-	/** Create a new plane by applying the given rotation: {@code this * q}
-	 *
-	 * <p>This function is an implementation of the operator for
-	 * the <a href="http://scala-lang.org/">Scala Language</a>.
-	 *
-	 * @param q the rotation quaternion
-	 * @return the transformed shape.
-	 * @see #rotate(Quaternion)
-	 */
-	@Pure
-	@ScalaOperator("*")
-	default PT $times(Quaternion<?, ?, ?> q) {
-		return operator_multiply(q);
 	}
 
 	/** Create a new plane by applying the given transformation: {@code this * t}
@@ -689,9 +717,25 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	@Pure
 	@XtextOperator("*")
 	default PT operator_multiply(Transform3D t) {
-		final PT clone = clone();
+		final var clone = clone();
 		clone.transform(t);
 		return clone;
+	}
+
+	/** Create a new plane by applying the given rotation: {@code this * q}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param quaternion the rotation quaternion
+	 * @return the transformed shape.
+	 * @see #rotate(Quaternion)
+	 */
+	@Pure
+	@ScalaOperator("*")
+	@Inline("operator_multiply($1)")
+	default PT $times(Quaternion<?, ?, ?> quaternion) {
+		return operator_multiply(quaternion);
 	}
 
 	/** Create a new plane by applying the given transformation: {@code this * t}
@@ -705,39 +749,9 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("*")
+	@Inline("operator_multiply($1)")
 	default PT $times(Transform3D t) {
 		return operator_multiply(t);
-	}
-
-	/** Negation of this plane: {@code -this}
-	 *
-	 * <p>This function is an implementation of the operator for
-	 * the languages that defined or based on the
-	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
-	 *
-	 * @return the result.
-	 * @see #negate()
-	 */
-	@Pure
-	@XtextOperator("(-)")
-	default PT operator_minus() {
-		final PT clone = clone();
-		clone.negate();
-		return clone;
-	}
-
-	/** Negation of this plane: {@code -this}
-	 *
-	 * <p>This function is an implementation of the operator for
-	 * the <a href="http://scala-lang.org/">Scala Language</a>.
-	 *
-	 * @return the result.
-	 * @see #negate()
-	 */
-	@Pure
-	@ScalaOperator("(-)")
-	default PT $minus() {
-		return operator_minus();
 	}
 
 	/** Replies if the given point is inside the plane: {@code this && point}
@@ -763,13 +777,46 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param shape the shape to test.
+	 * @param plane the shape to test.
 	 * @return {@code true} if the shapes are intersecting. Otherwise, {@code false}.
 	 * @see #intersects(Shape3D)
 	 */
 	@Pure
 	@XtextOperator("&&")
+	@Inline("intersects($1)")
 	default boolean operator_and(Plane3D<?, ?, ?, ?, ?> plane) {
+		return intersects(plane);
+	}
+
+	/** Replies if the given point is inside the plane: {@code this && point}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param point the point to test.
+	 * @return {@code true} if the point is inside the plane. Otherwise, {@code false}.
+	 * @see #intersects(Point3D)
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("intersects($1)")
+	default boolean $amp$amp(Point3D<?, ?, ?> point) {
+		return intersects(point);
+	}
+
+	/** Replies if the given plane has an intersection with this plane: {@code this && plane}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param plane the shape to test.
+	 * @return {@code true} if the shapes are intersecting. Otherwise, {@code false}.
+	 * @see #intersects(Shape3D)
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("intersects($1)")
+	default boolean $amp$amp(Plane3D<?, ?, ?, ?, ?> plane) {
 		return intersects(plane);
 	}
 
@@ -807,7 +854,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	}
 
 	/** Replies if the distance between this plane and the given point: {@code this .. point}.
-	 * 
 	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
@@ -815,9 +861,9 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 *
 	 * @param point the point to test.
 	 * @return the distance from the plane to the point.
-	 * It will be positive if the point is on the side of the
-	 * plane pointed to by the normal Vec3f, negative otherwise.
-	 * If the result is 0, the point is on the plane.
+	 *     It will be positive if the point is on the side of the
+	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     If the result is 0, the point is on the plane.
 	 * @see #getDistanceTo(Point3D)
 	 */
 	@Pure
@@ -835,9 +881,9 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 *
 	 * @param plane the plane to test.
 	 * @return the distance from the plane to the point.
-	 * It will be positive if the point is on the side of the
-	 * plane pointed to by the normal Vec3f, negative otherwise.
-	 * If the result is 0, the point is on the plane.
+	 *     It will be positive if the point is on the side of the
+	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     If the result is 0, the point is on the plane.
 	 * @see #getDistanceTo(Plane3D)
 	 */
 	@Pure

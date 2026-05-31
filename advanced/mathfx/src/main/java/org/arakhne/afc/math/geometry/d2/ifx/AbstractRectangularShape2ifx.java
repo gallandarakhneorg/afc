@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,9 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangular shape with 2 integer FX properties.
  *
@@ -83,7 +82,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 
 	@Override
 	public IT clone() {
-		final IT clone = super.clone();
+		final var clone = super.clone();
 		if (clone.minX != null) {
 			clone.minX = null;
 			clone.minXProperty().set(getMinX());
@@ -144,8 +143,8 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 			this.minX = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_X) {
 				@Override
 				protected void invalidated() {
-					final int currentMin = get();
-					final int currentMax = getMaxX();
+					final var currentMin = get();
+					final var currentMax = getMaxX();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxXProperty().set(currentMin);
@@ -177,8 +176,8 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 			this.maxX = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_X) {
 				@Override
 				protected void invalidated() {
-					final int currentMax = get();
-					final int currentMin = getMinX();
+					final var currentMax = get();
+					final var currentMin = getMinX();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minXProperty().set(currentMax);
@@ -210,8 +209,8 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 			this.minY = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_Y) {
 				@Override
 				protected void invalidated() {
-					final int currentMin = get();
-					final int currentMax = getMaxY();
+					final var currentMin = get();
+					final var currentMax = getMaxY();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxYProperty().set(currentMin);
@@ -243,8 +242,8 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 			this.maxY = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
 				@Override
 				protected void invalidated() {
-					final int currentMax = get();
-					final int currentMin = getMinY();
+					final var currentMax = get();
+					final var currentMin = getMinY();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minYProperty().set(currentMax);
@@ -259,12 +258,12 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Override
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Integer.hashCode(getMinX());
 		bits = 31 * bits + Integer.hashCode(getMinY());
 		bits = 31 * bits + Integer.hashCode(getMaxX());
 		bits = 31 * bits + Integer.hashCode(getMaxY());
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Override

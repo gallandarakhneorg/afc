@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,10 +34,9 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.maplayer.MapLayer;
 import org.arakhne.afc.progress.Progression;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Reader of GIS elements in a Java serialized form.
  *
@@ -74,6 +73,7 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 	 * @param url is the URL of the file to read
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public GISLayerReader(URL url) throws IOException {
 		this(url.openStream());
 	}
@@ -84,6 +84,7 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 	 * @param channel is the file to write
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public GISLayerReader(ReadableByteChannel channel) throws IOException {
 		this(Channels.newInputStream(channel));
 	}
@@ -172,10 +173,10 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 		T selectedObject = null;
 
 		if (this.restToRead > 0) {
-			final ObjectInputStream oos = new ObjectInputStream(this.input);
+			final var oos = new ObjectInputStream(this.input);
 			do {
 				try {
-					final Object readObject = oos.readObject();
+					final var readObject = oos.readObject();
 					--this.restToRead;
 					if (type.isInstance(readObject)) {
 						selectedObject = type.cast(readObject);
@@ -204,30 +205,30 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 	 */
 	@SuppressWarnings({"resource", "checkstyle:magicnumber"})
 	protected void readHeader() throws IOException {
-		final ReadableByteChannel in = Channels.newChannel(this.input);
-		final int limit = HEADER_KEY.getBytes().length + 2;
-		final ByteBuffer hBuffer = ByteBuffer.allocate(limit);
+		final var in = Channels.newChannel(this.input);
+		final var limit = HEADER_KEY.getBytes().length + 2;
+		final var hBuffer = ByteBuffer.allocate(limit);
 		hBuffer.limit(limit);
 
 		// Check the header
-		final byte[] key = GISLayerIOConstants.HEADER_KEY.getBytes();
-		final int n = in.read(hBuffer);
+		final var key = GISLayerIOConstants.HEADER_KEY.getBytes();
+		final var n = in.read(hBuffer);
 		if (n != limit) {
 			throw new IOException("Invalid file header"); //$NON-NLS-1$
 		}
-		for (int i = 0; i < key.length; ++i) {
+		for (var i = 0; i < key.length; ++i) {
 			if (hBuffer.get(i) != key[i]) {
 				throw new IOException("Invalid file header"); //$NON-NLS-1$
 			}
 		}
 		// Check the format version
-		final byte major = hBuffer.get(key.length);
-		final byte minor = hBuffer.get(key.length + 1);
+		final var major = hBuffer.get(key.length);
+		final var minor = hBuffer.get(key.length + 1);
 		if (major != GISLayerIOConstants.MAJOR_SPEC_NUMBER || minor != GISLayerIOConstants.MINOR_SPEC_NUMBER) {
 			throw new IOException("Invalid file format version."); //$NON-NLS-1$
 		}
 		// Read the number of objects inside the input stream
-		final ByteBuffer sBuffer = ByteBuffer.allocate(4);
+		final var sBuffer = ByteBuffer.allocate(4);
 		sBuffer.limit(4);
 		in.read(sBuffer);
 		sBuffer.rewind();
@@ -272,7 +273,7 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 
 		@Override
 		public T next() {
-			final T n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}

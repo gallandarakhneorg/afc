@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,14 +29,12 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import com.google.common.collect.Iterables;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
-import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.NullAttribute;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class implements an abstract attribute provider.
@@ -119,7 +117,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public boolean getAttributeAsBool(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -129,7 +127,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public int getAttributeAsInt(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -139,7 +137,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public long getAttributeAsLong(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -149,7 +147,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public float getAttributeAsFloat(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -159,7 +157,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public double getAttributeAsDouble(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -169,7 +167,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public String getAttributeAsString(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -179,7 +177,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public UUID getAttributeAsUUID(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -189,7 +187,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public URL getAttributeAsURL(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -199,7 +197,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public URI getAttributeAsURI(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -209,7 +207,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public Date getAttributeAsDate(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -219,7 +217,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public InetAddress getAttributeAsInetAddress(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -229,7 +227,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public Enum<?> getAttributeAsEnumeration(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -239,7 +237,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public <T extends Enum<T>> T getAttributeAsEnumeration(String name, Class<T> type) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -249,7 +247,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public Class<?> getAttributeAsJavaClass(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value == null) {
 			throw new NoAttributeFoundException(name);
 		}
@@ -259,7 +257,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public boolean getAttribute(String name, boolean defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getBoolean();
@@ -273,7 +271,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public int getAttribute(String name, int defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return (int) value.getInteger();
@@ -287,7 +285,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public long getAttribute(String name, long defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getInteger();
@@ -301,7 +299,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public float getAttribute(String name, float defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return (float) value.getReal();
@@ -315,7 +313,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public double getAttribute(String name, double defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getReal();
@@ -329,7 +327,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public String getAttribute(String name, String defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getString();
@@ -343,7 +341,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public UUID getAttribute(String name, UUID defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getUUID();
@@ -357,7 +355,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public URL getAttribute(String name, URL defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getURL();
@@ -371,7 +369,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public URI getAttribute(String name, URI defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getURI();
@@ -385,7 +383,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public Date getAttribute(String name, Date defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getDate();
@@ -399,7 +397,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public InetAddress getAttribute(String name, InetAddress defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getInetAddress();
@@ -413,7 +411,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public InetAddress getAttribute(String name, InetSocketAddress defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getInetAddress();
@@ -428,7 +426,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T getAttribute(String name, T defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return (T) value.getEnumeration();
@@ -442,7 +440,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	@Pure
 	@Override
 	public Class<?> getAttribute(String name, Class<?> defaultValue) {
-		final AttributeValue value = getAttribute(name);
+		final var value = getAttribute(name);
 		if (value != null) {
 			try {
 				return value.getJavaClass();
@@ -455,7 +453,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 
 	@Override
 	public final String toString() {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		toJson(buffer);
 		return buffer.toString();
 	}

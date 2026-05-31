@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,9 @@ import io.bootique.meta.module.ModulesMetadata;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
+ * @deprecated since 18.0
  */
+@Deprecated(since = "18.0")
 public final class Configs {
 
 	private Configs() {
@@ -152,8 +154,8 @@ public final class Configs {
 		Map<String, Object> entry = content;
 		for (int i = 0; i < elements.length - 1; ++i) {
 			final Object val = entry.get(elements[i]);
-			if (val instanceof Map<?, ?>) {
-				entry = (Map<String, Object>) val;
+			if (val instanceof Map map) {
+				entry = map;
 			} else {
 				final Map<String, Object> newElement = content.getClass().getDeclaredConstructor().newInstance();
 				entry.put(elements[i], newElement);

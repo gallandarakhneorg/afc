@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,12 @@
 
 package org.arakhne.afc.math.extensions.xtext;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.matrix.Matrix2d;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Matrix4d;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Xtext extensions for matrices.
  *
@@ -62,7 +61,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix2d> M operator_plus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.add(left, right);
         return result;
     }
@@ -87,7 +86,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix3d> M operator_plus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.add(left, right);
         return result;
     }
@@ -112,12 +111,12 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix4d> M operator_plus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.add(left, right);
         return result;
     }
 
-    /** Replies the substraction of the given scalar to this matrix: {@code left - right}.
+    /** Replies the subtraction of the given scalar to this matrix: {@code left - right}.
      *
      * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
@@ -137,7 +136,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix2d> M operator_minus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.set(
                 left - right.getM00(),
                 left - right.getM01(),
@@ -146,7 +145,7 @@ public final class MatrixExtensions {
         return result;
     }
 
-    /** Replies the substraction of the given scalar to this matrix: {@code left - right}.
+    /** Replies the subtraction of the given scalar to this matrix: {@code left - right}.
      *
      * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
@@ -166,7 +165,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix3d> M operator_minus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.set(
                 left - right.getM00(),
                 left - right.getM01(),
@@ -180,7 +179,7 @@ public final class MatrixExtensions {
         return result;
     }
 
-    /** Replies the substraction of the given scalar to this matrix: {@code left - right}.
+    /** Replies the subtraction of the given scalar to this matrix: {@code left - right}.
      *
      * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
@@ -200,7 +199,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix4d> M operator_minus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.set(
                 left - right.getM00(),
                 left - right.getM01(),
@@ -242,7 +241,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix2d> M operator_multiply(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.mul(left, right);
         return result;
     }
@@ -267,7 +266,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix3d> M operator_multiply(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.mul(left, right);
         return result;
     }
@@ -292,7 +291,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix4d> M operator_multiply(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.mul(left, right);
         return result;
     }
@@ -318,7 +317,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix2d> M operator_divide(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.set(
                 left / right.getM00(),
                 left / right.getM01(),
@@ -347,7 +346,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix3d> M operator_divide(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.set(
                 left / right.getM00(),
                 left / right.getM01(),
@@ -381,7 +380,7 @@ public final class MatrixExtensions {
     @SuppressWarnings("unchecked")
     public static <M extends Matrix4d> M operator_divide(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
-        final M result = (M) right.clone();
+        final var result = (M) right.clone();
         result.set(
                 left / right.getM00(),
                 left / right.getM01(),

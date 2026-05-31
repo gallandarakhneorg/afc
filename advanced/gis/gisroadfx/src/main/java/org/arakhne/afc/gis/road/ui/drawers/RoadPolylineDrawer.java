@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,11 @@ package org.arakhne.afc.gis.road.ui.drawers;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.ui.drawers.AbstractMapPolylineDrawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 import org.arakhne.afc.vmutil.ColorNames;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Drawer of a map road polyline.
  *
@@ -42,11 +41,11 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 
 	/** Default color for roads' interior.
 	 */
-	public static final int ROAD_COLOR = ColorNames.getColorFromName("white"); //$NON-NLS-1$
+	public static final int ROAD_COLOR = ColorNames.getColorFromName("white").intValue(); //$NON-NLS-1$
 
 	/** Default color for selected roads' interior.
 	 */
-	public static final int SELECTED_ROAD_COLOR = ColorNames.getColorFromName("antiquewhite"); //$NON-NLS-1$
+	public static final int SELECTED_ROAD_COLOR = ColorNames.getColorFromName("antiquewhite").intValue(); //$NON-NLS-1$
 
 	@Override
 	@Pure
@@ -85,7 +84,7 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 	 * @param element the element to draw.
 	 */
 	protected void setupRoadBorders(ZoomableGraphicsContext gc, RoadPolyline element) {
-		final Color color = gc.rgb(getDrawingColor(element));
+		final var color = gc.rgb(getDrawingColor(element));
 		gc.setStroke(color);
 		final double width;
 		if (element.isWidePolyline()) {

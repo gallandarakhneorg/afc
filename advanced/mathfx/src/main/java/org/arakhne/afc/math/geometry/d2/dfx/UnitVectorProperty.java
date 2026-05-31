@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,14 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import java.lang.ref.WeakReference;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A JavaFX property that is representing a unit vector.
@@ -86,7 +84,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 	}
 
 	private void init() {
-		final Vector2dfx v = getGeomFactory().newVector();
+		final var v = getGeomFactory().newVector();
 		this.x = new ReadOnlyDoubleWrapper(v, MathFXAttributeNames.X);
 		this.y = new ReadOnlyDoubleWrapper(v, MathFXAttributeNames.X);
 		v.set(this.x, this.y);
@@ -100,9 +98,9 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 		}
 		if (this.fake == null) {
 			this.fake = getGeomFactory().newVector();
-			final DoubleProperty x = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.X);
+			final var x = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.X);
 			x.bind(internalXProperty());
-			final DoubleProperty y = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.Y);
+			final var y = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.Y);
 			y.bind(internalYProperty());
 			this.fake.set(x, y);
 		}
@@ -123,7 +121,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 	public void set(double x, double y) {
 		assert Vector2D.isUnitVector(x, y) : AssertMessages.normalizedParameters(0, 1);
 		if ((x != getX() || y != getY()) && !isBound()) {
-			final Vector2dfx v = super.get();
+			final var v = super.get();
 			v.set(x, y);
 			fireValueChangedEvent();
 		}

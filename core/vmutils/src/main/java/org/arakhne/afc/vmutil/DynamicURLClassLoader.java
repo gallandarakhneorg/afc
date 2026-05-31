@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ public class DynamicURLClassLoader extends URLClassLoader {
 	 * @param urls the URLs to be added to the search path of URLs
 	 */
 	public void addURLs(URL... urls) {
-		for (final URL url : urls) {
+		for (final var url : urls) {
 			addURL(url);
 		}
 	}
@@ -94,6 +94,7 @@ public class DynamicURLClassLoader extends URLClassLoader {
 	 * @param urls the URLs to search for classes and resources
 	 * @return the resulting class loader
 	 */
+	@SuppressWarnings("removal")
 	@Pure
 	public static DynamicURLClassLoader newInstance(final ClassLoader parent, final URL... urls) {
 		// Need a privileged block to create the class loader
@@ -124,12 +125,13 @@ public class DynamicURLClassLoader extends URLClassLoader {
     	}
 
     	@Override
+    	@SuppressWarnings("removal")
     	public synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
     		// First check if we have permission to access the package. This
     		// should go away once we've added support for exported packages.
-    		final SecurityManager sm = System.getSecurityManager();
+    		final var sm = System.getSecurityManager();
     		if (sm != null) {
-    			final int i = name.lastIndexOf('.');
+    			final var i = name.lastIndexOf('.');
     			if (i != -1) {
     				sm.checkPackageAccess(name.substring(0, i));
     			}

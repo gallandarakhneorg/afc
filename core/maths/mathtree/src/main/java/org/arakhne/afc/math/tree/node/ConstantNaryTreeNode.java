@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,8 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This is the generic implementation of a n-ary
  * tree. This node has a constant count of children.
@@ -140,7 +139,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 		if (this.children != null) {
-			for (final N child : this.children) {
+			for (final var child : this.children) {
 				if (child != null) {
 					child.setParentNodeReference(toN(), false);
 				}
@@ -162,7 +161,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 		removeAllUserData();
 		if (this.children != null) {
 			N child;
-			for (int i = 0; i < this.children.length; ++i) {
+			for (var i = 0; i < this.children.length; ++i) {
 				child = this.children[i];
 				if (child != null) {
 					setChildAt(i, null);
@@ -187,8 +186,8 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	@Pure
 	@Override
 	public final int indexOf(N child) {
-		int i = 0;
-		for (final N cchild : this.children) {
+		var i = 0;
+		for (final var cchild : this.children) {
 			if (cchild == child) {
 				return i;
 			}
@@ -216,7 +215,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	 */
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
-		final N oldChild = (index < this.children.length) ? this.children[index] : null;
+		final var oldChild = (index < this.children.length) ? this.children[index] : null;
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -228,7 +227,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 		}
 
 		if (newChild != null) {
-			final N oldParent = newChild.getParentNode();
+			final var oldParent = newChild.getParentNode();
 			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
@@ -260,7 +259,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	@Override
 	public final boolean removeChild(N child) {
 		if (child != null && this.children != null) {
-			final int index = indexOf(child);
+			final var index = indexOf(child);
 			if (index >= 0 && index < this.children.length) {
 				this.children[index] = null;
 				--this.notNullChildCount;
@@ -275,7 +274,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	@Pure
 	@Override
 	public final boolean isLeaf() {
-		for (final N child : this.children) {
+		for (final var child : this.children) {
 			if (child != null) {
 				return false;
 			}
@@ -293,9 +292,9 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	@Pure
 	@Override
 	public int getMinHeight() {
-		int min = Integer.MAX_VALUE;
-		boolean set = false;
-		for (final N child : this.children) {
+		var min = Integer.MAX_VALUE;
+		var set = false;
+		for (final var child : this.children) {
 			if (child != null) {
 				if (set) {
 					min = Math.min(min, child.getMinHeight());
@@ -311,9 +310,9 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	@Pure
 	@Override
 	public int getMaxHeight() {
-		int max = Integer.MIN_VALUE;
-		boolean set = false;
-		for (final N child : this.children) {
+		var max = Integer.MIN_VALUE;
+		var set = false;
+		for (final var child : this.children) {
 			if (child != null) {
 				if (set) {
 					max = Math.max(max, child.getMaxHeight());
@@ -331,7 +330,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 		if (isLeaf()) {
 			heights.add(Integer.valueOf(currentHeight));
 		} else {
-			for (final N child : this.children) {
+			for (final var child : this.children) {
 				if (child != null) {
 					child.getHeights(currentHeight + 1, heights);
 				}

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A 2D segment/line encapsulating points with 2 integer numbers.
  *
@@ -97,17 +96,18 @@ public class SegmentPoint2i extends AbstractShape2i<SegmentPoint2i>
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + this.p1.hashCode();
 		bits = 31 * bits + this.p2.hashCode();
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append("("); //$NON-NLS-1$
 		b.append(getX1());
 		b.append(", "); //$NON-NLS-1$
@@ -124,10 +124,10 @@ public class SegmentPoint2i extends AbstractShape2i<SegmentPoint2i>
 	@Override
 	public Shape2i<?> createTransformedShape(Transform2D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
-		final Point2i point = getGeomFactory().newPoint(getX1(), getY1());
+		final var point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
-		final int x1 = point.x;
-		final int y1 = point.y;
+		final var x1 = point.x;
+		final var y1 = point.y;
 		point.set(getX2(), getY2());
 		transform.transform(point);
 		return getGeomFactory().newSegment(x1, y1, point.ix(), point.iy());

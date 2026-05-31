@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -44,6 +42,7 @@ import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Element of a GIS application.
  *
@@ -82,12 +81,12 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the attribute provider to use. If {@code null} was specified
 	 *     the new GISElement will use a default attribute provider (most of the time an
-	 * {@link HeapAttributeCollection}
+	 *     {@link HeapAttributeCollection}
 	 * @since 4.0
 	 */
 	public AbstractGISElement(UUID id, AttributeCollection attributeSource) {
 		this.uid = id;
-		if ((attributeSource == null) || (attributeSource == this)) {
+		if (attributeSource == null || attributeSource == this) {
 			this.attributeSource = new HeapAttributeCollection();
 		} else {
 			this.attributeSource = attributeSource;
@@ -116,7 +115,7 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 	@Pure
 	public T clone() {
 		try {
-			final T element = (T) super.clone();
+			final var element = (T) super.clone();
 			element.attributeSource = this.attributeSource.clone();
 			element.attributeSource.addAttributeChangeListener(element);
 			element.mapContainer = null;
@@ -159,12 +158,12 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 		if (this.mapContainer == null) {
 			return null;
 		}
-		final C container = this.mapContainer.get();
+		final var container = this.mapContainer.get();
 		if (container == null) {
 			return null;
 		}
-		if (container instanceof GISContentElement<?>) {
-			return ((GISContentElement<?>) container).getTopContainer();
+		if (container instanceof GISContentElement cont) {
+			return cont.getTopContainer();
 		}
 		return container;
 	}
@@ -210,14 +209,14 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 	 * that for two elements with the same geo-localized points, they
 	 * have the same geo-location identifier (Geo-Id) and they
 	 * have different unique ientifier (Uid):
-	 * <pre>{@code 
+	 * <pre><code>
 	 * GISElement obj1 = new MapPolyline(100,10,200,30,300,4);
 	 * GISElement obj2 = new MapPolyline(100,10,200,30,300,4);
 	 * assert( obj1.getGeoId().equals(obj2.getGeoId()) );
 	 * assert( obj2.getGeoId().equals(obj1.getGeoId()) );
 	 * assert( ! obj1.getUid().equals(obj2.getUid()) );
 	 * assert( ! obj2.getUid().equals(obj1.getUid()) );
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return an identifier
 	 * @since 4.0
@@ -254,11 +253,11 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 
 	@Override
 	public int copyAttributes(GISElement container) {
-		final Collection<Attribute> source = container.getAllAttributes();
+		final var source = container.getAllAttributes();
 		if (source != null) {
-			int count = 0;
-			final AttributeCollection provider = getAttributeCollection();
-			for (final Attribute attr : source) {
+			var count = 0;
+			final var provider = getAttributeCollection();
+			for (final var attr : source) {
 				try {
 					provider.setAttribute(attr);
 					++count;
@@ -274,7 +273,7 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 	@Override
 	@Pure
 	public String getName() {
-		final AttributeValue val = getAttributeCollection().getAttribute(ATTR_NAME);
+		final var val = getAttributeCollection().getAttribute(ATTR_NAME);
 		try {
 			if (val != null) {
 				return val.getString();
@@ -665,7 +664,7 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 	@Override
 	@Pure
 	public String hashKey() {
-		final StringBuilder buf = new StringBuilder();
+		final var buf = new StringBuilder();
 		buf.append(getClass().getName());
 		buf.append('@');
 		buf.append(Integer.toHexString(hashCode()));
@@ -675,7 +674,7 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 	@Override
 	@Pure
 	public final String toString() {
-		final JsonBuffer buffer = new JsonBuffer();
+		final var buffer = new JsonBuffer();
 		toJson(buffer);
 		return buffer.toString();
 	}

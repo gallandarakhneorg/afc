@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,6 @@ import java.lang.ref.SoftReference;
 import java.util.Iterator;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
@@ -33,6 +31,7 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.graph.GraphPoint;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class represents the connection point inside a road network and
@@ -73,7 +72,7 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
 	@Override
 	@Pure
 	public RoadConnection getWrappedRoadConnection() {
-		final RoadConnection c = this.connection.get();
+		final var c = this.connection.get();
 		if (c == null) {
 			return this;
 		}
@@ -254,17 +253,17 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
 	@Pure
     public Iterator<RoadSegment> toCounterclockwiseIterator(RoadSegment startSegment, Boolean startSegmentConnectedByItsStart,
     		RoadSegment endSegment, Boolean endSegmentConnectedByItsStart, ClockwiseBoundType boundType) {
-		final RoadSegment arrivalSegment = this.arrivalSegment.get();
+		final var arrivalSegment = this.arrivalSegment.get();
 		assert arrivalSegment != null;
 		Boolean theStartConnection = null;
 		Boolean theEndConnection = null;
 		if (startSegmentConnectedByItsStart == null
 				&& arrivalSegment.equals(startSegment)) {
-			theStartConnection = this.startConnection;
+			theStartConnection = Boolean.valueOf(this.startConnection);
 		}
 		if (endSegmentConnectedByItsStart == null
 				&& arrivalSegment.equals(endSegment)) {
-			theEndConnection = this.startConnection;
+			theEndConnection = Boolean.valueOf(this.startConnection);
 		}
     	return this.connection.get().toCounterclockwiseIterator(startSegment, theStartConnection,
     			endSegment, theEndConnection, boundType);
@@ -310,17 +309,17 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
     public Iterator<RoadSegment> toCounterclockwiseIterator(RoadSegment startSegment,
     		Boolean startSegmentConnectedByItsStart, RoadSegment endSegment,
     		Boolean endSegmentConnectedByItsStart, ClockwiseBoundType boundType, CoordinateSystem2D system) {
-		final RoadSegment arrivalSegment = this.arrivalSegment.get();
+		final var arrivalSegment = this.arrivalSegment.get();
 		assert arrivalSegment != null;
 		Boolean theStartConnection = null;
 		Boolean theEndConnection = null;
 		if (startSegmentConnectedByItsStart == null
 				&& arrivalSegment.equals(startSegment)) {
-			theStartConnection = this.startConnection;
+			theStartConnection = Boolean.valueOf(this.startConnection);
 		}
 		if (endSegmentConnectedByItsStart == null
 				&& arrivalSegment.equals(endSegment)) {
-			theEndConnection = this.startConnection;
+			theEndConnection = Boolean.valueOf(this.startConnection);
 		}
     	return this.connection.get().toCounterclockwiseIterator(startSegment, theStartConnection, endSegment,
     			theEndConnection, boundType, system);
@@ -365,17 +364,17 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
     public Iterator<RoadSegment> toClockwiseIterator(RoadSegment startSegment,
     		Boolean startSegmentConnectedByItsStart, RoadSegment endSegment,
     		Boolean endSegmentConnectedByItsStart, ClockwiseBoundType boundType) {
-		final RoadSegment arrivalSegment = this.arrivalSegment.get();
+		final var arrivalSegment = this.arrivalSegment.get();
 		assert arrivalSegment != null;
 		Boolean theStartConnection = null;
 		Boolean theEndConnection = null;
 		if (startSegmentConnectedByItsStart == null
 				&& arrivalSegment.equals(startSegment)) {
-			theStartConnection = this.startConnection;
+			theStartConnection = Boolean.valueOf(this.startConnection);
 		}
 		if (endSegmentConnectedByItsStart == null
 				&& arrivalSegment.equals(endSegment)) {
-			theEndConnection = this.startConnection;
+			theEndConnection = Boolean.valueOf(this.startConnection);
 		}
     	return this.connection.get().toClockwiseIterator(startSegment, theStartConnection,
     			endSegment, theEndConnection, boundType);
@@ -421,17 +420,17 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
     public Iterator<RoadSegment> toClockwiseIterator(RoadSegment startSegment, Boolean startSegmentConnectedByItsStart,
     		RoadSegment endSegment, Boolean endSegmentConnectedByItsStart, ClockwiseBoundType boundType,
     		CoordinateSystem2D system) {
-		final RoadSegment arrivalSegment = this.arrivalSegment.get();
+		final var arrivalSegment = this.arrivalSegment.get();
 		assert arrivalSegment != null;
 		Boolean theStartConnection = null;
 		Boolean theEndConnection = null;
 		if (startSegmentConnectedByItsStart == null
 				&& arrivalSegment.equals(startSegment)) {
-			theStartConnection = this.startConnection;
+			theStartConnection = Boolean.valueOf(this.startConnection);
 		}
 		if (endSegmentConnectedByItsStart == null
 				&& arrivalSegment.equals(endSegment)) {
-			theEndConnection = this.startConnection;
+			theEndConnection = Boolean.valueOf(this.startConnection);
 		}
     	return this.connection.get().toClockwiseIterator(startSegment, theStartConnection, endSegment,
     			theEndConnection, boundType, system);

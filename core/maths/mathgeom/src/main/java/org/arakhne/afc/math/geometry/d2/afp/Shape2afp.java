@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,18 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with 2D floating coordinates.
  *
@@ -71,77 +71,90 @@ public interface Shape2afp<
 		if (isEmpty()) {
 			return false;
 		}
-		if (shape instanceof Rectangle2afp) {
+		final var type = shape.getType();
+		assert type != null;
+		if (type == Shape2DType.RECTANGLE) {
 			return contains((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		final PathIterator2afp<?> iterator = getPathIterator();
-		final int crossings;
-		if (shape instanceof Circle2afp) {
-			final Circle2afp<?, ?, ?, ?, ?, ?> circle = (Circle2afp<?, ?, ?, ?, ?, ?>) shape;
+		final var iterator = getPathIterator();
+		var crossings = 0;
+		switch (type) {
+		case CIRCLE:
+			final var circle = (Circle2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.calculatesCrossingsPathIteratorCircleShadow(
 					0, iterator,
 					circle.getCenterX(), circle.getCenterY(), circle.getRadius(),
 					CrossingComputationType.STANDARD);
-		} else if (shape instanceof Ellipse2afp) {
-			final Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse = (Ellipse2afp<?, ?, ?, ?, ?, ?>) shape;
+			break;
+		case ELLIPSE:
+			final var ellipse = (Ellipse2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.calculatesCrossingsPathIteratorEllipseShadow(
 					0, iterator,
 					ellipse.getMinX(), ellipse.getMinY(), ellipse.getWidth(), ellipse.getHeight(),
 					CrossingComputationType.STANDARD);
-		} else if (shape instanceof RoundRectangle2afp) {
-			final RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle = (RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape;
+			break;
+		case ROUND_RECTANGLE:
+			final var roundRectangle = (RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.calculatesCrossingsPathIteratorRoundRectangleShadow(
 					0, iterator,
 					roundRectangle.getMinX(), roundRectangle.getMinY(),
 					roundRectangle.getMaxX(), roundRectangle.getMaxY(),
 					roundRectangle.getArcWidth(), roundRectangle.getArcHeight(),
 					CrossingComputationType.STANDARD);
-		} else if (shape instanceof Segment2afp) {
-			final Segment2afp<?, ?, ?, ?, ?, ?> segment = (Segment2afp<?, ?, ?, ?, ?, ?>) shape;
+			break;
+		case SEGMENT:
+			final var segment = (Segment2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.calculatesCrossingsPathIteratorSegmentShadow(
 					0, iterator,
 					segment.getX1(), segment.getY1(),
 					segment.getX2(), segment.getY2(),
 					CrossingComputationType.STANDARD);
-		} else if (shape instanceof Triangle2afp) {
-			final Triangle2afp<?, ?, ?, ?, ?, ?> triangle = (Triangle2afp<?, ?, ?, ?, ?, ?>) shape;
+			break;
+		case TRIANGLE:
+			final var triangle = (Triangle2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.calculatesCrossingsPathIteratorTriangleShadow(
 					0, iterator,
 					triangle.getX1(), triangle.getY1(),
 					triangle.getX2(), triangle.getY2(),
 					triangle.getX3(), triangle.getY3(),
 					CrossingComputationType.STANDARD);
-		} else if (!iterator.isPolygon()) {
-		    // Only a polygon can contain another shape.
-		    return false;
-		} else {
-            final double minX;
+			break;
+		case RECTANGLE:
+		case ORIENTED_RECTANGLE:
+		case PARALLELOGRAM:
+		case PATH:
+		case MULTISHAPE:
+		default:
+			if (!iterator.isPolygon()) {
+			    // Only a polygon can contain another shape.
+			    return false;
+			}
+			final double minX;
 			final double minY;
 			final double maxX;
 			final double maxY;
-			final Shape2D<?, ?, ?, ?, ?, ?> originalBounds = shape.toBoundingBox();
-			if (originalBounds instanceof Rectangle2afp) {
-			    final Rectangle2afp<?, ?, ?, ?, ?, ?> rect = (Rectangle2afp<?, ?, ?, ?, ?, ?>) originalBounds;
+			final var originalBounds = shape.toBoundingBox();
+			if (originalBounds instanceof Rectangle2afp rect) {
 			    minX = rect.getMinX();
                 minY = rect.getMinY();
                 maxX = rect.getMaxX();
                 maxY = rect.getMaxY();
 			} else {
 			    assert originalBounds instanceof Rectangle2ai;
-                final Rectangle2ai<?, ?, ?, ?, ?, ?> rect = (Rectangle2ai<?, ?, ?, ?, ?, ?>) originalBounds;
+                final var rect = (Rectangle2ai<?, ?, ?, ?, ?, ?>) originalBounds;
                 minX = rect.getMinX();
                 minY = rect.getMinY();
                 maxX = rect.getMaxX();
                 maxY = rect.getMaxY();
 			}
-			final PathIterator2afp<?> shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
+			final var shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
 			crossings = Path2afp.calculatesCrossingsPathIteratorPathShadow(
 					0, iterator,
 					new BasicPathShadow2afp(shapePathIterator, minX, minY, maxX, maxY),
 					CrossingComputationType.STANDARD);
+			break;
 		}
-
-		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		return crossings != GeomConstants.SHAPE_INTERSECTS
 				&& (crossings & mask) != 0;
 	}
@@ -183,50 +196,43 @@ public interface Shape2afp<
 	@Unefficient
 	@Override
 	default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> shape) {
-		// CAUTION:
-		// It is important to test several types in the reverse order than the inheritance hierarchy.
-		if (shape instanceof Rectangle2afp) {
-			return intersects((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof OrientedRectangle2afp) {
-			return intersects((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Parallelogram2afp) {
-			return intersects((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		//
-		if (shape instanceof Circle2afp) {
+		assert shape != null : AssertMessages.notNullParameter();
+		final var type = shape.getType();
+		assert type != null;
+    	assert type.getPreferredContinuousShapeType() != null;
+    	assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
+		case CIRCLE:
 			return intersects((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Ellipse2afp) {
+		case ELLIPSE:
 			return intersects((Ellipse2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof MultiShape2afp) {
+		case MULTISHAPE:
 			return intersects((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Path2afp) {
+		case ORIENTED_RECTANGLE:
+			return intersects((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		case PARALLELOGRAM:
+			return intersects((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
+		case PATH:
 			return intersects((Path2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof PathIterator2afp) {
-			return intersects((PathIterator2afp<?>) shape);
-		}
-		if (shape instanceof RoundRectangle2afp) {
+		case RECTANGLE:
+			return intersects((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		case ROUND_RECTANGLE:
 			return intersects((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Segment2afp) {
+		case SEGMENT:
 			return intersects((Segment2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Triangle2afp) {
+		case TRIANGLE:
 			return intersects((Triangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
 		}
-		return intersects(getPathIterator());
+		throw new IllegalStateException();
 	}
 
 	/** Replies if this shape is intersecting the given ellipse.
 	 *
 	 * @param ellipse the ellipse.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse);
@@ -235,7 +241,7 @@ public interface Shape2afp<
 	 *
 	 * @param circle the circle.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle);
@@ -244,7 +250,7 @@ public interface Shape2afp<
 	 *
 	 * @param rectangle the rectangle.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle);
@@ -253,7 +259,7 @@ public interface Shape2afp<
 	 *
 	 * @param segment the segment.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment);
@@ -262,7 +268,7 @@ public interface Shape2afp<
 	 *
 	 * @param triangle the triangle.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle);
@@ -271,7 +277,7 @@ public interface Shape2afp<
 	 *
 	 * @param path the other path.
 	 * @return {@code true} if this shape is intersecting the given path;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	default boolean intersects(Path2afp<?, ?, ?, ?, ?, ?> path) {
@@ -283,7 +289,7 @@ public interface Shape2afp<
 	 *
 	 * @param iterator the path iterator.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(PathIterator2afp<?> iterator);
@@ -292,7 +298,7 @@ public interface Shape2afp<
 	 *
 	 * @param orientedRectangle the oriented rectangle.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle);
@@ -301,7 +307,7 @@ public interface Shape2afp<
 	 *
 	 * @param parallelogram the parallelogram.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram);
@@ -310,7 +316,7 @@ public interface Shape2afp<
 	 *
 	 * @param roundRectangle the round rectangle.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle);
@@ -319,7 +325,7 @@ public interface Shape2afp<
 	 *
 	 * @param multishape the multishape.
 	 * @return {@code true} if this shape is intersecting the given shape;
-	 * {@code false} if there is no intersection.
+	 *     {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape);
@@ -328,38 +334,34 @@ public interface Shape2afp<
 	@Unefficient
 	@Override
 	default double getDistanceSquared(Shape2D<?, ?, ?, ?, ?, ?> shape) {
-		// CAUTION:
-		// It is important to test several types in the reverse order than the inheritance hierarchy.
-		if (shape instanceof Rectangle2afp) {
-			return getDistanceSquared((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof OrientedRectangle2afp) {
-			return getDistanceSquared((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Parallelogram2afp) {
-			return getDistanceSquared((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		//
-		if (shape instanceof Circle2afp) {
+		assert shape != null : AssertMessages.notNullParameter();
+		final var type = shape.getType();
+		assert type != null;
+    	assert type.getPreferredContinuousShapeType() != null;
+    	assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
+		case CIRCLE:
 			return getDistanceSquared((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Ellipse2afp) {
+		case ELLIPSE:
 			return getDistanceSquared((Ellipse2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof MultiShape2afp) {
+		case MULTISHAPE:
 			return getDistanceSquared((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Path2afp) {
+		case ORIENTED_RECTANGLE:
+			return getDistanceSquared((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		case PARALLELOGRAM:
+			return getDistanceSquared((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
+		case PATH:
 			return getDistanceSquared((Path2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof RoundRectangle2afp) {
+		case RECTANGLE:
+			return getDistanceSquared((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		case ROUND_RECTANGLE:
 			return getDistanceSquared((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Segment2afp) {
+		case SEGMENT:
 			return getDistanceSquared((Segment2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Triangle2afp) {
+		case TRIANGLE:
 			return getDistanceSquared((Triangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
 		}
 		throw new IllegalArgumentException();
 	}
@@ -471,10 +473,9 @@ public interface Shape2afp<
 	@Pure
 	default double getDistanceSquared(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
 	    assert multishape != null : AssertMessages.notNullParameter();
-        double minDist = Double.POSITIVE_INFINITY;
-        double dist;
-        for (final Shape2afp<?, ?, ?, ?, ?, ?> shape : multishape) {
-            dist = getDistanceSquared(shape);
+	    var minDist = Double.POSITIVE_INFINITY;
+        for (final var shape : multishape) {
+            final var dist = getDistanceSquared(shape);
             if (dist < minDist) {
                 minDist = dist;
             }
@@ -486,38 +487,34 @@ public interface Shape2afp<
 	@Unefficient
 	@Override
 	default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
-		// CAUTION:
-		// It is important to test several types in the reverse order than the inheritance hierarchy.
-		if (shape instanceof Rectangle2afp) {
-			return getClosestPointTo((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof OrientedRectangle2afp) {
-			return getClosestPointTo((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Parallelogram2afp) {
-			return getClosestPointTo((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		//
-		if (shape instanceof Circle2afp) {
+		assert shape != null : AssertMessages.notNullParameter();
+		final var type = shape.getType();
+		assert type != null;
+    	assert type.getPreferredContinuousShapeType() != null;
+    	assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
+		case CIRCLE:
 			return getClosestPointTo((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Ellipse2afp) {
+		case ELLIPSE:
 			return getClosestPointTo((Ellipse2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof MultiShape2afp) {
+		case MULTISHAPE:
 			return getClosestPointTo((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Path2afp) {
+		case ORIENTED_RECTANGLE:
+			return getClosestPointTo((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		case PARALLELOGRAM:
+			return getClosestPointTo((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
+		case PATH:
 			return getClosestPointTo((Path2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof RoundRectangle2afp) {
+		case RECTANGLE:
+			return getClosestPointTo((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		case ROUND_RECTANGLE:
 			return getClosestPointTo((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Segment2afp) {
+		case SEGMENT:
 			return getClosestPointTo((Segment2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Triangle2afp) {
+		case TRIANGLE:
 			return getClosestPointTo((Triangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		default:
+			break;
 		}
 		throw new IllegalArgumentException();
 	}
@@ -674,10 +671,9 @@ public interface Shape2afp<
 	default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		Shape2afp<?, ?, ?, ?, ?, ?> closest = null;
-		double minDist = Double.POSITIVE_INFINITY;
-		double dist;
-		for (final Shape2afp<?, ?, ?, ?, ?, ?> shape : multishape) {
-			dist = getDistanceSquared(shape);
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : multishape) {
+			final var dist = getDistanceSquared(shape);
 			if (dist < minDist) {
 				minDist = dist;
 				closest = shape;
@@ -699,11 +695,11 @@ public interface Shape2afp<
 		if (transform == null || transform.isIdentity()) {
 			return (ST) clone();
 		}
-		final PathIterator2afp<?> pi = getPathIterator(transform);
-		final GeomFactory2afp<IE, P, V, B> factory = getGeomFactory();
-		final Path2afp<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
+		final var pi = getPathIterator(transform);
+		final var factory = getGeomFactory();
+		final var newPath = factory.newPath(pi.getWindingRule());
 		while (pi.hasNext()) {
-			final PathElement2afp e = pi.next();
+			final var e = pi.next();
 			switch (e.getType()) {
 			case MOVE_TO:
 				newPath.moveTo(e.getToX(), e.getToY());
@@ -732,7 +728,7 @@ public interface Shape2afp<
 
 	@Override
 	default B toBoundingBox() {
-		final B box = getGeomFactory().newBox();
+		final var box = getGeomFactory().newBox();
 		toBoundingBox(box);
 		return box;
 	}

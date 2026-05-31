@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 * @param segment is the segment from which to start.
 	 * @param startingPoint is the segment's point indicating the direction.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the same
-	 *     segment, otherwhise {@code false}.
+	 *     segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -82,7 +82,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 * @param segment is the segment from which to start.
 	 * @param startingPoint is the segment's point indicating the direction.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the same
-	 *     segment, otherwhise {@code false}.
+	 *     segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -112,7 +112,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 * @param segment is the segment from which to start.
 	 * @param startingPoint is the segment's point indicating the direction.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the same
-	 *     segment, otherwhise {@code false}.
+	 *     segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -131,7 +131,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 			double distanceToReachStartingPoint,
 			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
 		super(graph,
-				new BreadthFirstGraphCourseModel<ST, PT>(),
+				new BreadthFirstGraphCourseModel<>(),
 				segment, startingPoint,
 				allowManyReplies,
 				assumeOrientedSegments,
@@ -146,7 +146,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 * @param segment is the segment from which to start.
 	 * @param startingPoint is the segment's point indicating the direction.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the same
-	 *     segment, otherwhise {@code false}.
+	 *     segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -172,7 +172,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 * @param segment is the segment from which to start.
 	 * @param startingPoint is the segment's point indicating the direction.
 	 * @param allowManyReplies may be {@code true} to allow to reply many times the same
-	 *     segment, otherwhise {@code false}.
+	 *     segment, otherwise {@code false}.
 	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
@@ -193,7 +193,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	}
 
 	private static double getStartingDistance(double positionFromStartingPoint, GraphSegment<?, ?> segment) {
-		final double totalLength = segment.getLength();
+		final var totalLength = segment.getLength();
 		if (positionFromStartingPoint > totalLength) {
 			return totalLength;
 		}

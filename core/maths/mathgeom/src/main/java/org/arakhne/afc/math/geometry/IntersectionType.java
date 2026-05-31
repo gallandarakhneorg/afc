@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,10 @@
 
 package org.arakhne.afc.math.geometry;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This enumeration describes a intersection classification.
@@ -124,7 +123,7 @@ public enum IntersectionType {
 
 	/** Compute the OR-combinaison of two intersection types.
 	 * It could be used to compute the intersection type of a global object
-	 * that is composed of two sub objects for which we have the classitification
+	 * that is composed of two sub objects for which we have the classification
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 *
@@ -180,7 +179,7 @@ public enum IntersectionType {
 
 	/** Compute the OR-combinaison of two intersection types.
 	 * It could be used to compute the intersection type of a global object
-	 * that is composed of two sub objects for which we have the classitification
+	 * that is composed of two sub objects for which we have the classification
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 *
@@ -275,11 +274,11 @@ public enum IntersectionType {
 		if (left == right) {
 			return left;
 		}
-		if ((left == INSIDE && right == ENCLOSING)
-				|| (left == ENCLOSING && right == INSIDE)) {
+		if (left == INSIDE && right == ENCLOSING
+				|| left == ENCLOSING && right == INSIDE) {
 			return SPANNING;
 		}
-		return (left.ordinal() > right.ordinal()) ? left : right;
+		return left.ordinal() > right.ordinal() ? left : right;
 	}
 
 	/** Compute the AND-combinaison of two intersection types.
@@ -530,7 +529,7 @@ public enum IntersectionType {
 
 	/** Compute the OR-combinaison of two intersection types.
 	 * It could be used to compute the intersection type of a global object
-	 * that is composed of two sub objects for which we have the classitification
+	 * that is composed of two sub objects for which we have the classification
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 *
@@ -581,7 +580,7 @@ public enum IntersectionType {
 
 	/** Compute the OR-combinaison of two intersection types.
 	 * It could be used to compute the intersection type of a global object
-	 * that is composed of two sub objects for which we have the classitification
+	 * that is composed of two sub objects for which we have the classification
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 *
@@ -633,7 +632,7 @@ public enum IntersectionType {
 
 	/** Compute the OR-combinaison of two intersection types.
 	 * It could be used to compute the intersection type of a global object
-	 * that is composed of two sub objects for which we have the classitification
+	 * that is composed of two sub objects for which we have the classification
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 *
@@ -685,7 +684,7 @@ public enum IntersectionType {
 
 	/** Compute the OR-combinaison of two intersection types.
 	 * It could be used to compute the intersection type of a global object
-	 * that is composed of two sub objects for which we have the classitification
+	 * that is composed of two sub objects for which we have the classification
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 *

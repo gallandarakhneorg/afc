@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import java.util.WeakHashMap;
  * <tt>WeakValueTreeMap</tt> will automatically be removed when its value is no
  * longer in ordinary use or null.
  *
- * <p>This class was inspirated from {@link WeakHashMap} and uses a {@link TreeMap}
+ * <p>This class was inspired from {@link WeakHashMap} and uses a {@link TreeMap}
  * as its internal data structure.
  *
  * <p>This class has a special flag which permits to control the
@@ -75,14 +75,14 @@ public class WeakValueTreeMap<K, V> extends AbstractWeakValueMap<K, V> {
      *        ordering} of the keys will be used.
      */
     public WeakValueTreeMap(Comparator<? super K> comparator) {
-    	super(new TreeMap<K, ReferencableValue<K, V>>(comparator));
+    	super(new TreeMap<>(comparator));
     }
 
     /**
      * Constructs an empty <tt>TreeMap</tt>.
      */
     public WeakValueTreeMap() {
-    	super(new TreeMap<K, ReferencableValue<K, V>>());
+    	super(new TreeMap<>());
     }
 
     /**
@@ -93,7 +93,7 @@ public class WeakValueTreeMap<K, V> extends AbstractWeakValueMap<K, V> {
      * @throws  NullPointerException if the specified map is null
      */
     public WeakValueTreeMap(Map<? extends K, ? extends V> map) {
-        super(new TreeMap<K, ReferencableValue<K, V>>());
+        super(new TreeMap<>());
         putAll(map);
     }
 
@@ -105,7 +105,7 @@ public class WeakValueTreeMap<K, V> extends AbstractWeakValueMap<K, V> {
      * @throws  NullPointerException if the specified map is null
      */
     public WeakValueTreeMap(SortedMap<K, ? extends V> map) {
-        super(new TreeMap<K, ReferencableValue<K, V>>(map.comparator()));
+        super(new TreeMap<>(map.comparator()));
         putAll(map);
     }
 

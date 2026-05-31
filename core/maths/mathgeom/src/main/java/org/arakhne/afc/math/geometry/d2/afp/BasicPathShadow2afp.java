@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public class BasicPathShadow2afp {
 
     private final PathIterator2afp<?> pathIterator;
@@ -92,8 +93,8 @@ public class BasicPathShadow2afp {
      */
     public BasicPathShadow2afp(PathIterator2afp<?> pathIterator, double minX, double minY, double maxX, double maxY) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
-        assert minX <= maxX : AssertMessages.lowerEqualParameters(1, minX, 3, maxX);
-        assert minY <= maxY : AssertMessages.lowerEqualParameters(2, minY, 4, maxY);
+        assert minX <= maxX : AssertMessages.lowerEqualParameters(1, Double.valueOf(minX), 3, Double.valueOf(maxX));
+        assert minY <= maxY : AssertMessages.lowerEqualParameters(2, Double.valueOf(minY), 4, Double.valueOf(maxY));
         this.pathIterator = pathIterator;
         this.boundingMinX = minX;
         this.boundingMinY = minY;
@@ -115,7 +116,7 @@ public class BasicPathShadow2afp {
             int crossings,
             double x0, double y0,
             double x1, double y1) {
-        int numCrosses =
+        var numCrosses =
                 Segment2afp.calculatesCrossingsRectangleShadowSegment(crossings,
                         this.boundingMinX,
                         this.boundingMinY,
@@ -145,7 +146,7 @@ public class BasicPathShadow2afp {
                     x0, y0, x1, y1);
 
             // Test if the shape is intesecting the shadow shape.
-            final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+            final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
             if (this.crossings == GeomConstants.SHAPE_INTERSECTS
                     || (this.crossings & mask) != 0) {
                 // The given line is intersecting the path shape
@@ -154,7 +155,7 @@ public class BasicPathShadow2afp {
 
             // There is no intersection with the shadow path's shape.
             // Compute the crossings with the minimum/maximum y borders.
-            int inc = 0;
+            var inc = 0;
             if (this.hasX4ymin) {
                 ++inc;
             }
@@ -186,10 +187,10 @@ public class BasicPathShadow2afp {
         if (element.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString(Path2afp.class, "E1")); //$NON-NLS-1$
         }
-        double movx = element.getToX();
-        double movy = element.getToY();
-        double curx = movx;
-        double cury = movy;
+        var movx = element.getToX();
+        var movy = element.getToY();
+        var curx = movx;
+        var cury = movy;
         while (pi.hasNext()) {
             this.coordinateParam = new BasicPathShadow2afp.CoordinatesParam(x1, y1, x2, y2, curx, cury);
             element = pi.next();
@@ -249,7 +250,7 @@ public class BasicPathShadow2afp {
 
         assert this.crossings != GeomConstants.SHAPE_INTERSECTS;
 
-        final boolean isOpen = (curx != movx) || (cury != movy);
+        final var isOpen = curx != movx || cury != movy;
 
         if (isOpen) {
             // Assume that when is the path is open, only
@@ -259,8 +260,8 @@ public class BasicPathShadow2afp {
     }
 
     private void setLineToFromDiscretizePathIterator(PathElement2afp elm, CoordinatesParam param) {
-        final double endx = elm.getToX();
-        final double endy = elm.getToY();
+        final var endx = elm.getToX();
+        final var endy = elm.getToY();
         crossSegmentTwoShadowLines(
                 param.getCurx(), param.getCury(),
                 endx, endy,
@@ -269,8 +270,8 @@ public class BasicPathShadow2afp {
 
     private void setQuadToFromDiscretizePathIterator(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
-        final double endx = elm.getToX();
-        final double endy = elm.getToY();
+        final var endx = elm.getToX();
+        final var endy = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
         localPath.moveTo(param.getCurx(), param.getCury());
         localPath.quadTo(
@@ -283,8 +284,8 @@ public class BasicPathShadow2afp {
 
     private void setCurveToFromDiscretizePathIterator(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam prm) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
-        final double endx = elm.getToX();
-        final double endy = elm.getToY();
+        final var endx = elm.getToX();
+        final var endy = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
         localPath.moveTo(prm.getCurx(), prm.getCury());
         localPath.curveTo(
@@ -297,8 +298,8 @@ public class BasicPathShadow2afp {
 
     private void setArcToFromDiscretizePathIterator(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
-        final double endx = elm.getToX();
-        final double endy = elm.getToY();
+        final var endx = elm.getToX();
+        final var endy = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
         localPath.moveTo(param.getCurx(), param.getCury());
         localPath.arcTo(
@@ -335,26 +336,27 @@ public class BasicPathShadow2afp {
     }
 
     /** Determine where the segment is crossing the two shadow lines.
-    *
-    * @param shadowX0 x coordinate of the reference point of the first shadow line.
-    * @param shadowY0 y coordinate of the reference point of the first shadow line.
-    * @param shadowX1 x coordinate of the reference point of the second shadow line.
-    * @param shadowY1 y coordinate of the reference point of the second shadow line.
-    * @param sx0 x coordinate of the first point of the segment.
-    * @param sy0 y coordinate of the first point of the segment.
-    * @param sx1 x coordinate of the second point of the segment.
-    * @param sy1 y coordinate of the second point of the segment.
-    */
+     *
+     * @param shadowX0 x coordinate of the reference point of the first shadow line.
+     * @param shadowY0 y coordinate of the reference point of the first shadow line.
+     * @param shadowX1 x coordinate of the reference point of the second shadow line.
+     * @param shadowY1 y coordinate of the reference point of the second shadow line.
+     * @param sx0 x coordinate of the first point of the segment.
+     * @param sy0 y coordinate of the first point of the segment.
+     * @param sx1 x coordinate of the second point of the segment.
+     * @param sy1 y coordinate of the second point of the segment.
+     */
+    @SuppressWarnings("checkstyle:npathcomplexity")
     private void crossSegmentTwoShadowLines(
             double shadowX0, double shadowY0,
             double shadowX1, double shadowY1,
             double sx0, double sy0,
             double sx1, double sy1) {
         // Update the global bounds of the shadow.
-        final double shadowXmin = Math.min(shadowX0, shadowX1);
-        final double shadowXmax = Math.max(shadowX0, shadowX1);
-        final double shadowYmin = Math.min(shadowY0, shadowY1);
-        final double shadowYmax = Math.max(shadowY0, shadowY1);
+        final var shadowXmin = Math.min(shadowX0, shadowX1);
+        final var shadowXmax = Math.max(shadowX0, shadowX1);
+        final var shadowYmin = Math.min(shadowY0, shadowY1);
+        final var shadowYmax = Math.max(shadowY0, shadowY1);
 
         if (sy0 < shadowYmin && sy1 < shadowYmin) {
             // The segment is entirely at the bottom of the shadow.
@@ -370,26 +372,26 @@ public class BasicPathShadow2afp {
         }
         if (sx0 >= shadowXmax && sx1 >= shadowXmax) {
             // The line is entirely at the right of the shadow
-            final double alpha = (sx1 - sx0) / (sy1 - sy0);
+            final var alpha = (sx1 - sx0) / (sy1 - sy0);
             if (sy0 < sy1) {
                 if (sy0 <= shadowYmin) {
-                    final double xintercept = sx0 + (shadowYmin - sy0) * alpha;
+                    final var xintercept = sx0 + (shadowYmin - sy0) * alpha;
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     ++this.crossings;
                 }
                 if (sy1 >= shadowYmax) {
-                    final double xintercept = sx0 + (shadowYmax - sy0) * alpha;
+                    final var xintercept = sx0 + (shadowYmax - sy0) * alpha;
                     setCrossingCoordinateForYMax(xintercept, shadowYmax);
                     ++this.crossings;
                 }
             } else {
                 if (sy1 <= shadowYmin) {
-                    final double xintercept = sx0 + (shadowYmin - sy0) * alpha;
+                    final var xintercept = sx0 + (shadowYmin - sy0) * alpha;
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     --this.crossings;
                 }
                 if (sy0 >= shadowYmax) {
-                    final double xintercept = sx0 + (shadowYmax - sy0) * alpha;
+                    final var xintercept = sx0 + (shadowYmax - sy0) * alpha;
                     setCrossingCoordinateForYMax(xintercept, shadowYmax);
                     --this.crossings;
                 }
@@ -402,7 +404,7 @@ public class BasicPathShadow2afp {
         } else {
             final int side1;
             final int side2;
-            final boolean isUp = shadowY0 <= shadowY1;
+            final var isUp = shadowY0 <= shadowY1;
             if (isUp) {
                 side1 = Segment2afp.findsSideLinePoint(
                         shadowX0, shadowY0,
@@ -474,7 +476,7 @@ public class BasicPathShadow2afp {
             return;
         }
         // Compute the intersection point between the segment and the shadow line
-        final double xintercept = sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0);
+        final var xintercept = sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0);
         if (shadowx > xintercept) {
             // The intersection point is on the left of the shadow line.
             return;
@@ -500,7 +502,8 @@ public class BasicPathShadow2afp {
      * @mavenartifactid $ArtifactId$
      */
     private  static  final  class CoordinatesParam {
-        private  double x1;
+
+    	private  double x1;
 
         private double y1;
 
@@ -554,5 +557,6 @@ public class BasicPathShadow2afp {
             return this.cury;
         }
     }
+
 }
 

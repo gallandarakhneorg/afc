@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,43 +45,35 @@ public final class InnerComputationGeomFactory extends AbstractGeomFactory1D<Inn
 
 	@Override
 	public InnerComputationPoint1afp convertToPoint(Point1D<?, ?, ?> pt) {
-		if (pt instanceof InnerComputationPoint1afp) {
-			return (InnerComputationPoint1afp) pt;
+		if (pt instanceof InnerComputationPoint1afp pts) {
+			return pts;
 		}
-		final double x;
-		final double y;
-		x = pt.getX();
-		y = pt.getY();
+		final var x = pt.getX();
+		final var y = pt.getY();
 		return new InnerComputationPoint1afp(pt.getSegment(), x, y);
 	}
 
 	@Override
 	public InnerComputationPoint1afp convertToPoint(Vector1D<?, ?, ?> v) {
-		final double x;
-		final double y;
-		x = v.getX();
-		y = v.getY();
+		final var x = v.getX();
+		final var y = v.getY();
 		return new InnerComputationPoint1afp(v.getSegment(), x, y);
 	}
 
 	@Override
 	public InnerComputationVector1afp convertToVector(Point1D<?, ?, ?> pt) {
-		final double x;
-		final double y;
-		x = pt.getX();
-		y = pt.getY();
+		final var x = pt.getX();
+		final var y = pt.getY();
 		return new InnerComputationVector1afp(pt.getSegment(), x, y);
 	}
 
 	@Override
 	public InnerComputationVector1afp convertToVector(Vector1D<?, ?, ?> v) {
-		if (v instanceof InnerComputationVector1afp) {
-			return (InnerComputationVector1afp) v;
+		if (v instanceof InnerComputationVector1afp pts) {
+			return pts;
 		}
-		final double x;
-		final double y;
-		x = v.getX();
-		y = v.getY();
+		final var x = v.getX();
+		final var y = v.getY();
 		return new InnerComputationVector1afp(v.getSegment(), x, y);
 	}
 

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,16 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Base class for rectangular prisms, or boxes. Only rectangular prism
  * are considered here.
  *
- * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
@@ -44,15 +42,15 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Box3afp<
-			ST extends Shape3afp<?, ?, IE, P, V, Q, B>,
-			IT extends Box3afp<?, ?, IE, P, V, Q, B>,
+			IT extends Box3afp<?, IE, P, V, Q, B>,
 			IE extends PathElement3afp,
 			P extends Point3D<? super P, ? super V, ? super Q>,
 			V extends Vector3D<? super V, ? super P, ? super Q>,
 			Q extends Quaternion<? super P, ? super V, ? super Q>,
-			B extends AlignedBox3afp<?, ?, IE, P, V, Q, B>>
-		extends Shape3afp<ST, IT, IE, P, V, Q, B> {
+			B extends AlignedBox3afp<?, IE, P, V, Q, B>>
+		extends Shape3afp<IT, IE, P, V, Q, B> {
 
 	@Override
 	default void toBoundingBox(B box) {
@@ -163,9 +161,9 @@ public interface Box3afp<
 	 * @param cornerZ the Z coordinate of the specified corner point
      */
 	default void setFromCenter(double centerX, double centerY, double centerZ, double cornerX, double cornerY, double cornerZ) {
-		final double demiWidth = Math.abs(centerX - cornerX);
-		final double demiHeight = Math.abs(centerY - cornerY);
-		final double demiDepth = Math.abs(centerZ - cornerZ);
+		final var demiWidth = Math.abs(centerX - cornerX);
+		final var demiHeight = Math.abs(centerY - cornerY);
+		final var demiDepth = Math.abs(centerZ - cornerZ);
         setFromCorners(
         		centerX - demiWidth,
         		centerY - demiHeight,
@@ -329,7 +327,7 @@ public interface Box3afp<
 	 * @param cx the center x.
 	 */
 	default void setCenterX(double cx) {
-		final double demiWidth = getWidth() / 2.;
+		final var demiWidth = getWidth() / 2.;
 		setMinX(cx - demiWidth);
 		setMaxX(cx + demiWidth);
 	}
@@ -339,7 +337,7 @@ public interface Box3afp<
 	 * @param cy the center y.
 	 */
 	default void setCenterY(double cy) {
-		final double demiHeight = getHeight() / 2.;
+		final var demiHeight = getHeight() / 2.;
 		setMinY(cy - demiHeight);
 		setMaxY(cy + demiHeight);
 	}
@@ -349,7 +347,7 @@ public interface Box3afp<
 	 * @param cz the center z.
 	 */
 	default void setCenterZ(double cz) {
-		final double demiDepth = getDepth() / 2.;
+		final var demiDepth = getDepth() / 2.;
 		setMinZ(cz - demiDepth);
 		setMaxZ(cz + demiDepth);
 	}
@@ -389,7 +387,7 @@ public interface Box3afp<
 	@Pure
 	@Override
 	default boolean isEmpty() {
-        return getMinX() == getMaxX() && getMinY() == getMaxY() && getMinZ() == getMaxZ();
+        return getMinX() >= getMaxX() || getMinY() >= getMaxY() || getMinZ() >= getMaxZ();
 	}
 
 	/** Inflate this rectangular prism with the given amounts.

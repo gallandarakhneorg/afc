@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,12 +54,12 @@ class AndroidResourceWrapper implements ResourceWrapper {
 	@Override
 	@Deprecated(since = "17.0")
     public URL getResource(ClassLoader classLoader, String path) {
-		final String resourceName = decodeResourceName(path);
+		final var resourceName = decodeResourceName(path);
 		final ClassLoader androidClassLoader;
 		try {
 			androidClassLoader = Android.getContextClassLoader();
 			assert androidClassLoader != null;
-			final URL url = androidClassLoader.getResource(resourceName);
+			final var url = androidClassLoader.getResource(resourceName);
 			if (url != null) {
 				return url;
 			}
@@ -74,12 +74,12 @@ class AndroidResourceWrapper implements ResourceWrapper {
 
 	@Override
     public URL getResource(Class<?> clazz, String path) {
-		final String resourceName = decodeResourceName(path);
+		final var resourceName = decodeResourceName(path);
 		final ClassLoader androidClassLoader;
 		try {
 			androidClassLoader = Android.getContextClassLoader();
 			assert androidClassLoader != null;
-			final URL url = androidClassLoader.getResource(resourceName);
+			final var url = androidClassLoader.getResource(resourceName);
 			if (url != null) {
 				return url;
 			}
@@ -95,12 +95,12 @@ class AndroidResourceWrapper implements ResourceWrapper {
 	@Override
 	@Deprecated(since = "17.0")
     public InputStream getResourceAsStream(ClassLoader classLoader, String path) {
-		final String resourceName = decodeResourceName(path);
+		final var resourceName = decodeResourceName(path);
 		final ClassLoader androidClassLoader;
 		try {
 			androidClassLoader = Android.getContextClassLoader();
 			assert androidClassLoader != null;
-			final InputStream stream = androidClassLoader.getResourceAsStream(resourceName);
+			final var stream = androidClassLoader.getResourceAsStream(resourceName);
 			if (stream != null) {
 				return stream;
 			}
@@ -115,12 +115,12 @@ class AndroidResourceWrapper implements ResourceWrapper {
 
 	@Override
     public InputStream getResourceAsStream(Class<?> clazz, String path) {
-		final String resourceName = decodeResourceName(path);
+		final var resourceName = decodeResourceName(path);
 		final ClassLoader androidClassLoader;
 		try {
 			androidClassLoader = Android.getContextClassLoader();
 			assert androidClassLoader != null;
-			final InputStream stream = androidClassLoader.getResourceAsStream(resourceName);
+			final var stream = androidClassLoader.getResourceAsStream(resourceName);
 			if (stream != null) {
 				return stream;
 			}

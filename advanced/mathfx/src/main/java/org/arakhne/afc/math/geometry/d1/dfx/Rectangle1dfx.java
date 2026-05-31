@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.afp.Rectangle1afp;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle with 2 double precision floating-point numbers.
  *
@@ -110,13 +109,13 @@ public class Rectangle1dfx extends AbstractShape1dfx<Rectangle1dfx>
 	@Override
 	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		long bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Objects.hashCode(getSegment());
 		bits = 31 * bits + Double.hashCode(getMinX());
 		bits = 31 * bits + Double.hashCode(getMinY());
 		bits = 31 * bits + Double.hashCode(getMaxX());
 		bits = 31 * bits + Double.hashCode(getMaxY());
-		final int b = (int) bits;
+		final var b = (int) bits;
 		return b ^ (b >> 31);
 	}
 
@@ -141,8 +140,8 @@ public class Rectangle1dfx extends AbstractShape1dfx<Rectangle1dfx>
 			this.minX = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_X) {
 				@Override
 				protected void invalidated() {
-					final double currentMin = get();
-					final double currentMax = getMaxX();
+					final var currentMin = get();
+					final var currentMax = getMaxX();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
 						maxXProperty().set(currentMin);
@@ -174,8 +173,8 @@ public class Rectangle1dfx extends AbstractShape1dfx<Rectangle1dfx>
 			this.maxX = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_X) {
 				@Override
 				protected void invalidated() {
-					final double currentMax = get();
-					final double currentMin = getMinX();
+					final var currentMax = get();
+					final var currentMin = getMinX();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
 						minXProperty().set(currentMax);
@@ -207,8 +206,8 @@ public class Rectangle1dfx extends AbstractShape1dfx<Rectangle1dfx>
 			this.minY = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_Y) {
 				@Override
 				protected void invalidated() {
-					final double currentMin = get();
-					final double currentMax = getMaxY();
+					final var currentMin = get();
+					final var currentMax = getMaxY();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
 						maxYProperty().set(currentMin);
@@ -240,8 +239,8 @@ public class Rectangle1dfx extends AbstractShape1dfx<Rectangle1dfx>
 			this.maxY = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
 				@Override
 				protected void invalidated() {
-					final double currentMax = get();
-					final double currentMin = getMinY();
+					final var currentMax = get();
+					final var currentMin = getMinY();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
 						minYProperty().set(currentMax);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Parallelogram with 2 double precision floating-point numbers.
  *
@@ -37,6 +36,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 		implements Parallelogram2afp<Shape2d<?>, Parallelogram2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
 
@@ -153,8 +153,9 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(this.cx);
 		bits = 31 * bits + Double.hashCode(this.cy);
 		bits = 31 * bits + Double.hashCode(this.rx);
@@ -163,7 +164,7 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 		bits = 31 * bits + Double.hashCode(this.sx);
 		bits = 31 * bits + Double.hashCode(this.sy);
 		bits = 31 * bits + Double.hashCode(this.extentS);
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure
@@ -300,6 +301,7 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2x,
 			double axis2y, double axis2Extent) {
 		assert Vector2D.isUnitVector(axis1x, axis1y) : AssertMessages.normalizedParameters(2, 3);

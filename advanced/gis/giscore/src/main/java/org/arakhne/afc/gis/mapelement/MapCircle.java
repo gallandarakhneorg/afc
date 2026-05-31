@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ package org.arakhne.afc.gis.mapelement;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -35,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.d.Circle2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to define a circle.
@@ -226,7 +225,7 @@ public class MapCircle extends MapPonctualElement {
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		buffer.add("radius", getRadius()); //$NON-NLS-1$
+		buffer.add("radius", Double.valueOf(getRadius())); //$NON-NLS-1$
 	}
 
 	/** Replies if the specified objects is the same as this one.
@@ -236,7 +235,7 @@ public class MapCircle extends MapPonctualElement {
 	@Pure
 	public boolean equals(MapElement element) {
 		if (super.equals(element)) {
-			final MapCircle e = (MapCircle) element;
+			final var e = (MapCircle) element;
 			return MathUtil.isEpsilonEqual(this.radius, e.radius, MapElementConstants.POINT_FUSION_DISTANCE);
 		}
 		return false;
@@ -246,7 +245,7 @@ public class MapCircle extends MapPonctualElement {
 	@SuppressWarnings({"checkstyle:equalshashcode"})
 	@Pure
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), this.radius);
+		return Objects.hash(Integer.valueOf(super.hashCode()), Double.valueOf(this.radius));
 	}
 
 	/** Replies the radius.
@@ -294,7 +293,7 @@ public class MapCircle extends MapPonctualElement {
 	@Override
 	@Pure
 	public <OT extends MapPonctualElement> double distance(OT another_point) {
-		double dist = super.distance(another_point);
+		var dist = super.distance(another_point);
 		dist -= this.radius;
 		return dist;
 	}
@@ -309,7 +308,7 @@ public class MapCircle extends MapPonctualElement {
 	@Override
 	@Pure
 	public double getDistance(Point2D<?, ?> point) {
-		double dist = super.getDistance(point);
+		var dist = super.getDistance(point);
 		dist -= this.radius;
 		return dist;
 	}
@@ -325,13 +324,13 @@ public class MapCircle extends MapPonctualElement {
 	@Pure
 	public boolean intersects(Shape2D<?, ?, ?, ?, ?, ? extends Rectangle2afp<?, ?, ?, ?, ?, ?>> rectangle) {
 		if (boundsIntersects(rectangle)) {
-			final double x = getX();
-			final double y = getY();
-			final Rectangle2afp<?, ?, ?, ?, ?, ?> box = rectangle.toBoundingBox();
-			final double minx = box.getMinX();
-			final double miny = box.getMinY();
-			final double maxx = box.getMaxX();
-			final double maxy = box.getMaxY();
+			final var x = getX();
+			final var y = getY();
+			final var box = rectangle.toBoundingBox();
+			final var minx = box.getMinX();
+			final var miny = box.getMinY();
+			final var maxx = box.getMaxX();
+			final var maxy = box.getMaxY();
 
 			return MathUtil.min(
 					Segment2afp.calculatesDistanceSegmentPoint(minx, miny, maxx, miny, x, y),
@@ -349,11 +348,11 @@ public class MapCircle extends MapPonctualElement {
 	@Override
 	@Pure
 	protected Rectangle2d calcBounds() {
-		double x = this.getX();
-		double y = this.getY();
+		var x = this.getX();
+		var y = this.getY();
 
-		final double w = this.radius * 2;
-		final double h = w;
+		final var w = this.radius * 2;
+		final var h = w;
 
 		x -= w / 2.;
 		y -= h / 2.;

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,10 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.UUID;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A primitive inside a GIS context.
  *
@@ -68,14 +67,14 @@ public interface GISPrimitive extends Serializable, JsonableObject {
 	 * that for two elements with the same geo-localized points, they
 	 * have the same geo-location identifier (Geo-Id) and they
 	 * have different unique ientifier (Uid):
-	 * <pre>{@code 
+	 * <pre><code>
 	 * GISElement obj1 = new MapPolyline(100,10,200,30,300,4);
 	 * GISElement obj2 = new MapPolyline(100,10,200,30,300,4);
 	 * assert( obj1.getGeoId().equals(obj2.getGeoId()) );
 	 * assert( obj2.getGeoId().equals(obj1.getGeoId()) );
 	 * assert( ! obj1.getUid().equals(obj2.getUid()) );
 	 * assert( ! obj2.getUid().equals(obj1.getUid()) );
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @return a location
 	 * @see #getGeoId()

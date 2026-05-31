@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-
 import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
@@ -108,7 +106,7 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 
 	private ChangeListener<? super Number> initializationListener = (it, oldValue, newValue) -> {
 		if (getWidth() > 0. && getHeight() > 0) {
-			final ChangeListener<? super Number> li = ZoomableCanvas.this.initializationListener;
+			final var li = ZoomableCanvas.this.initializationListener;
 			ZoomableCanvas.this.initializationListener = null;
 			if (li != null) {
 				widthProperty().removeListener(li);
@@ -221,7 +219,7 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	 */
 	public ZoomableGraphicsContext getDocumentGraphicsContext2D() {
 		if (this.documentGraphicsContext == null) {
-			final CenteringTransform transform = new CenteringTransform(
+			final var transform = new CenteringTransform(
 					invertedAxisXProperty(),
 					invertedAxisYProperty(),
 					viewportBoundsProperty());
@@ -241,7 +239,7 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	private static Runnable buildRunAfterChain(Runnable... runs) {
 		assert runs.length > 0;
 		Runnable next = null;
-		for (int i = runs.length - 1; i >= 0; --i) {
+		for (var i = runs.length - 1; i >= 0; --i) {
 			final Runnable run;
 			if (next != null) {
 				run = new UiRunnable(runs[i], next);
@@ -316,21 +314,21 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:nestedifdepth"})
 	@Override
 	public final void drawContent() {
-		final boolean old = setRenderingEnable(false);
+		final var old = setRenderingEnable(false);
 		if (old) {
 			if (this.refresher == null) {
 				if (this.drawRunAfterChain == null) {
 					this.drawRunAfterChain = buildRunAfterChain(
 						() -> fireDrawingStart(),
 						() -> {
-							final T model = getDocumentModel();
+							final var model = getDocumentModel();
 							if (model != null) {
-								final GraphicsContext gc = getGraphicsContext2D();
+								final var gc = getGraphicsContext2D();
 								gc.clearRect(0, 0, getWidth(), getHeight());
 
-								final Drawer<? super T> drawer = getDocumentDrawer();
+								final var drawer = getDocumentDrawer();
 								if (drawer != null) {
-									final ZoomableGraphicsContext docgc = getDocumentGraphicsContext2D();
+									final var docgc = getDocumentGraphicsContext2D();
 									docgc.prepareRendering();
 
 									/*final Rectangle2afp<?, ?, ?, ?, ?, ?> viewport = getViewportBounds();
@@ -446,12 +444,12 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	@Override
 	public ObjectProperty<Drawer<? super T>> documentDrawerProperty() {
 		if (this.drawer == null) {
-			final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor(getDocumentModel());
+			final var defaultDrawer = Drawers.getDrawerFor(getDocumentModel());
 			this.drawer = new SimpleObjectProperty<>(this, DOCUMENT_DRAWER_PROPERTY, defaultDrawer) {
 				@Override
 				protected void invalidated() {
 					if (get() == null) {
-						final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor(getDocumentModel());
+						final var defaultDrawer = Drawers.getDrawerFor(getDocumentModel());
 						set(defaultDrawer);
 					}
 				}
@@ -475,7 +473,7 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 		if (this.documentBounds == null) {
 			this.documentBounds = new ReadOnlyObjectWrapper<>(this, DOCUMENT_BOUNDS_PROPERTY);
 			this.documentBounds.bind(Bindings.createObjectBinding(
-				() ->  getDocumentModel().getBoundingBox(),
+				() -> getDocumentModel().getBoundingBox(),
 				documentModelProperty()));
 		}
 		return this.documentBounds.getReadOnlyProperty();
@@ -492,12 +490,12 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 			this.scaleValue = new SimpleDoubleProperty(this, SCALE_VALUE_PROPERTY, 1.) {
 				@Override
 				protected void invalidated() {
-					final double currentMin = getMinScaleValue();
-					final double current = get();
+					final var currentMin = getMinScaleValue();
+					final var current = get();
 					if (current < currentMin) {
 						set(currentMin);
 					} else {
-						final double currentMax = getMaxScaleValue();
+						final var currentMax = getMaxScaleValue();
 						if (current > currentMax) {
 							set(currentMax);
 						}
@@ -522,7 +520,7 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 
 	@Override
 	public final void setScaleValue(double scaleValue, double centerX, double centerY) {
-		final boolean old = setRenderingEnable(false);
+		final var old = setRenderingEnable(false);
 		setScaleValue(scaleValue);
 		setViewportCenterX(centerX);
 		setViewportCenterY(centerY);
@@ -536,12 +534,12 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 			this.minScaleValue = new SimpleDoubleProperty(this, MIN_SCALE_VALUE_PROPERTY, MINIMUM_SCALE_VALUE) {
 				@Override
 				protected void invalidated() {
-					final double max = getMaxScaleValue();
-					final double min = get();
+					final var max = getMaxScaleValue();
+					final var min = get();
 					if (max < min) {
 						setMaxScaleValue(min);
 					} else {
-						final double val = getScaleValue();
+						final var val = getScaleValue();
 						if (val < min) {
 							scaleValueProperty().set(min);
 						}
@@ -570,12 +568,12 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 			this.maxScaleValue = new SimpleDoubleProperty(this, MAX_SCALE_VALUE_PROPERTY, MAXIMUM_SCALE_VALUE) {
 				@Override
 				protected void invalidated() {
-					final double min = getMinScaleValue();
-					final double max = get();
+					final var min = getMinScaleValue();
+					final var max = get();
 					if (max < min) {
 						set(min);
 					}
-					final double val = getScaleValue();
+					final var val = getScaleValue();
 					if (val > max) {
 						scaleValueProperty().set(max);
 					}
@@ -635,7 +633,7 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 
 	@Override
 	public final void setViewportCenter(double x, double y) {
-		final boolean old = setRenderingEnable(false);
+		final var old = setRenderingEnable(false);
 		setViewportCenterX(x);
 		setViewportCenterY(y);
 		setRenderingEnable(old);
@@ -647,11 +645,11 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 		if (this.viewportBounds == null) {
 			this.viewportBounds = new ReadOnlyObjectWrapper<>(this, VIEWPORT_BOUNDS_PROPERTY);
 			this.viewportBounds.bind(Bindings.createObjectBinding(() -> {
-				final double scale = getScaleValue();
-				final double visibleAreaWidth = getWidth() / scale;
-				final double visibleAreaHeight = getHeight() / scale;
-				final double visibleAreaX = getViewportCenterX() - visibleAreaWidth / 2.;
-				final double visibleAreaY = getViewportCenterY() - visibleAreaHeight / 2.;
+				final var scale = getScaleValue();
+				final var visibleAreaWidth = getWidth() / scale;
+				final var visibleAreaHeight = getHeight() / scale;
+				final var visibleAreaX = getViewportCenterX() - visibleAreaWidth / 2.;
+				final var visibleAreaY = getViewportCenterY() - visibleAreaHeight / 2.;
 				return new Rectangle2d(visibleAreaX, visibleAreaY, visibleAreaWidth, visibleAreaHeight);
 			}, widthProperty(), heightProperty(), viewportCenterXProperty(), viewportCenterYProperty(),
 					scaleValueProperty()));
@@ -666,19 +664,19 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 
 	@Override
 	public double getScaleValueToFit(boolean minimizeOnly) {
-		final Rectangle2afp<?, ?, ?, ?, ?, ?> document = getDocumentBounds();
-		final double contentWidth = document.getWidth();
-		final double contentHeight = document.getHeight();
+		final var document = getDocumentBounds();
+		final var contentWidth = document.getWidth();
+		final var contentHeight = document.getHeight();
 
-		final double viewportWidth = getWidth();
-		final double viewportHeight = getHeight();
+		final var viewportWidth = getWidth();
+		final var viewportHeight = getHeight();
 
-		final double scaleX = contentWidth <= 0. ? 1. : viewportWidth / contentWidth;
-		final double scaleY = contentHeight <= 0. ? 1. : viewportHeight / contentHeight;
+		final var scaleX = contentWidth <= 0. ? 1. : viewportWidth / contentWidth;
+		final var scaleY = contentHeight <= 0. ? 1. : viewportHeight / contentHeight;
 
 		// distorted zoom: we don't want it => we search the minimum scale
 		// factor and apply it
-		double scale = Math.min(scaleX, scaleY);
+		var scale = Math.min(scaleX, scaleY);
 
 		// check if zoom factor would be an enlargement and if so, just set
 		// it to 1
@@ -761,7 +759,7 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 			this.budget = new SimpleIntegerProperty(this, DRAWABLE_ELEMENT_BUDGET_PROPERTY, DEFAULT_DRAWABLE_ELEMENT_BUDGET) {
 				@Override
 				protected void invalidated() {
-					final int value = get();
+					final var value = get();
 					if (value < MIN_DRAWABLE_ELEMENT_BUDGET) {
 						set(MIN_DRAWABLE_ELEMENT_BUDGET);
 					}
@@ -804,9 +802,9 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	/** Notifies listeners on drawing start.
 	 */
 	protected void fireDrawingStart() {
-		final ListenerCollection<EventListener> list = this.listeners;
+		final var list = this.listeners;
 		if (list != null) {
-			for (final DrawingListener listener : list.getListeners(DrawingListener.class)) {
+			for (final var listener : list.getListeners(DrawingListener.class)) {
 				listener.onDrawingStart();
 			}
 		}
@@ -815,9 +813,9 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	/** Notifies listeners on drawing finishing.
 	 */
 	protected void fireDrawingEnd() {
-		final ListenerCollection<EventListener> list = this.listeners;
+		final var list = this.listeners;
 		if (list != null) {
-			for (final DrawingListener listener : list.getListeners(DrawingListener.class)) {
+			for (final var listener : list.getListeners(DrawingListener.class)) {
 				listener.onDrawingEnd();
 			}
 		}

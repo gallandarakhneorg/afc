@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -214,7 +214,7 @@ public class AgentMotion implements Serializable, Cloneable {
 	@Override
 	public AgentMotion clone() {
 		try {
-			final AgentMotion clone = (AgentMotion) super.clone();
+			final var clone = (AgentMotion) super.clone();
 			clone.linear = this.linear.clone();
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -229,7 +229,7 @@ public class AgentMotion implements Serializable, Cloneable {
 			return true;
 		}
 		if (obj != null && obj.getClass() == getClass()) {
-			final AgentMotion other = (AgentMotion) obj;
+			final var other = (AgentMotion) obj;
 			return other.getAngular() == getAngular()
 					&& other.getLinear().equals(getLinear());
 		}
@@ -257,10 +257,10 @@ public class AgentMotion implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + this.linear.hashCode();
 		bits = 31 * bits + Double.hashCode(this.angular);
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	/** Add the given linear and angular motion to this motion: {@code this += motion}.
@@ -321,8 +321,8 @@ public class AgentMotion implements Serializable, Cloneable {
 	@XtextOperator("-")
 	public AgentMotion operator_minus(AgentMotion motion) {
 		assert motion != null : AssertMessages.notNullParameter();
-		final Vector2D<?, ?> mymotion = getLinear();
-		final Vector2D<?, ?> othermotion = motion.getLinear();
+		final var mymotion = getLinear();
+		final var othermotion = motion.getLinear();
 		return new AgentMotion(
 				mymotion.getX() - othermotion.getX(),
 				mymotion.getY() - othermotion.getY(),
@@ -359,7 +359,7 @@ public class AgentMotion implements Serializable, Cloneable {
 	@XtextOperator("-")
 	public AgentMotion operator_minus(Vector2D<?, ?> motion) {
 		assert motion != null : AssertMessages.notNullParameter();
-		final Vector2D<?, ?> mymotion = getLinear();
+		final var mymotion = getLinear();
 		return new AgentMotion(
 				mymotion.getX() - motion.getX(),
 				mymotion.getY() - motion.getY(),
@@ -379,8 +379,8 @@ public class AgentMotion implements Serializable, Cloneable {
 	@XtextOperator("+")
 	public AgentMotion operator_plus(AgentMotion motion) {
 		assert motion != null : AssertMessages.notNullParameter();
-		final Vector2D<?, ?> mymotion = getLinear();
-		final Vector2D<?, ?> othermotion = motion.getLinear();
+		final var mymotion = getLinear();
+		final var othermotion = motion.getLinear();
 		return new AgentMotion(
 				mymotion.getX() + othermotion.getX(),
 				mymotion.getY() + othermotion.getY(),
@@ -417,7 +417,7 @@ public class AgentMotion implements Serializable, Cloneable {
 	@XtextOperator("+")
 	public AgentMotion operator_plus(Vector2D<?, ?> motion) {
 		assert motion != null : AssertMessages.notNullParameter();
-		final Vector2D<?, ?> mymotion = getLinear();
+		final var mymotion = getLinear();
 		return new AgentMotion(
 				mymotion.getX() + motion.getX(),
 				mymotion.getY() + motion.getY(),

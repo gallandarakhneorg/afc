@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,10 +93,11 @@ public enum ShapeMultiPatchType {
 	 * @param esriNumber is the number from the ESRI shape file specification.
 	 * @return the element type corresponding to the number.
 	 * @throws ShapeFileException if the given parameter is not a valid integer.
+	 * @throws InvalidMultipatchTypeException if the type is unknown.
 	 */
 	@Pure
 	public static ShapeMultiPatchType fromESRIInteger(int esriNumber) throws ShapeFileException {
-		for (final ShapeMultiPatchType type : values()) {
+		for (final var type : values()) {
 			if (type.partType == esriNumber) {
 				return type;
 			}

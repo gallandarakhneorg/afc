@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes a road path with is clustered into
@@ -87,8 +86,8 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 */
 	@Pure
 	public double getLength() {
-		double length  = 0;
-		for (final RoadPath p : this.paths) {
+		var length  = 0.;
+		for (final var p : this.paths) {
 			length += p.getLength();
 		}
 		return length;
@@ -99,7 +98,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 * @see RoadPath#invert()
 	 */
 	public void invert() {
-		for (final RoadPath p : this.paths) {
+		for (final var p : this.paths) {
 			p.invert();
 		}
 	}
@@ -145,13 +144,13 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 *
 	 * @param segment a segment.
 	 * @return the index of the first occurrence. of the given road segment or
-	 * {@code -1} if the road segment was not found.
+	 *     {@code -1} if the road segment was not found.
 	 */
 	@Pure
 	public int indexOf(RoadSegment segment) {
-		int count = 0;
+		var count = 0;
 		int index;
-		for (final RoadPath p : this.paths) {
+		for (final var p : this.paths) {
 			index = p.indexOf(segment);
 			if (index >= 0) {
 				return count + index;
@@ -165,14 +164,14 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 *
 	 * @param segment a segment.
 	 * @return the index of the last occurrence. of the given road segment or
-	 * {@code -1} if the road segment was not found.
+	 *     {@code -1} if the road segment was not found.
 	 */
 	@Pure
 	public int lastIndexOf(RoadSegment segment) {
-		int count = 0;
+		var count = 0;
 		int index;
-		int lastIndex = -1;
-		for (final RoadPath p : this.paths) {
+		var lastIndex = -1;
+		for (final var p : this.paths) {
 			index = p.lastIndexOf(segment);
 			if (index >= 0) {
 				lastIndex = count + index;
@@ -186,13 +185,14 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 *
 	 * @param index an index.
 	 * @return the road segment.
+	 * @throws IndexOutOfBoundsException if index is out of bound.
 	 */
 	@Pure
 	public RoadSegment getRoadSegmentAt(int index) {
 		if (index >= 0) {
-			int b = 0;
-			for (final RoadPath p : this.paths) {
-				final int e = b + p.size();
+			var b = 0;
+			for (final var p : this.paths) {
+				final var e = b + p.size();
 				if (index < e) {
 					return p.get(index - b);
 				}
@@ -207,13 +207,14 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 *
 	 * @param index is the index of the road segment.
 	 * @return the road path, never {@code null}.
+	 * @throws IndexOutOfBoundsException if index of out bounds.
 	 */
 	@Pure
 	public RoadPath getPathForRoadSegmentAt(int index) {
 		if (index >= 0) {
-			int b = 0;
-			for (final RoadPath p : this.paths) {
-				final int e = b + p.size();
+			var b = 0;
+			for (final var p : this.paths) {
+				final var e = b + p.size();
 				if (index < e) {
 					return p;
 				}
@@ -231,13 +232,14 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 * @param index is the index of the road segment.
 	 * @return the direction of the segment at the given index
 	 *     for this path.
+	 * @throws IndexOutOfBoundsException if index of out bounds.
 	 */
 	@Pure
 	public Direction1D getRoadSegmentDirectionAt(int index) {
 		if (index >= 0) {
-			int b = 0;
-			for (final RoadPath p : this.paths) {
-				final int e = b + p.size();
+			var b = 0;
+			for (final var p : this.paths) {
+				final var e = b + p.size();
 				if (index < e) {
 					return p.getSegmentDirectionAt(index - b);
 				}
@@ -251,12 +253,13 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 *
 	 * @param index an index.
 	 * @return the removed road segment.
+	 * @throws IndexOutOfBoundsException if index of out bounds.
 	 */
 	public RoadSegment removeRoadSegmentAt(int index) {
 		if (index >= 0) {
-			int b = 0;
-			for (final RoadPath p : this.paths) {
-				int end = b + p.size();
+			var b = 0;
+			for (final var p : this.paths) {
+				var end = b + p.size();
 				if (index < end) {
 					end = index - b;
 					return removeRoadSegmentAt(p, end, null);
@@ -278,10 +281,9 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 * @return the removed segment, never {@code null}.
 	 */
 	private RoadSegment removeRoadSegmentAt(RoadPath path, int index, PathIterator iterator) {
-		final int pathIndex = this.paths.indexOf(path);
+		final var pathIndex = this.paths.indexOf(path);
 		assert pathIndex >= 0 && pathIndex < this.paths.size();
 		assert index >= 0 && index < path.size();
-		final RoadPath syncPath;
 		final RoadSegment sgmt;
 		if (index == 0 || index == path.size() - 1) {
 			// Remove one of the bounds of the path. if cause
@@ -291,7 +293,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			// Split the path somewhere between the first and last positions
 			sgmt = path.get(index);
 			assert sgmt != null;
-			final RoadPath rest = path.splitAfter(sgmt);
+			final var rest = path.splitAfter(sgmt);
 			path.remove(sgmt);
 			if (rest != null && !rest.isEmpty()) {
 				// put back the rest of the segments
@@ -299,6 +301,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			}
 		}
 		--this.segmentCount;
+		final RoadPath syncPath;
 		if (path.isEmpty()) {
 			this.paths.remove(path);
 			if (pathIndex > 0) {
@@ -332,8 +335,8 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	public RoadPath addAndGetPath(RoadPath end) {
 		RoadPath selectedPath = null;
 		if (end != null && !end.isEmpty()) {
-			RoadConnection first = end.getFirstPoint();
-			RoadConnection last = end.getLastPoint();
+			var first = end.getFirstPoint();
+			var last = end.getLastPoint();
 			assert first != null;
 			assert last != null;
 			first = first.getWrappedRoadConnection();
@@ -347,10 +350,9 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			} else {
 				RoadPath connectToFirst = null;
 				RoadPath connectToLast = null;
-				final Iterator<RoadPath> pathIterator = this.paths.iterator();
-				RoadPath path;
+				final var pathIterator = this.paths.iterator();
 				while ((connectToFirst == null || connectToLast == null) && pathIterator.hasNext()) {
-					path = pathIterator.next();
+					final var path = pathIterator.next();
 					if (connectToFirst == null) {
 						if (first.equals(path.getFirstPoint())) {
 							connectToFirst = path;
@@ -426,8 +428,8 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 		if (col == null || col.isEmpty()) {
 			return false;
 		}
-		boolean changed = false;
-		for (final RoadPath p : col) {
+		var changed = false;
+		for (final var p : col) {
 			if (add(p)) {
 				changed = true;
 			}
@@ -447,13 +449,13 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 		if (obj instanceof RoadPath) {
 			return this.paths.contains(obj);
 		} else if (obj instanceof RoadConnection) {
-			for (final RoadPath p : this.paths) {
+			for (final var p : this.paths) {
 				if (obj.equals(p.getFirstPoint()) || obj.equals(p.getLastPoint())) {
 					return true;
 				}
 			}
 		} else if (obj instanceof RoadSegment) {
-			for (final RoadPath p : this.paths) {
+			for (final var p : this.paths) {
 				if (p.contains(obj)) {
 					return true;
 				}
@@ -468,7 +470,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 		if (col == null || col.isEmpty()) {
 			return false;
 		}
-		for (final Object o : col) {
+		for (final var o : col) {
 			if (!contains(o)) {
 				return false;
 			}
@@ -490,13 +492,13 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 
 	@Override
 	public boolean remove(Object obj) {
-		if (obj instanceof RoadPath) {
+		if (obj instanceof RoadPath path) {
 			if (this.paths.remove(obj)) {
-				this.segmentCount -= ((RoadPath) obj).size();
+				this.segmentCount -= path.size();
 				return true;
 			}
-		} else if (obj instanceof RoadSegment) {
-			final int index = indexOf((RoadSegment) obj);
+		} else if (obj instanceof RoadSegment segment) {
+			final var index = indexOf(segment);
 			if (index >= 0) {
 				return removeRoadSegmentAt(index) != null;
 			}
@@ -524,7 +526,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			return false;
 		}
 		boolean allRemoved = true;
-		for (final Object o : col) {
+		for (final var o : col) {
 			allRemoved &= remove(o);
 		}
 		return allRemoved;
@@ -542,11 +544,10 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			clear();
 			return true;
 		}
-		boolean changed = false;
-		final Collection<RoadPath> retained = new ArrayList<>();
-		for (final Object o : col) {
-			if (o instanceof RoadPath) {
-				final RoadPath p = (RoadPath) o;
+		var changed = false;
+		final var retained = new ArrayList<RoadPath>();
+		for (final var o : col) {
+			if (o instanceof RoadPath p) {
 				if (this.paths.remove(o)) {
 					retained.add(p);
 				} else {
@@ -557,7 +558,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 		if (changed) {
 			this.paths.clear();
 			this.segmentCount = 0;
-			for (final RoadPath p : retained) {
+			for (final var p : retained) {
 				this.paths.add(p);
 				this.segmentCount += p.size();
 			}
@@ -669,7 +670,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			if (!this.isNextComputed) {
 				searchNext();
 			}
-			final RoadSegment n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}
@@ -734,7 +735,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			if (this.next < 0 || this.next >= this.path.size()) {
 				throw new NoSuchElementException();
 			}
-			final RoadSegment s = this.path.get(this.next);
+			final var s = this.path.get(this.next);
 			if (s == null) {
 				throw new NoSuchElementException();
 			}
@@ -748,7 +749,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			if (this.repliedSegment == null) {
 				throw new NoSuchElementException();
 			}
-			final int n = --this.next;
+			final var n = --this.next;
 			this.repliedSegment = null;
 			ClusteredRoadPath.this.removeRoadSegmentAt(this.path, n, this.pathIterator);
 		}
@@ -779,7 +780,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 		public void reset(RoadPath path) {
 			this.iterator = ClusteredRoadPath.this.paths.iterator();
 			RoadPath pth = null;
-			while (this.iterator.hasNext() && (pth == null || (path != null && pth != path))) {
+			while (this.iterator.hasNext() && (pth == null || path != null && pth != path)) {
 				pth = this.iterator.next();
 			}
 		}

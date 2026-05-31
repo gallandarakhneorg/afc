@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import org.arakhne.afc.math.geometry.d3.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.PointVector3DReceiver;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
-import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -49,15 +48,18 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 18.0
  */
+@SuppressWarnings({"checkstyle:javadocstyle", "checkstyle:magicnumber"})
 public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
-S extends Segment3afp<?, ?, ?, P, V, Q, ?>,
-P extends Point3D<? super P, ? super V, ? super Q>,
-V extends Vector3D<? super V, ? super P, ? super Q>,
-Q extends Quaternion<? super P, ? super V, ? super Q>>
-extends Plane3D<PT, S, P, V, Q> {
+		S extends Segment3afp<?, ?, ?, P, V, Q, ?>,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>>
+	extends Plane3D<PT, S, P, V, Q> {
 
 	/** {@inheritDoc}
-	 * <p>This function is overridden to refine the return to the the 3D AFP API.
+	 *
+	 * <p>
+	 * This function is overridden to refine the return to the the 3D AFP API.
 	 */
 	@Pure
 	@Override
@@ -67,59 +69,160 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * Replies the projection on the plane of a point with {@code (a,b,c)} not necessary a unit vector.
 	 * This function computes the unit vector of the plane normal. The function
 	 * {@link #calculatesPlanePointProjectionWithPlaneNormal(double, double, double, double, double, double, double, Point3D)}
-	 * calculates the same projection point assuming {@code (a,b,c)} is already a unit normal vector. 
+	 * calculates the same projection point assuming {@code (a,b,c)} is already a unit normal vector.
+	 *
 	 * <p>
 	 * <strong>First Approach: arithmetic resolution</strong>
+	 *
 	 * <p>
-	 * Let <math xmlns="http://www.w3.org/1998/Math/MathML"><mover><mrow><mi>u</mi></mrow><mo stretchy="false">&#x02192;</mo></mover></math> a vector colinear to the line <math><mi mathvariant="normal">&#x00394;</mi></math> with components <math><mo stretchy="false">(</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002C;</mo><msub><mi>y</mi><mi>u</mi></msub> <mo>&#x0002C;</mo><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo></math>.<br>
-	 * Let the equation of the plane <math><mi mathvariant="normal">&#x003A0;</mi></math> as <math><mi>a</mi><mo>.</mo><mi>x</mi><mo>&#x0002B;</mo><mi>b</mi><mo>.</mo><mi>y</mi><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo> <mi>z</mi><mo>&#x0002B;</mo><mi>d</mi><mo>&#x0003D;</mo><mn>0</mn></math><br>
-	 * Let the point <math><mi>A</mi></math> at coordinates <math><mo stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub><mo>&#x0002C;</mo><msub><mi>y</mi><mi>A</mi></msub> <mo>&#x0002C;</mo><msub><mi>z</mi><mi>A</mi></msub><mo stretchy="false">)</mo></math> and its projection point <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> at coordinates <math><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
-	 * <mo>&#x0002C;</mo><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub> <mo>&#x0002C;</mo><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><mo stretchy="false">)</mo></math>.
+	 * Let
+	 * <math xmlns="http://www.w3.org/1998/Math/MathML"><mover><mrow><mi>u</mi></mrow><mo stretchy="false">&#x02192;</mo></mover></math>
+	 * a vector colinear to the line
+	 * <math><mi mathvariant="normal">&#x00394;</mi></math>
+	 * with components
+	 * <math><mo stretchy="false">(</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002C;</mo><msub><mi>y</mi><mi>u</mi></msub>
+	 * <mo>&#x0002C;</mo><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo></math>.<br>
+	 * Let the equation of the plane
+	 * <math><mi mathvariant="normal">&#x003A0;</mi></math> as <math><mi>a</mi><mo>.</mo><mi>x</mi><mo>&#x0002B;</mo><mi>b</mi>
+	 * <mo>.</mo><mi>y</mi><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo> <mi>z</mi><mo>&#x0002B;</mo><mi>d</mi><mo>&#x0003D;</mo><mn>0</mn></math><br>
+	 * Let the point
+	 * <math><mi>A</mi></math>
+	 * at coordinates
+	 * <math><mo stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub><mo>&#x0002C;</mo><msub><mi>y</mi><mi>A</mi></msub> <mo>&#x0002C;</mo>
+	 * <msub><mi>z</mi><mi>A</mi></msub><mo stretchy="false">)</mo></math>
+	 * and its projection point
+	 * <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math>
+	 * at coordinates
+	 * <math><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
+	 * <mo>&#x0002C;</mo><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
+	 * <mo>&#x0002C;</mo><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><mo stretchy="false">)</mo></math>.
+	 *
 	 * <p>
-	 * Since <math><mo stretchy="false">(</mo><mi>A</mi><msup><mi>A</mi><mo>&#x02032;</mo></msup><mo stretchy="false">)</mo></math> is parallel to <math><mi mathvariant="normal">&#x00394;</mi></math>, a scalar <math><mi>k</mi></math> exists such as <math><mover><mrow><mi>A</mi><mrow><mi>A</mi><msup><mo>&#x02032;</mo></msup></mrow></mrow><mo stretchy="true">&#x02192;</mo></mover> <mo>&#x0003D;</mo><mi>k</mi><mo>&#x022C5;</mo><mover><mi>u</mi><mo
-	 * stretchy="false">&#x02192;</mo></mover></math><br>
-	 * that <math><mrow><mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi> <mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub> <mo>&#x02212;</mo><msub><mi>x</mi><mi>A</mi></msub><mo>&#x0003D;</mo> <mi>k</mi><mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub> </mtd></mtr><mtr><mtd><msub><mi>y</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x02212;</mo><msub> <mi>y</mi><mi>A</mi></msub><mo>&#x0003D;</mo><mi>k</mi>
-	 * <mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub></mtd></mtr> <mtr><mtd><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo> </msup></mrow></msub><mo>&#x02212;</mo><msub><mi>z</mi><mi>A</mi> </msub><mo>&#x0003D;</mo><mi>k</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mtd></mtr></mtable></mrow></math>.
+	 * Since <math><mo stretchy="false">(</mo><mi>A</mi><msup><mi>A</mi><mo>&#x02032;</mo></msup><mo stretchy="false">)</mo></math>
+	 * is parallel to <math><mi mathvariant="normal">&#x00394;</mi></math>, a scalar <math><mi>k</mi></math> exists such as
+	 * <math><mover><mrow><mi>A</mi><mrow><mi>A</mi><msup><mo>&#x02032;</mo></msup></mrow></mrow><mo stretchy="true">&#x02192;</mo></mover>
+	 * <mo>&#x0003D;</mo><mi>k</mi><mo>&#x022C5;</mo><mover><mi>u</mi><mo stretchy="false">&#x02192;</mo></mover></math><br>
+	 * that <math><mrow><mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi> <mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
+	 * <mo>&#x02212;</mo><msub><mi>x</mi><mi>A</mi></msub><mo>&#x0003D;</mo> <mi>k</mi><mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub>
+	 * </mtd></mtr><mtr><mtd><msub><mi>y</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x02212;</mo><msub>
+	 * <mi>y</mi><mi>A</mi></msub><mo>&#x0003D;</mo><mi>k</mi>
+	 * <mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub></mtd></mtr> <mtr><mtd><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo>
+	 * </msup></mrow></msub><mo>&#x02212;</mo><msub><mi>z</mi><mi>A</mi> </msub><mo>&#x0003D;</mo><mi>k</mi><mo>&#x022C5;</mo><msub><mi>z</mi>
+	 * <mi>u</mi></msub></mtd></mtr></mtable></mrow></math>.
+	 *
 	 * <p>
-	 * 
-	 * In addition, <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> is on <math><mi mathvariant="normal">&#x003A0;</mi></math>, what means that <math> <mi>a</mi><mo>.</mo><msub><mi>x</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0002B;</mo><mi>b</mi> <mo>.</mo><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo> </msup></mrow></msub><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo> <msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup>
+	 * In addition, <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> is on <math><mi mathvariant="normal">&#x003A0;</mi></math>,
+	 * what means that <math> <mi>a</mi><mo>.</mo><msub><mi>x</mi><mrow><msup><mi>A</mi>
+	 * <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0002B;</mo><mi>b</mi>
+	 * <mo>.</mo><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo> </msup></mrow></msub><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo>
+	 * <msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup>
 	 * </mrow></msub><mo>&#x0002B;</mo><mi>d</mi><mo>&#x0003D;</mo><mn>0</mn> </math>.
+	 *
 	 * <p>
-	 * The result is a system of 4 equations with 4 unknown variables: <math><msub><mi>x</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math>, <math><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math>, <math><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math> and <math><mi>k</mi><math>.
+	 * The result is a system of 4 equations with 4 unknown variables: <math><msub><mi>x</mi><mrow><msup><mi>A</mi>
+	 * <mo>&#x02032;</mo></msup></mrow></msub><math>, <math><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math>,
+	 * <math><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math> and <math><mi>k</mi><math>.
+	 *
 	 * <p>
-	 * <math> <mrow><mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow> <msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub> <mo>&#x0003D;</mo><mfrac><mrow><mi>b</mi><mo>&#x022C5;</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub><msub> <mi>y</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>y</mi> <mi>A</mi></msub><msub><mi>x</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo> <mo
-	 * stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub> <msub><mi>z</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>z</mi> <mi>A</mi></msub><msub><mi>x</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo> <msub><mi>x</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi> <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub>
-	 * <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd><msub> <mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow> </msub><mo>&#x0003D;</mo><mfrac><mrow><mi>a</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>y</mi><mi>A</mi></msub> <msub><mi>x</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi> <mi>A</mi></msub><msub><mi>y</mi><mi>u</mi></msub><mo
-	 * stretchy="false">)</mo><mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>y</mi><mi>A</mi></msub> <msub><mi>z</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>z</mi> <mi>A</mi></msub><msub><mi>y</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo> <msub><mi>y</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi> <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo>
-	 * <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub> <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd><msub> <mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow> </msub><mo>&#x0003D;</mo><mfrac><mrow><mi>a</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>z</mi><mi>A</mi></msub> <msub><mi>x</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi>
-	 * <mi>A</mi></msub><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x0002B;</mo><mi>b</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>z</mi><mi>A</mi></msub> <msub><mi>y</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>y</mi> <mi>A</mi></msub><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo> <msub><mi>z</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi>
-	 * <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub> <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr></mtable></mrow> </math>
+	 * <math> <mrow><mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow> <msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
+	 * <mo>&#x0003D;</mo><mfrac><mrow><mi>b</mi><mo>&#x022C5;</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub><msub>
+	 * <mi>y</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>y</mi> <mi>A</mi></msub><msub><mi>x</mi><mi>u</mi></msub><mo stretchy="false">)</mo>
+	 * <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo> <mo
+	 * stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub> <msub><mi>z</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>z</mi>
+	 * <mi>A</mi></msub><msub><mi>x</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>x</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi> <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo>
+	 * <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub>
+	 * <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd><msub>
+	 * <mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow> </msub><mo>&#x0003D;</mo><mfrac><mrow><mi>a</mi><mo>&#x022C5;</mo>
+	 * <mo stretchy="false">(</mo><msub><mi>y</mi><mi>A</mi></msub> <msub><mi>x</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi>
+	 * <mi>A</mi></msub><msub><mi>y</mi><mi>u</mi></msub><mo
+	 * stretchy="false">)</mo><mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>y</mi><mi>A</mi></msub>
+	 * <msub><mi>z</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>z</mi> <mi>A</mi></msub><msub><mi>y</mi><mi>u</mi></msub>
+	 * <mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo> <msub><mi>y</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi>
+	 * <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo>
+	 * <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub> <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi>
+	 * <mi>u</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd><msub> <mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow>
+	 * </msub><mo>&#x0003D;</mo><mfrac><mrow><mi>a</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>z</mi><mi>A</mi></msub>
+	 * <msub><mi>x</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi>
+	 * <mi>A</mi></msub><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x0002B;</mo><mi>b</mi><mo>&#x022C5;</mo>
+	 * <mo stretchy="false">(</mo><msub><mi>z</mi><mi>A</mi></msub> <msub><mi>y</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>y</mi>
+	 * <mi>A</mi></msub><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>z</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi>
+	 * <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub>
+	 * <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr></mtable></mrow> </math>
+	 *
 	 * <p>
-	 * In the case of an orthogonal projection and if the reference axis are orthonormal, one can choose <math><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>a</mi></math>, <math><msub><mi>y</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>b</mi></math>, <math><msub><mi>z</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>c</mi></math>, then:
+	 * In the case of an orthogonal projection and if the reference axis are orthonormal, one can choose <math><msub><mi>x</mi>
+	 * <mi>u</mi></msub><mo>&#x0003D;</mo><mi>a</mi></math>, <math><msub><mi>y</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>b</mi></math>,
+	 * <math><msub><mi>z</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>c</mi></math>, then:
+	 *
 	 * <p>
-	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow> <mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow><msup> <mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0003D;</mo> <mfrac><mrow><mo stretchy="false">(</mo><msup><mi>b</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>x</mi><mi>A</mi> </msub><mo>&#x02212;</mo><mi>a</mi><mi>b</mi><mo>&#x022C5;</mo>
-	 * <msub><mi>y</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>a</mi> <mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi><mi>A</mi></msub> <mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo><mi>a</mi></mrow> <mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup> <mi>b</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>c</mi> <mn>2</mn></msup></mrow></mfrac></mtd></mtr><mtr><mtd><msub> <mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow>
-	 * </msub><mo>&#x0003D;</mo><mfrac><mrow><mo>&#x02212;</mo><mi>a</mi> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>x</mi><mi>A</mi></msub> <mo>&#x0002B;</mo><mo stretchy="false">(</mo><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>y</mi><mi>A</mi> </msub><mo>&#x02212;</mo><mi>b</mi><mi>c</mi><mo>&#x022C5;</mo> <msub><mi>z</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>d</mi>
-	 * <mo>&#x022C5;</mo><mi>b</mi></mrow><mrow><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>b</mi><mn>2</mn></msup> <mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup></mrow> </mfrac></mtd></mtr><mtr><mtd><msub><mi>z</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0003D;</mo><mfrac> <mrow><mo>&#x02212;</mo><mi>a</mi><mi>c</mi><mo>&#x022C5;</mo> <msub><mi>x</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>b</mi>
-	 * <mi>c</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>A</mi></msub> <mo>&#x0002B;</mo><mo stretchy="false">(</mo><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>b</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>z</mi><mi>A</mi> </msub><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo><mi>c</mi> </mrow><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo> <msup><mi>b</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>c</mi>
+	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow> <mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow><msup>
+	 * <mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0003D;</mo> <mfrac><mrow><mo stretchy="false">(</mo><msup><mi>b</mi><mn>2</mn>
+	 * </msup><mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>x</mi><mi>A</mi>
+	 * </msub><mo>&#x02212;</mo><mi>a</mi><mi>b</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>y</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>a</mi> <mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi><mi>A</mi></msub>
+	 * <mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo><mi>a</mi></mrow> <mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup>
+	 * <mi>b</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>c</mi> <mn>2</mn></msup></mrow></mfrac></mtd></mtr><mtr><mtd><msub>
+	 * <mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow>
+	 * </msub><mo>&#x0003D;</mo><mfrac><mrow><mo>&#x02212;</mo><mi>a</mi> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>x</mi><mi>A</mi></msub>
+	 * <mo>&#x0002B;</mo><mo stretchy="false">(</mo><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup><mo
+	 * stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>y</mi><mi>A</mi> </msub><mo>&#x02212;</mo><mi>b</mi><mi>c</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>z</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>d</mi>
+	 * <mo>&#x022C5;</mo><mi>b</mi></mrow><mrow><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>b</mi><mn>2</mn></msup>
+	 * <mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup></mrow> </mfrac></mtd></mtr><mtr><mtd><msub><mi>z</mi><mrow><msup><mi>A</mi>
+	 * <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0003D;</mo><mfrac> <mrow><mo>&#x02212;</mo><mi>a</mi><mi>c</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>x</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>b</mi>
+	 * <mi>c</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>A</mi></msub> <mo>&#x0002B;</mo><mo stretchy="false">(</mo><msup><mi>a</mi><mn>2</mn>
+	 * </msup><mo>&#x0002B;</mo><msup><mi>b</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>z</mi><mi>A</mi>
+	 * </msub><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo><mi>c</mi> </mrow><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo>
+	 * <msup><mi>b</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>c</mi>
 	 * <mn>2</mn></msup></mrow></mfrac></mtd></mtr></mtable></mrow> </math>
+	 *
 	 * <p>
 	 * <strong>Second Approach: vectorial resolution</strong>
+	 *
 	 * <p>
-	 * Let the normal of the plane be <math><mover><mi>n</mi><mo stretchy="false">&#x02192;</mo></mover></math> with the coordinates <math><mo stretchy="false">(</mo><msub><mi>n</mi><mi>x</mi></msub><mo>&#x0002C;</mo> <msub><mi>n</mi><mi>y</mi></msub><mo>&#x0002C;</mo><msub><mi>n</mi><mi>z</mi></msub> <mo stretchy="false">)</mo></math>.<br>
-	 * Let <math><mi>A</mi></math> the point of coordinates <math><mo stretchy="false">(</mo><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002C;</mo> <msub><mi>A</mi><mi>y</mi></msub><mo>&#x0002C;</mo><msub><mi>A</mi><mi>z</mi></msub> <mo stretchy="false">)</mo></math> and its projection on the plane <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> with the coordinates <math><mo
-	 * stretchy="false">(</mo><msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>x</mi></msub> <mo>&#x0002C;</mo><msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>y</mi></msub> <mo>&#x0002C;</mo><msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>z</mi></msub> <mo stretchy="false">)</mo></math>.
+	 * Let the normal of the plane be <math><mover><mi>n</mi><mo stretchy="false">&#x02192;</mo></mover></math> with the coordinates
+	 * <math><mo stretchy="false">(</mo><msub><mi>n</mi><mi>x</mi></msub><mo>&#x0002C;</mo> <msub><mi>n</mi><mi>y</mi></msub>
+	 * <mo>&#x0002C;</mo><msub><mi>n</mi><mi>z</mi></msub> <mo stretchy="false">)</mo></math>.<br>
+	 * Let <math><mi>A</mi></math> the point of coordinates <math><mo stretchy="false">(</mo><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002C;</mo>
+	 * <msub><mi>A</mi><mi>y</mi></msub><mo>&#x0002C;</mo><msub><mi>A</mi><mi>z</mi></msub> <mo stretchy="false">)</mo></math>
+	 * and its projection on the plane <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> with the coordinates <math><mo
+	 * stretchy="false">(</mo><msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>x</mi></msub> <mo>&#x0002C;</mo><msub>
+	 * <mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>y</mi></msub> <mo>&#x0002C;</mo><msub><mrow><msup><mi>A</mi>
+	 * <mo>&#x02032;</mo></msup></mrow><mi>z</mi></msub> <mo stretchy="false">)</mo></math>.
+	 *
 	 * <p>
-	 * Let <math><mi>s</mi></math> the distance between the point <math><mi>A</mi></math> and the nearest point on the plane, ie. the point <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> such as: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mi>s</mi><mo>&#x0003D;</mo> <mi>a</mi><mo>.</mo><msub><mi>A</mi><mi>x</mi></msub> <mo>&#x0002B;</mo><mi>b</mi><mo>.</mo><msub><mi>A</mi><mi>y</mi> </msub><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo><msub><mi>A</mi>
-	 * <mi>z</mi></msub><mo>&#x0002B;</mo><mi>d</mi></math>. If <math><mi>s</mi></math> is positive, the point is in the front of the plane. If <math><mi>s</mi></math> is negative, the point is behind the plane.
+	 * Let <math><mi>s</mi></math> the distance between the point <math><mi>A</mi></math> and the nearest point
+	 * on the plane, ie. the point <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> such as:
+	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mi>s</mi><mo>&#x0003D;</mo> <mi>a</mi><mo>.</mo><msub>
+	 * <mi>A</mi><mi>x</mi></msub> <mo>&#x0002B;</mo><mi>b</mi><mo>.</mo><msub><mi>A</mi><mi>y</mi> </msub><mo>&#x0002B;</mo><mi>c</mi>
+	 * <mo>.</mo><msub><mi>A</mi>
+	 * <mi>z</mi></msub><mo>&#x0002B;</mo><mi>d</mi></math>. If <math><mi>s</mi></math> is positive, the point is in the front of
+	 * the plane. If <math><mi>s</mi></math> is negative, the point is behind the plane.
+	 *
 	 * <p>
-	 * Consequently <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>A</mi> <mo>&#x02032;</mo></msup><mo>&#x0003D;</mo><mi>A</mi><mo>&#x02212;</mo> <mfrac><mrow><mi>s</mi></mrow><mrow><mo stretchy="false">&#x0007C;</mo> <mover><mrow><mrow><mi>n</mi></mrow></mrow><mo stretchy="false">&#x02192;</mo></mover><mo stretchy="false">&#x0007C;</mo> </mrow></mfrac><mover><mrow><mrow><mi>n</mi></mrow></mrow><mo stretchy="false">&#x02192;</mo></mover></math>.
+	 * Consequently <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>A</mi> <mo>&#x02032;</mo></msup>
+	 * <mo>&#x0003D;</mo><mi>A</mi><mo>&#x02212;</mo> <mfrac><mrow><mi>s</mi></mrow><mrow><mo stretchy="false">&#x0007C;</mo>
+	 * <mover><mrow><mrow><mi>n</mi></mrow></mrow><mo stretchy="false">&#x02192;</mo></mover><mo stretchy="false">&#x0007C;</mo>
+	 * </mrow></mfrac><mover><mrow><mrow><mi>n</mi></mrow></mrow><mo stretchy="false">&#x02192;</mo></mover></math>.
+	 *
 	 * <p>
-	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"> <mrow> <mo>&#x0007B;</mo> <mtable> <mtr> <mtd> <msub> <mi>x</mi> <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>x</mi> <mi>A</mi> </msub> <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow> <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
-	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>x</mi> </msub> </mtd> </mtr> <mtr> <mtd> <msub> <mi>y</mi> <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>y</mi> <mi>A</mi> </msub> <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow> <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
-	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>y</mi> </msub> </mtd> </mtr> <mtr> <mtd> <msub> <mi>z</mi> <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>z</mi> <mi>A</mi> </msub> <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow> <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
+	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"> <mrow> <mo>&#x0007B;</mo> <mtable> <mtr> <mtd> <msub> <mi>x</mi>
+	 * <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>x</mi> <mi>A</mi> </msub>
+	 * <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow>
+	 * <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
+	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>x</mi> </msub> </mtd> </mtr> <mtr> <mtd> <msub> <mi>y</mi>
+	 * <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>y</mi> <mi>A</mi> </msub>
+	 * <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow>
+	 * <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
+	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>y</mi> </msub> </mtd> </mtr> <mtr> <mtd> <msub>
+	 * <mi>z</mi> <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>z</mi> <mi>A</mi> </msub>
+	 * <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow>
+	 * <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
 	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>z</mi> </msub> </mtd> </mtr> </mtable> </mrow> </math>
-	 * 
+	 *
 	 * @param a the a component of the plane equation.
 	 * @param b the b component of the plane equation.
 	 * @param c the c component of the plane equation.
@@ -130,13 +233,14 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param result the projection point.
 	 * @see #calculatesPlanePointProjectionWithPlaneNormal(double, double, double, double, double, double, double, Point3D)
 	 */
+	@SuppressWarnings("checkstyle:parametername")
 	static void calculatesPlanePointProjection(
 			double a, double b, double c, double d,
 			double x, double y, double z,
 			Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(7);
 
-		final double normalSqLength = a * a + b * b + c * c;
+		final var normalSqLength = a * a + b * b + c * c;
 		final double nx;
 		final double ny;
 		final double nz;
@@ -145,7 +249,7 @@ extends Plane3D<PT, S, P, V, Q> {
 			ny = b;
 			nz = c;
 		} else {
-			final double normalLength = Math.sqrt(normalSqLength);
+			final var normalLength = Math.sqrt(normalSqLength);
 			nx = a / normalLength;
 			ny = b / normalLength;
 			nz = c / normalLength;
@@ -156,58 +260,149 @@ extends Plane3D<PT, S, P, V, Q> {
 
 	/**
 	 * Replies the projection on the plane of a point with {@code (a,b,c)} the unit normal of the plane.
+	 *
 	 * <p>
 	 * <strong>First Approach: arithmetic resolution</strong>
+	 *
 	 * <p>
 	 * Let <math xmlns="http://www.w3.org/1998/Math/MathML"><mover><mrow><mi>u</mi></mrow><mo stretchy="false">&#x02192;</mo></mover></math> a vector colinear to the line <math><mi mathvariant="normal">&#x00394;</mi></math> with components <math><mo stretchy="false">(</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002C;</mo><msub><mi>y</mi><mi>u</mi></msub> <mo>&#x0002C;</mo><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo></math>.<br>
-	 * Let the equation of the plane <math><mi mathvariant="normal">&#x003A0;</mi></math> as <math><mi>a</mi><mo>.</mo><mi>x</mi><mo>&#x0002B;</mo><mi>b</mi><mo>.</mo><mi>y</mi><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo> <mi>z</mi><mo>&#x0002B;</mo><mi>d</mi><mo>&#x0003D;</mo><mn>0</mn></math><br>
-	 * Let the point <math><mi>A</mi></math> at coordinates <math><mo stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub><mo>&#x0002C;</mo><msub><mi>y</mi><mi>A</mi></msub> <mo>&#x0002C;</mo><msub><mi>z</mi><mi>A</mi></msub><mo stretchy="false">)</mo></math> and its projection point <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> at coordinates <math><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
-	 * <mo>&#x0002C;</mo><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub> <mo>&#x0002C;</mo><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><mo stretchy="false">)</mo></math>.
+	 * Let the equation of the plane <math><mi mathvariant="normal">&#x003A0;</mi></math> as <math><mi>a</mi><mo>.</mo>
+	 * <mi>x</mi><mo>&#x0002B;</mo><mi>b</mi><mo>.</mo><mi>y</mi><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo> <mi>z</mi><mo>&#x0002B;</mo>
+	 * <mi>d</mi><mo>&#x0003D;</mo><mn>0</mn></math><br>
+	 * Let the point <math><mi>A</mi></math> at coordinates <math><mo stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub><mo>&#x0002C;</mo>
+	 * <msub><mi>y</mi><mi>A</mi></msub> <mo>&#x0002C;</mo><msub><mi>z</mi><mi>A</mi></msub><mo stretchy="false">)</mo></math>
+	 * and its projection point <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> at coordinates
+	 * <math><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
+	 * <mo>&#x0002C;</mo><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub> <mo>&#x0002C;</mo><msub><mi>z</mi>
+	 * <mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><mo stretchy="false">)</mo></math>.
+	 *
 	 * <p>
-	 * Since <math><mo stretchy="false">(</mo><mi>A</mi><msup><mi>A</mi><mo>&#x02032;</mo></msup><mo stretchy="false">)</mo></math> is parallel to <math><mi mathvariant="normal">&#x00394;</mi></math>, a scalar <math><mi>k</mi></math> exists such as <math><mover><mrow><mi>A</mi><mrow><mi>A</mi><msup><mo>&#x02032;</mo></msup></mrow></mrow><mo stretchy="true">&#x02192;</mo></mover> <mo>&#x0003D;</mo><mi>k</mi><mo>&#x022C5;</mo><mover><mi>u</mi><mo
+	 * Since <math><mo stretchy="false">(</mo><mi>A</mi><msup><mi>A</mi><mo>&#x02032;</mo></msup><mo stretchy="false">)</mo></math>
+	 * is parallel to <math><mi mathvariant="normal">&#x00394;</mi></math>, a scalar <math><mi>k</mi></math> exists such as
+	 * <math><mover><mrow><mi>A</mi><mrow><mi>A</mi><msup><mo>&#x02032;</mo></msup></mrow></mrow><mo stretchy="true">&#x02192;</mo></mover>
+	 * <mo>&#x0003D;</mo><mi>k</mi><mo>&#x022C5;</mo><mover><mi>u</mi><mo
 	 * stretchy="false">&#x02192;</mo></mover></math><br>
-	 * that <math><mrow><mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi> <mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub> <mo>&#x02212;</mo><msub><mi>x</mi><mi>A</mi></msub><mo>&#x0003D;</mo> <mi>k</mi><mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub> </mtd></mtr><mtr><mtd><msub><mi>y</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x02212;</mo><msub> <mi>y</mi><mi>A</mi></msub><mo>&#x0003D;</mo><mi>k</mi>
-	 * <mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub></mtd></mtr> <mtr><mtd><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo> </msup></mrow></msub><mo>&#x02212;</mo><msub><mi>z</mi><mi>A</mi> </msub><mo>&#x0003D;</mo><mi>k</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mtd></mtr></mtable></mrow></math>.
+	 * that <math><mrow><mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi> <mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
+	 * <mo>&#x02212;</mo><msub><mi>x</mi><mi>A</mi></msub><mo>&#x0003D;</mo> <mi>k</mi><mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub>
+	 * </mtd></mtr><mtr><mtd><msub><mi>y</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x02212;</mo><msub>
+	 * <mi>y</mi><mi>A</mi></msub><mo>&#x0003D;</mo><mi>k</mi>
+	 * <mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub></mtd></mtr> <mtr><mtd><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo>
+	 * </msup></mrow></msub><mo>&#x02212;</mo><msub><mi>z</mi><mi>A</mi> </msub><mo>&#x0003D;</mo><mi>k</mi><mo>&#x022C5;</mo><msub><mi>z</mi>
+	 * <mi>u</mi></msub></mtd></mtr></mtable></mrow></math>.
+	 *
 	 * <p>
-	 * 
-	 * In addition, <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> is on <math><mi mathvariant="normal">&#x003A0;</mi></math>, what means that <math> <mi>a</mi><mo>.</mo><msub><mi>x</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0002B;</mo><mi>b</mi> <mo>.</mo><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo> </msup></mrow></msub><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo> <msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup>
+	 * In addition, <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> is on <math><mi mathvariant="normal">&#x003A0;</mi></math>,
+	 * what means that <math> <mi>a</mi><mo>.</mo><msub><mi>x</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0002B;</mo>
+	 * <mi>b</mi> <mo>.</mo><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo> </msup></mrow></msub><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo>
+	 * <msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup>
 	 * </mrow></msub><mo>&#x0002B;</mo><mi>d</mi><mo>&#x0003D;</mo><mn>0</mn> </math>.
+	 *
 	 * <p>
-	 * The result is a system of 4 equations with 4 unknown variables: <math><msub><mi>x</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math>, <math><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math>, <math><msub><mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math> and <math><mi>k</mi><math>.
+	 * The result is a system of 4 equations with 4 unknown variables: <math><msub><mi>x</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup>
+	 * </mrow></msub><math>, <math><msub><mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math>, <math><msub><mi>z</mi>
+	 * <mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><math> and <math><mi>k</mi><math>.
+	 *
 	 * <p>
-	 * <math> <mrow><mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow> <msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub> <mo>&#x0003D;</mo><mfrac><mrow><mi>b</mi><mo>&#x022C5;</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub><msub> <mi>y</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>y</mi> <mi>A</mi></msub><msub><mi>x</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo> <mo
-	 * stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub> <msub><mi>z</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>z</mi> <mi>A</mi></msub><msub><mi>x</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo> <msub><mi>x</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi> <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub>
-	 * <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd><msub> <mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow> </msub><mo>&#x0003D;</mo><mfrac><mrow><mi>a</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>y</mi><mi>A</mi></msub> <msub><mi>x</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi> <mi>A</mi></msub><msub><mi>y</mi><mi>u</mi></msub><mo
-	 * stretchy="false">)</mo><mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>y</mi><mi>A</mi></msub> <msub><mi>z</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>z</mi> <mi>A</mi></msub><msub><mi>y</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo> <msub><mi>y</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi> <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo>
-	 * <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub> <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd><msub> <mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow> </msub><mo>&#x0003D;</mo><mfrac><mrow><mi>a</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>z</mi><mi>A</mi></msub> <msub><mi>x</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi>
-	 * <mi>A</mi></msub><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x0002B;</mo><mi>b</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>z</mi><mi>A</mi></msub> <msub><mi>y</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>y</mi> <mi>A</mi></msub><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo> <msub><mi>z</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi>
-	 * <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub> <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr></mtable></mrow> </math>
+	 * <math> <mrow><mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow> <msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub>
+	 * <mo>&#x0003D;</mo><mfrac><mrow><mi>b</mi><mo>&#x022C5;</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub><msub>
+	 * <mi>y</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>y</mi> <mi>A</mi></msub><msub><mi>x</mi><mi>u</mi></msub><mo stretchy="false">)</mo>
+	 * <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo> <mo
+	 * stretchy="false">(</mo><msub><mi>x</mi><mi>A</mi></msub> <msub><mi>z</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>z</mi>
+	 * <mi>A</mi></msub><msub><mi>x</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>x</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi> <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo>
+	 * <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub>
+	 * <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd><msub>
+	 * <mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow> </msub><mo>&#x0003D;</mo><mfrac><mrow><mi>a</mi><mo>&#x022C5;</mo>
+	 * <mo stretchy="false">(</mo><msub><mi>y</mi><mi>A</mi></msub> <msub><mi>x</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi>
+	 * <mi>A</mi></msub><msub><mi>y</mi><mi>u</mi></msub><mo
+	 * stretchy="false">)</mo><mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>y</mi><mi>A</mi></msub>
+	 * <msub><mi>z</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>z</mi> <mi>A</mi></msub><msub><mi>y</mi><mi>u</mi></msub>
+	 * <mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo> <msub><mi>y</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi>
+	 * <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo>
+	 * <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub> <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi>
+	 * <mi>u</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd><msub> <mi>z</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow>
+	 * </msub><mo>&#x0003D;</mo><mfrac><mrow><mi>a</mi><mo>&#x022C5;</mo> <mo stretchy="false">(</mo><msub><mi>z</mi><mi>A</mi></msub>
+	 * <msub><mi>x</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi>
+	 * <mi>A</mi></msub><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x0002B;</mo><mi>b</mi><mo>&#x022C5;</mo>
+	 * <mo stretchy="false">(</mo><msub><mi>z</mi><mi>A</mi></msub> <msub><mi>y</mi><mi>u</mi></msub><mo>&#x02212;</mo><msub><mi>y</mi>
+	 * <mi>A</mi></msub><msub><mi>z</mi><mi>u</mi></msub><mo stretchy="false">)</mo><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>z</mi><mi>u</mi></msub></mrow><mrow><mi>a</mi>
+	 * <mo>&#x022C5;</mo><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0002B;</mo> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>u</mi></msub>
+	 * <mo>&#x0002B;</mo><mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi> <mi>u</mi></msub></mrow></mfrac></mtd></mtr></mtable></mrow> </math>
+	 *
 	 * <p>
-	 * In the case of an orthogonal projection and if the reference axis are orthonormal, one can choose <math><msub><mi>x</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>a</mi></math>, <math><msub><mi>y</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>b</mi></math>, <math><msub><mi>z</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>c</mi></math>, then:
+	 * In the case of an orthogonal projection and if the reference axis are orthonormal, one can choose <math><msub><mi>x</mi><mi>u</mi></msub>
+	 * <mo>&#x0003D;</mo><mi>a</mi></math>, <math><msub><mi>y</mi><mi>u</mi></msub><mo>&#x0003D;</mo><mi>b</mi></math>, <math><msub><mi>z</mi>
+	 * <mi>u</mi></msub><mo>&#x0003D;</mo><mi>c</mi></math>, then:
+	 *
 	 * <p>
-	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow> <mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow><msup> <mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0003D;</mo> <mfrac><mrow><mo stretchy="false">(</mo><msup><mi>b</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>x</mi><mi>A</mi> </msub><mo>&#x02212;</mo><mi>a</mi><mi>b</mi><mo>&#x022C5;</mo>
-	 * <msub><mi>y</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>a</mi> <mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi><mi>A</mi></msub> <mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo><mi>a</mi></mrow> <mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup> <mi>b</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>c</mi> <mn>2</mn></msup></mrow></mfrac></mtd></mtr><mtr><mtd><msub> <mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow>
-	 * </msub><mo>&#x0003D;</mo><mfrac><mrow><mo>&#x02212;</mo><mi>a</mi> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>x</mi><mi>A</mi></msub> <mo>&#x0002B;</mo><mo stretchy="false">(</mo><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>y</mi><mi>A</mi> </msub><mo>&#x02212;</mo><mi>b</mi><mi>c</mi><mo>&#x022C5;</mo> <msub><mi>z</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>d</mi>
-	 * <mo>&#x022C5;</mo><mi>b</mi></mrow><mrow><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>b</mi><mn>2</mn></msup> <mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup></mrow> </mfrac></mtd></mtr><mtr><mtd><msub><mi>z</mi><mrow><msup><mi>A</mi> <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0003D;</mo><mfrac> <mrow><mo>&#x02212;</mo><mi>a</mi><mi>c</mi><mo>&#x022C5;</mo> <msub><mi>x</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>b</mi>
-	 * <mi>c</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>A</mi></msub> <mo>&#x0002B;</mo><mo stretchy="false">(</mo><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>b</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>z</mi><mi>A</mi> </msub><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo><mi>c</mi> </mrow><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo> <msup><mi>b</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>c</mi>
+	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow> <mo>&#x0007B;</mo><mtable><mtr><mtd><msub><mi>x</mi><mrow><msup>
+	 * <mi>A</mi><mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0003D;</mo> <mfrac><mrow><mo stretchy="false">(</mo><msup><mi>b</mi><mn>2</mn>
+	 * </msup><mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>x</mi><mi>A</mi> </msub>
+	 * <mo>&#x02212;</mo><mi>a</mi><mi>b</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>y</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>a</mi> <mi>c</mi><mo>&#x022C5;</mo><msub><mi>z</mi><mi>A</mi></msub>
+	 * <mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo><mi>a</mi></mrow> <mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup>
+	 * <mi>b</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>c</mi> <mn>2</mn></msup></mrow></mfrac></mtd></mtr><mtr><mtd><msub>
+	 * <mi>y</mi><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow>
+	 * </msub><mo>&#x0003D;</mo><mfrac><mrow><mo>&#x02212;</mo><mi>a</mi> <mi>b</mi><mo>&#x022C5;</mo><msub><mi>x</mi><mi>A</mi></msub>
+	 * <mo>&#x0002B;</mo><mo stretchy="false">(</mo><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup>
+	 * <mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>y</mi><mi>A</mi> </msub><mo>&#x02212;</mo><mi>b</mi><mi>c</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>z</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>d</mi>
+	 * <mo>&#x022C5;</mo><mi>b</mi></mrow><mrow><msup><mi>a</mi><mn>2</mn> </msup><mo>&#x0002B;</mo><msup><mi>b</mi><mn>2</mn></msup>
+	 * <mo>&#x0002B;</mo><msup><mi>c</mi><mn>2</mn></msup></mrow> </mfrac></mtd></mtr><mtr><mtd><msub><mi>z</mi><mrow><msup><mi>A</mi>
+	 * <mo>&#x02032;</mo></msup></mrow></msub><mo>&#x0003D;</mo><mfrac> <mrow><mo>&#x02212;</mo><mi>a</mi><mi>c</mi><mo>&#x022C5;</mo>
+	 * <msub><mi>x</mi><mi>A</mi></msub><mo>&#x02212;</mo><mi>b</mi>
+	 * <mi>c</mi><mo>&#x022C5;</mo><msub><mi>y</mi><mi>A</mi></msub> <mo>&#x0002B;</mo><mo stretchy="false">(</mo><msup><mi>a</mi><mn>2</mn>
+	 * </msup><mo>&#x0002B;</mo><msup><mi>b</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&#x022C5;</mo><msub><mi>z</mi><mi>A</mi>
+	 * </msub><mo>&#x02212;</mo><mi>d</mi><mo>&#x022C5;</mo><mi>c</mi> </mrow><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo>
+	 * <msup><mi>b</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>c</mi>
 	 * <mn>2</mn></msup></mrow></mfrac></mtd></mtr></mtable></mrow> </math>
+	 *
 	 * <p>
 	 * <strong>Second Approach: vectorial resolution</strong>
+	 *
 	 * <p>
-	 * Let the normal of the plane be <math><mover><mi>n</mi><mo stretchy="false">&#x02192;</mo></mover></math> with the coordinates <math><mo stretchy="false">(</mo><msub><mi>n</mi><mi>x</mi></msub><mo>&#x0002C;</mo> <msub><mi>n</mi><mi>y</mi></msub><mo>&#x0002C;</mo><msub><mi>n</mi><mi>z</mi></msub> <mo stretchy="false">)</mo></math>.<br>
-	 * Let <math><mi>A</mi></math> the point of coordinates <math><mo stretchy="false">(</mo><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002C;</mo> <msub><mi>A</mi><mi>y</mi></msub><mo>&#x0002C;</mo><msub><mi>A</mi><mi>z</mi></msub> <mo stretchy="false">)</mo></math> and its projection on the plane <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> with the coordinates <math><mo
-	 * stretchy="false">(</mo><msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>x</mi></msub> <mo>&#x0002C;</mo><msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>y</mi></msub> <mo>&#x0002C;</mo><msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>z</mi></msub> <mo stretchy="false">)</mo></math>.
+	 * Let the normal of the plane be <math><mover><mi>n</mi><mo stretchy="false">&#x02192;</mo></mover></math> with the coordinates
+	 * <math><mo stretchy="false">(</mo><msub><mi>n</mi><mi>x</mi></msub><mo>&#x0002C;</mo> <msub><mi>n</mi><mi>y</mi></msub>
+	 * <mo>&#x0002C;</mo><msub><mi>n</mi><mi>z</mi></msub> <mo stretchy="false">)</mo></math>.<br>
+	 * Let <math><mi>A</mi></math> the point of coordinates <math><mo stretchy="false">(</mo><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002C;</mo>
+	 * <msub><mi>A</mi><mi>y</mi></msub><mo>&#x0002C;</mo><msub><mi>A</mi><mi>z</mi></msub> <mo stretchy="false">)</mo></math>
+	 * and its projection on the plane <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> with the coordinates <math><mo
+	 * stretchy="false">(</mo><msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>x</mi></msub> <mo>&#x0002C;</mo>
+	 * <msub><mrow><msup><mi>A</mi><mo>&#x02032;</mo></msup></mrow><mi>y</mi></msub> <mo>&#x0002C;</mo><msub><mrow><msup><mi>A</mi>
+	 * <mo>&#x02032;</mo></msup></mrow><mi>z</mi></msub> <mo stretchy="false">)</mo></math>.
+	 *
 	 * <p>
-	 * Let <math><mi>s</mi></math> the distance between the point <math><mi>A</mi></math> and the nearest point on the plane, ie. the point <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> such as: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mi>s</mi><mo>&#x0003D;</mo> <mi>a</mi><mo>.</mo><msub><mi>A</mi><mi>x</mi></msub> <mo>&#x0002B;</mo><mi>b</mi><mo>.</mo><msub><mi>A</mi><mi>y</mi> </msub><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo><msub><mi>A</mi>
-	 * <mi>z</mi></msub><mo>&#x0002B;</mo><mi>d</mi></math>. If <math><mi>s</mi></math> is positive, the point is in the front of the plane. If <math><mi>s</mi></math> is negative, the point is behind the plane.
+	 * Let <math><mi>s</mi></math> the distance between the point <math><mi>A</mi></math> and the nearest point on the plane, ie. the point
+	 * <math><msup><mi>A</mi><mo>&#x02032;</mo></msup></math> such as: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mi>s</mi>
+	 * <mo>&#x0003D;</mo> <mi>a</mi><mo>.</mo><msub><mi>A</mi><mi>x</mi></msub> <mo>&#x0002B;</mo><mi>b</mi><mo>.</mo><msub><mi>A</mi><mi>y</mi>
+	 * </msub><mo>&#x0002B;</mo><mi>c</mi><mo>.</mo><msub><mi>A</mi>
+	 * <mi>z</mi></msub><mo>&#x0002B;</mo><mi>d</mi></math>. If <math><mi>s</mi></math> is positive, the point is in the front of
+	 * the plane. If <math><mi>s</mi></math> is negative, the point is behind the plane.
+	 *
 	 * <p>
-	 * Consequently <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>A</mi> <mo>&#x02032;</mo></msup><mo>&#x0003D;</mo><mi>A</mi><mo>&#x02212;</mo> <mfrac><mrow><mi>s</mi></mrow><mrow><mo stretchy="false">&#x0007C;</mo> <mover><mrow><mrow><mi>n</mi></mrow></mrow><mo stretchy="false">&#x02192;</mo></mover><mo stretchy="false">&#x0007C;</mo> </mrow></mfrac><mover><mrow><mrow><mi>n</mi></mrow></mrow><mo stretchy="false">&#x02192;</mo></mover></math>.
+	 * Consequently <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>A</mi> <mo>&#x02032;</mo></msup><mo>&#x0003D;</mo>
+	 * <mi>A</mi><mo>&#x02212;</mo> <mfrac><mrow><mi>s</mi></mrow><mrow><mo stretchy="false">&#x0007C;</mo>
+	 * <mover><mrow><mrow><mi>n</mi></mrow></mrow>
+	 * <mo stretchy="false">&#x02192;</mo></mover><mo stretchy="false">&#x0007C;</mo> </mrow></mfrac><mover><mrow><mrow><mi>n</mi></mrow></mrow>
+	 * <mo stretchy="false">&#x02192;</mo></mover></math>.
+	 *
 	 * <p>
-	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"> <mrow> <mo>&#x0007B;</mo> <mtable> <mtr> <mtd> <msub> <mi>x</mi> <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>x</mi> <mi>A</mi> </msub> <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow> <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
-	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>x</mi> </msub> </mtd> </mtr> <mtr> <mtd> <msub> <mi>y</mi> <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>y</mi> <mi>A</mi> </msub> <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow> <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
-	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>y</mi> </msub> </mtd> </mtr> <mtr> <mtd> <msub> <mi>z</mi> <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>z</mi> <mi>A</mi> </msub> <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow> <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
+	 * <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"> <mrow> <mo>&#x0007B;</mo> <mtable> <mtr> <mtd> <msub> <mi>x</mi>
+	 * <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>x</mi> <mi>A</mi> </msub>
+	 * <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow>
+	 * <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
+	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>x</mi> </msub> </mtd> </mtr> <mtr> <mtd> <msub> <mi>y</mi>
+	 * <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>y</mi> <mi>A</mi> </msub>
+	 * <mo>&#x02212;</mo>
+	 * <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow> <mi>n</mi> </mrow> </mrow>
+	 * <mo stretchy="false">&#x02192;</mo> </mover> <mo
+	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>y</mi> </msub> </mtd> </mtr> <mtr> <mtd> <msub> <mi>z</mi>
+	 * <mrow> <msup> <mi>A</mi> <mo>&#x02032;</mo> </msup> </mrow> </msub> <mo>&#x0003D;</mo> <msub> <mi>z</mi> <mi>A</mi> </msub>
+	 * <mo>&#x02212;</mo> <mfrac> <mrow> <mi>s</mi> </mrow> <mrow> <mo stretchy="false">&#x0007C;</mo> <mover> <mrow> <mrow>
+	 * <mi>n</mi> </mrow> </mrow> <mo stretchy="false">&#x02192;</mo> </mover> <mo
 	 * stretchy="false">&#x0007C;</mo> </mrow> </mfrac> <msub> <mi>n</mi> <mi>z</mi> </msub> </mtd> </mtr> </mtable> </mrow> </math>
-	 * 
+	 *
 	 * @param a the a component of the plane equation.
 	 * @param b the b component of the plane equation.
 	 * @param c the c component of the plane equation.
@@ -218,6 +413,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param result the projection point.
 	 * @see #calculatesPlanePointProjection(double, double, double, double, double, double, double, Point3D)
 	 */
+	@SuppressWarnings("checkstyle:parametername")
 	static void calculatesPlanePointProjectionWithPlaneNormal(
 			double a, double b, double c, double d,
 			double x, double y, double z,
@@ -227,20 +423,20 @@ extends Plane3D<PT, S, P, V, Q> {
 
 		// Plan is defined by : a * u + b * v + c * w + d = 0
 		// So that the distance to the plane is: a * x + b * y + c * z + d
-		final double k = a * x + b * y + c * z + d;
+		final var k = a * x + b * y + c * z + d;
 
 		// Distance k may be negative or positive. It may be used to multiply the normal vector
 		// for obtaining the vector from the projection point P' and the projected point P.
 		// Consequently, P = P' + k (a,b,c) and P' = P - k (a,b,c)
-		final double px = x - k * a;
-		final double py = y - k * b;
-		final double pz = z - k * c;
+		final var px = x - k * a;
+		final var py = y - k * b;
+		final var pz = z - k * c;
 
 		result.set(px, py, pz);
 	}
 
 	/** Calculates the distance between the given plane and this plane.
-	 * 
+	 *
 	 * @param a1 the a coordinate of the first plane.
 	 * @param b1 the b coordinate of the first plane.
 	 * @param c1 the c coordinate of the first plane.
@@ -255,7 +451,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	static double calculatesPlanePlaneDistance(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2) {
-		final double length1 = Math.sqrt(a1 * a1 + b1 * b1 + c1 * c1);
+		final var length1 = Math.sqrt(a1 * a1 + b1 * b1 + c1 * c1);
 		final double nx1;
 		final double ny1;
 		final double nz1;
@@ -269,7 +465,7 @@ extends Plane3D<PT, S, P, V, Q> {
 			nz1 = c1 / length1;
 		}
 
-		final double length2 = Math.sqrt(a2 * a2 + b2 * b2 + c2 * c2);
+		final var length2 = Math.sqrt(a2 * a2 + b2 * b2 + c2 * c2);
 		final double nx2;
 		final double ny2;
 		final double nz2;
@@ -283,7 +479,7 @@ extends Plane3D<PT, S, P, V, Q> {
 			nz2 = c2 / length2;
 		}
 
-		final double dotProduct = Vector3D.dotProduct(nx1, ny1, nz1, nx2, ny2, nz2);
+		final var dotProduct = Vector3D.dotProduct(nx1, ny1, nz1, nx2, ny2, nz2);
 
 		if (MathUtil.isEpsilonEqual(Math.abs(dotProduct), 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
 			// Planes are coplanar.
@@ -292,7 +488,7 @@ extends Plane3D<PT, S, P, V, Q> {
 			// Distance of the first pane to the origin (0,0,0) is d1.
 			// Distance of the second pane to the origin (0,0,0) is d2.
 			// Invert the sign of d2 if the normal vectors of the two planes are not directed in the same direction.
-			final double dist2 = dotProduct < 0. ? -d2 : d2;
+			final var dist2 = dotProduct < 0. ? -d2 : d2;
 			if (d1 <= dist2) {
 				return dist2 - d1;
 			}
@@ -302,7 +498,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Calculates the distance between the given plane and this plane.
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -313,10 +509,11 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @return the distance between the two planes.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parametername")
 	static double calculatesPlanePointDistance(
 			double a, double b, double c, double d,
 			double px, double py, double pz) {
-		final double normalSqLength = a * a + b * b + c * c;
+		final var normalSqLength = a * a + b * b + c * c;
 		final double nx;
 		final double ny;
 		final double nz;
@@ -325,7 +522,7 @@ extends Plane3D<PT, S, P, V, Q> {
 			ny = b;
 			nz = c;
 		} else {
-			final double normalLength = Math.sqrt(normalSqLength);
+			final var normalLength = Math.sqrt(normalSqLength);
 			nx = a / normalLength;
 			ny = b / normalLength;
 			nz = c / normalLength;
@@ -334,7 +531,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Classifies the given point against to the plane.
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -342,13 +539,14 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param px the x coordinate of the point.
 	 * @param py the y coordinate of the point.
 	 * @param pz the c coordinate of the point.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parametername")
 	static PlaneClassification classifiesPlanePoint(
 			double a, double b, double c, double d,
 			double px, double py, double pz) {
-		final double k = calculatesPlanePointDistance(a, b, c, d, px, py ,pz);
+		final var k = calculatesPlanePointDistance(a, b, c, d, px, py, pz);
 		if (MathUtil.isEpsilonZero(k, GeomConstants.UNIT_VECTOR_EPSILON)) {
 			return PlaneClassification.COINCIDENT;
 		}
@@ -359,7 +557,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Calculates the distance between the given sphere and this plane.
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -367,13 +565,15 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param sx the x coordinate of the sphere center.
 	 * @param sy the y coordinate of the sphere center.
 	 * @param sz the c coordinate of the sphere center.
+	 * @param radius the radius of the sphere.
 	 * @return the distance between the plane and the sphere.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parametername")
 	static double calculatesPlaneSphereDistance(
 			double a, double b, double c, double d,
 			double sx, double sy, double sz, double radius) {
-		final double dist = calculatesPlanePointDistance(a, b, c, d, sx, sy, sz);
+		final var dist = calculatesPlanePointDistance(a, b, c, d, sx, sy, sz);
 		if (Math.abs(dist) <= radius) {
 			return 0.;
 		}
@@ -384,7 +584,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Classifies the given sphere against to the plane.
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -393,13 +593,14 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param sy the y coordinate of the sphere center.
 	 * @param sz the c coordinate of the sphere center.
 	 * @param radius the radius of the sphere.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parametername")
 	static PlaneClassification classifiesPlaneSphere(
 			double a, double b, double c, double d,
 			double sx, double sy, double sz, double radius) {
-		final double dist = calculatesPlanePointDistance(a, b, c, d, sx, sy, sz);
+		final var dist = calculatesPlanePointDistance(a, b, c, d, sx, sy, sz);
 		if (!MathUtil.isEpsilonEqual(dist, radius, GeomConstants.UNIT_VECTOR_EPSILON) && Math.abs(dist) < radius) {
 			return PlaneClassification.COINCIDENT;
 		}
@@ -410,7 +611,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Calculates the distance between the given aligned box and this plane.
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -424,14 +625,15 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @return the distance between the plane and the box.
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static double calculatesPlaneAlignedBoxDistance(
 			double a, double b, double c, double d,
 			double minx, double miny, double minz, double maxx, double maxy, double maxz) {
-		assert minx <= maxx : AssertMessages.lowerEqualParameters(2, minx, 5, maxx);
-		assert miny <= maxy : AssertMessages.lowerEqualParameters(3, miny, 6, maxy);
-		assert minz <= maxz : AssertMessages.lowerEqualParameters(4, minz, 7, maxz);
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(2, Double.valueOf(minx), 5, Double.valueOf(maxx));
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(3, Double.valueOf(miny), 6, Double.valueOf(maxy));
+		assert minz <= maxz : AssertMessages.lowerEqualParameters(4, Double.valueOf(minz), 7, Double.valueOf(maxz));
 
-		final double normalSqLength = a * a + b * b + c * c;
+		final var normalSqLength = a * a + b * b + c * c;
 		final double nx;
 		final double ny;
 		final double nz;
@@ -440,49 +642,49 @@ extends Plane3D<PT, S, P, V, Q> {
 			ny = b;
 			nz = c;
 		} else {
-			final double normalLength = Math.sqrt(normalSqLength);
+			final var normalLength = Math.sqrt(normalSqLength);
 			nx = a / normalLength;
 			ny = b / normalLength;
 			nz = c / normalLength;
 		}
 
-		double minx2;
-		double miny2;
-		double minz2;
-		double maxx2;
-		double maxy2;
-		double maxz2;
+		final double minx2;
+		final double miny2;
+		final double minz2;
+		final double maxx2;
+		final double maxy2;
+		final double maxz2;
 
-		// X axis 
-		if (nx >= 0.) { 
-			minx2 = minx; 
-			maxx2 = maxx; 
-		} else { 
-			minx2 = maxx; 
-			maxx2 = minx; 
-		} 
-
-		// Y axis 
-		if (ny >= 0.) { 
-			miny2 = miny; 
-			maxy2 = maxy; 
-		} else { 
-			miny2 = maxy; 
-			maxy2 = miny; 
-		} 
-
-		// Z axis 
-		if (nz >= 0.) { 
-			minz2 = minz; 
-			maxz2 = maxz; 
-		} else { 
-			minz2 = maxz; 
-			maxz2 = minz; 
+		// X axis
+		if (nx >= 0.) {
+			minx2 = minx;
+			maxx2 = maxx;
+		} else {
+			minx2 = maxx;
+			maxx2 = minx;
 		}
 
-		double dist = Vector3D.dotProduct(nx, ny, nz, minx2, miny2, minz2) + d;
+		// Y axis
+		if (ny >= 0.) {
+			miny2 = miny;
+			maxy2 = maxy;
+		} else {
+			miny2 = maxy;
+			maxy2 = miny;
+		}
+
+		// Z axis
+		if (nz >= 0.) {
+			minz2 = minz;
+			maxz2 = maxz;
+		} else {
+			minz2 = maxz;
+			maxz2 = minz;
+		}
+
+		var dist = Vector3D.dotProduct(nx, ny, nz, minx2, miny2, minz2) + d;
 		if (dist > 0.) {
-			return dist; 
+			return dist;
 		}
 
 		dist = Vector3D.dotProduct(nx, ny, nz, maxx2, maxy2, maxz2) + d;
@@ -494,7 +696,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Classifies the given segment against to the plane.
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -505,14 +707,15 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param x2 the x coordinate of the second point of the segment.
 	 * @param y2 the y coordinate of the second point of the segment.
 	 * @param z2 the z coordinate of the second point of the segment.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static PlaneClassification classifiesPlaneSegment(
 			double a, double b, double c, double d,
 			double x1, double y1, double z1,
 			double x2, double y2, double z2) {
-		final double normalSqLength = a * a + b * b + c * c;
+		final var normalSqLength = a * a + b * b + c * c;
 		final double nx;
 		final double ny;
 		final double nz;
@@ -521,18 +724,18 @@ extends Plane3D<PT, S, P, V, Q> {
 			ny = b;
 			nz = c;
 		} else {
-			final double normalLength = Math.sqrt(normalSqLength);
+			final var normalLength = Math.sqrt(normalSqLength);
 			nx = a / normalLength;
 			ny = b / normalLength;
 			nz = c / normalLength;
 		}
 
-		final double distp1 = nx * x1 + ny * y1 + nz * z1 + d;
+		final var distp1 = nx * x1 + ny * y1 + nz * z1 + d;
 		if (MathUtil.isEpsilonZero(distp1, GeomConstants.UNIT_VECTOR_EPSILON)) {
 			return PlaneClassification.COINCIDENT;
 		}
 
-		final double distp2 = nx * x2 + ny * y2 + nz * z2 + d;
+		final var distp2 = nx * x2 + ny * y2 + nz * z2 + d;
 		if (MathUtil.isEpsilonZero(distp2, GeomConstants.UNIT_VECTOR_EPSILON)) {
 			return PlaneClassification.COINCIDENT;
 		}
@@ -550,7 +753,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Classifies the given plane against to another plane.
-	 * 
+	 *
 	 * @param a1 first component of the first plane equation.
 	 * @param b1 second component of the first plane equation.
 	 * @param c1 third component of the first plane equation.
@@ -559,13 +762,13 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param b2 second component of the second plane equation.
 	 * @param c2 third component of the second plane equation.
 	 * @param d2 fourth component of the second plane equation.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
 	static PlaneClassification classifiesPlanePlane(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2) {
-		final double normalSqLength1 = a1 * a1 + b1 * b1 + c1 * c1;
+		final var normalSqLength1 = a1 * a1 + b1 * b1 + c1 * c1;
 		final double nx1;
 		final double ny1;
 		final double nz1;
@@ -574,13 +777,13 @@ extends Plane3D<PT, S, P, V, Q> {
 			ny1 = b1;
 			nz1 = c1;
 		} else {
-			final double normalLength = Math.sqrt(normalSqLength1);
+			final var normalLength = Math.sqrt(normalSqLength1);
 			nx1 = a1 / normalLength;
 			ny1 = b1 / normalLength;
 			nz1 = c1 / normalLength;
 		}
 
-		final double normalSqLength2 = a2 * a2 + b2 * b2 + c2 * c2;
+		final var normalSqLength2 = a2 * a2 + b2 * b2 + c2 * c2;
 		final double nx2;
 		final double ny2;
 		final double nz2;
@@ -589,13 +792,13 @@ extends Plane3D<PT, S, P, V, Q> {
 			ny2 = b2;
 			nz2 = c2;
 		} else {
-			final double normalLength = Math.sqrt(normalSqLength2);
+			final var normalLength = Math.sqrt(normalSqLength2);
 			nx2 = a2 / normalLength;
 			ny2 = b2 / normalLength;
 			nz2 = c2 / normalLength;
 		}
-		
-		final double p = Vector3D.dotProduct(nx1, ny1, nz1, nx2, ny2, nz2);
+
+		final var p = Vector3D.dotProduct(nx1, ny1, nz1, nx2, ny2, nz2);
 		if (MathUtil.isEpsilonEqual(Math.abs(p), 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
 			// planes are parallel
 			if (p >= 0.) {
@@ -609,7 +812,7 @@ extends Plane3D<PT, S, P, V, Q> {
 				return PlaneClassification.BEHIND;
 			}
 			// Plane normals are to the opposite directions
-			final double nd2 = -d2;
+			final var nd2 = -d2;
 			if (MathUtil.isEpsilonEqual(d1, nd2, GeomConstants.UNIT_VECTOR_EPSILON)) {
 				return PlaneClassification.COINCIDENT;
 			}
@@ -622,7 +825,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Classifies the given segment against to the plane.
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -633,17 +836,18 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param maxx the x coordinate of the maximum point of the aligned box.
 	 * @param maxy the y coordinate of the maximum point of the aligned box.
 	 * @param maxz the z coordinate of the maximum point of the aligned box.
-	 * @return the classification. 
+	 * @return the classification.
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static PlaneClassification classifiesPlaneAlignedBox(
 			double a, double b, double c, double d,
 			double minx, double miny, double minz,
 			double maxx, double maxy, double maxz) {
-		assert minx <= maxx : AssertMessages.lowerEqualParameters(2, minx, 5, maxx);
-		assert miny <= maxy : AssertMessages.lowerEqualParameters(3, miny, 6, maxy);
-		assert minz <= maxz : AssertMessages.lowerEqualParameters(4, minz, 7, maxz);
-		final double normalSqLength = a * a + b * b + c * c;
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(2, Double.valueOf(minx), 5, Double.valueOf(maxx));
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(3, Double.valueOf(miny), 6, Double.valueOf(maxy));
+		assert minz <= maxz : AssertMessages.lowerEqualParameters(4, Double.valueOf(minz), 7, Double.valueOf(maxz));
+		final var normalSqLength = a * a + b * b + c * c;
 		final double nx;
 		final double ny;
 		final double nz;
@@ -652,48 +856,48 @@ extends Plane3D<PT, S, P, V, Q> {
 			ny = b;
 			nz = c;
 		} else {
-			final double normalLength = Math.sqrt(normalSqLength);
+			final var normalLength = Math.sqrt(normalSqLength);
 			nx = a / normalLength;
 			ny = b / normalLength;
 			nz = c / normalLength;
 		}
 
-		double minx2;
-		double miny2;
-		double minz2;
-		double maxx2;
-		double maxy2;
-		double maxz2;
+		final double minx2;
+		final double miny2;
+		final double minz2;
+		final double maxx2;
+		final double maxy2;
+		final double maxz2;
 
-		// X axis 
-		if (nx >= 0.) { 
-			minx2 = minx; 
-			maxx2 = maxx; 
-		} else { 
-			minx2 = maxx; 
-			maxx2 = minx; 
-		} 
+		// X axis
+		if (nx >= 0.) {
+			minx2 = minx;
+			maxx2 = maxx;
+		} else {
+			minx2 = maxx;
+			maxx2 = minx;
+		}
 
-		// Y axis 
-		if (ny >= 0.) { 
-			miny2 = miny; 
-			maxy2 = maxy; 
-		} else { 
-			miny2 = maxy; 
-			maxy2 = miny; 
-		} 
+		// Y axis
+		if (ny >= 0.) {
+			miny2 = miny;
+			maxy2 = maxy;
+		} else {
+			miny2 = maxy;
+			maxy2 = miny;
+		}
 
-		// Z axis 
-		if (nz >= 0.) { 
-			minz2 = minz; 
-			maxz2 = maxz; 
-		} else { 
-			minz2 = maxz; 
-			maxz2 = minz; 
-		} 
+		// Z axis
+		if (nz >= 0.) {
+			minz2 = minz;
+			maxz2 = maxz;
+		} else {
+			minz2 = maxz;
+			maxz2 = minz;
+		}
 
 		if ((Vector3D.dotProduct(nx, ny, nz, minx2, miny2, minz2) + d) > 0.) {
-			return PlaneClassification.IN_FRONT_OF; 
+			return PlaneClassification.IN_FRONT_OF;
 		}
 
 		if ((Vector3D.dotProduct(nx, ny, nz, maxx2, maxy2, maxz2) + d) >= 0.) {
@@ -714,7 +918,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * then this function replies the factor of the line's equation that
 	 * permits to retrieve the intersection point from the segment definition.
 	 * </ol>
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -726,24 +930,25 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @param sy2 y coordinate of the second point of the segment.
 	 * @param sz2 z coordinate of the second axis of the oriented box.
 	 * @return the factor that permits to compute the intersection point,
-	 * {@link Double#NaN} when no intersection, {@link Double#POSITIVE_INFINITY}
-	 * when an infinite number of intersection points.
+	 *     {@link Double#NaN} when no intersection, {@link Double#POSITIVE_INFINITY}
+	 *     when an infinite number of intersection points.
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static double calculatesPlaneSegmentIntersectionFactor(
 			double a, double b, double c, double d,
 			double sx1, double sy1, double sz1,
 			double sx2, double sy2, double sz2) {
-		final double denom = a * (sx2 - sx1) + b * (sy2 - sy1) + c * (sz2 - sz1);
+		final var denom = a * (sx2 - sx1) + b * (sy2 - sy1) + c * (sz2 - sz1);
 		if (MathUtil.isEpsilonZero(denom, GeomConstants.UNIT_VECTOR_EPSILON)) {
 			// Segment and plane are parallel
 			// Compute the distance between a point of the segment and the plane.
-			final double dist = a * sx1 + b * sy1 + c * sz1 + d;
+			final var dist = a * sx1 + b * sy1 + c * sz1 + d;
 			if (MathUtil.isEpsilonZero(dist, GeomConstants.UNIT_VECTOR_EPSILON)) {
 				return Double.POSITIVE_INFINITY;
 			}
 		} else {
-			final double factor = (-a * sx1 - b * sy1 - c * sz1 - d) / denom;
+			final var factor = (-a * sx1 - b * sy1 - c * sz1 - d) / denom;
 			if (factor >= 0. && factor <= 1.) {
 				return factor;
 			}
@@ -755,7 +960,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	 *
 	 * <p>If the segment and the plane are not intersecting, this
 	 * function replies {@code false}. If the plane and thge segment are coplanar, the first point of the segment is replied.
-	 * 
+	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
 	 * @param c third component of the plane equation.
@@ -770,12 +975,13 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @return {@code true} if an intersection exists; otherwise {@code false}.
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static boolean calculatesPlaneSegmentIntersection(
 			double a, double b, double c, double d,
 			double sx1, double sy1, double sz1,
 			double sx2, double sy2, double sz2,
 			Point3D<?, ?, ?> result) {
-		final double factor = calculatesPlaneSegmentIntersectionFactor(a, b, c, d, sx1, sy1, sz1, sx2, sy2, sz2);
+		final var factor = calculatesPlaneSegmentIntersectionFactor(a, b, c, d, sx1, sy1, sz1, sx2, sy2, sz2);
 		if (Double.isNaN(factor)) {
 			return false;
 		}
@@ -793,7 +999,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Calculates the line that corresponds to the intersection between two general planes.
-	 * 
+	 *
 	 * @param a1 the a coordinate of the first plane.
 	 * @param b1 the b coordinate of the first plane.
 	 * @param c1 the c coordinate of the first plane.
@@ -806,6 +1012,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
 	 *     the planes are coplanar.
 	 */
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static boolean calculatesPlanePlaneIntersection(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2,
@@ -821,7 +1028,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Calculates the line that corresponds to the intersection between the two planes.
-	 * 
+	 *
 	 * @param a1 the a coordinate of the first plane.
 	 * @param b1 the b coordinate of the first plane.
 	 * @param c1 the c coordinate of the first plane.
@@ -835,6 +1042,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
 	 *     the planes are coplanar.
 	 */
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static boolean calculatesPlanePlaneIntersection(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2,
@@ -854,7 +1062,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Calculates the line that corresponds to the intersection between the two planes.
-	 * 
+	 *
 	 * @param a1 the a coordinate of the first plane.
 	 * @param b1 the b coordinate of the first plane.
 	 * @param c1 the c coordinate of the first plane.
@@ -868,6 +1076,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
 	 *     the planes are coplanar.
 	 */
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static boolean calculatesPlanePlaneIntersection(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2,
@@ -887,7 +1096,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Calculates the line that corresponds to the intersection between the two planes.
-	 * 
+	 *
 	 * @param a1 the a coordinate of the first plane.
 	 * @param b1 the b coordinate of the first plane.
 	 * @param c1 the c coordinate of the first plane.
@@ -902,15 +1111,16 @@ extends Plane3D<PT, S, P, V, Q> {
 	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
 	 *     the planes are coplanar.
 	 */
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	static boolean calculatesPlanePlaneIntersection(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2,
 			PointVector3DReceiver coordinateReceiver) {
 		assert coordinateReceiver != null : AssertMessages.notNullParameter(6);
 
-		final Vector3D<?, ?, ?> u = new InnerComputationVector3afp();
+		final var u = new InnerComputationVector3afp();
 		Vector3D.crossProduct(a1, b1, c1, a2, b2, c2, u);
-		final double ulengthSq = u.getLengthSquared();
+		final var ulengthSq = u.getLengthSquared();
 		if (MathUtil.isEpsilonZero(ulengthSq)) {
 			// planes are parallel
 			return false;
@@ -919,9 +1129,9 @@ extends Plane3D<PT, S, P, V, Q> {
 		// u is both perpendicular to the two normals,
 		// so it is parallel to both planes,
 		// i.e., it is the direction of the intersection line
-		final double ux = u.getX();
-		final double uy = u.getY();
-		final double uz = u.getZ();
+		final var ux = u.getX();
+		final var uy = u.getY();
+		final var uz = u.getZ();
 
 		// Intersection point is:
 		// ((d2 n1 - d1 n2) x (n1 x n2))
@@ -934,12 +1144,12 @@ extends Plane3D<PT, S, P, V, Q> {
 		// ---------------------
 		//      ulengthSq
 
-		final double vx = d2 * a1 - d1 * a2;
-		final double vy = d2 * b1 - d1 * b2;
-		final double vz = d2 * c1 - d1 * c2;
-		final Vector3D<?, ?, ?> i = new InnerComputationVector3afp();
+		final var vx = d2 * a1 - d1 * a2;
+		final var vy = d2 * b1 - d1 * b2;
+		final var vz = d2 * c1 - d1 * c2;
+		final var i = new InnerComputationVector3afp();
 		Vector3D.crossProduct(vx, vy, vz, ux, uy, uz, i);
-		final double f = 1. / ulengthSq;
+		final var f = 1. / ulengthSq;
 		i.scale(f);
 
 		coordinateReceiver.set(
@@ -960,31 +1170,31 @@ extends Plane3D<PT, S, P, V, Q> {
 
 	/**
 	 * Classifies a sphere with respect to the plane.
-	 * 
+	 *
 	 * @param sphere the sphere to classify.
 	 * @return the classification
 	 */
 	@Pure
-	default PlaneClassification classifies(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
+	default PlaneClassification classifies(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return classifies(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
 	/**
 	 * Classifies an aligned box with respect to the plane.
-	 * 
+	 *
 	 * @param box the box to classify.
 	 * @return the classification
 	 */
 	@Pure
-	default PlaneClassification classifies(Box3afp<?, ?, ?, ?, ?, ?, ?> box) {
+	default PlaneClassification classifies(Box3afp<?, ?, ?, ?, ?, ?> box) {
 		assert box != null : AssertMessages.notNullParameter();
 		return classifies(box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX(), box.getMaxY(), box.getMaxZ());
 	}
 
 	/**
 	 * Classifies a segment  with respect to the plane.
-	 * 
+	 *
 	 * @param segment the segment to classify.
 	 * @return the classification
 	 */
@@ -995,77 +1205,6 @@ extends Plane3D<PT, S, P, V, Q> {
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
 				segment.getX1(), segment.getY1(), segment.getZ1(),
 				segment.getX2(), segment.getY2(), segment.getZ2());
-	}
-
-	/**
-	 * Replies if the given sphere is intersecting the plane.
-	 * 
-	 * @param sphere the sphere to test.
-	 * @return {@code true} if intersection, otherwise {@code false}
-	 */
-	@Pure
-	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
-		return classifies(sphere) == PlaneClassification.COINCIDENT;
-	}
-
-	/**
-	 * Replies if the given sphere is intersecting the plane.
-	 * 
-	 * @param x x coordinate of the sphere center.
-	 * @param y y coordinate of the sphere center.
-	 * @param z z coordinate of the sphere center.
-	 * @param radius the radius of the sphere.
-	 * @return {@code true} if intersection, otherwise {@code false}
-	 */
-	@Pure
-	default boolean intersects(double x, double y, double z, double radius) {
-		return classifies(x, y, z, radius) == PlaneClassification.COINCIDENT;
-	}
-
-	/**
-	 * Replies if the given axis-aligned box is intersecting the plane.
-	 * 
-	 * @param box the box to test.
-	 * @return {@code true} if intersection, otherwise {@code false}
-	 */
-	@Pure
-	default boolean intersects(Box3afp<?, ?, ?, ?, ?, ?, ?> box) {
-		return classifies(box) == PlaneClassification.COINCIDENT;
-	}
-
-	/**
-	 * Replies if the given axis-aligned box is intersecting the plane.
-	 * 
-	 * @param minx x coordinate of the minimum point of the box.
-	 * @param miny y coordinate of the minimum point of the box.
-	 * @param minz z coordinate of the minimum point of the box.
-	 * @param maxx x coordinate of the maximum point of the box.
-	 * @param maxy y coordinate of the maximum point of the box.
-	 * @param maxz z coordinate of the maximum point of the box.
-	 * @return {@code true} if intersection, otherwise {@code false}
-	 */
-	@Pure
-	default boolean intersects(double minx, double miny, double minz, double maxx, double maxy, double maxz) {
-		return classifies(minx, miny, minz, maxx, maxy, maxz) == PlaneClassification.COINCIDENT;
-	}
-
-	/**
-	 * Replies if the given sphere is intersecting the segment.
-	 * If the intersection point between the point and the line that is
-	 * colinear to the given segment lies on the segment, then an intersection
-	 * exists. Otherwise there is no intersection.
-	 * 
-	 * @param segment the segment to test.
-	 * @return {@code true} if intersection, otherwise {@code false}
-	 */
-	@Pure
-	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : AssertMessages.notNullParameter();
-		final double factor = Plane3afp.calculatesPlaneSegmentIntersectionFactor(
-				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
-				segment.getX1(), segment.getY1(), segment.getZ1(),
-				segment.getX2(), segment.getY2(), segment.getZ2());
-		return !Double.isNaN(factor);
 	}
 
 	@Override
@@ -1087,6 +1226,79 @@ extends Plane3D<PT, S, P, V, Q> {
 		return classifiesPlaneAlignedBox(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
 				lx, ly, lz, ux, uy, uz);
+	}
+
+	/**
+	 * Replies if the given sphere is intersecting the plane.
+	 *
+	 * @param sphere the sphere to test.
+	 * @return {@code true} if intersection, otherwise {@code false}
+	 */
+	@Pure
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		return classifies(sphere) == PlaneClassification.COINCIDENT;
+	}
+
+	/**
+	 * Replies if the given sphere is intersecting the plane.
+	 *
+	 * @param x x coordinate of the sphere center.
+	 * @param y y coordinate of the sphere center.
+	 * @param z z coordinate of the sphere center.
+	 * @param radius the radius of the sphere.
+	 * @return {@code true} if intersection, otherwise {@code false}
+	 */
+	@Pure
+	@Override
+	default boolean intersects(double x, double y, double z, double radius) {
+		return classifies(x, y, z, radius) == PlaneClassification.COINCIDENT;
+	}
+
+	/**
+	 * Replies if the given axis-aligned box is intersecting the plane.
+	 *
+	 * @param box the box to test.
+	 * @return {@code true} if intersection, otherwise {@code false}
+	 */
+	@Pure
+	default boolean intersects(Box3afp<?, ?, ?, ?, ?, ?> box) {
+		return classifies(box) == PlaneClassification.COINCIDENT;
+	}
+
+	/**
+	 * Replies if the given axis-aligned box is intersecting the plane.
+	 *
+	 * @param minx x coordinate of the minimum point of the box.
+	 * @param miny y coordinate of the minimum point of the box.
+	 * @param minz z coordinate of the minimum point of the box.
+	 * @param maxx x coordinate of the maximum point of the box.
+	 * @param maxy y coordinate of the maximum point of the box.
+	 * @param maxz z coordinate of the maximum point of the box.
+	 * @return {@code true} if intersection, otherwise {@code false}
+	 */
+	@Pure
+	@Override
+	default boolean intersects(double minx, double miny, double minz, double maxx, double maxy, double maxz) {
+		return classifies(minx, miny, minz, maxx, maxy, maxz) == PlaneClassification.COINCIDENT;
+	}
+
+	/**
+	 * Replies if the given sphere is intersecting the segment.
+	 * If the intersection point between the point and the line that is
+	 * colinear to the given segment lies on the segment, then an intersection
+	 * exists. Otherwise there is no intersection.
+	 *
+	 * @param segment the segment to test.
+	 * @return {@code true} if intersection, otherwise {@code false}
+	 */
+	@Pure
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : AssertMessages.notNullParameter();
+		final var factor = Plane3afp.calculatesPlaneSegmentIntersectionFactor(
+				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
+				segment.getX1(), segment.getY1(), segment.getZ1(),
+				segment.getX2(), segment.getY2(), segment.getZ2());
+		return !Double.isNaN(factor);
 	}
 
 	/** Replies this plane with a Geogebra-compatible form.
@@ -1112,23 +1324,24 @@ extends Plane3D<PT, S, P, V, Q> {
 
 	@Override
 	default void absolute() {
-		set(	Math.abs(getEquationComponentA()),
+		set(Math.abs(getEquationComponentA()),
 				Math.abs(getEquationComponentB()),
 				Math.abs(getEquationComponentC()),
 				getEquationComponentD());
 	}
 
 	@Override
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	default void set(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z) {
-		final InnerComputationVector3afp v = new InnerComputationVector3afp();
+		final var v = new InnerComputationVector3afp();
 		Vector3D.crossProduct(
 				p2x - p1x, p2y - p1y, p2z - p1z,
 				p3x - p1x, p3y - p1y, p3z - p1z,
 				v);
-		final double a = v.getX();
-		final double b = v.getY();
-		final double c = v.getZ();
-		final double d = -(a * p1x + b * p1y + c * p1z);
+		final var a = v.getX();
+		final var b = v.getY();
+		final var c = v.getZ();
+		final var d = -(a * p1x + b * p1y + c * p1z);
 		set(a, b, c, d);
 		setPivot(
 				(p1x + p2x + p3x) / 3.,
@@ -1137,48 +1350,50 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Set this plane to contain the point and have the two vectors to be form the plane.
-	 * 
+	 *
 	 * @param pivot is the point in the plane.
 	 * @param vector1 is the first vector that represents a direction of tha plane.
 	 * @param vector2 is the second vector that represents a direction of tha plane.
 	 */
+	@Override
 	default void set(Point3D<?, ?, ?> pivot, Vector3D<?, ?, ?> vector1, Vector3D<?, ?, ?> vector2) {
 		assert pivot != null : AssertMessages.notNullParameter(0);
 		assert vector1 != null : AssertMessages.notNullParameter(1);
 		assert vector2 != null : AssertMessages.notNullParameter(2);
-		final InnerComputationVector3afp v = new InnerComputationVector3afp();
+		final var v = new InnerComputationVector3afp();
 		Vector3D.crossProduct(
 				vector1.getX(), vector1.getY(), vector1.getZ(),
 				vector2.getX(), vector2.getY(), vector2.getZ(),
 				v);
-		final double a = v.getX();
-		final double b = v.getY();
-		final double c = v.getZ();
-		final double d = -(a * pivot.getX() + b * pivot.getY() + c * pivot.getZ());
+		final var a = v.getX();
+		final var b = v.getY();
+		final var c = v.getZ();
+		final var d = -(a * pivot.getX() + b * pivot.getY() + c * pivot.getZ());
 		set(a, b, c, d);
 		setPivot(pivot);
 	}
 
 	/** Set this plane to contain the point and have the given normal vector.
-	 * 
+	 *
 	 * @param pivot is the point in the plane.
 	 * @param normal the normal of the plane.
 	 */
+	@Override
 	default void set(Point3D<?, ?, ?> pivot, Vector3D<?, ?, ?> normal) {
 		assert pivot != null : AssertMessages.notNullParameter(0);
 		assert normal != null : AssertMessages.notNullParameter(1);
-		final double length = normal.getLength();
-		final double a = normal.getX() / length;
-		final double b = normal.getY() / length;
-		final double c = normal.getZ() / length;
-		final double d = -(a * pivot.getX() + b * pivot.getY() + c * pivot.getZ());
+		final var length = normal.getLength();
+		final var a = normal.getX() / length;
+		final var b = normal.getY() / length;
+		final var c = normal.getZ() / length;
+		final var d = -(a * pivot.getX() + b * pivot.getY() + c * pivot.getZ());
 		set(a, b, c, d);
 		setPivot(pivot);
 	}
 
 	@Override
 	default P getProjection(double x, double y, double z) {
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		calculatesPlanePointProjection(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
 				x, y, z, point);
@@ -1192,6 +1407,7 @@ extends Plane3D<PT, S, P, V, Q> {
 				x, y, z);
 	}
 
+	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	@Override
 	default double getDistanceTo(double a, double b, double c, double d) {
 		return calculatesPlanePlaneDistance(
@@ -1199,10 +1415,10 @@ extends Plane3D<PT, S, P, V, Q> {
 				a, b, c, d);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "checkstyle:parametername", "checkstyle:parameternumber"})
 	@Override
 	default S getIntersection(double a, double b, double c, double d) {
-		final S segment = (S) getGeomFactory().newSegment();
+		final var segment = (S) getGeomFactory().newSegment();
 		if (calculatesPlanePlaneIntersection(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
 				a, b, c, d,
@@ -1213,13 +1429,13 @@ extends Plane3D<PT, S, P, V, Q> {
 	}
 
 	/** Replies the intersection between this plane and the specified line.
-	 * 
+	 *
 	 * @param line is used to compute the intersection.
 	 * @return the intersection point or {@code null}
 	 */
 	@Pure
 	default P getIntersection(Segment3afp<?, ?, ?, ?, ?, ?, ?> line) {
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		if (calculatesPlaneSegmentIntersection(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
 				line.getX1(), line.getY1(), line.getZ1(),
@@ -1232,35 +1448,34 @@ extends Plane3D<PT, S, P, V, Q> {
 
 	@Override
 	default void rotate(Quaternion<?, ?, ?> rotation, Point3D<?, ?, ?> pivot) {
-		assert rotation != null : AssertMessages.notNullParameter(0);
+		/*TODO assert rotation != null : AssertMessages.notNullParameter(0);
 
-		final Point3D<?, ?, ?> reference = getPivot();
-		final Point3D<?, ?, ?> realPivot = pivot == null ? reference : pivot;
+		final var reference = getPivot();
+		final var realPivot = pivot == null ? reference : pivot;
 
-		final Transform3D m = new Transform3D();
+		final var m = new Transform3D();
 		m.makeRotationMatrix(rotation);
 
-		final Vector3D<?, ?, ?> newNormal = new InnerComputationVector3afp(
+		final var newNormal = new InnerComputationVector3afp(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC());
 		m.transform(newNormal);
 
-		final Vector3D<?, ?, ?> newReference = new InnerComputationVector3afp(
+		final var newReference = new InnerComputationVector3afp(
 				reference.getX() - realPivot.getX(),
 				reference.getY() - realPivot.getY(),
 				reference.getZ() - realPivot.getZ());
 		m.transform(newReference);
-		
-		final double nrx = realPivot.getX() + newReference.getX();
-		final double nry = realPivot.getY() + newReference.getY();
-		final double nrz = realPivot.getZ() + newReference.getZ();
 
-		final double d = -(newNormal.getX() * nrx + newNormal.getY() * nry + newNormal.getZ() * nrz);
+		final var nrx = realPivot.getX() + newReference.getX();
+		final var nry = realPivot.getY() + newReference.getY();
+		final var nrz = realPivot.getZ() + newReference.getZ();
 
-		set(newNormal.getX(), newNormal.getY(), newNormal.getZ(), d);
+		final var d = -(newNormal.getX() * nrx + newNormal.getY() * nry + newNormal.getZ() * nrz);
+
+		set(newNormal.getX(), newNormal.getY(), newNormal.getZ(), d);*/
 	}
 
-	@Override
-	default void transform(Transform3D transform, Point3D<?, ?, ?> pivot) {
+	/* TODO default void transform(Transform3D transform, Point3D<?, ?, ?> pivot) {
 		assert transform != null : AssertMessages.notNullParameter(0);
 
 		final Point3D<?, ?, ?> reference = getPivot();
@@ -1275,7 +1490,7 @@ extends Plane3D<PT, S, P, V, Q> {
 				reference.getY() - realPivot.getY(),
 				reference.getZ() - realPivot.getZ());
 		transform.transform(newReference);
-		
+
 		final double nrx = realPivot.getX() + newReference.getX();
 		final double nry = realPivot.getY() + newReference.getY();
 		final double nrz = realPivot.getZ() + newReference.getZ();
@@ -1283,7 +1498,7 @@ extends Plane3D<PT, S, P, V, Q> {
 		final double d = -(newNormal.getX() * nrx + newNormal.getY() * nry + newNormal.getZ() * nrz);
 
 		set(newNormal.getX(), newNormal.getY(), newNormal.getZ(), d);
-	}
+	}*/
 
 	/** Replies if the given sphere is intersecting the plane.
 	 *
@@ -1298,7 +1513,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	@Pure
 	@XtextOperator("&&")
 	@Inline("intersects($1)")
-	default boolean operator_and(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
+	default boolean operator_and(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		return intersects(sphere);
 	}
 
@@ -1332,7 +1547,7 @@ extends Plane3D<PT, S, P, V, Q> {
 	@Pure
 	@XtextOperator("&&")
 	@Inline("intersects($1)")
-	default boolean operator_and(Box3afp<?, ?, ?, ?, ?, ?, ?> box) {
+	default boolean operator_and(Box3afp<?, ?, ?, ?, ?, ?> box) {
 		return intersects(box);
 	}
 

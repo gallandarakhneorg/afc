@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.vmutil.FileSystem;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Constants and utility functions for ESRI shape files.
@@ -288,22 +287,20 @@ public final class ESRIFileUtil {
 	 */
 	@Pure
 	public static URL generateShapeFileIndexFromShapeFile(File shapeFile) throws IOException {
-		final File shxFile = FileSystem.replaceExtension(shapeFile, "." + ShapeFileIndexFilter.EXTENSION_SHX); //$NON-NLS-1$
+		final var shxFile = FileSystem.replaceExtension(shapeFile, "." + ShapeFileIndexFilter.EXTENSION_SHX); //$NON-NLS-1$
 
-		try (ShapeFileReader<Object> shpReader = new ShapeFileReader<>(shapeFile, new NullFactory())) {
+		try (var shpReader = new ShapeFileReader<>(shapeFile, new NullFactory())) {
 
-			try (ShapeFileIndexWriter shxWriter = new ShapeFileIndexWriter(
+			try (var shxWriter = new ShapeFileIndexWriter(
 					shxFile,
 					shpReader.getShapeElementType(),
 					shpReader.getBoundsFromHeader())) {
-				int offset = shpReader.getFileReadingPosition();
-				int newOffset;
-				int shpLength;
+				var offset = shpReader.getFileReadingPosition();
 
 				while (shpReader.read() != null) {
-					newOffset = shpReader.getFileReadingPosition();
+					final var newOffset = shpReader.getFileReadingPosition();
 					// byte length - file header length - record header length
-					shpLength = newOffset - offset;
+					final var shpLength = newOffset - offset;
 					shxWriter.write(shpLength);
 					offset = newOffset;
 				}

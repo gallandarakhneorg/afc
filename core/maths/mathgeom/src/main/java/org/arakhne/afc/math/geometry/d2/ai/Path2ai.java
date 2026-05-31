@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
@@ -35,14 +34,16 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2DType;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D path on a plane.
+/** Functional interface that represented a 2D path on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -57,6 +58,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public interface Path2ai<
 		ST extends Shape2ai<?, ?, IE, P, V, B>,
 		IT extends Path2ai<?, ?, IE, P, V, B>,
@@ -78,6 +80,11 @@ public interface Path2ai<
 	 */
 	PathWindingRule DEFAULT_WINDING_RULE = PathWindingRule.NON_ZERO;
 
+	@Override
+	default Shape2DType getType() {
+		return Shape2DType.PATH;
+	}
+
 	/** Compute the box that corresponds to the drawable elements of the path.
 	 *
 	 * <p>An element is drawable if it is a line, a curve, or a closing path element.
@@ -86,16 +93,17 @@ public interface Path2ai<
 	 * @param box the box to set.
 	 * @return {@code true} if a drawable element was found.
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static boolean calculatesDrawableElementBoundingBox(PathIterator2ai<?> iterator,
 			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert iterator != null : AssertMessages.notNullParameter(0);
 		assert box != null : AssertMessages.notNullParameter(1);
-		final GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
-		boolean foundOneLine = false;
-		int xmin = Integer.MAX_VALUE;
-		int ymin = Integer.MAX_VALUE;
-		int xmax = Integer.MIN_VALUE;
-		int ymax = Integer.MIN_VALUE;
+		final var factory = iterator.getGeomFactory();
+		var foundOneLine = false;
+		var xmin = Integer.MAX_VALUE;
+		var ymin = Integer.MAX_VALUE;
+		var xmax = Integer.MIN_VALUE;
+		var ymax = Integer.MIN_VALUE;
 		PathElement2ai element;
 		Path2ai<?, ?, ?, ?, ?, ?> subPath;
 		while (iterator.hasNext()) {
@@ -228,15 +236,16 @@ public interface Path2ai<
 	 * @return {@code true} if a control point was found.
 	 * @see #calculatesDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static boolean calculatesControlPointBoundingBox(PathIterator2ai<?> iterator,
 			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert iterator != null : AssertMessages.notNullParameter(0);
 		assert box != null : AssertMessages.notNullParameter(1);
-		boolean foundOneControlPoint = false;
-		int xmin = Integer.MAX_VALUE;
-		int ymin = Integer.MAX_VALUE;
-		int xmax = Integer.MIN_VALUE;
-		int ymax = Integer.MIN_VALUE;
+		var foundOneControlPoint = false;
+		var xmin = Integer.MAX_VALUE;
+		var ymin = Integer.MAX_VALUE;
+		var xmax = Integer.MIN_VALUE;
+		var ymax = Integer.MIN_VALUE;
 		PathElement2ai element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
@@ -410,7 +419,9 @@ public interface Path2ai<
 	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
+	 * @throws IllegalArgumentException invalid move.
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static int calculatesCrossingsPathIteratorSegmentShadow(int crossings, PathIterator2ai<?> pi, int x1, int y1, int x2, int y2,
 			CrossingComputationType type) {
 		assert pi != null : AssertMessages.notNullParameter(1);
@@ -426,13 +437,13 @@ public interface Path2ai<
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
-		int movx = element.getToX();
-		int movy = element.getToY();
-		int curx = movx;
-		int cury = movy;
+		var movx = element.getToX();
+		var movy = element.getToY();
+		var curx = movx;
+		var cury = movy;
 		int endx;
 		int endy;
-		int numCrosses = crossings;
+		var numCrosses = crossings;
 		while (pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
@@ -459,7 +470,7 @@ public interface Path2ai<
 			case QUAD_TO:
 				endx = element.getToX();
 				endy = element.getToY();
-				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				var localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
 				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.quadTo(
 						element.getCtrlX1(), element.getCtrlY1(),
@@ -536,7 +547,7 @@ public interface Path2ai<
 
 		assert numCrosses != GeomConstants.SHAPE_INTERSECTS;
 
-		final boolean isOpen = (curx != movx) || (cury != movy);
+		final var isOpen = curx != movx || cury != movy;
 
 		if (isOpen && type != null) {
 			switch (type) {
@@ -572,7 +583,9 @@ public interface Path2ai<
 	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
+	 * @throws IllegalArgumentException if invalid move.
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static int calculatesCrossingsPathIteratorCircleShadow(int crossings, PathIterator2ai<?> pi, int cx, int cy, int radius,
 			CrossingComputationType type) {
 		assert pi != null : AssertMessages.notNullParameter(1);
@@ -589,13 +602,13 @@ public interface Path2ai<
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
-		int movx = element.getToX();
-		int movy = element.getToY();
-		int curx = movx;
-		int cury = movy;
+		var movx = element.getToX();
+		var movy = element.getToY();
+		var curx = movx;
+		var cury = movy;
 		int endx;
 		int endy;
-		int numCrosses = crossings;
+		var numCrosses = crossings;
 		while (pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
@@ -699,7 +712,7 @@ public interface Path2ai<
 
 		assert numCrosses != GeomConstants.SHAPE_INTERSECTS;
 
-		final boolean isOpen = (curx != movx) || (cury != movy);
+		final var isOpen = curx != movx || cury != movy;
 
 		if (isOpen && type != null) {
 			switch (type) {
@@ -745,7 +758,9 @@ public interface Path2ai<
 	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}
+	 * @throws IllegalArgumentException if invalid move.
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static int calculatesCrossingsPathIteratorPointShadow(int crossings, PathIterator2ai<?> pi, int px, int py,
 			CrossingComputationType type) {
 		assert pi != null : AssertMessages.notNullParameter(1);
@@ -761,13 +776,13 @@ public interface Path2ai<
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
-		int movx = element.getToX();
-		int movy = element.getToY();
-		int curx = movx;
-		int cury = movy;
+		var movx = element.getToX();
+		var movy = element.getToY();
+		var curx = movx;
+		var cury = movy;
 		int endx;
 		int endy;
-		int numCrossings = crossings;
+		var numCrossings = crossings;
 
 		while (pi.hasNext()) {
 			element = pi.next();
@@ -867,7 +882,7 @@ public interface Path2ai<
 
 		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
 
-		final boolean isOpen = (curx != movx) || (cury != movy);
+		final var isOpen = curx != movx || cury != movy;
 
 		if (isOpen && type != null) {
 			switch (type) {
@@ -914,8 +929,10 @@ public interface Path2ai<
 	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
+	 * @throws IllegalArgumentException if invalid move.
 	 * @see "Weiler–Atherton clipping algorithm"
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static int calculatesCrossingsPathIteratorPathShadow(
 			int crossings,
 			PathIterator2ai<?> iterator,
@@ -928,19 +945,19 @@ public interface Path2ai<
 			return 0;
 		}
 
-		PathElement2ai pathElement1 = iterator.next();
+		var pathElement1 = iterator.next();
 
 		if (pathElement1.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
-		final GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		final var factory = iterator.getGeomFactory();
 		Path2ai<?, ?, ?, ?, ?, ?> subPath;
-		int curx = pathElement1.getToX();
-		int movx = curx;
-		int cury = pathElement1.getToY();
-		int movy = cury;
-		int numCrossings = crossings;
+		var curx = pathElement1.getToX();
+		var movx = curx;
+		var cury = pathElement1.getToY();
+		var movy = cury;
+		var numCrossings = crossings;
 		int endx;
 		int endy;
 
@@ -1050,7 +1067,7 @@ public interface Path2ai<
 
 		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
 
-		final boolean isOpen = (curx != movx) || (cury != movy);
+		final var isOpen = curx != movx || cury != movy;
 
 		if (isOpen && type != null) {
 			switch (type) {
@@ -1091,8 +1108,8 @@ public interface Path2ai<
 	static boolean containsPoint(PathIterator2ai<?> pi, int x, int y) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		// Copied from the AWT API
-		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
-		final int cross = calculatesCrossingsPathIteratorPointShadow(0, pi, x, y,
+		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
+		final var cross = calculatesCrossingsPathIteratorPointShadow(0, pi, x, y,
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (cross & mask) != 0;
 	}
@@ -1118,8 +1135,8 @@ public interface Path2ai<
 		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(4);
 		// Copied from AWT API
-		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = calculatesCrossingsPathIteratorRectangleShadow(
+		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = calculatesCrossingsPathIteratorRectangleShadow(
 				0,
 				pi,
 				rx, ry, rx + rwidth, ry + rheight,
@@ -1162,7 +1179,9 @@ public interface Path2ai<
 	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
+	 * @throws IllegalArgumentException if invalid move.
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static int calculatesCrossingsPathIteratorRectangleShadow(
 			int crossings,
 			PathIterator2ai<?> pi,
@@ -1175,17 +1194,17 @@ public interface Path2ai<
 			return 0;
 		}
 
-		PathElement2ai pathElement = pi.next();
+		var pathElement = pi.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
-		int curx = pathElement.getToX();
-		int movx = curx;
-		int cury = pathElement.getToY();
-		int movy = cury;
-		int numCrossings = crossings;
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var numCrossings = crossings;
 		int endx;
 		int endy;
 
@@ -1218,7 +1237,7 @@ public interface Path2ai<
 			case QUAD_TO:
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
-				Path2ai<?, ?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				var curve = pi.getGeomFactory().newPath(pi.getWindingRule());
 				curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
 				curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorRectangleShadow(
@@ -1292,7 +1311,7 @@ public interface Path2ai<
 
 		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
 
-		final boolean isOpen = (curx != movx) || (cury != movy);
+		final var isOpen = curx != movx || cury != movy;
 
 		if (isOpen && type != null) {
 			switch (type) {
@@ -1358,8 +1377,8 @@ public interface Path2ai<
 		if (width == 0 || height == 0) {
 			return false;
 		}
-		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = calculatesCrossingsPathIteratorRectangleShadow(0, pi, x, y, x + width, y + height,
+		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = calculatesCrossingsPathIteratorRectangleShadow(0, pi, x, y, x + width, y + height,
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
@@ -1369,8 +1388,8 @@ public interface Path2ai<
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
 		assert circle != null : AssertMessages.notNullParameter();
-		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = calculatesCrossingsPathIteratorCircleShadow(
+		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = calculatesCrossingsPathIteratorCircleShadow(
 				0,
 				getPathIterator(),
 				circle.getX(), circle.getY(), circle.getRadius(),
@@ -1391,8 +1410,8 @@ public interface Path2ai<
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = calculatesCrossingsPathIteratorSegmentShadow(
+		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = calculatesCrossingsPathIteratorSegmentShadow(
 				0,
 				getPathIterator(),
 				segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(),
@@ -1404,8 +1423,8 @@ public interface Path2ai<
 	@Override
 	default boolean intersects(PathIterator2ai<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = calculatesCrossingsPathIteratorPathShadow(
+		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = calculatesCrossingsPathIteratorPathShadow(
 				0, iterator,
 				new BasicPathShadow2ai(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
@@ -1433,23 +1452,25 @@ public interface Path2ai<
 	 * @param y y coordinate of the point.
 	 * @param result the closest point on the shape; or the point itself
 	 *     if it is inside the shape.
+	 * @throws IllegalStateException if invalid move.
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static void findsClosestPointPathIteratorPoint(PathIterator2ai<? extends PathElement2ai> pi, int x, int y,
 			Point2D<?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 
-		int bestManhantanDist = Integer.MAX_VALUE;
-		int bestLinfinvDist = Integer.MAX_VALUE;
+		var bestManhantanDist = Integer.MAX_VALUE;
+		var bestLinfinvDist = Integer.MAX_VALUE;
 		Point2D<?, ?> candidate;
 		PathElement2ai pe;
 
-		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
-		int crossings = 0;
-		boolean isClosed = false;
-		int moveX = 0;
-		int moveY = 0;
-		int currentX = 0;
-		int currentY = 0;
+		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
+		var crossings = 0;
+		var isClosed = false;
+		var moveX = 0;
+		var moveY = 0;
+		var currentX = 0;
+		var currentY = 0;
 
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -1496,15 +1517,15 @@ public interface Path2ai<
 			}
 
 			if (candidate != null) {
-				final int dx = Math.abs(x - candidate.ix());
-				final int dy = Math.abs(y - candidate.iy());
-				final int manhatanDist = dx + dy;
+				final var dx = Math.abs(x - candidate.ix());
+				final var dy = Math.abs(y - candidate.iy());
+				final var manhatanDist = dx + dy;
 				if (manhatanDist <= 0) {
 					result.set(candidate);
 					return;
 				}
 				final int linfinvDist = Math.min(dx, dy);
-				if (manhatanDist < bestManhantanDist || (manhatanDist == bestManhantanDist && linfinvDist < bestLinfinvDist)) {
+				if (manhatanDist < bestManhantanDist || manhatanDist == bestManhantanDist && linfinvDist < bestLinfinvDist) {
 					bestManhantanDist = manhatanDist;
 					bestLinfinvDist = linfinvDist;
 					result.set(candidate);
@@ -1536,8 +1557,10 @@ public interface Path2ai<
 	 * @param shape the shape to which the closest point must be computed.
 	 * @param result the closest point on pi.
 	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalArgumentException if invalid move.
 	 */
 	@Unefficient
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static boolean findsClosestPointPathIteratorPathIterator(PathIterator2ai<? extends PathElement2ai> pi,
 			PathIterator2ai<? extends PathElement2ai> shape, Point2D<?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
@@ -1547,7 +1570,7 @@ public interface Path2ai<
 		if (!pi.hasNext() || !shape.hasNext()) {
 			return false;
 		}
-		PathElement2ai pathElement1 = pi.next();
+		var pathElement1 = pi.next();
 		if (pathElement1.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
@@ -1557,14 +1580,14 @@ public interface Path2ai<
 		if (!pi.hasNext() || !shape.hasNext()) {
 			return false;
 		}
-		final Rectangle2ai<?, ?, ?, ?, ?, ?> box = pi.getGeomFactory().newBox();
+		final var box = pi.getGeomFactory().newBox();
 		calculatesDrawableElementBoundingBox(shape.restartIterations(), box);
-		final ClosestPointPathShadow2ai shadow = new ClosestPointPathShadow2ai(shape.restartIterations(), box);
-		int crossings = 0;
-		int curx = pathElement1.getToX();
-		int movx = curx;
-		int cury = pathElement1.getToY();
-		int movy = cury;
+		final var shadow = new ClosestPointPathShadow2ai(shape.restartIterations(), box);
+		var crossings = 0;
+		var curx = pathElement1.getToX();
+		var movx = curx;
+		var cury = pathElement1.getToY();
+		var movy = cury;
 		int endx;
 		int endy;
 		while (pi.hasNext()) {
@@ -1605,7 +1628,7 @@ public interface Path2ai<
 		}
 		if (curx == movx && cury == movy) {
 			assert crossings != GeomConstants.SHAPE_INTERSECTS;
-			final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+			final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 			if ((crossings & mask) != 0) {
 				// Second path is inside the first shape
 				result.set(shadow.getClosestPointInShadowShape());
@@ -1619,7 +1642,7 @@ public interface Path2ai<
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		findsClosestPointPathIteratorPoint(getPathIterator(
 				getGeomFactory().getSplineApproximationRatio()), pt.ix(), pt.iy(), point);
 		return point;
@@ -1627,7 +1650,7 @@ public interface Path2ai<
 
 	@Override
 	default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		final P result = getGeomFactory().newPoint();
+		final var result = getGeomFactory().newPoint();
 		if (isCurved()) {
 			Path2ai.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					rectangle.getPathIterator(), result);
@@ -1639,7 +1662,7 @@ public interface Path2ai<
 
 	@Override
 	default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		final P result = getGeomFactory().newPoint();
+		final var result = getGeomFactory().newPoint();
 		if (isCurved()) {
 			Path2ai.findsClosestPointPathIteratorPoint(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					circle.getX(), circle.getY(), result);
@@ -1651,7 +1674,7 @@ public interface Path2ai<
 
 	@Override
 	default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		final P result = getGeomFactory().newPoint();
+		final var result = getGeomFactory().newPoint();
 		if (isCurved()) {
 			Path2ai.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					segment.getPathIterator(), result);
@@ -1663,7 +1686,7 @@ public interface Path2ai<
 
 	@Override
 	default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
-		final P result = getGeomFactory().newPoint();
+		final var result = getGeomFactory().newPoint();
 		if (isCurved()) {
 			Path2ai.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					path.getPathIterator(), result);
@@ -1685,17 +1708,18 @@ public interface Path2ai<
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
 	 * @param result the farthest point on the shape.
+	 * @throws IllegalStateException if invalid move.
 	 */
 	static void findsFarthestPointPathIteratorPoint(PathIterator2ai<? extends PathElement2ai> pi, int x, int y,
 			Point2D<?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 
-		int bestX = x;
-		int bestY = y;
-		int bestManhatanDist = Integer.MIN_VALUE;
-		int bestLinfinvDist = Integer.MIN_VALUE;
+		var bestX = x;
+		var bestY = y;
+		var bestManhatanDist = Integer.MIN_VALUE;
+		var bestLinfinvDist = Integer.MIN_VALUE;
 		PathElement2ai pe;
-		final Point2D<?, ?> point = new InnerComputationPoint2ai();
+		final var point = new InnerComputationPoint2ai();
 
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -1726,11 +1750,11 @@ public interface Path2ai<
 			}
 
 			if (foundCandidate) {
-				final int dx = Math.abs(x - candidateX);
-				final int dy = Math.abs(y - candidateY);
-				final int manhatanDist = dx + dy;
-				final int linfinvDist = Math.min(dx, dy);
-				if ((manhatanDist > bestManhatanDist) || (manhatanDist == bestManhatanDist && linfinvDist < bestLinfinvDist)) {
+				final var dx = Math.abs(x - candidateX);
+				final var dy = Math.abs(y - candidateY);
+				final var manhatanDist = dx + dy;
+				final var linfinvDist = Math.min(dx, dy);
+				if (manhatanDist > bestManhatanDist || manhatanDist == bestManhatanDist && linfinvDist < bestLinfinvDist) {
 					bestManhatanDist = manhatanDist;
 					bestLinfinvDist = linfinvDist;
 					bestX = candidateX;
@@ -1745,7 +1769,7 @@ public interface Path2ai<
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final P point = getGeomFactory().newPoint();
+		final var point = getGeomFactory().newPoint();
 		findsFarthestPointPathIteratorPoint(getPathIterator(
 				getGeomFactory().getSplineApproximationRatio()), pt.ix(), pt.iy(), point);
 		return point;
@@ -1954,21 +1978,21 @@ public interface Path2ai<
 	default void arcTo(int ctrlx, int ctrly, int tox, int toy, double tfrom, double tto, ArcType type) {
 		// Copied from JavaFX Path2D
 		assert tfrom >= 0. : AssertMessages.positiveOrZeroParameter(4);
-		assert tto >= tfrom : AssertMessages.lowerEqualParameters(4, tfrom, 5, tto);
-		assert tto <= 1. : AssertMessages.lowerEqualParameter(5, tto, 1);
-		int currentx = getCurrentX();
-		int currenty = getCurrentY();
-		final int ocurrentx = currentx;
-		final int ocurrenty = currenty;
-		int targetx = tox;
-		int targety = toy;
-		double realtfrom = tfrom;
-		double cx0 = currentx + (ctrlx - currentx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-		double cy0 = currenty + (ctrly - currenty) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-		double cx1 = targetx + (ctrlx - targetx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-		double cy1 = targety + (ctrly - targety) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		assert tto >= tfrom : AssertMessages.lowerEqualParameters(4, Double.valueOf(tfrom), 5, Double.valueOf(tto));
+		assert tto <= 1. : AssertMessages.lowerEqualParameter(5, Double.valueOf(tto), Double.valueOf(1));
+		var currentx = getCurrentX();
+		var currenty = getCurrentY();
+		final var ocurrentx = currentx;
+		final var ocurrenty = currenty;
+		var targetx = tox;
+		var targety = toy;
+		var realtfrom = tfrom;
+		var cx0 = currentx + (ctrlx - currentx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		var cy0 = currenty + (ctrly - currenty) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		var cx1 = targetx + (ctrlx - targetx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		var cy1 = targety + (ctrly - targety) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
 		if (tto < 1.) {
-			final double t = 1. - tto;
+			final var t = 1. - tto;
 			targetx += (cx1 - targetx) * t;
 			targety += (cy1 - targety) * t;
 			cx1 += (cx0 - cx1) * t;
@@ -2005,8 +2029,8 @@ public interface Path2ai<
 			lineTo(currentx, currenty);
 		}
 		if (realtfrom == tto
-				|| (currentx == cx0 && cx0 == cx1 && cx1 == targetx
-				&& currenty == cy0 && cy0 == cy1 && cy1 == targety)) {
+				|| currentx == cx0 && cx0 == cx1 && cx1 == targetx
+				&& currenty == cy0 && cy0 == cy1 && cy1 == targety) {
 			if (type != ArcType.LINE_THEN_ARC) {
 				lineTo(targetx, targety);
 			}
@@ -2026,9 +2050,9 @@ public interface Path2ai<
 	/**
 	 * Adds a section of an shallow ellipse to the current path.
 	 *
-	 * <p>This function is equivalent to:<pre>{@code 
+	 * <p>This function is equivalent to:<pre><code>
 	 * this.arcTo(ctrlx, ctrly, tox, toy, 0.0, 1.0, ArcType.ARCONLY);
-	 * }</pre>
+	 * </code></pre>
 	 *
 	 * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
 	 * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
@@ -2086,6 +2110,7 @@ public interface Path2ai<
 	 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
 	 * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	default void arcTo(int tox, int toy, int radiusx, int radiusy, double xAxisRotation,
 			boolean largeArcFlag, boolean sweepFlag) {
 		// Copied for JavaFX
@@ -2095,16 +2120,16 @@ public interface Path2ai<
 			lineTo(tox, toy);
 			return;
 		}
-		final int ocurrentx = getCurrentX();
-		final int ocurrenty = getCurrentY();
-		int x1 = ocurrentx;
-		int y1 = ocurrenty;
-		final  int x2 = tox;
-		final int y2 = toy;
+		final var ocurrentx = getCurrentX();
+		final var ocurrenty = getCurrentY();
+		var x1 = ocurrentx;
+		var y1 = ocurrenty;
+		final var x2 = tox;
+		final var y2 = toy;
 		if (x1 == x2 && y1 == y2) {
 			return;
 		}
-		final  double cosphi;
+		final double cosphi;
 		final double sinphi;
 		if (xAxisRotation == 0.) {
 			cosphi = 1.;
@@ -2113,27 +2138,27 @@ public interface Path2ai<
 			cosphi = Math.cos(xAxisRotation);
 			sinphi = Math.sin(xAxisRotation);
 		}
-		double mx = (x1 + x2) / 2.;
-		double my = (y1 + y2) / 2.;
-		final double relx1 = x1 - mx;
-		final double rely1 = y1 - my;
-		final double x1p = (cosphi * relx1 + sinphi * rely1) / radiusx;
-		final double y1p = (cosphi * rely1 - sinphi * relx1) / radiusy;
-		final double lenpsq = x1p * x1p + y1p * y1p;
+		var mx = (x1 + x2) / 2.;
+		var my = (y1 + y2) / 2.;
+		final var relx1 = x1 - mx;
+		final var rely1 = y1 - my;
+		final var x1p = (cosphi * relx1 + sinphi * rely1) / radiusx;
+		final var y1p = (cosphi * rely1 - sinphi * relx1) / radiusy;
+		final var lenpsq = x1p * x1p + y1p * y1p;
 		if (lenpsq >= 1.) {
-			double xqpr = y1p * radiusx;
-			double yqpr = x1p * radiusy;
+			var xqpr = y1p * radiusx;
+			var yqpr = x1p * radiusy;
 			if (sweepFlag) {
 				xqpr = -xqpr;
 			} else {
 				yqpr = -yqpr;
 			}
-			final double relxq = cosphi * xqpr - sinphi * yqpr;
-			final double relyq = cosphi * yqpr + sinphi * xqpr;
-			final int xq = (int) Math.round(mx + relxq);
-			final int yq = (int) Math.round(my + relyq);
-			double xc = x1 + relxq;
-			double yc = y1 + relyq;
+			final var relxq = cosphi * xqpr - sinphi * yqpr;
+			final var relyq = cosphi * yqpr + sinphi * xqpr;
+			final var xq = (int) Math.round(mx + relxq);
+			final var yq = (int) Math.round(my + relyq);
+			var xc = x1 + relxq;
+			var yc = y1 + relyq;
 			if (x1 != ocurrentx || y1 != ocurrenty) {
 				lineTo(x1, y1);
 			}
@@ -2143,9 +2168,9 @@ public interface Path2ai<
 			arcTo((int) Math.round(xc), (int) Math.round(yc), x2, y2, 0, 1, ArcType.ARC_ONLY);
 			return;
 		}
-		final double scalef = Math.sqrt((1. - lenpsq) / lenpsq);
-		double cxp = scalef * y1p;
-		double cyp = scalef * x1p;
+		final var scalef = Math.sqrt((1. - lenpsq) / lenpsq);
+		var cxp = scalef * y1p;
+		var cyp = scalef * x1p;
 		if (largeArcFlag == sweepFlag) {
 			cxp = -cxp;
 		} else {
@@ -2153,23 +2178,23 @@ public interface Path2ai<
 		}
 		mx += cosphi * cxp * radiusx - sinphi * cyp * radiusy;
 		my += cosphi * cyp * radiusy + sinphi * cxp * radiusx;
-		double ux = x1p - cxp;
-		double uy = y1p - cyp;
-		final double vx = -(x1p + cxp);
-		final double vy = -(y1p + cyp);
-		boolean done = false;
-		double quadlen = 1.;
-		boolean wasclose = false;
+		var ux = x1p - cxp;
+		var uy = y1p - cyp;
+		final var vx = -(x1p + cxp);
+		final var vy = -(y1p + cyp);
+		var done = false;
+		var quadlen = 1.;
+		var wasclose = false;
 		do {
-			double xqp = uy;
-			double yqp = ux;
+			var xqp = uy;
+			var yqp = ux;
 			if (sweepFlag) {
 				xqp = -xqp;
 			} else {
 				yqp = -yqp;
 			}
 			if (xqp * vx + yqp * vy > 0.) {
-				final double dot = ux * vx + uy * vy;
+				final var dot = ux * vx + uy * vy;
 				if (dot >= 0) {
 					quadlen = Math.acos(dot) / MathConstants.DEMI_PI;
 					done = true;
@@ -2178,12 +2203,12 @@ public interface Path2ai<
 			} else if (wasclose) {
 				break;
 			}
-			final double relxq = cosphi * xqp * radiusx - sinphi * yqp * radiusy;
-			final  double relyq = cosphi * yqp * radiusy + sinphi * xqp * radiusx;
-			final  int xq = (int) Math.round(mx + relxq);
-			final int yq = (int) Math.round(my + relyq);
-			final double xc = x1 + relxq;
-			final double yc = y1 + relyq;
+			final var relxq = cosphi * xqp * radiusx - sinphi * yqp * radiusy;
+			final var relyq = cosphi * yqp * radiusy + sinphi * xqp * radiusx;
+			final var xq = (int) Math.round(mx + relxq);
+			final var yq = (int) Math.round(my + relyq);
+			final var xc = x1 + relxq;
+			final var yc = y1 + relyq;
 			arcTo((int) Math.round(xc), (int) Math.round(yc), xq, yq, 0, quadlen, ArcType.ARC_ONLY);
 			x1 = xq;
 			y1 = yq;
@@ -2196,7 +2221,7 @@ public interface Path2ai<
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final Point2D<?, ?> c = getClosestPointTo(pt);
+		final var c = getClosestPointTo(pt);
 		return c.getDistanceSquared(pt);
 	}
 
@@ -2204,7 +2229,7 @@ public interface Path2ai<
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final Point2D<?, ?> c = getClosestPointTo(pt);
+		final var c = getClosestPointTo(pt);
 		return c.getDistanceL1(pt);
 	}
 
@@ -2212,7 +2237,7 @@ public interface Path2ai<
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final Point2D<?, ?> c = getClosestPointTo(pt);
+		final var c = getClosestPointTo(pt);
 		return c.getDistanceLinf(pt);
 	}
 
@@ -2222,11 +2247,11 @@ public interface Path2ai<
 			return 0;
 		}
 
-		double length = 0;
+		var length = 0.;
 
-		final PathIterator2ai<?> pi = getPathIterator(getGeomFactory().getSplineApproximationRatio());
+		final var pi = getPathIterator(getGeomFactory().getSplineApproximationRatio());
 
-		PathElement2ai pathElement = pi.next();
+		var pathElement = pi.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
@@ -2352,7 +2377,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default Iterator<P> getPointIterator() {
-		final PathIterator2ai<IE> pathIterator = getPathIterator(getGeomFactory().getSplineApproximationRatio());
+		final var pathIterator = getPathIterator(getGeomFactory().getSplineApproximationRatio());
 		return new PixelIterator<>(pathIterator, getGeomFactory());
 	}
 
@@ -2367,6 +2392,7 @@ public interface Path2ai<
 	 * @return the Geogebra representation of the path.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toPolygonDefinition(2, toDoubleArray());
 	}
@@ -2401,6 +2427,7 @@ public interface Path2ai<
 		 * @return thr crossing.
 		 */
 		@Pure
+		@SuppressWarnings("checkstyle:parameternumber")
 		private static int crossingHelper(
 				int crossings,
 				int rxmin, int rymin,
@@ -2408,16 +2435,16 @@ public interface Path2ai<
 				int curx, int cury,
 				int movx, int movy,
 				boolean intersectingBehavior) {
-			int crosses = Segment2ai.calculatesCrossingsRectangleShadowSegment(crossings,
+			var crosses = Segment2ai.calculatesCrossingsRectangleShadowSegment(crossings,
 					rxmin, rymin,
 					rxmax, rymax,
 					curx, cury,
 					movx, movy);
 			if (!intersectingBehavior && crosses == GeomConstants.SHAPE_INTERSECTS) {
-				final int x1 = rxmin + 1;
-				final int x2 = rxmax - 1;
-				final int y1 = rymin + 1;
-				final int y2 = rymax - 1;
+				final var x1 = rxmin + 1;
+				final var x2 = rxmax - 1;
+				final var y1 = rymin + 1;
+				final var y2 = rymax - 1;
 				crosses = Segment2ai.calculatesCrossingsRectangleShadowSegment(crossings,
 						x1, y1,
 						x2, y2,
@@ -2533,7 +2560,7 @@ public interface Path2ai<
 
 		@Override
 		public E next() {
-			final int type = this.typeIndex;
+			final var type = this.typeIndex;
 			if (this.typeIndex >= this.path.getPathElementCount()) {
 				throw new NoSuchElementException();
 			}
@@ -2566,8 +2593,8 @@ public interface Path2ai<
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
-				final int ctrlx = this.path.getCoordAt(this.coordIndex++);
-				final int ctrly = this.path.getCoordAt(this.coordIndex++);
+				final var ctrlx = this.path.getCoordAt(this.coordIndex++);
+				final var ctrly = this.path.getCoordAt(this.coordIndex++);
 				this.p2.set(
 						this.path.getCoordAt(this.coordIndex++),
 						this.path.getCoordAt(this.coordIndex++));
@@ -2581,10 +2608,10 @@ public interface Path2ai<
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
-				final int ctrlx1 = this.path.getCoordAt(this.coordIndex++);
-				final int ctrly1 = this.path.getCoordAt(this.coordIndex++);
-				final int ctrlx2 = this.path.getCoordAt(this.coordIndex++);
-				final int ctrly2 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrlx1 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrly1 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrlx2 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrly2 = this.path.getCoordAt(this.coordIndex++);
 				this.p2.set(
 						this.path.getCoordAt(this.coordIndex++),
 						this.path.getCoordAt(this.coordIndex++));
@@ -2783,16 +2810,16 @@ public interface Path2ai<
 		}
 
 		private void searchNext() {
-			final P old = this.next;
+			final var old = this.next;
 			this.next = null;
 			while (this.pathIterator.hasNext() && (this.lineIterator == null || !this.lineIterator.hasNext())) {
 				this.lineIterator = null;
-				final PathElement2ai elt = this.pathIterator.next();
+				final var elt = this.pathIterator.next();
 				if (elt.isDrawable()) {
 					switch (elt.getType()) {
 					case LINE_TO:
 					case CLOSE:
-						final Segment2ai<?, ?, ?, P, V, ?> segment = this.factory.newSegment(
+						final var segment = this.factory.newSegment(
 								elt.getFromX(), elt.getFromY(),
 								elt.getToX(), elt.getToY());
 						this.lineIterator = segment.getPointIterator();
@@ -2818,7 +2845,7 @@ public interface Path2ai<
 
 		@Override
 		public P next() {
-			final P n = this.next;
+			final var n = this.next;
 			if (n == null) {
 				throw new NoSuchElementException();
 			}
@@ -2955,9 +2982,9 @@ public interface Path2ai<
 		 */
 		private void ensureHoldCapacity(int want) {
 			if (this.holdIndex - want < 0) {
-				final int have = this.hold.length - this.holdIndex;
-				final int newsize = this.hold.length + GROW_SIZE;
-				final double[] newhold = new double[newsize];
+				final var have = this.hold.length - this.holdIndex;
+				final var newsize = this.hold.length + GROW_SIZE;
+				final var newhold = new double[newsize];
 				System.arraycopy(this.hold, this.holdIndex,
 						newhold, this.holdIndex + GROW_SIZE,
 						have);
@@ -3015,10 +3042,10 @@ public interface Path2ai<
 		private static void subdivideQuad(double[] src, int srcoff,
 				double[] left, int leftoff,
 				double[] right, int rightoff) {
-			double x1 = src[srcoff + 0];
-			double y1 = src[srcoff + 1];
-			double x2 = src[srcoff + 4];
-			double y2 = src[srcoff + 5];
+			var x1 = src[srcoff + 0];
+			var y1 = src[srcoff + 1];
+			var x2 = src[srcoff + 4];
+			var y2 = src[srcoff + 5];
 			if (left != null) {
 				left[leftoff + 0] = x1;
 				left[leftoff + 1] = y1;
@@ -3027,8 +3054,8 @@ public interface Path2ai<
 				right[rightoff + 4] = x2;
 				right[rightoff + 5] = y2;
 			}
-			double ctrlx = src[srcoff + 2];
-			double ctrly = src[srcoff + 3];
+			var ctrlx = src[srcoff + 2];
+			var ctrly = src[srcoff + 3];
 			x1 = (x1 + ctrlx) / 2;
 			y1 = (y1 + ctrly) / 2;
 			x2 = (x2 + ctrlx) / 2;
@@ -3110,10 +3137,10 @@ public interface Path2ai<
 				double[] src, int srcoff,
 				double[] left, int leftoff,
 				double[] right, int rightoff) {
-			double x1 = src[srcoff + 0];
-			double y1 = src[srcoff + 1];
-			double x2 = src[srcoff + 6];
-			double y2 = src[srcoff + 7];
+			var x1 = src[srcoff + 0];
+			var y1 = src[srcoff + 1];
+			var x2 = src[srcoff + 6];
+			var y2 = src[srcoff + 7];
 			if (left != null) {
 				left[leftoff + 0] = x1;
 				left[leftoff + 1] = y1;
@@ -3122,16 +3149,16 @@ public interface Path2ai<
 				right[rightoff + 6] = x2;
 				right[rightoff + 7] = y2;
 			}
-			double ctrlx1 = src[srcoff + 2];
-			double ctrly1 = src[srcoff + 3];
+			var ctrlx1 = src[srcoff + 2];
+			var ctrly1 = src[srcoff + 3];
 			x1 = (x1 + ctrlx1) / 2f;
 			y1 = (y1 + ctrly1) / 2f;
-			double ctrlx2 = src[srcoff + 4];
-			double ctrly2 = src[srcoff + 5];
+			var ctrlx2 = src[srcoff + 4];
+			var ctrly2 = src[srcoff + 5];
 			x2 = (x2 + ctrlx2) / 2f;
 			y2 = (y2 + ctrly2) / 2f;
-			double centerx = (ctrlx1 + ctrlx2) / 2f;
-			double centery = (ctrly1 + ctrly2) / 2f;
+			var centerx = (ctrlx1 + ctrlx2) / 2f;
+			var centery = (ctrly1 + ctrly2) / 2f;
 			ctrlx1 = (x1 + centerx) / 2f;
 			ctrly1 = (y1 + centery) / 2f;
 			ctrlx2 = (x2 + centerx) / 2f;
@@ -3164,7 +3191,7 @@ public interface Path2ai<
 		}
 
 		private boolean isSame() {
-			final PathElementType type = this.holdType;
+			final var type = this.holdType;
 			final int x;
 			final int y;
 			if (type == PathElementType.CLOSE) {
@@ -3185,7 +3212,7 @@ public interface Path2ai<
 					this.done = true;
 					return;
 				}
-				final PathElement2ai pathElement = this.pathIterator.next();
+				final var pathElement = this.pathIterator.next();
 				this.holdType = pathElement.getType();
 				pathElement.toArray(this.hold);
 				this.levelIndex = 0;
@@ -3326,10 +3353,10 @@ public interface Path2ai<
 			}
 
 			final E element;
-			final PathElementType type = this.holdType;
+			final var type = this.holdType;
 			if (type != PathElementType.CLOSE) {
-				final int x = (int) Math.round(this.hold[this.holdIndex + 0]);
-				final int y = (int) Math.round(this.hold[this.holdIndex + 1]);
+				final var x = (int) Math.round(this.hold[this.holdIndex + 0]);
+				final var y = (int) Math.round(this.hold[this.holdIndex + 1]);
 				if (type == PathElementType.MOVE_TO) {
 					element = this.pathIterator.getGeomFactory().newMovePathElement(x, y);
 				} else {
@@ -3340,8 +3367,8 @@ public interface Path2ai<
 				this.lastNextX = x;
 				this.lastNextY = y;
 			} else {
-				final int x = (int) Math.round(this.moveX);
-				final int y = (int) Math.round(this.moveY);
+				final var x = (int) Math.round(this.moveX);
+				final var y = (int) Math.round(this.moveY);
 				element = this.pathIterator.getGeomFactory().newClosePathElement(
 						this.lastNextX, this.lastNextY,
 						x, y);

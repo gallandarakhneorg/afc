@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle, aligned on the global axes, with 2 double precision floating-point numbers.
  *
@@ -35,7 +34,7 @@ import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
  * @since 13.0
  */
 public class AlignedBox3d extends AbstractShape3d<AlignedBox3d>
-	implements AlignedBox3afp<Shape3d<?>, AlignedBox3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
+	implements AlignedBox3afp<AlignedBox3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = -2138921378214589458L;
 
@@ -229,15 +228,16 @@ public class AlignedBox3d extends AbstractShape3d<AlignedBox3d>
 
 	@Pure
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		long bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.doubleToLongBits(this.minx);
 		bits = 31 * bits + Double.doubleToLongBits(this.miny);
 		bits = 31 * bits + Double.doubleToLongBits(this.minz);
 		bits = 31 * bits + Double.doubleToLongBits(this.maxx);
 		bits = 31 * bits + Double.doubleToLongBits(this.maxy);
 		bits = 31 * bits + Double.doubleToLongBits(this.maxz);
-		final int b = (int) bits;
+		final var b = (int) bits;
 		return b ^ (b >> 31);
 	}
 

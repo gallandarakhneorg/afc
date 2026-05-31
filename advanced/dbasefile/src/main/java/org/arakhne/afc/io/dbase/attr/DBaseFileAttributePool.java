@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,21 +28,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.collection.NoAttributeFoundException;
-import org.arakhne.afc.io.dbase.DBaseFieldType;
-import org.arakhne.afc.io.dbase.DBaseFileField;
 import org.arakhne.afc.io.dbase.DBaseFileReader;
-import org.arakhne.afc.io.dbase.DBaseFileRecord;
 import org.arakhne.afc.references.WeakValueTreeMap;
 import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.Resources;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class provides a pool of attributes obtained from
@@ -162,9 +157,9 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	public static DBaseFileAttributeProvider getContainer(URL dbaseFile, int recordNumber) {
-		final DBaseFileAttributePool pool = getPool(dbaseFile);
+		final var pool = getPool(dbaseFile);
 		if (pool != null) {
-			final DBaseFileAttributeAccessor accessor = pool.getAccessor(recordNumber);
+			final var accessor = pool.getAccessor(recordNumber);
 			if (accessor != null) {
 				return new DBaseFileAttributeProvider(accessor);
 			}
@@ -180,9 +175,9 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	public static DBaseFileAttributeProvider getProvider(URI dbaseFile, int recordNumber) {
-		final DBaseFileAttributePool pool = getPool(dbaseFile);
+		final var pool = getPool(dbaseFile);
 		if (pool != null) {
-			final DBaseFileAttributeAccessor accessor = pool.getAccessor(recordNumber);
+			final var accessor = pool.getAccessor(recordNumber);
 			if (accessor != null) {
 				return new DBaseFileAttributeProvider(accessor);
 			}
@@ -198,9 +193,9 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	public static DBaseFileAttributeProvider getProvider(File dbaseFile, int recordNumber) {
-		final DBaseFileAttributePool pool = getPool(dbaseFile);
+		final var pool = getPool(dbaseFile);
 		if (pool != null) {
-			final DBaseFileAttributeAccessor accessor = pool.getAccessor(recordNumber);
+			final var accessor = pool.getAccessor(recordNumber);
 			if (accessor != null) {
 				return new DBaseFileAttributeProvider(accessor);
 			}
@@ -209,7 +204,7 @@ public final class DBaseFileAttributePool {
 	}
 
 	/**
-	 * Get an attribute container that corresponds to the specified file
+	 * Get an attribute container that corresponds to the specified file.
 	 *
 	 * <p>The resource should be located according to the
 	 * {@link Class#getResource(String)} or
@@ -221,9 +216,9 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	public static DBaseFileAttributeProvider getProvider(String resource, int recordNumber) {
-		final DBaseFileAttributePool pool = getPool(resource);
+		final var pool = getPool(resource);
 		if (pool != null) {
-			final DBaseFileAttributeAccessor accessor = pool.getAccessor(recordNumber);
+			final var accessor = pool.getAccessor(recordNumber);
 			if (accessor != null) {
 				return new DBaseFileAttributeProvider(accessor);
 			}
@@ -239,9 +234,9 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	public static DBaseFileAttributeCollection getCollection(URL dbaseFile, int recordNumber) {
-		final DBaseFileAttributePool pool = getPool(dbaseFile);
+		final var pool = getPool(dbaseFile);
 		if (pool != null) {
-			final DBaseFileAttributeAccessor accessor = pool.getAccessor(recordNumber);
+			final var accessor = pool.getAccessor(recordNumber);
 			if (accessor != null) {
 				return new DBaseFileAttributeCollection(accessor);
 			}
@@ -257,9 +252,9 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	public static DBaseFileAttributeCollection getCollection(URI dbaseFile, int recordNumber) {
-		final DBaseFileAttributePool pool = getPool(dbaseFile);
+		final var pool = getPool(dbaseFile);
 		if (pool != null) {
-			final DBaseFileAttributeAccessor accessor = pool.getAccessor(recordNumber);
+			final var accessor = pool.getAccessor(recordNumber);
 			if (accessor != null) {
 				return new DBaseFileAttributeCollection(accessor);
 			}
@@ -275,9 +270,9 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	public static DBaseFileAttributeCollection getCollection(File dbaseFile, int recordNumber) {
-		final DBaseFileAttributePool pool = getPool(dbaseFile);
+		final var pool = getPool(dbaseFile);
 		if (pool != null) {
-			final DBaseFileAttributeAccessor accessor = pool.getAccessor(recordNumber);
+			final var accessor = pool.getAccessor(recordNumber);
 			if (accessor != null) {
 				return new DBaseFileAttributeCollection(accessor);
 			}
@@ -286,7 +281,7 @@ public final class DBaseFileAttributePool {
 	}
 
 	/**
-	 * Get an attribute container that corresponds to the specified file
+	 * Get an attribute container that corresponds to the specified file.
 	 *
 	 * <p>The resource should be located according to the
 	 * {@link Class#getResource(String)} or
@@ -298,9 +293,9 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	public static DBaseFileAttributeCollection getCollection(String resource, int recordNumber) {
-		final DBaseFileAttributePool pool = getPool(resource);
+		final var pool = getPool(resource);
 		if (pool != null) {
-			final DBaseFileAttributeAccessor accessor = pool.getAccessor(recordNumber);
+			final var accessor = pool.getAccessor(recordNumber);
 			if (accessor != null) {
 				return new DBaseFileAttributeCollection(accessor);
 			}
@@ -321,7 +316,7 @@ public final class DBaseFileAttributePool {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:nofinalizer")
+	@SuppressWarnings({ "checkstyle:nofinalizer", "removal" })
 	@Deprecated(since = "17.0", forRemoval = true)
 	public void finalize() throws Throwable {
 		try {
@@ -371,14 +366,14 @@ public final class DBaseFileAttributePool {
 	@Pure
 	public Collection<String> getAllAttributeNames(int recordNumber) {
 		try {
-			final DBaseFileReader dbReader = getReader();
+			final var dbReader = getReader();
 			synchronized (dbReader) {
-				final List<DBaseFileField> fields = dbReader.getDBFFields();
+				final var fields = dbReader.getDBFFields();
 				if (fields == null) {
 					return Collections.emptyList();
 				}
-				final ArrayList<String> titles = new ArrayList<>(fields.size());
-				for (int i = 0; i < fields.size(); ++i) {
+				final var titles = new ArrayList<String>(fields.size());
+				for (var i = 0; i < fields.size(); ++i) {
 					titles.add(fields.get(i).getName());
 				}
 				return titles;
@@ -396,7 +391,7 @@ public final class DBaseFileAttributePool {
 	@Pure
 	public int getAttributeCount() {
 		try {
-			final DBaseFileReader dbReader = getReader();
+			final var dbReader = getReader();
 			synchronized (dbReader) {
 				return dbReader.getDBFFieldCount();
 			}
@@ -420,15 +415,15 @@ public final class DBaseFileAttributePool {
 	@Pure
 	public Object getRawValue(int recordNumber, String name, OutputParameter<AttributeType> type) throws AttributeException {
 		try {
-			final DBaseFileReader dbReader = getReader();
+			final var dbReader = getReader();
 			synchronized (dbReader) {
 				dbReader.seek(recordNumber);
-				final DBaseFileRecord record = dbReader.readNextDBFRecord();
+				final var record = dbReader.readNextDBFRecord();
 				if (record != null) {
-					final int column = dbReader.getDBFFieldIndex(name);
+					final var column = dbReader.getDBFFieldIndex(name);
 					if (column >= 0) {
-						final Object value = record.getFieldValue(column);
-						final DBaseFieldType dbfType = dbReader.getDBFFieldType(column);
+						final var value = record.getFieldValue(column);
+						final var dbfType = dbReader.getDBFFieldType(column);
 						type.set(dbfType.toAttributeType());
 						return value;
 					}
@@ -448,10 +443,10 @@ public final class DBaseFileAttributePool {
 	 */
 	@Pure
 	DBaseFileAttributeAccessor getAccessor(int recordNumber) {
-		DBaseFileAttributeAccessor accessor = this.accessors.get(recordNumber);
+		var accessor = this.accessors.get(Integer.valueOf(recordNumber));
 		if (accessor == null) {
 			accessor = new DBaseFileAttributeAccessor(this, recordNumber);
-			this.accessors.put(recordNumber, accessor);
+			this.accessors.put(Integer.valueOf(recordNumber), accessor);
 		}
 		return accessor;
 	}

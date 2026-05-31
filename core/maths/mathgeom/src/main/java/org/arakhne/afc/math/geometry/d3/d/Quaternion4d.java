@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,13 +80,13 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 
 	/** Construct a quaternion with the components of the given quaternion.
 	 *
-	 * @param q the quaternion to copy.
+	 * @param quarternion the quaternion to copy.
 	 */
-	public Quaternion4d(Quaternion<?, ?, ?> q) {
-		this.x = q.getX();
-		this.y = q.getY();
-		this.z = q.getZ();
-		this.w = q.getW();
+	public Quaternion4d(Quaternion<?, ?, ?> quarternion) {
+		this.x = quarternion.getX();
+		this.y = quarternion.getY();
+		this.z = quarternion.getZ();
+		this.w = quarternion.getW();
 	}
 
 	/** Construct a quaternion from an axis-angle representation.
@@ -151,21 +151,21 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	@Override
 	public Quaternion4d clone() {
 		try {
-			return (Quaternion4d)super.clone(); 
-		}
-		catch(CloneNotSupportedException e) {   
+			return (Quaternion4d) super.clone();
+		} catch (CloneNotSupportedException e) {
 			throw new Error(e);
 		}
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
-		int bits = 1;
+		var bits = 1L;
 		bits = 31 * bits + Double.hashCode(this.x);
 		bits = 31 * bits + Double.hashCode(this.y);
 		bits = 31 * bits + Double.hashCode(this.z);
 		bits = 31 * bits + Double.hashCode(this.w);
-		return bits ^ (bits >> 31);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Override
@@ -228,12 +228,12 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 
 	@Override
 	public void setZ(double z) {
-		this.z=  z;
+		this.z =  z;
 	}
 
 	@Override
 	public void setZ(int z) {
-		this.z=  z;
+		this.z =  z;
 	}
 
 	@Override
@@ -257,12 +257,12 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	}
 
 	@Override
-	public void normalize(Quaternion<?, ?, ?> q) {
-		final double x = q.getX();
-		final double y = q.getY();
-		final double z = q.getZ();
-		final double w = q.getW();
-		double norm = x * x + y * y + z * z + w * w;
+	public void normalize(Quaternion<?, ?, ?> quarternion) {
+		final var x = quarternion.getX();
+		final var y = quarternion.getY();
+		final var z = quarternion.getZ();
+		final var w = quarternion.getW();
+		var norm = x * x + y * y + z * z + w * w;
 		if (norm > 0.) {
 			norm = 1. / Math.sqrt(norm);
 			this.x = x * norm;
@@ -279,7 +279,7 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 
 	@Override
 	public void normalize() {
-		double norm = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+		var norm = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
 		if (norm > 0.) {
 			norm = 1. / Math.sqrt(norm);
 			this.x *= norm;
@@ -295,12 +295,12 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	}
 
 	@Override
-	public void inverse(Quaternion<?, ?, ?> q) {
-		final double x = q.getX();
-		final double y = q.getY();
-		final double z = q.getZ();
-		final double w = q.getW();
-		final double norm = 1. / (w * w + x * x + y * y + z * z);
+	public void inverse(Quaternion<?, ?, ?> quaternion) {
+		final var x = quaternion.getX();
+		final var y = quaternion.getY();
+		final var z = quaternion.getZ();
+		final var w = quaternion.getW();
+		final var norm = 1. / (w * w + x * x + y * y + z * z);
 		this.w =  norm * w;
 		this.x = -norm * x;
 		this.y = -norm * y;
@@ -308,11 +308,11 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	}
 
 	@Override
-	public void conjugate(Quaternion<?, ?, ?> q) {
-		final double x = q.getX();
-		final double y = q.getY();
-		final double z = q.getZ();
-		final double w = q.getW();
+	public void conjugate(Quaternion<?, ?, ?> quaternion) {
+		final var x = quaternion.getX();
+		final var y = quaternion.getY();
+		final var z = quaternion.getZ();
+		final var w = quaternion.getW();
 		this.x = -x;
 		this.y = -y;
 		this.z = -z;
@@ -322,7 +322,7 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	@Pure
 	@Override
 	public String toString() {
-		final JsonBuffer objectDescription = new JsonBuffer();
+		final var objectDescription = new JsonBuffer();
 		toJson(objectDescription);
 		return objectDescription.toString();
 	}
@@ -334,14 +334,14 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 
 	@Override
 	public void mul(Quaternion<?, ?, ?> q1, Quaternion<?, ?, ?> q2) {
-		final double x1 = q1.getX();
-		final double y1 = q1.getY();
-		final double z1 = q1.getZ();
-		final double w1 = q1.getW();
-		final double x2 = q2.getX();
-		final double y2 = q2.getY();
-		final double z2 = q2.getZ();
-		final double w2 = q2.getW();
+		final var x1 = q1.getX();
+		final var y1 = q1.getY();
+		final var z1 = q1.getZ();
+		final var w1 = q1.getW();
+		final var x2 = q2.getX();
+		final var y2 = q2.getY();
+		final var z2 = q2.getZ();
+		final var w2 = q2.getW();
 		this.w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
 		this.x = w1 * x2 + w2 * x1 + y1 * z2 - z1 * y2;
 		this.y = w1 * y2 + w2 * y1 - x1 * z2 + z1 * x2;
@@ -350,31 +350,31 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 
 	@Override
 	public void mulInverse(Quaternion<?, ?, ?> q1, Quaternion<?, ?, ?> q2) {
-		final InnerComputationQuaternionafp tempQuat = new InnerComputationQuaternionafp(
-				q2.getX(), q2.getY(), q2.getZ(), q2.getW());  
-		tempQuat.inverse(); 
+		final var tempQuat = new InnerComputationQuaternionafp(
+				q2.getX(), q2.getY(), q2.getZ(), q2.getW());
+		tempQuat.inverse();
 		mul(q1, tempQuat);
 	}
 
 	@Override
 	public void interpolate(Quaternion<?, ?, ?> q1, Quaternion<?, ?, ?> q2, double alpha) {
-		double x1 = q1.getX();
-		double y1 = q1.getY();
-		double z1 = q1.getZ();
-		double w1 = q1.getW();
-		final double x2 = q2.getX();
-		final double y2 = q2.getY();
-		final double z2 = q2.getZ();
-		final double w2 = q2.getW();
+		var x1 = q1.getX();
+		var y1 = q1.getY();
+		var z1 = q1.getZ();
+		var w1 = q1.getW();
+		final var x2 = q2.getX();
+		final var y2 = q2.getY();
+		final var z2 = q2.getZ();
+		final var w2 = q2.getW();
 
 		// From "Advanced Animation and Rendering Techniques"
-		// by Watt and Watt pg. 364, function as implemented appeared to be 
+		// by Watt and Watt pg. 364, function as implemented appeared to be
 		// incorrect.  Fails to choose the same quaternion for the double
 		// covering. Resulting in change of direction for rotations.
 		// Fixed function to negate the first quaternion in the case that the
-		// dot product of q1 and this is negative. Second case was not needed. 
+		// dot product of q1 and this is negative. Second case was not needed.
 
-		double dot = x2 * x1 + y2 * y1 + z2 * z1 + w2 * w1;
+		var dot = x2 * x1 + y2 * y1 + z2 * z1 + w2 * w1;
 
 		if (dot < 0.) {
 			// negate quaternion
@@ -388,8 +388,8 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 		final double s1;
 		final double s2;
 		if ((1. - dot) > EPS) {
-			final double om = Math.acos(dot);
-			final double sinom = Math.sin(om);
+			final var om = Math.acos(dot);
+			final var sinom = Math.sin(om);
 			s1 = Math.sin((1. - alpha) * om) / sinom;
 			s2 = Math.sin(alpha * om) / sinom;
 		} else {

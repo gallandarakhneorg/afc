@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,8 +76,8 @@ public class AttributeComparator implements Comparator<Attribute>, Serializable 
      */
 	@Pure
 	public int compare(AttributeValue arg0, AttributeValue arg1) {
-		if ((arg0 instanceof Attribute) && (arg1 instanceof Attribute)) {
-			return compare((Attribute) arg0, (Attribute) arg1);
+		if (arg0 instanceof Attribute attr0 && arg1 instanceof Attribute attr1) {
+			return compare(attr0, attr1);
 		}
 		return AttributeValueImpl.compareValues(arg0, arg1);
 	}

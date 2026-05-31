@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d1;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions;
@@ -31,6 +28,8 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 1.5D Vector.
  *
@@ -54,17 +53,17 @@ public interface Vector1D<
 		if (vector == null) {
 			return -1;
 		}
-		final Segment1D<?, ?> mySegment = getSegment();
-		final Segment1D<?, ?> otherSegment = vector.getSegment();
+		final var mySegment = getSegment();
+		final var otherSegment = vector.getSegment();
 		if (mySegment == otherSegment) {
-			final int cmp = Double.compare(getX(), vector.getX());
+			final var cmp = Double.compare(getX(), vector.getX());
 			if (cmp == 0) {
 				return Double.compare(getY(), vector.getY());
 			}
 			return cmp;
 		}
-		final int h1 = mySegment != null ? mySegment.hashCode() : 0;
-		final int h2 = otherSegment != null ? otherSegment.hashCode() : 0;
+		final var h1 = mySegment != null ? mySegment.hashCode() : 0;
+		final var h2 = otherSegment != null ? otherSegment.hashCode() : 0;
 		return h1 - h2;
 	}
 
@@ -125,7 +124,7 @@ public interface Vector1D<
 	 * A unit vector has a length equal to 1.
 	 *
 	 * @return {@code true} if the vector has a length equal to 1.
-	 * {@code false} otherwise.
+	 *     {@code false} otherwise.
 	 */
 	@Pure
 	default boolean isUnitVector() {
@@ -273,8 +272,8 @@ public interface Vector1D<
 	 */
 	@Pure
 	default double getLength() {
-		final double x = getX();
-		final double y = getY();
+		final var x = getX();
+		final var y = getY();
 		return Math.hypot(x, y);
 	}
 
@@ -285,8 +284,8 @@ public interface Vector1D<
 	 */
 	@Pure
 	default double getLengthSquared() {
-		final double x = getX();
-		final double y = getY();
+		final var x = getX();
+		final var y = getY();
 		return x * x + y * y;
 	}
 
@@ -297,9 +296,9 @@ public interface Vector1D<
 	 */
 	default void normalize(Vector1D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		final double x = vector.getX();
-		final double y = vector.getY();
-		double sqlength = x * x + y * y;
+		final var x = vector.getX();
+		final var y = vector.getY();
+		var sqlength = x * x + y * y;
 		if (sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
 			set(x / sqlength, y / sqlength);
@@ -314,9 +313,9 @@ public interface Vector1D<
 	 * <p>If the length of the vector is zero, x and y are set to zero.
 	 */
 	default void normalize() {
-		final double x = getX();
-		final double y = getY();
-		double sqlength = x * x + y * y;
+		final var x = getX();
+		final var y = getY();
+		var sqlength = x * x + y * y;
 		if (sqlength != 1.) {
 			if (sqlength != 0.) {
 				sqlength = Math.sqrt(sqlength);
@@ -333,9 +332,9 @@ public interface Vector1D<
 	 * @param newLength - the new length.
 	 */
 	default void setLength(double newLength) {
-		final double l = getLength();
+		final var l = getLength();
 		if (l != 0.) {
-			final double f = newLength / l;
+			final var f = newLength / l;
 			set(getX() * f, getY() * f);
 		} else {
 			set(newLength, 0);
@@ -348,7 +347,7 @@ public interface Vector1D<
 	 */
 	@Pure
 	default RV toUnitVector() {
-		final double length = getLength();
+		final var length = getLength();
 		if (length == 0.) {
 			return getGeomFactory().newVector(getSegment());
 		}

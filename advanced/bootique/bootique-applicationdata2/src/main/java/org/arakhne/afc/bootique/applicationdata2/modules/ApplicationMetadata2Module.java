@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import io.bootique.env.DeclaredVariable;
 import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.module.ModulesMetadata;
-
 import org.arakhne.afc.bootique.applicationdata2.annotations.ApplicationDescription2;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 
@@ -44,7 +43,10 @@ import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationN
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
+ * @deprecated since 19.0
  */
+@SuppressWarnings("removal")
+@Deprecated(since = "19.0")
 public class ApplicationMetadata2Module implements BQModule {
 
 	@Override
@@ -85,7 +87,7 @@ public class ApplicationMetadata2Module implements BQModule {
 			description  = null;
 		}
 
-		final ApplicationMetadata.Builder builder = ApplicationMetadata
+		final var builder = ApplicationMetadata
 			.builder(name)
 			.description(description)
 			.addOptions(options);

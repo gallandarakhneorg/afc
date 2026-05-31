@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2023 The original authors and other contributors.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,10 +90,10 @@ public class ShapeFileIndexRecord implements Comparable<ShapeFileIndexRecord> {
 	@Override
 	@Pure
 	public int hashCode() {
-		int x = this.offset;
-		final int y = this.length;
-		int rc = 0;
-		for (int i = 7; i >= 0; --i) {
+		var x = this.offset;
+		final var y = this.length;
+		var rc = 0;
+		for (var i = 7; i >= 0; --i) {
 			if (i == 4) {
 				x = y;
 			}
@@ -106,8 +106,7 @@ public class ShapeFileIndexRecord implements Comparable<ShapeFileIndexRecord> {
 	@Override
 	@Pure
 	public boolean equals(Object obj) {
-		if (obj instanceof ShapeFileIndexRecord) {
-			final ShapeFileIndexRecord r = (ShapeFileIndexRecord) obj;
+		if (obj instanceof ShapeFileIndexRecord r) {
 			return r.offset == this.offset && r.length == this.length;
 		}
 		return false;
@@ -119,7 +118,7 @@ public class ShapeFileIndexRecord implements Comparable<ShapeFileIndexRecord> {
 		if (record == null) {
 			return -1;
 		}
-		final int cmp = this.offset - record.offset;
+		final var cmp = this.offset - record.offset;
 		if (cmp != 0) {
 			return cmp;
 		}
@@ -129,7 +128,7 @@ public class ShapeFileIndexRecord implements Comparable<ShapeFileIndexRecord> {
 	@Override
 	@Pure
 	public String toString() {
-		final StringBuilder b = new StringBuilder();
+		final var b = new StringBuilder();
 		b.append("[off="); //$NON-NLS-1$
 		b.append(this.offset);
 		b.append(",len="); //$NON-NLS-1$
