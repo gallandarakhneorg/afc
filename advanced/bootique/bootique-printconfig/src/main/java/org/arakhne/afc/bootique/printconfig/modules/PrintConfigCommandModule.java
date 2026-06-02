@@ -22,16 +22,17 @@ package org.arakhne.afc.bootique.printconfig.modules;
 
 import static io.bootique.BQCoreModule.extend;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import io.bootique.di.BQModule;
+import io.bootique.BQModule;
+import io.bootique.ModuleCrate;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Provides;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.module.ModulesMetadata;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 import org.arakhne.afc.bootique.printconfig.commands.PrintConfigCommand;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Module for the command that prints out the configuration values.
  *
@@ -40,11 +41,15 @@ import org.arakhne.afc.bootique.printconfig.commands.PrintConfigCommand;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
- * @deprecated since 18.0
  */
-@SuppressWarnings("removal")
-@Deprecated(since = "18.0")
 public class PrintConfigCommandModule implements BQModule {
+
+	@Override
+    public ModuleCrate crate() {
+        return ModuleCrate.of(this)
+                .description(Locale.getString("MODULE_DESCRIPTION")) //$NON-NLS-1$
+                .build();
+    }
 
 	@Override
 	public void configure(Binder binder) {

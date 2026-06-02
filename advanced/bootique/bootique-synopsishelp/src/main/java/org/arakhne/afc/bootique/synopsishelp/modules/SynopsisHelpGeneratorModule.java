@@ -20,9 +20,9 @@
 
 package org.arakhne.afc.bootique.synopsishelp.modules;
 
-import javax.inject.Singleton;
-
-import io.bootique.di.BQModule;
+import io.bootique.BQCoreModule;
+import io.bootique.BQModule;
+import io.bootique.ModuleCrate;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Key;
@@ -30,26 +30,45 @@ import io.bootique.di.Provides;
 import io.bootique.help.HelpGenerator;
 import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.terminal.Terminal;
+import jakarta.inject.Singleton;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
 import org.arakhne.afc.bootique.synopsishelp.help.SynopsisHelpGenerator;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Module for creating the help generator with synopsis.
+ *
+ * <p>The generator may have a specific parameters:
+ * <ul>
+ * <li><code>argumentSynopsis</code>: the synopsis of the arguments. If {@code null}, the default description is used.
+ *     If it is an empty string, no argument description is displayed.</li>
+ * <li><code>detailedDescription</code>: the detailed description of the application.</li>
+ * </ul>
+ *
+ * <p>These parameters could be overridden if you are using an injector.
+ * The annotation {@code ApplicationArgumentSynopsis} is used for redefining {@code argumentSynopsis}.
+ * The annotation {@code ApplicationDetailedDescription} is used for redefining {@code detailedDescription}.
+ * The following is an example of defining in an injector module:
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
- * @deprecated since 18.0
  */
-@SuppressWarnings("removal")
-@Deprecated(since = "18.0")
 public class SynopsisHelpGeneratorModule implements BQModule {
 
 	private static final int TTY_MIN_COLUMNS = 40;
 
 	private static final int TTY_DEFAULT_COLUMNS = 80;
+
+	@Override
+    public ModuleCrate crate() {
+        return ModuleCrate.of(this)
+                .description(Locale.getString("MODULE_DESCRIPTION")) //$NON-NLS-1$
+                .overrides(BQCoreModule.class)
+                .build();
+    }
 
 	@Override
 	public void configure(Binder binder) {
@@ -68,7 +87,7 @@ public class SynopsisHelpGeneratorModule implements BQModule {
 	@Singleton
 	public HelpGenerator provideHelpGenerator(
 			ApplicationMetadata metadata, Injector injector, Terminal terminal) {
-		int maxColumns = terminal.getColumns();
+		var maxColumns = terminal.getColumns();
 		if (maxColumns < TTY_MIN_COLUMNS) {
 			maxColumns = TTY_DEFAULT_COLUMNS;
 		}

@@ -27,16 +27,12 @@ import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationN
 
 /** Module for the compiler application metadata version 2.
  *
- * <p>This file is copied from the Bootique's original file in order to change the visibility.
- *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 18.0
- * @deprecated since 18.0
  */
-@Deprecated(since = "18.0")
 public final class BQCoreModuleExtender2 extends BQCoreModuleExtender {
 
 	/** Constructor.

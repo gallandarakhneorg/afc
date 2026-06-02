@@ -40,7 +40,7 @@ public class VariableDecls {
 	 *
 	 * @param extender the Bootique extender.
 	 */
-	protected VariableDecls(BQCoreModuleExtender extender) {
+	public VariableDecls(BQCoreModuleExtender extender) {
 		this.extender = extender;
 	}
 

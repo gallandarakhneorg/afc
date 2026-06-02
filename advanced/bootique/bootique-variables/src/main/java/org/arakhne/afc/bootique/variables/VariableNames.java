@@ -63,8 +63,8 @@ public final class VariableNames {
 			return null;
 		}
 		final var name = new StringBuilder();
-		final var pattern = Pattern.compile("((?:[a-z0_9_]+)|(?:[A-Z]+[^A-Z]*))"); //$NON-NLS-1$
-		for (final var component : bootiqueVariable.split("[^a-zA-Z0_9_]+")) { //$NON-NLS-1$
+		final var pattern = Pattern.compile("((?:[a-z0-9_]+)|(?:[A-Z]+[^A-Z]*))"); //$NON-NLS-1$
+		for (final var component : bootiqueVariable.split("[^a-zA-Z0-9_]+")) { //$NON-NLS-1$
 			final var matcher = pattern.matcher(component);
 			while (matcher.find()) {
 				final var word = matcher.group(1);
@@ -83,9 +83,11 @@ public final class VariableNames {
 	 * @return the name of the property.
 	 */
 	public static String basename(String bootiqueVariable) {
-		final var idx = bootiqueVariable.lastIndexOf('.');
-		if (idx >= 0) {
-			return bootiqueVariable.substring(idx + 1);
+		if (bootiqueVariable != null && !bootiqueVariable.isEmpty()) {
+			final var idx = bootiqueVariable.lastIndexOf('.');
+			if (idx >= 0) {
+				return bootiqueVariable.substring(idx + 1);
+			}
 		}
 		return bootiqueVariable;
 	}

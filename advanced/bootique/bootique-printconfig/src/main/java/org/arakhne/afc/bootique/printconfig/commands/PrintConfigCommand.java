@@ -23,9 +23,7 @@ package org.arakhne.afc.bootique.printconfig.commands;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.inject.Provider;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -39,7 +37,7 @@ import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.config.ConfigMetadataNode;
 import io.bootique.meta.module.ModulesMetadata;
-import joptsimple.OptionSpec;
+import jakarta.inject.Provider;
 import org.arakhne.afc.bootique.printconfig.configs.Configs;
 import org.arakhne.afc.vmutil.locale.Locale;
 
@@ -51,10 +49,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
- * @deprecated since 18.0
  */
-@SuppressWarnings("removal")
-@Deprecated(since = "18.0")
 public class PrintConfigCommand extends CommandWithMetadata {
 
 	private static final String CLI_NAME = "printconfig"; //$NON-NLS-1$
@@ -93,7 +88,8 @@ public class PrintConfigCommand extends CommandWithMetadata {
 				.addOption(
 						OptionMetadata.builder(XML_OPTION)
 						.description(Locale.getString("XML_DESCRIPTION")) //$NON-NLS-1$
-						.build()));
+						.build())
+				.build());
 		this.bootLogger = bootLogger;
 		this.modulesMetadata = modulesMetadata;
 		this.injector = injector;
@@ -101,13 +97,13 @@ public class PrintConfigCommand extends CommandWithMetadata {
 
 	@Override
 	public CommandOutcome run(Cli cli) {
-		final Map<String, Object> values = new TreeMap<>();
+		final var values = new TreeMap<String, Object>();
 		extractConfigValues(values, Configs.extractConfigs(this.modulesMetadata.get()));
 		// Search for the last format option
-		final List<OptionSpec<?>> options = cli.detectedOptions();
+		final var options = cli.detectedOptions();
 		String lastOpt = null;
-		for (int i = options.size() - 1; lastOpt == null && i >= 0; --i) {
-			final OptionSpec<?> opt = options.get(i);
+		for (var i = options.size() - 1; lastOpt == null && i >= 0; --i) {
+			final var opt = options.get(i);
 			if (opt.options().contains(JSON_OPTION)) {
 				lastOpt = JSON_OPTION;
 			} else if (opt.options().contains(XML_OPTION)) {
@@ -124,7 +120,7 @@ public class PrintConfigCommand extends CommandWithMetadata {
 			} else {
 				content = generateYaml(values);
 			}
-		} catch (JsonProcessingException exception) {
+		} catch (Exception exception) {
 			return CommandOutcome.failed(ERROR_CODE, exception.getLocalizedMessage(), exception);
 		}
 		this.bootLogger.get().stdout(content);
@@ -137,7 +133,7 @@ public class PrintConfigCommand extends CommandWithMetadata {
 	 * @param configs the configurations.
 	 */
 	protected void extractConfigValues(Map<String, Object> yaml, List<ConfigMetadataNode> configs) {
-		for (final ConfigMetadataNode config : configs) {
+		for (final var config : configs) {
 			Configs.defineConfig(yaml, config, this.injector);
 		}
 	}
@@ -146,13 +142,13 @@ public class PrintConfigCommand extends CommandWithMetadata {
 	 *
 	 * @param map the map to print out.
 	 * @return the Yaml representation.
-	 * @throws JsonProcessingException when the Json cannot be processed.
+	 * @throws Exception when the Json cannot be processed.
 	 */
 	@SuppressWarnings("static-method")
-	protected String generateYaml(Map<String, Object> map) throws JsonProcessingException {
-		final YAMLFactory yamlFactory = new YAMLFactory();
+	protected String generateYaml(Map<String, Object> map) throws Exception {
+		final var yamlFactory = new YAMLFactory();
 		yamlFactory.configure(Feature.WRITE_DOC_START_MARKER, false);
-		final ObjectMapper mapper = new ObjectMapper(yamlFactory);
+		final var mapper = new ObjectMapper(yamlFactory);
 		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
 	}
 
@@ -160,11 +156,11 @@ public class PrintConfigCommand extends CommandWithMetadata {
 	 *
 	 * @param map the map to print out.
 	 * @return the Json representation.
-	 * @throws JsonProcessingException when the Json cannot be processed.
+	 * @throws Exception when the Json cannot be processed.
 	 */
 	@SuppressWarnings("static-method")
-	protected String generateJson(Map<String, Object> map) throws JsonProcessingException {
-		final ObjectMapper mapper = new ObjectMapper();
+	protected String generateJson(Map<String, Object> map) throws Exception {
+		final var mapper = new ObjectMapper();
 		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
 	}
 
@@ -172,11 +168,11 @@ public class PrintConfigCommand extends CommandWithMetadata {
 	 *
 	 * @param map the map to print out.
 	 * @return the Xml representation.
-	 * @throws JsonProcessingException when XML cannot be processed.
+	 * @throws Exception when XML cannot be processed.
 	 */
 	@SuppressWarnings({"static-method"})
-	protected String generateXml(Map<String, Object> map) throws JsonProcessingException {
-		final XmlMapper mapper = new XmlMapper();
+	protected String generateXml(Map<String, Object> map) throws Exception {
+		final var mapper = new XmlMapper();
 		return mapper.writerWithDefaultPrettyPrinter().withRootName(XML_ROOT_NAME).writeValueAsString(map);
 	}
 

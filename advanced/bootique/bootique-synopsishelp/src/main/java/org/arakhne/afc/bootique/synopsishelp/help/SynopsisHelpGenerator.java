@@ -22,6 +22,7 @@ package org.arakhne.afc.bootique.synopsishelp.help;
 
 import java.lang.reflect.Method;
 
+import com.google.common.base.Strings;
 import io.bootique.help.ConsoleAppender;
 import io.bootique.help.DefaultHelpGenerator;
 import io.bootique.help.HelpAppender;
@@ -30,15 +31,36 @@ import io.bootique.meta.application.ApplicationMetadata;
 /** A generator of command-line help that displays the synopsis in addition to
  * the other sections provided by {@link DefaultHelpGenerator}.
  *
+ * <p>The generator may have a specific parameters:
+ * <ul>
+ * <li><code>argumentSynopsis</code>: the synopsis of the arguments. If {@code null}, the default description is used.
+ *     If it is an empty string, no argument description is displayed.</li>
+ * <li><code>detailedDescription</code>: the detailed description of the application.</li>
+ * </ul>
+ *
+ * <p>These parameters could be overridden if you are using an injector.
+ * The annotation {@code ApplicationArgumentSynopsis} is used for redefining {@code argumentSynopsis}.
+ * The annotation {@code ApplicationDetailedDescription} is used for redefining {@code detailedDescription}.
+ * The following is an example of defining in an injector module:
+ *
+ * <pre><code>
+ * class MyModule implements BQModule {
+ * 	public void configure(Binder binder) {
+ * 		binder.<String>bind(String.class, ApplicationArgumentSynopsis.class)
+ * 			.toInstance("the options");
+ * 		binder.<String>bind(String.class, ApplicationDetailedDescription.class)
+ * 			.toInstance("A detailed description of the application");
+ * 	}
+ * }
+ * </code></pre>
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
- * @deprecated since 18.0
  */
 @SuppressWarnings("all")
-@Deprecated(since = "18.0")
 public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 
 	private static final String SYNOPSIS = "SYNOPSIS"; //$NON-NLS-1$
@@ -88,17 +110,18 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		return this.metadata;
 	}
 
-	/*@Override
+	@Override
 	public void append(Appendable out) {
 		final SynopsisHelpAppender appender = createAppender(out);
 		final ApplicationMetadata meta = getApplicationMetadata();
 		final String name = meta.getName();
+
 		printName(appender, name, meta.getDescription());
 		printSynopsis(appender, name, this.argumentSynopsis);
 		printDetailedDescription(appender, this.detailedDescription);
-		printOptions(appender, collectOptions());
+		printOptions(appender, meta.getCliOptions());
 		printEnvironment(appender, meta.getVariables());
-	}*/
+	}
 
 	/** Print the synopsis of the command.
 	 *
@@ -106,7 +129,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 	 * @param name the name of the command.
 	 * @param argumentSynopsis the synopsis of the arguments.
 	 */
-	/*@SuppressWarnings("static-method")
+	@SuppressWarnings("static-method")
 	protected void printSynopsis(HelpAppender out, String name, String argumentSynopsis) {
 		out.printSectionName(SYNOPSIS);
 
@@ -117,20 +140,20 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		} else {
 			out.printText(name, OPTION_SYNOPSIS, argumentSynopsis);
 		}
-	}*/
+	}
 
 	/** Print the detailed description of the command.
 	 *
 	 * @param out the output receiver.
 	 * @param detailedDescription the detailed description of the application.
 	 */
-	/*@SuppressWarnings("static-method")
+	@SuppressWarnings("static-method")
 	protected void printDetailedDescription(SynopsisHelpAppender out, String detailedDescription) {
 		if (!Strings.isNullOrEmpty(detailedDescription)) {
 			out.printSectionName(DETAILED_DESCRIPTION);
 			out.printLongDescription(detailedDescription.split("[\r\n\f]+")); //$NON-NLS-1$
 		}
-	}*/
+	}
 
 	/** Appender for the synopsis help.
 	 *

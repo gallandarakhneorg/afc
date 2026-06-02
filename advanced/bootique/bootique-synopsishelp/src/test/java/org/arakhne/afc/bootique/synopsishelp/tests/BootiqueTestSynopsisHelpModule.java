@@ -18,43 +18,34 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.bootique.applicationdata2;
+package org.arakhne.afc.bootique.synopsishelp.tests;
 
-import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
-import org.arakhne.afc.bootique.applicationdata2.modules.ApplicationMetadata2Module;
+import io.bootique.BQModule;
+import io.bootique.ModuleCrate;
+import io.bootique.di.Binder;
+import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
+import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
 
-/** Provider of a Bootique module for ApplicationData2.
+/** Module for the command for testing bootique.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 15.0
- * @deprecated since 18.0
  */
-@SuppressWarnings("removal")
-@Deprecated(since = "18.0")
-public class ApplicationData2ModuleProvider implements BQModuleProvider {
+class BootiqueTestSynopsisHelpModule implements BQModule {
 
 	@Override
-	public BQModule module() {
-		return new ApplicationMetadata2Module();
-	}
-
-	/*@Override
-	public Collection<Class<? extends BQModule>> overrides() {
-		return Collections.singleton(BQCoreModule.class);
-	}
+    public ModuleCrate crate() {
+        return ModuleCrate.of(this)
+                .description("The test synopsis help module.") //$NON-NLS-1$
+                .build();
+    }
 
 	@Override
-	public BQModuleMetadata.Builder moduleBuilder() {
-		return BQModuleMetadata
-				.builder(module())
-				.overrides(overrides())
-				.providerName(name())
-				.configs(configs())
-				.description(Locale.getString("MODULE_DESCRIPTION")); //$NON-NLS-1$
-	}*/
+	public void configure(Binder binder) {
+		binder.<String>bind(String.class, ApplicationArgumentSynopsis.class).toInstance("additional arguments"); //$NON-NLS-1$
+		binder.<String>bind(String.class, ApplicationDetailedDescription.class).toInstance("A detailed description of the application"); //$NON-NLS-1$
+	}
 
 }

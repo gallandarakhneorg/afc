@@ -21,10 +21,11 @@
 package org.arakhne.afc.bootique.applicationdata2.modules;
 
 import java.util.Set;
-import javax.inject.Singleton;
 
+import io.bootique.BQCoreModule;
+import io.bootique.BQModule;
+import io.bootique.ModuleCrate;
 import io.bootique.command.CommandManager;
-import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Key;
@@ -33,21 +34,50 @@ import io.bootique.env.DeclaredVariable;
 import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.module.ModulesMetadata;
+import jakarta.inject.Singleton;
 import org.arakhne.afc.bootique.applicationdata2.annotations.ApplicationDescription2;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Module for the compiler application metadata version 2.
+ *
+ * <p>The application metadata version 2 could be overridden:
+ * <ul>
+ * <li>application name: the name of the application.</li>
+ * <li>application description: the regular description (not very detailed) of the application.</li>
+ * </ul>
+ *
+ * <p>These parameters could be overridden if you are using an injector.
+ * The annotation {@code DefaultApplicationName} is used for redefining the application name.
+ * The annotation {@code ApplicationDescription2} is used for redefining the application description.
+ * The following is an example of defining in an injector module:
+ *
+ * <pre><code>
+ * class MyModule implements BQModule {
+ * 	public void configure(Binder binder) {
+ * 		binder.<String>bind(String.class, DefaultApplicationName.class)
+ * 			.toInstance("the name");
+ * 		binder.<String>bind(String.class, ApplicationDescription2.class)
+ * 			.toInstance("A regular description of the application");
+ * 	}
+ * }
+ * </code></pre>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
- * @deprecated since 19.0
  */
-@SuppressWarnings("removal")
-@Deprecated(since = "19.0")
 public class ApplicationMetadata2Module implements BQModule {
+
+	@Override
+    public ModuleCrate crate() {
+        return ModuleCrate.of(this)
+                .description(Locale.getString("MODULE_DESCRIPTION")) //$NON-NLS-1$
+                .overrides(BQCoreModule.class)
+                .build();
+    }
 
 	@Override
 	public void configure(Binder binder) {
@@ -72,7 +102,6 @@ public class ApplicationMetadata2Module implements BQModule {
 			Set<DeclaredVariable> declaredVars,
 			ModulesMetadata modulesMetadata,
 			Injector injector) {
-
 		String name;
 		try {
 			name = injector.getInstance(Key.get(String.class, DefaultApplicationName.class));
@@ -102,9 +131,10 @@ public class ApplicationMetadata2Module implements BQModule {
 		commandManager.getPublicDefaultCommand().ifPresent(
 			c -> builder.addOptions(c.getMetadata().getOptions()));
 
-		declaredVars.forEach(dv -> DeclaredVariableMetaCompiler
-			.compileIfValid(dv, modulesMetadata)
-			.ifPresent(builder::addVariable));
+		for (final var dv : declaredVars) {
+			final var valueMetadata = DeclaredVariableMetaCompiler.compile(dv, modulesMetadata);
+			builder.addVariable(valueMetadata);
+		}
 
 		return builder.build();
 	}

@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.bootique.applicationdata2.modules;
 
-import java.util.Optional;
-
 import io.bootique.env.DeclaredVariable;
 import io.bootique.meta.config.ConfigMetadataNode;
 import io.bootique.meta.config.ConfigValueMetadata;
@@ -29,46 +27,50 @@ import io.bootique.meta.module.ModulesMetadata;
 
 /** Module for the compiler application metadata version 2.
  *
- * <p>This file is copied from the Bootique's original file in order to change the visibility.
+ * <p>This file is copied from the Bootique's original file and adapted in order to change the visibility of the class.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 18.0
- * @deprecated since 18.0
  */
-@Deprecated(since = "18.0")
 public final class DeclaredVariableMetaCompiler {
 
 	private DeclaredVariableMetaCompiler() {
 		//
 	}
 
-	/** Compute the values of the declared variables.
+	/** Compile the given variable.
 	 *
-	 * @param var the vairable.
-	 * @param modulesMetadata the metadata.
-	 * @return the value's metadata
+	 * @param var the variable to compile.
+	 * @param modulesMetadata the metadata for the module
+	 * @return the variable metadata.
 	 */
-	public static Optional<ConfigValueMetadata> compileIfValid(DeclaredVariable var, ModulesMetadata modulesMetadata) {
+	public static ConfigValueMetadata compile(DeclaredVariable var, ModulesMetadata modulesMetadata) {
 		for (final var mm : modulesMetadata.getModules()) {
-			// TODO: 'findConfig' does a String split over and over again as we iterate through the loop.
-			//  Precalculate this once.
 			final var cmn = mm.findConfig(var.getConfigPath());
 			if (cmn.isPresent()) {
-				return cmn.map(n -> compileMetadata(var, n));
+				return compileMetadata(var, cmn.get());
 			}
 		}
-		return Optional.empty();
+		return compileUnboundMetadata(var);
+	}
+
+	private static ConfigValueMetadata compileUnboundMetadata(DeclaredVariable variable) {
+		return ConfigValueMetadata
+				.builder(variable.getName())
+				.unbound()
+				.description(variable.getDescription() != null ? variable.getDescription() : null)
+				.build();
 	}
 
 	private static ConfigValueMetadata compileMetadata(DeclaredVariable variable, ConfigMetadataNode configMetadata) {
-		// TODO: validation... verify that the variable is bound to a value, not a collection or a map??
 		return ConfigValueMetadata
 				.builder(variable.getName())
 				.description(variable.getDescription() != null ? variable.getDescription() : configMetadata.getDescription())
-				.type(configMetadata.getType()).build();
+				.type(configMetadata.getType())
+				.build();
 	}
 
 }

@@ -18,40 +18,32 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.bootique.printconfig;
+package org.arakhne.afc.bootique.synopsishelp.tests;
 
-import io.bootique.BQModuleMetadata;
-import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
-import org.arakhne.afc.bootique.printconfig.modules.PrintConfigCommandModule;
-import org.arakhne.afc.vmutil.locale.Locale;
+import io.bootique.BQCoreModule;
+import io.bootique.BQModule;
+import io.bootique.ModuleCrate;
+import io.bootique.di.Binder;
 
-/** Provider of a Bootique module for configuration printer.
+/** Module for the command for testing bootique.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 15.0
- * @deprecated since 18.0
  */
-@SuppressWarnings("removal")
-@Deprecated(since = "18.0")
-public class PrintConfigModuleProvider implements BQModuleProvider {
+class BootiqueTestCommandModule implements BQModule {
 
 	@Override
-	public BQModule module() {
-		return new PrintConfigCommandModule();
-	}
+    public ModuleCrate crate() {
+        return ModuleCrate.of(this)
+                .description("The test command module.") //$NON-NLS-1$
+                .build();
+    }
 
 	@Override
-	public BQModuleMetadata.Builder moduleBuilder() {
-		return BQModuleMetadata
-				.builder(module())
-				.overrides(overrides())
-				.providerName(name())
-				.configs(configs())
-				.description(Locale.getString("MODULE_DESCRIPTION")); //$NON-NLS-1$
+	public void configure(Binder binder) {
+		BQCoreModule.extend(binder).addCommand(BootiqueTestCommand.class);
 	}
 
 }

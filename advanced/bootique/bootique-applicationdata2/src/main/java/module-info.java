@@ -31,12 +31,11 @@
 open module org.arakhne.afc.bootique.bootique_application2 {
 	requires transitive bootique;
 	requires org.arakhne.afc.core.vmutils;
-	requires javax.inject;
+	requires jakarta.inject;
 	
-	exports org.arakhne.afc.bootique.applicationdata2;
 	exports org.arakhne.afc.bootique.applicationdata2.annotations;
 	exports org.arakhne.afc.bootique.applicationdata2.modules;
 
-	provides io.bootique.BQModuleProvider
-		with org.arakhne.afc.bootique.applicationdata2.ApplicationData2ModuleProvider;
+	provides io.bootique.BQModule
+		with org.arakhne.afc.bootique.applicationdata2.modules.ApplicationMetadata2Module;
 }

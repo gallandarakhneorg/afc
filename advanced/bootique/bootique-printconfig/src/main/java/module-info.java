@@ -29,21 +29,18 @@
  */
 @SuppressWarnings("all")
 open module org.arakhne.afc.bootique.bootique_printconfig {
-	requires org.eclipse.xtext.xbase.lib;
-	requires javax.inject;
 	requires transitive bootique;
+	requires jopt.simple;
+	requires jakarta.inject;
 	requires org.arakhne.afc.core.vmutils;
-	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
 	requires com.fasterxml.jackson.dataformat.xml;
 	requires com.fasterxml.jackson.dataformat.yaml;
-	requires jopt.simple;
 
-	exports org.arakhne.afc.bootique.printconfig;
 	exports org.arakhne.afc.bootique.printconfig.commands;
 	exports org.arakhne.afc.bootique.printconfig.configs;
 	exports org.arakhne.afc.bootique.printconfig.modules;
 
-	provides io.bootique.BQModuleProvider
-		with org.arakhne.afc.bootique.printconfig.PrintConfigModuleProvider;
+	provides io.bootique.BQModule
+		with org.arakhne.afc.bootique.printconfig.modules.PrintConfigCommandModule;
 }

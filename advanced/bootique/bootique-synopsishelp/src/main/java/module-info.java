@@ -31,13 +31,13 @@
 open module org.arakhne.afc.bootique.bootique_synopsishelp {
 	requires transitive bootique;
 	requires org.arakhne.afc.core.vmutils;
-	requires javax.inject;
+	requires jakarta.inject;
+	requires com.google.common;
 
-	exports org.arakhne.afc.bootique.synopsishelp;
 	exports org.arakhne.afc.bootique.synopsishelp.annotations;
 	exports org.arakhne.afc.bootique.synopsishelp.help;
 	exports org.arakhne.afc.bootique.synopsishelp.modules;
 
-	provides io.bootique.BQModuleProvider
-		with org.arakhne.afc.bootique.synopsishelp.SynopsisHelpModuleProvider;
+	provides io.bootique.BQModule
+		with org.arakhne.afc.bootique.synopsishelp.modules.SynopsisHelpGeneratorModule;
 }
