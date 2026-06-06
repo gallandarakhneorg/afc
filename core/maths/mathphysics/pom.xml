@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>mathgeom</artifactId>
+			<artifactId>mathgeom2d</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
@@ -26,12 +26,12 @@
 			<scope>test</scope>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>mathgeomtesting</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.arakhne.afc.core</groupId>-->
+<!--			<artifactId>mathgeomtesting</artifactId>-->
+<!--			<scope>test</scope>-->
+<!--			<optional>true</optional>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>

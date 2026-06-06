@@ -45,7 +45,7 @@ import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.StandardRoadNetwork;
 import org.arakhne.afc.gis.road.path.RoadPath;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
-import org.arakhne.afc.math.geometry.d1.Direction1D;
+import org.arakhne.afc.math.geometry.base.d1.Direction1D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.testtools.AbstractTestCase;

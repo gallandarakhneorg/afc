@@ -29,9 +29,8 @@ import javafx.beans.property.IntegerProperty;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.test.geometry.d2.ai.AbstractCircle2aiTest;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractCircle2aiTest;
 
 @SuppressWarnings("all")
 public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2ifx> {

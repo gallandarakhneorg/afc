@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.nodefx.drawers;
 
-import org.arakhne.afc.math.geometry.d2.PathIterator2D;
+import org.arakhne.afc.math.geometry.base.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 import org.arakhne.afc.nodefx.Drawer;

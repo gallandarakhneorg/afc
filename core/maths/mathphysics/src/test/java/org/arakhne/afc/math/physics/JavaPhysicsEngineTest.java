@@ -28,9 +28,9 @@ import static org.arakhne.afc.math.MathConstants.SQRT_2;
 import static org.arakhne.afc.math.MathConstants.THREE_QUARTER_PI;
 import static org.arakhne.afc.math.MathConstants.TWO_PI;
 
-import org.arakhne.afc.math.geometry.d1.d.Vector1d;
+import org.arakhne.afc.math.geometry.base.d1.d.Vector1d;
+import org.arakhne.afc.math.geometry.base.d3.d.Vector3d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.junit.jupiter.api.AfterEach;

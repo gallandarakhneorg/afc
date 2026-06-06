@@ -21,7 +21,7 @@
 package org.arakhne.afc.math.geometry.d1.dfx;
 
 import javafx.beans.property.ObjectProperty;
-import org.arakhne.afc.math.geometry.d1.Segment1D;
+import org.arakhne.afc.math.geometry.base.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.afp.Shape1afp;
 
 /** 1.5D shape with 2 double precision floating-point FX properties.

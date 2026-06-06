@@ -39,7 +39,7 @@ import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.StandardRoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadNetwork;
-import org.arakhne.afc.math.geometry.d1.Direction1D;
+import org.arakhne.afc.math.geometry.base.d1.Direction1D;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;

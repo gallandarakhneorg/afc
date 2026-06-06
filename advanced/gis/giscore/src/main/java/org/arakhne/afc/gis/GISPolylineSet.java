@@ -22,7 +22,7 @@ package org.arakhne.afc.gis;
 
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
-import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.util.OutputParameter;
 
 /**

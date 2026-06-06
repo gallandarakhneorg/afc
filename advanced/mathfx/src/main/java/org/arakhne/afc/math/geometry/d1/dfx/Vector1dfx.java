@@ -24,12 +24,12 @@ import java.lang.ref.WeakReference;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import org.arakhne.afc.math.geometry.d1.GeomFactory1D;
-import org.arakhne.afc.math.geometry.d1.Point1D;
-import org.arakhne.afc.math.geometry.d1.Segment1D;
-import org.arakhne.afc.math.geometry.d1.UnmodifiableVector1D;
-import org.arakhne.afc.math.geometry.d1.Vector1D;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.base.d1.GeomFactory1D;
+import org.arakhne.afc.math.geometry.base.d1.Point1D;
+import org.arakhne.afc.math.geometry.base.d1.Segment1D;
+import org.arakhne.afc.math.geometry.base.d1.UnmodifiableVector1D;
+import org.arakhne.afc.math.geometry.base.d1.Vector1D;
+import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 1.5D Vector with 2 double precision floating-point FX properties.

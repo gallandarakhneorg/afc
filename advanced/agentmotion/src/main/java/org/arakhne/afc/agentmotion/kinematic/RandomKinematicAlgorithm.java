@@ -25,8 +25,8 @@ import java.util.Random;
 
 import org.arakhne.afc.agentmotion.AgentMotion;
 import org.arakhne.afc.agentmotion.RandomMotionAlgorithm;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Agent is changing randomly its position and orientation.

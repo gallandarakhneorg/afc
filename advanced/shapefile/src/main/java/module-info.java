@@ -30,7 +30,7 @@ open module org.arakhne.afc.advanced.shapefile {
 	requires org.eclipse.xtext.xbase.lib;
 	requires com.google.common;
 	requires transitive org.arakhne.afc.core.util;
-	requires transitive org.arakhne.afc.core.mathgeom;
+	requires transitive org.arakhne.afc.core.mathgeom3d;
 	requires transitive org.arakhne.afc.advanced.attributes;
 	requires transitive org.arakhne.afc.advanced.dbasefile;
 

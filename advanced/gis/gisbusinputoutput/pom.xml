@@ -27,7 +27,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>mathgeom</artifactId>
+			<artifactId>mathgeom1d</artifactId>
 		</dependency>
 
 		<dependency>

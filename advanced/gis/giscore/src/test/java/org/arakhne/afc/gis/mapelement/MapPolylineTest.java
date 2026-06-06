@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
-import org.arakhne.afc.math.geometry.d1.Segment1D;
+import org.arakhne.afc.math.geometry.base.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 
 /** Unit tests for MapPolyline.

@@ -19,7 +19,6 @@
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bytecode.optimize>false</bytecode.optimize>
 		<bytecode.debug>true</bytecode.debug>
 		<!-- Version of Mockito library (mockito-core) -->
 		<mockito.version>5.23.0</mockito.version>
@@ -97,7 +96,22 @@
 			</dependency>
 			<dependency>
 				<groupId>org.arakhne.afc.core</groupId>
-				<artifactId>mathgeom</artifactId>
+				<artifactId>mathgeombase</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>mathgeom1d</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>mathgeom2d</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>mathgeom3d</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
@@ -783,7 +797,6 @@
 					<failOnError>true</failOnError>
 					<indentSize>4</indentSize>
 					<showDeprecation>false</showDeprecation>
-					<optimize>${bytecode.optimize}</optimize>
 					<debug>${bytecode.debug}</debug>
 				</configuration>
 			</plugin>

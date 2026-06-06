@@ -36,7 +36,7 @@ import org.arakhne.afc.gis.primitive.GISBrowsable;
 import org.arakhne.afc.gis.primitive.GISContentElement;
 import org.arakhne.afc.gis.primitive.GISEditable;
 import org.arakhne.afc.gis.primitive.GISEditableChangeListener;
-import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.util.ListenerCollection;

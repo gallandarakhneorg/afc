@@ -37,7 +37,7 @@ import org.arakhne.afc.gis.location.GeoLocationUtil;
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadConnection.ClockwiseBoundType;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 
 /** Unit test for RoadConnection.

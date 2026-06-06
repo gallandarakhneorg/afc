@@ -30,14 +30,12 @@
 @SuppressWarnings("all")
 open module org.arakhne.afc.advanced.nodefx {
 	requires transitive java.logging;
-	requires org.eclipse.xtext.xbase.lib;
 	requires transitive javafx.base;
 	requires javafx.controls;
 	requires transitive javafx.graphics;
 	requires org.arakhne.afc.core.util;
-	requires org.arakhne.afc.core.references;
 	requires org.arakhne.afc.core.mathgen;
-	requires transitive org.arakhne.afc.core.mathgeom;
+	requires transitive org.arakhne.afc.core.mathgeom2d;
 	requires transitive org.arakhne.afc.advanced.javafx;
 
 	exports org.arakhne.afc.nodefx;

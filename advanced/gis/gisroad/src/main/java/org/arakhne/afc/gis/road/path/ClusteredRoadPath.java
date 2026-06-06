@@ -30,7 +30,7 @@ import java.util.NoSuchElementException;
 
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
-import org.arakhne.afc.math.geometry.d1.Direction1D;
+import org.arakhne.afc.math.geometry.base.d1.Direction1D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**

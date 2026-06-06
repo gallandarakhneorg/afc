@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.agentmotion;
 
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Agent is changing its oriented for being align to the target vector.

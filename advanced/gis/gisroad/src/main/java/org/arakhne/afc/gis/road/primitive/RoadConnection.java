@@ -24,9 +24,9 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import org.arakhne.afc.gis.location.GeoLocationPoint;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystemConstants;
-import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystemConstants;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.eclipse.xtext.xbase.lib.Pure;

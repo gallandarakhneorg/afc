@@ -20,8 +20,8 @@
 
 package org.arakhne.afc.agentmotion;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Agent is changing its position for evading the target vector.

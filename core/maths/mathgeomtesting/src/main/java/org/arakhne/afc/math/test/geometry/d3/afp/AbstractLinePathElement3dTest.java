@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.base.PathElementType;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
 import org.arakhne.afc.math.test.AbstractMathTestCase;

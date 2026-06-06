@@ -22,8 +22,8 @@ package org.arakhne.afc.agentmotion.common;
 
 import org.arakhne.afc.agentmotion.PursuingMotionAlgorithm;
 import org.arakhne.afc.agentmotion.SeekingMotionAlgorithm;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 

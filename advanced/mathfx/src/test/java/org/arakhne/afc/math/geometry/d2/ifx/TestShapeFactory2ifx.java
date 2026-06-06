@@ -20,14 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
 import org.arakhne.afc.math.geometry.d2.ai.MultiShape2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
-import org.arakhne.afc.math.test.geometry.d2.ai.TestShapeFactory;
+import org.arakhne.afc.math.geometry.d2.tests.ai.TestShapeFactory;
 
 @SuppressWarnings("all")
 public class TestShapeFactory2ifx implements TestShapeFactory<Point2ifx, Vector2ifx, Rectangle2ifx> {

@@ -26,8 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")

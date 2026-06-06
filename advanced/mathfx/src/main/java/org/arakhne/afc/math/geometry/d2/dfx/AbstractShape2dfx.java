@@ -21,7 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.dfx;
 
 import javafx.beans.property.ObjectProperty;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.base.d2.Shape2D;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Pure;

@@ -27,12 +27,11 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import javafx.beans.property.IntegerProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.test.geometry.d2.AbstractTuple2DTest;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractTuple2DTestCase;
 
 @SuppressWarnings("all")
-public class Tuple2ifxTest extends AbstractTuple2DTest<Tuple2ifx> {
+public class Tuple2ifxTest extends AbstractTuple2DTestCase<Tuple2ifx> {
 
 	@Override
 	public boolean isIntCoordinates() {

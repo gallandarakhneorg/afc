@@ -27,9 +27,8 @@ import javafx.beans.property.ObjectProperty;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.test.geometry.d2.afp.AbstractSegment2afpTest;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractSegment2afpTest;
 
 @SuppressWarnings("all")
 public class Segment2dfxTest extends AbstractSegment2afpTest<Segment2dfx, Rectangle2dfx> {

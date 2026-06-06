@@ -52,11 +52,11 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.base.d3.Point3D;
+import org.arakhne.afc.math.geometry.base.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -498,7 +498,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 *     {@code arg1}, or {@code 0} if they are equal.
 	 */
 	@Pure
-	@SuppressWarnings({"unchecked", "rawtypes", "checkstyle:returncount", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"unchecked", "checkstyle:returncount", "checkstyle:npathcomplexity"})
 	private static int compareRawValues(Object arg0, Object arg1) {
 		if (arg0 == arg1) {
 			return 0;

@@ -21,10 +21,10 @@
 package org.arakhne.afc.math.geometry.d2.ifx;
 
 import javafx.beans.property.IntegerProperty;
-import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
+import org.arakhne.afc.math.geometry.base.d2.GeomFactory2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.base.d2.UnmodifiablePoint2D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Pure;
 

@@ -28,9 +28,8 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.test.geometry.d2.afp.AbstractMultiShape2afpTest;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractMultiShape2afpTest;
 
 @SuppressWarnings("all")
 public class MultiShape2dfxTest extends AbstractMultiShape2afpTest<MultiShape2dfx<Shape2dfx<?>>, Shape2dfx<?>, Rectangle2dfx> {

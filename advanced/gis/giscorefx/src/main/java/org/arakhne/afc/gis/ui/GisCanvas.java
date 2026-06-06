@@ -22,7 +22,7 @@ package org.arakhne.afc.gis.ui;
 
 import javafx.application.Platform;
 import org.arakhne.afc.gis.primitive.GISContainer;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystemConstants;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystemConstants;
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableCanvas;
 import org.arakhne.afc.util.InformedIterable;

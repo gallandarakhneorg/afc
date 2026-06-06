@@ -32,13 +32,12 @@ import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.maplayer.MapLayer;
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.testtools.AbstractTestCase;
 
 /** Abstract test for GIS features.
@@ -58,22 +57,10 @@ public abstract class AbstractGisTest extends AbstractTestCase {
 		return new Point2d(getRandom().nextDouble() * 100, getRandom().nextDouble() * 100);
 	}
 
-	protected Point3d randomPoint3D() {
-		return new Point3d(getRandom().nextDouble() * 100, getRandom().nextDouble() * 100, getRandom().nextDouble() * 100);
-	}
-
 	protected Point2d[] randomPoints2D() {
 		Point2d[] tab = new Point2d[getRandom().nextInt(50) + 20];
 		for (int i = 0; i < tab.length; ++i) {
 			tab[i] = new Point2d(getRandom().nextDouble() * 100, getRandom().nextDouble() * 100);
-		}
-		return tab;
-	}
-
-	protected Point3d[] randomPoints3D() {
-		Point3d[] tab = new Point3d[getRandom().nextInt(50) + 20];
-		for (int i = 0; i < tab.length; ++i) {
-			tab[i] = new Point3d(getRandom().nextDouble() * 100, getRandom().nextDouble() * 100, getRandom().nextDouble() * 100);
 		}
 		return tab;
 	}

@@ -39,13 +39,12 @@ import java.util.Locale;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
-
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.base.d3.Point3D;
+import org.arakhne.afc.math.geometry.base.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.i.Point2i;
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.testtools.AbstractTestCase;
 

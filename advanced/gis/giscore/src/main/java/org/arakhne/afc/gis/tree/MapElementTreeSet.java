@@ -24,7 +24,7 @@ import org.arakhne.afc.gis.GISElementSet;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.mapelement.MapElementConstants;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
-import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.tree.Tree;

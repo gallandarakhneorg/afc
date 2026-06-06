@@ -27,11 +27,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.Quaternion;
-import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.base.PathElementType;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.base.d3.Point3D;
+import org.arakhne.afc.math.geometry.base.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;

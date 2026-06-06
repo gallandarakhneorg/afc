@@ -21,9 +21,9 @@
 package org.arakhne.afc.math.physics;
 
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.d1.Vector1D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.base.d1.Vector1D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 

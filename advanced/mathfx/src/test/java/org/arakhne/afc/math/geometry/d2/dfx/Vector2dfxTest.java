@@ -24,12 +24,11 @@ import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParamete
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.arakhne.afc.math.geometry.base.tests.AbstractVector2DTestCase;
 import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.math.test.geometry.d2.AbstractVector2DTest;
-
 @SuppressWarnings("all")
-public class Vector2dfxTest extends AbstractVector2DTest<Vector2dfx, Point2dfx, Vector2dfx> {
+public class Vector2dfxTest extends AbstractVector2DTestCase<Vector2dfx, Point2dfx, Vector2dfx> {
 
 	@Override
 	public boolean isIntCoordinates() {

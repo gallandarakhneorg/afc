@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.physics.kinematic.angular;
 
-import org.arakhne.afc.math.geometry.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.physics.AngularUnit;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;

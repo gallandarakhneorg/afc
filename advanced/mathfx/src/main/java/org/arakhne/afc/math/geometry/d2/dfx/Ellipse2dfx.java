@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 

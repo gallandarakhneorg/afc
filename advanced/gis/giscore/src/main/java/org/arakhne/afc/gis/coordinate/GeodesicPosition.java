@@ -23,7 +23,7 @@ package org.arakhne.afc.gis.coordinate;
 import java.io.Serializable;
 import java.util.prefs.Preferences;
 
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.xtext.xbase.lib.Pure;

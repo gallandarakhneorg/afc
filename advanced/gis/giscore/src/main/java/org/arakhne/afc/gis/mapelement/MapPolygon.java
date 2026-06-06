@@ -23,8 +23,8 @@ package org.arakhne.afc.gis.mapelement;
 import java.util.UUID;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.d.Path2d;

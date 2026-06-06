@@ -29,7 +29,7 @@
 module org.arakhne.afc.core.mathphysics {
 	requires org.eclipse.xtext.xbase.lib;
 	requires org.arakhne.afc.core.mathgen;
-	requires transitive org.arakhne.afc.core.mathgeom;
+	requires transitive org.arakhne.afc.core.mathgeombase;
 
 	exports org.arakhne.afc.math.physics;
 	exports org.arakhne.afc.math.physics.kinematic.angular;

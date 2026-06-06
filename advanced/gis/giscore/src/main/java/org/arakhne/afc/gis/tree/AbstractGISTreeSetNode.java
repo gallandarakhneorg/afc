@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
-import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.tree.node.IcosepQuadTreeNode;

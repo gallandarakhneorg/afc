@@ -20,11 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.test.geometry.d2.AbstractUnmodifiableVector2DTest;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractUnmodifiableVector2DTestCase;
 
 @SuppressWarnings("all")
-public class UnmodifiableVector2dfxTest extends AbstractUnmodifiableVector2DTest<Vector2dfx, Point2dfx> {
+public class UnmodifiableVector2dfxTest extends AbstractUnmodifiableVector2DTestCase<Vector2dfx, Point2dfx> {
 
 	@Override
 	public boolean isIntCoordinates() {

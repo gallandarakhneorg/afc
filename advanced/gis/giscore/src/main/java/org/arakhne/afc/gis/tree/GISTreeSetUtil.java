@@ -28,7 +28,7 @@ import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.mapelement.MapElementConstants;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.IntersectionType;
+import org.arakhne.afc.math.geometry.base.IntersectionType;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;

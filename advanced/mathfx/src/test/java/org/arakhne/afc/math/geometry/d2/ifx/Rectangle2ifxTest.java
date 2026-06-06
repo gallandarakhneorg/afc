@@ -29,9 +29,8 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.test.geometry.d2.ai.AbstractRectangle2aiTest;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractRectangle2aiTest;
 
 @SuppressWarnings("all")
 public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {

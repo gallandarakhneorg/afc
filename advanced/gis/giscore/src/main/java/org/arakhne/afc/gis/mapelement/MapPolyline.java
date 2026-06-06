@@ -25,12 +25,12 @@ import java.util.UUID;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.d1.Segment1D;
+import org.arakhne.afc.math.geometry.base.d1.Segment1D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Shape2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d1.d.DefaultSegment1d;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.d.Path2d;

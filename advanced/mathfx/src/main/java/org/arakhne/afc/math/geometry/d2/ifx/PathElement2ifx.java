@@ -25,7 +25,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
-import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;

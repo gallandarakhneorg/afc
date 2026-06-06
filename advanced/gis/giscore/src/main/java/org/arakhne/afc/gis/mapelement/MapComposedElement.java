@@ -29,7 +29,7 @@ import java.util.UUID;
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.location.GeoLocationPointList;
-import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
@@ -1308,7 +1308,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * to detect points at the same location.
 	 *
 	 * <p>The validator provided by MapComposedElement
-	 * is based on {@link Point2D#epsilonEquals(org.arakhne.afc.math.geometry.d2.Tuple2D, double)}.
+	 * is based on {@link Point2D#epsilonEquals(org.arakhne.afc.math.geometry.base.d2.Tuple2D, double)}.
 	 * Subclasses should override this function
 	 * to provide specifical implementation of a validator.
 	 *

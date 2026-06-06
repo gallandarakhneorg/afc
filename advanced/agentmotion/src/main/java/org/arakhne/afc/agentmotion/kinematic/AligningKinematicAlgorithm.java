@@ -24,7 +24,7 @@ import java.io.Serializable;
 
 import org.arakhne.afc.agentmotion.AligningMotionAlgorithm;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 

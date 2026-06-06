@@ -27,11 +27,11 @@
  * @since 17.0
  */
 open module org.arakhne.afc.advanced.attributes {
-	requires org.eclipse.xtext.xbase.lib;
 	requires transitive org.arakhne.afc.core.vmutils;
 	requires org.arakhne.afc.core.references;
 	requires transitive org.arakhne.afc.core.inputoutput;
-	requires org.arakhne.afc.core.mathgeom;
+	requires transitive org.arakhne.afc.core.mathgeom2d;
+	requires org.arakhne.afc.core.mathgeom3d;
 	requires com.google.common;
 
 	exports org.arakhne.afc.attrs.attr;

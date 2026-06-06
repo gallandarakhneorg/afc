@@ -27,9 +27,8 @@ import javafx.beans.property.ObjectProperty;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.test.geometry.d2.afp.AbstractTriangle2afpTest;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractTriangle2afpTest;
 
 @SuppressWarnings("all")
 public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rectangle2dfx> {

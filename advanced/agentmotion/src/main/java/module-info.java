@@ -30,7 +30,7 @@ module org.arakhne.afc.advanced.agentmotion {
 	requires org.eclipse.xtext.xbase.lib;
 	requires org.arakhne.afc.core.vmutils;
 	requires org.arakhne.afc.core.mathgen;
-	requires transitive org.arakhne.afc.core.mathgeom;
+	requires transitive org.arakhne.afc.core.mathgeom2d;
 
 	exports org.arakhne.afc.agentmotion;
 	exports org.arakhne.afc.agentmotion.common;

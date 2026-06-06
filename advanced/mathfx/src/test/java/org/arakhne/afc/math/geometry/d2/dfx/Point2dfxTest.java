@@ -25,13 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.test.geometry.d2.AbstractPoint2DTest;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.base.d2.Shape2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractPoint2DTestCase;
 
 @SuppressWarnings("all")
-public class Point2dfxTest extends AbstractPoint2DTest<Point2dfx, Vector2dfx, Point2dfx> {
+public class Point2dfxTest extends AbstractPoint2DTestCase<Point2dfx, Vector2dfx, Point2dfx> {
 
 	@Override
 	public boolean isIntCoordinates() {

@@ -1,0 +1,6 @@
+Shape3D.getFarthestPointTo(Shape3D)
+
+Shape3afp.getClosestPointTo(<<all shapes>>)
+Shape3afp.getFarthestPointTo(<<all shapes>>)
+Shape3afp.contains(<<all shapes>>)
+Shape3afp.getDistance(<<all shapes>>)

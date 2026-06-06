@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.road.AbstractGisTest;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
-import org.arakhne.afc.math.geometry.d1.Direction1D;
+import org.arakhne.afc.math.geometry.base.d1.Direction1D;
 
 /** Unit test for ClusteredRoadPath.
  *

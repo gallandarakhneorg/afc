@@ -34,6 +34,9 @@ open module org.arakhne.afc.gis.gisroad {
 	requires transitive org.arakhne.afc.core.util;
 	requires transitive org.arakhne.afc.gis.giscore;
 	requires com.google.common;
+	requires org.arakhne.afc.core.mathgeombase;
+	requires org.arakhne.afc.core.mathgeom1d;
+	requires org.arakhne.afc.core.mathgeom2d;
 
 	exports org.arakhne.afc.gis.road;
 	exports org.arakhne.afc.gis.road.layer;

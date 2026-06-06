@@ -21,10 +21,10 @@
 package org.arakhne.afc.math.geometry.d2.dfx;
 
 import javafx.beans.property.DoubleProperty;
-import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
+import org.arakhne.afc.math.geometry.base.d2.GeomFactory2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.base.d2.UnmodifiablePoint2D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Point with 2 double precision floating-point FX properties.

@@ -32,11 +32,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.test.geometry.d2.afp.AbstractPath2afpTest;
+import org.arakhne.afc.math.geometry.base.PathElementType;
+import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPath2afpTest;
 
 @SuppressWarnings("all")
 public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> {

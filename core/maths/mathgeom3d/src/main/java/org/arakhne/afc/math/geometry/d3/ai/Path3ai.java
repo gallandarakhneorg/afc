@@ -1,0 +1,3129 @@
+/*
+ * $Id$
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.arakhne.afc.math.geometry.d3.ai;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+import org.arakhne.afc.math.GeogebraUtil;
+import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.base.CrossingComputationType;
+import org.arakhne.afc.math.geometry.base.GeomConstants;
+import org.arakhne.afc.math.geometry.base.PathElementType;
+import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d3.Path3D;
+import org.arakhne.afc.math.geometry.base.d3.PathIterator3D;
+import org.arakhne.afc.math.geometry.base.d3.Point3D;
+import org.arakhne.afc.math.geometry.base.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Transform3D;
+import org.arakhne.afc.math.geometry.base.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.a.Shape3DType;
+import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+/** Functional interface that represented a 2D path on a plane.
+ *
+ * @param <IT> is the type of the implementation of this shape.
+ * @param <IE> is the type of the path elements.
+ * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternions.
+ * @param <B> is the type of the bounding boxes.
+ * @author $Author: sgalland$
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 13.0
+ */
+@SuppressWarnings("checkstyle:magicnumber")
+public interface Path3ai<
+		IT extends Path3ai<?, IE, P, V, Q, B>,
+		IE extends PathElement3ai,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3ai<?, IE, P, V, Q, B>>
+		extends Shape3ai<IT, IE, P, V, Q, B>, Path3D<IT, PathIterator3ai<IE>, P, V, Q, B> {
+
+	/** Multiple of cubic &amp; quad curve size.
+	 */
+	int GROW_SIZE = 24;
+
+	/** Default depth for the flattening of the path.
+	 */
+	int DEFAULT_FLATTENING_LIMIT = 10;
+
+	/** The default winding rule: {@link PathWindingRule#NON_ZERO}.
+	 */
+	PathWindingRule DEFAULT_WINDING_RULE = PathWindingRule.NON_ZERO;
+
+	@Override
+	default Shape3DType getType() {
+		return Shape3DType.PATH;
+	}
+
+	/** Compute the box that corresponds to the drawable elements of the path.
+	 *
+	 * <p>An element is drawable if it is a line, a curve, or a closing path element.
+	 *
+	 * @param iterator the iterator on the path elements.
+	 * @param box the box to set.
+	 * @return {@code true} if a drawable element was found.
+	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static boolean computeDrawableElementBoundingBox(PathIterator3ai<?> iterator,
+			AlignedBox3ai<?, ?, ?, ?, ?, ?> box) {
+		assert iterator != null : AssertMessages.notNullParameter(0);
+		assert box != null : AssertMessages.notNullParameter(1);
+		final var factory = iterator.getGeomFactory();
+		var foundOneLine = false;
+		var xmin = Integer.MAX_VALUE;
+		var ymin = Integer.MAX_VALUE;
+		var zmin = Integer.MAX_VALUE;
+		var xmax = Integer.MIN_VALUE;
+		var ymax = Integer.MIN_VALUE;
+		var zmax = Integer.MIN_VALUE;
+		while (iterator.hasNext()) {
+			final var element = iterator.next();
+			switch (element.getType()) {
+			case LINE_TO:
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromZ() < zmin) {
+					zmin = element.getFromZ();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getFromZ() > zmax) {
+					zmax = element.getFromZ();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToZ() < zmin) {
+					zmin = element.getToZ();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
+				if (element.getToZ() > zmax) {
+					zmax = element.getToZ();
+				}
+				foundOneLine = true;
+				break;
+			case CURVE_TO:
+				var subPath = factory.newPath(iterator.getWindingRule());
+				subPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				subPath.curveTo(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						element.getToX(), element.getToY(), element.getToZ());
+				if (computeDrawableElementBoundingBox(
+						subPath.getPathIterator(
+								iterator.getGeomFactory().getSplineApproximationRatio()),
+						box)) {
+					if (box.getMinX() < xmin) {
+						xmin = box.getMinX();
+					}
+					if (box.getMinY() < ymin) {
+						ymin = box.getMinY();
+					}
+					if (box.getMinZ() < zmin) {
+						zmin = box.getMinZ();
+					}
+					if (box.getMaxX() > xmax) {
+						xmax = box.getMaxX();
+					}
+					if (box.getMaxY() > ymax) {
+						ymax = box.getMaxY();
+					}
+					if (box.getMaxZ() > zmax) {
+						zmax = box.getMaxZ();
+					}
+					foundOneLine = true;
+				}
+				break;
+			case QUAD_TO:
+				subPath = factory.newPath(iterator.getWindingRule());
+				subPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				subPath.quadTo(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getToX(), element.getToY(), element.getToZ());
+				if (computeDrawableElementBoundingBox(
+						subPath.getPathIterator(
+								iterator.getGeomFactory().getSplineApproximationRatio()),
+						box)) {
+					if (box.getMinX() < xmin) {
+						xmin = box.getMinX();
+					}
+					if (box.getMinY() < ymin) {
+						ymin = box.getMinY();
+					}
+					if (box.getMinZ() < zmin) {
+						zmin = box.getMinZ();
+					}
+					if (box.getMaxX() > xmax) {
+						xmax = box.getMaxX();
+					}
+					if (box.getMaxY() > ymax) {
+						ymax = box.getMaxY();
+					}
+					if (box.getMaxZ() > zmax) {
+						zmax = box.getMaxZ();
+					}
+					foundOneLine = true;
+				}
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+		if (foundOneLine) {
+			box.setFromCorners(xmin, ymin, zmin, xmax, ymax, zmax);
+		} else {
+			box.clear();
+		}
+		return foundOneLine;
+	}
+
+	/** Compute the box that corresponds to the control points of the path.
+	 *
+	 * <p>An element is drawable if it is a line, a curve, or a closing path element.
+	 * The box fits the drawn lines and the drawn curves. The control points of the
+	 * curves may be outside the output box. For obtaining the bounding box
+	 * of the drawn lines and curves, use
+	 * {@link #computeDrawableElementBoundingBox(PathIterator3ai, AlignedBox3ai)}.
+	 *
+	 * @param iterator the iterator on the path elements.
+	 * @param box the box to set.
+	 * @return {@code true} if a control point was found.
+	 * @see #computeDrawableElementBoundingBox(PathIterator3ai, AlignedBox3ai)
+	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static boolean computeControlPointBoundingBox(PathIterator3ai<?> iterator,
+			AlignedBox3ai<?, ?, ?, ?, ?, ?> box) {
+		assert iterator != null : AssertMessages.notNullParameter(0);
+		assert box != null : AssertMessages.notNullParameter(1);
+		var foundOneControlPoint = false;
+		var xmin = Integer.MAX_VALUE;
+		var ymin = Integer.MAX_VALUE;
+		var zmin = Integer.MAX_VALUE;
+		var xmax = Integer.MIN_VALUE;
+		var ymax = Integer.MIN_VALUE;
+		var zmax = Integer.MIN_VALUE;
+		while (iterator.hasNext()) {
+			final var element = iterator.next();
+			switch (element.getType()) {
+			case LINE_TO:
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromZ() < zmin) {
+					zmin = element.getFromZ();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getFromZ() > zmax) {
+					zmax = element.getFromZ();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToZ() < zmin) {
+					zmin = element.getToZ();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
+				if (element.getToZ() > zmax) {
+					zmax = element.getToZ();
+				}
+				foundOneControlPoint = true;
+				break;
+			case CURVE_TO:
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromZ() < zmin) {
+					zmin = element.getFromZ();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getFromZ() > zmax) {
+					zmax = element.getFromZ();
+				}
+				if (element.getCtrlX1() < xmin) {
+					xmin = element.getCtrlX1();
+				}
+				if (element.getCtrlY1() < ymin) {
+					ymin = element.getCtrlY1();
+				}
+				if (element.getCtrlZ1() < zmin) {
+					zmin = element.getCtrlZ1();
+				}
+				if (element.getCtrlX1() > xmax) {
+					xmax = element.getCtrlX1();
+				}
+				if (element.getCtrlY1() > ymax) {
+					ymax = element.getCtrlY1();
+				}
+				if (element.getCtrlZ1() > zmax) {
+					zmax = element.getCtrlZ1();
+				}
+				if (element.getCtrlX2() < xmin) {
+					xmin = element.getCtrlX2();
+				}
+				if (element.getCtrlY2() < ymin) {
+					ymin = element.getCtrlY2();
+				}
+				if (element.getCtrlZ2() < zmin) {
+					zmin = element.getCtrlZ2();
+				}
+				if (element.getCtrlX2() > xmax) {
+					xmax = element.getCtrlX2();
+				}
+				if (element.getCtrlY2() > ymax) {
+					ymax = element.getCtrlY2();
+				}
+				if (element.getCtrlZ2() > zmax) {
+					zmax = element.getCtrlZ2();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToZ() < zmin) {
+					zmin = element.getToZ();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
+				if (element.getToZ() > zmax) {
+					zmax = element.getToZ();
+				}
+				foundOneControlPoint = true;
+				break;
+			case QUAD_TO:
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromZ() < zmin) {
+					zmin = element.getFromZ();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getFromZ() > zmax) {
+					zmax = element.getFromZ();
+				}
+				if (element.getCtrlX1() < xmin) {
+					xmin = element.getCtrlX1();
+				}
+				if (element.getCtrlY1() < ymin) {
+					ymin = element.getCtrlY1();
+				}
+				if (element.getCtrlZ1() < zmin) {
+					zmin = element.getCtrlZ1();
+				}
+				if (element.getCtrlX1() > xmax) {
+					xmax = element.getCtrlX1();
+				}
+				if (element.getCtrlY1() > ymax) {
+					ymax = element.getCtrlY1();
+				}
+				if (element.getCtrlZ1() > zmax) {
+					zmax = element.getCtrlZ1();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToZ() < zmin) {
+					zmin = element.getToZ();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
+				if (element.getToZ() > zmax) {
+					zmax = element.getToZ();
+				}
+				foundOneControlPoint = true;
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+		if (foundOneControlPoint) {
+			box.setFromCorners(xmin, ymin, zmin, xmax, ymax, zmax);
+		} else {
+			box.clear();
+		}
+		return foundOneControlPoint;
+	}
+
+	/**
+	 * Calculates the number of times the given path
+	 * crosses the given circle extending to the right.
+	 *
+	 * @param crossings is the initial value for crossing.
+	 * @param pi is the description of the path.
+	 * @param x1 is the first point of the segment.
+	 * @param y1 is the first point of the segment.
+	 * @param z1 is the first point of the segment.
+	 * @param x2 is the first point of the segment.
+	 * @param y2 is the first point of the segment.
+	 * @param z2 is the first point of the segment.
+	 * @param type is the type of special computation to apply. If {@code null}, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
+	 * @return the crossing
+	 * @throws IllegalArgumentException invalid move.
+	 */
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static int computeCrossingsFromSegment(int crossings, PathIterator3ai<?> pi, int x1, int y1, int z1, int x2, int y2, int z2,
+			CrossingComputationType type) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+
+		// Copied from the AWT API
+		if (!pi.hasNext()) {
+			return 0;
+		}
+		var element = pi.next();
+		if (element.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+		}
+
+		var movx = element.getToX();
+		var movy = element.getToY();
+		var movz = element.getToZ();
+		var curx = movx;
+		var cury = movy;
+		var curz = movz;
+		int endx;
+		int endy;
+		int endz;
+		int numCrosses = crossings;
+		while (pi.hasNext()) {
+			element = pi.next();
+			switch (element.getType()) {
+			case MOVE_TO:
+				movx = element.getToX();
+				curx = movx;
+				movy = element.getToY();
+				cury = movy;
+				movz = element.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				numCrosses = Segment3ai.computeCrossingsFromSegment(
+						numCrosses,
+						x1, y1, z1, x2, y2, z2,
+						curx, cury, curz,
+						endx, endy, endz);
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				var localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				localPath.quadTo(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						endx, endy, endz);
+				numCrosses = computeCrossingsFromSegment(
+						numCrosses,
+						localPath.getPathIterator(
+								pi.getGeomFactory().getSplineApproximationRatio()),
+						x1, y1, z1, x2, y2, z2,
+						CrossingComputationType.STANDARD);
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				localPath.curveTo(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						endx, endy, endz);
+				numCrosses = computeCrossingsFromSegment(
+						numCrosses,
+						localPath.getPathIterator(
+								pi.getGeomFactory().getSplineApproximationRatio()),
+						x1, y1, z1, x2, y2, z2,
+						CrossingComputationType.STANDARD);
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (cury != movy || curx != movx || curz != movz) {
+					numCrosses = Segment3ai.computeCrossingsFromSegment(
+							numCrosses,
+							x1, y1, z1, x2, y2, z2,
+							curx, cury, curz,
+							movx, movy, movz);
+					if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
+						return numCrosses;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+
+		assert numCrosses != GeomConstants.SHAPE_INTERSECTS;
+
+		final var isOpen = curx != movx || cury != movy || curz != movz;
+
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
+				numCrosses = Segment3ai.computeCrossingsFromSegment(
+						numCrosses,
+						x1, y1, z1, x2, y2, z2,
+						curx, cury, curz,
+						movx, movy, movz);
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				numCrosses = 0;
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+
+		return numCrosses;
+	}
+
+	/**
+	 * Calculates the number of times the given path
+	 * crosses the given circle extending to the right.
+	 *
+	 * @param crossings is the initial value for crossing.
+	 * @param pi is the description of the path.
+	 * @param cx is the center of the circle.
+	 * @param cy is the center of the circle.
+	 * @param cz is the center of the circle.
+	 * @param radius is the radius of the circle.
+	 * @param type is the type of special computation to apply. If {@code null}, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
+	 * @return the crossing
+	 * @throws IllegalArgumentException invalid move.
+	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static int computeCrossingsFromSphere(int crossings, PathIterator3ai<?> pi, int cx, int cy, int cz, int radius,
+			CrossingComputationType type) {
+		assert pi != null : AssertMessages.notNullParameter(1);
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(5);
+
+		// Copied from the AWT API
+		if (!pi.hasNext()) {
+			return 0;
+		}
+
+		var element = pi.next();
+		if (element.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+		}
+
+		var movx = element.getToX();
+		var movy = element.getToY();
+		var movz = element.getToZ();
+		var curx = movx;
+		var cury = movy;
+		var curz = movz;
+		int endx;
+		int endy;
+		int endz;
+		int numCrosses = crossings;
+		while (pi.hasNext()) {
+			element = pi.next();
+			switch (element.getType()) {
+			case MOVE_TO:
+				movx = element.getToX();
+				curx = movx;
+				movy = element.getToY();
+				cury = movy;
+				movz = element.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				numCrosses = Segment3ai.computeCrossingsFromSphere(
+						numCrosses,
+						cx, cy, cz, radius,
+						curx, cury, curz,
+						endx, endy, endz);
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				var localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				localPath.quadTo(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						endx, endy, endz);
+				numCrosses = computeCrossingsFromSphere(
+						numCrosses,
+						localPath.getPathIterator(
+								pi.getGeomFactory().getSplineApproximationRatio()),
+						cx, cy, cz, radius,
+						CrossingComputationType.STANDARD);
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				localPath.curveTo(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						endx, endy, endz);
+				numCrosses = computeCrossingsFromSphere(
+						numCrosses,
+						localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+						cx, cy, cz, radius,
+						CrossingComputationType.STANDARD);
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (cury != movy || curx != movx || curz != movz) {
+					numCrosses = Segment3ai.computeCrossingsFromSphere(
+							numCrosses,
+							cx, cy, cz, radius,
+							curx, cury, curz,
+							movx, movy, movz);
+					if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
+						return numCrosses;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+
+		assert numCrosses != GeomConstants.SHAPE_INTERSECTS;
+
+		final var isOpen = curx != movx || cury != movy || curz != movz;
+
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
+				// Auto close
+				numCrosses = Segment3ai.computeCrossingsFromSphere(
+						numCrosses,
+						cx, cy, cz, radius,
+						curx, cury, curz,
+						movx, movy, movz);
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				numCrosses = 0;
+				break;
+				//$CASES-OMITTED$
+			default:
+				// Standard behavior
+				break;
+			}
+		}
+
+		return numCrosses;
+	}
+
+	/**
+	 * Calculates the number of times the given path
+	 * crosses the ray extending to the right from (px,py).
+	 * If the point lies on a part of the path,
+	 * then no crossings are counted for that intersection.
+	 * +1 is added for each crossing where the Y coordinate is increasing
+	 * -1 is added for each crossing where the Y coordinate is decreasing
+	 * The return value is the sum of all crossings for every segment in
+	 * the path.
+	 * The path must start with a MOVE_TO, otherwise an exception is
+	 * thrown.
+	 *
+	 * @param crossings the initial crossing.
+	 * @param pi is the description of the path.
+	 * @param px is the reference point to test.
+	 * @param py is the reference point to test.
+	 * @param pz is the reference point to test.
+	 * @param type is the type of special computation to apply. If {@code null}, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
+	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}
+	 * @throws IllegalArgumentException invalid move.
+	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static int computeCrossingsFromPoint(int crossings, PathIterator3ai<?> pi, int px, int py, int pz,
+			CrossingComputationType type) {
+		assert pi != null : AssertMessages.notNullParameter();
+
+		// Copied and adapted from the AWT API
+		if (!pi.hasNext()) {
+			return 0;
+		}
+
+		var element = pi.next();
+		if (element.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+		}
+
+		var movx = element.getToX();
+		var movy = element.getToY();
+		var movz = element.getToZ();
+		var curx = movx;
+		var cury = movy;
+		var curz = movz;
+		int endx;
+		int endy;
+		int endz;
+		var numCrossings = crossings;
+
+		while (pi.hasNext()) {
+			element = pi.next();
+			switch (element.getType()) {
+			case MOVE_TO:
+				movx = element.getToX();
+				curx = movx;
+				movy = element.getToY();
+				cury = movy;
+				movz = element.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				numCrossings = Segment3ai.computeCrossingsFromPoint(
+						numCrossings,
+						px, py, pz,
+						curx, cury, curz,
+						endx, endy, endz);
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				var curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				curve.quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), endx, endy, endz);
+				numCrossings = computeCrossingsFromPoint(
+						numCrossings,
+						curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+						px, py, pz, CrossingComputationType.STANDARD);
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				endz = element.getToZ();
+				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				curve.curveTo(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						endx, endy, endz);
+				numCrossings = computeCrossingsFromPoint(
+						numCrossings,
+						curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+						px, py, pz, CrossingComputationType.STANDARD);
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (cury != movy || curx != movx || curz != movz) {
+					numCrossings = Segment3ai.computeCrossingsFromPoint(
+							numCrossings,
+							px, py, pz,
+							curx, cury, curz,
+							movx, movy, movz);
+					if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+						return numCrossings;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+
+		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
+
+		final var isOpen = curx != movx || cury != movy || curz != movz;
+
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
+				// Not closed
+				if (movx == px && movy == py && movz == pz) {
+					return GeomConstants.SHAPE_INTERSECTS;
+				}
+				numCrossings = Segment3ai.computeCrossingsFromPoint(
+						numCrossings,
+						px, py, pz,
+						curx, cury, curz,
+						movx, movy, movz);
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				numCrossings = 0;
+				break;
+				//$CASES-OMITTED$
+			default:
+				break;
+			}
+		}
+
+		return numCrossings;
+	}
+
+	/**
+	 * Tests if the specified coordinates are inside the closed
+	 * boundary of the specified {@link PathIterator3ai}.
+	 *
+	 * <p>This method provides a basic facility for implementors of
+	 * the {@link Shape3ai} interface to implement support for the
+	 * {@link Shape3ai#contains(int, int, int)} method.
+	 *
+	 * @param pi the specified {@code PathIterator2f}
+	 * @param x the specified X coordinate
+	 * @param y the specified Y coordinate
+	 * @param z the specified Z coordinate
+	 * @return {@code true} if the specified coordinates are inside the
+	 *         specified {@code PathIterator2f}; {@code false} otherwise
+	 */
+	static boolean contains(PathIterator3ai<?> pi, int x, int y, int z) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+		// Copied from the AWT API
+		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
+		final var cross = computeCrossingsFromPoint(0, pi, x, y, z, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		return (cross & mask) != 0;
+	}
+
+	/**
+	 * Tests if the specified rectangle is inside the closed
+	 * boundary of the specified {@link PathIterator3ai}.
+	 *
+	 * <p>The points on the path are assumed to be outside the path area.
+	 * It means that is the rectangle is intersecting the path, this
+	 * function replies {@code false}.
+	 *
+	 * @param pi the specified {@code PathIterator3ai}
+	 * @param rx the lowest corner of the rectangle.
+	 * @param ry the lowest corner of the rectangle.
+	 * @param rz the lowest corner of the rectangle.
+	 * @param rwidth is the width of the rectangle.
+	 * @param rheight is the width of the rectangle.
+	 * @param rdepth is the width of the rectangle.
+	 * @return {@code true} if the specified rectangle is inside the
+	 *         specified {@code PathIterator2f}; {@code false} otherwise.
+	 */
+	static boolean contains(PathIterator3ai<?> pi, int rx, int ry, int rz, int rwidth, int rheight, int rdepth) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(5);
+		assert rdepth >= 0 : AssertMessages.positiveOrZeroParameter(6);
+		// Copied from AWT API
+		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = computeCrossingsFromRect(
+				0,
+				pi,
+				rx, ry, rz, rx + rwidth, ry + rheight, rz + rdepth,
+				CrossingComputationType.AUTO_CLOSE);
+		return crossings != GeomConstants.SHAPE_INTERSECTS && (crossings & mask) != 0;
+	}
+
+	@Pure
+	@Override
+	default boolean contains(AlignedBox3ai<?, ?, ?, ?, ?, ?> box) {
+		assert box != null : AssertMessages.notNullParameter();
+		return contains(getPathIterator(),
+				box.getMinX(), box.getMinY(), box.getMinZ(), box.getWidth(), box.getHeight(), box.getHeight());
+	}
+
+	@Override
+	default boolean contains(int x, int y, int z) {
+		return contains(getPathIterator(), x, y, z);
+	}
+
+	/**
+	 * Accumulate the number of times the path crosses the shadow
+	 * extending to the right of the rectangle.  See the comment
+	 * for the SHAPE_INTERSECTS constant for more complete details.
+	 * The return value is the sum of all crossings for both the
+	 * top and bottom of the shadow for every segment in the path,
+	 * or the special value SHAPE_INTERSECTS if the path ever enters
+	 * the interior of the rectangle.
+	 * The path must start with a SEG_MOVETO, otherwise an exception is
+	 * thrown.
+	 * The caller must check r[xy]{min,max} for NaN values.
+	 *
+	 * @param crossings the initial crossing.
+	 * @param pi is the iterator on the path elements.
+	 * @param rxmin is the first corner of the rectangle.
+	 * @param rymin is the first corner of the rectangle.
+	 * @param rzmin is the first corner of the rectangle.
+	 * @param rxmax is the second corner of the rectangle.
+	 * @param rymax is the second corner of the rectangle.
+	 * @param rzmax is the second corner of the rectangle.
+	 * @param type is the type of special computation to apply. If {@code null}, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
+	 * @return the crossings.
+	 * @throws IllegalArgumentException invalid move.
+	 */
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static int computeCrossingsFromRect(
+			int crossings,
+			PathIterator3ai<?> pi,
+			int rxmin, int rymin, int rzmin,
+			int rxmax, int rymax, int rzmax,
+			CrossingComputationType type) {
+
+		assert pi != null : AssertMessages.notNullParameter(1);
+
+		// Copied from AWT API
+		if (!pi.hasNext()) {
+			return 0;
+		}
+
+		var pathElement = pi.next();
+
+		if (pathElement.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+		}
+
+		var numCrossings = crossings;
+		int endx;
+		int endy;
+		int endz;
+		var movx = pathElement.getToX();
+		var curx = movx;
+		var movy = pathElement.getToY();
+		var cury = movy;
+		var movz = pathElement.getToZ();
+		var curz = movz;
+
+		while (pi.hasNext()) {
+			pathElement = pi.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				// Count should always be a multiple of 2 here.
+				// assert((crossings & 1) != 0);
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
+				movz = pathElement.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				numCrossings = Segment3ai.computeCrossingsFromRect(
+						numCrossings,
+						rxmin, rymin, rzmin,
+						rxmax, rymax, rzmax,
+						curx, cury, curz,
+						endx, endy, endz);
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+					return GeomConstants.SHAPE_INTERSECTS;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				var curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve.moveTo(pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ());
+				curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				numCrossings = computeCrossingsFromRect(
+						numCrossings,
+						curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+						rxmin, rymin, rzmin, rxmax, rymax, rzmax,
+						CrossingComputationType.STANDARD);
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+					return GeomConstants.SHAPE_INTERSECTS;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve.moveTo(pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ());
+				curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), pathElement.getCtrlX2(),
+						pathElement.getCtrlY2(), pathElement.getCtrlZ2(), endx, endy, endz);
+				numCrossings = computeCrossingsFromRect(
+						numCrossings,
+						curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+						rxmin, rymin, rzmin, rxmax, rymax, rzmax,
+						CrossingComputationType.STANDARD);
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+					return GeomConstants.SHAPE_INTERSECTS;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					numCrossings = Segment3ai.computeCrossingsFromRect(
+							numCrossings,
+							rxmin, rymin, rzmin,
+							rxmax, rymax, rzmax,
+							curx, cury, curz,
+							movx, movy, movz);
+				}
+				// Stop as soon as possible
+				if (numCrossings != 0) {
+					return numCrossings;
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				// Count should always be a multiple of 2 here.
+				// assert((crossings & 1) != 0);
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+
+		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
+
+		final var isOpen = curx != movx || cury != movy || curz != movz;
+
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
+				// Not closed
+				numCrossings = Segment3ai.computeCrossingsFromRect(
+						numCrossings,
+						rxmin, rymin, rzmin,
+						rxmax, rymax, rzmax,
+						curx, cury, curz,
+						movx, movy, movz);
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				numCrossings = 0;
+				break;
+				//$CASES-OMITTED$
+			default:
+				break;
+			}
+		}
+
+		return numCrossings;
+	}
+
+	/**
+	 * Tests if the interior of the specified {@link PathIterator3ai}
+	 * intersects the interior of a specified set of rectangular
+	 * coordinates.
+	 *
+	 * <p>This method provides a basic facility for implementors of
+	 * the {@link Shape3ai} interface to implement support for the
+	 * {@code intersects()} method.
+	 *
+	 * <p>This method object may conservatively return true in
+	 * cases where the specified rectangular area intersects a
+	 * segment of the path, but that segment does not represent a
+	 * boundary between the interior and exterior of the path.
+	 * Such a case may occur if some set of segments of the
+	 * path are retraced in the reverse direction such that the
+	 * two sets of segments cancel each other out without any
+	 * interior area between them.
+	 * To determine whether segments represent true boundaries of
+	 * the interior of the path would require extensive calculations
+	 * involving all of the segments of the path and the winding
+	 * rule and are thus beyond the scope of this implementation.
+	 *
+	 * @param pi the specified {@code PathIterator}
+	 * @param x the specified X coordinate
+	 * @param y the specified Y coordinate
+	 * @param z the specified Z coordinate
+	 * @param width the width of the specified rectangular coordinates
+	 * @param height the height of the specified rectangular coordinates
+	 * @param depth the depth of the specified rectangular coordinates
+	 * @return {@code true} if the specified {@code PathIterator} and
+	 *         the interior of the specified set of rectangular
+	 *         coordinates intersect each other; {@code false} otherwise.
+	 */
+	static boolean intersects(PathIterator3ai<?> pi, int x, int y, int z, int width, int height, int depth) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(5);
+		assert depth >= 0 : AssertMessages.positiveOrZeroParameter(6);
+
+		if (width == 0 || height == 0 || depth == 0) {
+			return false;
+		}
+		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = computeCrossingsFromRect(0, pi, x, y, z, x + width, y + height, z + depth,
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = computeCrossingsFromSphere(
+				0,
+				getPathIterator(),
+				sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius(),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(AlignedBox3ai<?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
+		return intersects(getPathIterator(), AlignedBox.getMinX(), AlignedBox.getMinY(), AlignedBox.getMinZ(),
+				AlignedBox.getWidth(), AlignedBox.getHeight(), AlignedBox.getDepth());
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : AssertMessages.notNullParameter();
+		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final var crossings = computeCrossingsFromSegment(
+				0,
+				getPathIterator(),
+				segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2(),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+	}
+
+	@Override
+	default boolean intersects(PathIterator3ai<?> iterator) {
+		assert iterator != null : AssertMessages.notNullParameter();
+		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		//TODO
+		final var crossings = 0;
+		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : AssertMessages.notNullParameter();
+		return multishape.intersects(this);
+	}
+
+	/** Replies the point on the path that is closest to the given point.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying polyline primitives, ie. if the
+	 * {@link PathIterator3D#isPolyline()}of {@code pi} is replying
+	 * {@code true}.
+	 * {@link #getClosestPointTo(Point3D)} avoids this restriction.
+	 *
+	 * @param pi is the iterator on the elements of the path.
+	 * @param x x coordinate of the point.
+	 * @param y y coordinate of the point.
+	 * @param z z coordinate of the point.
+	 * @param result the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 * @throws IllegalStateException invalid move.
+	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	static void getClosestPointTo(PathIterator3ai<? extends PathElement3ai> pi, int x, int y, int z, Point3D<?, ?, ?> result) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+
+		var bestManhantanDist = Integer.MAX_VALUE;
+		var bestLinfinvDist = Integer.MAX_VALUE;
+
+		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
+		var crossings = 0;
+		var isClosed = false;
+		var moveX = 0;
+		var moveY = 0;
+		var moveZ = 0;
+		var currentX = 0;
+		var currentY = 0;
+		var currentZ = 0;
+
+		while (pi.hasNext()) {
+			final var pe = pi.next();
+
+			currentX = pe.getToX();
+			currentY = pe.getToY();
+			currentZ = pe.getToZ();
+
+			Point3D<?, ?, ?> candidate = null;
+			switch (pe.getType()) {
+			case MOVE_TO:
+				moveX = pe.getToX();
+				moveY = pe.getToY();
+				moveZ = pe.getToZ();
+				isClosed = false;
+				break;
+			case LINE_TO:
+				isClosed = false;
+				candidate = new InnerComputationPoint3ai();
+				Segment3ai.computeClosestPointToPoint(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(),
+						pe.getToZ(), x, y, z, candidate);
+				if (crossings != GeomConstants.SHAPE_INTERSECTS) {
+					crossings = Segment3ai.computeCrossingsFromPoint(
+							crossings,
+							x, y, z,
+							pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
+				}
+				break;
+			case CLOSE:
+				isClosed = true;
+				if (!pe.isEmpty()) {
+					candidate = new InnerComputationPoint3ai();
+					Segment3ai.computeClosestPointToPoint(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(),
+							pe.getToZ(), x, y, z, candidate);
+					if (crossings != GeomConstants.SHAPE_INTERSECTS) {
+						crossings = Segment3ai.computeCrossingsFromPoint(
+								crossings,
+								x, y, z,
+								pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
+					}
+				}
+				break;
+				//$CASES-OMITTED$
+			default:
+				throw new IllegalStateException();
+			}
+
+			if (candidate != null) {
+				final var dx = Math.abs(x - candidate.ix());
+				final var dy = Math.abs(y - candidate.iy());
+				final var dz = Math.abs(z - candidate.iz());
+				final var manhatanDist = dx + dy + dz;
+				if (manhatanDist <= 0) {
+					result.set(candidate);
+					return;
+				}
+				final var linfinvDist = MathUtil.min(dx, dy, dz);
+				if (manhatanDist < bestManhantanDist || manhatanDist == bestManhantanDist && linfinvDist < bestLinfinvDist) {
+					bestManhantanDist = manhatanDist;
+					bestLinfinvDist = linfinvDist;
+					result.set(candidate);
+				}
+			}
+		}
+
+		if (!isClosed && crossings != GeomConstants.SHAPE_INTERSECTS) {
+			crossings = Segment3ai.computeCrossingsFromPoint(
+					crossings,
+					x, y, z,
+					currentX, currentY, currentZ,
+					moveX, moveY, moveZ);
+		}
+
+		if (crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0) {
+			result.set(x, y, z);
+		}
+	}
+
+	@Override
+	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
+		assert pt != null : AssertMessages.notNullParameter();
+		final var point = getGeomFactory().newPoint();
+		getClosestPointTo(getPathIterator(getGeomFactory().getSplineApproximationRatio()), pt.ix(), pt.iy(), pt.iz(), point);
+		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(AlignedBox3ai<?, ?, ?, ?, ?, ?> rectangle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+		throw new UnsupportedOperationException();
+	}
+
+	/** Replies the point on the path that is farthest to the given point.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying polyline primitives, ie. if the
+	 * {@link PathIterator3D#isPolyline()} of {@code pi} is replying
+	 * {@code true}.
+	 * {@link #getFarthestPointTo(Point3D)} avoids this restriction.
+	 *
+	 * @param pi is the iterator on the elements of the path.
+	 * @param x x coordinate of the point.
+	 * @param y y coordinate of the point.
+	 * @param z z coordinate of the point.
+	 * @param result the farthest point on the shape.
+	 * @throws IllegalStateException invalid move.
+	 */
+	static void getFarthestPointTo(PathIterator3ai<? extends PathElement3ai> pi, int x, int y, int z, Point3D<?, ?, ?> result) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+
+		var bestX = x;
+		var bestY = y;
+		var bestZ = z;
+		var bestManhatanDist = Integer.MIN_VALUE;
+		var bestLinfinvDist = Integer.MIN_VALUE;
+		final var point = new InnerComputationPoint3ai();
+
+		while (pi.hasNext()) {
+			final var pe = pi.next();
+
+			final boolean foundCandidate;
+			final int candidateX;
+			final int candidateY;
+			final int candidateZ;
+
+			switch (pe.getType()) {
+			case MOVE_TO:
+				foundCandidate = true;
+				candidateX = pe.getToX();
+				candidateY = pe.getToY();
+				candidateZ = pe.getToZ();
+				break;
+			case LINE_TO:
+			case CLOSE:
+				Segment3ai.computeFarthestPointTo(
+						pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ(),
+						x, y, z, point);
+				foundCandidate = true;
+				candidateX = point.ix();
+				candidateY = point.iy();
+				candidateZ = point.iz();
+				break;
+				//$CASES-OMITTED$
+			default:
+				throw new IllegalStateException(
+						pe.getType() == null ? null : pe.getType().toString());
+			}
+
+			if (foundCandidate) {
+				final var dx = Math.abs(x - candidateX);
+				final var dy = Math.abs(y - candidateY);
+				final var dz = Math.abs(y - candidateY);
+				final var manhatanDist = dx + dy + dz;
+				final var linfinvDist = MathUtil.min(dx, dy, dz);
+				if (manhatanDist > bestManhatanDist || manhatanDist == bestManhatanDist && linfinvDist < bestLinfinvDist) {
+					bestManhatanDist = manhatanDist;
+					bestLinfinvDist = linfinvDist;
+					bestX = candidateX;
+					bestY = candidateY;
+					bestZ = candidateZ;
+				}
+			}
+		}
+
+		result.set(bestX, bestY, bestZ);
+	}
+
+	@Override
+	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
+		assert pt != null : AssertMessages.notNullParameter();
+		final var point = getGeomFactory().newPoint();
+		getFarthestPointTo(getPathIterator(getGeomFactory().getSplineApproximationRatio()), pt.ix(), pt.iy(), pt.iz(), point);
+		return point;
+	}
+
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return equalsToPathIterator(shape.getPathIterator());
+	}
+
+	/** Replies this shape as the same path iterator as the given one.
+	 *
+	 * <p>The equality test does not flatten the paths. It means that
+	 * is function has is functionnality equivalent to: <pre><code>
+	 * PathIterator2D it = this.getPathIterator();
+	 * while (it.hasNext() &amp;&amp; pathIterator.hasNext()) {
+	 *   PathElement2D e1 = it.next();
+	 *   PathElement2D e2 = it.next();
+	 *   if (!e1.equals(e2)) return false;
+	 * }
+	 * return !it.hasNext() &amp;&amp; !pathIterator.hasNext();
+	 * </code></pre>
+	 *
+	 * @param pathIterator the path iterator to compare to the one of this shape.
+	 * @return {@code true} if the path iterator of this shape replies the same
+	 *     elements as the given path iterator.
+	 */
+	@Pure
+	default boolean equalsToPathIterator(PathIterator3D<?> pathIterator) {
+		final var localIterator = getPathIterator();
+		if (pathIterator == null) {
+			return false;
+		}
+		while (localIterator.hasNext() && pathIterator.hasNext()) {
+			final var element1 = localIterator.next();
+			final var element2 = pathIterator.next();
+			if (!Objects.equals(element1, element2)) {
+				return false;
+			}
+		}
+		return !localIterator.hasNext() && !pathIterator.hasNext();
+	}
+
+	/** Add the elements replied by the iterator into this path.
+	 *
+	 * @param iterator the iterator on the elements to add.
+	 */
+	default void add(Iterator<? extends PathElement3ai> iterator) {
+		assert iterator != null : AssertMessages.notNullParameter();
+		while (iterator.hasNext()) {
+			final var element = iterator.next();
+			switch (element.getType()) {
+			case MOVE_TO:
+				moveTo(element.getToX(), element.getToY(), element.getToZ());
+				break;
+			case LINE_TO:
+				lineTo(element.getToX(), element.getToY(), element.getToZ());
+				break;
+			case QUAD_TO:
+				quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), element.getToX(), element.getToY(),
+						element.getToZ());
+				break;
+			case CURVE_TO:
+				curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), element.getCtrlX2(), element.getCtrlY2(),
+						element.getCtrlZ2(), element.getToX(), element.getToY(), element.getToZ());
+				break;
+			case CLOSE:
+				closePath();
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+	}
+
+	/** Set the path.
+	 *
+	 * @param path the path to copy.
+	 */
+	default void set(Path3ai<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : AssertMessages.notNullParameter();
+		clear();
+		add(path.getPathIterator());
+	}
+
+	/**
+	 * Adds a point to the path by moving to the specified
+	 * coordinates specified in double precision.
+	 *
+	 * @param x the specified X coordinate
+	 * @param y the specified Y coordinate
+	 * @param z the specified Y coordinate
+	 */
+	void moveTo(int x, int y, int z);
+
+	@Override
+	default void moveTo(Point3D<?, ?, ?> position) {
+		assert position != null : AssertMessages.notNullParameter();
+		moveTo(position.ix(), position.iy(), position.iz());
+	}
+
+	/**
+	 * Adds a point to the path by drawing a straight line from the
+	 * current coordinates to the new specified coordinates
+	 * specified in double precision.
+	 *
+	 * @param x the specified X coordinate
+	 * @param y the specified Y coordinate
+	 * @param z the specified Y coordinate
+	 */
+	void lineTo(int x, int y, int z);
+
+	@Override
+	default void lineTo(Point3D<?, ?, ?> to) {
+		assert to != null : AssertMessages.notNullParameter();
+		lineTo(to.ix(), to.iy(), to.iz());
+	}
+
+	/**
+	 * Adds a curved segment, defined by two new points, to the path by
+	 * drawing a Quadratic curve that intersects both the current
+	 * coordinates and the specified coordinates {@code (x2,y2)},
+	 * using the specified point {@code (x1,y1)} as a quadratic
+	 * parametric control point.
+	 * All coordinates are specified in double precision.
+	 *
+	 * @param x1 the X coordinate of the quadratic control point
+	 * @param y1 the Y coordinate of the quadratic control point
+	 * @param z1 the Z coordinate of the quadratic control point
+	 * @param x2 the X coordinate of the final end point
+	 * @param y2 the Y coordinate of the final end point
+	 * @param z2 the Z coordinate of the final end point
+	 */
+	void quadTo(int x1, int y1, int z1, int x2, int y2, int z2);
+
+	@Override
+	default void quadTo(Point3D<?, ?, ?> ctrl, Point3D<?, ?, ?> to) {
+		assert ctrl != null : AssertMessages.notNullParameter(0);
+		assert to != null : AssertMessages.notNullParameter(1);
+		quadTo(ctrl.ix(), ctrl.iy(), ctrl.iz(), to.ix(), to.iy(), to.iz());
+	}
+
+	/**
+	 * Adds a curved segment, defined by three new points, to the path by
+	 * drawing a B&eacute;zier curve that intersects both the current
+	 * coordinates and the specified coordinates {@code (x3,y3)},
+	 * using the specified points {@code (x1,y1)} and {@code (x2,y2)} as
+	 * B&eacute;zier control points.
+	 * All coordinates are specified in double precision.
+	 *
+	 * @param x1 the X coordinate of the first B&eacute;zier control point
+	 * @param y1 the Y coordinate of the first B&eacute;zier control point
+	 * @param z1 the Z coordinate of the first B&eacute;zier control point
+	 * @param x2 the X coordinate of the second B&eacute;zier control point
+	 * @param y2 the Y coordinate of the second B&eacute;zier control point
+	 * @param z2 the Z coordinate of the second B&eacute;zier control point
+	 * @param x3 the X coordinate of the final end point
+	 * @param y3 the Y coordinate of the final end point
+	 * @param z3 the Z coordinate of the final end point
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	void curveTo(int x1, int y1, int z1,
+			int x2, int y2, int z2,
+			int x3, int y3, int z3);
+
+	@Override
+	default void curveTo(Point3D<?, ?, ?> ctrl1, Point3D<?, ?, ?> ctrl2, Point3D<?, ?, ?> to) {
+		assert ctrl1 != null : AssertMessages.notNullParameter(0);
+		assert ctrl2 != null : AssertMessages.notNullParameter(1);
+		assert to != null : AssertMessages.notNullParameter(2);
+		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl1.iz(), ctrl2.ix(), ctrl2.iy(), ctrl2.iz(), to.ix(), to.iy(), to.iz());
+	}
+
+	@Pure
+	@Override
+	default double getDistanceSquared(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var c = getClosestPointTo(point);
+		return c.getDistanceSquared(point);
+	}
+
+	@Pure
+	@Override
+	default double getDistanceL1(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var c = getClosestPointTo(point);
+		return c.getDistanceL1(point);
+	}
+
+	@Pure
+	@Override
+	default double getDistanceLinf(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var c = getClosestPointTo(point);
+		return c.getDistanceLinf(point);
+	}
+
+	@Override
+	default double getLengthSquared() {
+		if (isEmpty()) {
+			return 0;
+		}
+
+		var length = 0;
+
+		final var pi = getPathIterator(getGeomFactory().getSplineApproximationRatio());
+
+		var pathElement = pi.next();
+
+		if (pathElement.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+		}
+
+		while (pi.hasNext()) {
+			pathElement = pi.next();
+
+			switch (pathElement.getType()) {
+			case LINE_TO:
+				length += Point3D.getDistanceSquaredPointPoint(
+						pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ(),
+						pathElement.getToX(), pathElement.getToY(), pathElement.getToZ());
+				break;
+			case CLOSE:
+				length += Point3D.getDistanceSquaredPointPoint(
+						pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ(),
+						pathElement.getToX(), pathElement.getToY(), pathElement.getToZ());
+				break;
+			case QUAD_TO:
+			case CURVE_TO:
+				throw new IllegalStateException();
+				//$CASES-OMITTED$
+			default:
+			}
+
+		}
+
+		return length;
+	}
+
+	@Pure
+	@Override
+	default P getCurrentPoint() {
+		return getGeomFactory().newPoint(getCurrentX(), getCurrentY(), getCurrentZ());
+	}
+
+	/** Replies the x coordinate of the last point in the path.
+	 *
+	 * @return the x coordinate of the last point in the path.
+	 */
+	@Pure
+	int getCurrentX();
+
+	/** Replies the x coordinate of the last point in the path.
+	 *
+	 * @return the x coordinate of the last point in the path.
+	 */
+	@Pure
+	int getCurrentY();
+
+	/** Replies the z coordinate of the last point in the path.
+	 *
+	 * @return the z coordinate of the last point in the path.
+	 */
+	@Pure
+	int getCurrentZ();
+
+	/** Replies the coordinate at the given index.
+	 * The index is in [0;{@link #size()}*3).
+	 *
+	 * @param index the index
+	 * @return the coordinate at the given index.
+	 */
+	@Pure
+	int getCoordAt(int index);
+
+	/** Change the coordinates of the last inserted point.
+	 *
+	 * @param x the new x coordinate of the last point.
+	 * @param y the new y coordinate of the last point.
+	 * @param z the new z coordinate of the last point.
+	 */
+	void setLastPoint(int x, int y, int z);
+
+	@Override
+	default void setLastPoint(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		setLastPoint(point.ix(), point.iy(), point.iz());
+	}
+
+	/** Transform the current path.
+	 * This function changes the current path.
+	 *
+	 * @param transform is the affine transformation to apply.
+	 * @see #createTransformedShape
+	 */
+	void transform(Transform3D transform);
+
+	/** Remove the point with the given coordinates.
+	 *
+	 * <p>If the given coordinates do not match exactly a point in the path, nothing is removed.
+	 *
+	 * @param x the x coordinate of the point to remove.
+	 * @param y the y coordinate of the point to remove.
+	 * @param z the z coordinate of the point to remove.
+	 * @return {@code true} if the point was removed; {@code false} otherwise.
+	 */
+	boolean remove(int x, int y, int z);
+
+	/** Replies an iterator on the path elements.
+	 *
+	 * <p>The iterator for this class is not multi-threaded safe.
+	 *
+	 * @param flatness the curve discretizing factor.
+	 * @return an iterator on the path elements.
+	 */
+	@Override
+	@Pure
+	default PathIterator3ai<IE> getPathIterator(double flatness) {
+		return new FlatteningPathIterator<>(this, getPathIterator(null), flatness, DEFAULT_FLATTENING_LIMIT);
+	}
+
+	/** Replies an iterator on the path elements.
+	 *
+	 * <p>The iterator for this class is not multi-threaded safe.
+	 *
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	default PathIterator3ai<IE> getPathIterator() {
+		return getPathIterator(null);
+	}
+
+	/** Replies the elements of the paths.
+	 *
+	 * @param transform is the transformation to apply to the path.
+	 * @return the elements of the path.
+	 */
+	@Pure
+	default PathIterator3ai<IE> getPathIterator(Transform3D transform) {
+		if (transform == null || transform.isIdentity()) {
+			return new PathPathIterator<>(this);
+		}
+		return new TransformedPathIterator<>(this, transform);
+	}
+
+	@Pure
+	@Override
+	default Iterator<P> getPointIterator() {
+		final var pathIterator = getPathIterator(getGeomFactory().getSplineApproximationRatio());
+		return new PixelIterator<>(pathIterator, getGeomFactory());
+	}
+
+	@Pure
+	@Override
+	default Collection<P> toCollection() {
+		return new PointCollection<>(this);
+	}
+
+	/** Replies this segment with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the segment.
+	 * @since 18.0
+	 */
+	@Override
+	default String toGeogebra() {
+		return GeogebraUtil.toPolygonDefinition(3, toDoubleArray());
+	}
+
+	/** Private API for Path3ai.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	final class PrivateAPI {
+
+		private PrivateAPI() {
+			//
+		}
+
+		/** Not documented.
+		 *
+		 * @param crossings the previous value of the crossing.
+		 * @param rxmin not documented.
+		 * @param rymin not documented.
+		 * @param rzmin not documented.
+		 * @param rxmax not documented.
+		 * @param rymax not documented.
+		 * @param rzmax not documented.
+		 * @param curx not documented.
+		 * @param cury not documented.
+		 * @param curz not documented.
+		 * @param movx not documented.
+		 * @param movy not documented.
+		 * @param movz not documented.
+		 * @param intersectingBehavior not documented.
+		 * @return the crossing.
+		 */
+		@Pure
+		@SuppressWarnings("checkstyle:parameternumber")
+		private static int crossingHelper(
+				int crossings,
+				int rxmin, int rymin, int rzmin,
+				int rxmax, int rymax, int rzmax,
+				int curx, int cury, int curz,
+				int movx, int movy, int movz,
+				boolean intersectingBehavior) {
+			var crosses = Segment3ai.computeCrossingsFromRect(crossings,
+					rxmin, rymin, rzmin,
+					rxmax, rymax, rzmax,
+					curx, cury, curz,
+					movx, movy, movz);
+			if (!intersectingBehavior && crosses == GeomConstants.SHAPE_INTERSECTS) {
+				final var x1 = rxmin + 1;
+				final var x2 = rxmax - 1;
+				final var y1 = rymin + 1;
+				final var y2 = rymax - 1;
+				final var z1 = rzmin + 1;
+				final var z2 = rzmax - 1;
+				crosses = Segment3ai.computeCrossingsFromRect(crossings,
+						x1, y1, z1,
+						x2, y2, z2,
+						curx, cury, curz,
+						movx, movy, movz);
+			}
+			return crosses;
+		}
+
+	}
+
+	/** An abstract path iterator.
+	 *
+	 * @param <E> the type of the path elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	abstract class AbstractPathIterator<E extends PathElement3ai> implements PathIterator3ai<E> {
+
+		/** Path.
+		 */
+		protected final Path3ai<?, E, ?, ?, ?, ?> path;
+
+		/** Constructor.
+		 * @param path the path.
+		 */
+		public AbstractPathIterator(Path3ai<?, E, ?, ?, ?, ?> path) {
+			assert path != null : AssertMessages.notNullParameter();
+			this.path = path;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public PathWindingRule getWindingRule() {
+			return this.path.getWindingRule();
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return this.path.isPolyline();
+		}
+
+		@Override
+		public boolean isCurved() {
+			return this.path.isCurved();
+		}
+
+		@Override
+		public boolean isMultiParts() {
+			return this.path.isMultiParts();
+		}
+
+		@Override
+		public boolean isPolygon() {
+			return this.path.isPolygon();
+		}
+
+		@Override
+		public GeomFactory3ai<E, ?, ?, ?, ?> getGeomFactory() {
+			return this.path.getGeomFactory();
+		}
+
+	}
+
+	/** A path iterator that does not transform the coordinates.
+	 *
+	 * @param <E> the type of the path elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	class PathPathIterator<E extends PathElement3ai> extends AbstractPathIterator<E> {
+
+		private final Point3D<?, ?, ?> p1;
+
+		private final Point3D<?, ?, ?> p2;
+
+		private int typeIndex;
+
+		private int coordIndex;
+
+		private int movex;
+
+		private int movey;
+
+		private int movez;
+
+		/** Constructor.
+		 * @param path the path.
+		 */
+		public PathPathIterator(Path3ai<?, E, ?, ?, ?, ?> path) {
+			super(path);
+			this.p1 = new InnerComputationPoint3ai();
+			this.p2 = new InnerComputationPoint3ai();
+		}
+
+		@Override
+		public PathIterator3ai<E> restartIterations() {
+			return new PathPathIterator<>(this.path);
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.typeIndex < this.path.getPathElementCount();
+		}
+
+		@Override
+		public E next() {
+			final var type = this.typeIndex;
+			if (this.typeIndex >= this.path.getPathElementCount()) {
+				throw new NoSuchElementException();
+			}
+			E element = null;
+			switch (this.path.getPathElementTypeAt(type)) {
+			case MOVE_TO:
+				if (this.coordIndex + 2 > (this.path.size() * 2)) {
+					throw new NoSuchElementException();
+				}
+				this.movex = this.path.getCoordAt(this.coordIndex++);
+				this.movey = this.path.getCoordAt(this.coordIndex++);
+				this.movez = this.path.getCoordAt(this.coordIndex++);
+				this.p2.set(this.movex, this.movey, this.movez);
+				element = getGeomFactory().newMovePathElement(
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+			case LINE_TO:
+				if (this.coordIndex + 2 > (this.path.size() * 2)) {
+					throw new NoSuchElementException();
+				}
+				this.p1.set(this.p2);
+				this.p2.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				element = getGeomFactory().newLinePathElement(
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+			case QUAD_TO:
+				if (this.coordIndex + 4 > (this.path.size() * 2)) {
+					throw new NoSuchElementException();
+				}
+				this.p1.set(this.p2);
+				final var ctrlx = this.path.getCoordAt(this.coordIndex++);
+				final var ctrly = this.path.getCoordAt(this.coordIndex++);
+				final var ctrlz = this.path.getCoordAt(this.coordIndex++);
+				this.p2.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				element = getGeomFactory().newCurvePathElement(
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						ctrlx, ctrly, ctrlz,
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+			case CURVE_TO:
+				if (this.coordIndex + 6 > (this.path.size() * 2)) {
+					throw new NoSuchElementException();
+				}
+				this.p1.set(this.p2);
+				final var ctrlx1 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrly1 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrlz1 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrlx2 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrly2 = this.path.getCoordAt(this.coordIndex++);
+				final var ctrlz2 = this.path.getCoordAt(this.coordIndex++);
+				this.p2.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				element = getGeomFactory().newCurvePathElement(
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						ctrlx1, ctrly1, ctrlz1,
+						ctrlx2, ctrly2, ctrlz2,
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+			case CLOSE:
+				this.p1.set(this.p2);
+				this.p2.set(this.movex, this.movey, this.movez);
+				element = getGeomFactory().newClosePathElement(
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+			if (element == null) {
+				throw new NoSuchElementException();
+			}
+
+			++this.typeIndex;
+
+			return element;
+		}
+
+	}
+
+	/** A path iterator that transforms the coordinates.
+	 *
+	 * @param <E> the type of the path elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	class TransformedPathIterator<E extends PathElement3ai> extends AbstractPathIterator<E> {
+
+		private final Transform3D transform;
+
+		private final Point3D<?, ?, ?> p1;
+
+		private final Point3D<?, ?, ?> p2;
+
+		private final Point3D<?, ?, ?> ptmp1;
+
+		private final Point3D<?, ?, ?> ptmp2;
+
+		private int typeIndex;
+
+		private int coordIndex;
+
+		private int movex;
+
+		private int movey;
+
+		private int movez;
+
+		/** Constructor.
+		 * @param path the path.
+		 * @param transform the transformation.
+		 */
+		public TransformedPathIterator(Path3ai<?, E, ?, ?, ?, ?> path, Transform3D transform) {
+			super(path);
+			assert transform != null : AssertMessages.notNullParameter(1);
+			this.transform = transform;
+			this.p1 = new InnerComputationPoint3ai();
+			this.p2 = new InnerComputationPoint3ai();
+			this.ptmp1 = new InnerComputationPoint3ai();
+			this.ptmp2 = new InnerComputationPoint3ai();
+		}
+
+		@Override
+		public PathIterator3ai<E> restartIterations() {
+			return new TransformedPathIterator<>(this.path, this.transform);
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.typeIndex < this.path.getPathElementCount();
+		}
+
+		@Override
+		public E next() {
+			if (this.typeIndex >= this.path.getPathElementCount()) {
+				throw new NoSuchElementException();
+			}
+			E element = null;
+			switch (this.path.getPathElementTypeAt(this.typeIndex++)) {
+			case MOVE_TO:
+				this.movex = this.path.getCoordAt(this.coordIndex++);
+				this.movey = this.path.getCoordAt(this.coordIndex++);
+				this.movez = this.path.getCoordAt(this.coordIndex++);
+				this.p2.set(this.movex, this.movey, this.movez);
+				this.transform.transform(this.p2);
+				element = getGeomFactory().newMovePathElement(
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+			case LINE_TO:
+				this.p1.set(this.p2);
+				this.p2.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				this.transform.transform(this.p2);
+				element = getGeomFactory().newLinePathElement(
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+			case QUAD_TO:
+				this.p1.set(this.p2);
+				this.ptmp1.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				this.transform.transform(this.ptmp1);
+				this.p2.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				this.transform.transform(this.p2);
+				element = getGeomFactory().newCurvePathElement(
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.ptmp1.ix(), this.ptmp1.iy(), this.ptmp1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+			case CURVE_TO:
+				this.p1.set(this.p2);
+				this.ptmp1.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				this.transform.transform(this.ptmp1);
+				this.ptmp2.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				this.transform.transform(this.ptmp2);
+				this.p2.set(
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
+				this.transform.transform(this.p2);
+				element = getGeomFactory().newCurvePathElement(
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.ptmp1.ix(), this.ptmp1.iy(), this.ptmp1.iz(),
+						this.ptmp2.ix(), this.ptmp2.iy(), this.ptmp2.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
+				break;
+			case CLOSE:
+				this.p1.set(this.p2);
+				this.p2.set(this.movex, this.movey, this.movez);
+				this.transform.transform(this.p2);
+				element = getGeomFactory().newClosePathElement(
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p1.iz());
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+			if (element == null) {
+				throw new NoSuchElementException();
+			}
+			return element;
+		}
+
+	}
+
+	/** Iterator on the pixels of the path.
+	 *
+	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
+	 * @param <Q> the type of the quaternions.
+	 * @author $Author: sgalland$
+	 * @author $Author: tpiotrow$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	class PixelIterator<P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>> implements Iterator<P> {
+
+		private final PathIterator3ai<?> pathIterator;
+
+		private final GeomFactory3ai<?, P, V, Q, ?> factory;
+
+		private Iterator<P> lineIterator;
+
+		private P next;
+
+		/** Constructor.
+		 * @param pi the iterator.
+		 * @param factory the element factory.
+		 */
+		public PixelIterator(PathIterator3ai<?> pi, GeomFactory3ai<?, P, V, Q, ?> factory) {
+			assert pi != null : AssertMessages.notNullParameter(0);
+			assert factory != null : AssertMessages.notNullParameter(1);
+			this.pathIterator = pi;
+			this.factory = factory;
+			searchNext();
+		}
+
+		private void searchNext() {
+			final var old = this.next;
+			this.next = null;
+			while (this.pathIterator.hasNext() && (this.lineIterator == null || !this.lineIterator.hasNext())) {
+				this.lineIterator = null;
+				final var elt = this.pathIterator.next();
+				if (elt.isDrawable()) {
+					switch (elt.getType()) {
+					case LINE_TO:
+					case CLOSE:
+						final var segment = this.factory.newSegment(
+								elt.getFromX(), elt.getFromY(), elt.getFromZ(),
+								elt.getToX(), elt.getToY(), elt.getToZ());
+						this.lineIterator = segment.getPointIterator();
+						break;
+						//$CASES-OMITTED$
+					default:
+						throw new IllegalStateException();
+					}
+				}
+			}
+			if (this.lineIterator != null && this.lineIterator.hasNext()) {
+				this.next = this.lineIterator.next();
+				while (this.next.equals(old)) {
+					this.next = this.lineIterator.next();
+				}
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.next != null;
+		}
+
+		@Override
+		public P next() {
+			final P n = this.next;
+			if (n == null) {
+				throw new NoSuchElementException();
+			}
+			searchNext();
+			return n;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+	}
+
+	/** An collection of the points of the path.
+	 *
+	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
+	 * @param <Q> the type of the quaternions.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	class PointCollection<P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>> implements Collection<P> {
+
+		private final Path3ai<?, ?, P, V, Q, ?> path;
+
+		/** Constructor.
+		 * @param path the path from which the points are extracted.
+		 */
+		public PointCollection(Path3ai<?, ?, P, V, Q, ?> path) {
+			assert path != null : AssertMessages.notNullParameter();
+			this.path = path;
+		}
+
+		@Override
+		public int size() {
+			return this.path.size();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return this.path.size() <= 0;
+		}
+
+		@Override
+		public boolean contains(Object obj) {
+			if (obj instanceof Point3D pt) {
+				return this.path.contains(pt);
+			}
+			return false;
+		}
+
+		@Override
+		public Iterator<P> iterator() {
+			return new PointIterator<>(this.path);
+		}
+
+		@Override
+		public Object[] toArray() {
+			return this.path.toPointArray();
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T[] toArray(T[] array) {
+			assert array != null : AssertMessages.notNullParameter();
+			final var iterator = new PointIterator<>(this.path);
+			for (var i = 0; i < array.length && iterator.hasNext(); ++i) {
+				array[i] = (T) iterator.next();
+			}
+			return array;
+		}
+
+		@Override
+		public boolean add(P element) {
+			if (element != null) {
+				if (this.path.size() == 0) {
+					this.path.moveTo(element.ix(), element.iy(), element.iz());
+				} else {
+					this.path.lineTo(element.ix(), element.iy(), element.iz());
+				}
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public boolean remove(Object obj) {
+			if (obj instanceof Point3D p) {
+				return this.path.remove(p.ix(), p.iy(), p.iz());
+			}
+			return false;
+		}
+
+		@Override
+		public boolean containsAll(Collection<?> collection) {
+			assert collection != null : AssertMessages.notNullParameter();
+			for (final var obj : collection) {
+				if (!(obj instanceof Point3D)
+						|| !this.path.contains((Point3D<?, ?, ?>) obj)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		@Override
+		public boolean addAll(Collection<? extends P> collection) {
+			assert collection != null : AssertMessages.notNullParameter();
+			var changed = false;
+			for (final var pts : collection) {
+				if (add(pts)) {
+					changed = true;
+				}
+			}
+			return changed;
+		}
+
+		@Override
+		public boolean removeAll(Collection<?> collection) {
+			assert collection != null : AssertMessages.notNullParameter();
+			var changed = false;
+			for (final var obj : collection) {
+				if (obj instanceof Point3D pts) {
+					if (this.path.remove(pts.ix(), pts.iy(), pts.iz())) {
+						changed = true;
+					}
+				}
+			}
+			return changed;
+		}
+
+		@Override
+		public boolean retainAll(Collection<?> collection) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void clear() {
+			this.path.clear();
+		}
+
+	}
+
+	/** Iterator on the points of the path.
+	 *
+	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
+	 * @param <Q> the type of the quaternions.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	class PointIterator<P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>> implements Iterator<P> {
+
+		private final Path3ai<?, ?, P, V, Q, ?> path;
+
+		private int index;
+
+		private P lastReplied;
+
+		/** Constructor.
+		 * @param path the path to iterate on.
+		 */
+		public PointIterator(Path3ai<?, ?, P, V, Q, ?> path) {
+			assert path != null : AssertMessages.notNullParameter();
+			this.path = path;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.index < this.path.size();
+		}
+
+		@Override
+		public P next() {
+			try {
+				this.lastReplied = this.path.getPointAt(this.index++);
+				return this.lastReplied;
+			} catch (Throwable exception) {
+				throw new NoSuchElementException();
+			}
+		}
+
+		@Override
+		public void remove() {
+			final var p = this.lastReplied;
+			this.lastReplied = null;
+			if (p == null) {
+				throw new NoSuchElementException();
+			}
+			this.path.remove(p.ix(), p.iy(), p.iz());
+		}
+
+	}
+
+	/** A path iterator that is flattening the path.
+	 * This iterator was copied from AWT FlatteningPathIterator.
+	 *
+	 * @param <E> the type of the path elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	// TODO : integrate z coordinate
+	class FlatteningPathIterator<E extends PathElement3ai> implements PathIterator3ai<E> {
+
+		/** Path.
+		 */
+		private final Path3ai<?, E, ?, ?, ?, ?> path;
+
+		/** The source iterator.
+		 */
+		private final PathIterator3ai<? extends E> pathIterator;
+
+		/**
+		 * Square of the flatness parameter for testing against squared lengths.
+		 */
+		private final double squaredFlatness;
+
+		/**
+		 * Maximum number of recursion levels.
+		 */
+		private final int limit;
+
+		/** The recursion level at which each curve being held in storage was generated.
+		 */
+		private int[] levels;
+
+		/** The cache of interpolated coords.
+		 * Note that this must be long enough
+		 * to store a full cubic segment and
+		 * a relative cubic segment to avoid
+		 * aliasing when copying the coords
+		 * of a curve to the end of the array.
+		 * This is also serendipitously equal
+		 * to the size of a full quad segment
+		 * and 2 relative quad segments.
+		 */
+		private double[] hold = new double[14];
+
+		/** The index of the last curve segment being held for interpolation.
+		 */
+		private int holdEnd;
+
+		/**
+		 * The index of the curve segment that was last interpolated.  This
+		 * is the curve segment ready to be returned in the next call to
+		 * next().
+		 */
+		private int holdIndex;
+
+		/** The ending x of the last segment.
+		 */
+		private double currentX;
+
+		/** The ending y of the last segment.
+		 */
+		private double currentY;
+
+		/** The ending y of the last segment.
+		 */
+		//TODO private double currentZ;
+
+		/** The x of the last move segment.
+		 */
+		private double moveX;
+
+		/** The y of the last move segment.
+		 */
+		private double moveY;
+
+		/** The y of the last move segment.
+		 */
+		private double moveZ;
+
+		/** The index of the entry in the
+		 * levels array of the curve segment
+		 * at the holdIndex.
+		 */
+		private int levelIndex;
+
+		/** True when iteration is done.
+		 */
+		private boolean done;
+
+		/** The type of the path element.
+		 */
+		private PathElementType holdType;
+
+		/** The x of the last move segment replied by next.
+		 */
+		private int lastNextX;
+
+		/** The y of the last move segment replied by next.
+		 */
+		private int lastNextY;
+
+		/** The z of the last move segment replied by next.
+		 */
+		private int lastNextZ;
+
+		/** Constructor.
+		 * @param path is the path.
+		 * @param pathIterator is the path iterator that may be used to initialize the path.
+		 * @param flatness the maximum allowable distance between the
+		 *     control points and the flattened curve
+		 * @param limit the maximum number of recursive subdivisions
+		 *     allowed for any curved segment
+		 */
+		public FlatteningPathIterator(Path3ai<?, E, ?, ?, ?, ?> path, PathIterator3ai<? extends E> pathIterator,
+				double flatness, int limit) {
+			assert path != null : AssertMessages.notNullParameter(0);
+			assert pathIterator != null : AssertMessages.notNullParameter(1);
+			assert flatness > 0f : AssertMessages.positiveOrZeroParameter(2);
+			assert limit >= 0 : AssertMessages.positiveOrZeroParameter(3);
+			this.path = path;
+			this.pathIterator = pathIterator;
+			this.squaredFlatness = flatness * flatness;
+			this.limit = limit;
+			this.levels = new int[limit + 1];
+			searchNext(true);
+		}
+
+		@Override
+		public PathIterator3ai<E> restartIterations() {
+			return new FlatteningPathIterator<>(this.path, this.pathIterator.restartIterations(),
+					Math.sqrt(this.squaredFlatness), this.limit);
+		}
+
+		/**
+		 * Ensures that the hold array can hold up to (want) more values.
+		 * It is currently holding (hold.length - holdIndex) values.
+		 */
+		private void ensureHoldCapacity(int want) {
+			if (this.holdIndex - want < 0) {
+				final var have = this.hold.length - this.holdIndex;
+				final var newsize = this.hold.length + GROW_SIZE;
+				final var newhold = new double[newsize];
+				System.arraycopy(this.hold, this.holdIndex,
+						newhold, this.holdIndex + GROW_SIZE,
+						have);
+				this.hold = newhold;
+				this.holdIndex += GROW_SIZE;
+				this.holdEnd += GROW_SIZE;
+			}
+		}
+
+		/**
+		 * Returns the square of the flatness, or maximum distance of a
+		 * control point from the line connecting the end points, of the
+		 * quadratic curve specified by the control points stored in the
+		 * indicated array at the indicated index.
+		 * @param coords an array containing coordinate values
+		 * @param offset the index into {@code coords} from which to
+		 *          to start getting the values from the array
+		 * @return the flatness of the quadratic curve that is defined by the
+		 *          values in the specified array at the specified index.
+		 */
+		// TODO : validate indexes
+		private static double getQuadSquaredFlatness(double[] coords, int offset) {
+			return Segment3afp.calculatesDistanceSquaredLinePoint(
+					coords[offset + 0], coords[offset + 1], coords[offset + 2],
+					coords[offset + 6], coords[offset + 7], coords[offset + 8],
+					coords[offset + 3], coords[offset + 4], coords[offset + 5]);
+		}
+
+		/**
+		 * Subdivides the quadratic curve specified by the coordinates stored in the {@code src} array at indices
+		 * {@code srcoff} through {@code srcoff}&nbsp;+&nbsp;5 and stores the resulting two subdivided curves into the
+		 * two result arrays at the corresponding indices. Either or both of the {@code left} and {@code right} arrays
+		 * can be {@code null} or a reference to the same array and offset as the {@code src} array. Note that the last
+		 * point in the first subdivided curve is the same as the first point in the second subdivided curve. Thus, it is possible
+		 * to pass the same array for {@code left} and {@code right} and to use offsets such that to avoid allocating
+		 * extra storage for this common point.
+		 *
+		 * @param src
+		 *            the array holding the coordinates for the source curve {@code rightoff} equals {@code leftoff} + 4
+		 *            in order
+		 * @param srcoff
+		 *            the offset into the array of the beginning of the the 6 source coordinates.
+		 * @param left
+		 *            the array for storing the coordinates for the first half of the subdivided curve.
+		 * @param leftoff
+		 *            the offset into the array of the beginning of the the 6 left coordinates.
+		 * @param right
+		 *            the array for storing the coordinates for the second half of the subdivided curve.
+		 * @param rightoff
+		 *            the offset into the array of the beginning of the the 6 right coordinates.
+		 */
+		// TODO : integrate z coordinate
+		private static void subdivideQuad(double[] src, int srcoff,
+				double[] left, int leftoff,
+				double[] right, int rightoff) {
+			var x1 = src[srcoff + 0];
+			var y1 = src[srcoff + 1];
+			var x2 = src[srcoff + 4];
+			var y2 = src[srcoff + 5];
+			if (left != null) {
+				left[leftoff + 0] = x1;
+				left[leftoff + 1] = y1;
+			}
+			if (right != null) {
+				right[rightoff + 4] = x2;
+				right[rightoff + 5] = y2;
+			}
+			var ctrlx = src[srcoff + 2];
+			var ctrly = src[srcoff + 3];
+			x1 = (x1 + ctrlx) / 2;
+			y1 = (y1 + ctrly) / 2;
+			x2 = (x2 + ctrlx) / 2;
+			y2 = (y2 + ctrly) / 2;
+			ctrlx = (x1 + x2) / 2;
+			ctrly = (y1 + y2) / 2;
+			if (left != null) {
+				left[leftoff + 2] = x1;
+				left[leftoff + 3] = y1;
+				left[leftoff + 4] = ctrlx;
+				left[leftoff + 5] = ctrly;
+			}
+			if (right != null) {
+				right[rightoff + 0] = ctrlx;
+				right[rightoff + 1] = ctrly;
+				right[rightoff + 2] = x2;
+				right[rightoff + 3] = y2;
+			}
+		}
+
+		/**
+		 * Returns the square of the flatness of the cubic curve specified
+		 * by the control points stored in the indicated array at the
+		 * indicated index. The flatness is the maximum distance
+		 * of a control point from the line connecting the end points.
+		 * @param coords an array containing coordinates
+		 * @param offset the index of {@code coords} from which to begin
+		 *          getting the end points and control points of the curve
+		 * @return the square of the flatness of the {@code CubicCurve2D}
+		 *          specified by the coordinates in {@code coords} at
+		 *          the specified offset.
+		 */
+		// TODO : validate indexes
+		private static double getCurveSquaredFlatness(double[] coords, int offset) {
+			return Math.max(
+					Segment3afp.calculatesDistanceSquaredSegmentPoint(
+							coords[offset + 9],
+							coords[offset + 10],
+							coords[offset + 11],
+							coords[offset + 3],
+							coords[offset + 4],
+							coords[offset + 5],
+							coords[offset + 0],
+							coords[offset + 1],
+							coords[offset + 2]),
+					Segment3afp.calculatesDistanceSquaredSegmentPoint(
+							coords[offset + 9],
+							coords[offset + 10],
+							coords[offset + 11],
+							coords[offset + 6],
+							coords[offset + 7],
+							coords[offset + 8],
+							coords[offset + 0],
+							coords[offset + 1],
+							coords[offset + 2]));
+		}
+
+		/**
+		 * Subdivides the cubic curve specified by the coordinates stored in the {@code src} array at indices
+		 * {@code srcoff} through ({@code srcoff}&nbsp;+&nbsp;7) and stores the resulting two subdivided curves into the
+		 * two result arrays at the corresponding indices. Either or both of the {@code left} and {@code right} arrays
+		 * may be {@code null} or a reference to the same array as the {@code src} array. Note that the last point in
+		 * the first subdivided curve is the same as the first point in the second subdivided curve. Thus, it is possible to pass
+		 * the same array for {@code left} and {@code right} and to use offsets, such as {@code rightoff} equals (
+		 * {@code leftoff} + 6), in order to avoid allocating extra storage for this common point.
+		 *
+		 * @param src
+		 *            the array holding the coordinates for the source curve
+		 * @param srcoff
+		 *            the offset into the array of the beginning of the the 6 source coordinates.
+		 * @param left
+		 *            the array for storing the coordinates for the first half of the subdivided curve.
+		 * @param leftoff
+		 *            the offset into the array of the beginning of the the 6 left coordinates.
+		 * @param right
+		 *            the array for storing the coordinates for the second half of the subdivided curve.
+		 * @param rightoff
+		 *            the offset into the array of the beginning of the the 6 right coordinates.
+		 */
+		// TODO : integrate z coordinate
+		private static void subdivideCurve(
+				double[] src, int srcoff,
+				double[] left, int leftoff,
+				double[] right, int rightoff) {
+			var x1 = src[srcoff + 0];
+			var y1 = src[srcoff + 1];
+			var x2 = src[srcoff + 6];
+			var y2 = src[srcoff + 7];
+			if (left != null) {
+				left[leftoff + 0] = x1;
+				left[leftoff + 1] = y1;
+			}
+			if (right != null) {
+				right[rightoff + 6] = x2;
+				right[rightoff + 7] = y2;
+			}
+			var ctrlx1 = src[srcoff + 2];
+			x1 = (x1 + ctrlx1) / 2f;
+			var ctrly1 = src[srcoff + 3];
+			y1 = (y1 + ctrly1) / 2f;
+			var ctrlx2 = src[srcoff + 4];
+			x2 = (x2 + ctrlx2) / 2f;
+			var ctrly2 = src[srcoff + 5];
+			y2 = (y2 + ctrly2) / 2f;
+			var centerx = (ctrlx1 + ctrlx2) / 2f;
+			var centery = (ctrly1 + ctrly2) / 2f;
+			ctrlx1 = (x1 + centerx) / 2f;
+			ctrly1 = (y1 + centery) / 2f;
+			ctrlx2 = (x2 + centerx) / 2f;
+			ctrly2 = (y2 + centery) / 2f;
+			centerx = (ctrlx1 + ctrlx2) / 2f;
+			centery = (ctrly1 + ctrly2) / 2f;
+			if (left != null) {
+				left[leftoff + 2] = x1;
+				left[leftoff + 3] = y1;
+				left[leftoff + 4] = ctrlx1;
+				left[leftoff + 5] = ctrly1;
+				left[leftoff + 6] = centerx;
+				left[leftoff + 7] = centery;
+			}
+			if (right != null) {
+				right[rightoff + 0] = centerx;
+				right[rightoff + 1] = centery;
+				right[rightoff + 2] = ctrlx2;
+				right[rightoff + 3] = ctrly2;
+				right[rightoff + 4] = x2;
+				right[rightoff + 5] = y2;
+			}
+		}
+
+		private void searchNext(boolean isFirst) {
+			do {
+				flattening();
+			}
+			while (!this.done && !isFirst && isSame());
+		}
+
+		private boolean isSame() {
+			final PathElementType type = this.holdType;
+			final int x;
+			final int y;
+			final int z;
+			if (type == PathElementType.CLOSE) {
+				x = (int) Math.round(this.moveX);
+				y = (int) Math.round(this.moveY);
+				z = (int) Math.round(this.moveZ);
+			} else {
+				x = (int) Math.round(this.hold[this.holdIndex + 0]);
+				y = (int) Math.round(this.hold[this.holdIndex + 1]);
+				z = (int) Math.round(this.hold[this.holdIndex + 2]);
+			}
+			return x == this.lastNextX && y == this.lastNextY && z == this.lastNextZ;
+		}
+
+		// TODO : integrate z coordinate
+		private void flattening() {
+			int level;
+
+			if (this.holdIndex >= this.holdEnd) {
+				if (!this.pathIterator.hasNext()) {
+					this.done = true;
+					return;
+				}
+				final var pathElement = this.pathIterator.next();
+				this.holdType = pathElement.getType();
+				pathElement.toArray(this.hold);
+				this.levelIndex = 0;
+				this.levels[0] = 0;
+			}
+
+			switch (this.holdType) {
+			case MOVE_TO:
+			case LINE_TO:
+				this.currentX = this.hold[0];
+				this.currentY = this.hold[1];
+				if (this.holdType == PathElementType.MOVE_TO) {
+					this.moveX = this.currentX;
+					this.moveY = this.currentY;
+				}
+				this.holdIndex = 0;
+				this.holdEnd = 0;
+				break;
+			case CLOSE:
+				this.currentX = this.moveX;
+				this.currentY = this.moveY;
+				this.holdIndex = 0;
+				this.holdEnd = 0;
+				break;
+			case QUAD_TO:
+				if (this.holdIndex >= this.holdEnd) {
+					// Move the coordinates to the end of the array.
+					this.holdIndex = this.hold.length - 6;
+					this.holdEnd = this.hold.length - 2;
+					this.hold[this.holdIndex + 0] = this.currentX;
+					this.hold[this.holdIndex + 1] = this.currentY;
+					this.hold[this.holdIndex + 2] = this.hold[0];
+					this.hold[this.holdIndex + 3] = this.hold[1];
+					this.currentX = this.hold[2];
+					this.hold[this.holdIndex + 4] = this.currentX;
+					this.currentY = this.hold[3];
+					this.hold[this.holdIndex + 5] = this.currentY;
+				}
+
+				level = this.levels[this.levelIndex];
+				while (level < this.limit) {
+					if (getQuadSquaredFlatness(this.hold, this.holdIndex) < this.squaredFlatness) {
+						break;
+					}
+
+					ensureHoldCapacity(4);
+					subdivideQuad(
+							this.hold, this.holdIndex,
+							this.hold, this.holdIndex - 4,
+							this.hold, this.holdIndex);
+					this.holdIndex -= 4;
+
+					// Now that we have subdivided, we have constructed
+					// two curves of one depth lower than the original
+					// curve.  One of those curves is in the place of
+					// the former curve and one of them is in the next
+					// set of held coordinate slots.  We now set both
+					// curves level values to the next higher level.
+					level++;
+					this.levels[this.levelIndex] = level;
+					this.levelIndex++;
+					this.levels[this.levelIndex] = level;
+				}
+
+				// This curve segment is flat enough, or it is too deep
+				// in recursion levels to try to flatten any more.  The
+				// two coordinates at holdIndex+4 and holdIndex+5 now
+				// contain the endpoint of the curve which can be the
+				// endpoint of an approximating line segment.
+				this.holdIndex += 4;
+				this.levelIndex--;
+				break;
+			case CURVE_TO:
+				if (this.holdIndex >= this.holdEnd) {
+					// Move the coordinates to the end of the array.
+					this.holdIndex = this.hold.length - 8;
+					this.holdEnd = this.hold.length - 2;
+					this.hold[this.holdIndex + 0] = this.currentX;
+					this.hold[this.holdIndex + 1] = this.currentY;
+					this.hold[this.holdIndex + 2] = this.hold[0];
+					this.hold[this.holdIndex + 3] = this.hold[1];
+					this.hold[this.holdIndex + 4] = this.hold[2];
+					this.hold[this.holdIndex + 5] = this.hold[3];
+					this.currentX = this.hold[4];
+					this.hold[this.holdIndex + 6] = this.currentX;
+					this.currentY = this.hold[5];
+					this.hold[this.holdIndex + 7] = this.currentY;
+				}
+
+				level = this.levels[this.levelIndex];
+				while (level < this.limit) {
+					if (getCurveSquaredFlatness(this.hold, this.holdIndex) < this.squaredFlatness) {
+						break;
+					}
+
+					ensureHoldCapacity(6);
+					subdivideCurve(
+							this.hold, this.holdIndex,
+							this.hold, this.holdIndex - 6,
+							this.hold, this.holdIndex);
+					this.holdIndex -= 6;
+
+					// Now that we have subdivided, we have constructed
+					// two curves of one depth lower than the original
+					// curve.  One of those curves is in the place of
+					// the former curve and one of them is in the next
+					// set of held coordinate slots.  We now set both
+					// curves level values to the next higher level.
+					level++;
+					this.levels[this.levelIndex] = level;
+					this.levelIndex++;
+					this.levels[this.levelIndex] = level;
+				}
+
+				// This curve segment is flat enough, or it is too deep
+				// in recursion levels to try to flatten any more.  The
+				// two coordinates at holdIndex+6 and holdIndex+7 now
+				// contain the endpoint of the curve which can be the
+				// endpoint of an approximating line segment.
+				this.holdIndex += 6;
+				this.levelIndex--;
+				break;
+				//$CASES-OMITTED$
+			default:
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return !this.done;
+		}
+
+		@Override
+		public E next() {
+			if (this.done) {
+				throw new NoSuchElementException();
+			}
+
+			final E element;
+			final var type = this.holdType;
+			if (type != PathElementType.CLOSE) {
+				final var x = (int) Math.round(this.hold[this.holdIndex + 0]);
+				final var y = (int) Math.round(this.hold[this.holdIndex + 1]);
+				final var z = (int) Math.round(this.hold[this.holdIndex + 2]);
+				if (type == PathElementType.MOVE_TO) {
+					element = this.path.getGeomFactory().newMovePathElement(x, y, z);
+				} else {
+					element = this.path.getGeomFactory().newLinePathElement(
+							this.lastNextX, this.lastNextY, this.lastNextZ,
+							x, y, z);
+				}
+				this.lastNextX = x;
+				this.lastNextY = y;
+				this.lastNextY = z;
+			} else {
+				final var x = (int) Math.round(this.moveX);
+				final var y = (int) Math.round(this.moveY);
+				final var z = (int) Math.round(this.moveZ);
+				element = this.path.getGeomFactory().newClosePathElement(
+						this.lastNextX, this.lastNextY, this.lastNextZ,
+						x, y, z);
+				this.lastNextX = x;
+				this.lastNextY = y;
+				this.lastNextZ = z;
+			}
+
+			searchNext(false);
+
+			return element;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public PathWindingRule getWindingRule() {
+			return this.path.getWindingRule();
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return !isMultiParts() && !isPolygon();
+		}
+
+		@Override
+		public boolean isCurved() {
+			// Because the iterator flats the path, this is no curve inside.
+			return false;
+		}
+
+		@Override
+		public boolean isMultiParts() {
+			return this.path.isMultiParts();
+		}
+
+		@Override
+		public boolean isPolygon() {
+			return this.path.isPolygon();
+		}
+
+		@Override
+		public GeomFactory3ai<E, ?, ?, ?, ?> getGeomFactory() {
+			return this.path.getGeomFactory();
+		}
+
+	}
+
+}

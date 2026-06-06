@@ -34,7 +34,8 @@ open module org.arakhne.afc.gis.giscore {
 	requires org.arakhne.afc.core.text;
 	requires org.arakhne.afc.core.mathgen;
 	requires transitive org.arakhne.afc.core.mathtree;
-	requires transitive org.arakhne.afc.core.mathgeom;
+	requires transitive org.arakhne.afc.core.mathgeom1d;
+	requires transitive org.arakhne.afc.core.mathgeom2d;
 	requires transitive org.arakhne.afc.advanced.attributes;
 
 	exports org.arakhne.afc.gis;

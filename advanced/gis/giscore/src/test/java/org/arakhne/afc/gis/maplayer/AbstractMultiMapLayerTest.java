@@ -155,13 +155,13 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 				o = randomPoint2D();
 				break;
 			case POINT3D:
-				o = randomPoint3D();
+				o = null;
 				break;
 			case POLYLINE:
 				o = randomPoints2D();
 				break;
 			case POLYLINE3D:
-				o = randomPoints3D();
+				o = null;
 				break;
 			case REAL:
 				o = getRandom().nextDouble();

@@ -213,7 +213,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @return the old heurisstic.
 	 */
 	public AStarHeuristic<? super PT> setEvaluationHeuristic(AStarHeuristic<? super PT> heuristic) {
-		final var old = this.heuristic;
+		final AStarHeuristic<? super PT> old = this.heuristic;
 		this.heuristic = heuristic;
 		return old;
 	}
