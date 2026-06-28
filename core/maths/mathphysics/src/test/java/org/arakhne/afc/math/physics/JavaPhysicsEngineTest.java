@@ -28,11 +28,9 @@ import static org.arakhne.afc.math.MathConstants.SQRT_2;
 import static org.arakhne.afc.math.MathConstants.THREE_QUARTER_PI;
 import static org.arakhne.afc.math.MathConstants.TWO_PI;
 
-import org.arakhne.afc.math.geometry.base.d1.d.Vector1d;
-import org.arakhne.afc.math.geometry.base.d3.d.Vector3d;
+import org.arakhne.afc.math.geometry.base.d1.InnerComputationVector1D;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.test.AbstractMathTestCase;
-import org.arakhne.afc.testtools.AbstractTestCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,8 +71,8 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		return v;
 	}
 
-	private Vector3d makeVect(double x, double y, double z, double n) {
-		final Vector3d v = new Vector3d(x,y,z);
+	private InnerComputationVector3D makeVect(double x, double y, double z, double n) {
+		final var v = new InnerComputationVector3D(x,y,z);
 		if (v.getLengthSquared()!=0.) v.normalize();
 		v.scale((double) n);
 		return v;
@@ -171,9 +169,9 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void motionNewtonLaw1D5() {
-		Vector1d v = new Vector1d();
-		Vector1d a = new Vector1d();
-		Vector1d r = new Vector1d();
+		var v = new InnerComputationVector1D(null);
+		var a = new InnerComputationVector1D(null);
+		var r = new InnerComputationVector1D(null);
 
 		//--- DT: 1
 
@@ -371,9 +369,9 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void motionNewtonLaw3D() {
-		Vector3d v = new Vector3d();
-		Vector3d a = new Vector3d();
-		Vector3d r = new Vector3d();
+		var v = new InnerComputationVector3D();
+		var a = new InnerComputationVector3D();
+		var r = new InnerComputationVector3D();
 
 		//--- DT: 1
 
@@ -381,19 +379,19 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		v.set(0.,0.,0.);
 		a.set(0.,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector3d(0., 0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(0., 0.,0.), r);
 		a.set(PI,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector3d(QUARTER_PI,0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(QUARTER_PI,0.,0.), r);
 		a.set(-PI,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector3d(-QUARTER_PI,0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(-QUARTER_PI,0.,0.), r);
 		a.set(0.,PI,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector3d(0., QUARTER_PI,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(0., QUARTER_PI,0.), r);
 		a.set(0.,-PI,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector3d(0., -QUARTER_PI,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(0., -QUARTER_PI,0.), r);
 		a.set(-PI,PI,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
 		assertEpsilonEquals(makeVect(-1,1,0.,QUARTER_PI), r);
@@ -405,13 +403,13 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		v.set(DEMI_PI,0.,0.);
 		a.set(0.,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector3d(DEMI_PI, 0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI, 0.,0.), r);
 		a.set(PI,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector3d(DEMI_PI,0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI,0.,0.), r);
 		a.set(-PI,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector3d(DEMI_PI-QUARTER_PI/2.,0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI-QUARTER_PI/2.,0.,0.), r);
 		a.set(0.,PI,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
 		assertEpsilonEquals(makeVect(1., .5,0., DEMI_PI), r);
@@ -434,19 +432,19 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		v.set(0.,0.,0.);
 		a.set(0.,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector3d(0., 0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(0., 0.,0.), r);
 		a.set(PI,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector3d(PI/16.,0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(PI/16.,0.,0.), r);
 		a.set(-PI,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector3d(-PI/16.,0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(-PI/16.,0.,0.), r);
 		a.set(0.,PI,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector3d(0., PI/16.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(0., PI/16.,0.), r);
 		a.set(0.,-PI,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector3d(0., -PI/16.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(0., -PI/16.,0.), r);
 		a.set(-PI,PI,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
 		assertEpsilonEquals(makeVect(-1,1,0.,PI/16.), r);
@@ -458,13 +456,13 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		v.set(DEMI_PI,0.,0.);
 		a.set(0.,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector3d(DEMI_PI/2., 0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI/2., 0.,0.), r);
 		a.set(PI,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector3d(DEMI_PI/2.,0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI/2.,0.,0.), r);
 		a.set(-PI,0.,0.);
 		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector3d((DEMI_PI-PI/16.)/2.,0.,0.), r);
+		assertEpsilonEquals(new InnerComputationVector3D((DEMI_PI-PI/16.)/2.,0.,0.), r);
 	}
 
 	/**
@@ -497,8 +495,8 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void motionNewtonEuler1Law1D5() {
-		Vector1d v = new Vector1d();
-		Vector1d r = new Vector1d();
+		var v = new InnerComputationVector1D(null);
+		var r = new InnerComputationVector1D(null);
 		
 		v.set(0.,0.);
 		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
@@ -625,8 +623,8 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void motionNewtonEuler1Law3D() {
-		Vector3d v = new Vector3d();
-		Vector3d r = new Vector3d();
+		var v = new InnerComputationVector3D();
+		var r = new InnerComputationVector3D();
 		
 		v.set(0.,0.,0.);
 		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);

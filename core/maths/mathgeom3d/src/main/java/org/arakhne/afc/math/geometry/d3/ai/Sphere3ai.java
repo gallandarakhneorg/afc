@@ -26,16 +26,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.arakhne.afc.math.GeogebraUtil;
-import org.arakhne.afc.math.geometry.base.CrossingComputationType;
-import org.arakhne.afc.math.geometry.base.GeomConstants;
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
-import org.arakhne.afc.math.geometry.base.d3.Tuple3iComparator;
+import org.arakhne.afc.math.geometry.base.d3.Tuple3DComparator;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.a.Shape3DType;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Functional interface that represented a 3D sphere.
@@ -567,6 +565,13 @@ public interface Sphere3ai<
 		return getRadius() <= 0;
 	}
 
+	@Pure
+	@Override
+	@Inline("isEmpty()")
+	default boolean isDegeneratedPoint() {
+        return isEmpty();
+	}
+
 	@Override
 	default void set(IT shape) {
 		set(shape.getX(), shape.getY(), shape.getZ(), shape.getRadius());
@@ -789,13 +794,7 @@ public interface Sphere3ai<
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final var crossings = Path3ai.computeCrossingsFromSphere(
-				0,
-				iterator,
-				getX(), getY(), getZ(), getRadius(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure
@@ -863,7 +862,7 @@ public interface Sphere3ai<
 
 		private P next;
 
-		private final Set<P> junctionPoint = new TreeSet<>(new Tuple3iComparator());
+		private final Set<P> junctionPoint = new TreeSet<>(new Tuple3DComparator());
 
 		/** Construct the iterator from the initialOctant (inclusive) to the lastOctant (exclusive).
 		 *

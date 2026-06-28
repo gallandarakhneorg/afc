@@ -22,12 +22,12 @@ package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.a.Shape3DType;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Interface that represented a 3D sphere independently of the storage of the coordinates.
@@ -76,9 +76,9 @@ public interface Sphere3afp<
 	@Pure
 	static boolean containsSpherePoint(double cx, double cy, double cz, double radius, double px, double py, double pz) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		return Point3D.getDistanceSquaredPointPoint(
-				px, py, pz,
-				cx, cy, cz) <= (radius * radius);
+		final var sd = Point3D.getDistanceSquaredPointPoint(px, py, pz, cx, cy, cz);
+		final var sr = radius * radius;
+		return sd <= sr;
 	}
 
 	/** Replies if an aligned box is inside in the sphere.
@@ -104,9 +104,9 @@ public interface Sphere3afp<
 		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(4, Double.valueOf(rxmin), 7, Double.valueOf(rxmax));
 		assert rymin <= rymax : AssertMessages.lowerEqualParameters(5, Double.valueOf(rymin), 8, Double.valueOf(rymax));
 		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(6, Double.valueOf(rzmin), 9, Double.valueOf(rzmax));
-		final var rcx = (rxmin + rxmax) / 2;
-		final var rcy = (rymin + rymax) / 2;
-		final var rcz = (rzmin + rzmax) / 2;
+		final var rcx = (rxmin + rxmax) / 2.;
+		final var rcy = (rymin + rymax) / 2.;
+		final var rcz = (rzmin + rzmax) / 2.;
 		final double farX;
         if (cx <= rcx) {
 			farX = rxmax;
@@ -147,7 +147,9 @@ public interface Sphere3afp<
 		assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert radius2 >= 0 : AssertMessages.positiveOrZeroParameter(7);
 		final var r = radius1 + radius2;
-		return Point3D.getDistanceSquaredPointPoint(x1, y1, z1, x2, y2, z2) < (r * r);
+		final var sd = Point3D.getDistanceSquaredPointPoint(x1, y1, z1, x2, y2, z2);
+		final var sr = r * r;
+		return sd < sr;
 	}
 
 	/** Replies if a sphere and an aligned box are intersecting.
@@ -197,10 +199,12 @@ public interface Sphere3afp<
 		} else {
 			dz = 0;
 		}
-		return (dx * dx + dy * dy + dz * dz) < (radius * radius);
+		final var sd = dx * dx + dy * dy + dz * dz;
+		final var sr = radius * radius;
+		return sd < sr;
 	}
 
-	/** Replies if a sphere and a line are intersecting.
+	/** Replies if a sphere and a line are intersecting. If the line is tangent to the sphere, there is intersection.
 	 *
 	 * @param x1 is the center of the sphere
 	 * @param y1 is the center of the sphere
@@ -220,7 +224,11 @@ public interface Sphere3afp<
     static boolean intersectsSphereLine(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
             double x3, double y3, double z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		return Segment3afp.calculatesDistanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
+		final var sd = Segment3afp.calculatesDistanceLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
+		if (Double.isNaN(sd)) {
+			return true;
+		}
+		return sd <= radius;
 	}
 
 	/** Replies if a sphere and a segment are intersecting.
@@ -243,7 +251,12 @@ public interface Sphere3afp<
     static boolean intersectsSphereSegment(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
             double x3, double y3, double z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		return Segment3afp.calculatesDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
+		final var sd = Segment3afp.calculatesDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
+		if (Double.isNaN(sd)) {
+			return containsSpherePoint(x1, y1, z1, radius, x2, y2, z2);
+		}
+		final var sr = radius * radius;
+		return sd <= sr;
 	}
 
 	@Pure
@@ -394,6 +407,12 @@ public interface Sphere3afp<
 		return MathUtil.isEpsilonZero(getRadius());
 	}
 
+	@Override
+	@Inline("isEmpty()")
+	default boolean isDegeneratedPoint() {
+		return isEmpty();
+	}
+
 	@Pure
 	@Override
 	default double getDistance(Point3D<?, ?, ?> pt) {
@@ -489,7 +508,6 @@ public interface Sphere3afp<
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		//TODO
 		return false;
 
@@ -582,20 +600,23 @@ public interface Sphere3afp<
 
 	@Override
 	@Pure
+	@Inline("getRadius()*2.")
 	default double getHeight() {
-		return getRadius();
+		return getRadius() * 2.;
 	}
 
 	@Override
 	@Pure
+	@Inline("getRadius()*2.")
 	default double getDepth() {
-		return getRadius();
+		return getRadius() * 2.;
 	}
 
 	@Override
 	@Pure
+	@Inline("getRadius()*2.")
 	default double getWidth() {
-		return getRadius();
+		return getRadius() * 2.;
 	}
 
 	/** {@inheritDoc}

@@ -37,12 +37,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
-import org.junit.jupiter.api.Test;
+import org.arakhne.afc.attrs.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
-import org.arakhne.afc.math.test.AbstractMathTestCase;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 public class AttributeValueTest extends AbstractMathTestCase {

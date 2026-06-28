@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.d3.AbstractGeomFactory3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
@@ -110,9 +109,8 @@ public class GeomFactory3d extends AbstractGeomFactory3D<Vector3d, Point3d, Quat
 	}
 
 	@Override
-	public Path3d newPath(PathWindingRule rule) {
-		assert rule != null : AssertMessages.notNullParameter();
-		return new Path3d(rule);
+	public Path3d newPath() {
+		return new Path3d();
 	}
 
 	@Override

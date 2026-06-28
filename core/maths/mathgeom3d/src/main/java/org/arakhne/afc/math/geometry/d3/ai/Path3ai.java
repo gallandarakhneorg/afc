@@ -37,8 +37,8 @@ import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.a.Shape3DType;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -149,7 +149,7 @@ public interface Path3ai<
 				foundOneLine = true;
 				break;
 			case CURVE_TO:
-				var subPath = factory.newPath(iterator.getWindingRule());
+				var subPath = factory.newPath();
 				subPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				subPath.curveTo(
 						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
@@ -181,7 +181,7 @@ public interface Path3ai<
 				}
 				break;
 			case QUAD_TO:
-				subPath = factory.newPath(iterator.getWindingRule());
+				subPath = factory.newPath();
 				subPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				subPath.quadTo(
 						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
@@ -506,7 +506,7 @@ public interface Path3ai<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				var localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				var localPath = pi.getGeomFactory().newPath();
 				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				localPath.quadTo(
 						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
@@ -528,7 +528,7 @@ public interface Path3ai<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath = pi.getGeomFactory().newPath();
 				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				localPath.curveTo(
 						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
@@ -665,17 +665,17 @@ public interface Path3ai<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				var localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
-				localPath.quadTo(
-						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
-						endx, endy, endz);
-				numCrosses = computeCrossingsFromSphere(
-						numCrosses,
-						localPath.getPathIterator(
-								pi.getGeomFactory().getSplineApproximationRatio()),
-						cx, cy, cz, radius,
-						CrossingComputationType.STANDARD);
+				var localPath = pi.getGeomFactory().newPath();
+				//				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				//				localPath.quadTo(
+				//						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+				//						endx, endy, endz);
+				//				numCrosses = computeCrossingsFromSphere(
+				//						numCrosses,
+				//						localPath.getPathIterator(
+				//								pi.getGeomFactory().getSplineApproximationRatio()),
+				//						cx, cy, cz, radius,
+				//						CrossingComputationType.STANDARD);
 				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
@@ -687,17 +687,17 @@ public interface Path3ai<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
-				localPath.curveTo(
-						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
-						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
-						endx, endy, endz);
-				numCrosses = computeCrossingsFromSphere(
-						numCrosses,
-						localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
-						cx, cy, cz, radius,
-						CrossingComputationType.STANDARD);
+				localPath = pi.getGeomFactory().newPath();
+				//				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				//				localPath.curveTo(
+				//						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+				//						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+				//						endx, endy, endz);
+				//				numCrosses = computeCrossingsFromSphere(
+				//						numCrosses,
+				// localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+				//						cx, cy, cz, radius,
+				//						CrossingComputationType.STANDARD);
 				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
@@ -833,16 +833,16 @@ public interface Path3ai<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				var curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-				curve.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
-				curve.quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), endx, endy, endz);
-				numCrossings = computeCrossingsFromPoint(
-						numCrossings,
-						curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
-						px, py, pz, CrossingComputationType.STANDARD);
-				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
-					return numCrossings;
-				}
+				var curve = pi.getGeomFactory().newPath();
+				//				curve.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				//	curve.quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), endx, endy, endz);
+				//				numCrossings = computeCrossingsFromPoint(
+				//						numCrossings,
+				//	curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+				//						px, py, pz, CrossingComputationType.STANDARD);
+				//				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+				//					return numCrossings;
+				//				}
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -851,16 +851,16 @@ public interface Path3ai<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-				curve.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
-				curve.curveTo(
-						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
-						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
-						endx, endy, endz);
-				numCrossings = computeCrossingsFromPoint(
-						numCrossings,
-						curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
-						px, py, pz, CrossingComputationType.STANDARD);
+				curve = pi.getGeomFactory().newPath();
+				//				curve.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				//				curve.curveTo(
+				//						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+				//						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+				//						endx, endy, endz);
+				//				numCrossings = computeCrossingsFromPoint(
+				//						numCrossings,
+				//	curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+				//						px, py, pz, CrossingComputationType.STANDARD);
 				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
@@ -933,13 +933,11 @@ public interface Path3ai<
 	 * @param z the specified Z coordinate
 	 * @return {@code true} if the specified coordinates are inside the
 	 *         specified {@code PathIterator2f}; {@code false} otherwise
+	 * @throws UnsupportedOperationException temp
 	 */
 	static boolean contains(PathIterator3ai<?> pi, int x, int y, int z) {
 		assert pi != null : AssertMessages.notNullParameter(0);
-		// Copied from the AWT API
-		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
-		final var cross = computeCrossingsFromPoint(0, pi, x, y, z, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return (cross & mask) != 0;
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -959,20 +957,14 @@ public interface Path3ai<
 	 * @param rdepth is the width of the rectangle.
 	 * @return {@code true} if the specified rectangle is inside the
 	 *         specified {@code PathIterator2f}; {@code false} otherwise.
+	 * @throws UnsupportedOperationException temp
 	 */
 	static boolean contains(PathIterator3ai<?> pi, int rx, int ry, int rz, int rwidth, int rheight, int rdepth) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(4);
 		assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(5);
 		assert rdepth >= 0 : AssertMessages.positiveOrZeroParameter(6);
-		// Copied from AWT API
-		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final var crossings = computeCrossingsFromRect(
-				0,
-				pi,
-				rx, ry, rz, rx + rwidth, ry + rheight, rz + rdepth,
-				CrossingComputationType.AUTO_CLOSE);
-		return crossings != GeomConstants.SHAPE_INTERSECTS && (crossings & mask) != 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure
@@ -1079,17 +1071,17 @@ public interface Path3ai<
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
-				var curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-				curve.moveTo(pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ());
-				curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
-				numCrossings = computeCrossingsFromRect(
-						numCrossings,
-						curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
-						rxmin, rymin, rzmin, rxmax, rymax, rzmax,
-						CrossingComputationType.STANDARD);
-				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
-					return GeomConstants.SHAPE_INTERSECTS;
-				}
+				var curve = pi.getGeomFactory().newPath();
+				//				curve.moveTo(pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ());
+				//	curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				//				numCrossings = computeCrossingsFromRect(
+				//						numCrossings,
+				//	curve.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
+				//						rxmin, rymin, rzmin, rxmax, rymax, rzmax,
+				//						CrossingComputationType.STANDARD);
+				//				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
+				//					return GeomConstants.SHAPE_INTERSECTS;
+				//				}
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1098,7 +1090,7 @@ public interface Path3ai<
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
-				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve = pi.getGeomFactory().newPath();
 				curve.moveTo(pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ());
 				curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), pathElement.getCtrlX2(),
 						pathElement.getCtrlY2(), pathElement.getCtrlZ2(), endx, endy, endz);
@@ -1199,6 +1191,7 @@ public interface Path3ai<
 	 * @return {@code true} if the specified {@code PathIterator} and
 	 *         the interior of the specified set of rectangular
 	 *         coordinates intersect each other; {@code false} otherwise.
+	 * @throws UnsupportedOperationException temp
 	 */
 	static boolean intersects(PathIterator3ai<?> pi, int x, int y, int z, int width, int height, int depth) {
 		assert pi != null : AssertMessages.notNullParameter(0);
@@ -1209,23 +1202,14 @@ public interface Path3ai<
 		if (width == 0 || height == 0 || depth == 0) {
 			return false;
 		}
-		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final var crossings = computeCrossingsFromRect(0, pi, x, y, z, x + width, y + height, z + depth,
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
-		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final var crossings = computeCrossingsFromSphere(
-				0,
-				getPathIterator(),
-				sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure
@@ -1240,22 +1224,13 @@ public interface Path3ai<
 	@Override
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final var crossings = computeCrossingsFromSegment(
-				0,
-				getPathIterator(),
-				segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		//TODO
-		final var crossings = 0;
-		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure
@@ -1288,8 +1263,6 @@ public interface Path3ai<
 		var bestManhantanDist = Integer.MAX_VALUE;
 		var bestLinfinvDist = Integer.MAX_VALUE;
 
-		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
-		var crossings = 0;
 		var isClosed = false;
 		var moveX = 0;
 		var moveY = 0;
@@ -1318,12 +1291,6 @@ public interface Path3ai<
 				candidate = new InnerComputationPoint3ai();
 				Segment3ai.computeClosestPointToPoint(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(),
 						pe.getToZ(), x, y, z, candidate);
-				if (crossings != GeomConstants.SHAPE_INTERSECTS) {
-					crossings = Segment3ai.computeCrossingsFromPoint(
-							crossings,
-							x, y, z,
-							pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
-				}
 				break;
 			case CLOSE:
 				isClosed = true;
@@ -1331,12 +1298,6 @@ public interface Path3ai<
 					candidate = new InnerComputationPoint3ai();
 					Segment3ai.computeClosestPointToPoint(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(),
 							pe.getToZ(), x, y, z, candidate);
-					if (crossings != GeomConstants.SHAPE_INTERSECTS) {
-						crossings = Segment3ai.computeCrossingsFromPoint(
-								crossings,
-								x, y, z,
-								pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
-					}
 				}
 				break;
 				//$CASES-OMITTED$
@@ -1360,18 +1321,6 @@ public interface Path3ai<
 					result.set(candidate);
 				}
 			}
-		}
-
-		if (!isClosed && crossings != GeomConstants.SHAPE_INTERSECTS) {
-			crossings = Segment3ai.computeCrossingsFromPoint(
-					crossings,
-					x, y, z,
-					currentX, currentY, currentZ,
-					moveX, moveY, moveZ);
-		}
-
-		if (crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0) {
-			result.set(x, y, z);
 		}
 	}
 
@@ -1951,11 +1900,6 @@ public interface Path3ai<
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public PathWindingRule getWindingRule() {
-			return this.path.getWindingRule();
 		}
 
 		@Override
@@ -3091,11 +3035,6 @@ public interface Path3ai<
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public PathWindingRule getWindingRule() {
-			return this.path.getWindingRule();
 		}
 
 		@Override

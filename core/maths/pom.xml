@@ -21,7 +21,6 @@
 		<module>mathgeom2d</module>
 		<module>mathgeom1d</module>
 		<module>mathgeom3d</module>
-<!--		<module>mathgeomtesting</module> -->
 		<module>mathphysics</module>
 		<module>math</module>
 	</modules>

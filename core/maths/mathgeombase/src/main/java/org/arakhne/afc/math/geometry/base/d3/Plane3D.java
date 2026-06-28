@@ -220,7 +220,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param point is the point.
 	 * @return the distance from the plane to the point.
 	 *     It will be positive if the point is on the side of the
-	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     plane pointed to by the normal Vector3D, negative otherwise.
 	 *     If the result is 0, the point is on the plane.
 	 */
 	@Pure
@@ -237,7 +237,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param z z coordinate of the point.
 	 * @return the distance from the plane to the point.
 	 *     It will be positive if the point is on the side of the
-	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     plane pointed to by the normal Vector3D, negative otherwise.
 	 *     If the result is 0, the point is on the plane.
 	 */
 	@Pure
@@ -249,7 +249,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param plane the plane.
 	 * @return the distance from the plane to the parallel plane.
 	 *     It will be positive if the plane is on the side of the
-	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     plane pointed to by the normal Vector3D, negative otherwise.
 	 *     If the result is 0, the planes are the same.
 	 *     If the result is NaN, the planes aren't colinear.
 	 */
@@ -269,7 +269,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param d the d component of the plane equation.
 	 * @return the distance from the plane to the parallel plane.
 	 *     It will be positive if the plane is on the side of the
-	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     plane pointed to by the normal Vector3D, negative otherwise.
 	 *     If the result is 0, the planes are the same.
 	 *     If the result is NaN, the planes aren't colinear.
 	 */
@@ -338,6 +338,12 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 		assert point != null : AssertMessages.notNullParameter();
 		setPivot(point.getX(), point.getY(), point.getZ());
 	}
+
+	/** Reset the coordinates of the pivot point to the default value for
+	 * the current coordinates of the plane. The default pivot point
+	 * corresponds to the projection of the origin point (0,0,0) on the plane.
+	 */
+	void setPivotToDefault();
 
 	/** Replies the point that lies on the plane and is used a pivot point.
 	 *
@@ -862,7 +868,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param point the point to test.
 	 * @return the distance from the plane to the point.
 	 *     It will be positive if the point is on the side of the
-	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     plane pointed to by the normal Vector3D, negative otherwise.
 	 *     If the result is 0, the point is on the plane.
 	 * @see #getDistanceTo(Point3D)
 	 */
@@ -882,7 +888,7 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @param plane the plane to test.
 	 * @return the distance from the plane to the point.
 	 *     It will be positive if the point is on the side of the
-	 *     plane pointed to by the normal Vec3f, negative otherwise.
+	 *     plane pointed to by the normal Vector3D, negative otherwise.
 	 *     If the result is 0, the point is on the plane.
 	 * @see #getDistanceTo(Plane3D)
 	 */

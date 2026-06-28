@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.base.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
@@ -49,10 +48,9 @@ public interface GeomFactory3afp<
 
 	/** Create an empty path with the given winding rule.
 	 *
-	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	Path3afp<?, E, P, V, Q, B> newPath(PathWindingRule rule);
+	Path3afp<?, E, P, V, Q, B> newPath();
 
 	/** Create an empty multishape.
 	 *

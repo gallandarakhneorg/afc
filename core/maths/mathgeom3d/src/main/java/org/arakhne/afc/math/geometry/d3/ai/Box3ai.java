@@ -314,7 +314,13 @@ public interface Box3ai<
 	@Pure
 	@Override
 	default boolean isEmpty() {
-        return getMinX() == getMaxX() && getMinY() == getMaxY() && getMinZ() == getMaxZ();
+        return getMinX() >= getMaxX() || getMinY() >= getMaxY() || getMinZ() >= getMaxZ();
+	}
+
+	@Pure
+	@Override
+	default boolean isDegeneratedPoint() {
+        return getMinX() >= getMaxX() && getMinY() >= getMaxY() && getMinZ() >= getMaxZ();
 	}
 
 	/** Inflate this prism with the given amounts.

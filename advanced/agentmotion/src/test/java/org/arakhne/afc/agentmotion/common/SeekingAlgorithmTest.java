@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.agentmotion.common;
 
+import org.arakhne.afc.agentmotion.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class SeekingAlgorithmTest extends AbstractMathTestCase {

@@ -143,9 +143,7 @@ public class InnerComputationPoint3ai implements Point3D<InnerComputationPoint3a
 	@Pure
 	@Override
 	public String toString() {
-		final var objectDescription = new JsonBuffer();
-		toJson(objectDescription);
-        return objectDescription.toString();
+		return toGeogebra();
 	}
 
 	@Override

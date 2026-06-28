@@ -20,7 +20,8 @@
 
 package org.arakhne.afc.math.geometry.base.tests.d2;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.arakhne.afc.math.geometry.base.d2.ImmutableGeomFactory2D;
 import org.arakhne.afc.math.geometry.base.d2.ImmutablePoint2D;

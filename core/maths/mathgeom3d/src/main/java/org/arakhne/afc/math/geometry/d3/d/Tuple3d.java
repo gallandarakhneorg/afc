@@ -400,9 +400,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 	@Pure
 	@Override
 	public String toString() {
-		final var objectDescription = new JsonBuffer();
-		toJson(objectDescription);
-        return objectDescription.toString();
+		return toGeogebra();
 	}
 
 	@Override

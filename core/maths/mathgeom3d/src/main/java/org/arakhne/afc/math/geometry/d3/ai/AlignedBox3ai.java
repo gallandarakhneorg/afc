@@ -26,15 +26,12 @@ import java.util.NoSuchElementException;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.base.CrossingComputationType;
-import org.arakhne.afc.math.geometry.base.GeomConstants;
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.a.Shape3DType;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai.BresenhamLineIterator;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -498,14 +495,7 @@ public interface AlignedBox3ai<
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final var crossings = Path3ai.computeCrossingsFromRect(
-				0,
-				iterator,
-				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure
@@ -1073,12 +1063,6 @@ public interface AlignedBox3ai<
 
 		@Pure
 		@Override
-		public PathWindingRule getWindingRule() {
-			return PathWindingRule.NON_ZERO;
-		}
-
-		@Pure
-		@Override
 		public boolean isPolyline() {
 			return false;
 		}
@@ -1249,12 +1233,6 @@ public interface AlignedBox3ai<
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
-		}
-
-		@Pure
-		@Override
-		public PathWindingRule getWindingRule() {
-			return PathWindingRule.NON_ZERO;
 		}
 
 		@Pure

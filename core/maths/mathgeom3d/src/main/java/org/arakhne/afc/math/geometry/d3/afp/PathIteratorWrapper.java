@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.geometry.base.PathElementType;
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 
 
 /** Wrapper of a path iterator.
@@ -58,11 +57,6 @@ class PathIteratorWrapper implements PathIterator3afp {
     @Override
     public PathIteratorWrapper restartIterations() {
         return new PathIteratorWrapper(this.factory, this.iterator.restartIterations());
-    }
-
-    @Override
-    public PathWindingRule getWindingRule() {
-        return this.iterator.getWindingRule();
     }
 
     @Override

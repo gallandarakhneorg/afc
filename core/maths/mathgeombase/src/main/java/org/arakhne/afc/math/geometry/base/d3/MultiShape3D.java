@@ -169,6 +169,15 @@ public interface MultiShape3D<
 
 	@Pure
 	@Override
+	default boolean isDegeneratedPoint() {
+		if (getBackendDataList().isEmpty()) {
+			return true;
+		}
+		return toBoundingBox().isDegeneratedPoint();
+	}
+
+	@Pure
+	@Override
 	default P getClosestPointTo(Point3D<?, ?, ?> point) {
 		P closestPoint = null;
 		var minDist = Double.POSITIVE_INFINITY;

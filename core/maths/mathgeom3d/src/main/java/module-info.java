@@ -28,9 +28,11 @@
  */
 open module org.arakhne.afc.core.mathgeom3d {
 	requires transitive org.arakhne.afc.core.mathgeombase;
+	requires org.arakhne.afc.core.mathgen;
 	requires org.arakhne.afc.core.references;
+	requires org.eclipse.xtext.xbase.lib;
 
-	exports org.arakhne.afc.math.geometry.d3.a;
+	exports org.arakhne.afc.math.geometry.d3.general;
 	exports org.arakhne.afc.math.geometry.d3.afp;
 	exports org.arakhne.afc.math.geometry.d3.ai;
 	exports org.arakhne.afc.math.geometry.d3.d;

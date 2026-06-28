@@ -326,4 +326,25 @@ public final class AssertMessages {
 		return msg("A2"); //$NON-NLS-1$
 	}
 
+	/** No such element in the collection or iterator.
+	 *
+	 * @return the error message.
+	 * @since 18.0
+	 */
+	@Pure
+	public static String noSuchElement() {
+		return msg("A17"); //$NON-NLS-1$
+	}
+
+	/** A constraint was violated.
+	 *
+	 * @param explanation the explanation of the violation.
+	 * @return the error message.
+	 * @since 18.0
+	 */
+	@Pure
+	public static String constraintViolation(String explanation) {
+		return msg("A18", explanation); //$NON-NLS-1$
+	}
+
 }

@@ -23,8 +23,8 @@ package org.arakhne.afc.math.geometry.d3.d;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
-import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path with 2 double precision floating-point numbers.
@@ -73,8 +73,21 @@ public abstract class PathElement3d implements PathElement3afp {
 
 	@Pure
 	@Override
-	public String toString() {
-        return ReflectionUtil.toString(this);
+	public final String toString() {
+		final var buffer = new JsonBuffer();
+		toString(buffer);
+        return buffer.toString();
+	}
+
+	/** Fill up the given buffer with the description of this path element.
+	 *
+	 * @param buffer the buffer to fill-up.
+	 */
+	protected void toString(JsonBuffer buffer) {
+		buffer.add("type", getType()); //$NON-NLS-1$
+		buffer.add("toX", Double.valueOf(getToX())); //$NON-NLS-1$
+		buffer.add("toY", Double.valueOf(getToY())); //$NON-NLS-1$
+		buffer.add("toZ", Double.valueOf(getToZ())); //$NON-NLS-1$
 	}
 
 	@Pure
@@ -334,6 +347,15 @@ public abstract class PathElement3d implements PathElement3afp {
 		}
 
 		@Override
+		protected void toString(JsonBuffer buffer) {
+			super.toString(buffer);
+			buffer.add("fromX", Double.valueOf(getFromX())); //$NON-NLS-1$
+			buffer.add("fromY", Double.valueOf(getFromY())); //$NON-NLS-1$
+			buffer.add("fromZ", Double.valueOf(getFromZ())); //$NON-NLS-1$
+			buffer.add("empty", Boolean.valueOf(isEmpty())); //$NON-NLS-1$
+		}
+
+		@Override
 		public void toArray(int[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
@@ -509,6 +531,18 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
+		}
+
+		@Override
+		protected void toString(JsonBuffer buffer) {
+			super.toString(buffer);
+			buffer.add("ctrlX1", Double.valueOf(getCtrlX1())); //$NON-NLS-1$
+			buffer.add("ctrlY1", Double.valueOf(getCtrlY1())); //$NON-NLS-1$
+			buffer.add("ctrlZ1", Double.valueOf(getCtrlZ1())); //$NON-NLS-1$
+			buffer.add("fromX", Double.valueOf(getFromX())); //$NON-NLS-1$
+			buffer.add("fromY", Double.valueOf(getFromY())); //$NON-NLS-1$
+			buffer.add("fromZ", Double.valueOf(getFromZ())); //$NON-NLS-1$
+			buffer.add("empty", Boolean.valueOf(isEmpty())); //$NON-NLS-1$
 		}
 
 		@Override
@@ -719,6 +753,21 @@ public abstract class PathElement3d implements PathElement3afp {
 		}
 
 		@Override
+		protected void toString(JsonBuffer buffer) {
+			super.toString(buffer);
+			buffer.add("ctrlX1", Double.valueOf(getCtrlX1())); //$NON-NLS-1$
+			buffer.add("ctrlY1", Double.valueOf(getCtrlY1())); //$NON-NLS-1$
+			buffer.add("ctrlZ1", Double.valueOf(getCtrlZ1())); //$NON-NLS-1$
+			buffer.add("ctrlX2", Double.valueOf(getCtrlX2())); //$NON-NLS-1$
+			buffer.add("ctrlY2", Double.valueOf(getCtrlY2())); //$NON-NLS-1$
+			buffer.add("ctrlZ2", Double.valueOf(getCtrlZ2())); //$NON-NLS-1$
+			buffer.add("fromX", Double.valueOf(getFromX())); //$NON-NLS-1$
+			buffer.add("fromY", Double.valueOf(getFromY())); //$NON-NLS-1$
+			buffer.add("fromZ", Double.valueOf(getFromZ())); //$NON-NLS-1$
+			buffer.add("empty", Boolean.valueOf(isEmpty())); //$NON-NLS-1$
+		}
+
+		@Override
 		public void toArray(int[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 9 : AssertMessages.tooSmallArrayParameter(array.length, 9);
@@ -888,6 +937,15 @@ public abstract class PathElement3d implements PathElement3afp {
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
+		}
+
+		@Override
+		protected void toString(JsonBuffer buffer) {
+			super.toString(buffer);
+			buffer.add("fromX", Double.valueOf(getFromX())); //$NON-NLS-1$
+			buffer.add("fromY", Double.valueOf(getFromY())); //$NON-NLS-1$
+			buffer.add("fromZ", Double.valueOf(getFromZ())); //$NON-NLS-1$
+			buffer.add("empty", Boolean.valueOf(isEmpty())); //$NON-NLS-1$
 		}
 
 		@Override

@@ -35,7 +35,9 @@ public final class InnerComputationGeomFactory3D
 	 */
 	public static final InnerComputationGeomFactory3D SINGLETON = new InnerComputationGeomFactory3D();
 
-	private InnerComputationGeomFactory3D() {
+	/** Construct, but prefer to use {@link #SINGLETON singleton}.
+	 */
+	public InnerComputationGeomFactory3D() {
 		//
 	}
 

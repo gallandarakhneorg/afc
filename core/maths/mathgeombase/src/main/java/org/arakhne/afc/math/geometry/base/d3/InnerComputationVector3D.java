@@ -91,9 +91,7 @@ public class InnerComputationVector3D implements Vector3D<InnerComputationVector
 	@Pure
 	@Override
 	public String toString() {
-		final var objectDescription = new JsonBuffer();
-		toJson(objectDescription);
-        return objectDescription.toString();
+		return toGeogebra();
 	}
 
 	@Override

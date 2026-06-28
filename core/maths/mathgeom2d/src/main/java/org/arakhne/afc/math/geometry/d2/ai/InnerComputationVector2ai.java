@@ -135,9 +135,7 @@ public class InnerComputationVector2ai implements Vector2D<InnerComputationVecto
 	@Pure
 	@Override
 	public String toString() {
-		final var objectDescription = new JsonBuffer();
-		toJson(objectDescription);
-        return objectDescription.toString();
+		return toGeogebra();
 	}
 
 	@Override

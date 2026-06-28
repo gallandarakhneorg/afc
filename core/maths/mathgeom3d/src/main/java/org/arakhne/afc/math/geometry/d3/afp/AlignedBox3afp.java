@@ -20,14 +20,22 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_BACK;
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_BOTTOM;
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_FRONT;
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_INSIDE;
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_LEFT;
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_RIGHT;
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_TOP;
+
 import org.arakhne.afc.math.GeogebraUtil;
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.a.Shape3DType;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -56,6 +64,12 @@ public interface AlignedBox3afp<
 		Q extends Quaternion<? super P, ? super V, ? super Q>,
 		B extends AlignedBox3afp<?, IE, P, V, Q, B>>
 	extends Box3afp<IT, IE, P, V, Q, B> {
+
+	/** Define the maximum number of loops during the reduction of the Cohen-Sutherland code.
+	 *
+	 * @since 18.0
+	 */
+	int COHEN_SUTHERLAND_CODE_REDUCTION_TRIES = 5;
 
 	@Override
 	default Shape3DType getType() {
@@ -277,7 +291,8 @@ public interface AlignedBox3afp<
 		findsFarthestPointAlignedBoxPoint(rminx, rminy, rminz, rmaxx, rmaxy, rmaxz, sx, sy, sz, farthest);
 	}
 
-	/** Compute the point on the aligned box that is the closest to the segment.
+
+	/** Replies the point on the aligned box that is closest to the segment.
 	 *
 	 * @param rminx the minimum x coordinate of the aligned box.
 	 * @param rminy the minimum y coordinate of the aligned box.
@@ -285,94 +300,539 @@ public interface AlignedBox3afp<
 	 * @param rmaxx the maximum x coordinate of the aligned box.
 	 * @param rmaxy the maximum y coordinate of the aligned box.
 	 * @param rmaxz the maximum z coordinate of the aligned box.
-	 * @param sx1 the x coordinate of the first point of the segment.
-	 * @param sy1 the y coordinate of the first point of the segment.
-	 * @param sz1 the z coordinate of the first point of the segment.
-	 * @param sx2 the x coordinate of the second point of the segment.
-	 * @param sy2 the y coordinate of the second point of the segment.
-	 * @param sz2 the z coordinate of the second point of the segment.
-	 * @param closest is set with the closest point on the aligned box.
+	 * @param sx1 is the x coordinate of the first point of the segment.
+	 * @param sy1 is the y coordinate of the first point of the segment.
+	 * @param sz1 is the z coordinate of the first point of the segment.
+	 * @param sx2 is the x coordinate of the second point of the segment.
+	 * @param sy2 is the y coordinate of the second point of the segment.
+	 * @param sz2 is the z coordinate of the second point of the segment.
+	 * @param result the is point on the aligned box. It cannot be {@code null}.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
 	static void findsClosestPointAlignedBoxSegment(
 			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
-			Point3D<?, ?, ?> closest) {
+			Point3D<?, ?, ?> result) {
+		assert result != null : AssertMessages.notNullParameter(12);
+		findsClosestPointAlignedBoxSegment(
+				rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
+				sx1, sy1, sz1, sx2, sy2, sz2,
+				result, null);
+	}
+
+	/** Replies the point on the aligned box that is closest to the segment.
+	 *
+	 * @param rminx the minimum x coordinate of the aligned box.
+	 * @param rminy the minimum y coordinate of the aligned box.
+	 * @param rminz the minimum z coordinate of the aligned box.
+	 * @param rmaxx the maximum x coordinate of the aligned box.
+	 * @param rmaxy the maximum y coordinate of the aligned box.
+	 * @param rmaxz the maximum z coordinate of the aligned box.
+	 * @param sx1 is the x coordinate of the first point of the segment.
+	 * @param sy1 is the y coordinate of the first point of the segment.
+	 * @param sz1 is the z coordinate of the first point of the segment.
+	 * @param sx2 is the x coordinate of the second point of the segment.
+	 * @param sy2 is the y coordinate of the second point of the segment.
+	 * @param sz2 is the z coordinate of the second point of the segment.
+	 * @param resultOnBox is the point on the aligned box. It can be {@code null}.
+	 * @param resultOnSegment is the point on the segment. It can be {@code null}.
+	 * @throws IllegalStateException if the internal state is invalid.
+	 */
+	@Pure
+	@Unefficient
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:methodlength"})
+	static void findsClosestPointAlignedBoxSegment(
+			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
+			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
+			Point3D<?, ?, ?> resultOnBox, Point3D<?, ?, ?> resultOnSegment) {
 		assert rmaxx >= rminx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rminx), 3, Double.valueOf(rmaxx));
 		assert rmaxy >= rminy : AssertMessages.lowerEqualParameters(1, Double.valueOf(rminy), 4, Double.valueOf(rmaxy));
-		assert rmaxz >= rminz : AssertMessages.lowerEqualParameters(2, Double.valueOf(rminz), 5, Double.valueOf(rmaxz));
-		assert closest != null : AssertMessages.notNullParameter(12);
+		assert rmaxz >= rminz : AssertMessages.lowerEqualParameters(2, Double.valueOf(rminy), 5, Double.valueOf(rmaxy));
+		assert resultOnBox != null || resultOnSegment != null
+				: AssertMessages.constraintViolation("at least on result argument must be not null"); //$NON-NLS-1$
+		assert resultOnBox != resultOnSegment
+				: AssertMessages.constraintViolation("resultOnBox != resultOnSegment"); //$NON-NLS-1$
+
 		final var code1 = MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rminx, rminy, rminz, rmaxx, rmaxy, rmaxz);
 		final var code2 = MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz2, rminx, rminy, rminz, rmaxx, rmaxy, rmaxz);
-		final var tmp1 = new InnerComputationPoint3afp();
-		final var zone = Segment3afp.reducesCohenSutherlandZoneAlignedBoxSegment(
+		final var tmp1 = new InnerComputationPoint3D();
+		final var tmp2 = new InnerComputationPoint3D();
+		final var zone = reducesCohenSutherlandZoneAlignedBoxSegment(
 				rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
 				sx1, sy1, sz1, sx2, sy2, sz2,
 				code1, code2,
-				tmp1, null);
-		final double closex;
-		final double closey;
-		final double closez;
-		if ((zone & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
-			closex = rminx;
-			if (sx1 >= sx2) {
-				closey = MathUtil.clamp(sy1, rminy, rmaxy);
-				closez = MathUtil.clamp(sz1, rminz, rmaxz);
-			} else {
-				closey = MathUtil.clamp(sy2, rminy, rmaxy);
-				closez = MathUtil.clamp(sz2, rminz, rmaxz);
+				tmp1, tmp2);
+		switch (zone) {
+		//
+		//-------------------- 3 INSIDES (in box)
+		//
+		case COHEN_SUTHERLAND_INSIDE:
+			final var x0 = (tmp1.getX() + tmp2.getX()) / 2.;
+			final var y0 = (tmp1.getY() + tmp2.getY()) / 2.;
+			final var z0 = (tmp1.getZ() + tmp2.getZ()) / 2.;
+			if (resultOnBox != null) {
+				resultOnBox.set(x0, y0, z0);
 			}
-		} else if ((zone & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
-			closex = rmaxx;
-			if (sx1 <= sx2) {
-				closey = MathUtil.clamp(sy1, rminy, rmaxy);
-				closez = MathUtil.clamp(sz1, rminz, rmaxz);
-			} else {
-				closey = MathUtil.clamp(sy2, rminy, rmaxy);
-				closez = MathUtil.clamp(sz2, rminz, rmaxz);
+			if (resultOnSegment != null) {
+				resultOnSegment.set(x0, y0, z0);
 			}
-		} else if ((zone & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
-			closey = rminy;
-			if (sy1 >= sy2) {
-				closex = MathUtil.clamp(sx1, rminx, rmaxx);
-				closez = MathUtil.clamp(sz1, rminz, rmaxz);
-			} else {
-				closex = MathUtil.clamp(sx2, rminx, rmaxx);
-				closez = MathUtil.clamp(sz2, rminz, rmaxz);
+			break;
+		//
+		//-------------------- 2 INSIDES (box face)
+		//
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_INSIDE:
+			PlaneYZ3afp.findsClosestPointRectangleYZSegment(
+					rminy, rminz, rmaxy, rmaxz, rminx,
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					resultOnBox, resultOnSegment);
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_INSIDE:
+			PlaneYZ3afp.findsClosestPointRectangleYZSegment(
+					rminy, rminz, rmaxy, rmaxz, rmaxx,
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					resultOnBox, resultOnSegment);
+			break;
+		case COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_INSIDE:
+			PlaneXZ3afp.findsClosestPointRectangleXZSegment(
+					rminx, rminz, rmaxx, rmaxz, rminy,
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					resultOnBox, resultOnSegment);
+			break;
+		case COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_INSIDE:
+			PlaneXZ3afp.findsClosestPointRectangleXZSegment(
+					rminx, rminz, rmaxx, rmaxz, rmaxy,
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					resultOnBox, resultOnSegment);
+			break;
+		case COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_FRONT:
+			PlaneXY3afp.findsClosestPointRectangleXYSegment(
+					rminx, rminy, rmaxx, rmaxy, rminz,
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					resultOnBox, resultOnSegment);
+			break;
+		case COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_BACK:
+			PlaneXY3afp.findsClosestPointRectangleXYSegment(
+					rminx, rminy, rmaxx, rmaxy, rmaxz,
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					resultOnBox, resultOnSegment);
+			break;
+		//
+		//-------------------- 1 INSIDE
+		//
+		case COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_FRONT:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rminx, rminy, rminz, rmaxx, rminy, rminz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_BACK:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rminx, rminy, rmaxz, rmaxx, rminy, rmaxz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_FRONT:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rminx, rmaxy, rminz, rmaxx, rmaxy, rminz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_BACK:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rminx, rmaxy, rmaxz, rmaxx, rmaxy, rmaxz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_FRONT:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rminx, rminy, rminz, rminx, rmaxy, rminz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_BACK:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rminx, rminy, rmaxz, rminx, rmaxy, rmaxz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_FRONT:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rmaxx, rminy, rminz, rmaxx, rmaxy, rminz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_BACK:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rmaxx, rminy, rmaxz, rmaxx, rmaxy, rmaxz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_INSIDE:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rminx, rminy, rminz, rminx, rminy, rmaxz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_INSIDE:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rminx, rmaxy, rminz, rminx, rmaxy, rmaxz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_INSIDE:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rmaxx, rminy, rminz, rmaxx, rminy, rmaxz,
+					resultOnSegment, resultOnBox);
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_INSIDE:
+			Segment3afp.findsClosestPointToSegment(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					rmaxx, rmaxy, rminz, rmaxx, rmaxy, rmaxz,
+					resultOnSegment, resultOnBox);
+			break;
+		//
+		//-------------------- 0 INSIDE (corners)
+		//
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_FRONT:
+			if (resultOnBox != null) {
+				resultOnBox.set(rminx, rminy, rminz);
 			}
-		} else if ((zone & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
-			closey = rmaxy;
-			if (sy1 <= sy2) {
-				closex = MathUtil.clamp(sx1, rminx, rmaxx);
-				closez = MathUtil.clamp(sz1, rminz, rmaxz);
-			} else {
-				closex = MathUtil.clamp(sx2, rminx, rmaxx);
-				closez = MathUtil.clamp(sz2, rminz, rmaxz);
+			if (resultOnSegment != null) {
+				Segment3afp.findsClosestPointToPoint(
+						sx1, sy1, sz1, sx2, sy2, sz2,
+						rminx, rminy, rminz, resultOnSegment);
 			}
-		} else if ((zone & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
-			closez = rminz;
-			if (sz1 >= sz2) {
-				closex = MathUtil.clamp(sx1, rminx, rmaxx);
-				closey = MathUtil.clamp(sy1, rminy, rmaxy);
-			} else {
-				closex = MathUtil.clamp(sx2, rminx, rmaxx);
-				closey = MathUtil.clamp(sy2, rminy, rmaxy);
+			break;
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_BACK:
+			if (resultOnBox != null) {
+				resultOnBox.set(rminx, rminy, rmaxz);
 			}
-		} else if ((zone & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
-			closez = rmaxz;
-			if (sy1 <= sy2) {
-				closex = MathUtil.clamp(sx1, rminx, rmaxx);
-				closey = MathUtil.clamp(sy1, rminy, rmaxy);
-			} else {
-				closex = MathUtil.clamp(sx2, rminx, rmaxx);
-				closey = MathUtil.clamp(sy2, rminy, rmaxy);
+			if (resultOnSegment != null) {
+				Segment3afp.findsClosestPointToPoint(
+						sx1, sy1, sz1, sx2, sy2, sz2,
+						rminx, rmaxy, rmaxz, resultOnSegment);
 			}
-		} else {
-			closex = tmp1.getX();
-			closey = tmp1.getY();
-			closez = tmp1.getZ();
+			break;
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_FRONT:
+			if (resultOnBox != null) {
+				resultOnBox.set(rminx, rmaxy, rminz);
+			}
+			if (resultOnSegment != null) {
+				Segment3afp.findsClosestPointToPoint(
+						sx1, sy1, sz1, sx2, sy2, sz2,
+						rminx, rmaxy, rminz, resultOnSegment);
+			}
+			break;
+		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_BACK:
+			if (resultOnBox != null) {
+				resultOnBox.set(rminx, rmaxy, rmaxz);
+			}
+			if (resultOnSegment != null) {
+				Segment3afp.findsClosestPointToPoint(
+						sx1, sy1, sz1, sx2, sy2, sz2,
+						rminx, rmaxy, rmaxz, resultOnSegment);
+			}
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_FRONT:
+			if (resultOnBox != null) {
+				resultOnBox.set(rmaxx, rminy, rminz);
+			}
+			if (resultOnSegment != null) {
+				Segment3afp.findsClosestPointToPoint(
+						sx1, sy1, sz1, sx2, sy2, sz2,
+						rmaxx, rminy, rminz, resultOnSegment);
+			}
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_BACK:
+			if (resultOnBox != null) {
+				resultOnBox.set(rmaxx, rminy, rmaxz);
+			}
+			if (resultOnSegment != null) {
+				Segment3afp.findsClosestPointToPoint(
+						sx1, sy1, sz1, sx2, sy2, sz2,
+						rmaxx, rmaxy, rmaxz, resultOnSegment);
+			}
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_FRONT:
+			if (resultOnBox != null) {
+				resultOnBox.set(rmaxx, rmaxy, rminz);
+			}
+			if (resultOnSegment != null) {
+				Segment3afp.findsClosestPointToPoint(
+						sx1, sy1, sz1, sx2, sy2, sz2,
+						rmaxx, rmaxy, rminz, resultOnSegment);
+			}
+			break;
+		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_TOP | COHEN_SUTHERLAND_BACK:
+			if (resultOnBox != null) {
+				resultOnBox.set(rmaxx, rmaxy, rmaxz);
+			}
+			if (resultOnSegment != null) {
+				Segment3afp.findsClosestPointToPoint(
+						sx1, sy1, sz1, sx2, sy2, sz2,
+						rmaxx, rmaxy, rmaxz, resultOnSegment);
+			}
+			break;
+		default:
+			throw new IllegalStateException();
 		}
-		closest.set(closex, closey, closez);
+	}
+
+	/** Update the given Cohen-Sutherland code that corresponds to the given 3D segment in order
+	 * to obtain a segment restricted to a single Cohen-Sutherland zone.
+	 * This function is at the heart of the
+	 * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
+	 *
+	 * <p>The result of this function may be:<ul>
+	 * <li>the code for a single zone, or</li>
+	 * <li>the code that corresponds to a single column, or </li>
+	 * <li>the code that corresponds to a single row, or </li>
+	 * <li>the code that corresponds to a single transverse line.</li>
+	 * </ul>
+	 *
+	 * @param rx1 is the first corner of the aligned box.
+	 * @param ry1 is the first corner of the aligned box.
+	 * @param rz1 is the first corner of the aligned box.
+	 * @param rx2 is the second corner of the aligned box.
+	 * @param ry2 is the second corner of the aligned box.
+	 * @param rz2 is the second corner of the aligned box.
+	 * @param sx1 is the first point of the segment.
+	 * @param sy1 is the first point of the segment.
+	 * @param sz1 is the first point of the segment.
+	 * @param sx2 is the second point of the segment.
+	 * @param sy2 is the second point of the segment.
+	 * @param sz2 is the second point of the segment.
+	 * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
+	 * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
+	 * @param newSegmentP1 is set with the new coordinates of the segment first point. If {@code null},
+	 *     this parameter is ignored.
+	 * @param newSegmentP2 is set with the new coordinates of the segment second point. If {@code null},
+	 *     this parameter is ignored.
+	 * @return the restricted Cohen-Sutherland zone.
+	 * @see MathUtil#getCohenSutherlandCode3D(double, double, double, double, double, double, double, double, double)
+	 */
+	@Pure
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
+		"checkstyle:booleanexpressioncomplexity", "checkstyle:methodlength"})
+	static int reducesCohenSutherlandZoneAlignedBoxSegment(double rx1, double ry1, double rz1, double rx2, double ry2, double rz2,
+			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2, int codePoint1, int codePoint2,
+			Point3D<?, ?, ?> newSegmentP1, Point3D<?, ?, ?> newSegmentP2) {
+		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 3, Double.valueOf(rx2));
+		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 4, Double.valueOf(ry2));
+		assert rz1 <= rz2 : AssertMessages.lowerEqualParameters(2, Double.valueOf(ry1), 5, Double.valueOf(ry2));
+		assert codePoint1 == MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rx1, ry1, rz1, rx2, ry2, rz2) : AssertMessages.invalidValue(8);
+		assert codePoint2 == MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz2, rx1, ry1, rz1, rx2, ry2, rz2) : AssertMessages.invalidValue(9);
+
+		var x0 = sx1;
+		var y0 = sy1;
+		var z0 = sz1;
+		var x1 = sx2;
+		var y1 = sy2;
+		var z1 = sz2;
+		var code1 = codePoint1;
+		var code2 = codePoint2;
+		final var point = new InnerComputationPoint3D();
+		var cont = true;
+		var tries = COHEN_SUTHERLAND_CODE_REDUCTION_TRIES;
+
+		while (cont && tries > 0) {
+			if ((code1 | code2) == 0) {
+				// Bitwise OR is 0. All the points are inside.
+				cont = false;
+			} else if ((code1 & code2) != 0) {
+				// Bitwise AND is not 0. There is common areas that is used.
+				cont = false;
+			} else {
+				// Failed both tests, so calculate the line segment to clip
+				// from an outside point to an intersection with clip plan
+
+				int code3 = 0;
+				if ((code1 & COHEN_SUTHERLAND_LEFT) != 0 && (code2 & COHEN_SUTHERLAND_RIGHT) != 0) {
+					if ((rx1 - x0) >= (x1 - rx2)) {
+						code3 = code1;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								1, 0, 0, -rx1,
+								point);
+					} else {
+						code3 = code2;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								1, 0, 0, -rx2,
+								point);
+					}
+				} else if ((code1 & COHEN_SUTHERLAND_RIGHT) != 0 && (code2 & COHEN_SUTHERLAND_LEFT) != 0) {
+					if ((x0 - rx1) >= (rx2 - x1)) {
+						code3 = code1;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								1, 0, 0, -rx2,
+								point);
+					} else {
+						code3 = code2;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								1, 0, 0, -rx1,
+								point);
+					}
+				} else if ((code1 & COHEN_SUTHERLAND_BOTTOM) != 0 && (code2 & COHEN_SUTHERLAND_TOP) != 0) {
+					if ((ry1 - y0) >= (y1 - ry2)) {
+						code3 = code1;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								0, 1, 0, -ry1,
+								point);
+					} else {
+						code3 = code2;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								0, 1, 0, -ry2,
+								point);
+					}
+				} else if ((code1 & COHEN_SUTHERLAND_TOP) != 0 && (code2 & COHEN_SUTHERLAND_BOTTOM) != 0) {
+					if ((y0 - ry1) >= (ry2 - y1)) {
+						code3 = code1;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								0, 1, 0, -ry2,
+								point);
+					} else {
+						code3 = code2;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								0, 1, 0, -ry1,
+								point);
+					}
+				} else if ((code1 & COHEN_SUTHERLAND_FRONT) != 0 && (code2 & COHEN_SUTHERLAND_BACK) != 0) {
+					if ((rz1 - z0) >= (z1 - rz2)) {
+						code3 = code1;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								0, 0, 1, -rz1,
+								point);
+					} else {
+						code3 = code2;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								0, 0, 1, -rz2,
+								point);
+					}
+				} else if ((code1 & COHEN_SUTHERLAND_BACK) != 0 && (code2 & COHEN_SUTHERLAND_FRONT) != 0) {
+					if ((z0 - rz1) >= (rz2 - z1)) {
+						code3 = code1;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								0, 0, 1, -rz2,
+								point);
+					} else {
+						code3 = code2;
+						Segment3afp.calculatesLinePlaneIntersection(
+								x0, y0, z0, x1, y1, z1,
+								0, 0, 1, -rz1,
+								point);
+					}
+				} else if ((code1 & COHEN_SUTHERLAND_LEFT) != 0) {
+					code3 = code1;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							1, 0, 0, -rx1,
+							point);
+				} else if ((code1 & COHEN_SUTHERLAND_RIGHT) != 0) {
+					code3 = code1;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							1, 0, 0, -rx2,
+							point);
+				} else if ((code2 & COHEN_SUTHERLAND_LEFT) != 0) {
+					code3 = code2;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							1, 0, 0, -rx1,
+							point);
+				} else if ((code2 & COHEN_SUTHERLAND_RIGHT) != 0) {
+					code3 = code2;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							1, 0, 0, -rx2,
+							point);
+				} else if ((code1 & COHEN_SUTHERLAND_BOTTOM) != 0) {
+					code3 = code1;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 1, 0, -ry1,
+							point);
+				} else if ((code1 & COHEN_SUTHERLAND_TOP) != 0) {
+					code3 = code1;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 1, 0, -ry2,
+							point);
+				} else if ((code2 & COHEN_SUTHERLAND_BOTTOM) != 0) {
+					code3 = code2;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 1, 0, -ry1,
+							point);
+				} else if ((code2 & COHEN_SUTHERLAND_TOP) != 0) {
+					code3 = code2;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 1, 0, -ry2,
+							point);
+				} else if ((code1 & COHEN_SUTHERLAND_FRONT) != 0) {
+					code3 = code1;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 0, 1, -rz1,
+							point);
+				} else if ((code1 & COHEN_SUTHERLAND_BACK) != 0) {
+					code3 = code1;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 0, 1, -rz2,
+							point);
+				} else if ((code2 & COHEN_SUTHERLAND_FRONT) != 0) {
+					code3 = code2;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 0, 1, -rz1,
+							point);
+				} else if ((code2 & COHEN_SUTHERLAND_BACK) != 0) {
+					code3 = code2;
+					Segment3afp.calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 0, 1, -rz2,
+							point);
+				}
+
+				if (code3 != 0) {
+					// Now we move outside point to intersection point to clip
+					// and get ready for next pass.
+					if (code3 == code1) {
+						x0 = point.getX();
+						y0 = point.getY();
+						z0 = point.getZ();
+						code1 = MathUtil.getCohenSutherlandCode3D(x0, y0, z0, rx1, ry1, rz1, rx2, ry2, rz2);
+					} else {
+						x1 = point.getX();
+						y1 = point.getY();
+						z1 = point.getZ();
+						code2 = MathUtil.getCohenSutherlandCode3D(x1, y1, z1, rx1, ry1, rz1, rx2, ry2, rz2);
+					}
+				}
+
+				--tries;
+			}
+		}
+		if (newSegmentP1 != null) {
+			newSegmentP1.set(x0, y0, z0);
+		}
+		if (newSegmentP2 != null) {
+			newSegmentP2.set(x1, y1, z1);
+		}
+		return code1 & code2;
 	}
 
 	/** Compute the point on the aligned box that is the farthest to the given point.
@@ -1050,7 +1510,6 @@ public interface AlignedBox3afp<
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null :  AssertMessages.notNullParameter();
-		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		//TODO
 		return false;
 
@@ -1258,6 +1717,7 @@ public interface AlignedBox3afp<
 	 * @return the Geogebra representation of the aligned box.
 	 * @since 18.0
 	 */
+	@Override
 	default String toGeogebra() {
 		return GeogebraUtil.toPrismDefinition(3,
 				getMinX(), getMinY(), getMinZ(),

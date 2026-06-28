@@ -96,7 +96,7 @@ public abstract class AbstractShape3d<T extends AbstractShape3d<?>> implements S
 	@Pure
 	@Override
 	@SuppressWarnings({"unchecked", "checkstyle:equalshashcode"})
-	public final boolean equals(Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}

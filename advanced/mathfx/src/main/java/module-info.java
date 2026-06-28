@@ -27,14 +27,17 @@
  * @since 17.0
  */
 module org.arakhne.afc.advanced.mathfx {
-	requires transitive javafx.base;
 	requires transitive org.arakhne.afc.core.mathgeombase;
-	requires transitive org.arakhne.afc.core.mathgeom1d;
-	requires transitive org.arakhne.afc.core.mathgeom2d;
-	requires transitive org.arakhne.afc.advanced.javafx;
+	requires org.arakhne.afc.core.mathgeom1d;
+	requires org.arakhne.afc.core.mathgeom2d;
+	requires org.arakhne.afc.core.mathgen;
+	requires transitive javafx.base;
+	requires org.arakhne.afc.core.vmutils;
+	requires org.eclipse.xtext.xbase.lib;
+	requires org.arakhne.afc.advanced.javafx;
 
-	exports org.arakhne.afc.math.geometry.d1.dfx;
-	exports org.arakhne.afc.math.geometry.d2.dfx;
-	exports org.arakhne.afc.math.geometry.d2.ifx;
+	exports org.arakhne.afc.math.geometry.fx.d1.d;
+	exports org.arakhne.afc.math.geometry.fx.d2.d;
+	exports org.arakhne.afc.math.geometry.fx.d2.i;
 	exports org.arakhne.afc.math.geometry.fx;
 }

@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.testtools;
 
+import static org.junit.jupiter.api.AssertionFailureBuilder.assertionFailure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -42,6 +43,7 @@ import java.util.logging.Logger;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.xbase.lib.Pair;
+import org.junit.jupiter.api.Assertions;
 
 /** Abstract class that is providing a base for unit tests.
  *
@@ -106,7 +108,12 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	public static void failCompare(String message, String expected, String actual) {
-		fail(formatFailMessage(() -> message, expected, actual));
+		assertionFailure()
+			.message(formatFailMessage(() -> message, expected, actual))
+			.expected(expected)
+			.actual(actual)
+			.trimStacktrace(Assertions.class)
+			.buildAndThrow();
 	}
 
 	/** Replies if two values are equals at espilon.

@@ -1,2 +1,2 @@
-org.arakhne.afc.math.extensions.xtext.MatrixExtensions
-org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions
+org.arakhne.afc.math.geometry.base.extensions.xtext.MatrixExtensions.java
+org.arakhne.afc.math.geometry.base.extensions.xtext.Tuple2DExtensions

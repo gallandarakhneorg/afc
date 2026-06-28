@@ -22,10 +22,10 @@ package org.arakhne.afc.math.geometry.d3.d;
 
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationQuaternion;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.UnmodifiableQuaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
-import org.arakhne.afc.math.geometry.base.d3.afp.InnerComputationQuaternionafp;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -350,7 +350,7 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 
 	@Override
 	public void mulInverse(Quaternion<?, ?, ?> q1, Quaternion<?, ?, ?> q2) {
-		final var tempQuat = new InnerComputationQuaternionafp(
+		final var tempQuat = new InnerComputationQuaternion(
 				q2.getX(), q2.getY(), q2.getZ(), q2.getW());
 		tempQuat.inverse();
 		mul(q1, tempQuat);

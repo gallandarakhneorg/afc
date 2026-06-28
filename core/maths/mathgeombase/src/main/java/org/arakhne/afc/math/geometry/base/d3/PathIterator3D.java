@@ -22,7 +22,6 @@ package org.arakhne.afc.math.geometry.base.d3;
 
 import java.util.Iterator;
 
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This interface describes an interator on path elements.
@@ -36,12 +35,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface PathIterator3D<T extends PathElement3D> extends Iterator<T> {
-	/** Replies the winding rule for the path.
-	 *
-	 * @return the winding rule for the path.
-	 */
-	@Pure
-	PathWindingRule getWindingRule();
 
 	/** Replies the path is composed only by
 	 * one {@code MOVE_TO}, and a sequence of {@code LINE_TO}

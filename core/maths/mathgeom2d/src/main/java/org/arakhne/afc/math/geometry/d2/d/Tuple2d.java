@@ -328,9 +328,7 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 	@Pure
 	@Override
 	public String toString() {
-		final var objectDescription = new JsonBuffer();
-		toJson(objectDescription);
-        return objectDescription.toString();
+		return toGeogebra();
 	}
 
 	@Override

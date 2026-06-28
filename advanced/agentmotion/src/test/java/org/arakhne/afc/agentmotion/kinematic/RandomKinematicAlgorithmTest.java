@@ -22,14 +22,13 @@ package org.arakhne.afc.agentmotion.kinematic;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import org.arakhne.afc.agentmotion.AbstractMathTestCase;
 import org.arakhne.afc.agentmotion.AgentMotion;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.test.AbstractMathTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 public class RandomKinematicAlgorithmTest extends AbstractMathTestCase {

@@ -20,27 +20,29 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
-import org.arakhne.afc.math.geometry.base.CrossingComputationType;
-import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
 import org.arakhne.afc.math.geometry.base.d3.Path3D;
 import org.arakhne.afc.math.geometry.base.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.a.Shape3DType;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -68,7 +70,7 @@ public interface Path3afp<
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>,
 		B extends AlignedBox3afp<?, IE, P, V, Q, B>>
-		extends Shape3afp<IT, IE, P, V, Q, B>, Path3D<IT, PathIterator3afp<IE>, P, V, Q, B> {
+	extends Shape3afp<IT, IE, P, V, Q, B>, Path3D<IT, PathIterator3afp<IE>, P, V, Q, B> {
 
 	/**
 	 * Multiple of cubic &amp; quad curve size.
@@ -103,19 +105,16 @@ public interface Path3afp<
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
 	 * @param z z coordinate of the point.
-	 * @param result the closest point on the shape; or the point itself if it is inside the shape.
+	 * @param result the closest point on the shape; or the point itself if it is inside the shape. It cannot be {@code null}.
 	 * @throws IllegalStateException invalid move.
 	 */
-	static void getClosestPointTo(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z,
+	static void findsClosestPointToPoint(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z,
 			Point3D<?, ?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert !pi.isCurved() : AssertMessages.invalidTrueValue("isCurved"); //$NON-NLS-1$
 		assert result != null : AssertMessages.notNullParameter(4);
 
 		var bestDist = Double.POSITIVE_INFINITY;
-
-		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
-		var crossings = 0;
 
 		while (pi.hasNext()) {
 			final var pe = pi.next();
@@ -133,40 +132,23 @@ public interface Path3afp<
 				candidateZ = pe.getToZ();
 				break;
 			case LINE_TO:
-				var factor = Segment3afp.calculatesProjectedPointOnLine(x, y, z, pe.getFromX(), pe.getFromY(), pe.getFromZ(),
+			case CLOSE:
+				var factor = Segment3afp.calculatesProjectedPointOnLine(
+						x, y, z,
+						pe.getFromX(), pe.getFromY(), pe.getFromZ(),
 						pe.getToX(), pe.getToY(), pe.getToZ());
-				factor = MathUtil.clamp(factor, 0, 1);
+				if (factor < 0.) {
+					factor = 0.;
+				} else if (factor > 1.) {
+					factor = 1.;
+				}
 				foundCandidate = true;
-				var vx = (pe.getToX() - pe.getFromX()) * factor;
-				var vy = (pe.getToY() - pe.getFromY()) * factor;
-				var vz = (pe.getToZ() - pe.getFromZ()) * factor;
+				final var vx = (pe.getToX() - pe.getFromX()) * factor;
+				final var vy = (pe.getToY() - pe.getFromY()) * factor;
+				final var vz = (pe.getToZ() - pe.getFromZ()) * factor;
 				candidateX = pe.getFromX() + vx;
 				candidateY = pe.getFromY() + vy;
 				candidateZ = pe.getFromZ() + vz;
-				crossings += Segment3afp.calculatesCrossingsFromPoint(x, y, z, pe.getFromX(), pe.getFromY(), pe.getFromZ(),
-						pe.getToX(), pe.getToY(), pe.getToZ());
-				break;
-			case CLOSE:
-				crossings += Segment3afp.calculatesCrossingsFromPoint(x, y, z, pe.getFromX(), pe.getFromY(), pe.getFromZ(),
-						pe.getToX(), pe.getToY(), pe.getToZ());
-				if ((crossings & mask) != 0) {
-					result.set(x, y, z);
-					return;
-				}
-
-				if (!pe.isEmpty()) {
-					factor = Segment3afp.calculatesProjectedPointOnLine(x, y, z, pe.getFromX(), pe.getFromY(), pe.getFromZ(),
-							pe.getToX(), pe.getToY(), pe.getToZ());
-					factor = MathUtil.clamp(factor, 0, 1);
-					vx = (pe.getToX() - pe.getFromX()) * factor;
-					vy = (pe.getToY() - pe.getFromY()) * factor;
-					vz = (pe.getToZ() - pe.getFromZ()) * factor;
-					foundCandidate = true;
-					candidateX = pe.getFromX() + vx;
-					candidateY = pe.getFromY() + vy;
-					candidateZ = pe.getFromY() + vz;
-				}
-				crossings = 0;
 				break;
 				//$CASES-OMITTED$
 			default:
@@ -174,7 +156,7 @@ public interface Path3afp<
 			}
 
 			if (foundCandidate) {
-				final double d = Point3D.getDistanceSquaredPointPoint(x, y, z, candidateX, candidateY, candidateZ);
+				final var d = Point3D.getDistanceSquaredPointPoint(x, y, z, candidateX, candidateY, candidateZ);
 				if (d < bestDist) {
 					bestDist = d;
 					result.set(candidateX, candidateY, candidateZ);
@@ -193,62 +175,88 @@ public interface Path3afp<
 	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param shape the shape to which the closest point must be computed.
-	 * @param result the closest point on pi.
+	 * @param result the closest point on pi. It cannot be {@code null}.
 	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalArgumentException if the path is malformed.
 	 */
 	@Unefficient
-	static boolean getClosestPointTo(PathIterator3afp<? extends PathElement3afp> pi,
+	static boolean findsClosestPointToPath(PathIterator3afp<? extends PathElement3afp> pi,
 			PathIterator3afp<? extends PathElement3afp> shape, Point3D<?, ?, ?> result) {
+		return findsClosestPointToPath(pi, shape, result, null);
+	}
+
+	/** Replies the point on the path of pi that is closest to the given shape.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying not-curved primitives, ie. if the
+	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
+	 * {@code false}.
+	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
+	 *
+	 * @param pi is the iterator of path elements, on one of which the closest point is located.
+	 * @param shape the shape to which the closest point must be computed.
+	 * @param result1 the closest point on pi. It cannot be {@code null}.
+	 * @param result2 the closest point on the shape.  It can be {@code null}.
+	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalArgumentException if the path is malformed.
+	 */
+	@Unefficient
+	static boolean findsClosestPointToPath(PathIterator3afp<? extends PathElement3afp> pi,
+			PathIterator3afp<? extends PathElement3afp> shape, Point3D<?, ?, ?> result1, Point3D<?, ?, ?> result2) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert shape != null : AssertMessages.notNullParameter(1);
 		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
-		assert result != null : AssertMessages.notNullParameter(2);
-		if (!pi.hasNext() || !shape.hasNext()) {
+		assert !shape.isCurved() : AssertMessages.invalidTrueValue(1, "isCurved"); //$NON-NLS-1$
+		assert result1 != null : AssertMessages.notNullParameter(2);
+		if (!pi.hasNext()) {
 			return false;
 		}
-		/* TODO
-		PathElement3afp pathElement1 = pi.next();
-		if (pathElement1.getType() != PathElementType.MOVE_TO) {
+		var pathElement = pi.next();
+		if (pathElement.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
-		if (shape.next().getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
-		}
-		if (!pi.hasNext() || !shape.hasNext()) {
+		if (!pi.hasNext()) {
 			return false;
 		}
-		final AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> box = pi.getGeomFactory().newBox();
-		calculatesDrawableElementBoundingBox(shape.restartIterations(), box);
-		final ClosestPointPathShadow3afp shadow = new ClosestPointPathShadow3afp(shape.restartIterations(), box);
-		int crossings = 0;
-		double curx = pathElement1.getToX();
-		double movx = curx;
-		double cury = pathElement1.getToY();
-		double movy = cury;
-		double curz = pathElement1.getToZ();
-		double movz = curz;
-		double endx;
-		double endy;
-		double endz;
+		var bestDistance = Double.POSITIVE_INFINITY;
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var curz = pathElement.getToZ();
+		var movz = curz;
+		final var point1 = new InnerComputationPoint3D();
+		final var point2 = new InnerComputationPoint3D();
+		var foundPoint = false;
 		while (pi.hasNext()) {
-			pathElement1 = pi.next();
-			switch (pathElement1.getType()) {
+			pathElement = pi.next();
+			switch (pathElement.getType()) {
 			case MOVE_TO:
-				movx = pathElement1.getToX();
+				movx = pathElement.getToX();
 				curx = movx;
-				movy = pathElement1.getToY();
+				movy = pathElement.getToY();
 				cury = movy;
-				movz = pathElement1.getToZ();
+				movz = pathElement.getToZ();
 				curz = movz;
 				break;
 			case LINE_TO:
-				endx = pathElement1.getToX();
-				endy = pathElement1.getToY();
-				endz = pathElement1.getToZ();
-				crossings = shadow.calculatesCrossings(crossings, curx, cury, curz, endx, endy, endz);
-				if (crossings == GeomConstants.SHAPE_INTERSECTS) {
-					result.set(shadow.getClosestPointInOtherShape());
-					return true;
+				final var endx = pathElement.getToX();
+				final var endy = pathElement.getToY();
+				final var endz = pathElement.getToZ();
+				findsClosestPointToSegment(
+						shape.restartIterations(),
+						curx, cury, curz, endx, endy, endz,
+						point1, point2);
+				var dist = Point3D.getDistanceSquaredPointPoint(
+						point1.getX(), point1.getY(), point1.getZ(),
+						point2.getX(), point2.getY(), point2.getZ());
+				if (dist < bestDistance) {
+					bestDistance = dist;
+					result1.set(point2);
+					if (result2 != null) {
+						result2.set(point1);
+					}
+					foundPoint = true;
 				}
 				curx = endx;
 				cury = endy;
@@ -256,32 +264,274 @@ public interface Path3afp<
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy || curz != movz) {
-					crossings = shadow.calculatesCrossings(crossings, curx, cury, curz, movx, movy, movz);
-					if (crossings == GeomConstants.SHAPE_INTERSECTS) {
-						result.set(shadow.getClosestPointInOtherShape());
-						return true;
+					findsClosestPointToSegment(
+							shape.restartIterations(),
+							curx, cury, curz, movx, movy, movz,
+							point1, point2);
+					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						result1.set(point2);
+						if (result2 != null) {
+							result2.set(point1);
+						}
+						foundPoint = true;
 					}
 				}
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
-				//$CASES-OMITTED$
+			case ARC_TO:
+			case QUAD_TO:
+			case CURVE_TO:
 			default:
 				throw new IllegalArgumentException();
 			}
 		}
-		if (curx == movx && cury == movy && curz == movz) {
-			assert crossings != GeomConstants.SHAPE_INTERSECTS;
-			final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-			if ((crossings & mask) != 0) {
-				// Second path is inside the first shape
-				result.set(shadow.getClosestPointInShadowShape());
-				return true;
+		return foundPoint;
+	}
+
+	/** Replies the point on the path of pi that is closest to the given segment.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying not-curved primitives, ie. if the
+	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
+	 * {@code false}.
+	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
+	 *
+	 * @param pi is the iterator of path elements, on one of which the closest point is located.
+	 * @param x1 the x coordinate of the first point of the segment.
+	 * @param y1 the y coordinate of the first point of the segment.
+	 * @param z1 the z coordinate of the first point of the segment.
+	 * @param x2 the x coordinate of the second point of the segment.
+	 * @param y2 the y coordinate of the second point of the segment.
+	 * @param z2 the z coordinate of the second point of the segment.
+	 * @param result the closest point on pi. It cannot be {@code null}.
+	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalArgumentException if the path os malformed.
+	 */
+	@Unefficient
+	static boolean findsClosestPointToSegment(PathIterator3afp<? extends PathElement3afp> pi,
+			double x1, double y1, double z1, double x2, double y2, double z2, Point3D<?, ?, ?> result) {
+		return findsClosestPointToSegment(pi, x1, y1, z1, x2, y2, z2, result, null);
+	}
+
+	/** Replies the point on the path of pi that is closest to the given segment.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying not-curved primitives, ie. if the
+	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
+	 * {@code false}.
+	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
+	 *
+	 * @param pi is the iterator of path elements, on one of which the closest point is located.
+	 * @param x1 the x coordinate of the first point of the segment.
+	 * @param y1 the y coordinate of the first point of the segment.
+	 * @param z1 the z coordinate of the first point of the segment.
+	 * @param x2 the x coordinate of the second point of the segment.
+	 * @param y2 the y coordinate of the second point of the segment.
+	 * @param z2 the z coordinate of the second point of the segment.
+	 * @param result1 the closest point on pi. It cannot be {@code null}.
+	 * @param result2 the closest point on the segment. It can be {@code null}.
+	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalArgumentException if the path is malformed.
+	 */
+	@Unefficient
+	@SuppressWarnings("checkstyle:parameternumber")
+	static boolean findsClosestPointToSegment(PathIterator3afp<? extends PathElement3afp> pi,
+			double x1, double y1, double z1, double x2, double y2, double z2,
+			Point3D<?, ?, ?> result1, Point3D<?, ?, ?> result2) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+		assert result1 != null : AssertMessages.notNullParameter(2);
+		if (!pi.hasNext()) {
+			return false;
+		}
+		var pathElement = pi.next();
+		if (pathElement.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+		}
+		if (!pi.hasNext()) {
+			return false;
+		}
+		var bestDistance = Double.POSITIVE_INFINITY;
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var curz = pathElement.getToZ();
+		var movz = curz;
+		final var point1 = new InnerComputationPoint3D();
+		final var point2 = new InnerComputationPoint3D();
+		var foundPoint = false;
+		while (pi.hasNext()) {
+			pathElement = pi.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
+				movz = pathElement.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				final var endx = pathElement.getToX();
+				final var endy = pathElement.getToY();
+				final var endz = pathElement.getToZ();
+				Segment3afp.findsClosestPointToSegment(
+						curx, cury, curz, endx, endy, endz,
+						x1, y1, z1, x2, y2, z2,
+						point1, point2);
+				var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+						point2.getX(), point2.getY(), point2.getZ());
+				if (dist < bestDistance) {
+					bestDistance = dist;
+					result1.set(point1);
+					if (result2 != null) {
+						result2.set(point2);
+					}
+					foundPoint = true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					Segment3afp.findsClosestPointToSegment(
+							curx, cury, curz, movx, movy, movz,
+							x1, y1, z1, x2, y2, z2,
+							point1, point2);
+					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						result1.set(point1);
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			case ARC_TO:
+			case QUAD_TO:
+			case CURVE_TO:
+			default:
+				throw new IllegalArgumentException();
 			}
 		}
-		result.set(shadow.getClosestPointInOtherShape());*/
-		return true;
+		return foundPoint;
+	}
+
+	/** Replies the point on the path of pi that is closest to the given aligned box.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying not-curved primitives, ie. if the
+	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
+	 * {@code false}.
+	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
+	 *
+	 * @param pi is the iterator of path elements, on one of which the closest point is located.
+	 * @param rx is the x coordinate of the rectangle.
+	 * @param ry is the y coordinate of the rectangle.
+	 * @param rz is the z coordinate of the rectangle.
+	 * @param rwidth is the width of the rectangle.
+	 * @param rheight is the height of the rectangle.
+	 * @param rdepth is the depth of the rectangle.
+	 * @param result the closest point on pi. It cannot be {@code null}.
+	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalArgumentException if the path os malformed.
+	 */
+	@Unefficient
+	@SuppressWarnings("checkstyle:parameternumber")
+	static boolean findsClosestPointPathIteratorAlignedBox(PathIterator3afp<? extends PathElement3afp> pi,
+			double rx, double ry, double rz, double rwidth, double rheight, double rdepth, Point3D<?, ?, ?> result) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+		assert result != null : AssertMessages.notNullParameter(2);
+		if (!pi.hasNext()) {
+			return false;
+		}
+		var pathElement = pi.next();
+		if (pathElement.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+		}
+		if (!pi.hasNext()) {
+			return false;
+		}
+		var bestDistance = Double.POSITIVE_INFINITY;
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var curz = pathElement.getToZ();
+		var movz = curz;
+		final var point1 = new InnerComputationPoint3D();
+		final var point2 = new InnerComputationPoint3D();
+		var foundPoint = false;
+		while (pi.hasNext()) {
+			pathElement = pi.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
+				movz = pathElement.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				final var endx = pathElement.getToX();
+				final var endy = pathElement.getToY();
+				final var endz = pathElement.getToZ();
+				AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+						rx, ry, rz, rx + rwidth, ry + rheight, rz + rdepth,
+						curx, cury, curz, endx, endy, endz,
+						null, point1);
+				var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+						point2.getX(), point2.getY(), point2.getZ());
+				if (dist < bestDistance) {
+					bestDistance = dist;
+					result.set(point1);
+					foundPoint = true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					Segment3afp.findsClosestPointToSegment(
+							curx, cury, curz, movx, movy, movz,
+							rx, ry, rz, rwidth, rheight, rdepth,
+							point1, point2);
+					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						result.set(point1);
+						foundPoint = true;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			case ARC_TO:
+			case QUAD_TO:
+			case CURVE_TO:
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
+		return foundPoint;
 	}
 
 	@Pure
@@ -289,7 +539,7 @@ public interface Path3afp<
 	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final var point = getGeomFactory().newPoint();
-		Path3afp.getClosestPointTo(getPathIterator(
+		Path3afp.findsClosestPointToPoint(getPathIterator(
 				getGeomFactory().getSplineApproximationRatio()), pt.getX(), pt.getY(), pt.getZ(),
 				point);
 		return point;
@@ -301,10 +551,11 @@ public interface Path3afp<
 	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		final var result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path3afp.getClosestPointTo(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
+			Path3afp.findsClosestPointToPoint(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					sphere.getCenterX(), sphere.getCenterY(), sphere.getCenterZ(), result);
 		} else {
-			Path3afp.getClosestPointTo(getPathIterator(), sphere.getCenterX(), sphere.getCenterY(), sphere.getCenterZ(), result);
+			Path3afp.findsClosestPointToPoint(getPathIterator(),
+					sphere.getCenterX(), sphere.getCenterY(), sphere.getCenterZ(), result);
 		}
 		return result;
 	}
@@ -313,13 +564,18 @@ public interface Path3afp<
 	@Unefficient
 	@Override
 	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> alignedBox) {
-		final var result = getGeomFactory().newPoint();
+		final PathIterator3afp<?> iterator;
 		if (isCurved()) {
-			//TODO Path3afp.getClosestPointTo(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
-			//		alignedBox.getPathIterator(), result);
+			iterator = getPathIterator(getGeomFactory().getSplineApproximationRatio());
 		} else {
-			// TODO Path3afp.getClosestPointTo(getPathIterator(), AlignedBox.getPathIterator(), result);
+			iterator = getPathIterator();
 		}
+		final var result = getGeomFactory().newPoint();
+		Path3afp.findsClosestPointPathIteratorAlignedBox(
+				iterator,
+				alignedBox.getMinX(), alignedBox.getMinY(), alignedBox.getMinZ(),
+				alignedBox.getWidth(), alignedBox.getHeight(), alignedBox.getDepth(),
+				result);
 		return result;
 	}
 
@@ -327,13 +583,18 @@ public interface Path3afp<
 	@Unefficient
 	@Override
 	default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-		final var result = getGeomFactory().newPoint();
+		assert segment != null : AssertMessages.notNullParameter();
+		final PathIterator3afp<?> iterator;
 		if (isCurved()) {
-			// TODO Path3afp.getClosestPointTo(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
-			//segment.getPathIterator(), result);
+			iterator = getPathIterator(getGeomFactory().getSplineApproximationRatio());
 		} else {
-			// TODO Path3afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), result);
+			iterator = getPathIterator();
 		}
+		final var result = getGeomFactory().newPoint();
+		Path3afp.findsClosestPointToSegment(iterator,
+				segment.getX1(), segment.getY1(), segment.getZ1(),
+				segment.getX2(), segment.getY2(), segment.getZ2(),
+				result);
 		return result;
 	}
 
@@ -341,13 +602,21 @@ public interface Path3afp<
 	@Unefficient
 	@Override
 	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
-		final var result = getGeomFactory().newPoint();
+		assert path != null : AssertMessages.notNullParameter();
+		final PathIterator3afp<?> i1;
 		if (isCurved()) {
-			Path3afp.getClosestPointTo(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
-					path.getPathIterator(), result);
+			i1 = getPathIterator(getGeomFactory().getSplineApproximationRatio());
 		} else {
-			Path3afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), result);
+			i1 = getPathIterator();
 		}
+		final PathIterator3afp<?> i2;
+		if (path.isCurved()) {
+			i2 = path.getPathIterator(path.getGeomFactory().getSplineApproximationRatio());
+		} else {
+			i2 = path.getPathIterator();
+		}
+		final var result = getGeomFactory().newPoint();
+		Path3afp.findsClosestPointToPath(i1, i2, result);
 		return result;
 	}
 
@@ -362,10 +631,10 @@ public interface Path3afp<
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
 	 * @param z z coordinate of the point.
-	 * @param result the farthest point on the shape.
+	 * @param result the farthest point on the shape. It cannot be {@code null}.
 	 * @throws IllegalStateException invalid move.
 	 */
-	static void getFarthestPointTo(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z,
+	static void findsFarthestPointToPoint(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z,
 			Point3D<?, ?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert !pi.isCurved() : AssertMessages.invalidTrueValue("isCurved"); //$NON-NLS-1$
@@ -373,7 +642,7 @@ public interface Path3afp<
 		var bestDist = Double.NEGATIVE_INFINITY;
 
 		// Only for internal use.
-		final var point = new InnerComputationPoint3afp();
+		final var point = new InnerComputationPoint3D();
 
 		while (pi.hasNext()) {
 			final var pe = pi.next();
@@ -403,34 +672,10 @@ public interface Path3afp<
 	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final var point = getGeomFactory().newPoint();
-		Path3afp.getFarthestPointTo(getPathIterator(
+		Path3afp.findsFarthestPointToPoint(getPathIterator(
 				getGeomFactory().getSplineApproximationRatio()), pt.getX(), pt.getY(), pt.getZ(),
 				point);
 		return point;
-	}
-
-	/**
-	 * Tests if the specified coordinates are inside the closed boundary of the specified {@link PathIterator3afp}.
-	 *
-	 * <p>This method provides a basic facility for implementors of the {@link Shape3afp} interface to implement support for the
-	 * {@link Shape3afp#contains(double, double, double)} method.
-	 *
-	 * @param pi
-	 *            the specified {@code PathIterator2f}
-	 * @param x
-	 *            the specified X coordinate
-	 * @param y
-	 *            the specified Y coordinate
-	 * @param z
-	 *            the specified Z coordinate
-	 * @return {@code true} if the specified coordinates are inside the specified {@code PathIterator2f}; {@code false} otherwise
-	 */
-	static boolean containsPoint(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z) {
-		assert pi != null : AssertMessages.notNullParameter(0);
-		// Copied from the AWT API
-		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
-		final var cross = calculatesCrossingsFromPoint(0, pi, x, y, z, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return (cross & mask) != 0;
 	}
 
 	/**
@@ -463,165 +708,8 @@ public interface Path3afp<
 		if (width <= 0 || height <= 0 || depth <= 0) {
 			return false;
 		}
-		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		//TODO
 		return false;
-	}
-
-	/**
-	 * Calculates the number of times the given path crosses the ray extending to the right from (px,py). If the point lies on a
-	 * part of the path, then no crossings are counted for that intersection. +1 is added for each crossing where the Y coordinate
-	 * is increasing -1 is added for each crossing where the Y coordinate is decreasing The return value is the sum of all
-	 * crossings for every segment in the path. The path must start with a MOVE_TO, otherwise an exception is thrown.
-	 *
-	 * @param crossings
-	 *            is the initial value for crossing.
-	 * @param iterator
-	 *            is the description of the path.
-	 * @param px
-	 *            is the reference point to test.
-	 * @param py
-	 *            is the reference point to test.
-	 * @param pz
-	 *            is the reference point to test.
-	 * @param type
-	 *            is the type of special computation to apply. If {@code null}, it is equivalent to
-	 *            {@link CrossingComputationType#STANDARD}.
-	 * @return the crossing
-	 * @throws IllegalArgumentException invalid move.
-	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-	static int calculatesCrossingsFromPoint(int crossings, PathIterator3afp<? extends PathElement3afp> iterator, double px,
-			double py, double pz, CrossingComputationType type) {
-		assert iterator != null : AssertMessages.notNullParameter(1);
-		// Copied from the AWT API
-		if (!iterator.hasNext()) {
-			return 0;
-		}
-
-		var element = iterator.next();
-		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
-		}
-
-		final var factory = iterator.getGeomFactory();
-		var movx = element.getToX();
-		var movy = element.getToY();
-		var movz = element.getToZ();
-		var curx = movx;
-		var cury = movy;
-		var curz = movz;
-		double endx;
-		double endy;
-		double endz;
-		var numCrossings = crossings;
-		while (iterator.hasNext()) {
-			element = iterator.next();
-			switch (element.getType()) {
-			case MOVE_TO:
-				movx = element.getToX();
-				curx = movx;
-				movy = element.getToY();
-				cury = movy;
-				movz = element.getToZ();
-				curz = movz;
-				break;
-			case LINE_TO:
-				endx = element.getToX();
-				endy = element.getToY();
-				endz = element.getToZ();
-				if (endx == px && endy == py && endz == pz) {
-					return GeomConstants.SHAPE_INTERSECTS;
-				}
-				numCrossings += Segment3afp.calculatesCrossingsFromPoint(px, py, pz, curx, cury, curz, endx, endy, endz);
-				curx = endx;
-				cury = endy;
-				curz = endz;
-				break;
-			case QUAD_TO:
-				endx = element.getToX();
-				endy = element.getToY();
-				endz = element.getToZ();
-				if (endx == px && endy == py && endz == pz) {
-					return GeomConstants.SHAPE_INTERSECTS;
-				}
-				// For internal use only
-				var subPath = factory.newPath(iterator.getWindingRule());
-				subPath.moveTo(curx, cury, curz);
-				subPath.quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), endx, endy, endz);
-				numCrossings = calculatesCrossingsFromPoint(numCrossings,
-						subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()), px, py, pz,
-						CrossingComputationType.STANDARD);
-				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
-					return numCrossings;
-				}
-				curx = endx;
-				cury = endy;
-				curz = endz;
-				break;
-			case CURVE_TO:
-				endx = element.getToX();
-				endy = element.getToY();
-				endz = element.getToZ();
-				if (endx == px && endy == py && endz == pz) {
-					return GeomConstants.SHAPE_INTERSECTS;
-				}
-				// For internal use only
-				subPath = factory.newPath(iterator.getWindingRule());
-				subPath.moveTo(curx, cury, curz);
-				subPath.curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), element.getCtrlX2(),
-						element.getCtrlY2(), element.getCtrlZ2(), endx, endy, endz);
-				numCrossings = calculatesCrossingsFromPoint(numCrossings,
-						subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()), px, py, pz,
-						CrossingComputationType.STANDARD);
-				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
-					return numCrossings;
-				}
-				curx = endx;
-				cury = endy;
-				curz = endz;
-				break;
-			case CLOSE:
-				if (cury != movy || curx != movx || curz != movz) {
-					if (movx == px && movy == py && movz == pz) {
-						return GeomConstants.SHAPE_INTERSECTS;
-					}
-					numCrossings += Segment3afp.calculatesCrossingsFromPoint(px, py, pz, curx, cury, curz, movx, movy, movz);
-				}
-				curx = movx;
-				cury = movy;
-				curz = movz;
-				break;
-				//$CASES-OMITTED$
-			default:
-			}
-		}
-
-		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
-
-		final var isOpen = curx != movx || cury != movy || curz != movz;
-
-		if (isOpen && type != null) {
-			switch (type) {
-			case AUTO_CLOSE:
-				// Not closed
-				if (movx == px && movy == py && movz == pz) {
-					return GeomConstants.SHAPE_INTERSECTS;
-				}
-				numCrossings += Segment3afp.calculatesCrossingsFromPoint(px, py, pz, curx, cury, curz, movx, movy, movz);
-				break;
-			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
-				// Assume that when is the path is open, only
-				// SHAPE_INTERSECTS may be return
-				numCrossings = 0;
-				break;
-				//$CASES-OMITTED$
-			default:
-				break;
-			}
-		}
-
-		return numCrossings;
 	}
 
 	/**
@@ -631,16 +719,15 @@ public interface Path3afp<
 	 * curves. The control points of the curves may be outside the output box. For obtaining the bounding box of the path's
 	 * points, use {@link #calculatesControlPointBoundingBox(PathIterator3afp, AlignedBox3afp)}.
 	 *
-	 * @param iterator
-	 *            the iterator on the path elements.
-	 * @param box
-	 *            the box to set.
+	 * @param iterator the iterator on the path elements.
+	 * @param box the box to set.
 	 * @return {@code true} if a drawable element was found.
 	 * @see #calculatesControlPointBoundingBox(PathIterator3afp, AlignedBox3afp)
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static boolean calculatesDrawableElementBoundingBox(PathIterator3afp<?> iterator, AlignedBox3afp<?, ?, ?, ?, ?, ?> box) {
 		assert iterator != null : AssertMessages.notNullParameter(0);
+		assert box != null : AssertMessages.notNullParameter(1);
 		var foundOneLine = false;
 		var xmin = Double.POSITIVE_INFINITY;
 		var ymin = Double.POSITIVE_INFINITY;
@@ -691,42 +778,68 @@ public interface Path3afp<
 					}
 					foundOneLine = true;
 					break;
+				case QUAD_TO:
+					final var subPath0 = iterator.getGeomFactory().newPath();
+					subPath0.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+					subPath0.quadTo(
+							element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+							element.getToX(), element.getToY(), element.getToZ());
+					final var box0 = iterator.getGeomFactory().newBox();
+					if (calculatesDrawableElementBoundingBox(
+							subPath0.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
+							box0)) {
+						if (box0.getMinX() < xmin) {
+							xmin = box0.getMinX();
+						}
+						if (box0.getMinY() < ymin) {
+							ymin = box0.getMinY();
+						}
+						if (box0.getMinZ() < zmin) {
+							zmin = box0.getMinZ();
+						}
+						if (box0.getMaxX() > xmax) {
+							xmax = box0.getMaxX();
+						}
+						if (box0.getMaxY() > ymax) {
+							ymax = box0.getMaxY();
+						}
+						if (box0.getMaxZ() > zmax) {
+							zmax = box0.getMaxZ();
+						}
+						foundOneLine = true;
+					}
+					break;
 				case CURVE_TO:
-					//TODO subPath = new Path3d();
-					/*subPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
-					subPath.curveTo(
+					final var subPath1 = iterator.getGeomFactory().newPath();
+					subPath1.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+					subPath1.curveTo(
 							element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
 							element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
 							element.getToX(), element.getToY(), element.getToZ());
+					final var box1 = iterator.getGeomFactory().newBox();
 					if (calculatesDrawableElementBoundingBox(
-							subPath.getPathIterator(GeomConstants.SPLINE_APPROXIMATION_RATIO),
-							box)) {
-						if (box.getMinX()<xmin) xmin = box.getMinX();
-						if (box.getMinY()<ymin) ymin = box.getMinY();
-						if (box.getMinZ()<zmin) zmin = box.getMinZ();
-						if (box.getMaxX()>xmax) xmax = box.getMaxX();
-						if (box.getMinY()>ymax) ymax = box.getMinY();
-						if (box.getMinZ()>zmax) zmax = box.getMinZ();
+							subPath1.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
+							box1)) {
+						if (box1.getMinX() < xmin) {
+							xmin = box1.getMinX();
+						}
+						if (box1.getMinY() < ymin) {
+							ymin = box1.getMinY();
+						}
+						if (box1.getMinZ() < zmin) {
+							zmin = box1.getMinZ();
+						}
+						if (box1.getMaxX() > xmax) {
+							xmax = box1.getMaxX();
+						}
+						if (box1.getMaxY() > ymax) {
+							ymax = box1.getMaxY();
+						}
+						if (box1.getMaxZ() > zmax) {
+							zmax = box1.getMaxZ();
+						}
 						foundOneLine = true;
-					}*/
-					break;
-				case QUAD_TO:
-					//TODO subPath = new Path3d();
-					/*subPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
-					subPath.quadTo(
-							element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
-							element.getToX(), element.getToY(), element.getToZ());
-					if (calculatesDrawableElementBoundingBox(
-							subPath.getPathIterator(GeomConstants.SPLINE_APPROXIMATION_RATIO),
-							box)) {
-						if (box.getMinX()<xmin) xmin = box.getMinX();
-						if (box.getMinY()<ymin) ymin = box.getMinY();
-						if (box.getMinZ()<zmin) zmin = box.getMinZ();
-						if (box.getMaxX()>xmax) xmax = box.getMaxX();
-						if (box.getMinY()>ymax) ymax = box.getMinY();
-						if (box.getMinZ()>zmax) zmax = box.getMinZ();
-						foundOneLine = true;
-					}*/
+					}
 					break;
 				default:
 					break;
@@ -977,7 +1090,7 @@ public interface Path3afp<
 		var movz = pathElement.getToZ();
 		var curz = movz;
 
-		var length = 0;
+		var length = 0.;
 
 		double endx;
 		double endy;
@@ -999,7 +1112,8 @@ public interface Path3afp<
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
-				length += Point3D.getDistancePointPoint(curx, cury, curz, endx, endy, endz);
+				var elementLength = Point3D.getDistancePointPoint(curx, cury, curz, endx, endy, endz);
+				length += elementLength;
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1008,11 +1122,12 @@ public interface Path3afp<
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
-				var subPath = factory.newPath(iterator.getWindingRule());
+				var subPath = factory.newPath();
 				subPath.moveTo(curx, cury, curz);
 				subPath.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
-				length += calculatesLength(subPath.getPathIterator(
+				elementLength = calculatesLength(subPath.getPathIterator(
 						iterator.getGeomFactory().getSplineApproximationRatio()));
+				length += elementLength;
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1021,19 +1136,21 @@ public interface Path3afp<
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
-				subPath = factory.newPath(iterator.getWindingRule());
+				subPath = factory.newPath();
 				subPath.moveTo(curx, cury, curz);
 				subPath.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
 						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(), endx, endy, endz);
-				length += calculatesLength(subPath.getPathIterator(
+				elementLength = calculatesLength(subPath.getPathIterator(
 						iterator.getGeomFactory().getSplineApproximationRatio()));
+				length += elementLength;
 				curx = endx;
 				cury = endy;
 				curz = endz;
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy || curz != movz) {
-					length += Point3D.getDistancePointPoint(curx, cury, curz, movx, movy, movz);
+					elementLength = Point3D.getDistancePointPoint(curx, cury, curz, movx, movy, movz);
+					length += elementLength;
 				}
 				curx = movx;
 				cury = movy;
@@ -1265,15 +1382,27 @@ public interface Path3afp<
 
 	@Pure
 	@Override
+	@Unefficient
 	default boolean contains(double x, double y, double z) {
-		return containsPoint(getPathIterator(getGeomFactory().getSplineApproximationRatio()), x, y, z);
+		final var point = new InnerComputationPoint3D(x, y, z);
+		final var distance = getDistanceSquared(point);
+		return MathUtil.isEpsilonZero(distance);
+	}
+
+	@Pure
+	@Override
+	@Inline(value = "MathUtil.isEpsilonZero(($0).getDistanceSquared($1))", imported = {MathUtil.class}, constantExpression = true)
+	@Unefficient
+	default boolean contains(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var distance = getDistanceSquared(point);
+		return MathUtil.isEpsilonZero(distance);
 	}
 
 	@Override
-	default boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : AssertMessages.notNullParameter();
-		//TODO
-		return false;
+	default boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?> box) {
+		assert box != null : AssertMessages.notNullParameter();
+		return box.isDegeneratedPoint() && contains(box.getMinX(), box.getMinY(), box.getMinZ());
 	}
 
 	@Pure
@@ -1284,7 +1413,6 @@ public interface Path3afp<
 		if (prism.isEmpty()) {
 			return false;
 		}
-		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		//TODO
 		return false;
 	}
@@ -1293,7 +1421,6 @@ public interface Path3afp<
 	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
-		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		//TODO
 		return false;
 	}
@@ -1302,7 +1429,6 @@ public interface Path3afp<
 	@Override
 	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		//TODO
 		return false;
 	}
@@ -1311,7 +1437,6 @@ public interface Path3afp<
 	@Override
 	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
-		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		//TODO
 		return false;
 	}
@@ -1320,7 +1445,6 @@ public interface Path3afp<
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final var mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		//TODO
 		return false;
 	}
@@ -1403,7 +1527,7 @@ public interface Path3afp<
 	@Pure
 	@Override
 	default PathIterator3afp<IE> getPathIterator(double flatness) {
-		return new FlatteningPathIterator<>(getWindingRule(), getPathIterator(null), flatness, DEFAULT_FLATENING_LIMIT);
+		return new FlatteningPathIterator<>(getPathIterator(null), flatness, DEFAULT_FLATENING_LIMIT);
 	}
 
 	/**
@@ -1430,7 +1554,7 @@ public interface Path3afp<
 	 */
 	@Pure
 	default PathIterator3afp<IE> getPathIterator(Transform3D transform, double flatness) {
-		return new FlatteningPathIterator<>(getWindingRule(), getPathIterator(transform), flatness, DEFAULT_FLATENING_LIMIT);
+		return new FlatteningPathIterator<>(getPathIterator(transform), flatness, DEFAULT_FLATENING_LIMIT);
 	}
 
 	/**
@@ -1472,6 +1596,13 @@ public interface Path3afp<
 	 * Remove the point with the given coordinates.
 	 *
 	 * <p>If the given coordinates do not match exactly a point in the path, nothing is removed.
+	 * Otherwise, the following rules apply:
+	 * <ul>
+	 * <li>If the point is for a {@code MOVE_TO}, a {@code LINE_TO} or a {@code CLOSE} or the end
+	 *     points or a curve, the associated path elements are removed;</li>
+	 * <li>If the point is the control point of a quadratic curve; then the curve is converted to a line.</li>
+	 * <li>If the point is one of the control point of a cubic spline; then the spline is converted to a quadratic curve.</li>
+	 * </ul>
 	 *
 	 * @param x
 	 *            the x coordinate of the ponit to remove.
@@ -1486,8 +1617,7 @@ public interface Path3afp<
 	@Override
 	default void toBoundingBox(B box) {
 		assert box != null : AssertMessages.notNullParameter();
-		Path3afp.calculatesDrawableElementBoundingBox(getPathIterator(
-				getGeomFactory().getSplineApproximationRatio()), box);
+		Path3afp.calculatesDrawableElementBoundingBox(getPathIterator(), box);
 	}
 
 	/** Replies this segment with a Geogebra-compatible form.
@@ -1539,12 +1669,6 @@ public interface Path3afp<
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
-		}
-
-		@Pure
-		@Override
-		public PathWindingRule getWindingRule() {
-			return this.path.getWindingRule();
 		}
 
 		@Override
@@ -1600,8 +1724,8 @@ public interface Path3afp<
 		 */
 		public PathElementPathIterator(Path3afp<?, T, ?, ?, ?, ?> path) {
 			super(path);
-			this.p1 = new InnerComputationPoint3afp();
-			this.p2 = new InnerComputationPoint3afp();
+			this.p1 = new InnerComputationPoint3D();
+			this.p2 = new InnerComputationPoint3D();
 		}
 
 		@Override
@@ -1746,10 +1870,10 @@ public interface Path3afp<
 			super(path);
 			assert transform != null : AssertMessages.notNullParameter(1);
 			this.transform = transform;
-			this.p1 = new InnerComputationPoint3afp();
-			this.p2 = new InnerComputationPoint3afp();
-			this.ptmp1 = new InnerComputationPoint3afp();
-			this.ptmp2 = new InnerComputationPoint3afp();
+			this.p1 = new InnerComputationPoint3D();
+			this.p2 = new InnerComputationPoint3D();
+			this.ptmp1 = new InnerComputationPoint3D();
+			this.ptmp2 = new InnerComputationPoint3D();
 		}
 
 		@Override
@@ -1833,6 +1957,13 @@ public interface Path3afp<
 
 	/**
 	 * A path iterator that is flattening the path. This iterator was copied from AWT FlatteningPathIterator.
+	 * Curve:
+			//a=Curve((1-t)^(3) CA + 3 (1-t)^(2) t CB + 3 (1-t) t^(2) CC + t^(3) CD, t,0,1)
+			// =Curve(
+			//	x(CA) (1-t)^(3)+3 x(CB) (1-t)^(2) t+3 x(CC) (1-t) t^(2)+x(CD) t^(3),
+			//	y(CA) (1-t)^(3)+3 y(CB) (1-t)^(2) t+3 y(CC) (1-t) t^(2)+y(CD) t^(3),
+			//	z(CA) (1-t)^(3)+3 z(CB) (1-t)^(2) t+3 z(CC) (1-t) t^(2)+z(CD) t^(3),
+			//	t,0,1)
 	 *
 	 * @param <T>
 	 *            the type of the path elements.
@@ -1843,10 +1974,6 @@ public interface Path3afp<
 	 * @since 13.0
 	 */
 	class FlatteningPathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
-
-		/** Winding rule of the path.
-		 */
-		private final PathWindingRule windingRule;
 
 		/** The source iterator.
 		 */
@@ -1862,538 +1989,386 @@ public interface Path3afp<
 		 */
 		private final int limit;
 
-		/** The recursion level at which each curve being held in storage was generated.
+		/** The next element to be replied by the iterator.
 		 */
-		private int[] levels;
+		private T nextElement;
 
-		/** The cache of interpolated coords.
-		 * Note that this must be long enough
-		 * to store a full cubic segment and
-		 * a relative cubic segment to avoid
-		 * aliasing when copying the coords
-		 * of a curve to the end of the array.
-		 *
+		/** List of flatten points from a curve. If this attribute is {@code null},
+		 * there is no flatten curve under iteration.
 		 */
-		private double[] hold = new double[36];
+		private List<FPoint> flattenPoints;
 
-		/** The index of the last curve segment being held for interpolation.
+		/** Index of the segment to reply for the {@code flattenPoints}.
 		 */
-		private int holdEnd;
-
-		/**
-		 * The index of the curve segment that was last interpolated.  This
-		 * is the curve segment ready to be returned in the next call to
-		 * next().
-		 */
-		private int holdIndex;
-
-		/** The ending x of the last segment.
-		 */
-		private double currentX;
-
-		/** The ending y of the last segment.
-		 */
-		private double currentY;
-
-		/** The ending z of the last segment.
-		 */
-		private double currentZ;
-
-		/** The x of the last move segment.
-		 */
-		private double moveX;
-
-		/** The y of the last move segment.
-		 */
-		private double moveY;
-
-		/** The z of the last move segment.
-		 */
-		private double moveZ;
-
-		/** The index of the entry in the
-		 * levels array of the curve segment
-		 * at the holdIndex.
-		 */
-		private int levelIndex;
-
-		/** True when iteration is done.
-		 */
-		private boolean done;
-
-		/** The type of the path element.
-		 */
-		private PathElementType holdType;
-
-		/** The x of the last move segment replied by next.
-		 */
-		private double lastNextX;
-
-		/** The y of the last move segment replied by next.
-		 */
-		private double lastNextY;
-
-		/** The y of the last move segment replied by next.
-		 */
-		private double lastNextZ;
+		private int flattenPointsIndex;
 
 		/** Constructor.
-		 * @param windingRule is the winding rule of the path.
+		 *
 		 * @param pathIterator is the path iterator that may be used to initialize the path.
 		 * @param flatness the maximum allowable distance between the control points and the flattened curve
 		 * @param limit the maximum number of recursive subdivisions allowed for any curved segment
 		 */
-		public FlatteningPathIterator(PathWindingRule windingRule, PathIterator3afp<T> pathIterator, double flatness, int limit) {
-			assert windingRule != null : AssertMessages.notNullParameter(0);
+		public FlatteningPathIterator(PathIterator3afp<T> pathIterator, double flatness, int limit) {
+			this(pathIterator, limit, flatness * flatness);
+		}
+
+		/** Constructor.
+		 *
+		 * @param pathIterator is the path iterator that may be used to initialize the path.
+		 * @param limit the maximum number of recursive subdivisions allowed for any curved segment
+		 * @param squaredFlatness the squared value of the maximum allowable distance between the control points and the flattened curve
+		 */
+		private FlatteningPathIterator(PathIterator3afp<T> pathIterator, int limit, double squaredFlatness) {
 			assert pathIterator != null : AssertMessages.notNullParameter(1);
-			assert flatness > 0. : AssertMessages.positiveStrictlyParameter(2);
-			assert limit >= 0 : AssertMessages.positiveOrZeroParameter(3);
-			this.windingRule = windingRule;
+			assert squaredFlatness > 0. : AssertMessages.positiveStrictlyParameter(3);
+			assert limit >= 0 : AssertMessages.positiveOrZeroParameter(2);
 			this.pathIterator = pathIterator;
-			this.squaredFlatness = flatness * flatness;
+			this.squaredFlatness = squaredFlatness;
 			this.limit = limit;
-			this.levels = new int[limit + 1];
 			searchNext();
 		}
 
-		/**
-		 * Ensures that the hold array can hold up to (want) more values.
-		 * It is currently holding (hold.length - holdIndex) values.
-		 */
-		private void ensureHoldCapacity(int want) {
-			if (this.holdIndex - want < 0) {
-				final var have = this.hold.length - this.holdIndex;
-				final var newsize = this.hold.length + GROW_SIZE;
-				final var newhold = new double[newsize];
-				System.arraycopy(this.hold,
-						this.holdIndex,
-						newhold,
-						this.holdIndex + GROW_SIZE,
-						have);
-				this.hold = newhold;
-				this.holdIndex += GROW_SIZE;
-				this.holdEnd += GROW_SIZE;
-			}
-		}
-
-		/**
-		 * Returns the square of the flatness, or maximum distance of a
-		 * control point from the line connecting the end points, of the
-		 * quadratic curve specified by the control points stored in the
-		 * indicated array at the indicated index.
-		 * @param coords an array containing coordinate values
-		 * @param offset the index into {@code coords} from which to
-		 *          to start getting the values from the array
-		 * @return the flatness of the quadratic curve that is defined by the
-		 *          values in the specified array at the specified index.
-		 */
-		@Pure
-		private static double getQuadSquaredFlatness(double[] coords, int offset) {
-			return Segment3afp.calculatesDistanceSquaredSegmentPoint(
-					coords[offset + 0], coords[offset + 1], coords[offset + 2],
-					coords[offset + 6], coords[offset + 7], coords[offset + 8],
-					coords[offset + 3], coords[offset + 4], coords[offset + 5]);
-		}
-
-		/**
-		 * Subdivides the quadratic curve specified by the coordinates
-		 * stored in the {@code src} array at indices
-		 * {@code srcoff} through {@code srcoff}&nbsp;+&nbsp;8
-		 * and stores the resulting two subdivided curves into the two
-		 * result arrays at the corresponding indices.
-		 * Either or both of the {@code left} and {@code right}
-		 * arrays can be {@code null} or a reference to the same array
-		 * and offset as the {@code src} array.
-		 * Note that the last point in the first subdivided curve is the
-		 * same as the first point in the second subdivided curve.  Thus,
-		 * it is possible to pass the same array for {@code left} and
-		 * {@code right} and to use offsets such that
-		 * {@code rightoff} equals {@code leftoff} + 6 in order
-		 * to avoid allocating extra storage for this common point.
-		 * @param src the array holding the coordinates for the source curve
-		 * @param srcoff the offset into the array of the beginning of the
-		 *     the 9 source coordinates
-		 * @param left the array for storing the coordinates for the first
-		 *     half of the subdivided curve
-		 * @param leftoff the offset into the array of the beginning of the
-		 *     the 9 left coordinates
-		 * @param right the array for storing the coordinates for the second
-		 *     half of the subdivided curve
-		 * @param rightoff the offset into the array of the beginning of the
-		 *     the 9 right coordinates
-		 */
-		private static void subdivideQuad(double[] src, int srcoff, double[] left, int leftoff, double[] right, int rightoff) {
-			var x1 = src[srcoff + 0];
-			var y1 = src[srcoff + 1];
-			var z1 = src[srcoff + 2];
-			if (left != null) {
-				left[leftoff + 0] = x1;
-				left[leftoff + 1] = y1;
-				left[leftoff + 2] = z1;
-			}
-			var x2 = src[srcoff + 6];
-			var y2 = src[srcoff + 7];
-			var z2 = src[srcoff + 8];
-			if (right != null) {
-				right[rightoff + 6] = x2;
-				right[rightoff + 7] = y2;
-				right[rightoff + 8] = z2;
-			}
-			var ctrlx = src[srcoff + 3];
-			var ctrly = src[srcoff + 4];
-			var ctrlz = src[srcoff + 5];
-			x1 = (x1 + ctrlx) * .5;
-			y1 = (y1 + ctrly) * .5;
-			z1 = (z1 + ctrlz) * .5;
-			x2 = (x2 + ctrlx) * .5;
-			y2 = (y2 + ctrly) * .5;
-			z2 = (z2 + ctrlz) * .5;
-			ctrlx = (x1 + x2) * .5;
-			ctrly = (y1 + y2) * .5;
-			ctrlz = (z1 + z2) * .5;
-			if (left != null) {
-				left[leftoff + 3] = x1;
-				left[leftoff + 4] = y1;
-				left[leftoff + 5] = z1;
-				left[leftoff + 6] = ctrlx;
-				left[leftoff + 7] = ctrly;
-				left[leftoff + 8] = ctrlz;
-			}
-			if (right != null) {
-				right[rightoff + 0] = ctrlx;
-				right[rightoff + 1] = ctrly;
-				right[rightoff + 2] = ctrlz;
-				right[rightoff + 3] = x2;
-				right[rightoff + 4] = y2;
-				right[rightoff + 5] = z2;
-			}
-		}
-
-		/**
-		 * Returns the square of the flatness of the cubic curve specified
-		 * by the control points stored in the indicated array at the
-		 * indicated index. The flatness is the maximum distance
-		 * of a control point from the line connecting the end points.
-		 * @param coords an array containing coordinates
-		 * @param offset the index of {@code coords} from which to begin
-		 *          getting the end points and control points of the curve
-		 * @return the square of the flatness of the 3D cubic curve
-		 *          specified by the coordinates in {@code coords} at
-		 *          the specified offset.
-		 */
-		@Pure
-		private static double getCurveSquaredFlatness(double[] coords, int offset) {
-			final var dist1 = Segment3afp.calculatesDistanceSquaredSegmentPoint(
-					coords[offset + 0],
-					coords[offset + 1],
-					coords[offset + 2],
-					coords[offset + 9],
-					coords[offset + 10],
-					coords[offset + 11],
-					coords[offset + 3],
-					coords[offset + 4],
-					coords[offset + 5]);
-			final var dist2 = Segment3afp.calculatesDistanceSquaredSegmentPoint(
-					coords[offset + 0],
-					coords[offset + 1],
-					coords[offset + 2],
-					coords[offset + 9],
-					coords[offset + 10],
-					coords[offset + 11],
-					coords[offset + 6],
-					coords[offset + 7],
-					coords[offset + 8]);
-			return Math.max(dist1, dist2);
-		}
-
-		/**
-		 * Subdivides the cubic curve specified by the coordinates
-		 * stored in the {@code src} array at indices {@code srcoff}
-		 * through ({@code srcoff}&nbsp;+&nbsp;11) and stores the
-		 * resulting two subdivided curves into the two result arrays at the
-		 * corresponding indices.
-		 * Either or both of the {@code left} and {@code right}
-		 * arrays may be {@code null} or a reference to the same array
-		 * as the {@code src} array.
-		 * Note that the last point in the first subdivided curve is the
-		 * same as the first point in the second subdivided curve. Thus,
-		 * it is possible to pass the same array for {@code left}
-		 * and {@code right} and to use offsets, such as {@code rightoff}
-		 * equals ({@code leftoff} + 9), in order
-		 * to avoid allocating extra storage for this common point.
-		 * @param src the array holding the coordinates for the source curve
-		 * @param srcoff the offset into the array of the beginning of the
-		 *     the 9 source coordinates
-		 * @param left the array for storing the coordinates for the first
-		 *     half of the subdivided curve
-		 * @param leftoff the offset into the array of the beginning of the
-		 *     the 9 left coordinates
-		 * @param right the array for storing the coordinates for the second
-		 *     half of the subdivided curve
-		 * @param rightoff the offset into the array of the beginning of the
-		 *     the 9 right coordinates
-		 */
-		private static void subdivideCurve(double[] src, int srcoff, double[] left, int leftoff, double[] right, int rightoff) {
-			var x1 = src[srcoff + 0];
-			var y1 = src[srcoff + 1];
-			final var z1 = src[srcoff + 2];
-			if (left != null) {
-				left[leftoff + 0] = x1;
-				left[leftoff + 1] = y1;
-				left[leftoff + 2] = z1;
-			}
-			var x2 = src[srcoff + 9];
-			var y2 = src[srcoff + 10];
-			var z2 = src[srcoff + 11];
-			if (right != null) {
-				right[rightoff + 9] = x2;
-				right[rightoff + 10] = y2;
-				right[rightoff + 11] = z2;
-			}
-			var ctrlx1 = src[srcoff + 3];
-			var ctrly1 = src[srcoff + 4];
-			var ctrlz1 = src[srcoff + 5];
-			x1 = (x1 + ctrlx1) * .5;
-			y1 = (y1 + ctrly1) * .5;
-			y1 = (z1 + ctrlz1) * .5;
-			var ctrlx2 = src[srcoff + 6];
-			var ctrly2 = src[srcoff + 7];
-			var ctrlz2 = src[srcoff + 8];
-			x2 = (x2 + ctrlx2) * .5;
-			y2 = (y2 + ctrly2) * .5;
-			z2 = (z2 + ctrlz2) * .5;
-			var centerx = (ctrlx1 + ctrlx2) * .5;
-			var centery = (ctrly1 + ctrly2) * .5;
-			var centerz = (ctrlz1 + ctrlz2) * .5;
-			ctrlx1 = (x1 + centerx) * .5;
-			ctrly1 = (y1 + centery) * .5;
-			ctrlz1 = (z1 + centerz) * .5;
-			ctrlx2 = (x2 + centerx) * .5;
-			ctrly2 = (y2 + centery) * .5;
-			ctrlz2 = (z2 + centerz) * .5;
-			centerx = (ctrlx1 + ctrlx2) * .5;
-			centery = (ctrly1 + ctrly2) * .5;
-			centerz = (ctrlz1 + ctrlz2) * .5;
-			if (left != null) {
-				left[leftoff + 3] = x1;
-				left[leftoff + 4] = y1;
-				left[leftoff + 5] = z1;
-				left[leftoff + 6] = ctrlx1;
-				left[leftoff + 7] = ctrly1;
-				left[leftoff + 8] = ctrlz1;
-				left[leftoff + 9] = centerx;
-				left[leftoff + 10] = centery;
-				left[leftoff + 11] = centerz;
-			}
-			if (right != null) {
-				right[rightoff + 0] = centerx;
-				right[rightoff + 1] = centery;
-				right[rightoff + 2] = centerz;
-				right[rightoff + 3] = ctrlx2;
-				right[rightoff + 4] = ctrly2;
-				right[rightoff + 5] = ctrly2;
-				right[rightoff + 6] = x2;
-				right[rightoff + 7] = y2;
-				right[rightoff + 8] = z2;
-			}
-		}
-
 		private void searchNext() {
-			if (this.holdIndex >= this.holdEnd) {
-				if (!this.pathIterator.hasNext()) {
-					this.done = true;
-					return;
+			this.nextElement = null;
+			if (this.flattenPoints != null) {
+				if (this.flattenPointsIndex + 1 < this.flattenPoints.size()) {
+					final var p1 = this.flattenPoints.get(this.flattenPointsIndex);
+					++this.flattenPointsIndex;
+					final var p2 = this.flattenPoints.get(this.flattenPointsIndex);
+					this.nextElement = getGeomFactory().newLinePathElement(
+							p1.x(), p1.y(), p1.z(),
+							p2.x(), p2.y(), p2.z());
+				} else {
+					this.flattenPoints = null;
 				}
-				final var pathElement = this.pathIterator.next();
-				this.holdType = pathElement.getType();
-				pathElement.toArray(this.hold);
-				this.levelIndex = 0;
-				this.levels[0] = 0;
 			}
-
-			switch (this.holdType) {
-			case MOVE_TO:
-			case LINE_TO:
-				this.currentX = this.hold[0];
-				this.currentY = this.hold[1];
-				this.currentZ = this.hold[2];
-				if (this.holdType == PathElementType.MOVE_TO) {
-					this.moveX = this.currentX;
-					this.moveY = this.currentY;
-					this.moveZ = this.currentZ;
-				}
-				this.holdIndex = 0;
-				this.holdEnd = 0;
-				break;
-			case CLOSE:
-				this.currentX = this.moveX;
-				this.currentY = this.moveY;
-				this.currentZ = this.moveZ;
-				this.holdIndex = 0;
-				this.holdEnd = 0;
-				break;
-			case QUAD_TO:
-				if (this.holdIndex >= this.holdEnd) {
-					// Move the coordinates to the end of the array.
-					this.holdIndex = this.hold.length - 9;
-					this.holdEnd = this.hold.length - 3;
-					this.hold[this.holdIndex + 0] = this.currentX;
-					this.hold[this.holdIndex + 1] = this.currentY;
-					this.hold[this.holdIndex + 2] = this.currentZ;
-					this.hold[this.holdIndex + 3] = this.hold[0];
-					this.hold[this.holdIndex + 4] = this.hold[1];
-					this.hold[this.holdIndex + 5] = this.hold[2];
-					this.currentX = this.hold[3];
-					this.hold[this.holdIndex + 6] = this.currentX;
-					this.currentY = this.hold[4];
-					this.hold[this.holdIndex + 7] = this.currentY;
-					this.currentZ = this.hold[5];
-					this.hold[this.holdIndex + 8] = this.currentZ;
-				}
-
-				var level = this.levels[this.levelIndex];
-				while (level < this.limit) {
-					if (getQuadSquaredFlatness(this.hold, this.holdIndex) < this.squaredFlatness) {
-						break;
+			if (this.nextElement == null && this.pathIterator.hasNext()) {
+				final var originalElement = this.pathIterator.next();
+				switch (originalElement.getType()) {
+				case MOVE_TO:
+				case LINE_TO:
+				case CLOSE:
+					this.nextElement = originalElement;
+					break;
+				case QUAD_TO:
+					this.flattenPoints = flattenQuad(
+							originalElement.getFromX(),
+							originalElement.getFromY(),
+							originalElement.getFromZ(),
+							originalElement.getCtrlX1(),
+							originalElement.getCtrlY1(),
+							originalElement.getCtrlZ1(),
+							originalElement.getToX(),
+							originalElement.getToY(),
+							originalElement.getToZ());
+					if (this.flattenPoints.size() < 2) {
+						this.flattenPoints = null;
+					} else {
+						final var p1 = this.flattenPoints.get(0);
+						final var p2 = this.flattenPoints.get(1);
+						this.nextElement = getGeomFactory().newLinePathElement(
+								p1.x(), p1.y(), p1.z(),
+								p2.x(), p2.y(), p2.z());
+						this.flattenPointsIndex = 1;
 					}
-
-					ensureHoldCapacity(6);
-					subdivideQuad(
-							this.hold, this.holdIndex,
-							this.hold, this.holdIndex - 6,
-							this.hold, this.holdIndex);
-					this.holdIndex -= 6;
-
-					// Now that we have subdivided, we have constructed
-					// two curves of one depth lower than the original
-					// curve.  One of those curves is in the place of
-					// the former curve and one of them is in the next
-					// set of held coordinate slots.  We now set both
-					// curves level values to the next higher level.
-					++level;
-					this.levels[this.levelIndex] = level;
-					++this.levelIndex;
-					this.levels[this.levelIndex] = level;
-				}
-
-				// This curve segment is flat enough, or it is too deep
-				// in recursion levels to try to flatten any more.  The
-				// two coordinates at holdIndex+6 and holdIndex+7 now
-				// contain the endpoint of the curve which can be the
-				// endpoint of an approximating line segment.
-				this.holdIndex += 6;
-				this.levelIndex--;
-				break;
-			case CURVE_TO:
-				if (this.holdIndex >= this.holdEnd) {
-					// Move the coordinates to the end of the array.
-					this.holdIndex = this.hold.length - 12;
-					this.holdEnd = this.hold.length - 3;
-					this.hold[this.holdIndex + 0] = this.currentX;
-					this.hold[this.holdIndex + 1] = this.currentY;
-					this.hold[this.holdIndex + 2] = this.currentZ;
-					this.hold[this.holdIndex + 3] = this.hold[0];
-					this.hold[this.holdIndex + 4] = this.hold[1];
-					this.hold[this.holdIndex + 5] = this.hold[2];
-					this.hold[this.holdIndex + 6] = this.hold[3];
-					this.hold[this.holdIndex + 7] = this.hold[4];
-					this.hold[this.holdIndex + 8] = this.hold[5];
-					this.currentX = this.hold[6];
-					this.hold[this.holdIndex + 9] = this.currentX;
-					this.currentY = this.hold[7];
-					this.hold[this.holdIndex + 10] = this.currentY;
-					this.currentZ = this.hold[6];
-					this.hold[this.holdIndex + 11] = this.currentZ;
-				}
-
-				level = this.levels[this.levelIndex];
-				while (level < this.limit) {
-					if (getCurveSquaredFlatness(this.hold, this.holdIndex) < this.squaredFlatness) {
-						break;
+					break;
+				case CURVE_TO:
+					this.flattenPoints = flattenCubic(
+							originalElement.getFromX(),
+							originalElement.getFromY(),
+							originalElement.getFromZ(),
+							originalElement.getCtrlX1(),
+							originalElement.getCtrlY1(),
+							originalElement.getCtrlZ1(),
+							originalElement.getCtrlX2(),
+							originalElement.getCtrlY2(),
+							originalElement.getCtrlZ2(),
+							originalElement.getToX(),
+							originalElement.getToY(),
+							originalElement.getToZ());
+					if (this.flattenPoints.size() < 2) {
+						this.flattenPoints = null;
+					} else {
+						final var p1 = this.flattenPoints.get(0);
+						final var p2 = this.flattenPoints.get(1);
+						this.nextElement = getGeomFactory().newLinePathElement(
+								p1.x(), p1.y(), p1.z(),
+								p2.x(), p2.y(), p2.z());
+						this.flattenPointsIndex = 1;
 					}
-
-					ensureHoldCapacity(9);
-					subdivideCurve(
-							this.hold, this.holdIndex,
-							this.hold, this.holdIndex - 9,
-							this.hold, this.holdIndex);
-					this.holdIndex -= 9;
-
-					// Now that we have subdivided, we have constructed
-					// two curves of one depth lower than the original
-					// curve.  One of those curves is in the place of
-					// the former curve and one of them is in the next
-					// set of held coordinate slots.  We now set both
-					// curves level values to the next higher level.
-					++level;
-					this.levels[this.levelIndex] = level;
-					++this.levelIndex;
-					this.levels[this.levelIndex] = level;
+					break;
+				case ARC_TO:
+				default:
+					throw new UnsupportedOperationException();
 				}
-
-				// This curve segment is flat enough, or it is too deep
-				// in recursion levels to try to flatten any more.  The
-				// two coordinates at holdIndex+9 and holdIndex+10 now
-				// contain the endpoint of the curve which can be the
-				// endpoint of an approximating line segment.
-				this.holdIndex += 9;
-				--this.levelIndex;
-				break;
-			default:
 			}
+		}
+
+		/**
+		 * Flattens a 3D quadratic Bézier curve into a polyline.
+		 *
+		 * <p>The curve is defined by the standard parametric equation:
+		 * <pre>
+		 *   P(t) = (1-t)² QA + 2(1-t)t QB + t² QC,  t in [0, 1]
+		 * </pre>
+		 * where QA is the start point, QB the control point, and QC the end point.
+		 *
+		 * <p><b>Algorithm — recursive De Casteljau subdivision</b><br>
+		 * For a quadratic Bézier, the maximum perpendicular deviation of the chord
+		 * [QA, QC] from the exact curve occurs at t = 0.5 and equals:
+		 * <pre>
+		 *   deviation = ‖ midCurve − midChord ‖
+		 *             = ‖ (QA/4 + QB/2 + QC/4) − (QA/2 + QC/2) ‖
+		 *             = ‖ QB/2 − QA/4 − QC/4 ‖
+		 * </pre>
+		 * This closed-form expression makes the flatness test O(1) per recursion level,
+		 * with no sampling required.
+		 *
+		 * <p>When the deviation exceeds {@code flatness}, the curve is split at t = 0.5
+		 * via De Casteljau into two sub-curves, each recursed independently. Recursion
+		 * stops either when the deviation is within tolerance or when {@code maxIterations}
+		 * depth is reached (safety cap).
+		 *
+		 * @param qax x coordinate of the start point {@code QA}.
+		 * @param qay y coordinate of the start point {@code QA}.
+		 * @param qaz z coordinate of the start point {@code QA}.
+		 * @param qbx x coordinate of the control point {@code QB}.
+		 * @param qby y coordinate of the control point {@code QB}.
+		 * @param qbz z coordinate of the control point {@code QB}.
+		 * @param qcx x coordinate of the end point {@code QC}.
+		 * @param qcy y coordinate of the end point {@code QC}.
+		 * @param qcz z coordinate of the end point {@code QC}.
+		 * @return the points, starting with {@code QA} and ending with
+		 *     {@code QC}, representing the approximating polyline.
+		 */
+		@SuppressWarnings("checkstyle:parameternumber")
+		protected List<FPoint> flattenQuad(
+				double qax, double qay, double qaz,
+				double qbx, double qby, double qbz,
+				double qcx, double qcy, double qcz) {
+			// Pre-allocate a reasonably sized list; typical curves need O(log(1/flatness)) points.
+			final var points = new ArrayList<FPoint>(64);
+			// Add the first point
+			points.add(new FPoint(qax, qay, qaz));
+			// Subdivise
+			subdivideQuad(
+					qax, qay, qaz,
+					qbx, qby, qbz,
+					qcx, qcy, qcz,
+					0,
+					points);
+			return points;
+		}
+
+		@SuppressWarnings("checkstyle:parameternumber")
+		private void subdivideQuad(
+				double qax, double qay, double qaz,
+				double qbx, double qby, double qbz,
+				double qcx, double qcy, double qcz,
+				int depth,
+				List<FPoint> points) {
+			// Deviation test:
+			// midCurve = P(0.5) = 0.25*QA + 0.5*QB + 0.25*QC
+			// midChord = 0.5*QA + 0.5*QC
+			// delta    = midCurve - midChord = 0.5*QB - 0.25*QA - 0.25*QC
+			//          = 0.25*(2QB - QA - QC)
+			final var dx = .25 * (2. * qbx - qax - qcx);
+			final var dy = .25 * (2. * qby - qay - qcy);
+			final var dz = .25 * (2. * qbz - qaz - qcz);
+			final var squaredDeviation = dx * dx + dy * dy + dz * dz;
+
+			if (depth >= this.limit || squaredDeviation <= this.squaredFlatness) {
+				// Chord [QA, QC] is flat enough
+				points.add(new FPoint(qcx, qcy, qcz));
+			} else {
+				// De Casteljau split at t = 0.5:
+				// Left  sub-curve: L0=QA,  L1=M_AB,  L2=M_mid
+				// Right sub-curve: R0=M_mid, R1=M_BC, R2=QC
+				final var mabx = .5 * (qax + qbx);
+				final var maby = .5 * (qay + qby);
+				final var mabz = .5 * (qaz + qbz);
+				final var mbcx = .5 * (qbx + qcx);
+				final var mbcy = .5 * (qby + qcy);
+				final var mbcz = .5 * (qbz + qcz);
+				final var midx = .5 * (mabx + mbcx);
+				final var midy = .5 * (maby + mbcy);
+				final var midz = .5 * (mabz + mbcz);
+				final var next = depth + 1;
+				subdivideQuad(qax, qay, qaz, mabx, maby, mabz, midx, midy, midz, next, points);
+				subdivideQuad(midx, midy, midz, mbcx, mbcy, mbcz, qcx, qcy, qcz, next, points);
+			}
+		}
+
+		/**
+		 * Flattens a cubic Bézier curve into a polyline approximation.
+		 *
+		 * @param qax x coordinate of the start point {@code QA}.
+		 * @param qay y coordinate of the start point {@code QA}.
+		 * @param qaz z coordinate of the start point {@code QA}.
+		 * @param qbx x coordinate of the first control point {@code QB}.
+		 * @param qby y coordinate of the first control point {@code QB}.
+		 * @param qbz z coordinate of the first control point {@code QB}.
+		 * @param qcx x coordinate of the second control point {@code QC}.
+		 * @param qcy y coordinate of the second control point {@code QC}.
+		 * @param qcz z coordinate of the second control point {@code QC}.
+		 * @param qdx x coordinate of the end point {@code QD}.
+		 * @param qdy y coordinate of the end point {@code QD}.
+		 * @param qdz z coordinate of the end point {@code QD}.
+		 * @return the points, starting with {@code QA} and ending with
+		 *     {@code QD}, representing the approximating polyline.
+		 */
+		@SuppressWarnings("checkstyle:parameternumber")
+		protected List<FPoint> flattenCubic(
+				double qax, double qay, double qaz,
+				double qbx, double qby, double qbz,
+				double qcx, double qcy, double qcz,
+				double qdx, double qdy, double qdz) {
+			// Pre-allocate a reasonably sized list; typical curves need O(log(1/flatness)) points.
+			final var points = new ArrayList<FPoint>(64);
+			// Add the first point
+			points.add(new FPoint(qax, qay, qaz));
+			// Subdivise
+			subdivideCubic(
+					qax, qay, qaz,
+					qbx, qby, qbz,
+					qcx, qcy, qcz,
+					qdx, qdy, qdz,
+					0,
+					points);
+			// Add the last point
+			points.add(new FPoint(qdx, qdy, qdz));
+			return points;
+		}
+
+		@SuppressWarnings("checkstyle:parameternumber")
+		private void subdivideCubic(
+				double qax, double qay, double qaz,
+				double qbx, double qby, double qbz,
+				double qcx, double qcy, double qcz,
+				double qdx, double qdy, double qdz,
+				int depth,
+				List<FPoint> points) {
+
+			// Base case 1: maximum depth reached.
+			// Base case 2: curve is already flat enough.
+			if (depth >= this.limit || isCubicFlat(qax, qay, qaz, qbx, qby, qbz, qcx, qcy, qcz, qdx, qdy, qdz)) {
+				points.add(new FPoint(qcx, qcy, qcz));
+			} else {
+				// De Casteljau split at t = 0.5 — numerically stable, branchless.
+				//
+				//  m01  = midpoint(QA, QB)
+				//  m12  = midpoint(QB, QC)
+				//  m23  = midpoint(QC, QD)
+				//  m012 = midpoint(m01, m12)
+				//  m123 = midpoint(m12, m23)
+				//  mid  = midpoint(m012, m123) - point on the curve at t = 0.5
+				//
+				//  Left  sub-curve: [QA,  m01,  m012, mid]
+				//  Right sub-curve: [mid, m123, m23,  QD]
+
+				final var m01x = .5 * (qax + qbx);
+				final var m01y = .5 * (qay + qby);
+				final var m01z = .5 * (qaz + qbz);
+				final var m12x = .5 * (qbx + qcx);
+				final var m12y = .5 * (qby + qcy);
+				final var m12z = .5 * (qbz + qcz);
+				final var m23x = .5 * (qcx + qdx);
+				final var m23y = .5 * (qcy + qdy);
+				final var m23z = .5 * (qcz + qdz);
+				final var m012x = .5 * (m01x + m12x);
+				final var m012y = .5 * (m01y + m12y);
+				final var m012z = .5 * (m01z + m12z);
+				final var m123x = .5 * (m12x + m23x);
+				final var m123y = .5 * (m12y + m23y);
+				final var m123z = .5 * (m12z + m23z);
+				final var midx = .5 * (m012x + m123x);
+				final var midy = .5 * (m012y + m123y);
+				final var midz = .5 * (m012z + m123z);
+				final var next = depth + 1;
+				subdivideCubic(
+						qax, qay, qaz,
+						m01x, m01y, m01z,
+						m012x, m012y, m012z,
+						midx, midy, midz,
+						next, points);
+				subdivideCubic(
+						midx, midy, midz,
+						m123x, m123y, m123z,
+						m23x, m23y, m23z,
+						qdx, qdy, qdz,
+						next, points);
+			}
+		}
+
+		@SuppressWarnings("checkstyle:parameternumber")
+		private boolean isCubicFlat(
+				double qax, double qay, double qaz,
+				double qbx, double qby, double qbz,
+				double qcx, double qcy, double qcz,
+				double qdx, double qdy, double qdz) {
+			// Chord vector
+			final var dx = qdx - qax;
+			final var dy = qdy - qay;
+			final var dz = qdz - qaz;
+			final var squareChord = dx * dx + dy * dy + dz * dz;
+			var dist = squaredDistanceToSegment(
+					qbx, qby, qbz,
+					qax, qay, qaz,
+					dx, dy, dz,
+					squareChord);
+			if (dist <= this.squaredFlatness) {
+				return true;
+			}
+			dist = squaredDistanceToSegment(
+					qcx, qcy, qcz,
+					qax, qay, qaz,
+					dx, dy, dz, squareChord);
+			return dist <= this.squaredFlatness;
+		}
+
+		@SuppressWarnings("checkstyle:parameternumber")
+		private static double squaredDistanceToSegment(
+				double px, double py, double pz,
+				double ax, double ay, double az,
+				double dx, double dy, double dz,
+				double squareChord) {
+			final var apx = px - ax;
+			final var apy = py - ay;
+			final var apz = pz - az;
+			if (MathUtil.isEpsilonZero(squareChord)) {
+				// Degenerate segment: distance to the single point a
+				return apx * apx + apy * apy + apz * apz;
+			}
+			// Clamp projection parameter to [0, 1]
+			var t = (apx * dx + apy * dy + apz * dz) / squareChord;
+			if (t < 0.) {
+				t = 0.;
+			} else if (t > 1.) {
+				t = 1.;
+			}
+			final var ex = apx - t * dx;
+			final var ey = apy - t * dy;
+			final var ez = apz - t * dz;
+			return ex * ex + ey * ey + ez * ez;
 		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return !this.done;
+			return this.nextElement != null;
 		}
 
 		@Override
 		public T next() {
-			if (this.done) {
-				throw new NoSuchElementException("flattening iterator out of bounds");
-			}
-
-			final var type = this.holdType;
-			final T element;
-			if (type != PathElementType.CLOSE) {
-				final var x = this.hold[this.holdIndex + 0];
-				final var y = this.hold[this.holdIndex + 1];
-				final var z = this.hold[this.holdIndex + 2];
-				if (type == PathElementType.MOVE_TO) {
-					element = getGeomFactory().newMovePathElement(x, y, z);
-				} else {
-					element = getGeomFactory().newLinePathElement(
-							this.lastNextX, this.lastNextY, this.lastNextZ,
-							x, y, z);
-				}
-				this.lastNextX = x;
-				this.lastNextY = y;
-				this.lastNextZ = z;
-			} else {
-				element = getGeomFactory().newClosePathElement(
-						this.lastNextX, this.lastNextY, this.lastNextZ,
-						this.moveX, this.moveY, this.moveZ);
-				this.lastNextX = this.moveX;
-				this.lastNextY = this.moveY;
-				this.lastNextZ = this.moveZ;
-			}
-
+			assert this.nextElement != null : AssertMessages.noSuchElement();
+			final var element = this.nextElement;
 			searchNext();
-
 			return element;
 		}
 
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
-		}
-
-		@Pure
-		@Override
-		public PathWindingRule getWindingRule() {
-			return this.windingRule;
 		}
 
 		@Pure
@@ -2425,8 +2400,22 @@ public interface Path3afp<
 
 		@Override
 		public PathIterator3afp<T> restartIterations() {
-			return new FlatteningPathIterator<>(this.windingRule, this.pathIterator.restartIterations(),
-					Math.sqrt(this.squaredFlatness), this.limit);
+			return new FlatteningPathIterator<>(this.pathIterator.restartIterations(),
+					this.limit, this.squaredFlatness);
+		}
+
+		/** Coordinates that corresponds to the approximation of the curve.
+		 *
+		 * @author $Author: sgalland$
+		 * @author $Author: hjaffali$
+		 * @author $Author: tpiotrow$
+		 * @version $FullVersion$
+		 * @mavengroupid $GroupId$
+		 * @mavenartifactid $ArtifactId$
+		 * @since 13.0
+		 */
+		private record FPoint(double x, double y, double z) {
+			//
 		}
 
 	}
@@ -2448,7 +2437,7 @@ public interface Path3afp<
 	 */
 	class PointCollection<P extends Point3D<? super P, ? super V, ? super Q>,
 			V extends Vector3D<? super V, ? super P, ? super Q>, Q extends Quaternion<? super P, ? super V, ? super Q>>
-			implements Collection<P> {
+		implements Collection<P> {
 
 		private final Path3afp<?, ?, P, V, Q, ?> path;
 
@@ -2593,7 +2582,7 @@ public interface Path3afp<
 	class PointIterator<P extends Point3D<? super P, ? super V, ? super Q>,
 			V extends Vector3D<? super V, ? super P, ? super Q>,
 			Q extends Quaternion<? super P, ? super V, ? super Q>>
-			implements Iterator<P> {
+		implements Iterator<P> {
 
 		private final Path3afp<?, ?, P, V, Q, ?> path;
 

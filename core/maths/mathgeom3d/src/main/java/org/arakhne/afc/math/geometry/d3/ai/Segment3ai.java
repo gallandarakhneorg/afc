@@ -25,16 +25,15 @@ import java.util.Iterator;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.base.CrossingComputationType;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.a.Shape3DType;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Functional interface that represented a 2D segment/line on a plane.
@@ -1161,6 +1160,13 @@ public interface Segment3ai<
 		return getX1() == getX2() && getY1() == getY2() && getZ1() == getZ2();
 	}
 
+	@Pure
+	@Override
+	@Inline("isEmpty()")
+	default boolean isDegeneratedPoint() {
+        return isEmpty();
+	}
+
 	/** Change the line.
 	 *
 	 * @param x1 x coordinate of the first point.
@@ -1630,14 +1636,7 @@ public interface Segment3ai<
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final var crossings = Path3ai.computeCrossingsFromSegment(
-				0,
-				iterator,
-				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure

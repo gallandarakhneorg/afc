@@ -23,11 +23,13 @@ package org.arakhne.afc.math.geometry.d3.afp;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Plane3D;
 import org.arakhne.afc.math.geometry.base.d3.PlaneClassification;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.PointVector3DReceiver;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -68,7 +70,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	/**
 	 * Replies the projection on the plane of a point with {@code (a,b,c)} not necessary a unit vector.
 	 * This function computes the unit vector of the plane normal. The function
-	 * {@link #calculatesPlanePointProjectionWithPlaneNormal(double, double, double, double, double, double, double, Point3D)}
+	 * {@link #findsPlanePointProjectionWithPlaneNormal(double, double, double, double, double, double, double, Point3D)}
 	 * calculates the same projection point assuming {@code (a,b,c)} is already a unit normal vector.
 	 *
 	 * <p>
@@ -231,35 +233,31 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 * @param y the y coordinate of the project to project on the plane.
 	 * @param z the z coordinate of the project to project on the plane.
 	 * @param result the projection point.
-	 * @see #calculatesPlanePointProjectionWithPlaneNormal(double, double, double, double, double, double, double, Point3D)
+	 * @see #findsPlanePointProjectionWithPlaneNormal(double, double, double, double, double, double, double, Point3D)
 	 */
 	@SuppressWarnings("checkstyle:parametername")
-	static void calculatesPlanePointProjection(
+	static void findsPlanePointProjection(
 			double a, double b, double c, double d,
 			double x, double y, double z,
 			Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(7);
 
-		final var normalSqLength = a * a + b * b + c * c;
-		final double nx;
-		final double ny;
-		final double nz;
-		if (MathUtil.isEpsilonEqual(normalSqLength, 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
-			nx = a;
-			ny = b;
-			nz = c;
-		} else {
-			final var normalLength = Math.sqrt(normalSqLength);
-			nx = a / normalLength;
-			ny = b / normalLength;
-			nz = c / normalLength;
-		}
+		final var normalLength = Math.sqrt(a * a + b * b + c * c);
 
-		calculatesPlanePointProjectionWithPlaneNormal(nx, ny, nz, d, x, y, z, result);
+		findsPlanePointProjectionWithPlaneNormal(
+				a / normalLength,
+				b / normalLength,
+				c / normalLength,
+				d, x, y, z, result);
 	}
 
 	/**
 	 * Replies the projection on the plane of a point with {@code (a,b,c)} the unit normal of the plane.
+	 * This function differs from {@link #findsPlanePointProjection(double, double, double, double, double, double, double, Point3D)}
+	 * baecause it assumes that the normal vector {@code (a, b, c}} is implicitly a unit vector.
+	 * If you are sure the vector {@code (a, b, c)} is a unit vector, you could call this function; otherwise
+	 * you have to call {@link #findsPlanePointProjection(double, double, double, double, double, double, double, Point3D)}
+	 * that is computing the unit vector from {@code a}, {@code b} and {@code c}.
 	 *
 	 * <p>
 	 * <strong>First Approach: arithmetic resolution</strong>
@@ -411,10 +409,10 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 * @param y the y coordinate of the project to project on the plane.
 	 * @param z the z coordinate of the project to project on the plane.
 	 * @param result the projection point.
-	 * @see #calculatesPlanePointProjection(double, double, double, double, double, double, double, Point3D)
+	 * @see #findsPlanePointProjection(double, double, double, double, double, double, double, Point3D)
 	 */
 	@SuppressWarnings("checkstyle:parametername")
-	static void calculatesPlanePointProjectionWithPlaneNormal(
+	static void findsPlanePointProjectionWithPlaneNormal(
 			double a, double b, double c, double d,
 			double x, double y, double z,
 			Point3D<?, ?, ?> result) {
@@ -451,35 +449,12 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	static double calculatesPlanePlaneDistance(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2) {
-		final var length1 = Math.sqrt(a1 * a1 + b1 * b1 + c1 * c1);
-		final double nx1;
-		final double ny1;
-		final double nz1;
-		if (MathUtil.isEpsilonEqual(length1, 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
-			nx1 = a1;
-			ny1 = b1;
-			nz1 = c1;
-		} else {
-			nx1 = a1 / length1;
-			ny1 = b1 / length1;
-			nz1 = c1 / length1;
-		}
+		assert MathUtil.isEpsilonEqual(1., a1 * a1 + b1 * b1 + c1 * c1, GeomConstants.UNIT_VECTOR_EPSILON)
+			: AssertMessages.constraintViolation("(a1,b1,c1) is not a unit vector"); //$NON-NLS-1$
+		assert MathUtil.isEpsilonEqual(1., a2 * a2 + b2 * b2 + c2 * c2, GeomConstants.UNIT_VECTOR_EPSILON)
+			: AssertMessages.constraintViolation("(a2,b2,c2) is not a unit vector"); //$NON-NLS-1$
 
-		final var length2 = Math.sqrt(a2 * a2 + b2 * b2 + c2 * c2);
-		final double nx2;
-		final double ny2;
-		final double nz2;
-		if (MathUtil.isEpsilonEqual(length2, 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
-			nx2 = a2;
-			ny2 = b2;
-			nz2 = c2;
-		} else {
-			nx2 = a2 / length2;
-			ny2 = b2 / length2;
-			nz2 = c2 / length2;
-		}
-
-		final var dotProduct = Vector3D.dotProduct(nx1, ny1, nz1, nx2, ny2, nz2);
+		final var dotProduct = Vector3D.dotProduct(a1, b1, c1, a2, b2, c2);
 
 		if (MathUtil.isEpsilonEqual(Math.abs(dotProduct), 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
 			// Planes are coplanar.
@@ -513,21 +488,8 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	static double calculatesPlanePointDistance(
 			double a, double b, double c, double d,
 			double px, double py, double pz) {
-		final var normalSqLength = a * a + b * b + c * c;
-		final double nx;
-		final double ny;
-		final double nz;
-		if (MathUtil.isEpsilonEqual(normalSqLength, 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
-			nx = a;
-			ny = b;
-			nz = c;
-		} else {
-			final var normalLength = Math.sqrt(normalSqLength);
-			nx = a / normalLength;
-			ny = b / normalLength;
-			nz = c / normalLength;
-		}
-		return nx * px + ny * py + nz * pz + d;
+		assert MathUtil.isEpsilonEqual(a * a + b * b + c * c, 1., GeomConstants.UNIT_VECTOR_EPSILON) : AssertMessages.invalidValue(0);
+		return a * px + b * py + c * pz + d;
 	}
 
 	/** Classifies the given point against to the plane.
@@ -939,6 +901,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 			double a, double b, double c, double d,
 			double sx1, double sy1, double sz1,
 			double sx2, double sy2, double sz2) {
+		assert MathUtil.isEpsilonEqual(a * a + b * b + c * c, 1., GeomConstants.UNIT_VECTOR_EPSILON) : AssertMessages.invalidValue(0);
 		final var denom = a * (sx2 - sx1) + b * (sy2 - sy1) + c * (sz2 - sz1);
 		if (MathUtil.isEpsilonZero(denom, GeomConstants.UNIT_VECTOR_EPSILON)) {
 			// Segment and plane are parallel
@@ -976,7 +939,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
-	static boolean calculatesPlaneSegmentIntersection(
+	static boolean findsPlaneSegmentIntersection(
 			double a, double b, double c, double d,
 			double sx1, double sy1, double sz1,
 			double sx2, double sy2, double sz2,
@@ -1013,11 +976,11 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 *     the planes are coplanar.
 	 */
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
-	static boolean calculatesPlanePlaneIntersection(
+	static boolean findsPlanePlaneIntersection(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2,
 			Segment3afp<?, ?, ?, ?, ?, ?, ?> result) {
-		return calculatesPlanePlaneIntersection(
+		return findsPlanePlaneIntersection(
 				a1, b1, c1, d1,
 				a2, b2, c2, d2,
 				(px, py, pz, vx, vy, vz) -> {
@@ -1043,12 +1006,12 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 *     the planes are coplanar.
 	 */
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
-	static boolean calculatesPlanePlaneIntersection(
+	static boolean findsPlanePlaneIntersection(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2,
 			Point3D<?, ?, ?> firstSegmentPoint,
 			Point3D<?, ?, ?> secondSegmentPoint) {
-		return calculatesPlanePlaneIntersection(
+		return findsPlanePlaneIntersection(
 				a1, b1, c1, d1,
 				a2, b2, c2, d2,
 				(px, py, pz, vx, vy, vz) -> {
@@ -1077,12 +1040,12 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 *     the planes are coplanar.
 	 */
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
-	static boolean calculatesPlanePlaneIntersection(
+	static boolean findsPlanePlaneIntersection(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2,
 			Point3D<?, ?, ?> intersectionPoint,
 			Vector3D<?, ?, ?> intersectionDirection) {
-		return calculatesPlanePlaneIntersection(
+		return findsPlanePlaneIntersection(
 				a1, b1, c1, d1,
 				a2, b2, c2, d2,
 				(px, py, pz, vx, vy, vz) -> {
@@ -1112,13 +1075,17 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 *     the planes are coplanar.
 	 */
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
-	static boolean calculatesPlanePlaneIntersection(
+	static boolean findsPlanePlaneIntersection(
 			double a1, double b1, double c1, double d1,
 			double a2, double b2, double c2, double d2,
 			PointVector3DReceiver coordinateReceiver) {
+		assert MathUtil.isEpsilonEqual(1., Math.sqrt(a1 * a1 + b1 * b1 + c1 * c1), GeomConstants.UNIT_VECTOR_EPSILON)
+			: AssertMessages.constraintViolation("(a1,b1,c1) is not a unit vector"); //$NON-NLS-1$
+		assert MathUtil.isEpsilonEqual(1., Math.sqrt(a2 * a2 + b2 * b2 + c2 * c2), GeomConstants.UNIT_VECTOR_EPSILON)
+			: AssertMessages.constraintViolation("(a2,b2,c2) is not a unit vector"); //$NON-NLS-1$
 		assert coordinateReceiver != null : AssertMessages.notNullParameter(6);
 
-		final var u = new InnerComputationVector3afp();
+		final var u = new InnerComputationVector3D();
 		Vector3D.crossProduct(a1, b1, c1, a2, b2, c2, u);
 		final var ulengthSq = u.getLengthSquared();
 		if (MathUtil.isEpsilonZero(ulengthSq)) {
@@ -1147,7 +1114,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 		final var vx = d2 * a1 - d1 * a2;
 		final var vy = d2 * b1 - d1 * b2;
 		final var vz = d2 * c1 - d1 * c2;
-		final var i = new InnerComputationVector3afp();
+		final var i = new InnerComputationVector3D();
 		Vector3D.crossProduct(vx, vy, vz, ux, uy, uz, i);
 		final var f = 1. / ulengthSq;
 		i.scale(f);
@@ -1333,7 +1300,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	@Override
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:parameternumber"})
 	default void set(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z) {
-		final var v = new InnerComputationVector3afp();
+		final var v = new InnerComputationVector3D();
 		Vector3D.crossProduct(
 				p2x - p1x, p2y - p1y, p2z - p1z,
 				p3x - p1x, p3y - p1y, p3z - p1z,
@@ -1352,18 +1319,22 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	/** Set this plane to contain the point and have the two vectors to be form the plane.
 	 *
 	 * @param pivot is the point in the plane.
-	 * @param vector1 is the first vector that represents a direction of tha plane.
-	 * @param vector2 is the second vector that represents a direction of tha plane.
+	 * @param vector1 is the first vector that represents a direction of the plane.
+	 * @param vector2 is the second vector that represents a direction of the plane.
 	 */
 	@Override
 	default void set(Point3D<?, ?, ?> pivot, Vector3D<?, ?, ?> vector1, Vector3D<?, ?, ?> vector2) {
 		assert pivot != null : AssertMessages.notNullParameter(0);
 		assert vector1 != null : AssertMessages.notNullParameter(1);
 		assert vector2 != null : AssertMessages.notNullParameter(2);
-		final var v = new InnerComputationVector3afp();
+		final var v = new InnerComputationVector3D();
+		final var v1 = new InnerComputationVector3D();
+		v1.normalize(vector1);
+		final var v2 = new InnerComputationVector3D();
+		v2.normalize(vector2);
 		Vector3D.crossProduct(
-				vector1.getX(), vector1.getY(), vector1.getZ(),
-				vector2.getX(), vector2.getY(), vector2.getZ(),
+				v1.getX(), v1.getY(), v1.getZ(),
+				v2.getX(), v2.getY(), v2.getZ(),
 				v);
 		final var a = v.getX();
 		final var b = v.getY();
@@ -1394,7 +1365,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	@Override
 	default P getProjection(double x, double y, double z) {
 		final var point = getGeomFactory().newPoint();
-		calculatesPlanePointProjection(
+		findsPlanePointProjection(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
 				x, y, z, point);
 		return point;
@@ -1419,7 +1390,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	@Override
 	default S getIntersection(double a, double b, double c, double d) {
 		final var segment = (S) getGeomFactory().newSegment();
-		if (calculatesPlanePlaneIntersection(
+		if (findsPlanePlaneIntersection(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
 				a, b, c, d,
 				segment)) {
@@ -1436,7 +1407,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	@Pure
 	default P getIntersection(Segment3afp<?, ?, ?, ?, ?, ?, ?> line) {
 		final var point = getGeomFactory().newPoint();
-		if (calculatesPlaneSegmentIntersection(
+		if (findsPlaneSegmentIntersection(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
 				line.getX1(), line.getY1(), line.getZ1(),
 				line.getX2(), line.getY2(), line.getZ2(),
@@ -1448,57 +1419,46 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 
 	@Override
 	default void rotate(Quaternion<?, ?, ?> rotation, Point3D<?, ?, ?> pivot) {
-		/*TODO assert rotation != null : AssertMessages.notNullParameter(0);
-
-		final var reference = getPivot();
-		final var realPivot = pivot == null ? reference : pivot;
-
+		assert rotation != null : AssertMessages.notNullParameter(0);
 		final var m = new Transform3D();
 		m.makeRotationMatrix(rotation);
-
-		final var newNormal = new InnerComputationVector3afp(
-				getEquationComponentA(), getEquationComponentB(), getEquationComponentC());
-		m.transform(newNormal);
-
-		final var newReference = new InnerComputationVector3afp(
-				reference.getX() - realPivot.getX(),
-				reference.getY() - realPivot.getY(),
-				reference.getZ() - realPivot.getZ());
-		m.transform(newReference);
-
-		final var nrx = realPivot.getX() + newReference.getX();
-		final var nry = realPivot.getY() + newReference.getY();
-		final var nrz = realPivot.getZ() + newReference.getZ();
-
-		final var d = -(newNormal.getX() * nrx + newNormal.getY() * nry + newNormal.getZ() * nrz);
-
-		set(newNormal.getX(), newNormal.getY(), newNormal.getZ(), d);*/
+		transform(m, pivot);
 	}
 
-	/* TODO default void transform(Transform3D transform, Point3D<?, ?, ?> pivot) {
+	@Override
+	default void transform(Transform3D transform, Point3D<?, ?, ?> pivot) {
 		assert transform != null : AssertMessages.notNullParameter(0);
 
-		final Point3D<?, ?, ?> reference = getPivot();
-		final Point3D<?, ?, ?> realPivot = pivot == null ? reference : pivot;
-
-		final Vector3D<?, ?, ?> newNormal = new InnerComputationVector3afp(
+		final var newNormal = new InnerComputationVector3D(
 				getEquationComponentA(), getEquationComponentB(), getEquationComponentC());
 		transform.transform(newNormal);
 
-		final Point3D<?, ?, ?> newReference = new InnerComputationPoint3afp(
-				reference.getX() - realPivot.getX(),
-				reference.getY() - realPivot.getY(),
-				reference.getZ() - realPivot.getZ());
-		transform.transform(newReference);
+		final var r = getPivot();
+		double px;
+		double py;
+		double pz;
+		if (pivot == null) {
+			px = r.getX();
+			py = r.getY();
+			pz = r.getZ();
+		} else {
+			final var rv = new InnerComputationVector3D(
+					r.getX() - pivot.getX(),
+					r.getY() - pivot.getY(),
+					r.getZ() - pivot.getZ());
+			transform.transform(rv);
+			px = pivot.getX() + rv.getX();
+			py = pivot.getY() + rv.getY();
+			pz = pivot.getZ() + rv.getZ();
+		}
 
-		final double nrx = realPivot.getX() + newReference.getX();
-		final double nry = realPivot.getY() + newReference.getY();
-		final double nrz = realPivot.getZ() + newReference.getZ();
+		px += transform.getTranslationX();
+		py += transform.getTranslationY();
+		pz += transform.getTranslationZ();
 
-		final double d = -(newNormal.getX() * nrx + newNormal.getY() * nry + newNormal.getZ() * nrz);
-
-		set(newNormal.getX(), newNormal.getY(), newNormal.getZ(), d);
-	}*/
+		set(newNormal.getX(), newNormal.getY(), newNormal.getZ(),
+				-(newNormal.getX() * px + newNormal.getY() * py + newNormal.getZ() * pz));
+	}
 
 	/** Replies if the given sphere is intersecting the plane.
 	 *

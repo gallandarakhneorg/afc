@@ -390,6 +390,12 @@ public interface Box3afp<
         return getMinX() >= getMaxX() || getMinY() >= getMaxY() || getMinZ() >= getMaxZ();
 	}
 
+	@Pure
+	@Override
+	default boolean isDegeneratedPoint() {
+        return getMinX() >= getMaxX() && getMinY() >= getMaxY() && getMinZ() >= getMaxZ();
+	}
+
 	/** Inflate this rectangular prism with the given amounts.
 	 *
 	 * <p>All borders may be inflated. If the value associated to a border

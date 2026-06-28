@@ -85,9 +85,7 @@ public class InnerComputationPoint2D implements Point2D<InnerComputationPoint2D,
 	@Pure
 	@Override
 	public String toString() {
-		final var objectDescription = new JsonBuffer();
-		toJson(objectDescription);
-        return objectDescription.toString();
+		return toGeogebra();
 	}
 
 	@Override

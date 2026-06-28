@@ -88,9 +88,7 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 	@Pure
 	@Override
 	public String toString() {
-		final var objectDescription = new JsonBuffer();
-		toJson(objectDescription);
-        return objectDescription.toString();
+		return toGeogebra();
 	}
 
 	@Override

@@ -21,12 +21,16 @@
 package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Plane3D;
 import org.arakhne.afc.math.geometry.base.d3.PlaneClassification;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.PointVector3DReceiver;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -92,7 +96,7 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 			nz = c;
 		}
 		if (Vector3D.isColinearVectors(nx, ny, nz, 1., 0., 0.)) {
-			final var px = nx >= 0. ? -d : d;
+			final double px = nx >= 0. ? -d : d;
 			return positive ? px - x : x - px;
 		}
 		return 0.;
@@ -234,12 +238,13 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static boolean calculatesPlaneYZSegmentIntersection(
+	static boolean findsPlaneYZSegmentIntersection(
 			boolean positive, double x,
 			double sx1, double sy1, double sz1,
 			double sx2, double sy2, double sz2,
 			Point3D<?, ?, ?> result) {
-		final var factor = calculatesPlaneYZSegmentIntersectionFactor(positive, x, sx1, sy1, sz1, sx2, sy2, sz2);
+		final var factor = calculatesPlaneYZSegmentIntersectionFactor(
+				positive, x, sx1, sy1, sz1, sx2, sy2, sz2);
 		if (Double.isNaN(factor)) {
 			return false;
 		}
@@ -256,6 +261,202 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 		return true;
 	}
 
+	/**
+	 * Computes the closest points between a 3D segment and an axis-aligned
+	 * rectangle coplanar to the YZ plane (constant x).
+	 *
+	 * <p>The rectangle is defined by its minimum corner (x, ry, rz) and its
+	 * maximum corner (x, rmaxy, rmaxz).
+	 *
+	 * <p>Returns:
+	 * <ul>
+	 *   <li>the closest point on the segment,</li>
+	 *   <li>the closest point on the rectangle,</li>
+	 *   <li>the squared distance between them.</li>
+	 * </ul>
+	 *
+	 * @param ry  bottom (min-y) edge of the rectangle.
+	 * @param rz  front (min-z) edge of the rectangle.
+	 * @param rmaxy  top (max-y) edge of the rectangle.
+	 * @param rmaxz  back (max-z) edge of the rectangle.
+	 * @param x x-level of the rectangle's plane.
+	 * @param sx1 x of segment start
+	 * @param sy1 y of segment start
+	 * @param sz1 z of segment start
+	 * @param sx2 x of segment end
+	 * @param sy2 y of segment end
+	 * @param sz2 z of segment end
+	 * @param resultRectangle is the closest point on the rectangle. It cannot be {@code null}.
+	 * @param resultSegment is the closest point on the segment. It can be {@code null}.
+	 * @return the squared distance between the plane and the segment.
+	 */
+	@Unefficient
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+	static double findsClosestPointRectangleYZSegment(
+			double ry, double rz,
+			double rmaxy, double rmaxz,
+			double x,
+			double sx1, double sy1, double sz1,
+			double sx2, double sy2, double sz2,
+			Point3D<?, ?, ?> resultRectangle, Point3D<?, ?, ?> resultSegment) {
+		assert resultRectangle != null : AssertMessages.notNullParameter(11);
+
+		// Step 1 – Fast path: does the segment pierce the plane x = x at a point inside the rectangle?
+
+		// Parametric form: P(t) = S1 + t*(S2-S1),  t in [0,1].
+		// x-component: sx1 + t*(sx2-sx1) = x  =>  t = (x-sx1) / dx
+		var dx = sx2 - sx1;
+		if (!MathUtil.isEpsilonZero(dx)) {
+			final var t = (x - sx1) / dx;
+			if (t >= 0. && t <= 1.) {
+				final var iy = sy1 + t * (sy2 - sy1);
+				final var iz = sz1 + t * (sz2 - sz1);
+				// Is the intersection YZ-point inside the rectangle?
+				if (iy >= ry && iy <= rmaxy && iz >= rz && iz <= rmaxz) {
+					// Distance is 0; both closest points are the intersection.
+					resultRectangle.set(x, iy, iz);
+					if (resultSegment != null) {
+						resultSegment.set(x, iy, iz);
+					}
+					return 0.;
+				}
+			}
+		}
+
+		// Step 2 – General case.
+
+		// Rectangle corners (all at height x):
+		//   A = (x, ry,    rz)     B = (x, ry,    rmaxz)
+		//   C = (x, rmaxy, rmaxz)  D = (x, rmaxy, rz)
+		//
+		// The four edges are AB, BC, CD, DA.
+		// For each edge we compute the closest pair (segment <-> edge).
+		// findsClosestPointToSegment returns the squared distance and writes:
+		//   resultOnFirstSegment ->closest point on *our* segment (= seg side)
+		//   resultOnSecondSegment -> closest point on the *edge* (= rect side)
+
+		// Edge AB: A=(x,ry,rz) -> B=(x,ry,rmaxz)
+		final var segment = new InnerComputationPoint3D();
+		final var rectangle = new InnerComputationPoint3D();
+		Segment3afp.findsClosestPointToSegment(
+				sx1, sy1, sz1, sx2, sy2, sz2,
+				x, ry, rz, x, ry, rmaxz,
+				segment, rectangle);
+
+		var bestDistance = segment.getDistanceSquared(rectangle);
+		final var bestSegment = new InnerComputationPoint3D(segment);
+		final var bestRectangle = new InnerComputationPoint3D(rectangle);
+
+		// Edge BC: B=(x,ry,rmaxz) -> C=(x,rmaxy,rmaxz)
+		Segment3afp.findsClosestPointToSegment(
+				sx1, sy1, sz1, sx2, sy2, sz2,
+				x, ry, rmaxz, x, rmaxy, rmaxz,
+				segment, rectangle);
+		var distance = segment.getDistanceSquared(rectangle);
+		if (distance < bestDistance) {
+			bestDistance = distance;
+			bestSegment.set(segment);
+			bestRectangle.set(rectangle);
+		}
+
+		// Edge CD: C=(x,rmaxy,rmaxz) -> D=(x,rmaxy,rz)
+		Segment3afp.findsClosestPointToSegment(
+				sx1, sy1, sz1, sx2, sy2, sz2,
+				x, rmaxy, rmaxz, x, rmaxy, rz,
+				segment, rectangle);
+		distance = segment.getDistanceSquared(rectangle);
+		if (distance < bestDistance) {
+			bestDistance = distance;
+			bestSegment.set(segment);
+			bestRectangle.set(rectangle);
+		}
+
+		// Edge DA: D=(x,rmaxy,rz) -> A=(x,ry,rz)
+		Segment3afp.findsClosestPointToSegment(
+				sx1, sy1, sz1, sx2, sy2, sz2,
+				x, rmaxy, rz, x, ry, rz,
+				segment, rectangle);
+		distance = segment.getDistanceSquared(rectangle);
+		if (distance < bestDistance) {
+			bestDistance = distance;
+			bestSegment.set(segment);
+			bestRectangle.set(rectangle);
+		}
+
+		// Step 3 – Interior projection
+
+		// Project each segment endpoint onto the plane, clamp to the
+		// rectangle, then find the closest point on the segment to that
+		// clamped point.  This handles the case where the segment "hovers"
+		// directly above the rectangle interior (closest rect point is not
+		// on any edge but in the filled interior).
+
+		// Projection of S1 onto plane, clamped to rectangle
+		var cry = MathUtil.clamp(sy1, ry, rmaxy);
+		var crz = MathUtil.clamp(sz1, rz, rmaxz);
+		// Closest point on segment to (x, cry, crz)
+		var ratio = MathUtil.clamp(
+				Segment3afp.calculatesProjectedPointOnLine(
+						x, cry, crz,
+						sx1, sy1, sz1, sx2, sy2, sz2),
+				0., 1.);
+		double segx;
+		double segy;
+		double segz;
+		if (Double.isNaN(ratio)) {
+			segx = sx1;
+			segy = sy1;
+			segz = sz1;
+		} else {
+			segx = sx1 + ratio * (sx2 - sx1);
+			segy = sy1 + ratio * (sy2 - sy1);
+			segz = sz1 + ratio * (sz2 - sz1);
+		}
+		dx = segx - x;
+		var dy = segy - cry;
+		var dz = segz - crz;
+		distance = dx * dx + dy * dy + dz * dz;
+		if (distance < bestDistance) {
+			bestDistance = distance;
+			bestSegment.set(segx, segy, segz);
+			bestRectangle.set(x, cry, crz);
+		}
+
+		// Projection of S2 onto plane, clamped to rectangle
+		cry = MathUtil.clamp(sy2, ry, rmaxy);
+		crz = MathUtil.clamp(sz2, rz, rmaxz);
+		// Closest point on segment to (x, cry, crz)
+		ratio = MathUtil.clamp(
+				Segment3afp.calculatesProjectedPointOnLine(
+						x, cry, crz,
+						sx1, sy1, sz1, sx2, sy2, sz2),
+				0., 1.);
+		if (Double.isNaN(ratio)) {
+			segx = sx1;
+			segy = sy1;
+			segz = sz1;
+		} else {
+			segx = sx1 + ratio * (sx2 - sx1);
+			segy = sy1 + ratio * (sy2 - sy1);
+			segz = sz1 + ratio * (sz2 - sz1);
+		}
+		dx = segx - x;
+		dy = segy - cry;
+		dz = segz - crz;
+		distance = dx * dx + dy * dy + dz * dz;
+		if (distance < bestDistance) {
+			bestDistance = distance;
+			bestSegment.set(segx, segy, segz);
+			bestRectangle.set(x, cry, crz);
+		}
+
+		resultRectangle.set(bestRectangle);
+		if (resultSegment != null) {
+			resultSegment.set(bestSegment);
+		}
+		return bestDistance;
+	}
+
 	/** Calculates the line that corresponds to the intersection between the YZ plane and the general plane.
 	 *
 	 * @param positive indicates if the normal of the plan is positive or not.
@@ -268,72 +469,14 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
 	 *     the planes are coplanar.
 	 */
-	static boolean calculatesPlaneYZPlaneIntersection(
+	static boolean findsPlaneYZPlaneIntersection(
 			boolean positive, double x,
 			double a2, double b2, double c2, double d2,
 			Segment3afp<?, ?, ?, ?, ?, ?, ?> result) {
-		return calculatesPlaneYZPlaneIntersection(positive, x, a2, b2, c2, d2,
+		return findsPlaneYZPlaneIntersection(positive, x, a2, b2, c2, d2,
 				(px, py, pz, vx, vy, vz) -> {
 					if (result != null) {
 						result.set(px, py, pz, px + vx, py + vy, pz + vz);
-					}
-				});
-	}
-
-	/** Calculates the line that corresponds to the intersection between the YZ plane and the general plane.
-	 *
-	 * @param positive indicates if the normal of the plan is positive or not.
-	 * @param x the x coordinate that is for all the points of the plane.
-	 * @param a2 the a coordinate of the other plane.
-	 * @param b2 the b coordinate of the other plane.
-	 * @param c2 the c coordinate of the other plane.
-	 * @param d2 the d coordinate of the other plane.
-	 * @param firstSegmentPoint the receiver of the coordinates of the first point of the intersection line.
-	 * @param secondSegmentPoint the receiver of the coordinates of the second point of the intersection line.
-	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
-	 *     the planes are coplanar.
-	 */
-	static boolean calculatesPlaneYZPlaneIntersection(
-			boolean positive, double x,
-			double a2, double b2, double c2, double d2,
-			Point3D<?, ?, ?> firstSegmentPoint,
-			Point3D<?, ?, ?> secondSegmentPoint) {
-		return calculatesPlaneYZPlaneIntersection(positive, x, a2, b2, c2, d2,
-				(px, py, pz, vx, vy, vz) -> {
-					if (firstSegmentPoint != null) {
-						firstSegmentPoint.set(px, py, pz);
-					}
-					if (secondSegmentPoint != null) {
-						secondSegmentPoint.set(px + vx, py + vy, pz + vz);
-					}
-				});
-	}
-
-	/** Calculates the line that corresponds to the intersection between the YZ plane and the general plane.
-	 *
-	 * @param positive indicates if the normal of the plan is positive or not.
-	 * @param x the x coordinate that is for all the points of the plane.
-	 * @param a2 the a coordinate of the other plane.
-	 * @param b2 the b coordinate of the other plane.
-	 * @param c2 the c coordinate of the other plane.
-	 * @param d2 the d coordinate of the other plane.
-	 * @param intersectionPoint the receiver of the coordinates of a point of the intersection line.
-	 * @param intersectionDirection the receiver of the coordinates of the direction vector of the intersection line.
-	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
-	 *     the planes are coplanar.
-	 */
-	static boolean calculatesPlaneYZPlaneIntersection(
-			boolean positive, double x,
-			double a2, double b2, double c2, double d2,
-			Point3D<?, ?, ?> intersectionPoint,
-			Vector3D<?, ?, ?> intersectionDirection) {
-		return calculatesPlaneYZPlaneIntersection(positive, x, a2, b2, c2, d2,
-				(px, py, pz, vx, vy, vz) -> {
-					if (intersectionPoint != null) {
-						intersectionPoint.set(px, py, pz);
-					}
-					if (intersectionDirection != null) {
-						intersectionDirection.set(vx, vy, vz);
 					}
 				});
 	}
@@ -352,14 +495,72 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
 	 *     the planes are coplanar.
 	 */
-	static boolean calculatesPlaneYZPlaneIntersection(
+	static boolean findsPlaneYZPlaneIntersection(
 			boolean positive, double x,
 			double a2, double b2, double c2, double d2,
 			PointVector3DReceiver coordinateReceiver) {
-		return Plane3afp.calculatesPlanePlaneIntersection(
+		return Plane3afp.findsPlanePlaneIntersection(
 				positive ? 1. : -1., 0., 0., positive ? -x : x,
-				a2, b2, c2, d2,
-				coordinateReceiver);
+						a2, b2, c2, d2,
+						coordinateReceiver);
+	}
+
+	/** Calculates the line that corresponds to the intersection between the YZ plane and the general plane.
+	 *
+	 * @param positive indicates if the normal of the plan is positive or not.
+	 * @param x the x coordinate that is for all the points of the plane.
+	 * @param a2 the a coordinate of the other plane.
+	 * @param b2 the b coordinate of the other plane.
+	 * @param c2 the c coordinate of the other plane.
+	 * @param d2 the d coordinate of the other plane.
+	 * @param intersectionPoint the receiver of the coordinates of a point of the intersection line.
+	 * @param intersectionDirection the receiver of the coordinates of the direction vector of the intersection line.
+	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
+	 *     the planes are coplanar.
+	 */
+	static boolean findsPlaneYZPlaneIntersection(
+			boolean positive, double x,
+			double a2, double b2, double c2, double d2,
+			Point3D<?, ?, ?> intersectionPoint,
+			Vector3D<?, ?, ?> intersectionDirection) {
+		return findsPlaneYZPlaneIntersection(positive, x, a2, b2, c2, d2,
+				(px, py, pz, vx, vy, vz) -> {
+					if (intersectionPoint != null) {
+						intersectionPoint.set(px, py, pz);
+					}
+					if (intersectionDirection != null) {
+						intersectionDirection.set(vx, vy, vz);
+					}
+				});
+	}
+
+	/** Calculates the line that corresponds to the intersection between the YZ plane and the general plane.
+	 *
+	 * @param positive indicates if the normal of the plan is positive or not.
+	 * @param x the x coordinate that is for all the points of the plane.
+	 * @param a2 the a coordinate of the other plane.
+	 * @param b2 the b coordinate of the other plane.
+	 * @param c2 the c coordinate of the other plane.
+	 * @param d2 the d coordinate of the other plane.
+	 * @param firstSegmentPoint the receiver of the coordinates of the first point of the intersection line.
+	 * @param secondSegmentPoint the receiver of the coordinates of the second point of the intersection line.
+	 * @return {@code true} if there is a line intersection, {@code false} if there is no intersection or
+	 *     the planes are coplanar.
+	 */
+	static boolean findsPlaneYZPlaneIntersection(
+			boolean positive, double x,
+			double a2, double b2, double c2, double d2,
+			Point3D<?, ?, ?> firstSegmentPoint,
+			Point3D<?, ?, ?> secondSegmentPoint) {
+		return findsPlaneYZPlaneIntersection(positive, x, a2, b2, c2, d2,
+				(px, py, pz, vx, vy, vz) -> {
+					if (firstSegmentPoint != null) {
+						firstSegmentPoint.set(px, py, pz);
+					}
+					if (secondSegmentPoint != null) {
+						secondSegmentPoint.set(px + vx, py + vy, pz + vz);
+					}
+				});
 	}
 
 	/** Classifies the given segment against to the YZ plane.
@@ -469,6 +670,11 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 		return getGeomFactory().newPoint(getX(), 0., 0.);
 	}
 
+	@Override
+	default void setPivotToDefault() {
+		//
+	}
+
 	@Pure
 	@Override
 	default double getNormalX() {
@@ -520,7 +726,32 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 	}
 
 	@Override
-	@Inline("setX(0.0)")
+	@SuppressWarnings("checkstyle:parameternumber")
+	default void set(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z) {
+		final var crossProductX = (p2z - p1z) * (p3y - p1y) - (p2y - p1y) * (p3z - p1z);
+		setPositive(crossProductX >= 0.);
+		setX((p1x + p2x + p3x) / 3.);
+	}
+
+	@Override
+	default void set(Point3D<?, ?, ?> pivot, Vector3D<?, ?, ?> vector1, Vector3D<?, ?, ?> vector2) {
+		assert pivot != null : AssertMessages.notNullParameter(0);
+		assert vector1 != null : AssertMessages.notNullParameter(1);
+		assert vector2 != null : AssertMessages.notNullParameter(2);
+		final var crossProductX = vector1.getZ() * vector2.getY() - vector1.getY() * vector2.getZ();
+		setPositive(crossProductX >= 0.);
+		setX(pivot.getX());
+	}
+
+	@Override
+	default void set(Point3D<?, ?, ?> pivot, Vector3D<?, ?, ?> normal) {
+		assert pivot != null : AssertMessages.notNullParameter(0);
+		assert normal != null : AssertMessages.notNullParameter(1);
+		setPositive(normal.getX() >= 0.);
+		setX(pivot.getX());
+	}
+
+	@Override
 	default void clear() {
 		setPositive(true);
 		setX(0.);
@@ -559,10 +790,24 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 	}
 
 	@Override
+	default void transform(Transform3D transform, Point3D<?, ?, ?> pivot) {
+		assert transform != null : AssertMessages.notNullParameter(0);
+
+		final var newNormal = new InnerComputationVector3D(
+				getEquationComponentA(), getEquationComponentB(), getEquationComponentC());
+		transform.transform(newNormal);
+
+		final var newX = getX() + transform.getTranslationX();
+
+		setPositive(newNormal.getX() >= 0.);
+		setX(newX);
+	}
+
+	@Override
 	@SuppressWarnings({"unchecked", "checkstyle:parametername"})
 	default S getIntersection(double a, double b, double c, double d) {
 		final var result = (S) getGeomFactory().newSegment();
-		if (calculatesPlaneYZPlaneIntersection(isPositive(), getX(), a, b, c, d, result)) {
+		if (findsPlaneYZPlaneIntersection(isPositive(), getX(), a, b, c, d, result)) {
 			return result;
 		}
 		return null;
@@ -572,7 +817,7 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 	default P getIntersection(Segment3afp<?, ?, ?, ?, ?, ?, ?> line) {
 		assert line != null : AssertMessages.notNullParameter();
 		final var point = getGeomFactory().newPoint();
-		if (calculatesPlaneYZSegmentIntersection(isPositive(), getX(),
+		if (findsPlaneYZSegmentIntersection(isPositive(), getX(),
 				line.getX1(), line.getY1(), line.getZ1(),
 				line.getX2(), line.getY2(), line.getZ2(), point)) {
 			return point;

@@ -82,6 +82,15 @@ public interface Shape3D<
 	@Pure
 	boolean isEmpty();
 
+	/** Replies if this shape is degenerated to a single point.
+	 *
+	 * @return {@code true} if the shape is a point;
+	 *      {@code false} otherwise.
+	 * @since 18.0
+	 */
+	@Pure
+	boolean isDegeneratedPoint();
+
 	/** Clone this shape.
 	 *
 	 * @return the clone.

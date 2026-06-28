@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.base.d3;
 import java.util.Collection;
 
 import org.arakhne.afc.math.geometry.base.PathElementType;
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Path.
@@ -48,19 +47,6 @@ public interface Path3D<
 	Q extends Quaternion<? super P, ? super V, ? super Q>,
 	B extends Shape3D<?, I, P, V, Q, B>>
 	extends Shape3D<IT, I, P, V, Q, B> {
-
-	/** Replies the winding rule for the path.
-	 *
-	 * @return the winding rule for the path.
-	 */
-	@Pure
-	PathWindingRule getWindingRule();
-
-	/** Set the winding rule for the path.
-	 *
-	 * @param rule is the winding rule for the path.
-	 */
-	void setWindingRule(PathWindingRule rule);
 
 	/** Replies the path is composed only by
 	 * one {@code MOVE_TO}, and a sequence of {@code LINE_TO}

@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.base.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
@@ -48,10 +47,9 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 
 	/** Create an empty path with the given winding rule.
 	 *
-	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	Path3ai<?, E, P, V, Q, B> newPath(PathWindingRule rule);
+	Path3ai<?, E, P, V, Q, B> newPath();
 
 	/** Create a segment.
 	 *

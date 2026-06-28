@@ -25,10 +25,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.base.PathElementType;
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
+import org.arakhne.afc.math.geometry.base.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
-import org.arakhne.afc.math.geometry.base.d3.afp.InnerComputationPoint3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -46,7 +46,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 @SuppressWarnings("checkstyle:magicnumber")
 public class Path3d extends AbstractShape3d<Path3d>
-	    implements Path3afp<Path3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
+		implements Path3afp<Path3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = 4567950736238157802L;
 
@@ -65,10 +65,6 @@ public class Path3d extends AbstractShape3d<Path3d>
 	/** Number of coords in the array.
 	 */
 	private int numCoords;
-
-	/** Winding rule for the path.
-	 */
-	private PathWindingRule windingRule;
 
 	/** Indicates if the path is empty.
 	 * The path is empty when there is no point inside, or
@@ -110,58 +106,53 @@ public class Path3d extends AbstractShape3d<Path3d>
 	 */
 	private Double length;
 
-	/** Construct an empty path.
-     */
-	public Path3d() {
-		this(DEFAULT_WINDING_RULE);
-	}
-
-	/** Construct a path by copying the given elements.
-     * @param iterator the iterator that provides the elements to copy.
-     */
-	public Path3d(Iterator<PathElement3d> iterator) {
-		this(DEFAULT_WINDING_RULE, iterator);
-	}
-
 	/** Create an empty path with the given path winding rule.
-     * @param windingRule the path winding rule.
-     */
-	public Path3d(PathWindingRule windingRule) {
-		assert windingRule != null : AssertMessages.notNullParameter();
+	 */
+	public Path3d() {
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
-		this.windingRule = windingRule;
 	}
 
 	/** Create an empty path with the given path winding rule, and by copying the given elements.
-     * @param windingRule the path winding rule.
-     * @param iterator the iterator that provides the elements to copy.
-     */
-	public Path3d(PathWindingRule windingRule, Iterator<PathElement3d> iterator) {
-		assert windingRule != null : AssertMessages.notNullParameter(0);
+	 *
+	 * @param iterator the iterator that provides the elements to copy.
+	 */
+	public Path3d(Iterator<PathElement3d> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
-		this.windingRule = windingRule;
 		add(iterator);
 	}
 
 	/** Constructor by copy.
-     * @param path the path to copy.
-     */
+	 * @param path the path to copy.
+	 */
 	public Path3d(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		set(path);
 	}
 
+	@Pure
+	@Override
+	@SuppressWarnings("checkstyle:equalshashcode")
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof PathIterator3D iterator) {
+			return equalsToPathIterator(iterator);
+		}
+		return super.equals(obj);
+	}
+
 	private void ensureSlots(boolean needMove, int nbSlots) {
-        if (needMove && this.numTypes == 0) {
+		if (needMove && this.numTypes == 0) {
 			throw new IllegalStateException(Locale.getString("E1")); //$NON-NLS-1$
 		}
-        if (this.types.length == this.numTypes) {
-            this.types = Arrays.copyOf(this.types, this.types.length + GROW_SIZE);
+		if (this.types.length == this.numTypes) {
+			this.types = Arrays.copyOf(this.types, this.types.length + GROW_SIZE);
 		}
-        while ((this.numCoords + nbSlots) >= this.coords.length) {
-            this.coords = Arrays.copyOf(this.coords, this.coords.length + GROW_SIZE);
+		while ((this.numCoords + nbSlots) >= this.coords.length) {
+			this.coords = Arrays.copyOf(this.coords, this.coords.length + GROW_SIZE);
 		}
 	}
 
@@ -169,11 +160,11 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	public boolean containsControlPoint(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-        for (var i = 0; i < this.numCoords; i += 3) {
+		for (var i = 0; i < this.numCoords; i += 3) {
 			final var x = this.coords[i];
 			final var y = this.coords[i + 1];
 			final var z = this.coords[i + 2];
-            if (x == point.getX() && y == point.getY() && z == point.getZ()) {
+			if (x == point.getX() && y == point.getY() && z == point.getZ()) {
 				return true;
 			}
 		}
@@ -184,7 +175,6 @@ public class Path3d extends AbstractShape3d<Path3d>
 	public void clear() {
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
-		this.windingRule = PathWindingRule.NON_ZERO;
 		this.numCoords = 0;
 		this.numTypes = 0;
 		this.isEmpty = Boolean.TRUE;
@@ -203,7 +193,6 @@ public class Path3d extends AbstractShape3d<Path3d>
 		final var clone = super.clone();
 		clone.coords = this.coords.clone();
 		clone.types = this.types.clone();
-		clone.windingRule = this.windingRule;
 		return clone;
 	}
 
@@ -216,34 +205,33 @@ public class Path3d extends AbstractShape3d<Path3d>
 		bits = 31 * bits + this.numTypes;
 		bits = 31 * bits + Arrays.hashCode(this.coords);
 		bits = 31 * bits + Arrays.hashCode(this.types);
-		bits = 31 * bits + this.windingRule.ordinal();
 		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Override
 	public void translate(double dx, double dy, double dz) {
-        for (var i = 0; i < this.numCoords;) {
+		for (var i = 0; i < this.numCoords;) {
 			this.coords[i++] += dx;
 			this.coords[i++] += dy;
 			this.coords[i++] += dz;
 		}
 		var bb = this.logicalBounds == null ? null : this.logicalBounds.get();
-        if (bb != null) {
-            bb.translate(dx, dy, dz);
-        }
-        bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
-        if (bb != null) {
-            bb.translate(dx, dy, dz);
-        }
+		if (bb != null) {
+			bb.translate(dx, dy, dz);
+		}
+		bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
+		if (bb != null) {
+			bb.translate(dx, dy, dz);
+		}
 		fireGeometryChange();
 	}
 
 	@Override
 	public void transform(Transform3D transform) {
-        assert transform != null : AssertMessages.notNullParameter();
-		final var p = new InnerComputationPoint3afp();
-        for (var i = 0; i < this.numCoords; i += 3) {
-            p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
+		assert transform != null : AssertMessages.notNullParameter();
+		final var p = new InnerComputationPoint3D();
+		for (var i = 0; i < this.numCoords; i += 3) {
+			p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 			transform.transform(p);
 			this.coords[i] = p.getX();
 			this.coords[i + 1] = p.getY();
@@ -257,12 +245,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public boolean isEmpty() {
-        if (this.isEmpty == null) {
+		if (this.isEmpty == null) {
 			this.isEmpty = Boolean.TRUE;
 			final var pi = getPathIterator();
-            while (this.isEmpty == Boolean.TRUE && pi.hasNext()) {
+			while (this.isEmpty == Boolean.TRUE && pi.hasNext()) {
 				final var pe = pi.next();
-                if (pe.isDrawable()) {
+				if (pe.isDrawable()) {
 					this.isEmpty = Boolean.FALSE;
 				}
 			}
@@ -271,9 +259,14 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
+	public boolean isDegeneratedPoint() {
+        return isEmpty();
+	}
+
+	@Override
 	public AlignedBox3d toBoundingBox() {
 		var bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
-        if (bb == null) {
+		if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path3afp.calculatesDrawableElementBoundingBox(
 					getPathIterator(getGeomFactory().getSplineApproximationRatio()),
@@ -288,7 +281,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	public void toBoundingBox(AlignedBox3d box) {
 		assert box != null : AssertMessages.notNullParameter();
 		var bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
-        if (bb == null) {
+		if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path3afp.calculatesDrawableElementBoundingBox(
 					getPathIterator(getGeomFactory().getSplineApproximationRatio()),
@@ -296,11 +289,6 @@ public class Path3d extends AbstractShape3d<Path3d>
 			this.graphicalBounds = new SoftReference<>(bb);
 		}
 		box.set(bb);
-	}
-
-	@Override
-	public PathWindingRule getWindingRule() {
-		return this.windingRule;
 	}
 
 	@Override
@@ -339,7 +327,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 			while (this.isCurved == Boolean.FALSE && pi.hasNext()) {
 				final var pe = pi.next();
 				final var t = pe.getType();
-                if (t == PathElementType.CURVE_TO || t == PathElementType.QUAD_TO) {
+				if (t == PathElementType.CURVE_TO || t == PathElementType.QUAD_TO) {
 					this.isCurved = Boolean.TRUE;
 				}
 			}
@@ -356,7 +344,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 			while (this.isMultipart == Boolean.FALSE && pi.hasNext()) {
 				final var pe = pi.next();
 				final var t = pe.getType();
-                if (t == PathElementType.MOVE_TO) {
+				if (t == PathElementType.MOVE_TO) {
 					if (foundOne) {
 						this.isMultipart = Boolean.TRUE;
 					} else {
@@ -399,8 +387,8 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void closePath() {
-        if (this.numTypes <= 0 || this.types[this.numTypes - 1] != PathElementType.CLOSE
-                && this.types[this.numTypes - 1] != PathElementType.MOVE_TO) {
+		if (this.numTypes <= 0 || this.types[this.numTypes - 1] != PathElementType.CLOSE
+				&& this.types[this.numTypes - 1] != PathElementType.MOVE_TO) {
 			ensureSlots(true, 0);
 			this.types[this.numTypes++] = PathElementType.CLOSE;
 			this.isPolyline = Boolean.FALSE;
@@ -413,7 +401,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Pure
 	public AlignedBox3d toBoundingBoxWithCtrlPoints() {
 		var bb = this.logicalBounds == null ? null : this.logicalBounds.get();
-        if (bb == null) {
+		if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path3afp.calculatesControlPointBoundingBox(
 					getPathIterator(),
@@ -428,7 +416,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	public void toBoundingBoxWithCtrlPoints(AlignedBox3d box) {
 		assert box != null : AssertMessages.notNullParameter();
 		var bb = this.logicalBounds == null ? null : this.logicalBounds.get();
-        if (bb == null) {
+		if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path3afp.calculatesControlPointBoundingBox(
 					getPathIterator(),
@@ -443,13 +431,13 @@ public class Path3d extends AbstractShape3d<Path3d>
 	public int[] toIntArray(Transform3D transform) {
 		final var clone = new int[this.numCoords];
 		if (transform == null || transform.isIdentity()) {
-            for (var i = 0; i < this.numCoords; ++i) {
+			for (var i = 0; i < this.numCoords; ++i) {
 				clone[i] = (int) this.coords[i];
 			}
 		} else {
-			final var p = new InnerComputationPoint3afp();
-            for (var i = 0; i < clone.length; i += 3) {
-                p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
+			final var p = new InnerComputationPoint3D();
+			for (var i = 0; i < clone.length; i += 3) {
+				p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 				transform.transform(p);
 				clone[i] = p.ix();
 				clone[i + 1] = p.iy();
@@ -464,13 +452,13 @@ public class Path3d extends AbstractShape3d<Path3d>
 	public float[] toFloatArray(Transform3D transform) {
 		final var clone = new float[this.numCoords];
 		if (transform == null || transform.isIdentity()) {
-            for (var i = 0; i < this.numCoords; ++i) {
+			for (var i = 0; i < this.numCoords; ++i) {
 				clone[i] = (float) this.coords[i];
 			}
 		} else {
-			final var p = new InnerComputationPoint3afp();
-            for (var i = 0; i < clone.length; i += 3) {
-                p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
+			final var p = new InnerComputationPoint3D();
+			for (var i = 0; i < clone.length; i += 3) {
+				p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 				transform.transform(p);
 				clone[i] = (float) p.getX();
 				clone[i + 1] = (float) p.getY();
@@ -486,10 +474,10 @@ public class Path3d extends AbstractShape3d<Path3d>
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		final var p = new InnerComputationPoint3afp();
+		final var p = new InnerComputationPoint3D();
 		final var clone = new double[this.numCoords];
-        for (var i = 0; i < clone.length; i += 3) {
-            p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
+		for (var i = 0; i < clone.length; i += 3) {
+			p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 			transform.transform(p);
 			clone[i] = p.getX();
 			clone[i + 1] = p.getY();
@@ -501,16 +489,16 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	@Pure
 	public Point3d[] toPointArray(Transform3D transform) {
-        final var clone = new Point3d[this.numCoords / 2];
+		final var clone = new Point3d[this.numCoords / 2];
 		if (transform == null || transform.isIdentity()) {
-            for (int i = 0, j = 0; j < this.numCoords; ++i, j += 3) {
+			for (int i = 0, j = 0; j < this.numCoords; ++i, j += 3) {
 				clone[i] = getGeomFactory().newPoint(
 						this.coords[j],
 						this.coords[j + 1],
 						this.coords[j + 2]);
 			}
 		} else {
-            for (int i = 0, j = 0; j < clone.length; ++i, j += 3) {
+			for (int i = 0, j = 0; j < clone.length; ++i, j += 3) {
 				clone[i] = getGeomFactory().newPoint(
 						this.coords[j],
 						this.coords[j + 1],
@@ -528,14 +516,14 @@ public class Path3d extends AbstractShape3d<Path3d>
 				: AssertMessages.outsideRangeInclusiveParameter(Double.valueOf(index), Double.valueOf(0), Double.valueOf(index - 1));
 		final var baseIndex = index * 3;
 		return getGeomFactory().newPoint(
-                this.coords[baseIndex], this.coords[baseIndex + 1], this.coords[baseIndex + 2]);
+				this.coords[baseIndex], this.coords[baseIndex + 1], this.coords[baseIndex + 2]);
 	}
 
 	@Override
 	@Pure
 	public Point3d getCurrentPoint() {
-        return getGeomFactory().newPoint(this.coords[this.numCoords - 3], this.coords[this.numCoords - 2],
-                this.coords[this.numCoords - 1]);
+		return getGeomFactory().newPoint(this.coords[this.numCoords - 3], this.coords[this.numCoords - 2],
+				this.coords[this.numCoords - 1]);
 	}
 
 	@Override
@@ -556,13 +544,13 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	@Pure
 	public int size() {
-        return this.numCoords / 3;
+		return this.numCoords / 3;
 	}
 
 	@Override
 	public void removeLast() {
-        if (this.numTypes > 0) {
-            switch (this.types[this.numTypes - 1]) {
+		if (this.numTypes > 0) {
+			switch (this.types[this.numTypes - 1]) {
 			case CLOSE:
 				// no coord to remove
 				this.isPolygon = null;
@@ -587,7 +575,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 				this.isPolyline = null;
 				this.isCurved = null;
 				break;
-				//$CASES-OMITTED$
+			case ARC_TO:
 			default:
 				throw new IllegalStateException();
 			}
@@ -611,10 +599,10 @@ public class Path3d extends AbstractShape3d<Path3d>
 		if (this.isMultipart != null && this.isMultipart != Boolean.TRUE) {
 			this.isMultipart = null;
 		}
-        if (this.numTypes > 0 && this.types[this.numTypes - 1] == PathElementType.MOVE_TO) {
-            this.coords[this.numCoords - 3] = x;
-            this.coords[this.numCoords - 2] = y;
-            this.coords[this.numCoords - 1] = z;
+		if (this.numTypes > 0 && this.types[this.numTypes - 1] == PathElementType.MOVE_TO) {
+			this.coords[this.numCoords - 3] = x;
+			this.coords[this.numCoords - 2] = y;
+			this.coords[this.numCoords - 1] = z;
 		} else {
 			ensureSlots(false, 3);
 			this.types[this.numTypes++] = PathElementType.MOVE_TO;
@@ -695,11 +683,11 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void setLastPoint(double x, double y, double z) {
-        if (this.numCoords >= 3) {
-            this.coords[this.numCoords - 3] = x;
-            this.coords[this.numCoords - 2] = y;
-            this.coords[this.numCoords - 1] = z;
-            this.graphicalBounds = null;
+		if (this.numCoords >= 3) {
+			this.coords[this.numCoords - 3] = x;
+			this.coords[this.numCoords - 2] = y;
+			this.coords[this.numCoords - 1] = z;
+			this.graphicalBounds = null;
 			this.logicalBounds = null;
 			this.length = null;
 			fireGeometryChange();
@@ -709,25 +697,19 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
-	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : AssertMessages.notNullParameter();
-		this.windingRule = rule;
-	}
-
-	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:fallthrough", "checkstyle:booleanexpressioncomplexity"})
 	public boolean remove(double x, double y, double z) {
-        for (int i = 0, j = 0; i < this.numCoords && j < this.numTypes;) {
-            switch (this.types[j]) {
+		for (int i = 0, j = 0; i < this.numCoords && j < this.numTypes;) {
+			switch (this.types[j]) {
 			case MOVE_TO:
 				this.isMultipart = null;
 				//$FALL-THROUGH$
 			case LINE_TO:
-                if (x == this.coords[i] && y == this.coords[i + 1] && z == this.coords[i + 2]) {
-					this.numCoords -= 2;
+				if (x == this.coords[i] && y == this.coords[i + 1] && z == this.coords[i + 2]) {
+					this.numCoords -= 3;
 					--this.numTypes;
-                    System.arraycopy(this.coords, i + 3, this.coords, i, this.numCoords);
-                    System.arraycopy(this.types, j + 1, this.types, j, this.numTypes);
+					System.arraycopy(this.coords, i + 3, this.coords, i, this.numCoords - i);
+					System.arraycopy(this.types, j + 1, this.types, j, this.numTypes - j);
 					this.isEmpty = null;
 					this.length = null;
 					this.graphicalBounds = null;
@@ -738,32 +720,24 @@ public class Path3d extends AbstractShape3d<Path3d>
 				i += 3;
 				++j;
 				break;
-			case CURVE_TO:
-                if (x == this.coords[i] && y == this.coords[i + 1] && z == this.coords[i + 2]
-                        || x == this.coords[i + 3] && y == this.coords[i + 4] && z == this.coords[i + 5]
-                        || x == this.coords[i + 6] && y == this.coords[i + 7] && z == this.coords[i + 8]) {
-                    this.numCoords -= 6;
-                    --this.numTypes;
-                    System.arraycopy(this.coords, i + 8, this.coords, i, this.numCoords);
-                    System.arraycopy(this.types, j + 1, this.types, j, this.numTypes);
+			case QUAD_TO:
+				if (x == this.coords[i] && y == this.coords[i + 1] && z == this.coords[i + 2]) {
+					// Remove the control point, transform to line
+					this.numCoords -= 3;
+					this.types[j] = PathElementType.LINE_TO;
+					System.arraycopy(this.coords, i + 3, this.coords, i, this.numCoords - i);
 					this.isEmpty = null;
-					this.isPolyline = null;
 					this.length = null;
 					this.graphicalBounds = null;
 					this.logicalBounds = null;
 					fireGeometryChange();
 					return true;
-				}
-				i += 9;
-				++j;
-				break;
-			case QUAD_TO:
-                if (x == this.coords[i] && y == this.coords[i + 1] && z == this.coords[i + 2]
-                        || x == this.coords[i + 3] && y == this.coords[i + 4] && z == this.coords[i + 5]) {
-					this.numCoords -= 4;
+				} else if (x == this.coords[i + 3] && y == this.coords[i + 4] && z == this.coords[i + 5]) {
+					// Remove the end point, remove the curve
+					this.numCoords -= 6;
 					--this.numTypes;
-                    System.arraycopy(this.coords, i + 6, this.coords, i, this.numCoords);
-                    System.arraycopy(this.types, j + 1, this.types, j, this.numTypes);
+					System.arraycopy(this.coords, i + 6, this.coords, i, this.numCoords - i);
+					System.arraycopy(this.types, j + 1, this.types, j, this.numTypes - j);
 					this.isEmpty = null;
 					this.isPolyline = null;
 					this.length = null;
@@ -775,10 +749,50 @@ public class Path3d extends AbstractShape3d<Path3d>
 				i += 6;
 				++j;
 				break;
+			case CURVE_TO:
+				if (x == this.coords[i] && y == this.coords[i + 1] && z == this.coords[i + 2]) {
+					// Remove the first control point, transform to quad curve
+					this.numCoords -= 3;
+					this.types[j] = PathElementType.QUAD_TO;
+					System.arraycopy(this.coords, i + 3, this.coords, i, this.numCoords - i);
+					this.isEmpty = null;
+					this.length = null;
+					this.graphicalBounds = null;
+					this.logicalBounds = null;
+					fireGeometryChange();
+					return true;
+				} else if (x == this.coords[i + 3] && y == this.coords[i + 4] && z == this.coords[i + 5]) {
+					// Remove the second control point, transform to quad curve
+					this.numCoords -= 3;
+					this.types[j] = PathElementType.QUAD_TO;
+					System.arraycopy(this.coords, i + 6, this.coords, i + 3, this.numCoords - i);
+					this.isEmpty = null;
+					this.length = null;
+					this.graphicalBounds = null;
+					this.logicalBounds = null;
+					fireGeometryChange();
+					return true;
+				} else if (x == this.coords[i + 6] && y == this.coords[i + 7] && z == this.coords[i + 8]) {
+					// Remove the end point, remove the curve
+					this.numCoords -= 9;
+					--this.numTypes;
+					System.arraycopy(this.coords, i + 9, this.coords, i, this.numCoords - i);
+					System.arraycopy(this.types, j + 1, this.types, j, this.numTypes - j);
+					this.isEmpty = null;
+					this.isPolyline = null;
+					this.length = null;
+					this.graphicalBounds = null;
+					this.logicalBounds = null;
+					fireGeometryChange();
+					return true;
+				}
+				i += 9;
+				++j;
+				break;
 			case CLOSE:
 				++j;
 				break;
-				//$CASES-OMITTED$
+			case ARC_TO:
 			default:
 				break;
 			}
@@ -802,6 +816,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	@Pure
 	public PathElementType getPathElementTypeAt(int index) {
+		assert index < this.numTypes : AssertMessages.noSuchElement();
 		return this.types[index];
 	}
 

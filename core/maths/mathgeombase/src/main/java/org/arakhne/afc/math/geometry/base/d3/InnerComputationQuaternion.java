@@ -209,27 +209,68 @@ public class InnerComputationQuaternion implements Quaternion<InnerComputationPo
 
 	@Override
 	public void conjugate(Quaternion<?, ?, ?> quaternion) {
-		throw new UnsupportedOperationException();
+		final var x = quaternion.getX();
+		final var y = quaternion.getY();
+		final var z = quaternion.getZ();
+		final var w = quaternion.getW();
+		this.x = -x;
+		this.y = -y;
+		this.z = -z;
+		this.w = w;
 	}
 
 	@Override
 	public void mul(Quaternion<?, ?, ?> q1, Quaternion<?, ?, ?> q2) {
-		throw new UnsupportedOperationException();
+		final var x1 = q1.getX();
+		final var y1 = q1.getY();
+		final var z1 = q1.getZ();
+		final var w1 = q1.getW();
+		final var x2 = q2.getX();
+		final var y2 = q2.getY();
+		final var z2 = q2.getZ();
+		final var w2 = q2.getW();
+		this.w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
+		this.x = w1 * x2 + w2 * x1 + y1 * z2 - z1 * y2;
+		this.y = w1 * y2 + w2 * y1 - x1 * z2 + z1 * x2;
+		this.z = w1 * z2 + w2 * z1 + x1 * y2 - y1 * x2;
 	}
 
 	@Override
 	public void mulInverse(Quaternion<?, ?, ?> q1, Quaternion<?, ?, ?> q2) {
-		throw new UnsupportedOperationException();
+		final var tempQuat = new InnerComputationQuaternion(
+				q2.getX(), q2.getY(), q2.getZ(), q2.getW());
+		tempQuat.inverse();
+		mul(q1, tempQuat);
 	}
 
 	@Override
 	public void inverse(Quaternion<?, ?, ?> quaternion) {
-		throw new UnsupportedOperationException();
+		final var x = quaternion.getX();
+		final var y = quaternion.getY();
+		final var z = quaternion.getZ();
+		final var w = quaternion.getW();
+		final var norm = 1. / (w * w + x * x + y * y + z * z);
+		this.w =  norm * w;
+		this.x = -norm * x;
+		this.y = -norm * y;
+		this.z = -norm * z;
 	}
 
 	@Override
 	public void normalize(Quaternion<?, ?, ?> quaternion) {
-		throw new UnsupportedOperationException();
+		var norm = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+		if (norm > 0.) {
+			norm = 1. / Math.sqrt(norm);
+			this.x *= norm;
+			this.y *= norm;
+			this.z *= norm;
+			this.w *= norm;
+		} else {
+			this.x = 0.;
+			this.y = 0.;
+			this.z = 0.;
+			this.w = 0.;
+		}
 	}
 
 	@Override

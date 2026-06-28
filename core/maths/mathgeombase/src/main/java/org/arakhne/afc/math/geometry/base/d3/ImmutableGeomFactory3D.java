@@ -36,7 +36,9 @@ public final class ImmutableGeomFactory3D extends AbstractGeomFactory3D<Immutabl
 	 */
 	public static final ImmutableGeomFactory3D SINGLETON = new ImmutableGeomFactory3D();
 
-	private ImmutableGeomFactory3D() {
+	/** Construct, but prefer to use {@link #SINGLETON singleton}.
+	 */
+	public ImmutableGeomFactory3D() {
 		//
 	}
 
