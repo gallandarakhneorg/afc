@@ -30,9 +30,12 @@ import static org.arakhne.afc.math.MathConstants.TWO_PI;
 
 import org.arakhne.afc.math.geometry.base.d1.InnerComputationVector1D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -43,25 +46,20 @@ import org.junit.jupiter.api.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("JavaPhysicsEngine")
 @SuppressWarnings("all")
 public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 
 	private JavaPhysicsEngine engine;
 	
-	/**
-	 * @throws Exception
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.engine = new JavaPhysicsEngine();
+		engine = new JavaPhysicsEngine();
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.engine = null;
+		engine = null;
 	}
 	
 	private Vector2d makeVect(double x, double y, double n) {
@@ -78,609 +76,1648 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		return v;
 	}
 
-	/**
-	 */
-	@Test
-	public void speed() {
-		assertEpsilonEquals(0., this.engine.speed(0., 1.));
-		assertEpsilonEquals(PI, this.engine.speed(PI, 1.));
-		assertEpsilonEquals(-PI, this.engine.speed(-PI, 1.));
-		assertEpsilonEquals(0., this.engine.speed(0., .5));
-		assertEpsilonEquals(TWO_PI, this.engine.speed(PI, .5));
-		assertEpsilonEquals(-TWO_PI, this.engine.speed(-PI, .5));
+	@DisplayName("speed")
+	@Nested
+	public class Speed {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEpsilonEquals(0., engine.speed(0., 1.));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEpsilonEquals(PI, engine.speed(PI, 1.));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEpsilonEquals(-PI, engine.speed(-PI, 1.));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertEpsilonEquals(0., engine.speed(0., .5));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			assertEpsilonEquals(TWO_PI, engine.speed(PI, .5));
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			assertEpsilonEquals(-TWO_PI, engine.speed(-PI, .5));
+		}
+
 	}
 
-	/** 
-	 */
-	@Test
-	public void acceleration() {
-		assertEpsilonEquals(0., this.engine.acceleration(0., 0., 1.));
-		assertEpsilonEquals(PI, this.engine.acceleration(0., PI, 1.));
-		assertEpsilonEquals(-PI, this.engine.acceleration(0., -PI, 1.));
-		assertEpsilonEquals(-PI, this.engine.acceleration(PI, 0., 1.));
-		assertEpsilonEquals(0., this.engine.acceleration(PI, PI, 1.));
-		assertEpsilonEquals(-TWO_PI, this.engine.acceleration(PI, -PI, 1.));
-		assertEpsilonEquals(PI, this.engine.acceleration(-PI, 0., 1.));
-		assertEpsilonEquals(TWO_PI, this.engine.acceleration(-PI, PI, 1.));
-		assertEpsilonEquals(0., this.engine.acceleration(-PI, -PI, 1.));
+	@DisplayName("acceleration")
+	@Nested
+	public class Acceleration {
 
-		assertEpsilonEquals(0., this.engine.acceleration(0., 0., .5));
-		assertEpsilonEquals(TWO_PI, this.engine.acceleration(0., PI, .5));
-		assertEpsilonEquals(-TWO_PI, this.engine.acceleration(0., -PI, .5));
-		assertEpsilonEquals(-TWO_PI, this.engine.acceleration(PI, 0., .5));
-		assertEpsilonEquals(0., this.engine.acceleration(PI, PI, .5));
-		assertEpsilonEquals(-2.*TWO_PI, this.engine.acceleration(PI, -PI, .5));
-		assertEpsilonEquals(TWO_PI, this.engine.acceleration(-PI, 0., .5));
-		assertEpsilonEquals(2*TWO_PI, this.engine.acceleration(-PI, PI, .5));
-		assertEpsilonEquals(0., this.engine.acceleration(-PI, -PI, .5));
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEpsilonEquals(0., engine.acceleration(0., 0., 1.));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEpsilonEquals(PI, engine.acceleration(0., PI, 1.));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEpsilonEquals(-PI, engine.acceleration(0., -PI, 1.));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertEpsilonEquals(-PI, engine.acceleration(PI, 0., 1.));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			assertEpsilonEquals(0., engine.acceleration(PI, PI, 1.));
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			assertEpsilonEquals(-TWO_PI, engine.acceleration(PI, -PI, 1.));
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			assertEpsilonEquals(PI, engine.acceleration(-PI, 0., 1.));
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			assertEpsilonEquals(TWO_PI, engine.acceleration(-PI, PI, 1.));
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			assertEpsilonEquals(0., engine.acceleration(-PI, -PI, 1.));
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			assertEpsilonEquals(0., engine.acceleration(0., 0., .5));
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			assertEpsilonEquals(TWO_PI, engine.acceleration(0., PI, .5));
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			assertEpsilonEquals(-TWO_PI, engine.acceleration(0., -PI, .5));
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			assertEpsilonEquals(-TWO_PI, engine.acceleration(PI, 0., .5));
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			assertEpsilonEquals(0., engine.acceleration(PI, PI, .5));
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			assertEpsilonEquals(-2.*TWO_PI, engine.acceleration(PI, -PI, .5));
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			assertEpsilonEquals(TWO_PI, engine.acceleration(-PI, 0., .5));
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			assertEpsilonEquals(2*TWO_PI, engine.acceleration(-PI, PI, .5));
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			assertEpsilonEquals(0., engine.acceleration(-PI, -PI, .5));
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonLaw() {
-		assertEpsilonEquals(0., this.engine.motionNewtonLaw(0., 0., 1.));
-		assertEpsilonEquals(DEMI_PI, this.engine.motionNewtonLaw(0., PI, 1.));
-		assertEpsilonEquals(-DEMI_PI, this.engine.motionNewtonLaw(0., -PI, 1.));
-		assertEpsilonEquals(PI, this.engine.motionNewtonLaw(PI, 0., 1.));
-		assertEpsilonEquals(ONE_HALF_PI, this.engine.motionNewtonLaw(PI, PI, 1.));
-		assertEpsilonEquals(DEMI_PI, this.engine.motionNewtonLaw(PI, -PI, 1.));
-		assertEpsilonEquals(-PI, this.engine.motionNewtonLaw(-PI, 0., 1.));
-		assertEpsilonEquals(-DEMI_PI, this.engine.motionNewtonLaw(-PI, PI, 1.));
-		assertEpsilonEquals(-ONE_HALF_PI, this.engine.motionNewtonLaw(-PI, -PI, 1.));
+	@DisplayName("motionNewtonLaw")
+	@Nested
+	public class MotionNewtonLaw {
 
-		assertEpsilonEquals(0., this.engine.motionNewtonLaw(0., 0., .5));
-		assertEpsilonEquals(QUARTER_PI/2., this.engine.motionNewtonLaw(0., PI, .5));
-		assertEpsilonEquals(-QUARTER_PI/2., this.engine.motionNewtonLaw(0., -PI, .5));
-		assertEpsilonEquals(DEMI_PI, this.engine.motionNewtonLaw(PI, 0., .5));
-		assertEpsilonEquals(DEMI_PI+QUARTER_PI/2., this.engine.motionNewtonLaw(PI, PI, .5));
-		assertEpsilonEquals(THREE_QUARTER_PI/2., this.engine.motionNewtonLaw(PI, -PI, .5));
-		assertEpsilonEquals(-DEMI_PI, this.engine.motionNewtonLaw(-PI, 0., .5));
-		assertEpsilonEquals(-THREE_QUARTER_PI/2., this.engine.motionNewtonLaw(-PI, PI, .5));
-		assertEpsilonEquals((-PI-QUARTER_PI)/2., this.engine.motionNewtonLaw(-PI, -PI, .5));
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEpsilonEquals(0., engine.motionNewtonLaw(0., 0., 1.));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEpsilonEquals(DEMI_PI, engine.motionNewtonLaw(0., PI, 1.));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEpsilonEquals(-DEMI_PI, engine.motionNewtonLaw(0., -PI, 1.));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertEpsilonEquals(PI, engine.motionNewtonLaw(PI, 0., 1.));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			assertEpsilonEquals(ONE_HALF_PI, engine.motionNewtonLaw(PI, PI, 1.));
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			assertEpsilonEquals(DEMI_PI, engine.motionNewtonLaw(PI, -PI, 1.));
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			assertEpsilonEquals(-PI, engine.motionNewtonLaw(-PI, 0., 1.));
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			assertEpsilonEquals(-DEMI_PI, engine.motionNewtonLaw(-PI, PI, 1.));
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			assertEpsilonEquals(-ONE_HALF_PI, engine.motionNewtonLaw(-PI, -PI, 1.));
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			assertEpsilonEquals(0., engine.motionNewtonLaw(0., 0., .5));
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			assertEpsilonEquals(QUARTER_PI/2., engine.motionNewtonLaw(0., PI, .5));
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			assertEpsilonEquals(-QUARTER_PI/2., engine.motionNewtonLaw(0., -PI, .5));
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			assertEpsilonEquals(DEMI_PI, engine.motionNewtonLaw(PI, 0., .5));
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			assertEpsilonEquals(DEMI_PI+QUARTER_PI/2., engine.motionNewtonLaw(PI, PI, .5));
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			assertEpsilonEquals(THREE_QUARTER_PI/2., engine.motionNewtonLaw(PI, -PI, .5));
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			assertEpsilonEquals(-DEMI_PI, engine.motionNewtonLaw(-PI, 0., .5));
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			assertEpsilonEquals(-THREE_QUARTER_PI/2., engine.motionNewtonLaw(-PI, PI, .5));
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			assertEpsilonEquals((-PI-QUARTER_PI)/2., engine.motionNewtonLaw(-PI, -PI, .5));
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonLaw1D() {
-		assertEpsilonEquals(0., this.engine.motionNewtonLaw1D(0., 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, 1.));
-		assertEpsilonEquals(QUARTER_PI, this.engine.motionNewtonLaw1D(0., 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, 1.));
-		assertEpsilonEquals(-QUARTER_PI/2., this.engine.motionNewtonLaw1D(0., 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, 1.));
-		assertEpsilonEquals(DEMI_PI, this.engine.motionNewtonLaw1D(PI, 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, 1.));
-		assertEpsilonEquals(DEMI_PI, this.engine.motionNewtonLaw1D(PI, 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, 1.));
-		assertEpsilonEquals(DEMI_PI, this.engine.motionNewtonLaw1D(PI, 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, 1.));
-		assertEpsilonEquals(-DEMI_PI, this.engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, 1.));
-		assertEpsilonEquals(-DEMI_PI, this.engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, 1.));
-		assertEpsilonEquals(-DEMI_PI, this.engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, 1.));
+	@DisplayName("motionNewtonLaw1D")
+	@Nested
+	public class MotionNewtonLaw1D {
 
-		assertEpsilonEquals(0., this.engine.motionNewtonLaw1D(0.,0, DEMI_PI,  0., -QUARTER_PI, DEMI_PI, .5));
-		assertEpsilonEquals(QUARTER_PI/4., this.engine.motionNewtonLaw1D(0., 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, .5));
-		assertEpsilonEquals(-QUARTER_PI/8., this.engine.motionNewtonLaw1D(0., 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, .5));
-		assertEpsilonEquals(QUARTER_PI, this.engine.motionNewtonLaw1D(PI, 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, .5));
-		assertEpsilonEquals(QUARTER_PI, this.engine.motionNewtonLaw1D(PI, 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, .5));
-		assertEpsilonEquals(QUARTER_PI, this.engine.motionNewtonLaw1D(PI, 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, .5));
-		assertEpsilonEquals(-DEMI_PI/2., this.engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, .5));
-		assertEpsilonEquals(-DEMI_PI/2., this.engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, .5));
-		assertEpsilonEquals(-DEMI_PI/2., this.engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, .5));
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEpsilonEquals(0., engine.motionNewtonLaw1D(0., 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEpsilonEquals(QUARTER_PI, engine.motionNewtonLaw1D(0., 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEpsilonEquals(-QUARTER_PI/2., engine.motionNewtonLaw1D(0., 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertEpsilonEquals(DEMI_PI, engine.motionNewtonLaw1D(PI, 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			assertEpsilonEquals(DEMI_PI, engine.motionNewtonLaw1D(PI, 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			assertEpsilonEquals(DEMI_PI, engine.motionNewtonLaw1D(PI, 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			assertEpsilonEquals(-DEMI_PI, engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			assertEpsilonEquals(-DEMI_PI, engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			assertEpsilonEquals(-DEMI_PI, engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			assertEpsilonEquals(0., engine.motionNewtonLaw1D(0.,0, DEMI_PI,  0., -QUARTER_PI, DEMI_PI, .5));
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			assertEpsilonEquals(QUARTER_PI/4., engine.motionNewtonLaw1D(0., 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, .5));
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			assertEpsilonEquals(-QUARTER_PI/8., engine.motionNewtonLaw1D(0., 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, .5));
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			assertEpsilonEquals(QUARTER_PI, engine.motionNewtonLaw1D(PI, 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, .5));
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			assertEpsilonEquals(QUARTER_PI, engine.motionNewtonLaw1D(PI, 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, .5));
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			assertEpsilonEquals(QUARTER_PI, engine.motionNewtonLaw1D(PI, 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, .5));
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			assertEpsilonEquals(-DEMI_PI/2., engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, 0., -QUARTER_PI, DEMI_PI, .5));
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			assertEpsilonEquals(-DEMI_PI/2., engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, PI, -QUARTER_PI, DEMI_PI, .5));
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			assertEpsilonEquals(-DEMI_PI/2., engine.motionNewtonLaw1D(-PI, 0, DEMI_PI, -PI, -QUARTER_PI, DEMI_PI, .5));
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonLaw1D5() {
-		var v = new InnerComputationVector1D(null);
-		var a = new InnerComputationVector1D(null);
-		var r = new InnerComputationVector1D(null);
+	@DisplayName("motionNewtonLaw1D5")
+	@Nested
+	public class MotionNewtonLaw1D5 {
 
-		//--- DT: 1
+		private InnerComputationVector1D v;
+		private InnerComputationVector1D a;
+		private InnerComputationVector1D r;
 
-		// velocity = (0,0)
-		v.set(0.,0.);
-		a.set(0.,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(0., 0.), r);
-		a.set(PI,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(QUARTER_PI,0.), r);
-		a.set(-PI,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(-QUARTER_PI,0.), r);
-		a.set(0.,PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(0., QUARTER_PI), r);
-		a.set(0.,-PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(0., -QUARTER_PI), r);
-		a.set(-PI,PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1,1,QUARTER_PI), r);
-		a.set(-PI,-PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1,-1,QUARTER_PI), r);
+		@BeforeEach
+		public void setUp() {
+			this.v = new InnerComputationVector1D(null);
+			this.a = new InnerComputationVector1D(null);
+			this.r = new InnerComputationVector1D(null);
+		}
 
-		// velocity = (PI/2,0)
-		v.set(DEMI_PI,0.);
-		a.set(0.,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI, 0.), r);
-		a.set(PI,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI,0.), r);
-		a.set(-PI,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI-QUARTER_PI/2.,0.), r);
-		a.set(0.,PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1., .5, DEMI_PI), r);
-		a.set(0.,-PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1., -.5, DEMI_PI), r);
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			v.set(0.,0.);
+			a.set(0.,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(0., 0.), r);
+		}
 
-		// velocity = (1,0)
-		v.set(1.,0.);
-		a.set(-1.,1.);
-		this.engine.motionNewtonLaw1D5(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
-		assertEpsilonEquals(makeVect(1,1,Math.sqrt(.5)), r);
-		a.set(-1.,-1.);
-		this.engine.motionNewtonLaw1D5(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
-		assertEpsilonEquals(makeVect(1,-1,Math.sqrt(.5)), r);
-				
-		//--- DT: 1/2
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			v.set(0.,0.);
+			a.set(PI,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(QUARTER_PI,0.), r);
+		}
 
-		// velocity = (0,0)
-		v.set(0.,0.);
-		a.set(0.,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(0., 0.), r);
-		a.set(PI,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(PI/16.,0.), r);
-		a.set(-PI,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(-PI/16.,0.), r);
-		a.set(0.,PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(0., PI/16.), r);
-		a.set(0.,-PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(0., -PI/16.), r);
-		a.set(-PI,PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1,1,PI/16.), r);
-		a.set(-PI,-PI);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1,-1,PI/16.), r);
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			v.set(0.,0.);
+			a.set(-PI,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(-QUARTER_PI,0.), r);
+		}
 
-		// velocity = (PI/2,0)
-		v.set(DEMI_PI,0.);
-		a.set(0.,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI/2., 0.), r);
-		a.set(PI,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI/2.,0.), r);
-		a.set(-PI,0.);
-		this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d((DEMI_PI-PI/16.)/2.,0.), r);
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			v.set(0.,0.);
+			a.set(0.,PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(0., QUARTER_PI), r);
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			v.set(0.,0.);
+			a.set(0.,-PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(0., -QUARTER_PI), r);
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			v.set(0.,0.);
+			a.set(-PI,PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1,1,QUARTER_PI), r);
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			v.set(0.,0.);
+			a.set(-PI,-PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1,-1,QUARTER_PI), r);
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			v.set(DEMI_PI,0.);
+			a.set(0.,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI, 0.), r);
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			v.set(DEMI_PI,0.);
+			a.set(PI,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI,0.), r);
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			v.set(DEMI_PI,0.);
+			a.set(-PI,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI-QUARTER_PI/2.,0.), r);
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			v.set(DEMI_PI,0.);
+			a.set(0.,PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1., .5, DEMI_PI), r);
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			v.set(DEMI_PI,0.);
+			a.set(0.,-PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1., -.5, DEMI_PI), r);
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			v.set(1.,0.);
+			a.set(-1.,1.);
+			engine.motionNewtonLaw1D5(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
+			assertEpsilonEquals(makeVect(1,1,Math.sqrt(.5)), r);
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			v.set(1.,0.);
+			a.set(-1.,-1.);
+			engine.motionNewtonLaw1D5(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
+			assertEpsilonEquals(makeVect(1,-1,Math.sqrt(.5)), r);
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			v.set(0.,0.);
+			a.set(0.,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(0., 0.), r);
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			v.set(0.,0.);
+			a.set(PI,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(PI/16.,0.), r);
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			v.set(0.,0.);
+			a.set(-PI,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(-PI/16.,0.), r);
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			v.set(0.,0.);
+			a.set(0.,PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(0., PI/16.), r);
+		}
+
+		@DisplayName("#19")
+		@Test
+		public void test_19() {
+			v.set(0.,0.);
+			a.set(0.,-PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(0., -PI/16.), r);
+		}
+
+		@DisplayName("#20")
+		@Test
+		public void test_20() {
+			v.set(0.,0.);
+			a.set(-PI,PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1,1,PI/16.), r);
+		}
+
+		@DisplayName("#21")
+		@Test
+		public void test_21() {
+			v.set(0.,0.);
+			a.set(-PI,-PI);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1,-1,PI/16.), r);
+		}
+
+		@DisplayName("#22")
+		@Test
+		public void test_22() {
+			v.set(DEMI_PI,0.);
+			a.set(0.,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI/2., 0.), r);
+		}
+
+		@DisplayName("#23")
+		@Test
+		public void test_23() {
+			v.set(DEMI_PI,0.);
+			a.set(PI,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI/2.,0.), r);
+		}
+
+		@DisplayName("#24")
+		@Test
+		public void test_24() {
+			v.set(DEMI_PI,0.);
+			a.set(-PI,0.);
+			engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d((DEMI_PI-PI/16.)/2.,0.), r);
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonLaw2D() {
-		Vector2d v = new Vector2d();
-		Vector2d a = new Vector2d();
-		Vector2d r = new Vector2d();
+	@DisplayName("motionNewtonLaw2D")
+	@Nested
+	public class MotionNewtonLaw2D {
 
-		//--- DT: 1
+		private Vector2d v;
+		private Vector2d a;
+		private Vector2d r;
 
-		// velocity = (0,0)
-		v.set(0.,0.);
-		a.set(0.,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(0., 0.), r);
-		a.set(PI,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(QUARTER_PI,0.), r);
-		a.set(-PI,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(-QUARTER_PI,0.), r);
-		a.set(0.,PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(0., QUARTER_PI), r);
-		a.set(0.,-PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(0., -QUARTER_PI), r);
-		a.set(-PI,PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1,1,QUARTER_PI), r);
-		a.set(-PI,-PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1,-1,QUARTER_PI), r);
+		@BeforeEach
+		public void setUp() {
+			this.v = new Vector2d();
+			this.a = new Vector2d();
+			this.r = new Vector2d();
+		}
 
-		// velocity = (PI/2,0)
-		v.set(DEMI_PI,0.);
-		a.set(0.,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI, 0.), r);
-		a.set(PI,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI,0.), r);
-		a.set(-PI,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI-QUARTER_PI/2.,0.), r);
-		a.set(0.,PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1., .5, DEMI_PI), r);
-		a.set(0.,-PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1., -.5, DEMI_PI), r);
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			v.set(0.,0.);
+			a.set(0.,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(0., 0.), r);
+		}
 
-		// velocity = (1,0)
-		v.set(1.,0.);
-		a.set(-1.,1.);
-		this.engine.motionNewtonLaw2D(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
-		assertEpsilonEquals(makeVect(1,1,Math.sqrt(.5)), r);
-		a.set(-1.,-1.);
-		this.engine.motionNewtonLaw2D(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
-		assertEpsilonEquals(makeVect(1,-1,Math.sqrt(.5)), r);
-				
-		//--- DT: 1/2
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			v.set(0.,0.);
+			a.set(PI,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(QUARTER_PI,0.), r);
+		}
 
-		// velocity = (0,0)
-		v.set(0.,0.);
-		a.set(0.,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(0., 0.), r);
-		a.set(PI,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(PI/16.,0.), r);
-		a.set(-PI,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(-PI/16.,0.), r);
-		a.set(0.,PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(0., PI/16.), r);
-		a.set(0.,-PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(0., -PI/16.), r);
-		a.set(-PI,PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1,1,PI/16.), r);
-		a.set(-PI,-PI);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1,-1,PI/16.), r);
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			v.set(0.,0.);
+			a.set(-PI,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(-QUARTER_PI,0.), r);
+		}
 
-		// velocity = (PI/2,0)
-		v.set(DEMI_PI,0.);
-		a.set(0.,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI/2., 0.), r);
-		a.set(PI,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d(DEMI_PI/2.,0.), r);
-		a.set(-PI,0.);
-		this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new Vector2d((DEMI_PI-PI/16.)/2.,0.), r);
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			v.set(0.,0.);
+			a.set(0.,PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(0., QUARTER_PI), r);
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			v.set(0.,0.);
+			a.set(0.,-PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(0., -QUARTER_PI), r);
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			v.set(0.,0.);
+			a.set(-PI,PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1,1,QUARTER_PI), r);
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			v.set(0.,0.);
+			a.set(-PI,-PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1,-1,QUARTER_PI), r);
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			v.set(DEMI_PI,0.);
+			a.set(0.,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI, 0.), r);
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			v.set(DEMI_PI,0.);
+			a.set(PI,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI,0.), r);
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			v.set(DEMI_PI,0.);
+			a.set(-PI,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI-QUARTER_PI/2.,0.), r);
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			v.set(DEMI_PI,0.);
+			a.set(0.,PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1., .5, DEMI_PI), r);
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			v.set(DEMI_PI,0.);
+			a.set(0.,-PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1., -.5, DEMI_PI), r);
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			v.set(1.,0.);
+			a.set(-1.,1.);
+			engine.motionNewtonLaw2D(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
+			assertEpsilonEquals(makeVect(1,1,Math.sqrt(.5)), r);
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			v.set(1.,0.);
+			a.set(-1.,-1.);
+			engine.motionNewtonLaw2D(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
+			assertEpsilonEquals(makeVect(1,-1,Math.sqrt(.5)), r);
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			v.set(0.,0.);
+			a.set(0.,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(0., 0.), r);
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			v.set(0.,0.);
+			a.set(PI,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(PI/16.,0.), r);
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			v.set(0.,0.);
+			a.set(-PI,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(-PI/16.,0.), r);
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			v.set(0.,0.);
+			a.set(0.,PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(0., PI/16.), r);
+		}
+
+		@DisplayName("#19")
+		@Test
+		public void test_19() {
+			v.set(0.,0.);
+			a.set(0.,-PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(0., -PI/16.), r);
+		}
+
+		@DisplayName("#20")
+		@Test
+		public void test_20() {
+			v.set(0.,0.);
+			a.set(-PI,PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1,1,PI/16.), r);
+		}
+
+		@DisplayName("#21")
+		@Test
+		public void test_21() {
+			v.set(0.,0.);
+			a.set(-PI,-PI);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1,-1,PI/16.), r);
+		}
+
+		@DisplayName("#22")
+		@Test
+		public void test_22() {
+			v.set(DEMI_PI,0.);
+			a.set(0.,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI/2., 0.), r);
+		}
+
+		@DisplayName("#23")
+		@Test
+		public void test_23() {
+			v.set(DEMI_PI,0.);
+			a.set(PI,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d(DEMI_PI/2.,0.), r);
+		}
+
+		@DisplayName("#24")
+		@Test
+		public void test_24() {
+			v.set(DEMI_PI,0.);
+			a.set(-PI,0.);
+			engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new Vector2d((DEMI_PI-PI/16.)/2.,0.), r);
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonLaw3D() {
-		var v = new InnerComputationVector3D();
-		var a = new InnerComputationVector3D();
-		var r = new InnerComputationVector3D();
+	@DisplayName("motionNewtonLaw3D")
+	@Nested
+	public class MotionNewtonLaw3D {
 
-		//--- DT: 1
+		private InnerComputationVector3D v;
+		private InnerComputationVector3D a;
+		private InnerComputationVector3D r;
 
-		// velocity = (0,0)
-		v.set(0.,0.,0.);
-		a.set(0.,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new InnerComputationVector3D(0., 0.,0.), r);
-		a.set(PI,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new InnerComputationVector3D(QUARTER_PI,0.,0.), r);
-		a.set(-PI,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new InnerComputationVector3D(-QUARTER_PI,0.,0.), r);
-		a.set(0.,PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new InnerComputationVector3D(0., QUARTER_PI,0.), r);
-		a.set(0.,-PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new InnerComputationVector3D(0., -QUARTER_PI,0.), r);
-		a.set(-PI,PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1,1,0.,QUARTER_PI), r);
-		a.set(-PI,-PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1,-1,0.,QUARTER_PI), r);
+		@BeforeEach
+		public void setUp() {
+			this.v = new InnerComputationVector3D();
+			this.a = new InnerComputationVector3D();
+			this.r = new InnerComputationVector3D();
+		}
 
-		// velocity = (PI/2,0)
-		v.set(DEMI_PI,0.,0.);
-		a.set(0.,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI, 0.,0.), r);
-		a.set(PI,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI,0.,0.), r);
-		a.set(-PI,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI-QUARTER_PI/2.,0.,0.), r);
-		a.set(0.,PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1., .5,0., DEMI_PI), r);
-		a.set(0.,-PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1., -.5,0, DEMI_PI), r);
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			v.set(0.,0.,0.);
+			a.set(0.,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new InnerComputationVector3D(0., 0.,0.), r);
+		}
 
-		// velocity = (1,0)
-		v.set(1.,0.,0.);
-		a.set(-1.,1.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
-		assertEpsilonEquals(makeVect(1,1,0.,Math.sqrt(.5)), r);
-		a.set(-1.,-1.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
-		assertEpsilonEquals(makeVect(1,-1,0.,Math.sqrt(.5)), r);
-				
-		//--- DT: 1/2
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			v.set(0.,0.,0.);
+			a.set(PI,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new InnerComputationVector3D(QUARTER_PI,0.,0.), r);
+		}
 
-		// velocity = (0,0)
-		v.set(0.,0.,0.);
-		a.set(0.,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new InnerComputationVector3D(0., 0.,0.), r);
-		a.set(PI,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new InnerComputationVector3D(PI/16.,0.,0.), r);
-		a.set(-PI,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new InnerComputationVector3D(-PI/16.,0.,0.), r);
-		a.set(0.,PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new InnerComputationVector3D(0., PI/16.,0.), r);
-		a.set(0.,-PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new InnerComputationVector3D(0., -PI/16.,0.), r);
-		a.set(-PI,PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1,1,0.,PI/16.), r);
-		a.set(-PI,-PI,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1,-1,0.,PI/16.), r);
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			v.set(0.,0.,0.);
+			a.set(-PI,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new InnerComputationVector3D(-QUARTER_PI,0.,0.), r);
+		}
 
-		// velocity = (PI/2,0)
-		v.set(DEMI_PI,0.,0.);
-		a.set(0.,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI/2., 0.,0.), r);
-		a.set(PI,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI/2.,0.,0.), r);
-		a.set(-PI,0.,0.);
-		this.engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
-		assertEpsilonEquals(new InnerComputationVector3D((DEMI_PI-PI/16.)/2.,0.,0.), r);
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			v.set(0.,0.,0.);
+			a.set(0.,PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new InnerComputationVector3D(0., QUARTER_PI,0.), r);
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			v.set(0.,0.,0.);
+			a.set(0.,-PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new InnerComputationVector3D(0., -QUARTER_PI,0.), r);
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			v.set(0.,0.,0.);
+			a.set(-PI,PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1,1,0.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			v.set(0.,0.,0.);
+			a.set(-PI,-PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1,-1,0.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			v.set(DEMI_PI,0.,0.);
+			a.set(0.,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI, 0.,0.), r);
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			v.set(DEMI_PI,0.,0.);
+			a.set(PI,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI,0.,0.), r);
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			v.set(DEMI_PI,0.,0.);
+			a.set(-PI,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI-QUARTER_PI/2.,0.,0.), r);
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			v.set(DEMI_PI,0.,0.);
+			a.set(0.,PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1., .5,0., DEMI_PI), r);
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			v.set(DEMI_PI,0.,0.);
+			a.set(0.,-PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1., -.5,0, DEMI_PI), r);
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			v.set(1.,0.,0.);
+			a.set(-1.,1.,0.);
+			engine.motionNewtonLaw3D(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
+			assertEpsilonEquals(makeVect(1,1,0.,Math.sqrt(.5)), r);
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			v.set(1.,0.,0.);
+			a.set(-1.,-1.,0.);
+			engine.motionNewtonLaw3D(v, 0, SQRT_2, a, -SQRT_2, SQRT_2, 1., r);
+			assertEpsilonEquals(makeVect(1,-1,0.,Math.sqrt(.5)), r);
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			v.set(0.,0.,0.);
+			a.set(0.,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new InnerComputationVector3D(0., 0.,0.), r);
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			v.set(0.,0.,0.);
+			a.set(PI,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new InnerComputationVector3D(PI/16.,0.,0.), r);
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			v.set(0.,0.,0.);
+			a.set(-PI,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new InnerComputationVector3D(-PI/16.,0.,0.), r);
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			v.set(0.,0.,0.);
+			a.set(0.,PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new InnerComputationVector3D(0., PI/16.,0.), r);
+		}
+
+		@DisplayName("#19")
+		@Test
+		public void test_19() {
+			v.set(0.,0.,0.);
+			a.set(0.,-PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new InnerComputationVector3D(0., -PI/16.,0.), r);
+		}
+
+		@DisplayName("#20")
+		@Test
+		public void test_20() {
+			v.set(0.,0.,0.);
+			a.set(-PI,PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1,1,0.,PI/16.), r);
+		}
+
+		@DisplayName("#21")
+		@Test
+		public void test_21() {
+			v.set(0.,0.,0.);
+			a.set(-PI,-PI,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1,-1,0.,PI/16.), r);
+		}
+
+		@DisplayName("#22")
+		@Test
+		public void test_22() {
+			v.set(DEMI_PI,0.,0.);
+			a.set(0.,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI/2., 0.,0.), r);
+		}
+
+		@DisplayName("#23")
+		@Test
+		public void test_23() {
+			v.set(DEMI_PI,0.,0.);
+			a.set(PI,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new InnerComputationVector3D(DEMI_PI/2.,0.,0.), r);
+		}
+
+		@DisplayName("#24")
+		@Test
+		public void test_24() {
+			v.set(DEMI_PI,0.,0.);
+			a.set(-PI,0.,0.);
+			engine.motionNewtonLaw3D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5, r);
+			assertEpsilonEquals(new InnerComputationVector3D((DEMI_PI-PI/16.)/2.,0.,0.), r);
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonEuler1Law() {
-		assertEpsilonEquals(0., this.engine.motionNewtonEuler1Law(0., 1.));
-		assertEpsilonEquals(PI, this.engine.motionNewtonEuler1Law(PI, 1.));
-		assertEpsilonEquals(-PI, this.engine.motionNewtonEuler1Law(-PI, 1.));
+	@DisplayName("motionNewtonEuler1Law")
+	@Nested
+	public class MotionNewtonEuler1Law {
 
-		assertEpsilonEquals(0., this.engine.motionNewtonEuler1Law(0., .5));
-		assertEpsilonEquals(DEMI_PI, this.engine.motionNewtonEuler1Law(PI, .5));
-		assertEpsilonEquals(-DEMI_PI, this.engine.motionNewtonEuler1Law(-PI, .5));
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEpsilonEquals(0., engine.motionNewtonEuler1Law(0., 1.));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEpsilonEquals(PI, engine.motionNewtonEuler1Law(PI, 1.));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEpsilonEquals(-PI, engine.motionNewtonEuler1Law(-PI, 1.));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertEpsilonEquals(0., engine.motionNewtonEuler1Law(0., .5));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			assertEpsilonEquals(DEMI_PI, engine.motionNewtonEuler1Law(PI, .5));
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			assertEpsilonEquals(-DEMI_PI, engine.motionNewtonEuler1Law(-PI, .5));
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonEuler1Law1D() {
-		assertEpsilonEquals(0., this.engine.motionNewtonEuler1Law1D(0., 0, DEMI_PI, 1.));
-		assertEpsilonEquals(DEMI_PI, this.engine.motionNewtonEuler1Law1D(PI, 0, DEMI_PI, 1.));
-		assertEpsilonEquals(-DEMI_PI, this.engine.motionNewtonEuler1Law1D(-PI, 0, DEMI_PI, 1.));
+	@DisplayName("motionNewtonEuler1Law1D")
+	@Nested
+	public class MotionNewtonEuler1Law1D {
 
-		assertEpsilonEquals(0., this.engine.motionNewtonEuler1Law1D(0., 0, DEMI_PI, .5));
-		assertEpsilonEquals(QUARTER_PI, this.engine.motionNewtonEuler1Law1D(PI, 0, DEMI_PI, .5));
-		assertEpsilonEquals(-QUARTER_PI, this.engine.motionNewtonEuler1Law1D(-PI, 0, DEMI_PI, .5));
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEpsilonEquals(0., engine.motionNewtonEuler1Law1D(0., 0, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEpsilonEquals(DEMI_PI, engine.motionNewtonEuler1Law1D(PI, 0, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEpsilonEquals(-DEMI_PI, engine.motionNewtonEuler1Law1D(-PI, 0, DEMI_PI, 1.));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertEpsilonEquals(0., engine.motionNewtonEuler1Law1D(0., 0, DEMI_PI, .5));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			assertEpsilonEquals(QUARTER_PI, engine.motionNewtonEuler1Law1D(PI, 0, DEMI_PI, .5));
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			assertEpsilonEquals(-QUARTER_PI, engine.motionNewtonEuler1Law1D(-PI, 0, DEMI_PI, .5));
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonEuler1Law1D5() {
-		var v = new InnerComputationVector1D(null);
-		var r = new InnerComputationVector1D(null);
+	@DisplayName("motionNewtonEuler1Law1D5")
+	@Nested
+	public class MotionNewtonEuler1Law1D5 {
+
+		private InnerComputationVector1D v;
+		private InnerComputationVector1D r;
+
+		@BeforeEach
+		public void setUp() {
+			this.v = new InnerComputationVector1D(null);
+			this.r = new InnerComputationVector1D(null);
+		}
 		
-		v.set(0.,0.);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,0.,0.), r);
-		v.set(0.,PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(0.,1.,DEMI_PI), r);
-		v.set(0.,-PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(0.,-1.,DEMI_PI), r);
-		v.set(PI,0.);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,0.,DEMI_PI), r);
-		v.set(PI,PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,1.,DEMI_PI), r);
-		v.set(PI,-PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,-1.,DEMI_PI), r);
-		v.set(-PI,0.);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,0.,DEMI_PI), r);
-		v.set(-PI,PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,1.,DEMI_PI), r);
-		v.set(-PI,-PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,-1.,DEMI_PI), r);
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			v.set(0.,0.);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,0.,0.), r);
+		}
+		
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			v.set(0.,PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(0.,1.,DEMI_PI), r);
+		}
+		
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			v.set(0.,-PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(0.,-1.,DEMI_PI), r);
+		}
+		
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			v.set(PI,0.);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,0.,DEMI_PI), r);
+		}
+		
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			v.set(PI,PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,1.,DEMI_PI), r);
+		}
+		
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			v.set(PI,-PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,-1.,DEMI_PI), r);
+		}
+		
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			v.set(-PI,0.);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,0.,DEMI_PI), r);
+		}
+		
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			v.set(-PI,PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,1.,DEMI_PI), r);
+		}
+		
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			v.set(-PI,-PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,-1.,DEMI_PI), r);
+		}
+		
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			v.set(0.,0.);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,0.,0.), r);
+		}
+		
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			v.set(0.,PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(0.,1.,QUARTER_PI), r);
+		}
+		
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			v.set(0.,-PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(0.,-1.,QUARTER_PI), r);
+		}
+		
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			v.set(PI,0.);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,0.,QUARTER_PI), r);
+		}
+		
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			v.set(PI,PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,1.,QUARTER_PI), r);
+		}
+		
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			v.set(PI,-PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,-1.,QUARTER_PI), r);
+		}
+		
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			v.set(-PI,0.);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,0.,QUARTER_PI), r);
+		}
+		
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			v.set(-PI,PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,1.,QUARTER_PI), r);
+		}
+		
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			v.set(-PI,-PI);
+			engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,-1.,QUARTER_PI), r);
+		}
 
-		v.set(0.,0.);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,0.,0.), r);
-		v.set(0.,PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(0.,1.,QUARTER_PI), r);
-		v.set(0.,-PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(0.,-1.,QUARTER_PI), r);
-		v.set(PI,0.);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,0.,QUARTER_PI), r);
-		v.set(PI,PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,1.,QUARTER_PI), r);
-		v.set(PI,-PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,-1.,QUARTER_PI), r);
-		v.set(-PI,0.);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,0.,QUARTER_PI), r);
-		v.set(-PI,PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,1.,QUARTER_PI), r);
-		v.set(-PI,-PI);
-		this.engine.motionNewtonEuler1Law1D5(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,-1.,QUARTER_PI), r);
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonEuler1Law2D() {
-		Vector2d v = new Vector2d();
-		Vector2d r = new Vector2d();
-		
-		v.set(0.,0.);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,0.,0.), r);
-		v.set(0.,PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(0.,1.,DEMI_PI), r);
-		v.set(0.,-PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(0.,-1.,DEMI_PI), r);
-		v.set(PI,0.);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,0.,DEMI_PI), r);
-		v.set(PI,PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,1.,DEMI_PI), r);
-		v.set(PI,-PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,-1.,DEMI_PI), r);
-		v.set(-PI,0.);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,0.,DEMI_PI), r);
-		v.set(-PI,PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,1.,DEMI_PI), r);
-		v.set(-PI,-PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,-1.,DEMI_PI), r);
+	@DisplayName("motionNewtonEuler1Law2D")
+	@Nested
+	public class MotionNewtonEuler1Law2D {
 
-		v.set(0.,0.);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,0.,0.), r);
-		v.set(0.,PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(0.,1.,QUARTER_PI), r);
-		v.set(0.,-PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(0.,-1.,QUARTER_PI), r);
-		v.set(PI,0.);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,0.,QUARTER_PI), r);
-		v.set(PI,PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,1.,QUARTER_PI), r);
-		v.set(PI,-PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,-1.,QUARTER_PI), r);
-		v.set(-PI,0.);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,0.,DEMI_PI/2.), r);
-		v.set(-PI,PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,1.,DEMI_PI/2.), r);
-		v.set(-PI,-PI);
-		this.engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,-1.,DEMI_PI/2.), r);
+		private Vector2d v;
+		private Vector2d r;
+
+		@BeforeEach
+		public void setUp() {
+			this.v = new Vector2d();
+			this.r = new Vector2d();
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			v.set(0.,0.);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,0.,0.), r);
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			v.set(0.,PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(0.,1.,DEMI_PI), r);
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			v.set(0.,-PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(0.,-1.,DEMI_PI), r);
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			v.set(PI,0.);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			v.set(PI,PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,1.,DEMI_PI), r);
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			v.set(PI,-PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,-1.,DEMI_PI), r);
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			v.set(-PI,0.);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			v.set(-PI,PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,1.,DEMI_PI), r);
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			v.set(-PI,-PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,-1.,DEMI_PI), r);
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			v.set(0.,0.);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,0.,0.), r);
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			v.set(0.,PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(0.,1.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			v.set(0.,-PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(0.,-1.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			v.set(PI,0.);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,0.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			v.set(PI,PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,1.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			v.set(PI,-PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,-1.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			v.set(-PI,0.);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,0.,DEMI_PI/2.), r);
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			v.set(-PI,PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,1.,DEMI_PI/2.), r);
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			v.set(-PI,-PI);
+			engine.motionNewtonEuler1Law2D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,-1.,DEMI_PI/2.), r);
+		}
+
 	}
 
-	/**
-	 */
-	@Test
-	public void motionNewtonEuler1Law3D() {
-		var v = new InnerComputationVector3D();
-		var r = new InnerComputationVector3D();
-		
-		v.set(0.,0.,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,0.,0.,0.), r);
-		v.set(0.,PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(0.,1.,0.,DEMI_PI), r);
-		v.set(0.,-PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(0.,-1.,0.,DEMI_PI), r);
-		v.set(PI,0.,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,0.,0.,DEMI_PI), r);
-		v.set(PI,PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,1.,0.,DEMI_PI), r);
-		v.set(PI,-PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(1.,-1.,0.,DEMI_PI), r);
-		v.set(-PI,0.,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,0.,0.,DEMI_PI), r);
-		v.set(-PI,PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,1.,0.,DEMI_PI), r);
-		v.set(-PI,-PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
-		assertEpsilonEquals(makeVect(-1.,-1.,0.,DEMI_PI), r);
+	@DisplayName("motionNewtonEuler1Law3D")
+	@Nested
+	public class MotionNewtonEuler1Law3D {
 
-		v.set(0.,0.,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,0.,0.,0.), r);
-		v.set(0.,PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(0.,1.,0.,QUARTER_PI), r);
-		v.set(0.,-PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(0.,-1.,0.,QUARTER_PI), r);
-		v.set(PI,0.,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,0.,0.,QUARTER_PI), r);
-		v.set(PI,PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,1.,0.,QUARTER_PI), r);
-		v.set(PI,-PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(1.,-1.,0.,QUARTER_PI), r);
-		v.set(-PI,0.,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,0.,0.,DEMI_PI/2.), r);
-		v.set(-PI,PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,1.,0.,DEMI_PI/2.), r);
-		v.set(-PI,-PI,0.);
-		this.engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
-		assertEpsilonEquals(makeVect(-1.,-1.,0.,DEMI_PI/2.), r);
+		private InnerComputationVector3D v;
+		private InnerComputationVector3D r;
+
+		@BeforeEach
+		public void setUp() {
+			this.v = new InnerComputationVector3D();
+			this.r = new InnerComputationVector3D();
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			v.set(0.,0.,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,0.,0.,0.), r);
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			v.set(0.,PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(0.,1.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			v.set(0.,-PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(0.,-1.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			v.set(PI,0.,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,0.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			v.set(PI,PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,1.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			v.set(PI,-PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(1.,-1.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			v.set(-PI,0.,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,0.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			v.set(-PI,PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,1.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			v.set(-PI,-PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, 1., r);
+			assertEpsilonEquals(makeVect(-1.,-1.,0.,DEMI_PI), r);
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			v.set(0.,0.,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,0.,0.,0.), r);
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			v.set(0.,PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(0.,1.,0.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			v.set(0.,-PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(0.,-1.,0.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			v.set(PI,0.,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,0.,0.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void test_14() {
+			v.set(PI,PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,1.,0.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void test_15() {
+			v.set(PI,-PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(1.,-1.,0.,QUARTER_PI), r);
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void test_16() {
+			v.set(-PI,0.,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,0.,0.,DEMI_PI/2.), r);
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void test_17() {
+			v.set(-PI,PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,1.,0.,DEMI_PI/2.), r);
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void test_18() {
+			v.set(-PI,-PI,0.);
+			engine.motionNewtonEuler1Law3D(v, 0, DEMI_PI, .5, r);
+			assertEpsilonEquals(makeVect(-1.,-1.,0.,DEMI_PI/2.), r);
+		}
+
 	}
 
 }
