@@ -28,7 +28,7 @@
 		<!-- Version of SLF4J library (org.slf4j:slf4j-api) -->
 		<slf4j.version>2.0.18</slf4j.version>
 		<!--  Version of the Jackson API (usually included by Bootique) (com.fasterxml.jackson.core:jackson-core) -->
-		<jacksonapi.version>2.21.4</jacksonapi.version>
+		<jacksonapi.version>2.22.0</jacksonapi.version>
 		<!--  Version of the Jackson API (usually included by Bootique) (com.fasterxml.jackson.core:jackson-annotations) -->
 		<jacksonannot.version>2.21</jacksonannot.version>
 		<!-- URL of the deployment server base -->
@@ -97,6 +97,11 @@
 			<dependency>
 				<groupId>org.arakhne.afc.core</groupId>
 				<artifactId>mathgeombase</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>mathgeombasetests</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
