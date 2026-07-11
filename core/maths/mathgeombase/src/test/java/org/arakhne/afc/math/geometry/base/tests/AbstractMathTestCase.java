@@ -624,8 +624,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double dz = z - v.getZ();
 		double distSq = dx * dx + dy * dy + dz * dz;
 		if (!isEpsilonEquals(distSq, 0.)) {
-			final String str1 = "(" + x + ", " + y + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.getX() + ", " + v.getY() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ", " + z + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str2 = "(" + v.getX() + ", " + v.getY() + ", " + v.getZ() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			failCompare(formatFailMessage(NO_MESSAGE, "not same vector", str1, str2),  //$NON-NLS-1$
 					str1, str2);   
 		}
@@ -640,8 +640,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertIntVectorEquals(int x, int y, int z, Vector3D<?, ?, ?> v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
-			final String str1 = "(" + x + ", " + y + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ", " + z + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str2 = "(" + v.ix() + ", " + v.iy() + ", " + v.iz() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			failCompare(formatFailMessage(NO_MESSAGE, "not same vector", str1, str2),  //$NON-NLS-1$
 					str1, str2);   
 		}
@@ -660,8 +660,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double dz = z - v.getZ();
 		double distSq = dx * dx + dy * dy + dz * dz;
 		if (isEpsilonEquals(distSq, 0.)) {
-			final String str1 = "(" + x + ", " + y + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.getX() + ", " + v.getY() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ", " + 7 + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str2 = "(" + v.getX() + ", " + v.getY() + ", " + v.getZ() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			failCompare(formatFailMessage(NO_MESSAGE, "same vector", str1, str2),  //$NON-NLS-1$
 					str1, str2);   
 		}
@@ -676,8 +676,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D<?, ?, ?> v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
-			final String str1 = "(" + x + ", " + y + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ", " + z + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str2 = "(" + v.ix() + ", " + v.iy() + ", " + v.iz() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			failCompare(formatFailMessage(NO_MESSAGE, "same vector", str1, str2),  //$NON-NLS-1$
 					str1, str2);   
 		}
@@ -762,8 +762,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double distSq = dx * dx + dy * dy + dz * dz;
 		if (!isEpsilonEquals(distSq, 0.)) {
 			failCompare("Not same point", //$NON-NLS-1$
-					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + x + "; " + y + "; " + z  + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + "; " + v.getZ() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

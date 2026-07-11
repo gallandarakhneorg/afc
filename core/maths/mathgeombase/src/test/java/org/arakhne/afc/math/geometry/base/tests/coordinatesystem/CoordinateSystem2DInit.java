@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystemConstants;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,6 +34,7 @@ import org.junit.jupiter.api.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("CoordinateSystem2D Initialization")
 @SuppressWarnings("all")
 public class CoordinateSystem2DInit {
 
@@ -41,24 +43,37 @@ public class CoordinateSystem2DInit {
 		CoordinateSystem2D.setDefaultCoordinateSystem(null);
 	}
 	
+	@DisplayName("SIMULATION_2D")
 	@Test
 	public void getDefaultSimulationCoordinateSystem() {
 		CoordinateSystem2D cs = CoordinateSystemConstants.SIMULATION_2D;
 		assertSame(CoordinateSystem2D.XY_RIGHT_HAND,cs);
 	}
 
+	@DisplayName("getDefaultCoordinateSystem")
 	@Test
 	public void getDefaultCoordinateSystem() {
 		CoordinateSystem2D cs = CoordinateSystem2D.getDefaultCoordinateSystem();
 		assertSame(CoordinateSystemConstants.SIMULATION_2D, cs);
 	}
 
+	@DisplayName("setDefaultCoordinateSystem(XY_LEFT_HAND)")
 	@Test
-	public void setDefaultCoordinateSystem() {
+	public void setDefaultCoordinateSystem_1() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
 		assertSame(CoordinateSystem2D.XY_LEFT_HAND, CoordinateSystem2D.getDefaultCoordinateSystem());
+	}
+
+	@DisplayName("setDefaultCoordinateSystem(XY_RIGHT_HAND)")
+	@Test
+	public void setDefaultCoordinateSystem_2() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
 		assertSame(CoordinateSystem2D.XY_RIGHT_HAND, CoordinateSystem2D.getDefaultCoordinateSystem());
+	}
+
+	@DisplayName("setDefaultCoordinateSystem(null)")
+	@Test
+	public void setDefaultCoordinateSystem_3() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(null);
 		assertSame(CoordinateSystem2D.XY_RIGHT_HAND, CoordinateSystem2D.getDefaultCoordinateSystem());
 	}

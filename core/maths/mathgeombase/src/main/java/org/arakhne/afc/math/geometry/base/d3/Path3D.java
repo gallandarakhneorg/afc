@@ -117,8 +117,9 @@ public interface Path3D<
 	 * coordinates specified in double precision.
 	 *
 	 * @param position the new position.
+	 * @return {@code this}.
 	 */
-	void moveTo(Point3D<?, ?, ?> position);
+	IT moveTo(Point3D<?, ?, ?> position);
 
 	/**
 	 * Adds a point to the path by drawing a straight line from the
@@ -126,8 +127,9 @@ public interface Path3D<
 	 * specified in double precision.
 	 *
 	 * @param to the end point
+	 * @return {@code this}.
 	 */
-	void lineTo(Point3D<?, ?, ?> to);
+	IT lineTo(Point3D<?, ?, ?> to);
 
 	/**
 	 * Adds a curved segment, defined by two new points, to the path by
@@ -139,8 +141,9 @@ public interface Path3D<
 	 *
 	 * @param ctrl the quadratic control point
 	 * @param to the final end point
+	 * @return {@code this}.
 	 */
-	void quadTo(Point3D<?, ?, ?> ctrl, Point3D<?, ?, ?> to);
+	IT quadTo(Point3D<?, ?, ?> ctrl, Point3D<?, ?, ?> to);
 
 	/**
 	 * Adds a curved segment, defined by three new points, to the path by
@@ -153,16 +156,19 @@ public interface Path3D<
 	 * @param ctrl1 the first B&eacute;zier control point
 	 * @param ctrl2 the second B&eacute;zier control point
 	 * @param to the final end point
+	 * @return {@code this}.
 	 */
-	void curveTo(Point3D<?, ?, ?> ctrl1, Point3D<?, ?, ?> ctrl2, Point3D<?, ?, ?> to);
+	IT curveTo(Point3D<?, ?, ?> ctrl1, Point3D<?, ?, ?> ctrl2, Point3D<?, ?, ?> to);
 
 	/**
 	 * Closes the current subpath by drawing a straight line back to
 	 * the coordinates of the last {@code moveTo}.  If the path is already
 	 * closed or if the previous coordinates are for a {@code moveTo}
 	 * then this method has no effect.
+	 *
+	 * @return {@code this}.
 	 */
-	void closePath();
+	IT closePath();
 
 	/** Replies the bounding box of all the points added in this path.
 	 *

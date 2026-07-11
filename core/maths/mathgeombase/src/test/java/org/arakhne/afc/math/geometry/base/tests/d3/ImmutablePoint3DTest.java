@@ -49,15 +49,5 @@ public class ImmutablePoint3DTest extends AbstractUnmodifiablePoint3DTestCase<Im
 	public boolean isIntCoordinates() {
 		return false;
 	}
-	
-	@Override
-	public void operator_upToShape3D(CoordinateSystem3D cs) {
-		//
-	}
-	
-	@Override
-	public void operator_andShape3D(CoordinateSystem3D cs) {
-		//
-	}
 
 }

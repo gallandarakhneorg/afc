@@ -89,6 +89,13 @@ public final class GeomConstants {
 	 */
 	public static final double ORTHOGONAL_VECTOR_EPSILON = 1E-5;
 
+	/**
+	 * Number precision for testing colinear 3D lines.
+	 *
+	 * @since 18.0
+	 */
+	public static final double COLINEAR_LINE_EPSILON = 1e-10;
+
 	private GeomConstants() {
 		//
 	}

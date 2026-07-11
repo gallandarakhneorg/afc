@@ -23,24 +23,28 @@ package org.arakhne.afc.math.geometry.base.tests.d3;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
-import org.arakhne.afc.math.geometry.base.tests.AbstractVector2DTestCase;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationQuaternion;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
+import org.arakhne.afc.math.geometry.base.d3.Vector3D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractVector3DTestCase;
 
 @SuppressWarnings("all")
-public class InnerComputation3Vector2DTest extends AbstractVector2DTestCase<InnerComputationVector2D, InnerComputationPoint2D, Vector2D> {
-	
+public class InnerComputationVector3DTest extends AbstractVector3DTestCase<InnerComputationVector3D, InnerComputationPoint3D, InnerComputationQuaternion, Vector3D> {
+
 	@Override
-	public InnerComputationVector2D createVector(final double tx, final double ty) {
-		return new InnerComputationVector2D(tx, ty);
+	public InnerComputationVector3D createVector(double x, double y, double z) {
+		return new InnerComputationVector3D(x, y, z);
 	}
 
 	@Override
-	public InnerComputationPoint2D createPoint(final double tx, final double ty) {
-		return new InnerComputationPoint2D(tx,  ty);
+	public InnerComputationPoint3D createPoint(double x, double y, double z) {
+		return new InnerComputationPoint3D(x,  y, z);
 	}
 
 	@Override
-	public Vector2D createTuple(double x, double y) {
-		return new InnerComputationVector2D(x, y);
+	public Vector3D createTuple(double x, double y, double z) {
+		return new InnerComputationVector3D(x, y, z);
 	}
 
 	@Override

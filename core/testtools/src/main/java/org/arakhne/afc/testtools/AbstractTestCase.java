@@ -1542,7 +1542,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (isEpsilonEquals(expected, actual)) {
 			return;
 		}
-		fail(formatFailMessage(message, "not same double value.", Double.valueOf(expected), Double.valueOf(actual))); //$NON-NLS-1$
+		failCompare(formatFailMessage(message, "not same double value.", Double.valueOf(expected), Double.valueOf(actual)), //$NON-NLS-1$
+				Double.toString(expected), Double.toString(actual));
 	}
 
 	/** Test if the two collections contain the same elements without

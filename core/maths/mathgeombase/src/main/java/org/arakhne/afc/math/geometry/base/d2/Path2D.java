@@ -132,16 +132,18 @@ public interface Path2D<
 	 * coordinates specified in double precision.
 	 *
 	 * @param position the new position.
+	 * @return {@code this}.
 	 */
-	void moveTo(Point2D<?, ?> position);
+	IT moveTo(Point2D<?, ?> position);
 
 	/**
 	 * Adds a point to the path by moving to the specified
 	 * coordinates specified in double precision.
 	 *
 	 * @param position the new position.
+	 * @return {@code this}.
 	 */
-	void moveToIfFar(Point2D<?, ?> position);
+	IT moveToIfFar(Point2D<?, ?> position);
 
 	/**
 	 * Adds a point to the path by drawing a straight line from the
@@ -149,8 +151,9 @@ public interface Path2D<
 	 * specified in double precision.
 	 *
 	 * @param to the end point
+	 * @return {@code this}.
 	 */
-	void lineTo(Point2D<?, ?> to);
+	IT lineTo(Point2D<?, ?> to);
 
 	/**
 	 * Adds a curved segment, defined by two new points, to the path by
@@ -162,8 +165,9 @@ public interface Path2D<
 	 *
 	 * @param ctrl the quadratic control point
 	 * @param to the final end point
+	 * @return {@code this}.
 	 */
-	void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to);
+	IT quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to);
 
 	/**
 	 * Adds a curved segment, defined by three new points, to the path by
@@ -176,8 +180,9 @@ public interface Path2D<
 	 * @param ctrl1 the first B&eacute;zier control point
 	 * @param ctrl2 the second B&eacute;zier control point
 	 * @param to the final end point
+	 * @return {@code this}.
 	 */
-	void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to);
+	IT curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to);
 
 	/**
 	 * Adds a section of an shallow ellipse to the current path.
@@ -221,8 +226,9 @@ public interface Path2D<
 	 * @param tto the fraction of the ellipse section where the curve should end
 	 * @param type the specification of what additional path segments should
 	 *               be appended to lead the current path to the starting point.
+	 * @return {@code this}.
 	 */
-	void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto, ArcType type);
+	IT arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto, ArcType type);
 
 	/**
 	 * Adds a section of an shallow ellipse to the current path.
@@ -233,9 +239,10 @@ public interface Path2D<
 	 *
 	 * @param ctrl the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
 	 * @param to the target point.
+	 * @return {@code this}.
 	 */
-	default void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
-		arcTo(ctrl, to, 0., 1., ArcType.ARC_ONLY);
+	default IT arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
+		return arcTo(ctrl, to, 0., 1., ArcType.ARC_ONLY);
 	}
 
 	/**
@@ -274,17 +281,20 @@ public interface Path2D<
 	 * @param xAxisRotation the angle of tilt of the ellipse.
 	 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
 	 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
+	 * @return {@code this}.
 	 * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
 	 */
-	void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag);
+	IT arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag);
 
 	/**
 	 * Closes the current subpath by drawing a straight line back to
 	 * the coordinates of the last {@code moveTo}.  If the path is already
 	 * closed or if the previous coordinates are for a {@code moveTo}
 	 * then this method has no effect.
+	 *
+	 * @return {@code this}.
 	 */
-	void closePath();
+	IT closePath();
 
 	/** Replies the bounding box of all the points added in this path.
 	 *

@@ -31,6 +31,7 @@ package org.arakhne.afc.math.geometry.base.d3;
  * @since 13.0
  */
 public interface UnmodifiableTuple3D<RT extends Tuple3D<? super RT>> extends Tuple3D<RT> {
+
 	@Override
 	default void absolute() {
 		throw new UnsupportedOperationException();

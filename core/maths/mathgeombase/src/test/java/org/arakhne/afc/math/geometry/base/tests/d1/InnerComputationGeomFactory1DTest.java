@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.base.d1.InnerComputationGeomFactory1D;
 import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
@@ -46,142 +47,178 @@ public class InnerComputationGeomFactory1DTest extends AbstractMathTestCase {
 		this.segment = new Segment1DStub();
 	}
 
-	@Test
-	@DisplayName("convertToPoint((Point1D) immutable)")
-	public void convertToPoint_immutablePoint1D() {
-		var expected = new ImmutablePoint1D<Segment1DStub>(this.segment, 1., 2.);
-		var actual = this.factory.convertToPoint(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@DisplayName("convertToPoint(Point1D)")
+	@Nested
+	public class ConvertToPointPoint1D {
+
+		@Test
+		@DisplayName("(immutable)")
+		public void convertToPoint_immutablePoint1D() {
+			var expected = new ImmutablePoint1D<Segment1DStub>(segment, 1., 2.);
+			var actual = factory.convertToPoint(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(mutable)")
+		public void convertToPoint_mutablePoint1D() {
+			var expected = new Point1DStub(segment);
+			var actual = factory.convertToPoint(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToPoint((Point1D) mutable)")
-	public void convertToPoint_mutablePoint1D() {
-		var expected = new Point1DStub(this.segment);
-		var actual = this.factory.convertToPoint(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@DisplayName("convertToPoint(Vector1D)")
+	@Nested
+	public class ConvertToPointVector1D {
+
+		@Test
+		@DisplayName("(immutable)")
+		public void convertToPoint_immutableVector1D() {
+			var expected = new ImmutableVector1D(segment, 1., 2.);
+			var actual = factory.convertToPoint(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(mutable)")
+		public void convertToPoint_mutableVector1D() {
+			var expected = new Vector1DStub(segment);
+			var actual = factory.convertToPoint(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToPoint((Vector1D) immutable)")
-	public void convertToPoint_immutableVector1D() {
-		var expected = new ImmutableVector1D(this.segment, 1., 2.);
-		var actual = this.factory.convertToPoint(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@DisplayName("convertToVector(Point1D)")
+	@Nested
+	public class ConvertToVectorPoint1D {
+		
+		@Test
+		@DisplayName("(immutable)")
+		public void convertToVector_immutablePoint1D() {
+			var expected = new ImmutablePoint1D<Segment1DStub>(segment, 1., 2.);
+			var actual = factory.convertToVector(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(mutable)")
+		public void convertToVector_mutablePoint1D() {
+			var expected = new Point1DStub(segment);
+			var actual = factory.convertToVector(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToPoint((Vector1D) mutable)")
-	public void convertToPoint_mutableVector1D() {
-		var expected = new Vector1DStub(this.segment);
-		var actual = this.factory.convertToPoint(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@DisplayName("convertToVector(Vector1D)")
+	@Nested
+	public class ConvertToVectorVector1D {
+
+		@Test
+		@DisplayName("(immutable)")
+		public void convertToVector_immutableVector1D() {
+			var expected = new ImmutableVector1D<Segment1DStub>(segment, 1., 2.);
+			var actual = factory.convertToVector(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(mutable)")
+		public void convertToVector_mutableVector1D() {
+			var expected = new Vector1DStub(segment);
+			var actual = factory.convertToVector(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToVector((Point1D) immutable)")
-	public void convertToVector_immutablePoint1D() {
-		var expected = new ImmutablePoint1D<Segment1DStub>(this.segment, 1., 2.);
-		var actual = this.factory.convertToVector(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@DisplayName("newPoint")
+	@Nested
+	public class NewPoint {
+
+		@Test
+		@DisplayName("(Segment1D)")
+		public void newPoint() {
+			var s = new Segment1DStub();
+			var actual = factory.newPoint(s);
+			assertNotNull(actual);
+			assertSame(s, actual.getSegment());
+			assertEpsilonEquals(0., actual.getX());
+			assertEpsilonEquals(0., actual.getY());
+		}
+	
+		@Test
+		@DisplayName("(Segment1D, double, double)")
+		public void newPoint_doubledouble() {
+			var s = new Segment1DStub();
+			var actual = factory.newPoint(s, 154.487, 695.365);
+			assertNotNull(actual);
+			assertSame(s, actual.getSegment());
+			assertEpsilonEquals(154.487, actual.getX());
+			assertEpsilonEquals(695.365, actual.getY());
+		}
+	
+		@Test
+		@DisplayName("(Segment1D, int, int)")
+		public void newPoint_intint() {
+			var s = new Segment1DStub();
+			var actual = factory.newPoint(s, 154, 695);
+			assertNotNull(actual);
+			assertSame(s, actual.getSegment());
+			assertEpsilonEquals(154., actual.getX());
+			assertEpsilonEquals(695., actual.getY());
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToVector((Point1D) mutable)")
-	public void convertToVector_mutablePoint1D() {
-		var expected = new Point1DStub(this.segment);
-		var actual = this.factory.convertToVector(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
+	@DisplayName("newVector")
+	@Nested
+	public class NewVector {
 
-	@Test
-	@DisplayName("convertToVector((Vector1D) immutable)")
-	public void convertToVector_immutableVector1D() {
-		var expected = new ImmutableVector1D<Segment1DStub>(this.segment, 1., 2.);
-		var actual = this.factory.convertToVector(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
+		@Test
+		@DisplayName("(Segment1D)")
+		public void newVector() {
+			var s = new Segment1DStub();
+			var actual = factory.newVector(s);
+			assertNotNull(actual);
+			assertSame(s, actual.getSegment());
+			assertEpsilonEquals(0., actual.getX());
+			assertEpsilonEquals(0., actual.getY());
+		}
+	
+		@Test
+		@DisplayName("(Segment1D, double, double)")
+		public void newVector_doubledouble() {
+			var s = new Segment1DStub();
+			var actual = factory.newVector(s, 154.487, 695.365);
+			assertNotNull(actual);
+			assertSame(s, actual.getSegment());
+			assertEpsilonEquals(154.487, actual.getX());
+			assertEpsilonEquals(695.365, actual.getY());
+		}
+	
+		@Test
+		@DisplayName("(Segment1D, int, int)")
+		public void newVector_intint() {
+			var s = new Segment1DStub();
+			var actual = factory.newVector(s, 154, 695);
+			assertNotNull(actual);
+			assertSame(s, actual.getSegment());
+			assertEpsilonEquals(154., actual.getX());
+			assertEpsilonEquals(695., actual.getY());
+		}
 
-	@Test
-	@DisplayName("convertToVector((Vector1D) mutable)")
-	public void convertToVector_mutableVector1D() {
-		var expected = new Vector1DStub(this.segment);
-		var actual = this.factory.convertToVector(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("newPoint(Segment1D)")
-	public void newPoint() {
-		var s = new Segment1DStub();
-		var actual = this.factory.newPoint(s);
-		assertNotNull(actual);
-		assertSame(s, actual.getSegment());
-		assertEpsilonEquals(0., actual.getX());
-		assertEpsilonEquals(0., actual.getY());
-	}
-
-	@Test
-	@DisplayName("newPoint(Segment1D, double, double)")
-	public void newPoint_doubledouble() {
-		var s = new Segment1DStub();
-		var actual = this.factory.newPoint(s, 154.487, 695.365);
-		assertNotNull(actual);
-		assertSame(s, actual.getSegment());
-		assertEpsilonEquals(154.487, actual.getX());
-		assertEpsilonEquals(695.365, actual.getY());
-	}
-
-	@Test
-	@DisplayName("newPoint(Segment1D, int, int)")
-	public void newPoint_intint() {
-		var s = new Segment1DStub();
-		var actual = this.factory.newPoint(s, 154, 695);
-		assertNotNull(actual);
-		assertSame(s, actual.getSegment());
-		assertEpsilonEquals(154., actual.getX());
-		assertEpsilonEquals(695., actual.getY());
-	}
-
-	@Test
-	@DisplayName("newVector(Segment1D)")
-	public void newVector() {
-		var s = new Segment1DStub();
-		var actual = this.factory.newVector(s);
-		assertNotNull(actual);
-		assertSame(s, actual.getSegment());
-		assertEpsilonEquals(0., actual.getX());
-		assertEpsilonEquals(0., actual.getY());
-	}
-
-	@Test
-	@DisplayName("newVector(Segment1D, double, double)")
-	public void newVector_doubledouble() {
-		var s = new Segment1DStub();
-		var actual = this.factory.newVector(s, 154.487, 695.365);
-		assertNotNull(actual);
-		assertSame(s, actual.getSegment());
-		assertEpsilonEquals(154.487, actual.getX());
-		assertEpsilonEquals(695.365, actual.getY());
-	}
-
-	@Test
-	@DisplayName("newVector(Segment1D, int, int)")
-	public void newVector_intint() {
-		var s = new Segment1DStub();
-		var actual = this.factory.newVector(s, 154, 695);
-		assertNotNull(actual);
-		assertSame(s, actual.getSegment());
-		assertEpsilonEquals(154., actual.getX());
-		assertEpsilonEquals(695., actual.getY());
 	}
 
 }

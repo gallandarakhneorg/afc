@@ -180,7 +180,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	}
 
 	/**
-	 * Replies if two vectors are colinear.
+	 * Replies if two vectors are colinear. If one vector is empty, the vectors are assumed to be not colinear.
 	 *
 	 * <p>This function uses the test {@link MathUtil#isEpsilonZero(double,double)}.
 	 *
@@ -203,6 +203,10 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	static boolean isColinearVectors(double x1, double y1, double z1, double x2, double y2, double z2) {
+		if (MathUtil.isEpsilonZero(x1) && MathUtil.isEpsilonZero(y1) && MathUtil.isEpsilonZero(z1)
+			|| MathUtil.isEpsilonZero(x2) && MathUtil.isEpsilonZero(y2) && MathUtil.isEpsilonZero(z2)) {
+			return false;
+		}
 		// Cross product
 		final var cx = y1 * z2 - z1 * y2;
 		final var cy = z1 * x2 - x1 * z2;
@@ -459,7 +463,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 		assert vector2 != null : AssertMessages.notNullParameter(1);
 		set(scale * vector1.getX() + vector2.getX(),
 				scale * vector1.getY() + vector2.getY(),
-				scale * vector1.getZ() + vector2.getY());
+				scale * vector1.getZ() + vector2.getZ());
 	}
 
 	/**

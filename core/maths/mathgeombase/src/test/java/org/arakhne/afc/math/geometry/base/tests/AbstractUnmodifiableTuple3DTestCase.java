@@ -20,346 +20,767 @@
 
 package org.arakhne.afc.math.geometry.base.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Tuple3D;
 
 @SuppressWarnings("all")
 public abstract class AbstractUnmodifiableTuple3DTestCase<TT extends Tuple3D> extends AbstractTuple3DTestCase<TT> {
+
+	@DisplayName("absolute")
+	@Nested
+	public class Absolute {
 	
-	@Override
-	public final void absolute(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().absolute());
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().absolute();
+			});
+		}
+
 	}
 
-	@Override
-	public final void absoluteT(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
+	@DisplayName("absolute(Tuple3D)")
+	@Nested
+	public class AbsoluteTuple3D {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Tuple3D c = new InnerComputationVector3D();
-			getT().absolute(c);
-		});
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().absolute(c);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addIntIntInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().add(6, 7, 0));
+	@DisplayName("add(int,int,int)")
+	@Nested
+	public class AddIntIntInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().add(6, 7, 1);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addXInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().addX(6));
+	@DisplayName("add(double,double,double)")
+	@Nested
+	public class AddDoubleDoubleDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().add(6.5, 7.5, 5.5);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addYInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().addY(6));
+	@DisplayName("addX(int)")
+	@Nested
+	public class AddXInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().addX(6);
+			});
+		}
+
 	}
 
-	@Override
-	public final void negateT(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
+	@DisplayName("addX(double)")
+	@Nested
+	public class AddXDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().addX(6.5);
+			});
+		}
+
+	}
+	
+	@DisplayName("addY(int)")
+	@Nested
+	public class AddYInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().addY(6);
+			});
+		}
+
+	}
+	
+	@DisplayName("addY(double)")
+	@Nested
+	public class AddYDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().addY(6.5);
+			});
+		}
+
+	}
+
+	@DisplayName("addZ(int)")
+	@Nested
+	public class AddZInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().addZ(5);
+			});
+		}
+
+	}
+
+	@DisplayName("addZ(double)")
+	@Nested
+	public class AddZDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().addZ(5.5);
+			});
+		}
+
+	}
+
+	@DisplayName("negate(Tuple3D)")
+	@Nested
+	public class NegateTuple3D {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Tuple3D c = new InnerComputationVector3D();
-			getT().negate(c);
-		});
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().negate(c);
+			});
+		}
+
 	}
 
-	@Override
-	public final void negate(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().negate());
+	@DisplayName("negate")
+	@Nested
+	public class Negate {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().negate();
+			});
+		}
+
 	}
 
-	@Override
-	public final void scaleIntT(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
+	@DisplayName("scale(int,Tuple3D)")
+	@Nested
+	public class ScaleIntTuple3D {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Tuple3D c = new InnerComputationVector3D(2, -1, -2);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().scale(4, c);
+			});
+		}
+
+	}
+
+	@DisplayName("scale(double,Tuple3D)")
+	@Nested
+	public class ScaleDoubleTuple3D {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Tuple3D c = new InnerComputationVector3D(2, -1, 0);
-			getT().scale(4, c);
-		});
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().scale(4.5, c);
+			});
+		}
+
 	}
 
-	@Override
-	public final void scaleInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().scale(4));
+	@DisplayName("scale(int)")
+	@Nested
+	public class ScaleInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().scale(4);
+			});
+		}
+
 	}
 
-	@Override
-	public final void setTuple3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			Tuple3D c = new InnerComputationVector3D(-45, 78, 0);
-			getT().set(c);
-		});
+	@DisplayName("scale(double)")
+	@Nested
+	public class ScaleDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().scale(4.5);
+			});
+		}
+
 	}
 
-	@Override
-	public final void setIntIntInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().set(-45, 78, 0));
+	@DisplayName("set(Tuple3D)")
+	@Nested
+	public class SetTuple3D {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Tuple3D c = new InnerComputationVector3D(-45, 78, 1);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().set(c);
+			});
+		}
+
 	}
 
-	@Override
-	public final void setIntArray(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().set(new int[]{-45, 78, 0}));
+	@DisplayName("set(int,int,int)")
+	@Nested
+	public class SetIntIntInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().set(-45, 78, 1);
+			});
+		}
+
 	}
 
-	@Override
-	public final void setXInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().setX(45));
+	@DisplayName("set(double,double,double)")
+	@Nested
+	public class SetDoubleDoubleDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().set(-45.5, 78.5, 1.1);
+			});
+		}
+
 	}
 
-	@Override
-	public final void setYInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().setY(45));
+	@DisplayName("set(int[])")
+	@Nested
+	public class SetIntArray {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().set(new int[]{-45, 78, 1});
+			});
+		}
+
 	}
 
-	@Override
-	public final void subIntIntInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().sub(45, 78, 0));
+	@DisplayName("set(double[])")
+	@Nested
+	public class SetDoubleArray {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().set(new double[]{-45.5, 78.5, 1.1});
+			});
+		}
+
 	}
 
-	@Override
-	public final void subXInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().subX(45));
+	@DisplayName("setX(int)")
+	@Nested
+	public class SetXInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().setX(45);
+			});
+		}
+
 	}
 
-	@Override
-	public final void subYInt(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> getT().subY(78));
+	@DisplayName("setX(double)")
+	@Nested
+	public class SetXDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().setX(45.5);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addDoubleDoubleDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().add(12.3, 4.56, 0);
-		});
+	@DisplayName("setY(int)")
+	@Nested
+	public class SetYInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().setY(45);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addDoubleDoubleDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().add(12.3, 4.56, 0);
-		});
+	@DisplayName("setY(double)")
+	@Nested
+	public class SetYDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().setY(45.5);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addXDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().addX(12.3);
-		});
+	@DisplayName("setZ(int)")
+	@Nested
+	public class SetZInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().setZ(45);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addXDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().addX(12.3);
-		});
+	@DisplayName("setZ(double)")
+	@Nested
+	public class SetZDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().setZ(45.5);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addYDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().addY(12.3);
-		});
+	@DisplayName("sub(int,int,int)")
+	@Nested
+	public class SubIntIntInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().sub(45, 78, 0);
+			});
+		}
+
 	}
 
-	@Override
-	public final void addYDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().addY(12.3);
-		});
+	@DisplayName("subX(int)")
+	@Nested
+	public class SubXInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().subX(45);
+			});
+		}
+
 	}
 
-	@Override
-	public final void scaleDoubleT_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().scale(12.3, createTuple(1,2, 0));
-		});
+	@DisplayName("subY(int)")
+	@Nested
+	public class SubYInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().subY(78);
+			});
+		}
+
 	}
 
-	@Override
-	public final void scaleDoubleT_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().scale(12.3, createTuple(1,2, 0));
-		});
+	@DisplayName("subZ(int)")
+	@Nested
+	public class SubZInt {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().subZ(78);
+			});
+		}
+
 	}
 
-	@Override
-	public final void scaleDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().scale(12.3);
-		});
+	@DisplayName("sub(double,double,double)")
+	@Nested
+	public class SubDoubleDoubleDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().sub(45.5, 78.5, 0);
+			});
+		}
+
 	}
 
-	@Override
-	public final void scaleDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().scale(12.3);
-		});
+	@DisplayName("subX(double)")
+	@Nested
+	public class SubXDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().subX(45.5);
+			});
+		}
+
 	}
 
-	@Override
-	public final void setDoubleDoubleDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().set(12.3, 4.56, 0);
-		});
+	@DisplayName("subY(double)")
+	@Nested
+	public class SubYDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().subY(78.5);
+			});
+		}
+
 	}
 
-	@Override
-	public final void setDoubleDoubleDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().set(12.3, 4.56, 0);
-		});
-	}
+	@DisplayName("subZ(double)")
+	@Nested
+	public class SubZDouble {
+	
+		@BeforeEach
+		public void setUp() {
+			assumeImmutable(getT());
+		}
 
-	@Override
-	public final void setDoubleArray_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().set(new double[] {12.3, 4.56, 0});
-		});
-	}
-
-	@Override
-	public final void setDoubleArray_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().set(new double[] {12.3, 4.56, 0});
-		});
-	}
-
-	@Override
-	public final void setXDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().setX(12.3);
-		});
-	}
-
-	@Override
-	public final void setXDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().setX(12.3);
-		});
-	}
-
-	@Override
-	public final void setYDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().setY(12.3);
-		});
-	}
-
-	@Override
-	public final void setYDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().setY(12.3);
-		});
-	}
-
-	@Override
-	public final void subDoubleDoubleDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().sub(12.3, 4.56, 0);
-		});
-	}
-
-	@Override
-	public final void subDoubleDoubleDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().sub(12.3, 4.56, 0);
-		});
-	}
-
-	@Override
-	public final void subXDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().subX(12.3);
-		});
-	}
-
-	@Override
-	public final void subXDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().subX(12.3);
-		});
-	}
-
-	@Override
-	public final void subYDouble_iffp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeFalse(isIntCoordinates());
-			getT().subY(12.3);
-		});
-	}
-
-	@Override
-	public final void subYDouble_ifi(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			assumeTrue(isIntCoordinates());
-			getT().subY(12.3);
-		});
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(UnsupportedOperationException.class, () -> {
+				getT().subZ(78.5);
+			});
+		}
+	
 	}
 
 }

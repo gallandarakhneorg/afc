@@ -552,6 +552,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @XtextOperator("..")
+    @Inline("($1).getDistance($0)")
     default double operator_upTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
         return shape.getDistance(this);
     }
@@ -586,6 +587,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      */
     @Pure
     @XtextOperator("&&")
+    @Inline("($1).contains($0)")
     default boolean operator_and(Shape2D<?, ?, ?, ?, ?, ?> shape) {
         return shape.contains(this);
     }

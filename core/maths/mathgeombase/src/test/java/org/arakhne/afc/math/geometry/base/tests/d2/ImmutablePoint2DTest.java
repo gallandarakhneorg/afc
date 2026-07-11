@@ -50,21 +50,5 @@ public class ImmutablePoint2DTest extends AbstractUnmodifiablePoint2DTestCase<Im
 	public boolean isIntCoordinates() {
 		return false;
 	}
-	
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void operator_upToShape2D(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		//
-	}
-	
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void operator_andShape2D(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		//
-	}
 
 }

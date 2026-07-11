@@ -47,6 +47,7 @@ import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -61,164 +62,200 @@ public class InnerComputationGeomFactory3DTest extends AbstractMathTestCase {
 		this.factory = new InnerComputationGeomFactory3D();
 	}
 	
-	@Test
-	@DisplayName("convertToPoint((Point3D) null)")
-	public void convertToPoint_nullPoint3D() {
-		var expected = new InnerComputationPoint3D(0, 0, 0);
-		var actual = this.factory.convertToPoint((Point3D) null);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@DisplayName("convertToPoint(Point3D)")
+	@Nested
+	public class ConvertToPointPoint3D {
+
+		@Test
+		@DisplayName("(null)")
+		public void convertToPoint_nullPoint3D() {
+			var expected = new InnerComputationPoint3D(0, 0, 0);
+			var actual = factory.convertToPoint((Point3D) null);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(mutable)")
+		public void convertToPoint_expectedPoint3D() {
+			var expected = new InnerComputationPoint3D(123., 486., 654.2);
+			var actual = factory.convertToPoint(expected);
+			assertSame(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(immutable)")
+		public void convertToPoint_immutablePoint3D() {
+			var expected = new ImmutablePoint3D(123., 486., 654.2);
+			var actual = factory.convertToPoint(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToPoint((Point3D) expected)")
-	public void convertToPoint_expectedPoint3D() {
-		var expected = new InnerComputationPoint3D(123., 486., 654.2);
-		var actual = this.factory.convertToPoint(expected);
-		assertSame(expected, actual);
+	@DisplayName("convertToVector(Point3D)")
+	@Nested
+	public class ConvertToVectorPoint3D {
+
+		@Test
+		@DisplayName("(null)")
+		public void convertToVector_nullPoint3D() {
+			var expected = new InnerComputationPoint3D(0, 0, 0);
+			var actual = factory.convertToVector((Point3D) null);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(mutable)")
+		public void convertToVector_expectedPoint3D() {
+			var expected = new InnerComputationPoint3D(123., 486., 654.2);
+			var actual = factory.convertToVector(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(immutable)")
+		public void convertToVector_immutablePoint3D() {
+			var expected = new ImmutablePoint3D(123., 486., 654.2);
+			var actual = factory.convertToVector(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToPoint((Point3D) immutable)")
-	public void convertToPoint_immutablePoint3D() {
-		var expected = new ImmutablePoint3D(123., 486., 654.2);
-		var actual = this.factory.convertToPoint(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@DisplayName("convertToPoint(Vector3D)")
+	@Nested
+	public class ConvertToPointVector3D {
+
+		@Test
+		@DisplayName("(null)")
+		public void convertToPoint_nullVector3D() {
+			var expected = new InnerComputationVector3D(0, 0, 0);
+			var actual = factory.convertToPoint((Vector3D) null);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(mutable)")
+		public void convertToPoint_expectedVector3D() {
+			var expected = new InnerComputationVector3D(123., 486., 654.2);
+			var actual = factory.convertToPoint(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(immutable)")
+		public void convertToPoint_immutableVector3D() {
+			var expected = new ImmutableVector3D(123., 486., 654.2);
+			var actual = factory.convertToPoint(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToVector((Point3D) null)")
-	public void convertToVector_nullPoint3D() {
-		var expected = new InnerComputationPoint3D(0, 0, 0);
-		var actual = this.factory.convertToVector((Point3D) null);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@DisplayName("convertToVector(Vector3D)")
+	@Nested
+	public class ConvertToVectorVector3D {
+
+		@Test
+		@DisplayName("(null)")
+		public void convertToVector_nullVector3D() {
+			var expected = new InnerComputationVector3D(0, 0, 0);
+			var actual = factory.convertToVector((Vector3D) null);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(mutable)")
+		public void convertToVector_expectedVector() {
+			var expected = new InnerComputationVector3D(123., 486., 654.2);
+			var actual = factory.convertToVector(expected);
+			assertSame(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(immutable)")
+		public void convertToVector_immutableVector3D() {
+			var expected = new ImmutableVector3D(123., 486., 654.2);
+			var actual = factory.convertToVector(expected);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("convertToVector((Point3D) expected)")
-	public void convertToVector_expectedPoint3D() {
-		var expected = new InnerComputationPoint3D(123., 486., 654.2);
-		var actual = this.factory.convertToVector(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("convertToVector((Point3D) immutable)")
-	public void convertToVector_immutablePoint3D() {
-		var expected = new ImmutablePoint3D(123., 486., 654.2);
-		var actual = this.factory.convertToVector(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("convertToPoint((Vector3D) null)")
-	public void convertToPoint_nullVector3D() {
-		var expected = new InnerComputationVector3D(0, 0, 0);
-		var actual = this.factory.convertToPoint((Vector3D) null);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("convertToPoint((Vector3D) expected)")
-	public void convertToPoint_expectedVector3D() {
-		var expected = new InnerComputationVector3D(123., 486., 654.2);
-		var actual = this.factory.convertToPoint(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("convertToPoint((Vector3D) immutable)")
-	public void convertToPoint_immutableVector3D() {
-		var expected = new ImmutableVector3D(123., 486., 654.2);
-		var actual = this.factory.convertToPoint(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("convertToVector((Vector3D) null)")
-	public void convertToVector_nullVector3D() {
-		var expected = new InnerComputationVector3D(0, 0, 0);
-		var actual = this.factory.convertToVector((Vector3D) null);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("convertToVector((Vector3D) expected)")
-	public void convertToVector_expectedVector() {
-		var expected = new InnerComputationVector3D(123., 486., 654.2);
-		var actual = this.factory.convertToVector(expected);
-		assertSame(expected, actual);
-	}
-
-	@Test
-	@DisplayName("convertToVector((Vector3D) immutable)")
-	public void convertToVector_immutableVector3D() {
-		var expected = new ImmutableVector3D(123., 486., 654.2);
-		var actual = this.factory.convertToVector(expected);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
 	@DisplayName("newPoint")
-	public void newPoint() {
-		var expected = new ImmutablePoint3D(0., 0., 0.);
-		var actual = this.factory.newPoint();
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
+	@Nested
+	public class NewPoint {
+
+		@Test
+		@DisplayName("()")
+		public void newPoint() {
+			var expected = new ImmutablePoint3D(0., 0., 0.);
+			var actual = factory.newPoint();
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(123.568, 457.584, 654.2)")
+		public void newPoint_doubledoubledouble() {
+			var expected = new ImmutablePoint3D(123.568, 457.584, 654.2);
+			var actual = factory.newPoint(123.568, 457.584, 654.2);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(123, 457, 654)")
+		public void newPoint_intint() {
+			var expected = new ImmutablePoint3D(123, 457, 654);
+			var actual = factory.newPoint(123, 457, 654);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+
 	}
 
-	@Test
-	@DisplayName("newPoint(123.568, 457.584, 654.2)")
-	public void newPoint_doubledoubledouble() {
-		var expected = new ImmutablePoint3D(123.568, 457.584, 654.2);
-		var actual = this.factory.newPoint(123.568, 457.584, 654.2);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("newPoint(123, 457, 654)")
-	public void newPoint_intint() {
-		var expected = new ImmutablePoint3D(123, 457, 654);
-		var actual = this.factory.newPoint(123, 457, 654);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
 	@DisplayName("newVector")
-	public void newVector() {
-		var expected = new ImmutableVector3D(0., 0., 0.);
-		var actual = this.factory.newVector();
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
+	@Nested
+	public class NewVector {
+		
+		@Test
+		@DisplayName("()")
+		public void newVector() {
+			var expected = new ImmutableVector3D(0., 0., 0.);
+			var actual = factory.newVector();
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(123.568, 457.584, 654.2)")
+		public void newVector_doubledoubledouble() {
+			var expected = new ImmutableVector3D(123.568, 457.584, 654.2);
+			var actual = factory.newVector(123.568, 457.584, 654.2);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
+	
+		@Test
+		@DisplayName("(123, 457, 654)")
+		public void newVector_intint() {
+			var expected = new ImmutableVector3D(123, 457, 654);
+			var actual = factory.newVector(123, 457, 654);
+			assertNotSame(expected, actual);
+			assertEpsilonEquals(expected, actual);
+		}
 
-	@Test
-	@DisplayName("newVector(123.568, 457.584, 654.2)")
-	public void newVector_doubledoubledouble() {
-		var expected = new ImmutableVector3D(123.568, 457.584, 654.2);
-		var actual = this.factory.newVector(123.568, 457.584, 654.2);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
-	}
-
-	@Test
-	@DisplayName("newVector(123, 457, 654)")
-	public void newVector_intint() {
-		var expected = new ImmutableVector3D(123, 457, 654);
-		var actual = this.factory.newVector(123, 457, 654);
-		assertNotSame(expected, actual);
-		assertEpsilonEquals(expected, actual);
 	}
 
 }

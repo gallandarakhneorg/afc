@@ -180,13 +180,13 @@ public class InnerComputationVector3D implements Vector3D<InnerComputationVector
 	}
 
 	@Override
-	public UnmodifiableVector3D<InnerComputationVector3D, InnerComputationPoint3D, InnerComputationQuaternion> toUnmodifiable() {
-		throw new UnsupportedOperationException();
+	public UnmodifiableVector3D<?, ?, ?> toUnmodifiable() {
+		return new ImmutableVector3D(getX(), getY(), getZ());
 	}
 
 	@Override
 	public GeomFactory3D<InnerComputationVector3D, InnerComputationPoint3D, InnerComputationQuaternion> getGeomFactory() {
-		throw new UnsupportedOperationException();
+		return InnerComputationGeomFactory3D.SINGLETON;
 	}
 
 }
