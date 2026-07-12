@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>maths</artifactId>
+		<groupId>org.arakhne.afc.core</groupId>
+		<version>18.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>mathgeombasetests</artifactId>
+	<name>Base Geometry Test Tools</name>
+	<inceptionYear>2013</inceptionYear>
+
+	<properties>
+		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>mathgeombase</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>testtools</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

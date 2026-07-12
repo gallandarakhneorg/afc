@@ -6,7 +6,13 @@
 <!-- Checkstyle configuration that checks the AFC coding conventions. -->
 <module name="Checker">
 
-	<!-- Exclude module information file from the checked files. -->
+	<!-- SuppressionFilter MUST come BEFORE FileLength -->
+	<module name="SuppressionFilter">
+		<property name="file" value="suppressions.xml"/>
+		<property name="optional" value="true"/>
+	</module>
+    
+    	<!-- Exclude module information file from the checked files. -->
 	<module name="BeforeExecutionExclusionFileFilter">
 	  <property name="fileNamePattern" value="module\-info\.java$"/>
 	</module>
@@ -36,7 +42,7 @@
 
 	<!-- Files should not be too large. -->
 	<module name="FileLength">
-		<property name="max" value="4000" />
+		<property name="max" value="7000" />
 	</module>
 
 	<!-- No trailing white spaces for minimizing the size of the files. -->

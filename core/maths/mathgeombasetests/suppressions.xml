@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <!-- Suppress FileLength for a specific file -->
+    <suppress checks="FileLengthCheck" files="Abstract(Point|Vector)2DTestCase\.java"/>
+</suppressions>

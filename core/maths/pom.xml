@@ -18,6 +18,7 @@
 		<module>mathtree</module>
 		<module>mathgraph</module>
 		<module>mathgeombase</module>
+		<module>mathgeombasetests</module>
 		<module>mathgeom2d</module>
 		<module>mathgeom1d</module>
 		<module>mathgeom3d</module>
