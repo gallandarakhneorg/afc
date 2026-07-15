@@ -24,11 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
 public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, T, ?, ?, ?, B>,

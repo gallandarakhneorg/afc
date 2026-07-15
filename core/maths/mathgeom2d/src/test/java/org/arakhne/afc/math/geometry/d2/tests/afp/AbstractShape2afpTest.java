@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
@@ -43,7 +44,6 @@ import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
-import org.arakhne.afc.math.geometry.d2.tests.AbstractMathTestCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -65,6 +65,14 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	public void setUp() throws Exception {
 		this.factory = createFactory();
 		this.shape = createShape();
+	}
+	
+	/** Replies the shape to be tested.
+	 *
+	 * @return the shape.
+	 */
+	protected T getS() {
+		return this.shape;
 	}
 	
 	protected abstract TestShapeFactory<? extends Point2D, ? extends Vector2D, B> createFactory();
@@ -252,270 +260,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	    //distance = shape1.getDistance(point); 
 	    //assertEpsilonZero("Closest point " + point + " is not in the first shape: " + shape1 + ". Distance: " + distance, distance);
         distance = shape2.getDistance(point); 
-	    assertEpsilonZero("Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: " + distance, distance); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	    assertEpsilonZero(distance, "Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: " + distance); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void testClone(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void equalsObject(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void equalsObject_withPathIterator(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void equalsToPathIterator(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void equalsToShape(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void isEmpty(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void clear(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void containsPoint2D(CoordinateSystem2D cs);
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointTo(CoordinateSystem2D cs);
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getFarthestPointTo(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToEllipse2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToCircle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToSegment2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToTriangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToPath2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToOrientedRectangle2afp(CoordinateSystem2D cs);
-		
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToParallelogram2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToRoundRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getClosestPointToMultiShape2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistance(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquared(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceL1(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceLinf(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void setIT(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getPathIterator(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getPathIteratorTransform2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void createTransformedShape(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void translateVector2D(CoordinateSystem2D cs); 
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void toBoundingBox(CoordinateSystem2D cs);
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void toBoundingBoxB(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void containsRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void containsShape2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsCircle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsTriangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsEllipse2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsSegment2afp(CoordinateSystem2D cs);
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsPath2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsPathIterator2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsOrientedRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsParallelogram2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsRoundRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredCircle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredTriangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredEllipse2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredSegment2afp(CoordinateSystem2D cs);
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredPath2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredOrientedRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredParallelogram2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredRoundRectangle2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void getDistanceSquaredMultiShape2afp(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void translateDoubleDouble(CoordinateSystem2D cs); 
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void containsDoubleDouble(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getGeomFactory(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertNotNull(this.shape.getGeomFactory());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void intersectsShape2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void operator_addVector2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void operator_plusVector2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void operator_removeVector2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void operator_minusVector2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void operator_multiplyTransform2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void operator_andPoint2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void operator_andShape2D(CoordinateSystem2D cs);
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void operator_upToPoint2D(CoordinateSystem2D cs);
 
 }

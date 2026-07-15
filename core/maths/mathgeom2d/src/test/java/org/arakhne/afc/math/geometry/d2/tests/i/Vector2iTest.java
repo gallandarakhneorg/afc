@@ -22,9 +22,9 @@ package org.arakhne.afc.math.geometry.d2.tests.i;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
+import org.arakhne.afc.math.geometry.base.tests.AbstractVector2DTestCase;
 import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.arakhne.afc.math.geometry.d2.i.Vector2i;
-import org.arakhne.afc.math.geometry.d2.tests.AbstractVector2DTestCase;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")

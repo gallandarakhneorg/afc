@@ -1838,31 +1838,35 @@ public interface Path2ai<
 	 *
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @return {@code this}.
 	 */
-	void moveTo(int x, int y);
+	IT moveTo(int x, int y);
 
 	@Override
-	default void moveTo(Point2D<?, ?> position) {
+	default IT moveTo(Point2D<?, ?> position) {
 		assert position != null : AssertMessages.notNullParameter();
-		moveTo(position.ix(), position.iy());
+		return moveTo(position.ix(), position.iy());
 	}
 
 	/** Adds a point to the path by moving to the specified coordinates specified in double precision
 	 * if and only if the current position does not corresponds to the given position.
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @return {@code this}.
 	 * @since 14.0
 	 */
-	default void moveToIfFar(int x, int y) {
+	@SuppressWarnings("unchecked")
+	default IT moveToIfFar(int x, int y) {
 		if (isEmpty() || x != getCurrentX() || y != getCurrentY()) {
-			moveTo(x, y);
+			return moveTo(x, y);
 		}
+		return (IT) this;
 	}
 
 	@Override
-	default void moveToIfFar(Point2D<?, ?> position) {
+	default IT moveToIfFar(Point2D<?, ?> position) {
 		assert position != null : AssertMessages.notNullParameter();
-		moveToIfFar(position.ix(), position.iy());
+		return moveToIfFar(position.ix(), position.iy());
 	}
 
 	/**
@@ -1872,13 +1876,14 @@ public interface Path2ai<
 	 *
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @return {@code this}.
 	 */
-	void lineTo(int x, int y);
+	IT lineTo(int x, int y);
 
 	@Override
-	default void lineTo(Point2D<?, ?> to) {
+	default IT lineTo(Point2D<?, ?> to) {
 		assert to != null : AssertMessages.notNullParameter();
-		lineTo(to.ix(), to.iy());
+		return lineTo(to.ix(), to.iy());
 	}
 
 	/**
@@ -1893,14 +1898,15 @@ public interface Path2ai<
 	 * @param y1 the Y coordinate of the quadratic control point
 	 * @param x2 the X coordinate of the final end point
 	 * @param y2 the Y coordinate of the final end point
+	 * @return {@code this}.
 	 */
-	void quadTo(int x1, int y1, int x2, int y2);
+	IT quadTo(int x1, int y1, int x2, int y2);
 
 	@Override
-	default void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
+	default IT quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
 		assert ctrl != null : AssertMessages.notNullParameter(0);
 		assert to != null : AssertMessages.notNullParameter(1);
-		quadTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy());
+		return quadTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy());
 	}
 
 	/**
@@ -1917,17 +1923,18 @@ public interface Path2ai<
 	 * @param y2 the Y coordinate of the second B&eacute;zier control point
 	 * @param x3 the X coordinate of the final end point
 	 * @param y3 the Y coordinate of the final end point
+	 * @return {@code this}.
 	 */
-	void curveTo(int x1, int y1,
+	IT curveTo(int x1, int y1,
 			int x2, int y2,
 			int x3, int y3);
 
 	@Override
-	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
+	default IT curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
 		assert ctrl1 != null : AssertMessages.notNullParameter(0);
 		assert ctrl2 != null : AssertMessages.notNullParameter(1);
 		assert to != null : AssertMessages.notNullParameter(2);
-		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl2.ix(), ctrl2.iy(), to.ix(), to.iy());
+		return curveTo(ctrl1.ix(), ctrl1.iy(), ctrl2.ix(), ctrl2.iy(), to.ix(), to.iy());
 	}
 
 	/**
@@ -1974,8 +1981,10 @@ public interface Path2ai<
 	 * @param tto the fraction of the ellipse section where the curve should end
 	 * @param type the specification of what additional path segments should
 	 *               be appended to lead the current path to the starting point.
+	 * @return {@code this}.
 	 */
-	default void arcTo(int ctrlx, int ctrly, int tox, int toy, double tfrom, double tto, ArcType type) {
+	@SuppressWarnings("unchecked")
+	default IT arcTo(int ctrlx, int ctrly, int tox, int toy, double tfrom, double tto, ArcType type) {
 		// Copied from JavaFX Path2D
 		assert tfrom >= 0. : AssertMessages.positiveOrZeroParameter(4);
 		assert tto >= tfrom : AssertMessages.lowerEqualParameters(4, Double.valueOf(tfrom), 5, Double.valueOf(tto));
@@ -2037,14 +2046,15 @@ public interface Path2ai<
 		} else {
 			curveTo((int) Math.round(cx0), (int) Math.round(cy0), (int) Math.round(cx1), (int) Math.round(cy1), targetx, targety);
 		}
+		return (IT) this;
 	}
 
 	@Override
-	default void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto,
+	default IT arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto,
 			Path2D.ArcType type) {
 		assert ctrl != null : AssertMessages.notNullParameter(0);
 		assert to != null : AssertMessages.notNullParameter(1);
-		arcTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy(), tfrom, tto, type);
+		return arcTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy(), tfrom, tto, type);
 	}
 
 	/**
@@ -2058,16 +2068,17 @@ public interface Path2ai<
 	 * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
 	 * @param tox the x coordinate of the target point.
 	 * @param toy the y coordinate of the target point.
+	 * @return {@code this}.
 	 */
-	default void arcTo(int ctrlx, int ctrly, int tox, int toy) {
-		arcTo(ctrlx, ctrly, tox, toy, 0., 1., ArcType.ARC_ONLY);
+	default IT arcTo(int ctrlx, int ctrly, int tox, int toy) {
+		return arcTo(ctrlx, ctrly, tox, toy, 0., 1., ArcType.ARC_ONLY);
 	}
 
 	@Override
-	default void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+	default IT arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
 		assert radii != null : AssertMessages.notNullParameter(1);
 		assert to != null : AssertMessages.notNullParameter(0);
-		arcTo(to.ix(), to.iy(), radii.ix(), radii.iy(), xAxisRotation, largeArcFlag, sweepFlag);
+		return arcTo(to.ix(), to.iy(), radii.ix(), radii.iy(), xAxisRotation, largeArcFlag, sweepFlag);
 	}
 
 	/**
@@ -2108,17 +2119,18 @@ public interface Path2ai<
 	 * @param xAxisRotation the angle of tilt of the ellipse.
 	 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
 	 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
+	 * @return {@code this}.
 	 * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
 	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-	default void arcTo(int tox, int toy, int radiusx, int radiusy, double xAxisRotation,
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "unchecked"})
+	default IT arcTo(int tox, int toy, int radiusx, int radiusy, double xAxisRotation,
 			boolean largeArcFlag, boolean sweepFlag) {
 		// Copied for JavaFX
 		assert radiusx >= 0. : AssertMessages.positiveOrZeroParameter(2);
 		assert radiusy >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		if (radiusx == 0. || radiusy == 0.) {
 			lineTo(tox, toy);
-			return;
+			return (IT) this;
 		}
 		final var ocurrentx = getCurrentX();
 		final var ocurrenty = getCurrentY();
@@ -2127,7 +2139,7 @@ public interface Path2ai<
 		final var x2 = tox;
 		final var y2 = toy;
 		if (x1 == x2 && y1 == y2) {
-			return;
+			return (IT) this;
 		}
 		final double cosphi;
 		final double sinphi;
@@ -2166,7 +2178,7 @@ public interface Path2ai<
 			xc = x2 + relxq;
 			yc = y2 + relyq;
 			arcTo((int) Math.round(xc), (int) Math.round(yc), x2, y2, 0, 1, ArcType.ARC_ONLY);
-			return;
+			return (IT) this;
 		}
 		final var scalef = Math.sqrt((1. - lenpsq) / lenpsq);
 		var cxp = scalef * y1p;
@@ -2215,6 +2227,7 @@ public interface Path2ai<
 			ux = xqp;
 			uy = yqp;
 		} while (!done);
+		return (IT) this;
 	}
 
 	@Pure

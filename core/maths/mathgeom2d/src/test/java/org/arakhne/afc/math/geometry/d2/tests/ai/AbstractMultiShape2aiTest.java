@@ -30,9 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.d2.MultiShape2D;
@@ -45,6 +42,8 @@ import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Shape2ai;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
 public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C, ?, ?, ?, B>,

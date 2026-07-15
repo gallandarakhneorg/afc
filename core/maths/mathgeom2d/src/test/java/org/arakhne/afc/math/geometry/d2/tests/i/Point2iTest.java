@@ -25,10 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.d2.Shape2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractPoint2DTestCase;
 import org.arakhne.afc.math.geometry.d2.i.Circle2i;
 import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.arakhne.afc.math.geometry.d2.i.Vector2i;
-import org.arakhne.afc.math.geometry.d2.tests.AbstractPoint2DTestCase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 

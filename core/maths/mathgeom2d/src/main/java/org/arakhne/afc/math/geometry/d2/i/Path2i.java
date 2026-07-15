@@ -423,7 +423,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 	}
 
 	@Override
-	public void closePath() {
+	public Path2i closePath() {
 		if (this.numTypes <= 0
 				|| this.types[this.numTypes - 1] != PathElementType.CLOSE
 				&& this.types[this.numTypes - 1] != PathElementType.MOVE_TO) {
@@ -433,6 +433,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 			this.isPolygon = null;
 			fireGeometryChange();
 		}
+		return this;
 	}
 
 	@Override
@@ -608,7 +609,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 	}
 
 	@Override
-	public void moveTo(int x, int y) {
+	public Path2i moveTo(int x, int y) {
 		if (this.numTypes != 0) {
 			this.isPolyline = Boolean.FALSE;
 			this.isPolygon = Boolean.FALSE;
@@ -628,10 +629,11 @@ public class Path2i extends AbstractShape2i<Path2i>
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
-	public void lineTo(int x, int y) {
+	public Path2i lineTo(int x, int y) {
 		ensureSlots(true, 2);
 		this.types[this.numTypes++] = PathElementType.LINE_TO;
 		this.coords[this.numCoords++] = x;
@@ -643,10 +645,11 @@ public class Path2i extends AbstractShape2i<Path2i>
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
-	public void quadTo(int x1, int y1, int x2, int y2) {
+	public Path2i quadTo(int x1, int y1, int x2, int y2) {
 		ensureSlots(true, 4);
 		this.types[this.numTypes++] = PathElementType.QUAD_TO;
 		this.coords[this.numCoords++] = x1;
@@ -659,10 +662,11 @@ public class Path2i extends AbstractShape2i<Path2i>
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
-	public void curveTo(int x1, int y1, int x2, int y2, int x3, int y3) {
+	public Path2i curveTo(int x1, int y1, int x2, int y2, int x3, int y3) {
 		ensureSlots(true, 6);
 		this.types[this.numTypes++] = PathElementType.CURVE_TO;
 		this.coords[this.numCoords++] = x1;
@@ -677,6 +681,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override

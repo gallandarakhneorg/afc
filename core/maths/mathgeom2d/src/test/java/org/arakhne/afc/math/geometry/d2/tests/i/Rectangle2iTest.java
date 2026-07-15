@@ -1,5 +1,5 @@
 /*
- * $Id$
+s * $Id$
  * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
  * Copyright (c) 2000-2012 Stephane GALLAND.

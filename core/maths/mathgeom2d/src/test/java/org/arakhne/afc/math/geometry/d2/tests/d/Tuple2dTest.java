@@ -20,8 +20,8 @@
 
 package org.arakhne.afc.math.geometry.d2.tests.d;
 
+import org.arakhne.afc.math.geometry.base.tests.AbstractTuple2DTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
-import org.arakhne.afc.math.geometry.d2.tests.AbstractTuple2DTestCase;
 
 @SuppressWarnings("all")
 public class Tuple2dTest extends AbstractTuple2DTestCase<Tuple2d> {

@@ -28,10 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.PathElementType;
@@ -45,6 +41,8 @@ import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai.Side;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
 public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?, ?, T>>

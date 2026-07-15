@@ -21,10 +21,12 @@
 package org.arakhne.afc.math.geometry.d2.tests.d;
 
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractUnmodifiableVector2DTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.geometry.d2.tests.AbstractUnmodifiableVector2DTestCase;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("UnmodifiableVector2d")
 @SuppressWarnings("all")
 public class UnmodifiableVector2dTest extends AbstractUnmodifiableVector2DTestCase<Vector2d, Point2d> {
 

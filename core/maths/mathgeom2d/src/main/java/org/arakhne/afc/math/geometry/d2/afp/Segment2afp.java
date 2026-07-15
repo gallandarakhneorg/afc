@@ -1565,7 +1565,7 @@ public interface Segment2afp<
 	 * @return {@code factor1} or {@link Double#NaN} if no intersection.
 	 */
 	@Pure
-	static double calculatesLineLineIntersectionFactor(double x1, double y1, double x2, double y2,
+	static double findsIntersectionLineLineFactor(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
 		final var vx1 = x2 - x1;
 		final var vy1 = y2 - y1;
@@ -1680,7 +1680,7 @@ public interface Segment2afp<
 			double x3, double y3, double x4, double y4,
 			Point2D<?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(8);
-		final var m = calculatesSegmentSegmentIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
+		final var m = findsIntersectionSegmentSegmentFactor(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (Double.isNaN(m)) {
 			return false;
 		}
@@ -1718,7 +1718,7 @@ public interface Segment2afp<
 	 * @return {@code factor1} or {@link Double#NaN} if no intersection.
 	 */
 	@Pure
-	static double calculatesSegmentSegmentIntersectionFactor(double x1, double y1, double x2, double y2,
+	static double findsIntersectionSegmentSegmentFactor(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
 		final var vx1 = x2 - x1;
 		final var vy1 = y2 - y1;
@@ -2180,11 +2180,34 @@ public interface Segment2afp<
 	 *         line have closed locations.
 	 */
 	@Pure
-	static boolean isPointClosedToLine(double x1, double y1,
+	static boolean isPointCloseToLine(double x1, double y1,
 			double x2, double y2,
 			double x, double y, double hitDistance) {
 		assert hitDistance >= 0. : AssertMessages.positiveOrZeroParameter(6);
 		return calculatesDistanceLinePoint(x1, y1, x2, y2, x, y) < hitDistance;
+	}
+
+	/** Replies if a point is closed to a line.
+	 *
+	 * @param x1 horizontal location of the first-line begining.
+	 * @param y1 vertical location of the first-line ending.
+	 * @param x2 horizontal location of the second-line begining.
+	 * @param y2 vertical location of the second-line ending.
+	 * @param x horizontal location of the point.
+	 * @param y vertical location of the point.
+	 * @param hitDistance is the maximal hitting distance.
+	 * @return {@code true} if the point and the
+	 *         line have closed locations.
+	 * @see #isPointCloseToLine(double, double, double, double, double, double, double)
+	 * @deprecated since 18.0
+	 */
+	@Pure
+	@Inline("isPointCloseToLine($1, $2, $3, $4, $5, $6, $7)")
+	@Deprecated(forRemoval = true, since = "18.0")
+	static boolean isPointClosedToLine(double x1, double y1,
+			double x2, double y2,
+			double x, double y, double hitDistance) {
+		return isPointCloseToLine(x1, y1, x2, y2, x, y, hitDistance);
 	}
 
 	/** Replies if a point is closed to a segment.
@@ -2200,11 +2223,34 @@ public interface Segment2afp<
 	 *         line have closed locations.
 	 */
 	@Pure
-	static boolean isPointClosedToSegment(double x1, double y1,
+	static boolean isPointCloseToSegment(double x1, double y1,
 			double x2, double y2,
 			double x, double y, double hitDistance) {
 		assert hitDistance >= 0. : AssertMessages.positiveOrZeroParameter(6);
 		return calculatesDistanceSegmentPoint(x1, y1, x2, y2, x, y) < hitDistance;
+	}
+
+	/** Replies if a point is closed to a segment.
+	 *
+	 * @param x1 horizontal location of the first-segment begining.
+	 * @param y1 vertical location of the first-segment ending.
+	 * @param x2 horizontal location of the second-segment begining.
+	 * @param y2 vertical location of the second-segment ending.
+	 * @param x horizontal location of the point.
+	 * @param y vertical location of the point.
+	 * @param hitDistance is the maximal hitting distance.
+	 * @return {@code true} if the point and the
+	 *         line have closed locations.
+	 * @see #isPointCloseToSegment(double, double, double, double, double, double, double)
+	 * @deprecated since 18.0
+	 */
+	@Pure
+	@Inline("isPointCloseToSegment($1, $2, $3, $4, $5, $6, $7)")
+	@Deprecated(since = "18.0", forRemoval = true)
+	static boolean isPointClosedToSegment(double x1, double y1,
+			double x2, double y2,
+			double x, double y, double hitDistance) {
+		return isPointCloseToSegment(x1, y1, x2, y2, x, y, hitDistance);
 	}
 
 	@Override

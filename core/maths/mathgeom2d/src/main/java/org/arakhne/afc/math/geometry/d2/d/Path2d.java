@@ -397,7 +397,7 @@ public class Path2d
 	}
 
 	@Override
-	public void closePath() {
+	public Path2d closePath() {
 		if (this.numTypes <= 0
 				|| this.types[this.numTypes - 1] != PathElementType.CLOSE
 				&& this.types[this.numTypes - 1] != PathElementType.MOVE_TO) {
@@ -407,6 +407,7 @@ public class Path2d
 			this.isPolygon = null;
 			fireGeometryChange();
 		}
+		return this;
 	}
 
 	@Override
@@ -587,7 +588,7 @@ public class Path2d
 	}
 
 	@Override
-	public void moveTo(double x, double y) {
+	public Path2d moveTo(double x, double y) {
 		if (this.numTypes != 0) {
 			this.isPolyline = Boolean.FALSE;
 			this.isPolygon = Boolean.FALSE;
@@ -608,10 +609,11 @@ public class Path2d
 		this.logicalBounds = null;
 		this.length = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
-	public void lineTo(double x, double y) {
+	public Path2d lineTo(double x, double y) {
 		ensureSlots(true, 2);
 		this.types[this.numTypes++] = PathElementType.LINE_TO;
 		this.coords[this.numCoords++] = x;
@@ -624,10 +626,11 @@ public class Path2d
 		this.logicalBounds = null;
 		this.length = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
-	public void quadTo(double x1, double y1, double x2, double y2) {
+	public Path2d quadTo(double x1, double y1, double x2, double y2) {
 		ensureSlots(true, 4);
 		this.types[this.numTypes++] = PathElementType.QUAD_TO;
 		this.coords[this.numCoords++] = x1;
@@ -641,10 +644,11 @@ public class Path2d
 		this.logicalBounds = null;
 		this.length = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
-	public void curveTo(double x1, double y1, double x2, double y2, double x3, double y3) {
+	public Path2d curveTo(double x1, double y1, double x2, double y2, double x3, double y3) {
 		ensureSlots(true, 6);
 		this.types[this.numTypes++] = PathElementType.CURVE_TO;
 		this.coords[this.numCoords++] = x1;
@@ -660,6 +664,7 @@ public class Path2d
 		this.logicalBounds = null;
 		this.length = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override

@@ -22,12 +22,17 @@ package org.arakhne.afc.math.geometry.d2.tests.d;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractVector2DTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.geometry.d2.tests.AbstractVector2DTestCase;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("Vector2d")
 @SuppressWarnings("all")
 public class Vector2dTest extends AbstractVector2DTestCase<Vector2d, Point2d, Vector2d> {
 
@@ -51,15 +56,50 @@ public class Vector2dTest extends AbstractVector2DTestCase<Vector2d, Point2d, Ve
 		return new Vector2d(x, y);
 	}
 
-	@Test
 	@DisplayName("toOrientationVector")
-	public void staticToOrientationVector() {
-		assertFpVectorEquals(1, 0, Vector2d.toOrientationVector(0));
-		assertFpVectorEquals(-1, 0, Vector2d.toOrientationVector(Math.PI));
-		assertFpVectorEquals(0, 1, Vector2d.toOrientationVector(Math.PI/2));
-		assertFpVectorEquals(0, -1, Vector2d.toOrientationVector(-Math.PI/2));
+	@Nested
+	public class ToOrientationVector {
 
-        assertInlineParameterUsage(Vector2d.class, "toOrientationVector", double.class); //$NON-NLS-1$
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFpVectorEquals(1, 0, Vector2d.toOrientationVector(0));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_2(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFpVectorEquals(-1, 0, Vector2d.toOrientationVector(Math.PI));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_3(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFpVectorEquals(0, 1, Vector2d.toOrientationVector(Math.PI/2));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_4(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFpVectorEquals(0, -1, Vector2d.toOrientationVector(-Math.PI/2));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_5(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+	        assertInlineParameterUsage(Vector2d.class, "toOrientationVector", double.class); //$NON-NLS-1$
+		}
+
 	}
 
 }
