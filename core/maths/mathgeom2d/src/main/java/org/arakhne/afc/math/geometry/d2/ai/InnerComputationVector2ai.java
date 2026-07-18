@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import org.arakhne.afc.math.geometry.base.d2.GeomFactory2D;
+import org.arakhne.afc.math.geometry.base.d2.ImmutableVector2D;
 import org.arakhne.afc.math.geometry.base.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
@@ -128,8 +129,8 @@ public class InnerComputationVector2ai implements Vector2D<InnerComputationVecto
 	}
 
 	@Override
-	public UnmodifiableVector2D<InnerComputationVector2ai, InnerComputationPoint2ai> toUnmodifiable() {
-		throw new UnsupportedOperationException();
+	public UnmodifiableVector2D<?, ?> toUnmodifiable() {
+		return new ImmutableVector2D(ix(), iy());
 	}
 
 	@Pure

@@ -994,6 +994,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_2(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			getS().add(createPoint(123.456, 456.789));
 			getS().add(createPoint(-123.456, 456.789));
 			assertEpsilonEquals(-123.456, getS().getMinX());
 			assertEpsilonEquals(8, getS().getMinY());
@@ -1006,6 +1007,8 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_3(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			getS().add(createPoint(123.456, 456.789));
+			getS().add(createPoint(-123.456, 456.789));
 			getS().add(createPoint(-123.456, -456.789));
 			assertEpsilonEquals(-123.456, getS().getMinX());
 			assertEpsilonEquals(-456.789, getS().getMinY());
@@ -1036,6 +1039,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_2(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			getS().add(123.456, 456.789);
 			getS().add(-123.456, 456.789);
 			assertEpsilonEquals(-123.456, getS().getMinX());
 			assertEpsilonEquals(8, getS().getMinY());
@@ -1048,6 +1052,8 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_3(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			getS().add(123.456, 456.789);
+			getS().add(-123.456, 456.789);
 			getS().add(-123.456, -456.789);
 			assertEpsilonEquals(-123.456, getS().getMinX());
 			assertEpsilonEquals(-456.789, getS().getMinY());

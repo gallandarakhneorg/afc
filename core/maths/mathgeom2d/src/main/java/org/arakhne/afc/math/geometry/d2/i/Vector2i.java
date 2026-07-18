@@ -20,13 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.arakhne.afc.math.geometry.base.d2.GeomFactory2D;
+import org.arakhne.afc.math.geometry.base.d2.ImmutableVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.base.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
-import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -243,65 +242,8 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 
 	@Pure
 	@Override
-	public UnmodifiableVector2D<Vector2i, Point2i> toUnmodifiable() {
-		return new UnmodifiableVector2D<>() {
-
-			private static final long serialVersionUID = 7684988962796497763L;
-
-			@Override
-			public GeomFactory2D<Vector2i, Point2i> getGeomFactory() {
-				return Vector2i.this.getGeomFactory();
-			}
-
-			@Override
-			public Vector2i toUnitVector() {
-				return Vector2i.this.toUnitVector();
-			}
-
-			@Override
-			public Vector2i toOrthogonalVector() {
-				return Vector2i.this.toOrthogonalVector();
-			}
-
-			@Override
-			@SuppressWarnings("checkstyle:superclone")
-			public Vector2i clone() {
-				return Vector2i.this.getGeomFactory().newVector(
-						Vector2i.this.ix(),
-						Vector2i.this.iy());
-			}
-
-			@Override
-			public double getX() {
-				return Vector2i.this.getX();
-			}
-
-			@Override
-			public int ix() {
-				return Vector2i.this.ix();
-			}
-
-			@Override
-			public double getY() {
-				return Vector2i.this.getY();
-			}
-
-			@Override
-			public int iy() {
-				return Vector2i.this.iy();
-			}
-
-			@Override
-			public String toString() {
-				return Vector2i.this.toString();
-			}
-
-			@Override
-			public void toJson(JsonBuffer buffer) {
-				Vector2i.this.toJson(buffer);
-			}
-
-		};
+	public UnmodifiableVector2D<?, ?> toUnmodifiable() {
+		return new ImmutableVector2D(ix(), iy());
 	}
 
 }

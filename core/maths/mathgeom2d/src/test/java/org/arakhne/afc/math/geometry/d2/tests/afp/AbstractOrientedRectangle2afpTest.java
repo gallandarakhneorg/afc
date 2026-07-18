@@ -4784,14 +4784,14 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			T shape = getS().operator_plus(createVector(123.456, 789.123));
-			assertEpsilonEquals(cx + 123.456, getS().getCenterX());
-			assertEpsilonEquals(cy + 789.123, getS().getCenterY());
-			assertEpsilonEquals(ux, getS().getFirstAxisX());
-			assertEpsilonEquals(uy, getS().getFirstAxisY());
-			assertEpsilonEquals(e1, getS().getFirstAxisExtent());
-			assertEpsilonEquals(vx, getS().getSecondAxisX());
-			assertEpsilonEquals(vy, getS().getSecondAxisY());
-			assertEpsilonEquals(e2, getS().getSecondAxisExtent());
+			assertEpsilonEquals(cx + 123.456, shape.getCenterX());
+			assertEpsilonEquals(cy + 789.123, shape.getCenterY());
+			assertEpsilonEquals(ux, shape.getFirstAxisX());
+			assertEpsilonEquals(uy, shape.getFirstAxisY());
+			assertEpsilonEquals(e1, shape.getFirstAxisExtent());
+			assertEpsilonEquals(vx, shape.getSecondAxisX());
+			assertEpsilonEquals(vy, shape.getSecondAxisY());
+			assertEpsilonEquals(e2, shape.getSecondAxisExtent());
 		}
 
 	}
@@ -4828,14 +4828,14 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			T shape = getS().operator_minus(createVector(123.456, 789.123));
-			assertEpsilonEquals(cx - 123.456, getS().getCenterX());
-			assertEpsilonEquals(cy - 789.123, getS().getCenterY());
-			assertEpsilonEquals(ux, getS().getFirstAxisX());
-			assertEpsilonEquals(uy, getS().getFirstAxisY());
-			assertEpsilonEquals(e1, getS().getFirstAxisExtent());
-			assertEpsilonEquals(vx, getS().getSecondAxisX());
-			assertEpsilonEquals(vy, getS().getSecondAxisY());
-			assertEpsilonEquals(e2, getS().getSecondAxisExtent());
+			assertEpsilonEquals(cx - 123.456, shape.getCenterX());
+			assertEpsilonEquals(cy - 789.123, shape.getCenterY());
+			assertEpsilonEquals(ux, shape.getFirstAxisX());
+			assertEpsilonEquals(uy, shape.getFirstAxisY());
+			assertEpsilonEquals(e1, shape.getFirstAxisExtent());
+			assertEpsilonEquals(vx, shape.getSecondAxisX());
+			assertEpsilonEquals(vy, shape.getSecondAxisY());
+			assertEpsilonEquals(e2, shape.getSecondAxisExtent());
 		}
 
 	}

@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.base.d2.InnerComputationVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
@@ -1230,7 +1231,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			assertEpsilonEquals(origin, immutable);
 		}
 
-		@DisplayName("#1")
+		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
 		public final void test_2(CoordinateSystem2D cs) {
@@ -3397,7 +3398,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			newPoint.scaleAdd(0.5,vector);
-			assertIntVectorEquals(1, 0, newPoint);
+			assertIntVectorEquals(2, 1, newPoint);
 		}
 
 		@DisplayName("With int coords #2")
@@ -3407,7 +3408,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			newPoint.scaleAdd(1.2,vector);
-			assertIntVectorEquals(2, 0, newPoint);
+			assertIntVectorEquals(2, 1, newPoint);
 		}
 
 		@DisplayName("With int coords #3")
@@ -3417,7 +3418,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			newPoint.scaleAdd(-10.,vector);
-			assertIntVectorEquals(-19, 0, newPoint);
+			assertIntVectorEquals(-9, -10, newPoint);
 		}
 
 	}
@@ -3957,7 +3958,6 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			vector = createVector(2, 0);
 			vector.turn(MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, 2, vector); 
 		}
@@ -3968,7 +3968,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			vector.turn(MathConstants.DEMI_PI);
+			vector.turn(2. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 
@@ -3978,7 +3978,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_3(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			vector.turn(MathConstants.DEMI_PI);
+			vector.turn(3. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, -2, vector); 
 		}
 
@@ -3988,7 +3988,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_4(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			vector.turn(MathConstants.DEMI_PI);
+			vector.turn(4. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 
@@ -4009,7 +4009,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_6(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			vector.turn(-MathConstants.DEMI_PI);
+			vector.turn(-2. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 
@@ -4019,7 +4019,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_7(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			vector.turn(-MathConstants.DEMI_PI);
+			vector.turn(-3. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, 2, vector); 
 		}
 
@@ -4029,7 +4029,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_8(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			vector.turn(-MathConstants.DEMI_PI);
+			vector.turn(-4. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 
@@ -4039,8 +4039,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_9(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			vector = createVector(2, 0);
-			vector.turn(-MathConstants.DEMI_PI/3);
+			vector.turn(-4. * MathConstants.DEMI_PI - MathConstants.DEMI_PI/3);
 			assertIntVectorEquals(2, -1, vector); 
 		}
 
@@ -4355,7 +4354,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnLeft(MathConstants.DEMI_PI);
+			vector.turnLeft(2. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 
@@ -4366,8 +4365,8 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnLeft(MathConstants.DEMI_PI);
-			assertIntVectorEquals(2, 0, vector); 
+			vector.turnLeft(3. * MathConstants.DEMI_PI);
+			assertIntVectorEquals(0, -2, vector); 
 		}
 
 		@DisplayName("Right-handed with int coords #4")
@@ -4389,7 +4388,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnLeft(-MathConstants.DEMI_PI);
+			vector.turnLeft(-2. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 
@@ -4400,7 +4399,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnLeft(-MathConstants.DEMI_PI);
+			vector.turnLeft(-3. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, 2, vector); 
 		}
 
@@ -4411,7 +4410,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnLeft(-MathConstants.DEMI_PI);
+			vector.turnLeft(-4. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 
@@ -4423,7 +4422,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 			vector = createVector(2, 0);
-			vector.turnLeft(-MathConstants.DEMI_PI/3);
+			vector.turnLeft(-4. * MathConstants.DEMI_PI - MathConstants.DEMI_PI/3);
 			assertIntVectorEquals(2, -1, vector); 
 		}
 
@@ -4434,8 +4433,8 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnLeft(MathConstants.DEMI_PI);
-			assertIntVectorEquals(0, -2, vector); 
+			vector.turnLeft(4. * MathConstants.DEMI_PI);
+			assertIntVectorEquals(2, 0, vector); 
 		}
 
 		@DisplayName("Left-handed with int coords #1")
@@ -4457,7 +4456,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnLeft(MathConstants.DEMI_PI);
+			vector.turnLeft(2. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 
@@ -4468,7 +4467,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnLeft(MathConstants.DEMI_PI);
+			vector.turnLeft(3. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, 2, vector); 
 		}
 
@@ -4479,7 +4478,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnLeft(MathConstants.DEMI_PI);
+			vector.turnLeft(4. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 
@@ -4502,7 +4501,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnLeft(-MathConstants.DEMI_PI);
+			vector.turnLeft(-2. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 
@@ -4513,7 +4512,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnLeft(-MathConstants.DEMI_PI);
+			vector.turnLeft(-3. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, -2, vector); 
 		}
 
@@ -4524,7 +4523,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnLeft(-MathConstants.DEMI_PI);
+			vector.turnLeft(-4. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 
@@ -4536,7 +4535,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
 			vector = createVector(2, 0);
-			vector.turnLeft(-MathConstants.DEMI_PI/3);
+			vector.turnLeft(-4. * MathConstants.DEMI_PI - MathConstants.DEMI_PI/3);
 			assertIntVectorEquals(2, 1, vector); 
 		}
 
@@ -4605,7 +4604,6 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector = createVector(2, 0);
 			vector.turnRight(-5. * MathConstants.DEMI_PI);
 			assertFpVectorEquals(0, 2, vector); 
 		}
@@ -4773,7 +4771,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnRight(MathConstants.DEMI_PI);
+			vector.turnRight(2. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 		
@@ -4784,7 +4782,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnRight(MathConstants.DEMI_PI);
+			vector.turnRight(3. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, 2, vector); 
 		}
 		
@@ -4795,7 +4793,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnRight(MathConstants.DEMI_PI);
+			vector.turnRight(4. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 		
@@ -4807,7 +4805,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 			vector = createVector(2, 0);
-			vector.turnRight(-MathConstants.DEMI_PI);
+			vector.turnRight(-5. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, 2, vector); 
 		}
 		
@@ -4818,7 +4816,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnRight(-MathConstants.DEMI_PI);
+			vector.turnRight(-6. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 		
@@ -4829,7 +4827,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnRight(-MathConstants.DEMI_PI);
+			vector.turnRight(-7. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, -2, vector); 
 		}
 		
@@ -4840,7 +4838,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-			vector.turnRight(-MathConstants.DEMI_PI);
+			vector.turnRight(-8. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 		
@@ -4852,7 +4850,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 			vector = createVector(2, 0);
-			vector.turnRight(-MathConstants.DEMI_PI/3);
+			vector.turnRight(-8. * MathConstants.DEMI_PI - MathConstants.DEMI_PI/3);
 			assertIntVectorEquals(2, 1, vector); 
 		}
 	
@@ -4874,7 +4872,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnRight(MathConstants.DEMI_PI);
+			vector.turnRight(2. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 		
@@ -4885,7 +4883,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnRight(MathConstants.DEMI_PI);
+			vector.turnRight(3. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, -2, vector); 
 		}
 		
@@ -4896,7 +4894,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnRight(MathConstants.DEMI_PI);
+			vector.turnRight(4. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 		
@@ -4908,7 +4906,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
 			vector = createVector(2, 0);
-			vector.turnRight(-MathConstants.DEMI_PI);
+			vector.turnRight(-5. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, -2, vector); 
 		}
 		
@@ -4919,7 +4917,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnRight(-MathConstants.DEMI_PI);
+			vector.turnRight(-6. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(-2, 0, vector); 
 		}
 		
@@ -4930,7 +4928,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnRight(-MathConstants.DEMI_PI);
+			vector.turnRight(-7. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(0, 2, vector); 
 		}
 		
@@ -4941,7 +4939,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-			vector.turnRight(-MathConstants.DEMI_PI);
+			vector.turnRight(-8. * MathConstants.DEMI_PI);
 			assertIntVectorEquals(2, 0, vector); 
 		}
 		
@@ -4953,7 +4951,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 			assumeTrue(isIntCoordinates());
 			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
 			vector = createVector(2, 0);
-			vector.turnRight(-MathConstants.DEMI_PI/3);
+			vector.turnRight(-8. * MathConstants.DEMI_PI - MathConstants.DEMI_PI/3);
 			assertIntVectorEquals(2, -1, vector); 
 		}
 
@@ -5265,9 +5263,9 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(getRandom().nextDouble(), getRandom().nextDouble());
+			this.vector = createVector(getRandom().nextDouble() * 100., getRandom().nextDouble() * 100.);
 			this.vector2 = createVector(0,0);
-			this.oldVector = (Vector2D) vector.clone();
+			this.oldVector = new InnerComputationVector2D(this.vector);
 			assumeMutable(this.vector);
 		}
 
@@ -5277,10 +5275,12 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void double_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			double newLength = getRandom().nextDouble();
+			double newLength = getRandom().nextDouble() * 100.;
 			vector.setLength(newLength);
-			assertEpsilonEquals(vector.angle(oldVector), 0);
-			assertEpsilonEquals(vector.getLength()*oldVector.getLength()/newLength,oldVector.getLength());
+			// New length is set
+			assertEpsilonEquals(newLength,vector.getLength());
+			// Orientation of vector is unchanged
+			assertEpsilonColinear(oldVector, vector);
 		}
 	
 		@DisplayName("With double coords #2")
@@ -5289,7 +5289,7 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void double_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			double newLength = getRandom().nextDouble();
+			double newLength = getRandom().nextDouble() * 100.;
 			vector2.setLength(newLength);
 			assertFpVectorEquals(newLength,0, vector2);
 		}
@@ -5300,10 +5300,28 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			double newLength = getRandom().nextDouble();
+			double newLength = getRandom().nextDouble() * 100.;
+
 			vector.setLength(newLength);
-			assertEpsilonEquals(vector.angle(oldVector), 0);
-			assertEpsilonEquals(vector.getLength()*oldVector.getLength()/newLength,oldVector.getLength());
+
+			// New length is set
+			var ix = vector.ix();
+			var iy = vector.iy();
+			var expectedLength = Math.hypot(ix, iy);
+			var currentLength = vector.getLength();
+			if (!isEpsilonEquals(expectedLength, currentLength)) {
+				fail("invalid length");
+			}
+
+			// Orientation of vector is unchanged
+			final double cross = Vector2D.dotProduct(
+					this.oldVector.ix(), this.oldVector.iy(),
+					this.vector.ix(), this.vector.iy());
+			if (cross <= 0.) {
+				failCompare("not colinear vectors",
+						new InnerComputationVector2D(this.oldVector.ix(), this.oldVector.iy()).toString(),
+						new InnerComputationVector2D(this.vector.ix(), this.vector.iy()).toString());
+			}
 		}
 	
 		@DisplayName("With int coords #2")
@@ -5312,9 +5330,21 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 		public void int_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			double newLength = getRandom().nextDouble();
+			double newLength = getRandom().nextDouble() * 100.;
+			int newLengthInt = (int) Math.round(newLength);
+			int newLengthInt2 = (int) Math.floor(newLength);
 			vector2.setLength(newLength);
-			assertFpVectorEquals(newLength,0, vector2);
+
+			var expectedVector = new InnerComputationVector2D(newLengthInt, 0);
+			var str2 = vector2.toString();
+			if (vector2.iy() != 0) {
+				failCompare("not same vector",  //$NON-NLS-1$
+						expectedVector.toString(), str2);
+			}
+			if (vector2.ix() != newLengthInt && vector2.ix() != newLengthInt2) {
+				failCompare("not same vector",  //$NON-NLS-1$
+						expectedVector.toString(), str2);
+			}
 		}
 
 	}

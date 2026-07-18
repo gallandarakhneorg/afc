@@ -27,7 +27,9 @@ import org.arakhne.afc.math.geometry.d2.i.GeomFactory2i;
 import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.arakhne.afc.math.geometry.d2.i.Vector2i;
 import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractGeomFactory2aiTest;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("GeomFactory2i")
 @SuppressWarnings("all")
 public class GeomFactory2iTest extends AbstractGeomFactory2aiTest {
 

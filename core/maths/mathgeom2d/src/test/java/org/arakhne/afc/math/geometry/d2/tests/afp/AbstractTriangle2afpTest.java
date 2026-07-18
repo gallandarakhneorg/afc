@@ -4343,8 +4343,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 			assertFalse(getS().intersects(createSegment(-6, -2, 14, -4)));
 		}
 
-		@DisplayName("(Segment2afp) #")
-		@ParameterizedTest(name = "{i4ndex} => {0}")
+		@DisplayName("(Segment2afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
 		public void segment_4(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);	

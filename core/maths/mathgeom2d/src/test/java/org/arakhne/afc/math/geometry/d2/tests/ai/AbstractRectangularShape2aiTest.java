@@ -25,7 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -45,265 +49,413 @@ public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, 
 	
 	protected static final int MAXY = MINY + HEIGHT;
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	@Override
-	public void toBoundingBoxB(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		B box = createRectangle(0, 0, 0, 0);
-		this.shape.toBoundingBox(box);
-		assertEquals(this.shape.getMinX(), box.getMinX());
-		assertEquals(this.shape.getMinY(), box.getMinY());
-		assertEquals(this.shape.getMaxX(), box.getMaxX());
-		assertEquals(this.shape.getMaxY(), box.getMaxY());
+	@DisplayName("toBoundingBox(B)")
+	@Nested
+	public class ToBoundingBoxB {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			B box = createRectangle(0, 0, 0, 0);
+			shape.toBoundingBox(box);
+			assertEquals(shape.getMinX(), box.getMinX());
+			assertEquals(shape.getMinY(), box.getMinY());
+			assertEquals(shape.getMaxX(), box.getMaxX());
+			assertEquals(shape.getMaxY(), box.getMaxY());
+		}
+
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	@Override
-	public void toBoundingBox(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		B box = this.shape.toBoundingBox();
-		assertEquals(this.shape.getMinX(), box.getMinX());
-		assertEquals(this.shape.getMinY(), box.getMinY());
-		assertEquals(this.shape.getMaxX(), box.getMaxX());
-		assertEquals(this.shape.getMaxY(), box.getMaxY());
+	@DisplayName("toBoundingBox")
+	@Nested
+	public class ToBoundingBox {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			B box = shape.toBoundingBox();
+			assertEquals(shape.getMinX(), box.getMinX());
+			assertEquals(shape.getMinY(), box.getMinY());
+			assertEquals(shape.getMaxX(), box.getMaxX());
+			assertEquals(shape.getMaxY(), box.getMaxY());
+		}
+	}
+
+	@DisplayName("clear")
+	@Nested
+	public class Clear {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.clear();
+			assertEquals(0, shape.getMinX());
+			assertEquals(0, shape.getMinY());
+			assertEquals(0, shape.getMaxX());
+			assertEquals(0, shape.getMaxY());
+		}
+
+	}
+
+	@DisplayName("set(int,int,int,int)")
+	@Nested
+	public class SetIntIntIntInt {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.set(10, 12, 14, 16);
+			assertEquals(10, shape.getMinX());
+			assertEquals(12, shape.getMinY());
+			assertEquals(24, shape.getMaxX());
+			assertEquals(28, shape.getMaxY());
+		}
+
+	}
+
+	@DisplayName("set(Point2D,Point2D)")
+	@Nested
+	public class SetPoint2DPoint2D {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.set(createPoint(10, 12), createPoint(14, 16));
+			assertEquals(10, shape.getMinX());
+			assertEquals(12, shape.getMinY());
+			assertEquals(14, shape.getMaxX());
+			assertEquals(16, shape.getMaxY());
+		}
+
+	}
+
+	@DisplayName("setWidth")
+	@Nested
+	public class SetWidth {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setWidth(150);
+			assertEquals(5, shape.getMinX());
+			assertEquals(8, shape.getMinY());
+			assertEquals(155, shape.getMaxX());
+			assertEquals(13, shape.getMaxY());
+		}
+	}
+
+	@DisplayName("setHeight")
+	@Nested
+	public class SetHeight {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setHeight(150);
+			assertEquals(5, shape.getMinX());
+			assertEquals(8, shape.getMinY());
+			assertEquals(15, shape.getMaxX());
+			assertEquals(158, shape.getMaxY());
+		}
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	@Override
-	public void clear(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.clear();
-		assertEquals(0, this.shape.getMinX());
-		assertEquals(0, this.shape.getMinY());
-		assertEquals(0, this.shape.getMaxX());
-		assertEquals(0, this.shape.getMaxY());
+	@DisplayName("setFromCorners")
+	@Nested
+	public class SetFromCorners {
+
+		@DisplayName("(int,int,int,int) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setFromCorners(2, 3, 4, 5);
+			assertEquals(2, shape.getMinX());
+			assertEquals(3, shape.getMinY());
+			assertEquals(4, shape.getMaxX()); 
+			assertEquals(5, shape.getMaxY());
+		}
+
+		@DisplayName("(Point2D,Point2D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_2(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setFromCorners(createPoint(2, 3), createPoint(4, 5));
+			assertEquals(2, shape.getMinX());
+			assertEquals(3, shape.getMinY());
+			assertEquals(4, shape.getMaxX()); 
+			assertEquals(5, shape.getMaxY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setIntIntIntInt(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.set(10, 12, 14, 16);
-		assertEquals(10, this.shape.getMinX());
-		assertEquals(12, this.shape.getMinY());
-		assertEquals(24, this.shape.getMaxX());
-		assertEquals(28, this.shape.getMaxY());
+	@DisplayName("setFromCenter")
+	@Nested
+	public class SetFromCenter {
+
+		@DisplayName("(int,int,int,int) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setFromCenter(2, 3, 4, 5);
+			assertEquals(0, shape.getMinX());
+			assertEquals(1, shape.getMinY());
+			assertEquals(4, shape.getMaxX()); 
+			assertEquals(5, shape.getMaxY());
+		}
+		
+		@DisplayName("(Point2D,Point2D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_2(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setFromCenter(createPoint(2, 3), createPoint(4, 5));
+			assertEquals(0, shape.getMinX());
+			assertEquals(1, shape.getMinY());
+			assertEquals(4, shape.getMaxX()); 
+			assertEquals(5, shape.getMaxY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setPoint2DPoint2D(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.set(createPoint(10, 12), createPoint(14, 16));
-		assertEquals(10, this.shape.getMinX());
-		assertEquals(12, this.shape.getMinY());
-		assertEquals(14, this.shape.getMaxX());
-		assertEquals(16, this.shape.getMaxY());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setWidth(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setWidth(150);
-		assertEquals(5, this.shape.getMinX());
-		assertEquals(8, this.shape.getMinY());
-		assertEquals(155, this.shape.getMaxX());
-		assertEquals(13, this.shape.getMaxY());
+	@DisplayName("getMinX")
+	@Nested
+	public class GetMinX {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertEquals(MINX, shape.getMinX());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setHeight(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setHeight(150);
-		assertEquals(5, this.shape.getMinX());
-		assertEquals(8, this.shape.getMinY());
-		assertEquals(15, this.shape.getMaxX());
-		assertEquals(158, this.shape.getMaxY());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setFromCornersIntIntIntInt(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setFromCorners(2, 3, 4, 5);
-		assertEquals(2, this.shape.getMinX());
-		assertEquals(3, this.shape.getMinY());
-		assertEquals(4, this.shape.getMaxX()); 
-		assertEquals(5, this.shape.getMaxY());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setFromCornersPoint2DPoint2D(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setFromCorners(createPoint(2, 3), createPoint(4, 5));
-		assertEquals(2, this.shape.getMinX());
-		assertEquals(3, this.shape.getMinY());
-		assertEquals(4, this.shape.getMaxX()); 
-		assertEquals(5, this.shape.getMaxY());
+	@DisplayName("setMinX")
+	@Nested
+	public class SetMinX {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setMinX(-45);
+			assertEquals(-45, shape.getMinX());
+			assertEquals(MINY, shape.getMinY());
+			assertEquals(MAXX, shape.getMaxX()); 
+			assertEquals(MAXY, shape.getMaxY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setFromCenterIntIntIntInt(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setFromCenter(2, 3, 4, 5);
-		assertEquals(0, this.shape.getMinX());
-		assertEquals(1, this.shape.getMinY());
-		assertEquals(4, this.shape.getMaxX()); 
-		assertEquals(5, this.shape.getMaxY());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setFromCenterPoint2DPoint2D(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setFromCenter(createPoint(2, 3), createPoint(4, 5));
-		assertEquals(0, this.shape.getMinX());
-		assertEquals(1, this.shape.getMinY());
-		assertEquals(4, this.shape.getMaxX()); 
-		assertEquals(5, this.shape.getMaxY());
+	@DisplayName("getCenter")
+	@Nested
+	public class GetCenter {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+	        assertFpPointEquals(
+	                MINX + WIDTH / 2,
+	                MINY + HEIGHT / 2,
+	                shape.getCenter());
+	    }
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getMinX(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(MINX, this.shape.getMinX());
+	@DisplayName("getCenterX")
+	@Nested
+	public class GetCenterX {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertEquals(MINX + WIDTH / 2, shape.getCenterX());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setMinX(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setMinX(-45);
-		assertEquals(-45, this.shape.getMinX());
-		assertEquals(MINY, this.shape.getMinY());
-		assertEquals(MAXX, this.shape.getMaxX()); 
-		assertEquals(MAXY, this.shape.getMaxY());
+	@DisplayName("getMaxX")
+	@Nested
+	public class GetMaxX {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertEquals(MAXX, shape.getMaxX());
+		}
 	}
 
-    @ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-    public void getCenter(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-        assertFpPointEquals(
-                MINX + WIDTH / 2,
-                MINY + HEIGHT / 2,
-                this.shape.getCenter());
-    }
+	@DisplayName("setMaxX")
+	@Nested
+	public class SetMaxX {
 
-    @ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getCenterX(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(MINX + WIDTH / 2, this.shape.getCenterX());
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setMaxX(45);
+			assertEquals(MINX, shape.getMinX());
+			assertEquals(MINY, shape.getMinY());
+			assertEquals(45, shape.getMaxX()); 
+			assertEquals(MAXY, shape.getMaxY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getMaxX(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(MAXX, this.shape.getMaxX());
+	@DisplayName("getMinY")
+	@Nested
+	public class GetMinY {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertEquals(MINY, shape.getMinY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setMaxX(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setMaxX(45);
-		assertEquals(MINX, this.shape.getMinX());
-		assertEquals(MINY, this.shape.getMinY());
-		assertEquals(45, this.shape.getMaxX()); 
-		assertEquals(MAXY, this.shape.getMaxY());
+	@DisplayName("setMinY")
+	@Nested
+	public class SetMinY {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setMinY(-45);
+			assertEquals(MINX, shape.getMinX());
+			assertEquals(-45, shape.getMinY());
+			assertEquals(MAXX, shape.getMaxX()); 
+			assertEquals(MAXY, shape.getMaxY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getMinY(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(MINY, this.shape.getMinY());
+	@DisplayName("getCenterY")
+	@Nested
+	public class GetCenterY {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertEquals(MINY + HEIGHT / 2, shape.getCenterY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setMinY(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setMinY(-45);
-		assertEquals(MINX, this.shape.getMinX());
-		assertEquals(-45, this.shape.getMinY());
-		assertEquals(MAXX, this.shape.getMaxX()); 
-		assertEquals(MAXY, this.shape.getMaxY());
+	@DisplayName("getMaxY")
+	@Nested
+	public class GetMaxY {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertEquals(MAXY, shape.getMaxY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getCenterY(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(MINY + HEIGHT / 2, this.shape.getCenterY());
+	@DisplayName("setMaxY")
+	@Nested
+	public class SetMaxY {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.setMaxY(45);
+			assertEquals(MINX, shape.getMinX());
+			assertEquals(MINY, shape.getMinY());
+			assertEquals(MAXX, shape.getMaxX()); 
+			assertEquals(45, shape.getMaxY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getMaxY(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(MAXY, this.shape.getMaxY());
+	@DisplayName("getWidth")
+	@Nested
+	public class GetWidth {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertEquals(WIDTH, shape.getWidth());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void setMaxY(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.setMaxY(45);
-		assertEquals(MINX, this.shape.getMinX());
-		assertEquals(MINY, this.shape.getMinY());
-		assertEquals(MAXX, this.shape.getMaxX()); 
-		assertEquals(45, this.shape.getMaxY());
+	@DisplayName("getHeight")
+	@Nested
+	public class GetHeight {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertEquals(HEIGHT, shape.getHeight());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getWidth(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(WIDTH, this.shape.getWidth());
+	@DisplayName("translate(int,int)")
+	@Nested
+	public class TranslateIntInt {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.translate(3,  4);
+			assertEquals(8, shape.getMinX());
+			assertEquals(12, shape.getMinY());
+			assertEquals(18, shape.getMaxX());
+			assertEquals(17, shape.getMaxY());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void getHeight(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(HEIGHT, this.shape.getHeight());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	@Override
-	public void translateIntInt(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		this.shape.translate(3,  4);
-		assertEquals(8, this.shape.getMinX());
-		assertEquals(12, this.shape.getMinY());
-		assertEquals(18, this.shape.getMaxX());
-		assertEquals(17, this.shape.getMaxY());
-	}
+	@DisplayName("isEmpty")
+	@Nested
+	public class IsEmpty {
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	@Override
-	public void isEmpty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.isEmpty());
-		this.shape.clear();
-		assertTrue(this.shape.isEmpty());
-	}
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(shape.isEmpty());
+		}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public abstract void inflate(CoordinateSystem2D cs);
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_2(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape.clear();
+			assertTrue(shape.isEmpty());
+		}
+	}
 
 }

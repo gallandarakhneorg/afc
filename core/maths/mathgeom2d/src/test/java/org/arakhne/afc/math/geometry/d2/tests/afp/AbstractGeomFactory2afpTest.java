@@ -42,6 +42,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -67,6 +68,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	}
 
 	@DisplayName("convertToPoint")
+	@Nested
 	public class ConvertToPoint {
 
 		@DisplayName("#1")
@@ -104,6 +106,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	}
 	
 	@DisplayName("convertToVector")
+	@Nested
 	public class ConvertToVector {
 
 		@DisplayName("#1")
@@ -141,6 +144,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	}
 	
 	@DisplayName("newPoint")
+	@Nested
 	public class NewPoint {
 
 		@DisplayName("()")
@@ -185,6 +189,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	}
 
 	@DisplayName("newVector")
+	@Nested
 	public class NewVector {
 
 		@DisplayName("()")
@@ -229,6 +234,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	}
 
 	@DisplayName("newPath")
+	@Nested
 	public class NewPath {
 
 		@DisplayName("NON_ZERO")
@@ -256,6 +262,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	}
 
 	@DisplayName("newBox")
+	@Nested
 	public class NewBox {
 
 		@DisplayName("()")
@@ -287,6 +294,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	}
 
 	@DisplayName("newPathElement")
+	@Nested
 	public class NewPathElement {
 
 		@DisplayName("Move")

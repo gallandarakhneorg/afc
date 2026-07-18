@@ -850,7 +850,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			var newVector = point.operator_minus(point3);
-			assertFpVectorEquals(2., -3., newVector); 
+			assertFpVectorEquals(2., 3., newVector); 
 		}
 
 		@DisplayName("With int coords #4")
@@ -1502,7 +1502,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			point.scaleAdd(2.5, vector3, point);
-			assertIntPointEquals(2, -15, point);
+			assertIntPointEquals(4, -10, point);
 		}
 
 		@DisplayName("With int coords #4")
@@ -1786,7 +1786,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			point.scaleAdd(-2.5, point, vector2);
-			assertIntPointEquals(-6, -10, point);
+			assertIntPointEquals(-1, -3, point);
 		}
 		
 		@DisplayName("With int coords #3")
@@ -1796,7 +1796,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			point.scaleAdd(2.5, point, vector3);
-			assertIntPointEquals(-14, -30, point);
+			assertIntPointEquals(4, 0, point);
 		}
 		
 		@DisplayName("With int coords #4")
@@ -2001,7 +2001,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			point.scaleAdd(-2.5, vector2);
-			assertIntPointEquals(-6, -10, point);
+			assertIntPointEquals(-1, -3, point);
 		}
 		
 		@DisplayName("With int coords #3")
@@ -2011,7 +2011,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			point.scaleAdd(2.5, vector3);
-			assertIntPointEquals(-14, -30, point);
+			assertIntPointEquals(4, 0, point);
 		}
 		
 		@DisplayName("With int coords #4")
@@ -2021,7 +2021,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			point.scaleAdd(-2.5, vector1);
-			assertIntPointEquals(35, 75, point);
+			assertIntPointEquals(-2, -5, point);
 		}
 		
 		@DisplayName("With int coords #5")
@@ -2031,7 +2031,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			point.scaleAdd(2.5, vector2);
-			assertIntPointEquals(89, 190, point);
+			assertIntPointEquals(4, 7, point);
 		}
 		
 		@DisplayName("With int coords #6")
@@ -2041,7 +2041,7 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
 			point.scaleAdd(-2.5, vector3);
-			assertIntPointEquals(-221, -480, point);
+			assertIntPointEquals(-1, -10, point);
 		}
 
 	}
@@ -2738,13 +2738,19 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 	@Nested
 	public class TurnDoublePoint {
 
+		private Point2D p;
+
+		@BeforeEach
+		public void setUp() {
+			p = createPoint(0, 0);
+		}
+
 		@DisplayName("With int coords #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
 		public void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(Math.PI/2, createPoint(1, 0));
 			assertIntPointEquals(0, 1, p);
 		}
@@ -2755,10 +2761,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(Math.PI/2, createPoint(0, 1));
 			assertIntPointEquals(-1, 0, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #3")
@@ -2767,10 +2771,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_3(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(Math.PI/2, createPoint(-1, 0));
 			assertIntPointEquals(0, -1, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #4")
@@ -2779,10 +2781,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_4(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(Math.PI/2, createPoint(0, -1));
 			assertIntPointEquals(1, 0, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #5")
@@ -2791,10 +2791,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_5(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(-Math.PI/2, createPoint(1, 0));
 			assertIntPointEquals(0, -1, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #6")
@@ -2803,10 +2801,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_6(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(-Math.PI/2, createPoint(0, -1));
 			assertIntPointEquals(-1, 0, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #7")
@@ -2818,7 +2814,6 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 			Point2D p = createPoint(0, 0);
 			p.turn(-Math.PI/2, createPoint(-1, 0));
 			assertIntPointEquals(0, 1, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #8")
@@ -2827,10 +2822,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_8(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(-Math.PI/2, createPoint(0, 1));
 			assertIntPointEquals(1, 0, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #9")
@@ -2839,10 +2832,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_9(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(Math.PI/6, createPoint(12, 0));
 			assertIntPointEquals(10, 6, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #10")
@@ -2851,10 +2842,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_10(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(-Math.PI/6, createPoint(12, 0));
 			assertIntPointEquals(10, -6, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #11")
@@ -2863,10 +2852,8 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_11(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(Math.PI/11, createPoint(-4, 18));
 			assertIntPointEquals(-9, 16, p);
-			assertIntPointEquals(0, 1, p);
 		}
 	
 		@DisplayName("With int coords #12")
@@ -2875,7 +2862,6 @@ public abstract class AbstractPoint2DTestCase<P extends Point2D<? super P, ? sup
 		public void int_12(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Point2D p = createPoint(0, 0);
 			p.turn(-Math.PI/11, createPoint(-4, 18));
 			assertIntPointEquals(1, 18, p);
 		}

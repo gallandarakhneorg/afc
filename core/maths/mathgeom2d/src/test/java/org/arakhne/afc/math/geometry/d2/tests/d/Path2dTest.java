@@ -23,7 +23,9 @@ package org.arakhne.afc.math.geometry.d2.tests.d;
 import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPath2afpTest;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("Path2d")
 @SuppressWarnings("all")
 public class Path2dTest extends AbstractPath2afpTest<Path2d, Rectangle2d> {
 

@@ -3257,6 +3257,12 @@ extends AbstractShape2afpTest<T, B> {
 	    public void test_1(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assertTrue(getS().remove(5, -1));
+			assertTrue(getS().getCurrentPoint().equals(createPoint(4, 3)));
+			PathIterator2afp pi = getS().getPathIterator();
+			assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+			assertElement(pi, PathElementType.LINE_TO, 1, 1);
+			assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+			assertNoElement(pi);
     	}
 
     	@DisplayName("#2")
@@ -3264,7 +3270,12 @@ extends AbstractShape2afpTest<T, B> {
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_2(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().getCurrentPoint().equals(createPoint(4, 3)));
+			assertTrue(getS().remove(1, 1));
+			PathIterator2afp pi = getS().getPathIterator();
+			assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+			assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+			assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+			assertNoElement(pi);
     	}
 
     	@DisplayName("#3")
@@ -3272,23 +3283,13 @@ extends AbstractShape2afpTest<T, B> {
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_3(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().remove(1, 1));
-    	}
-
-    	@DisplayName("#4")
-    	@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem2D.class)
-	    public void test_4(CoordinateSystem2D cs) {
-	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().size() == 3);
-    	}
-
-    	@DisplayName("#5")
-    	@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem2D.class)
-	    public void test_5(CoordinateSystem2D cs) {
-	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assertFalse(getS().remove(35, 35));
+			PathIterator2afp pi = getS().getPathIterator();
+			assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+			assertElement(pi, PathElementType.LINE_TO, 1, 1);
+			assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+			assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+			assertNoElement(pi);
 		}
 
     }
@@ -6810,8 +6811,8 @@ extends AbstractShape2afpTest<T, B> {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			getS().clear();
 			getS().moveTo(1, 2);
-			getS().moveTo(3, 4);
 			getS().lineTo(3, 4);
+			getS().moveTo(3, 4);
 			getS().lineTo(5, 6);
 			getS().quadTo(7, 8, 9, 10);
 			assertTrue(getS().isMultiParts());

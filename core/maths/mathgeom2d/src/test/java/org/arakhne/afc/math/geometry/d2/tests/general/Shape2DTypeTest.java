@@ -42,6 +42,7 @@ import org.arakhne.afc.math.geometry.d2.general.Shape2DType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Shape2DType")
 @SuppressWarnings("all")
 public class Shape2DTypeTest {
 

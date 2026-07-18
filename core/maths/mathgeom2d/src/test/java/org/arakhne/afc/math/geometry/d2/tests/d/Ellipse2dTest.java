@@ -23,7 +23,9 @@ package org.arakhne.afc.math.geometry.d2.tests.d;
 import org.arakhne.afc.math.geometry.d2.d.Ellipse2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractEllipse2afpTest;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("Ellipse2d")
 @SuppressWarnings("all")
 public class Ellipse2dTest extends AbstractEllipse2afpTest<Ellipse2d, Rectangle2d> {
 

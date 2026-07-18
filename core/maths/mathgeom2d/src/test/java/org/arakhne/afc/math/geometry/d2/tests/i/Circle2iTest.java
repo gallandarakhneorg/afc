@@ -23,7 +23,9 @@ package org.arakhne.afc.math.geometry.d2.tests.i;
 import org.arakhne.afc.math.geometry.d2.i.Circle2i;
 import org.arakhne.afc.math.geometry.d2.i.Rectangle2i;
 import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractCircle2aiTest;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("Circle2i")
 @SuppressWarnings("all")
 public class Circle2iTest extends AbstractCircle2aiTest<Circle2i, Rectangle2i> {
 

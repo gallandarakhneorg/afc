@@ -24,7 +24,9 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPointCollectionTest;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("Path2dPointCollection")
 @SuppressWarnings("all")
 public class Path2dPointCollectionTest extends AbstractPointCollectionTest<Point2d, Vector2d, Rectangle2d> {
 

@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("OrientedPoint2d")
 @SuppressWarnings("all")
 public class OrientedPoint2dTest extends AbstractOrientedPoint2DTestCase<OrientedPoint2d, Vector2d, OrientedPoint2d> {
     

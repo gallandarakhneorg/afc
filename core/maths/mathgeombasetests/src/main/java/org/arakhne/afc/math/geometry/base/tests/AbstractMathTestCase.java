@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.base.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
@@ -122,10 +123,12 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertNotEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual, Supplier<String> message) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
-			fail(formatFailMessage(message, "not same x value", expected, actual)); //$NON-NLS-1$
+			failCompare(formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+					Objects.toString(expected), Objects.toString(actual));
 		}
 		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
-			fail(formatFailMessage(message, "not same y value", expected, actual)); //$NON-NLS-1$
+			failCompare(formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+					Objects.toString(expected), Objects.toString(actual));
 		}
 	}
 
@@ -244,6 +247,49 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		}
 	}
 	
+	/** Test if the actual vector is colinear to the expected vector with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 18.0
+	 */
+	public void assertEpsilonColinear(Vector2D<?, ?> expected, Vector2D<?, ?> actual) {
+		assertEpsilonColinear(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual vector is colinear to the expected vector with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonColinear(Vector2D<?, ?> expected, Vector2D<?, ?> actual, String message) {
+		assertEpsilonColinear(expected, actual, () -> message);
+	}
+
+	/** Test if the actual vector is colinear to the expected vector with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonColinear(Vector2D<?, ?> expected, Vector2D<?, ?> actual, Supplier<String> message) {
+		final var expectedUnit = expected.toUnitVector(); 
+		final var actualUnit = actual.toUnitVector(); 
+		final double cross = expectedUnit.dot(actualUnit);
+		if (!isEpsilonEquals(Math.abs(cross), 1.)) {
+			failCompare(
+					formatFailMessage(message, "not colinear vectors, with cross=" + cross, expected, actual),  //$NON-NLS-1$
+					expectedUnit.toString(),
+					actualUnit.toString());
+		}
+	}
+
 	/** Test if the actual value is not equal to the expected value with
 	 * a distance of epsilon.
 	 * 

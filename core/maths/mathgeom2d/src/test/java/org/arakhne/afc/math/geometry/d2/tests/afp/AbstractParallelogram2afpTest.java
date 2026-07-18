@@ -5574,7 +5574,6 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_1(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);	
-	        getS().operator_add(createVector(123.456, 789.123));
 	        T shape = getS().operator_plus(createVector(123.456, 789.123));
 	        assertEpsilonEquals(cx + 123.456, shape.getCenterX());
 	        assertEpsilonEquals(cy + 789.123, shape.getCenterY());

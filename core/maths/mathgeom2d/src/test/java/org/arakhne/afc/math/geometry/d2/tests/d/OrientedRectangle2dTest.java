@@ -23,7 +23,9 @@ package org.arakhne.afc.math.geometry.d2.tests.d;
 import org.arakhne.afc.math.geometry.d2.d.OrientedRectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractOrientedRectangle2afpTest;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("OrientedRectangle2d")
 @SuppressWarnings("all")
 public class OrientedRectangle2dTest extends AbstractOrientedRectangle2afpTest<OrientedRectangle2d, Rectangle2d> {
 

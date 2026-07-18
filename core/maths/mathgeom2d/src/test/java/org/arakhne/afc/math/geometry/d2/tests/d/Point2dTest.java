@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("Point2d")
 @SuppressWarnings("all")
 public class Point2dTest extends AbstractPoint2DTestCase<Point2d, Vector2d, Point2d> {
 

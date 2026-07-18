@@ -35,6 +35,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -89,299 +90,173 @@ public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super 
 	@Nested
 	public class Contains {
 
-		@DisplayName("(double,double) #1")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_1(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.EVEN_ODD);
+		@DisplayName("EVEN_ODD #1")
+		@Test
+	    public void evenodd_1() {
+			createTestShape(PathWindingRule.EVEN_ODD);
 			assertFalse(shape.contains(0, 0));
 		}
 
-		@DisplayName("(double,double) #2")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_2(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-			assertFalse(shape.contains(-4, 10));
-		}
-
-		@DisplayName("(double,double) #3")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_3(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-			assertFalse(shape.contains(2, -2));
-		}
-
-		@DisplayName("(double,double) #4")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_4(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-			assertFalse(shape.contains(10, 0));
-		}
-
-		@DisplayName("(double,double) #5")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_5(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-		}
-
-		@DisplayName("(double,double) #6")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_6(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-			assertFalse(shape.contains(8, -5));
-	    }
-   
-		@DisplayName("(double,double) #7")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_7(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-	    }
-		   
-		@DisplayName("(double,double) #8")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_8(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
+		@DisplayName("NON_ZERO #1")
+		@Test
+	    public void nonzero_1() {
+			createTestShape(PathWindingRule.NON_ZERO);
 			assertFalse(shape.contains(0, 0));
-	    }
-		   
-		@DisplayName("(double,double) #9")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_9(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
+		}
+
+		@DisplayName("EVEN_ODD #2")
+		@Test
+	    public void evenodd_2() {
+			createTestShape(PathWindingRule.EVEN_ODD);
 			assertFalse(shape.contains(-4, 10));
-	    }
-		   
-		@DisplayName("(double,double) #10")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_10(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-	    }
-		   
-		@DisplayName("(double,double) #11")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_11(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
+		}
+
+		@DisplayName("NON_ZERO #2")
+		@Test
+	    public void nonzero_2() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertFalse(shape.contains(-4, 10));
+		}
+
+		@DisplayName("EVEN_ODD #3")
+		@Test
+	    public void evenodd_3() {
+			createTestShape(PathWindingRule.EVEN_ODD);
 			assertFalse(shape.contains(2, -2));
-	    }
-		   
-		@DisplayName("(double,double) #12")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_12(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
+		}
+
+		@DisplayName("NON_ZERO #3")
+		@Test
+	    public void nonzero_3() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertFalse(shape.contains(2, -2));
+		}
+
+		@DisplayName("EVEN_ODD #4")
+		@Test
+	    public void evenodd_4() {
+			createTestShape(PathWindingRule.EVEN_ODD);
 			assertFalse(shape.contains(10, 0));
-	    }
-		   
-		@DisplayName("(double,double) #13")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_13(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
+		}
+
+		@DisplayName("NON_ZERO #4")
+		@Test
+	    public void nonzero_4() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertFalse(shape.contains(10, 0));
+		}
+
+		@DisplayName("EVEN_ODD #5")
+		@Test
+	    public void evenodd_5() {
+			createTestShape(PathWindingRule.EVEN_ODD);
 			assertFalse(shape.contains(8, -5));
-	    }
-		   
-		@DisplayName("(double,double) #14")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_14(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertFalse(shape.contains(6, 2));
-	    }
-		   
-		@DisplayName("(double,double) #15")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_15(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertFalse(shape.contains(5, 2));
-	    }
-		   
-		@DisplayName("(double,double) #16")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_16(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertFalse(shape.contains(6, 2));
-	    }
-		   
-		@DisplayName("(double,double) #17")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_17(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertFalse(shape.contains(5, 2));
-	    }
-		   
-		@DisplayName("(double,double) #18")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_18(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(3, 2));
-	    }
-		   
-		@DisplayName("(double,double) #19")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_19(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(5, 4.1));
-	    }
-		   
-		@DisplayName("(double,double) #20")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_20(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(8, 3));
-	    }
-		   
-		@DisplayName("(double,double) #21")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_21(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(11, -3));
-	    }
-		   
-		@DisplayName("(double,double) #22")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_22(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(5, -4));
-	    }
-		   
-		@DisplayName("(double,double) #23")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_23(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(3, 2));
-	    }
-		   
-		@DisplayName("(double,double) #24")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_24(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(5, 4.1));
-	    }
-		   
-		@DisplayName("(double,double) #25")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_25(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(8, 3));
-	    }
-		   
-		@DisplayName("(double,double) #26")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_26(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(11, -3));
-	    }
-		   
-		@DisplayName("(double,double) #27")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_27(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(5, -4));
-	    }
-		   
-		@DisplayName("(double,double) #28")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_28(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertFalse(shape.contains(7, -1));
-	    }
-		   
-		@DisplayName("(double,double) #29")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_29(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertFalse(shape.contains(8, -2));
-	    }
-		   
-		@DisplayName("(double,double) #30")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_30(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertFalse(shape.contains(6, -2.5));
-	    }
-		   
-		@DisplayName("(double,double) #31")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_31(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(7, -1));
-	    }
-		   
-		@DisplayName("(double,double) #32")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_32(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(8, -2));
-	    }
-		   
-		@DisplayName("(double,double) #33")
-		@ParameterizedTest
-		@EnumSource(PathWindingRule.class)
-	    public void test_33(PathWindingRule rule) {
-			createTestShape(rule);
-			assumeTrue(shape.getWindingRule() == PathWindingRule.NON_ZERO);
-			assertTrue(shape.contains(6, -2.5));
-	    }
+		}
+
+		@DisplayName("NON_ZERO #5")
+		@Test
+	    public void nonzero_5() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertFalse(shape.contains(8, -5));
+		}
+
+		@DisplayName("EVEN_ODD #6")
+		@Test
+	    public void evenodd_6() {
+			createTestShape(PathWindingRule.EVEN_ODD);
+			assertTrue(shape.contains(2, 2));
+		}
+
+		@DisplayName("NON_ZERO #6")
+		@Test
+	    public void nonzero_6() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertTrue(shape.contains(2, 2));
+		}
+
+		@DisplayName("EVEN_ODD #7")
+		@Test
+	    public void evenodd_7() {
+			createTestShape(PathWindingRule.EVEN_ODD);
+			assertTrue(shape.contains(8, 2));
+		}
+
+		@DisplayName("NON_ZERO #7")
+		@Test
+	    public void nonzero_7() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertTrue(shape.contains(8, 2));
+		}
+
+		@DisplayName("EVEN_ODD #8")
+		@Test
+	    public void evenodd_8() {
+			createTestShape(PathWindingRule.EVEN_ODD);
+			assertTrue(shape.contains(10, -2));
+		}
+
+		@DisplayName("NON_ZERO #8")
+		@Test
+	    public void nonzero_8() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertTrue(shape.contains(10, -2));
+		}
+
+		@DisplayName("EVEN_ODD #9")
+		@Test
+	    public void evenodd_9() {
+			createTestShape(PathWindingRule.EVEN_ODD);
+			assertTrue(shape.contains(6, -4));
+		}
+
+		@DisplayName("NON_ZERO #9")
+		@Test
+	    public void nonzero_9() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertTrue(shape.contains(6, -4));
+		}
+
+		@DisplayName("EVEN_ODD #10")
+		@Test
+	    public void evenodd_10() {
+			createTestShape(PathWindingRule.EVEN_ODD);
+			assertFalse(shape.contains(5, 2.5));
+		}
+
+		@DisplayName("NON_ZERO #10")
+		@Test
+	    public void nonzero_10() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertFalse(shape.contains(5, 2.5));
+		}
+
+		@DisplayName("EVEN_ODD #11")
+		@Test
+	    public void evenodd_11() {
+			createTestShape(PathWindingRule.EVEN_ODD);
+			assertFalse(shape.contains(8, -2.5));
+		}
+
+		@DisplayName("NON_ZERO #11")
+		@Test
+	    public void nonzero_11() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertTrue(shape.contains(8, -2.5));
+		}
+
+		@DisplayName("EVEN_ODD #12")
+		@Test
+	    public void evenodd_12() {
+			createTestShape(PathWindingRule.EVEN_ODD);
+			assertTrue(shape.contains(5, 4.2));
+		}
+
+		@DisplayName("NON_ZERO #12")
+		@Test
+	    public void nonzero_12() {
+			createTestShape(PathWindingRule.NON_ZERO);
+			assertTrue(shape.contains(5, 4.2));
+		}
 
     }
 

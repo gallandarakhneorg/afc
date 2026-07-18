@@ -22,7 +22,9 @@ package org.arakhne.afc.math.geometry.d2.tests.i;
 
 import org.arakhne.afc.math.geometry.d2.i.Rectangle2i;
 import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractRectangle2aiTest;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("Rectangle2i")
 @SuppressWarnings("all")
 public class Rectangle2iTest extends AbstractRectangle2aiTest<Rectangle2i> {
 
