@@ -53,8 +53,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectangle2afp<?, T, ?, ?, ?, B>,
-		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
+public abstract class AbstractOrientedRectangle2afpTestCase<T extends OrientedRectangle2afp<?, T, ?, ?, ?, B>,
+		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTestCase<T, B> {
 
 	protected final double cx = 6;
 	protected final double cy = 9;

@@ -2300,15 +2300,26 @@ public abstract class AbstractVector2DTestCase<V extends Vector2D<? super V, ? s
 	}
 
 	@DisplayName("this * double")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public final void test_1(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		var vect = createVector(45, -78);
-		Vector2D result = vect.operator_multiply(5);
-		assertNotSame(vect, result);
-		assertEpsilonEquals(225, result.getX());
-		assertEpsilonEquals(-390, result.getY());
+	@Nested
+	public class OperatorMultiplyDouble {
+
+		private Vector2D vect;
+
+		@BeforeEach
+		public void setUp() {
+			vect = createVector(45, -78);
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public final void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			Vector2D result = vect.operator_multiply(5);
+			assertNotSame(vect, result);
+			assertEpsilonEquals(225, result.getX());
+			assertEpsilonEquals(-390, result.getY());
+		}
 	}
 
 	@DisplayName("this / double")

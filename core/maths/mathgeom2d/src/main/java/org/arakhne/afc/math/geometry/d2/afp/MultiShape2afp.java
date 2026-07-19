@@ -27,6 +27,7 @@ import java.util.List;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.MultiShape2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Transform2D;
@@ -290,17 +291,26 @@ public interface MultiShape2afp<
 
 	@Pure
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		final var iterator = getBackendDataList().iterator();
 		if (iterator.hasNext()) {
-			iterator.next().toBoundingBox(box);
-			final var subbounds = getGeomFactory().newBox();
+			final var receiver = getGeomFactory().newBox();
+			var element = iterator.next();
+			element.toBoundingBox(receiver);
+			double minx = receiver.getMinX();
+			double miny = receiver.getMinY();
+			double maxx = receiver.getMaxX();
+			double maxy = receiver.getMaxY();
 			while (iterator.hasNext()) {
-				final var element = iterator.next();
-				element.toBoundingBox(subbounds);
-				box.setUnion(subbounds);
+				element = iterator.next();
+				element.toBoundingBox(receiver);
+		        minx = Math.min(minx, receiver.getMinX());
+		        miny = Math.min(miny, receiver.getMinY());
+		        maxx = Math.max(maxx, receiver.getMaxX());
+		        maxy = Math.max(maxy, receiver.getMaxY());
 			}
+			box.setFromCorners(minx, miny, maxx, maxy);
 		}
 	}
 

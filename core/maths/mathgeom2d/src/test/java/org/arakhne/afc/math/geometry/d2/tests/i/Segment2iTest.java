@@ -22,12 +22,12 @@ package org.arakhne.afc.math.geometry.d2.tests.i;
 
 import org.arakhne.afc.math.geometry.d2.i.Rectangle2i;
 import org.arakhne.afc.math.geometry.d2.i.Segment2i;
-import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractSegment2aiTest;
+import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractSegment2aiTestCase;
 import org.junit.jupiter.api.DisplayName;
 
 @DisplayName("Segment2i")
 @SuppressWarnings("all")
-public class Segment2iTest extends AbstractSegment2aiTest<Segment2i, Rectangle2i> {
+public class Segment2iTest extends AbstractSegment2aiTestCase<Segment2i, Rectangle2i> {
 
 	@Override
 	protected TestShapeFactory2i createFactory() {

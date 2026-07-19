@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -47,10 +48,10 @@ public interface RectangularShape2ai<
 		P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2ai<?, ?, IE, P, V, B>>
-		extends Shape2ai<ST, IT, IE, P, V, B> {
+		extends Shape2ai<ST, IT, IE, P, V, B>, BoundsReceiver2D {
 
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 	}
@@ -110,6 +111,11 @@ public interface RectangularShape2ai<
 	 * @param y2 is the coordinate of the second corner.
 	 */
 	void setFromCorners(int x1, int y1, int x2, int y2);
+
+	@Override
+	default void setFromCorners(double x1, double y1, double x2, double y2) {
+		setFromCorners((int) Math.round(x1), (int) Math.round(y1), (int) Math.round(x2), (int) Math.round(y2));
+	}
 
 	/** Change the frame of the rectangle conserving previous min and max if needed.
 	 *

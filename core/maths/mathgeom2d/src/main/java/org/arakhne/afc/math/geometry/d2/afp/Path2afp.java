@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.base.CrossingComputationType;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
 import org.arakhne.afc.math.geometry.base.d2.Path2D;
 import org.arakhne.afc.math.geometry.base.d2.PathIterator2D;
@@ -1838,7 +1839,7 @@ public interface Path2afp<
 	 * @see #calculatesControlPointBoundingBox(PathIterator2afp, Rectangle2afp)
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:returncount"})
-	static boolean calculatesDrawableElementBoundingBox(PathIterator2afp<?> iterator, Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
+	static boolean calculatesDrawableElementBoundingBox(PathIterator2afp<?> iterator, BoundsReceiver2D box) {
 		assert iterator != null : AssertMessages.notNullParameter(0);
 		assert box != null : AssertMessages.notNullParameter(1);
 		final var factory = iterator.getGeomFactory();
@@ -1965,7 +1966,7 @@ public interface Path2afp<
 		if (foundOneLine) {
 			box.setFromCorners(xmin, ymin, xmax, ymax);
 		} else {
-			box.clear();
+			box.setFromCorners(0, 0, 0, 0);
 		}
 		return foundOneLine;
 	}
@@ -2984,7 +2985,7 @@ public interface Path2afp<
 	boolean remove(double x, double y);
 
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		Path2afp.calculatesDrawableElementBoundingBox(
 				getPathIterator(getGeomFactory().getSplineApproximationRatio()),

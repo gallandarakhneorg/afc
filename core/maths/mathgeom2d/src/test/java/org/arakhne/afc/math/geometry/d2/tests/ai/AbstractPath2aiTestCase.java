@@ -56,8 +56,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
-B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
+public abstract class AbstractPath2aiTestCase<T extends Path2ai<?, T, ?, ?, ?, B>,
+B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractShape2aiTestCase<T, B> {
 
 	@Override
 	protected final T createShape() {

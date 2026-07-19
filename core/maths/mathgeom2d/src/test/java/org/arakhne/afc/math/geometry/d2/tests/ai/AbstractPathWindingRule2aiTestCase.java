@@ -40,7 +40,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractPathWindingRule2aiTest<P extends Point2D<? super P, ? super V>,
+public abstract class AbstractPathWindingRule2aiTestCase<P extends Point2D<? super P, ? super V>,
 V extends Vector2D<? super V, ? super P>,
 B extends Rectangle2ai<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
 

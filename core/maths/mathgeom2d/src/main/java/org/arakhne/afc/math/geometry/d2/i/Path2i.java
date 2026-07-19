@@ -26,6 +26,7 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.InnerComputationPoint2ai;
@@ -305,7 +306,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 
 	@Override
 	@Pure
-	public void toBoundingBox(Rectangle2i box) {
+	public void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		var bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
@@ -315,7 +316,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
 		}
-		box.set(bb);
+		box.setFromCorners(bb.getMinX(), bb.getMinY(), bb.getMaxX(), bb.getMaxY());
 	}
 
 	@Override

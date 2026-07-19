@@ -48,8 +48,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?, ?, T>>
-extends AbstractRectangularShape2aiTest<T, T> {
+public abstract class AbstractRectangle2aiTestCase<T extends Rectangle2ai<?, T, ?, ?, ?, T>>
+extends AbstractRectangularShape2aiTestCase<T, T> {
 
 	@Override
 	protected final T createShape() {

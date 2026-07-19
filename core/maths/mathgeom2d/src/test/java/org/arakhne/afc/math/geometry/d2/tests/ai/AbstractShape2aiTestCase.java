@@ -45,7 +45,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
+public abstract class AbstractShape2aiTestCase<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
 	
 	/** Is the rectangular shape to test.

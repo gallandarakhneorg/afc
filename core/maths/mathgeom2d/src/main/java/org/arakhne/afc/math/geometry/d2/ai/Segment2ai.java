@@ -30,6 +30,7 @@ import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.base.CrossingComputationType;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Shape2D;
@@ -1169,7 +1170,7 @@ public interface Segment2ai<
 
     @Override
     @Pure
-    default void toBoundingBox(B box) {
+    default void toBoundingBox(BoundsReceiver2D box) {
         assert box != null : AssertMessages.notNullParameter();
         box.setFromCorners(getX1(), getY1(), getX2(), getY2());
     }

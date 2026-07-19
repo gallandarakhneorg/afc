@@ -18,21 +18,26 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2.tests.d;
+package org.arakhne.afc.math.geometry.base.d1;
 
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPointCollectionTestCase;
-import org.junit.jupiter.api.DisplayName;
+/** Functional interface that represented the receiver of the bounds of an 1D object.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 18.0
+ */
+public interface BoundsReceiver1D {
 
-@DisplayName("Path2dPointCollection")
-@SuppressWarnings("all")
-public class Path2dPointCollectionTest extends AbstractPointCollectionTestCase<Point2d, Vector2d, Rectangle2d> {
-
-	@Override
-	protected TestShapeFactory2d createFactory() {
-		return TestShapeFactory2d.SINGLETON;
-	}
+	/** Change the bounds of the element.
+	 *
+	 * @param segment the segment on which the bounds are located
+	 * @param x is the coordinate of the minimal side of the bounds.
+	 * @param y is the coordinate of the minimal side of the bounds.
+	 * @param width is the width of the box.
+	 * @param height is the height of the nox.
+	 */
+	void set(Segment1D<?, ?> segment, double x, double y, double width, double height);
 
 }

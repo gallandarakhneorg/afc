@@ -34,8 +34,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, T, ?, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
+public abstract class AbstractRectangularShape2aiTestCase<T extends Rectangle2ai<?, T, ?, ?, ?, B>,
+		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractShape2aiTestCase<T, B> {
 
 	protected static final int MINX = 5;
 	

@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2.tests.afp;
+package org.arakhne.afc.math.geometry.d2.tests.ai;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -35,10 +35,11 @@ import org.arakhne.afc.math.geometry.base.d2.InnerComputationVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
-import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
+import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
+import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
+import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
+import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
+import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,24 +48,24 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
+public abstract class AbstractGeomFactory2aiTestCase extends AbstractMathTestCase {
 
-	private GeomFactory2afp<?, ?, ?, ?> factory;
-	
-	protected abstract GeomFactory2afp<?, ?, ?, ?> createFactory();
-	
-	protected abstract Point2D createPoint(double x, double y);
+	private GeomFactory2ai<?, ?, ?, ?> factory;
 
-	protected abstract Vector2D createVector(double x, double y);
+	protected abstract GeomFactory2ai<?, ?, ?, ?> createFactory();
+
+	protected abstract Point2D createPoint(int x, int y);
+
+	protected abstract Vector2D createVector(int x, int y);
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.factory = createFactory();
+		factory = createFactory();
 	}
-	
+
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.factory = null;
+		factory = null;
 	}
 
 	@DisplayName("convertToPoint")
@@ -74,7 +75,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void convertToPointPoint2D_expectedPointType(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Point2D p = createPoint(45, 56);
 			Point2D p2 = factory.convertToPoint(p);
@@ -84,7 +85,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void convertToPointPoint2D_notExpectedPointType(CoordinateSystem2D cs) {
+		public void test_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Point2D p = new InnerComputationPoint2D(45, 56);
 			Point2D p2 = factory.convertToPoint(p);
@@ -95,7 +96,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		@DisplayName("#3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void convertToPointVector2D(CoordinateSystem2D cs) {
+		public void test_3(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Vector2D v = new InnerComputationVector2D(45, 56);
 			Point2D p = factory.convertToPoint(v);
@@ -104,7 +105,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		}
 
 	}
-	
+
 	@DisplayName("convertToVector")
 	@Nested
 	public class ConvertToVector {
@@ -123,7 +124,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void convertToVectorVector2D_expectedVectorType(CoordinateSystem2D cs) {
+		public void test_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Vector2D v = createVector(45, 56);
 			Vector2D v2 = factory.convertToVector(v);
@@ -133,7 +134,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		@DisplayName("#3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void convertToVectorVector2D_notExpectedVectorType(CoordinateSystem2D cs) {
+		public void test_3(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Vector2D v = new InnerComputationVector2D(45, 56);
 			Vector2D v2 = factory.convertToVector(v);
@@ -142,7 +143,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		}
 
 	}
-	
+
 	@DisplayName("newPoint")
 	@Nested
 	public class NewPoint {
@@ -150,20 +151,20 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		@DisplayName("()")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newPoint(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Point2D p = factory.newPoint();
 			assertNotNull(p);
-			assertEpsilonEquals(0, p.getX());
-			assertEpsilonEquals(0, p.getY());
+			assertEquals(0, p.ix());
+			assertEquals(0, p.iy());
 			Point2D ref = createPoint(0, 0);
 			assertEquals(ref.getClass(), p.getClass());
 		}
-	
+
 		@DisplayName("(int,int)")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newPointIntInt(CoordinateSystem2D cs) {
+		public void test_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Point2D p = factory.newPoint(15, 48);
 			assertNotNull(p);
@@ -172,16 +173,16 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 			Point2D ref = createPoint(0, 0);
 			assertEquals(ref.getClass(), p.getClass());
 		}
-	
+
 		@DisplayName("(double,double)")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newPointDoubleDouble(CoordinateSystem2D cs) {
+		public void test_3(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			Point2D p = factory.newPoint(15.34, 48.56);
+			Point2D p = factory.newPoint(15.56, 48.32);
 			assertNotNull(p);
-			assertEpsilonEquals(15.34, p.getX());
-			assertEpsilonEquals(48.56, p.getY());
+			assertEpsilonEquals(16, p.getX());
+			assertEpsilonEquals(48, p.getY());
 			Point2D ref = createPoint(0, 0);
 			assertEquals(ref.getClass(), p.getClass());
 		}
@@ -195,20 +196,20 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		@DisplayName("()")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newVector(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Vector2D p = factory.newVector();
 			assertNotNull(p);
-			assertEpsilonEquals(0, p.getX());
-			assertEpsilonEquals(0, p.getY());
+			assertEquals(0, p.ix());
+			assertEquals(0, p.iy());
 			Vector2D ref = createVector(0, 0);
 			assertEquals(ref.getClass(), p.getClass());
 		}
-	
+
 		@DisplayName("(int,int)")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newVectorIntInt(CoordinateSystem2D cs) {
+		public void test_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			Vector2D p = factory.newVector(15, 48);
 			assertNotNull(p);
@@ -217,16 +218,16 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 			Vector2D ref = createVector(0, 0);
 			assertEquals(ref.getClass(), p.getClass());
 		}
-	
+
 		@DisplayName("(double,double)")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newVectorDoubleDouble(CoordinateSystem2D cs) {
+		public void test_3(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			Vector2D p = factory.newVector(15.45, 48.67);
+			Vector2D p = factory.newVector(15.45, 48.87);
 			assertNotNull(p);
-			assertEpsilonEquals(15.45, p.getX());
-			assertEpsilonEquals(48.67, p.getY());
+			assertEpsilonEquals(15, p.getX());
+			assertEpsilonEquals(49, p.getY());
 			Vector2D ref = createVector(0, 0);
 			assertEquals(ref.getClass(), p.getClass());
 		}
@@ -237,26 +238,44 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	@Nested
 	public class NewPath {
 
-		@DisplayName("NON_ZERO")
+		@DisplayName("(NON_ZERO)")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newPath_NONZERO(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			Path2afp<?, ?, ?, ?, ?, ?> path = factory.newPath(PathWindingRule.NON_ZERO);
+			Path2ai<?, ?, ?, ?, ?, ?> path = factory.newPath(PathWindingRule.NON_ZERO);
 			assertNotNull(path);
 			assertSame(PathWindingRule.NON_ZERO, path.getWindingRule());
 			assertEquals(0, path.size());
 		}
 
-		@DisplayName("EVEN_ODD")
+		@DisplayName("(EVEN_ODD)")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newPath_EVENODD(CoordinateSystem2D cs) {
+		public void test_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			Path2afp<?, ?, ?, ?, ?, ?> path = factory.newPath(PathWindingRule.EVEN_ODD);
+			Path2ai<?, ?, ?, ?, ?, ?> path = factory.newPath(PathWindingRule.EVEN_ODD);
 			assertNotNull(path);
 			assertSame(PathWindingRule.EVEN_ODD, path.getWindingRule());
 			assertEquals(0, path.size());
+		}
+	}
+
+	@DisplayName("newSegment")
+	@Nested
+	public class NewSegment {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void test_1(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			Segment2ai<?, ?, ?, ?, ?, ?> s = factory.newSegment(1,  2,  3,  4);
+			assertNotNull(s);
+			assertEquals(1, s.getX1());
+			assertEquals(2, s.getY1());
+			assertEquals(3, s.getX2());
+			assertEquals(4, s.getY2());
 		}
 
 	}
@@ -268,139 +287,161 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		@DisplayName("()")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newBox(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			Rectangle2afp<?, ?, ?, ?, ?, ?> r = factory.newBox();
+			Rectangle2ai<?, ?, ?, ?, ?, ?> r = factory.newBox();
 			assertNotNull(r);
-			assertEpsilonEquals(0, r.getMinX());
-			assertEpsilonEquals(0, r.getMinY());
-			assertEpsilonEquals(0, r.getMaxX());
-			assertEpsilonEquals(0, r.getMaxY());
+			assertEquals(0, r.getMinX());
+			assertEquals(0, r.getMinY());
+			assertEquals(0, r.getMaxX());
+			assertEquals(0, r.getMaxY());
 		}
-	
+
 		@DisplayName("(double,double,double,double)")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newBoxNumberNumberNumberNumber(CoordinateSystem2D cs) {
+		public void test_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			Rectangle2afp<?, ?, ?, ?, ?, ?> r = factory.newBox(1, 2, 3, 4);
+			Rectangle2ai<?, ?, ?, ?, ?, ?> r = factory.newBox(1, 2, 3, 4);
 			assertNotNull(r);
-			assertEpsilonEquals(1, r.getMinX());
-			assertEpsilonEquals(2, r.getMinY());
-			assertEpsilonEquals(4, r.getMaxX());
-			assertEpsilonEquals(6, r.getMaxY());
+			assertEquals(1, r.getMinX());
+			assertEquals(2, r.getMinY());
+			assertEquals(4, r.getMaxX());
+			assertEquals(6, r.getMaxY());
 		}
 
 	}
 
-	@DisplayName("newPathElement")
+	@DisplayName("newMovePathElement")
 	@Nested
-	public class NewPathElement {
+	public class NewMovePathElement {
 
-		@DisplayName("Move")
+		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newMovePathElement(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			PathElement2afp element = factory.newMovePathElement(1, 2);
+			PathElement2ai element = factory.newMovePathElement(1, 2);
 			assertNotNull(element);
 			assertSame(PathElementType.MOVE_TO, element.getType());
-			assertEpsilonEquals(0, element.getFromX());
-			assertEpsilonEquals(0, element.getFromY());
-			assertEpsilonEquals(0, element.getCtrlX1());
-			assertEpsilonEquals(0, element.getCtrlY1());
-			assertEpsilonEquals(0, element.getCtrlX2());
-			assertEpsilonEquals(0, element.getCtrlY2());
-			assertEpsilonEquals(1, element.getToX());
-			assertEpsilonEquals(2, element.getToY());
+			assertEquals(0, element.getFromX());
+			assertEquals(0, element.getFromY());
+			assertEquals(0, element.getCtrlX1());
+			assertEquals(0, element.getCtrlY1());
+			assertEquals(0, element.getCtrlX2());
+			assertEquals(0, element.getCtrlY2());
+			assertEquals(1, element.getToX());
+			assertEquals(2, element.getToY());
 		}
-		
-		@DisplayName("Line")
+
+	}
+
+	@DisplayName("newLinePathElement")
+	@Nested
+	public class NewLinePathElement {
+
+		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newLinePathElement(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			PathElement2afp element = factory.newLinePathElement(1, 2, 3, 4);
+			PathElement2ai element = factory.newLinePathElement(1, 2, 3, 4);
 			assertNotNull(element);
 			assertSame(PathElementType.LINE_TO, element.getType());
-			assertEpsilonEquals(1, element.getFromX());
-			assertEpsilonEquals(2, element.getFromY());
-			assertEpsilonEquals(0, element.getCtrlX1());
-			assertEpsilonEquals(0, element.getCtrlY1());
-			assertEpsilonEquals(0, element.getCtrlX2());
-			assertEpsilonEquals(0, element.getCtrlY2());
-			assertEpsilonEquals(3, element.getToX());
-			assertEpsilonEquals(4, element.getToY());
+			assertEquals(1, element.getFromX());
+			assertEquals(2, element.getFromY());
+			assertEquals(0, element.getCtrlX1());
+			assertEquals(0, element.getCtrlY1());
+			assertEquals(0, element.getCtrlX2());
+			assertEquals(0, element.getCtrlY2());
+			assertEquals(3, element.getToX());
+			assertEquals(4, element.getToY());
 		}
-	
-		@DisplayName("Close")
+	}
+
+	@DisplayName("newClosePathElement")
+	@Nested
+	public class NewClosePathElement {
+
+		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newClosePathElement(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			PathElement2afp element = factory.newClosePathElement(1, 2, 3, 4);
+			PathElement2ai element = factory.newClosePathElement(1, 2, 3, 4);
 			assertNotNull(element);
 			assertSame(PathElementType.CLOSE, element.getType());
-			assertEpsilonEquals(1, element.getFromX());
-			assertEpsilonEquals(2, element.getFromY());
-			assertEpsilonEquals(0, element.getCtrlX1());
-			assertEpsilonEquals(0, element.getCtrlY1());
-			assertEpsilonEquals(0, element.getCtrlX2());
-			assertEpsilonEquals(0, element.getCtrlY2());
-			assertEpsilonEquals(3, element.getToX());
-			assertEpsilonEquals(4, element.getToY());
+			assertEquals(1, element.getFromX());
+			assertEquals(2, element.getFromY());
+			assertEquals(0, element.getCtrlX1());
+			assertEquals(0, element.getCtrlY1());
+			assertEquals(0, element.getCtrlX2());
+			assertEquals(0, element.getCtrlY2());
+			assertEquals(3, element.getToX());
+			assertEquals(4, element.getToY());
 		}
-	
-		@DisplayName("Quad")
+	}
+
+	@DisplayName("newCurvePathElement")
+	@Nested
+	public class NewCurvePathElement {
+
+		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newCurvePathElement_quad(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			PathElement2afp element = factory.newCurvePathElement(1, 2, 3, 4, 5, 6);
+			PathElement2ai element = factory.newCurvePathElement(1, 2, 3, 4, 5, 6);
 			assertNotNull(element);
 			assertSame(PathElementType.QUAD_TO, element.getType());
-			assertEpsilonEquals(1, element.getFromX());
-			assertEpsilonEquals(2, element.getFromY());
-			assertEpsilonEquals(3, element.getCtrlX1());
-			assertEpsilonEquals(4, element.getCtrlY1());
-			assertEpsilonEquals(0, element.getCtrlX2());
-			assertEpsilonEquals(0, element.getCtrlY2());
-			assertEpsilonEquals(5, element.getToX());
-			assertEpsilonEquals(6, element.getToY());
+			assertEquals(1, element.getFromX());
+			assertEquals(2, element.getFromY());
+			assertEquals(3, element.getCtrlX1());
+			assertEquals(4, element.getCtrlY1());
+			assertEquals(0, element.getCtrlX2());
+			assertEquals(0, element.getCtrlY2());
+			assertEquals(5, element.getToX());
+			assertEquals(6, element.getToY());
 		}
-	
-		@DisplayName("Curve")
+
+		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newCurvePathElement_curve(CoordinateSystem2D cs) {
+		public void test_2(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			PathElement2afp element = factory.newCurvePathElement(1, 2, 3, 4, 5, 6, 7, 8);
+			PathElement2ai element = factory.newCurvePathElement(1, 2, 3, 4, 5, 6, 7, 8);
 			assertNotNull(element);
 			assertSame(PathElementType.CURVE_TO, element.getType());
-			assertEpsilonEquals(1, element.getFromX());
-			assertEpsilonEquals(2, element.getFromY());
-			assertEpsilonEquals(3, element.getCtrlX1());
-			assertEpsilonEquals(4, element.getCtrlY1());
-			assertEpsilonEquals(5, element.getCtrlX2());
-			assertEpsilonEquals(6, element.getCtrlY2());
-			assertEpsilonEquals(7, element.getToX());
-			assertEpsilonEquals(8, element.getToY());
+			assertEquals(1, element.getFromX());
+			assertEquals(2, element.getFromY());
+			assertEquals(3, element.getCtrlX1());
+			assertEquals(4, element.getCtrlY1());
+			assertEquals(5, element.getCtrlX2());
+			assertEquals(6, element.getCtrlY2());
+			assertEquals(7, element.getToX());
+			assertEquals(8, element.getToY());
 		}
-		
-		@DisplayName("Arc")
+
+	}
+
+	@DisplayName("newArcPathElement")
+	@Nested
+	public class NewArcPathElement {
+
+		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
-		public void newArcPathElement(CoordinateSystem2D cs) {
+		public void test_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			PathElement2afp element = factory.newArcPathElement(1, 2, 3, 4, 5, 6, 7, true, false);
+			PathElement2ai element = factory.newArcPathElement(1, 2, 3, 4, 5, 6, 7, true, false);
 			assertNotNull(element);
 			assertSame(PathElementType.ARC_TO, element.getType());
-			assertEpsilonEquals(1, element.getFromX());
-			assertEpsilonEquals(2, element.getFromY());
-			assertEpsilonEquals(3, element.getToX());
-			assertEpsilonEquals(4, element.getToY());
-			assertEpsilonEquals(5, element.getRadiusX());
-			assertEpsilonEquals(6, element.getRadiusY());
+			assertEquals(1, element.getFromX());
+			assertEquals(2, element.getFromY());
+			assertEquals(3, element.getToX());
+			assertEquals(4, element.getToY());
+			assertEquals(5, element.getRadiusX());
+			assertEquals(6, element.getRadiusY());
 			assertEpsilonEquals(7, element.getRotationX());
 			assertTrue(element.getLargeArcFlag());
 			assertFalse(element.getSweepFlag());

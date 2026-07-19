@@ -21,12 +21,12 @@
 package org.arakhne.afc.math.geometry.d2.tests.d;
 
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractRectangle2afpTest;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractRectangle2afpTestCase;
 import org.junit.jupiter.api.DisplayName;
 
 @DisplayName("Rectangle2d")
 @SuppressWarnings("all")
-public class Rectangle2dTest extends AbstractRectangle2afpTest<Rectangle2d, Rectangle2d> {
+public class Rectangle2dTest extends AbstractRectangle2afpTestCase<Rectangle2d, Rectangle2d> {
 
 	@Override
 	protected TestShapeFactory2d createFactory() {

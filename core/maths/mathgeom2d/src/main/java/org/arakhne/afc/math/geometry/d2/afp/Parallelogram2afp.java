@@ -28,6 +28,7 @@ import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.base.CrossingComputationType;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
@@ -1674,7 +1675,7 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
 
 		final var minCorner = new InnerComputationPoint2D(getCenterX(), getCenterY());
@@ -1702,7 +1703,7 @@ public interface Parallelogram2afp<
 				maxCorner.sub(srx - ssx, sry + ssy);
 			}
 		}
-		box.setFromCorners(minCorner, maxCorner);
+		box.setFromCorners(minCorner.getX(), minCorner.getY(), maxCorner.getX(), maxCorner.getY());
 	}
 
 	@Pure

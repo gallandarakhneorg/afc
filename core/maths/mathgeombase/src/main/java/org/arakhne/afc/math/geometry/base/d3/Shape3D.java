@@ -234,7 +234,7 @@ public interface Shape3D<
 	 *
 	 * @param box is set with the bounds of the shape.
 	 */
-	void toBoundingBox(B box);
+	void toBoundingBox(BoundsReceiver3D box);
 
 	/** Replies if this shape is intersecting the given shape.
 	 *

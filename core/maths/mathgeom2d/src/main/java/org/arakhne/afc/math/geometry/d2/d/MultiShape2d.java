@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -133,13 +134,13 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 
 	@Pure
 	@Override
-	public void toBoundingBox(Rectangle2d box) {
+	public void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
 			MultiShape2afp.super.toBoundingBox(this.bounds);
 		}
-		box.set(this.bounds);
+		box.setFromCorners(this.bounds.getMinX(), this.bounds.getMinY(), this.bounds.getMaxX(), this.bounds.getMaxY());
 	}
 
 	@Override

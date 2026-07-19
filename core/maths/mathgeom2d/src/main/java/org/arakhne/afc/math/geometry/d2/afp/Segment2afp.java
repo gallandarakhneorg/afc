@@ -29,6 +29,7 @@ import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.base.CrossingComputationType;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Shape2D;
@@ -2921,7 +2922,7 @@ public interface Segment2afp<
 
 	@Pure
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(
 				this.getX1(),

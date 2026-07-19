@@ -22,12 +22,12 @@ package org.arakhne.afc.math.geometry.d2.tests.d;
 
 import org.arakhne.afc.math.geometry.d2.d.Circle2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractCircle2afpTest;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractCircle2afpTestCase;
 import org.junit.jupiter.api.DisplayName;
 
 @DisplayName("Circle2d")
 @SuppressWarnings("all")
-public class Circle2dTest extends AbstractCircle2afpTest<Circle2d, Rectangle2d> {
+public class Circle2dTest extends AbstractCircle2afpTestCase<Circle2d, Rectangle2d> {
 
 	@Override
 	protected TestShapeFactory2d createFactory() {

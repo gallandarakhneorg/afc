@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractPointCollectionTest<P extends Point2D<? super P, ? super V>,
+public abstract class AbstractPointCollectionTestCase<P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
 	

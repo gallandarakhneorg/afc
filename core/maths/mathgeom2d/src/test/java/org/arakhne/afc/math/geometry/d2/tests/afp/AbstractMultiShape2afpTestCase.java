@@ -52,9 +52,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 
 @SuppressWarnings("all")
-public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, C, ?, ?, ?, B>,
+public abstract class AbstractMultiShape2afpTestCase<T extends MultiShape2afp<?, T, C, ?, ?, ?, B>,
 		C extends Shape2afp<?, ?, ?, ?, ?, B>,
-		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
+		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTestCase<T, B> {
 
 	protected C firstObject;
 	

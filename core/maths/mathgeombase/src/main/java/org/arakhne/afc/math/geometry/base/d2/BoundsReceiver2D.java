@@ -18,21 +18,26 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2.tests.d;
+package org.arakhne.afc.math.geometry.base.d2;
 
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPointCollectionTestCase;
-import org.junit.jupiter.api.DisplayName;
+/** Functional interface that represented the receiver of bounds of an 2D object.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 18.0
+ */
+@FunctionalInterface
+public interface BoundsReceiver2D {
 
-@DisplayName("Path2dPointCollection")
-@SuppressWarnings("all")
-public class Path2dPointCollectionTest extends AbstractPointCollectionTestCase<Point2d, Vector2d, Rectangle2d> {
-
-	@Override
-	protected TestShapeFactory2d createFactory() {
-		return TestShapeFactory2d.SINGLETON;
-	}
+	/** Change the bounds of the element.
+	 *
+	 * @param x1 is the coordinate of the first corner.
+	 * @param y1 is the coordinate of the first corner.
+	 * @param x2 is the coordinate of the second corner.
+	 * @param y2 is the coordinate of the second corner.
+	 */
+	void setFromCorners(double x1, double y1, double x2, double y2);
 
 }

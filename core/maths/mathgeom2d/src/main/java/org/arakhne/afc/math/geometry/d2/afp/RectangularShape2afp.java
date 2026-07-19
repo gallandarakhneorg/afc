@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -47,10 +48,10 @@ public interface RectangularShape2afp<
 		P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
-		extends Shape2afp<ST, IT, IE, P, V, B> {
+		extends Shape2afp<ST, IT, IE, P, V, B>, BoundsReceiver2D {
 
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 	}
@@ -110,16 +111,6 @@ public interface RectangularShape2afp<
 
 	/** Change the frame of the rectangle conserving previous min and max if needed.
 	 *
-	 * @param x1 is the coordinate of the first corner.
-	 * @param y1 is the coordinate of the first corner.
-	 * @param x2 is the coordinate of the second corner.
-	 * @param y2 is the coordinate of the second corner.
-	 */
-	// This function has no default implementation for allowing implementation to be atomic.
-	void setFromCorners(double x1, double y1, double x2, double y2);
-
-	/** Change the frame of the rectangle conserving previous min and max if needed.
-	 *
 	 * @param p1 the first corner.
 	 * @param p2 the second corner.
 	 */
@@ -166,7 +157,6 @@ public interface RectangularShape2afp<
 	 *
 	 * @return the min x.
 	 */
-	@Pure
 	double getMinX();
 
 	/** Set the min X conserving previous min if needed.
@@ -193,11 +183,10 @@ public interface RectangularShape2afp<
 		return (getMinX() + getMaxX()) / 2;
 	}
 
-	/** Replies the max x.
+	/** Replies the max X.
 	 *
 	 * @return the max x.
 	 */
-	@Pure
 	double getMaxX();
 
 	/** Set the max X conserving previous max if needed.
@@ -206,11 +195,10 @@ public interface RectangularShape2afp<
 	 */
 	void setMaxX(double x);
 
-	/** Replies the min y.
+	/** Replies the min Y.
 	 *
 	 * @return the min y.
 	 */
-	@Pure
 	double getMinY();
 
 	/** Set the min Y conserving previous min if needed.
@@ -228,11 +216,10 @@ public interface RectangularShape2afp<
 		return (getMinY() + getMaxY()) / 2;
 	}
 
-	/** Replies the max y.
+	/** Replies the max Y.
 	 *
 	 * @return the max y.
 	 */
-	@Pure
 	double getMaxY();
 
 	/** Set the max Y conserving previous max if needed.
@@ -241,7 +228,7 @@ public interface RectangularShape2afp<
 	 */
 	void setMaxY(double y);
 
-	/** Replies the width.
+	/** Replies the size along the O-X axis.
 	 *
 	 * @return the width.
 	 */
@@ -250,7 +237,7 @@ public interface RectangularShape2afp<
 		return getMaxX() - getMinX();
 	}
 
-	/** Replies the height.
+	/** Replies the size along the O-Y axis.
 	 *
 	 * @return the height.
 	 */

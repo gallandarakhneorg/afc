@@ -251,7 +251,7 @@ public interface Shape1D<
 	 *
 	 * @param box is set with the bounds of the shape.
 	 */
-	void toBoundingBox(B box);
+	void toBoundingBox(BoundsReceiver1D box);
 
 	/** Replies if this shape is intersecting the given shape.
 	 *

@@ -23,12 +23,12 @@ package org.arakhne.afc.math.geometry.d2.tests.d;
 import org.arakhne.afc.math.geometry.d2.d.MultiShape2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
-import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractMultiShape2afpTest;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractMultiShape2afpTestCase;
 import org.junit.jupiter.api.DisplayName;
 
 @DisplayName("MultiShape2d")
 @SuppressWarnings("all")
-public class MultiShape2dTest extends AbstractMultiShape2afpTest<MultiShape2d<Shape2d<?>>, Shape2d<?>, Rectangle2d> {
+public class MultiShape2dTest extends AbstractMultiShape2afpTestCase<MultiShape2d<Shape2d<?>>, Shape2d<?>, Rectangle2d> {
 
     @Override
     protected TestShapeFactory2d createFactory() {

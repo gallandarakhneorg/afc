@@ -51,8 +51,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?, ?, B>,
-B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
+public abstract class AbstractTriangle2afpTestCase<T extends Triangle2afp<?, T, ?, ?, ?, B>,
+B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTestCase<T, B> {
 
 	@Override
 	protected final T createShape() {
