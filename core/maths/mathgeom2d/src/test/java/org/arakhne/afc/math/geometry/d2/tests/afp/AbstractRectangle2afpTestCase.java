@@ -1763,6 +1763,16 @@ public abstract class AbstractRectangle2afpTestCase<T extends Rectangle2afp<?, T
 			assertClosestPointInBothShapes(getS(), createRectangle(5.1, 12, 1, 1));
 		}
 
+		@DisplayName("(Rectangle2afp) #27")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void rectangle_27(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+	    	getS().set(1.235, -3.459, 10.254, 14.963);
+	    	var p = getS().getClosestPointTo(createRectangle(0, 0, 1, 1));
+			assertEpsilonEquals(createPoint(1.235, .5), p);
+		}
+
 		@DisplayName("(Segment2afp) #1")
     	@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem2D.class)
@@ -6513,6 +6523,18 @@ public abstract class AbstractRectangle2afpTestCase<T extends Rectangle2afp<?, T
 	    	var result = createPoint(Double.NaN, Double.NaN);
 			Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 5.1, 12, 6.1, 13, result);
 			assertFpPointEquals(5.6, 12.5, result);
+		}
+
+		@DisplayName("#28")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_28(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+	    	var result = createPoint(Double.NaN, Double.NaN);
+			Rectangle2afp.findsClosestPointRectangleRectangle(
+					1.235, -3.459, 1.235 + 10.254, -3.459 + 14.963,
+					0, 0, 1, 1, result);
+			assertEpsilonEquals(createPoint(1.235, .5), result);
 		}
 
 	}

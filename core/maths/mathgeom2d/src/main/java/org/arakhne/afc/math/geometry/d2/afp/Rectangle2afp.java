@@ -126,22 +126,22 @@ public interface Rectangle2afp<
         assert rmaxx2 >= rx2 : AssertMessages.lowerEqualParameters(4, Double.valueOf(rx2), 6, Double.valueOf(rmaxx2));
         assert rmaxy2 >= ry2 : AssertMessages.lowerEqualParameters(5, Double.valueOf(rx2), 7, Double.valueOf(rmaxx2));
         final double px;
-        final var cx = (rx2 + rmaxx2) / 2.;
-        if (cx <= rx1) {
-            px = rx1;
-        } else if (cx >= rmaxx1) {
+        if (rmaxx1 < rx2) {
             px = rmaxx1;
+        } else if (rmaxx2 < rx1) {
+            px = rx1;
         } else {
-            px = cx;
+            final var center = (rx2 + rmaxx2) / 2.;
+            px = Math.clamp(center, rx1, rmaxx1);
         }
         final double py;
-        final var cy = (ry2 + rmaxy2) / 2.;
-        if (cy <= rx1) {
-            py = ry1;
-        } else if (cy >= rmaxy1) {
+        if (rmaxy1 < ry2) {
             py = rmaxy1;
+        } else if (rmaxy2 < ry1) {
+            py = ry1;
         } else {
-            py = cy;
+            final var center = (ry2 + rmaxy2) / 2.;
+            py = Math.clamp(center, ry1, rmaxy1);
         }
         closest.set(px, py);
     }
