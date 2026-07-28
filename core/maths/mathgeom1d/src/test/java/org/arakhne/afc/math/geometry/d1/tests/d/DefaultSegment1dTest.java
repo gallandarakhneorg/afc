@@ -20,33 +20,19 @@
 
 package org.arakhne.afc.math.geometry.d1.tests.d;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
 
-import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.base.d1.Segment1D;
-import org.arakhne.afc.math.geometry.base.d2.Point2D;
-import org.arakhne.afc.math.geometry.base.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d1.d.DefaultSegment1d;
-import org.arakhne.afc.math.geometry.d1.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/**
- * Test of basic implementation of a 1.5D segment.
- *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 18.0
- */
+@DisplayName("DefaultSegment1d")
 @SuppressWarnings("all")
 public class DefaultSegment1dTest extends AbstractMathTestCase {
 

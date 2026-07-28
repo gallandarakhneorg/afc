@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d1.general.Shape1DType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Shape1DType")
 @SuppressWarnings("all")
 public class Shape1DTypeTest {
 

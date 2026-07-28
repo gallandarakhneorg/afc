@@ -20,13 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d1.tests.d;
 
+import org.arakhne.afc.math.geometry.base.tests.AbstractTuple1DTestCase;
 import org.arakhne.afc.math.geometry.d1.d.DefaultSegment1d;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d1.d.Tuple1d;
 import org.arakhne.afc.math.geometry.d1.d.Vector1d;
-import org.arakhne.afc.math.geometry.d1.tests.AbstractTuple1DTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("Tuple1d")
 @SuppressWarnings("all")
 public class Tuple1dTest extends AbstractTuple1DTestCase<Tuple1d<Vector1d, Vector1d, Point1d, DefaultSegment1d>, DefaultSegment1d> {
 

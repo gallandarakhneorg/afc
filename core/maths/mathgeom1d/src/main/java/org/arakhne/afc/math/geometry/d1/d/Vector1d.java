@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d1.d;
 
 import org.arakhne.afc.math.geometry.base.d1.GeomFactory1D;
+import org.arakhne.afc.math.geometry.base.d1.ImmutableVector1D;
 import org.arakhne.afc.math.geometry.base.d1.Point1D;
 import org.arakhne.afc.math.geometry.base.d1.Segment1D;
 import org.arakhne.afc.math.geometry.base.d1.Tuple1D;
@@ -28,7 +29,6 @@ import org.arakhne.afc.math.geometry.base.d1.UnmodifiableVector1D;
 import org.arakhne.afc.math.geometry.base.d1.Vector1D;
 import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
-import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 1.5D Vector with 2 double precision floating-point numbers.
@@ -249,64 +249,8 @@ public class Vector1d extends Tuple1d<Vector1d, Vector1d, Point1d, Segment1D<?, 
 	}
 
 	@Override
-	public UnmodifiableVector1D<Vector1d, Point1d, Segment1D<?, ?>> toUnmodifiable() {
-		return new UnmodifiableVector1D<>() {
-
-			private static final long serialVersionUID = 6848610371671516804L;
-
-			@Override
-			public Vector1d toUnitVector() {
-				return Vector1d.this.toUnitVector();
-			}
-
-			@Override
-			@SuppressWarnings("checkstyle:superclone")
-			public Vector1d clone() {
-				return Vector1d.this.getGeomFactory().newVector(Vector1d.this.getSegment(),
-						Vector1d.this.getX(), Vector1d.this.getY());
-			}
-
-			@Override
-			public double getX() {
-				return Vector1d.this.getX();
-			}
-
-			@Override
-			public int ix() {
-				return Vector1d.this.ix();
-			}
-
-			@Override
-			public double getY() {
-				return Vector1d.this.getY();
-			}
-
-			@Override
-			public int iy() {
-				return Vector1d.this.iy();
-			}
-
-			@Override
-			public Segment1D<?, ?> getSegment() {
-				return Vector1d.this.getSegment();
-			}
-
-			@Override
-			public GeomFactory1D<Vector1d, Point1d> getGeomFactory() {
-				return Vector1d.this.getGeomFactory();
-			}
-
-			@Override
-			public String toString() {
-				return Vector1d.this.toString();
-			}
-
-			@Override
-			public void toJson(JsonBuffer buffer) {
-				Vector1d.this.toJson(buffer);
-			}
-
-		};
+	public UnmodifiableVector1D<?, ?, Segment1D<?, ?>> toUnmodifiable() {
+		return new ImmutableVector1D<>(getSegment(), getCurvilineCoordinate(), getLateralDistance());
 	}
 
 }

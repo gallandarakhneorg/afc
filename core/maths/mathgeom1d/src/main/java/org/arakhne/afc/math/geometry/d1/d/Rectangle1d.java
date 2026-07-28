@@ -82,6 +82,12 @@ public class Rectangle1d extends AbstractShape1d<Rectangle1d>
 	}
 
 	@Override
+	public void set(Segment1D<?, ?> segment, double x, double y, double width, double height) {
+		setSegment(segment);
+		set(x, y, width, height);
+	}
+
+	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
 		final double a;
 		final double b;

@@ -18,36 +18,34 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d1.tests;
+package org.arakhne.afc.math.geometry.d1.tests.d;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import org.arakhne.afc.math.geometry.base.d1.Point1D;
 import org.arakhne.afc.math.geometry.base.d1.Segment1D;
-import org.arakhne.afc.math.geometry.base.d1.Vector1D;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.d1.d.Point1d;
+import org.arakhne.afc.math.geometry.d1.d.Rectangle1d;
+import org.arakhne.afc.math.geometry.d1.d.Vector1d;
+import org.arakhne.afc.math.geometry.d1.tests.afp.TestShapeFactory;
 
 @SuppressWarnings("all")
-public abstract class AbstractPoint1DTestCase<
-			RP extends Point1D<?, ?, ?>,
-			RV extends Vector1D<?, ?, ?>,
-			RS extends Segment1D<?, ?>>
-		extends AbstractTuple1DTestCase<RP, RS> {
+public class TestShapeFactory1d implements TestShapeFactory<Point1d, Vector1d, Rectangle1d>{
 
-	@Test
-	@DisplayName("getGeomFactory")
-	public abstract void getGeomFactory();
+	public static final TestShapeFactory1d SINGLETON = new TestShapeFactory1d();
+	
+	@Override
+	public Point1d createPoint(Segment1D<?, ?> segment, double x, double y) {
+		return new Point1d(segment, x, y);
+	}
 
-	@Test
-	@DisplayName("toUnmodifiable")
-	public void toUnmodifiable() {
-		var pts = getT().toUnmodifiable();
-		assertNotNull(pts);
-		assertNotSame(getT(), pts);
-		assertEpsilonEquals(getT(), pts);
+	@Override
+	public Vector1d createVector(Segment1D<?, ?> segment, double x, double y) {
+		return new Vector1d(segment, x, y);
+	}
+
+	@Override
+	public Rectangle1d createBox(Segment1D<?, ?> segment, double x, double y, double width, double height) {
+		return new Rectangle1d(segment, x, y, width, height);
 	}
 
 }

@@ -21,13 +21,13 @@
 package org.arakhne.afc.math.geometry.d1.d;
 
 import org.arakhne.afc.math.geometry.base.d1.GeomFactory1D;
+import org.arakhne.afc.math.geometry.base.d1.ImmutablePoint1D;
 import org.arakhne.afc.math.geometry.base.d1.Point1D;
 import org.arakhne.afc.math.geometry.base.d1.Segment1D;
 import org.arakhne.afc.math.geometry.base.d1.Tuple1D;
 import org.arakhne.afc.math.geometry.base.d1.UnmodifiablePoint1D;
 import org.arakhne.afc.math.geometry.base.d1.Vector1D;
 import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
-import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 1.5D Point with 2 double precision floating-point numbers.
  *
@@ -154,59 +154,8 @@ public class Point1d extends Tuple1d<Point1d, Vector1d, Point1d, Segment1D<?, ?>
 	}
 
 	@Override
-	public UnmodifiablePoint1D<Point1d, Vector1d, Segment1D<?, ?>> toUnmodifiable() {
-		return new UnmodifiablePoint1D<>() {
-
-			private static final long serialVersionUID = 7256619908484020358L;
-
-			@Override
-			@SuppressWarnings("checkstyle:superclone")
-			public Point1d clone() {
-				return Point1d.this.getGeomFactory().newPoint(Point1d.this.getSegment(),
-						Point1d.this.getX(), Point1d.this.getY());
-			}
-
-			@Override
-			public double getX() {
-				return Point1d.this.getX();
-			}
-
-			@Override
-			public int ix() {
-				return Point1d.this.ix();
-			}
-
-			@Override
-			public double getY() {
-				return Point1d.this.getY();
-			}
-
-			@Override
-			public int iy() {
-				return Point1d.this.iy();
-			}
-
-			@Override
-			public Segment1D<?, ?> getSegment() {
-				return Point1d.this.getSegment();
-			}
-
-			@Override
-			public GeomFactory1D<Vector1d, Point1d> getGeomFactory() {
-				return Point1d.this.getGeomFactory();
-			}
-
-			@Override
-			public String toString() {
-				return Point1d.this.toString();
-			}
-
-			@Override
-			public void toJson(JsonBuffer buffer) {
-				Point1d.this.toJson(buffer);
-			}
-
-		};
+	public UnmodifiablePoint1D<?, ?, Segment1D<?, ?>> toUnmodifiable() {
+		return new ImmutablePoint1D<>(getSegment(), getCurvilineCoordinate(), getLateralDistance());
 	}
 
 }

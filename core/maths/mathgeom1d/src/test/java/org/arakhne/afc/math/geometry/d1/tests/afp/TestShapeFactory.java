@@ -1,0 +1,54 @@
+/*
+ * $Id$
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.arakhne.afc.math.geometry.d1.tests.afp;
+
+import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d1.Point1D;
+import org.arakhne.afc.math.geometry.base.d1.Segment1D;
+import org.arakhne.afc.math.geometry.base.d1.Vector1D;
+import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d1.afp.Rectangle1afp;
+import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
+import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
+import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
+import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
+
+@SuppressWarnings("all")
+public interface TestShapeFactory<P extends Point1D<? super P, ? super V, ?>, V extends Vector1D<? super V, ? super P, ?>, B extends Rectangle1afp<?, ?, ?, ?, ?, ?>> {
+
+	P createPoint(Segment1D<?, ?> segment, double x, double y);
+
+	V createVector(Segment1D<?, ?> segment, double x, double y);
+
+	B createBox(Segment1D<?, ?> segment, double x, double y, double width, double height);
+
+	default Point2D createPoint2d(double x, double y) {
+		return new InnerComputationPoint2D(x, y);
+	}
+
+}

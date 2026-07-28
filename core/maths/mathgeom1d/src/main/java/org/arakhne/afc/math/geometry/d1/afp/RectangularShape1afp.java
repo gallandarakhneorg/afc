@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d1.afp;
 
+import org.arakhne.afc.math.geometry.base.d1.BoundsReceiver1D;
 import org.arakhne.afc.math.geometry.base.d1.Point1D;
 import org.arakhne.afc.math.geometry.base.d1.Segment1D;
 import org.arakhne.afc.math.geometry.base.d1.Vector1D;
@@ -48,13 +49,12 @@ public interface RectangularShape1afp<
 		V extends Vector1D<? super V, ? super P, ? super S>,
 		S extends Segment1D<?, ?>,
 		B extends Rectangle1afp<?, ?, P, V, S, B>>
-		extends Shape1afp<ST, IT, P, V, S, B> {
+		extends Shape1afp<ST, IT, P, V, S, B>, BoundsReceiver1D {
 
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver1D box) {
 		assert box != null : AssertMessages.notNullParameter();
-		box.setSegment(getSegment());
-		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
+		box.set(getSegment(), getMinX(), getMinY(), getWidth(), getHeight());
 	}
 
 	@Override
@@ -125,8 +125,19 @@ public interface RectangularShape1afp<
 	 * @param p1 the first corner.
 	 * @param p2 the second corner.
 	 */
-	// This function has no default implementation for allowing implementation to be atomic.
 	default void setFromCorners(Point2D<?, ?> p1, Point2D<?, ?> p2) {
+		assert p1 != null : AssertMessages.notNullParameter(0);
+		assert p2 != null : AssertMessages.notNullParameter(1);
+		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	}
+
+	/** Change the frame of the rectangle conserving previous min and max if needed.
+	 *
+	 * @param p1 the first corner.
+	 * @param p2 the second corner.
+	 * @since 18.0
+	 */
+	default void setFromCorners(Point1D<?, ?, ?> p1, Point1D<?, ?, ?> p2) {
 		assert p1 != null : AssertMessages.notNullParameter(0);
 		assert p2 != null : AssertMessages.notNullParameter(1);
 		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
@@ -159,6 +170,22 @@ public interface RectangularShape1afp<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point2D<?, ?> center, Point2D<?, ?> corner) {
+		assert center != null : AssertMessages.notNullParameter(0);
+		assert corner != null : AssertMessages.notNullParameter(1);
+		setFromCenter(center.getX(), center.getY(), corner.getX(), corner.getY());
+	}
+
+	/**
+     * Sets the framing rectangle of this {@code Shape}
+     * based on the specified center point coordinates and corner point
+     * coordinates.  The framing rectangle is used by the subclasses of
+     * {@code RectangularShape} to define their geometry.
+     *
+     * @param center the specified center point
+     * @param corner the specified corner point
+     * @since 18.0
+     */
+	default void setFromCenter(Point1D<?, ?, ?> center, Point1D<?, ?, ?> corner) {
 		assert center != null : AssertMessages.notNullParameter(0);
 		assert corner != null : AssertMessages.notNullParameter(1);
 		setFromCenter(center.getX(), center.getY(), corner.getX(), corner.getY());

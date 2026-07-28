@@ -20,24 +20,39 @@
 
 package org.arakhne.afc.math.geometry.d1.tests.d;
 
+import org.arakhne.afc.math.geometry.base.d1.Point1D;
+import org.arakhne.afc.math.geometry.base.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d1.d.DefaultSegment1d;
 import org.arakhne.afc.math.geometry.d1.d.Rectangle1d;
-import org.arakhne.afc.math.geometry.d1.tests.AbstractRectangularShape1DTestCase;
+import org.arakhne.afc.math.geometry.d1.tests.afp.AbstractRectangle1afpTestCase;
+import org.arakhne.afc.math.geometry.d1.tests.afp.TestShapeFactory;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("Rectangle1d")
 @SuppressWarnings("all")
-public class Rectangle1dTest extends AbstractRectangularShape1DTestCase<Rectangle1d, DefaultSegment1d> {
+public class Rectangle1dTest extends AbstractRectangle1afpTestCase<Rectangle1d, DefaultSegment1d, Rectangle1d> {
 
 	@Override
-	protected DefaultSegment1d createSegment() {
+	protected DefaultSegment1d createSegment(double x1, double y1, double x2, double y2) {
 		return new DefaultSegment1d(
-				new Point2d(125.3569, 14587.659),
-				new Point2d(442.74158, 12473.93215));
+				new Point2d(x1, y1),
+				new Point2d(x2, y2));
 	}
 
 	@Override
 	protected Rectangle1d createShape(double x, double y, double width, double height) {
 		return new Rectangle1d(getSG(), x, y, width, height);
+	}
+//
+//	@Override
+//	protected TestShapeFactory<? extends Point1D, ? extends Vector1D, Rectangle1d> createFactory() {
+//		return TestShapeFactory1d.SINGLETON;
+//	}
+
+	@Override
+	protected TestShapeFactory<? extends Point1D, ? extends Vector1D, Rectangle1d> createFactory() {
+		return TestShapeFactory1d.SINGLETON;
 	}
 
 }

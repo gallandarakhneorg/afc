@@ -23,10 +23,15 @@ package org.arakhne.afc.math.geometry.d1.tests;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.arakhne.afc.math.geometry.base.d1.Point1D;
 import org.arakhne.afc.math.geometry.base.d1.Segment1D;
+import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
+import org.arakhne.afc.math.geometry.base.d2.Point2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d1.afp.Shape1afp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /** Test abstract shape.
@@ -39,7 +44,7 @@ import org.junit.jupiter.api.Test;
  */
 @SuppressWarnings("all")
 public abstract class AbstractShape1DTestCase<
-		SH extends Shape1afp<?, ?, ?, ?, ? super SG, ?>,
+		SH extends Shape1afp<?, ? super SH, ?, ?, ? super SG, ?>,
 		SG extends Segment1D<?, ?>>
 		extends AbstractMathTestCase {
 
@@ -65,24 +70,40 @@ public abstract class AbstractShape1DTestCase<
 		this.shape = createShape();
 	}
 
-	@Test
 	@DisplayName("getSegment")
-	public void getSegment() {
-		assertSame(getSG(), getSH().getSegment());
+	@Nested
+	public class GetSegment {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertSame(getSG(), getSH().getSegment());
+		}
+
 	}
 
-	@Test
 	@DisplayName("setSegment")
-	public void setSegment() {
-		var sg = createSegment();
-		getSH().setSegment(sg);
-		assertSame(sg, getSH().getSegment());
+	@Nested
+	public class SetSegment {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			var sg = createSegment();
+			getSH().setSegment(sg);
+			assertSame(sg, getSH().getSegment());
+		}
 	}
 
-	@Test
 	@DisplayName("getGeomFactory")
-	public void getGeomFactory() {
-		assertNotNull(getSH().getGeomFactory());
+	@Nested
+	public class GetGeomFactory {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertNotNull(getSH().getGeomFactory());
+		}
 	}
 
 }

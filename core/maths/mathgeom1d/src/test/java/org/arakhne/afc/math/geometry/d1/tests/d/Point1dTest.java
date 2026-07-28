@@ -23,15 +23,17 @@ package org.arakhne.afc.math.geometry.d1.tests.d;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.arakhne.afc.math.geometry.base.tests.AbstractPoint1DTestCase;
 import org.arakhne.afc.math.geometry.d1.d.DefaultSegment1d;
 import org.arakhne.afc.math.geometry.d1.d.GeomFactory1d;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d1.d.Vector1d;
-import org.arakhne.afc.math.geometry.d1.tests.AbstractPoint1DTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Point1d")
 @SuppressWarnings("all")
 public class Point1dTest extends AbstractPoint1DTestCase<Point1d, Vector1d, DefaultSegment1d> {
 
@@ -52,9 +54,15 @@ public class Point1dTest extends AbstractPoint1DTestCase<Point1d, Vector1d, Defa
 				new Point2d(442.74158, 12473.93215));
 	}
 
-	@Override
-	public void getGeomFactory() {
-		assertSame(GeomFactory1d.SINGLETON, getT().getGeomFactory());
+	@DisplayName("getGeomFactory")
+	@Nested
+	public class GetGeomFactory {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertSame(GeomFactory1d.SINGLETON, getT().getGeomFactory());
+		}
 	}
 
 	@Test

@@ -54,6 +54,14 @@ public abstract class AbstractRectangularShape1d<IT extends AbstractRectangularS
 		super();
 	}
 
+	/** Construct an empty shape.
+	 *
+	 * @param segment the segment.
+	 */
+	protected AbstractRectangularShape1d(Segment1D<?, ?> segment) {
+		super(segment);
+	}
+
 	/** Constructor by copy.
 	 * @param rect the rectangular shape to copy.
 	 */
@@ -64,6 +72,12 @@ public abstract class AbstractRectangularShape1d<IT extends AbstractRectangularS
 		this.miny = rect.getMinY();
 		this.maxx = rect.getMaxX();
 		this.maxy = rect.getMaxY();
+	}
+
+	@Override
+	public void set(Segment1D<?, ?> segment, double x, double y, double width, double height) {
+		setSegment(segment);
+		set(x, y, width, height);
 	}
 
 	@Override

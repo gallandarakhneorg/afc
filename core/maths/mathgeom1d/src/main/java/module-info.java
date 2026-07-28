@@ -30,6 +30,7 @@ open module org.arakhne.afc.core.mathgeom1d {
 	requires transitive org.arakhne.afc.core.mathgeom2d;
 	requires org.eclipse.xtext.xbase.lib;
 	requires org.arakhne.afc.core.mathgen;
+	requires org.arakhne.afc.core.mathgeombase;
 	
 	exports org.arakhne.afc.math.geometry.d1.afp;
 	exports org.arakhne.afc.math.geometry.d1.d;
