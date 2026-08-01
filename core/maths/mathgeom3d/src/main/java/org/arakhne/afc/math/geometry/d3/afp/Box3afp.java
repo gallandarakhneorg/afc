@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
+import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
@@ -50,10 +52,190 @@ public interface Box3afp<
 			V extends Vector3D<? super V, ? super P, ? super Q>,
 			Q extends Quaternion<? super P, ? super V, ? super Q>,
 			B extends AlignedBox3afp<?, IE, P, V, Q, B>>
-		extends Shape3afp<IT, IE, P, V, Q, B> {
+		extends Shape3afp<IT, IE, P, V, Q, B>, BoundsReceiver3D {
+
+	/** Move the first rectangular prism to avoid collision with the second rectangular box.
+	 *
+	 * @param rminx1 minimum x coordinate of the first box.
+	 * @param rminy1 minimum y coordinate of the first box.
+	 * @param rminz1 minimum z coordinate of the first box.
+	 * @param rmaxx1 maximum x coordinate of the first box.
+	 * @param rmaxy1 maximum y coordinate of the first box.
+	 * @param rmaxz1 maximum z coordinate of the first box.
+	 * @param rminx2 minimum x coordinate of the second box.
+	 * @param rminy2 minimum y coordinate of the second box.
+	 * @param rminz2 minimum z coordinate of the second box.
+	 * @param rmaxx2 maximum x coordinate of the second box.
+	 * @param rmaxy2 maximum y coordinate of the second box.
+	 * @param rmaxz2 maximum z coordinate of the second box.
+	 * @param newMinimumCorner the new coordinates of the minimum corner for the first box. It can be {@code null}.
+	 * @param newMaximumCorner the new coordinates of the maximum corner for the first box. It can be {@code null}.
+	 * @param displacementVector the displacement vector. It can be {@code null}.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	static void avoidCollisionBoxBox(
+			double rminx1, double rminy1, double rminz1,
+			double rmaxx1, double rmaxy1, double rmaxz1,
+			double rminx2, double rminy2, double rminz2,
+			double rmaxx2, double rmaxy2, double rmaxz2,
+			Point3D<?, ?, ?> newMinimumCorner,
+			Point3D<?, ?, ?> newMaximumCorner,
+			Vector3D<?, ?, ?> displacementVector) {
+		assert rminx1 <= rmaxx1 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rminx1), 3, Double.valueOf(rmaxx1));
+		assert rminy1 <= rmaxy1 : AssertMessages.lowerEqualParameters(1, Double.valueOf(rminy1), 4, Double.valueOf(rmaxy1));
+		assert rminz1 <= rmaxz1 : AssertMessages.lowerEqualParameters(2, Double.valueOf(rminz1), 5, Double.valueOf(rmaxz1));
+		assert rminx2 <= rmaxx2 : AssertMessages.lowerEqualParameters(6, Double.valueOf(rminx2), 9, Double.valueOf(rmaxx2));
+		assert rminy2 <= rmaxy2 : AssertMessages.lowerEqualParameters(7, Double.valueOf(rminy2), 10, Double.valueOf(rmaxy2));
+		assert rminz2 <= rmaxz2 : AssertMessages.lowerEqualParameters(8, Double.valueOf(rminz2), 11, Double.valueOf(rmaxz2));
+		assert newMinimumCorner != null || newMaximumCorner != null || displacementVector != null
+				: AssertMessages.constraintViolation("you must provide an object for " //$NON-NLS-1$
+						+ "newMinimumCorner, newMaximumCorner or " //$NON-NLS-1$
+						+ "displacementVector"); //$NON-NLS-1$
+
+		final var dx1 = rmaxx2 - rminx1;
+		final var dx2 = rminx2 - rmaxx1;
+		final var dy1 = rmaxy2 - rminy1;
+		final var dy2 = rminy2 - rmaxy1;
+		final var dz1 = rmaxz2 - rminz1;
+		final var dz2 = rminz2 - rmaxz1;
+
+		final var absdx1 = Math.abs(dx1);
+		final var absdx2 = Math.abs(dx2);
+		final var absdy1 = Math.abs(dy1);
+		final var absdy2 = Math.abs(dy2);
+		final var absdz1 = Math.abs(dz1);
+		final var absdz2 = Math.abs(dz2);
+
+		final var min = MathUtil.min(absdx1, absdx2, absdy1, absdy2, absdz1, absdz2);
+
+		var dx = 0.;
+		var dy = 0.;
+		var dz = 0.;
+
+		if (min == absdy1) {
+			dy = dy1;
+		} else if (min == absdy2) {
+			dy = dy2;
+		} else if (min == absdz1) {
+			dz = dz1;
+		} else if (min == absdz2) {
+			dz = dz2;
+		} else if (min == absdx1) {
+			dx = dx1;
+		} else {
+			dx = dx2;
+		}
+		if (newMinimumCorner != null) {
+			newMinimumCorner.set(rminx1 + dx, rminy1 + dy, rminz1 + dz);
+		}
+		if (newMaximumCorner != null) {
+			newMaximumCorner.set(rmaxx1 + dx, rmaxy1 + dy, rmaxz1 + dz);
+		}
+		if (displacementVector != null) {
+			displacementVector.set(dx, dy, dz);
+		}
+	}
+
+	/** Move this aligned box to avoid collision
+	 * with the reference aligned box.
+	 *
+	 * @param rminx1 minimum x coordinate of the first box.
+	 * @param rminy1 minimum y coordinate of the first box.
+	 * @param rminz1 minimum z coordinate of the first box.
+	 * @param rmaxx1 maximum x coordinate of the first box.
+	 * @param rmaxy1 maximum y coordinate of the first box.
+	 * @param rmaxz1 maximum z coordinate of the first box.
+	 * @param rminx2 minimum x coordinate of the second box.
+	 * @param rminy2 minimum y coordinate of the second box.
+	 * @param rminz2 minimum z coordinate of the second box.
+	 * @param rmaxx2 maximum x coordinate of the second box.
+	 * @param rmaxy2 maximum y coordinate of the second box.
+	 * @param rmaxz2 maximum z coordinate of the second box.
+	 * @param allowedDisplacementDirection is the direction of the allowed displacement (it is an input).
+	 *     This vector is set according to the result before returning. It can be {@code null}.
+	 * @param newMinimumCorner the new coordinates of the minimum corner for the first box. It can be {@code null}.
+	 * @param newMaximumCorner the new coordinates of the maximum corner for the first box. It can be {@code null}.
+	 * @param displacementVector the displacement vector. It can be {@code null}.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	static void avoidCollisionBoxBox(
+			double rminx1, double rminy1, double rminz1,
+			double rmaxx1, double rmaxy1, double rmaxz1,
+			double rminx2, double rminy2, double rminz2,
+			double rmaxx2, double rmaxy2, double rmaxz2,
+			Vector3D<?, ?, ?> allowedDisplacementDirection,
+			Point3D<?, ?, ?> newMinimumCorner,
+			Point3D<?, ?, ?> newMaximumCorner,
+			Vector3D<?, ?, ?> displacementVector) {
+		assert rminx1 <= rmaxx1 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rminx1), 3, Double.valueOf(rmaxx1));
+		assert rminy1 <= rmaxy1 : AssertMessages.lowerEqualParameters(1, Double.valueOf(rminy1), 4, Double.valueOf(rmaxy1));
+		assert rminz1 <= rmaxz1 : AssertMessages.lowerEqualParameters(2, Double.valueOf(rminz1), 5, Double.valueOf(rmaxz1));
+		assert rminx2 <= rmaxx2 : AssertMessages.lowerEqualParameters(6, Double.valueOf(rminx2), 9, Double.valueOf(rmaxx2));
+		assert rminy2 <= rmaxy2 : AssertMessages.lowerEqualParameters(7, Double.valueOf(rminy2), 10, Double.valueOf(rmaxy2));
+		assert rminz2 <= rmaxz2 : AssertMessages.lowerEqualParameters(8, Double.valueOf(rminz2), 11, Double.valueOf(rmaxz2));
+		assert newMinimumCorner != null || newMaximumCorner != null || displacementVector != null
+				: AssertMessages.constraintViolation("you must provide an object for " //$NON-NLS-1$
+						+ "newMinimumCorner, newMaximumCorner or " //$NON-NLS-1$
+						+ "displacementVector"); //$NON-NLS-1$
+
+		if (allowedDisplacementDirection == null || MathUtil.isEpsilonZero(allowedDisplacementDirection.getLengthSquared())) {
+			avoidCollisionBoxBox(
+					rminx1, rminy1, rminz1, rmaxx1, rmaxy1, rmaxz1,
+					rminx2, rminy2, rminz2, rmaxx2, rmaxy2, rmaxz2,
+					newMinimumCorner, newMaximumCorner, displacementVector);
+		} else {
+			final var dx1 = rmaxx2 - rminx1;
+			final var dx2 = rminx2 - rmaxx1;
+			final var dy1 = rmaxy2 - rminy1;
+			final var dy2 = rminy2 - rmaxy1;
+			final var dz1 = rmaxz2 - rminz1;
+			final var dz2 = rminz2 - rmaxz1;
+
+			final var absdx1 = Math.abs(dx1);
+			final var absdx2 = Math.abs(dx2);
+			final var absdy1 = Math.abs(dy1);
+			final var absdy2 = Math.abs(dy2);
+			final var absdz1 = Math.abs(dz1);
+			final var absdz2 = Math.abs(dz2);
+
+			final double dx;
+			final double dy;
+			final double dz;
+
+			if (allowedDisplacementDirection.getX() < 0) {
+				dx = -Math.min(absdx1, absdx2);
+			} else {
+				dx = Math.min(absdx1, absdx2);
+			}
+
+			if (allowedDisplacementDirection.getY() < 0) {
+				dy = -Math.min(absdy1, absdy2);
+			} else {
+				dy = Math.min(absdy1, absdy2);
+			}
+
+			if (allowedDisplacementDirection.getZ() < 0) {
+				dz = -Math.min(absdz1, absdz2);
+			} else {
+				dz = Math.min(absdz1, absdz2);
+			}
+
+			allowedDisplacementDirection.set(dx, dy, dz);
+
+			if (newMinimumCorner != null) {
+				newMinimumCorner.set(rminx1 + dx, rminy1 + dy, rminz1 + dz);
+			}
+			if (newMaximumCorner != null) {
+				newMaximumCorner.set(rmaxx1 + dx, rmaxy1 + dy, rmaxz1 + dz);
+			}
+			if (displacementVector != null) {
+				displacementVector.set(dx, dy, dz);
+			}
+		}
+	}
 
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver3D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 	}
@@ -122,18 +304,6 @@ public interface Box3afp<
 		assert depth >= 0. : AssertMessages.positiveOrZeroParameter();
 		setMaxZ(getMinZ() + depth);
 	}
-
-	/** Change the frame of the rectangular prism conserving previous min and max if needed.
-	 *
-	 * @param x1 is the coordinate of the first corner.
-	 * @param y1 is the coordinate of the first corner.
-	 * @param z1 is the coordinate of the first corner.
-	 * @param x2 is the coordinate of the second corner.
-	 * @param y2 is the coordinate of the second corner.
-	 * @param z2 is the coordinate of the second corner.
-	 */
-	// This function has no default implementation for allowing implementation to be atomic.
-	void setFromCorners(double x1, double y1, double z1, double x2, double y2, double z2);
 
 	/** Change the frame of the rectangular prism conserving previous min and max if needed.
 	 *

@@ -20,16 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d3.tests.d;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.d.AlignedBox3d;
 import org.arakhne.afc.math.geometry.d3.d.Path3d;
-import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase;
 import org.arakhne.afc.math.geometry.d3.tests.afp.TestShapeFactory3d;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 @DisplayName("Path3d")
@@ -38,24 +33,6 @@ public class Path3dTest extends AbstractPath3dTestCase<Path3d, AlignedBox3d> {
 	@Override
 	protected TestShapeFactory3d createFactory() {
 		return new BaseTestShapeFactory3d();
-	}
-
-	@Override
-	@Test
-	public void getDistanceSquaredAlignedBox3afp(CoordinateSystem3D cs) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Test
-	public void intersectsMultiShape3afp(CoordinateSystem3D cs) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Test
-	public void getDistanceAlignedBox3afp(CoordinateSystem3D cs) {
-		throw new UnsupportedOperationException();
 	}
 
 }

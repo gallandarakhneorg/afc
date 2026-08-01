@@ -244,6 +244,7 @@ public interface Shape3afp<
      * @return the minimum distance between the two shapes.
      */
     @Pure
+    @Unefficient
     default double getDistanceSquared(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
         assert AlignedBox != null : AssertMessages.notNullParameter();
         return AlignedBox.getDistanceSquared(getClosestPointTo(AlignedBox));
@@ -263,18 +264,25 @@ public interface Shape3afp<
     /** Replies the minimum distance between this shape and the given path.
      *
      * @param path the path.
-     * @return the minimum distance between the two shapes.
+     * @return the minimum distance between the two shapes; or {@link Double#NaN}
+     *      if the path does not contain a visible component and avoid to compute
+     *      a distance.
      */
     @Pure
     default double getDistanceSquared(Path3afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        return path.getDistanceSquared(getClosestPointTo(path));
+        final var point = getClosestPointTo(path);
+        if (point != null) {
+        	return path.getDistanceSquared(point);
+        }
+        return Double.NaN;
     }
 
     /** Replies the minimum distance between this shape and the given multishape.
      *
      * @param multishape the multishape.
-     * @return the minimum distance between the two shapes.
+     * @return the minimum distance between the two shapes; {@link Double#NaN} if there
+     *      is no shape in the multishape that avoid to compute the distance.
      */
     @Pure
     default double getDistanceSquared(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
@@ -371,7 +379,8 @@ public interface Shape3afp<
      *
      * @param path the path.
      * @return the closest point on the shape; or the point itself
-     *     if it is inside the shape.
+     *     if it is inside the shape; or {@code null} if the path does not
+     *     contain a visible component that avoid to compute the closest point.
      */
     @Pure
     P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path);
@@ -386,7 +395,7 @@ public interface Shape3afp<
      *
      * @param multishape the multishape.
      * @return the closest point on the shape; or the point itself
-     *     if it is inside the shape.
+     *     if it is inside the shape; or {@code null} if there is no shape in the multishape.
      */
     @Pure
     default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {

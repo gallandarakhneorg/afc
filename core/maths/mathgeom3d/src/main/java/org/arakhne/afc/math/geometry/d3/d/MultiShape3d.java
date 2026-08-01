@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -134,13 +135,15 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 
 	@Pure
 	@Override
-	public void toBoundingBox(AlignedBox3d box) {
+	public void toBoundingBox(BoundsReceiver3D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
 			MultiShape3afp.super.toBoundingBox(this.bounds);
 		}
-		box.set(this.bounds);
+		box.setFromCorners(
+				this.bounds.getMinX(), this.bounds.getMinY(), this.bounds.getMinZ(),
+				this.bounds.getMaxX(), this.bounds.getMaxY(), this.bounds.getMaxZ());
 	}
 
 	@Override

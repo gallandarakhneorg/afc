@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.ai;
 
 import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.base.d3.ImmutableVector3D;
 import org.arakhne.afc.math.geometry.base.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
@@ -148,8 +149,8 @@ public class InnerComputationVector3ai implements Vector3D<InnerComputationVecto
 	}
 
 	@Override
-	public UnmodifiableVector3D<InnerComputationVector3ai, InnerComputationPoint3ai, InnerComputationQuaternionai> toUnmodifiable() {
-		throw new UnsupportedOperationException();
+	public UnmodifiableVector3D<?, ?, ?> toUnmodifiable() {
+		return new ImmutableVector3D(getX(), getY(), getZ());
 	}
 
 	@Pure

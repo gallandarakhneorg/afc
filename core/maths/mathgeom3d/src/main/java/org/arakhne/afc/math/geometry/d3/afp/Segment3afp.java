@@ -24,7 +24,9 @@ import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
@@ -54,14 +56,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 @SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber"})
 public interface Segment3afp<
-			ST extends Shape3afp<?, IE, P, V, Q, B>,
-			IT extends Segment3afp<?, ?, IE, P, V, Q, B>,
-			IE extends PathElement3afp,
-			P extends Point3D<? super P, ? super V, ? super Q>,
-			V extends Vector3D<? super V, ? super P, ? super Q>,
-			Q extends Quaternion<? super P, ? super V, ? super Q>,
-			B extends AlignedBox3afp<?, IE, P, V, Q, B>>
-		extends TransformableShape3afp<ST, IT, IE, P, V, Q, B> {
+		ST extends Shape3afp<?, IE, P, V, Q, B>,
+		IT extends Segment3afp<?, ?, IE, P, V, Q, B>,
+		IE extends PathElement3afp,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3afp<?, IE, P, V, Q, B>>
+	extends TransformableShape3afp<ST, IT, IE, P, V, Q, B> {
 
 	@Override
 	default Shape3DType getType() {
@@ -71,36 +73,24 @@ public interface Segment3afp<
 	/**
 	 * Replies if two lines are colinear.
 	 *
-	 *<p>The given two lines are described respectively by two points, i.e. {@code (x1,y1)} and {@code (x2,y2)} for the first
-	 * line, and {@code (x3,y3)} and {@code (x4,y4)} for the second line.
+	 *<p>The given two lines are described respectively by two points, i.e. {@code (x1,y1,z1)} and {@code (x2,y2,z2)} for the first
+	 * line, and {@code (x3,y3,z3)} and {@code (x4,y4,z4)} for the second line.
 	 *
 	 * <p>If you are interested to test if the two lines are parallel, see
 	 * {@link #isParallelLines(double, double, double, double, double, double, double, double, double, double, double, double)}.
 	 *
-	 * @param x1
-	 *            is the X coordinate of the first point of the first line.
-	 * @param y1
-	 *            is the Y coordinate of the first point of the first line.
-	 * @param z1
-	 *            is the Z coordinate of the first point of the first line.
-	 * @param x2
-	 *            is the X coordinate of the second point of the first line.
-	 * @param y2
-	 *            is the Y coordinate of the second point of the first line.
-	 * @param z2
-	 *            is the Z coordinate of the second point of the first line.
-	 * @param x3
-	 *            is the X coordinate of the first point of the second line.
-	 * @param y3
-	 *            is the Y coordinate of the first point of the second line.
-	 * @param z3
-	 *            is the Z coordinate of the first point of the second line.
-	 * @param x4
-	 *            is the X coordinate of the second point of the second line.
-	 * @param y4
-	 *            is the Y coordinate of the second point of the second line.
-	 * @param z4
-	 *            is the Z coordinate of the second point of the second line.
+	 * @param x1 is the X coordinate of the first point of the first line.
+	 * @param y1 is the Y coordinate of the first point of the first line.
+	 * @param z1 is the Z coordinate of the first point of the first line.
+	 * @param x2 is the X coordinate of the second point of the first line.
+	 * @param y2 is the Y coordinate of the second point of the first line.
+	 * @param z2 is the Z coordinate of the second point of the first line.
+	 * @param x3 is the X coordinate of the first point of the second line.
+	 * @param y3 is the Y coordinate of the first point of the second line.
+	 * @param z3 is the Z coordinate of the first point of the second line.
+	 * @param x4 is the X coordinate of the second point of the second line.
+	 * @param y4 is the Y coordinate of the second point of the second line.
+	 * @param z4 is the Z coordinate of the second point of the second line.
 	 * @return {@code true} if the two given lines are colinear.
 	 * @see #isParallelLines(double, double, double, double, double, double, double, double, double, double, double, double)
 	 * @see Point3D#isCollinearPoints(double, double, double, double, double, double, double, double, double)
@@ -116,36 +106,24 @@ public interface Segment3afp<
 	/**
 	 * Replies if two lines are parallel.
 	 *
-	 * <p>The given two lines are described respectivaly by two points, i.e. {@code (x1,y1)} and {@code (x2,y2)} for the first
-	 * line, and {@code (x3,y3)} and {@code (x4,y4)} for the second line.
+	 * <p>The given two lines are described respectively by two points, i.e. {@code (x1,y1,z1)} and {@code (x2,y2,z2)} for the first
+	 * line, and {@code (x3,y3,z3)} and {@code (x4,y4,z4)} for the second line.
 	 *
 	 * <p>If you are interested to test if the two lines are colinear, see
 	 * {@link #isColinearLines(double, double, double, double, double, double, double, double, double, double, double, double)}.
 	 *
-	 * @param x1
-	 *            is the X coordinate of the first point of the first line.
-	 * @param y1
-	 *            is the Y coordinate of the first point of the first line.
-	 * @param z1
-	 *            is the Z coordinate of the first point of the first line.
-	 * @param x2
-	 *            is the X coordinate of the second point of the first line.
-	 * @param y2
-	 *            is the Y coordinate of the second point of the first line.
-	 * @param z2
-	 *            is the Z coordinate of the second point of the first line.
-	 * @param x3
-	 *            is the X coordinate of the first point of the second line.
-	 * @param y3
-	 *            is the Y coordinate of the first point of the second line.
-	 * @param z3
-	 *            is the Z coordinate of the first point of the second line.
-	 * @param x4
-	 *            is the X coordinate of the second point of the second line.
-	 * @param y4
-	 *            is the Y coordinate of the second point of the second line.
-	 * @param z4
-	 *            is the Z coordinate of the second point of the second line.
+	 * @param x1 is the X coordinate of the first point of the first line.
+	 * @param y1 is the Y coordinate of the first point of the first line.
+	 * @param z1 is the Z coordinate of the first point of the first line.
+	 * @param x2 is the X coordinate of the second point of the first line.
+	 * @param y2 is the Y coordinate of the second point of the first line.
+	 * @param z2 is the Z coordinate of the second point of the first line.
+	 * @param x3 is the X coordinate of the first point of the second line.
+	 * @param y3 is the Y coordinate of the first point of the second line.
+	 * @param z3 is the Z coordinate of the first point of the second line.
+	 * @param x4 is the X coordinate of the second point of the second line.
+	 * @param y4 is the Y coordinate of the second point of the second line.
+	 * @param z4 is the Z coordinate of the second point of the second line.
 	 * @return {@code true} if the two given lines are parallel.
 	 * @see #isColinearLines(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
@@ -185,15 +163,15 @@ public interface Segment3afp<
 	 *            is the Z coordinate of the second point of the second line.
 	 * @param result the intersection point.
 	 * @return {@code true} if an intersection exists.
-	 * @see #calculatesLineLineIntersection(double, double, double, double, double,
+	 * @see #findsIntersectionLineLine(double, double, double, double, double,
 	 * double, double, double, double, double, double, double, Point3D)
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static boolean calculatesSegmentSegmentIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
+	static boolean findsIntersectionSegmentSegment(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4,
 			Point3D<?, ?, ?> result) {
-		final var factors = calculatesSegmentSegmentIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		final var factors = calculatesIntersectionFactorsSegmentSegment(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
@@ -254,13 +232,13 @@ public interface Segment3afp<
 	 * @param z4
 	 *            is the Z coordinate of the second point of the second segment.
 	 * @return the intersection description if there is intersection; or {@code null} if no intersection.
-	 * @see #calculatesLineLineIntersectionFactors(double, double, double, double, double, double, double, double, double, double, double, double)
+	 * @see #calculatesIntersectionFactorsLineLine(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static SegmentIntersection calculatesSegmentSegmentIntersectionFactors(double x1, double y1, double z1, double x2, double y2,
+	static SegmentIntersection calculatesIntersectionFactorsSegmentSegment(double x1, double y1, double z1, double x2, double y2,
 			double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
-		final var factors = calculatesLineLineIntersectionFactors(
+		final var factors = calculatesIntersectionFactorsLineLine(
 				x1, y1, z1, x2, y2, z2,
 				x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
@@ -323,39 +301,27 @@ public interface Segment3afp<
 	 * 		</ul></li>
 	 * </ul>
 	 *
-	 * @param x1
-	 *            is the X coordinate of the first point of the first line.
-	 * @param y1
-	 *            is the Y coordinate of the first point of the first line.
-	 * @param z1
-	 *            is the Z coordinate of the first point of the first line.
-	 * @param x2
-	 *            is the X coordinate of the second point of the first line.
-	 * @param y2
-	 *            is the Y coordinate of the second point of the first line.
-	 * @param z2
-	 *            is the Z coordinate of the second point of the first line.
-	 * @param x3
-	 *            is the X coordinate of the first point of the second line.
-	 * @param y3
-	 *            is the Y coordinate of the first point of the second line.
-	 * @param z3
-	 *            is the Z coordinate of the first point of the second line.
-	 * @param x4
-	 *            is the X coordinate of the second point of the second line.
-	 * @param y4
-	 *            is the Y coordinate of the second point of the second line.
-	 * @param z4
-	 *            is the Z coordinate of the second point of the second line.
+	 * @param x1 is the X coordinate of the first point of the first line.
+	 * @param y1 is the Y coordinate of the first point of the first line.
+	 * @param z1 is the Z coordinate of the first point of the first line.
+	 * @param x2 is the X coordinate of the second point of the first line.
+	 * @param y2 is the Y coordinate of the second point of the first line.
+	 * @param z2 is the Z coordinate of the second point of the first line.
+	 * @param x3 is the X coordinate of the first point of the second line.
+	 * @param y3 is the Y coordinate of the first point of the second line.
+	 * @param z3 is the Z coordinate of the first point of the second line.
+	 * @param x4 is the X coordinate of the second point of the second line.
+	 * @param y4 is the Y coordinate of the second point of the second line.
+	 * @param z4 is the Z coordinate of the second point of the second line.
 	 * @return the intersection description if there is intersection; or {@code null} if no intersection.
 	 * @since 18.0
-	 * @see #calculatesLineLineIntersectionFactors(double, double, double, double, double, double, double, double, double, double, double, double)
+	 * @see #calculatesIntersectionFactorsLineLine(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
-	static LineIntersection calculatesLineLineIntersectionFactors(double x1, double y1, double z1, double x2, double y2, double z2,
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:returncount"})
+	static LineIntersection calculatesIntersectionFactorsLineLine(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
-		//We compute the 4 vectors
+		// We compute the 4 vectors
 		final var ax = x2 - x1;
 		final var ay = y2 - y1;
 		final var az = z2 - z1;
@@ -363,6 +329,30 @@ public interface Segment3afp<
 		final var bx = x4 - x3;
 		final var by = y4 - y3;
 		final var bz = z4 - z3;
+
+		final var epsa = MathUtil.isEpsilonZero(ax) && MathUtil.isEpsilonZero(ay) && MathUtil.isEpsilonZero(az);
+		final var epsb = MathUtil.isEpsilonZero(bx) && MathUtil.isEpsilonZero(by) && MathUtil.isEpsilonZero(bz);
+
+		if (epsa) {
+			if (epsb) {
+				// The two segments degenerate to points
+				if (MathUtil.isEpsilonEqual(x1, x3) && MathUtil.isEpsilonEqual(y1, y3) && MathUtil.isEpsilonEqual(z1, z3)) {
+					return new LineIntersection(true, 0., 1., 0., 0.);
+				}
+				return null;
+			}
+			// First segment degenerates to point
+			if (Segment3afp.isPointCloseToSegment(x3, y3, z3, x4, y4, z4, x1, y1, z1, GeomConstants.UNIT_VECTOR_EPSILON)) {
+				return new LineIntersection(true, 0., 1., 0., 0.);
+			}
+			return null;
+		} else if (epsb) {
+			// Second segment degenerates to point
+			if (Segment3afp.isPointCloseToSegment(x1, y1, z1, x2, y2, z2, x3, y3, z3, GeomConstants.UNIT_VECTOR_EPSILON)) {
+				return new LineIntersection(true, 0., 1., 0., 0.);
+			}
+			return null;
+		}
 
 		final var cx = x3 - x1;
 		final var cy = y3 - y1;
@@ -387,16 +377,7 @@ public interface Segment3afp<
 				final var length = ax * ax + ay * ay + az * az;
 				final var proj3on1 = (cx * ax + cy * ay + cz * az) / length;
 				final var proj4on1 = ((x4 - x1) * ax + (y4 - y1) * ay + (z4 - z1) * az) / length;
-				final double f1;
-				final double f2;
-				if (proj3on1 <= proj4on1) {
-					f1 = proj3on1;
-					f2 = proj4on1;
-				} else {
-					f1 = proj4on1;
-					f2 = proj3on1;
-				}
-				return new LineIntersection(true, 0., 1., f1, f2);
+				return new LineIntersection(true, 0., 1., proj3on1, proj4on1);
 			}
 			return null;
 		}
@@ -438,15 +419,15 @@ public interface Segment3afp<
 	 * @param z4 z position of the second point of the line.
 	 * @param result the intersection point.
 	 * @return {@code true} if there is an intersection.
-	 * @see #calculatesLineLineIntersectionFactor(double, double, double, double, double, double, double, double, double, double, double, double)
+	 * @see #findsIntersectionLineLineFactor(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static boolean calculatesLineLineIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
+	static boolean findsIntersectionLineLine(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4,
 			Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(13);
-		final var factors = calculatesLineLineIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		final var factors = calculatesIntersectionFactorsLineLine(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
@@ -496,9 +477,9 @@ public interface Segment3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static double calculatesDistanceSquaredSegmentPoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
 			double py, double pz) {
-		final var ratio = calculatesProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
+		final var ratio = findsProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
 
-		if (ratio <= 0.) {
+		if (Double.isNaN(ratio) || ratio <= 0.) {
 			return Point3D.getDistanceSquaredPointPoint(px, py, pz, x1, y1, z1);
 		}
 
@@ -529,9 +510,9 @@ public interface Segment3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static double calculatesDistanceSegmentPoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
 			double py, double pz) {
-		final var ratio = calculatesProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
+		final var ratio = findsProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
 
-		if (ratio <= 0.) {
+		if (Double.isNaN(ratio) || ratio <= 0.) {
 			return Point3D.getDistancePointPoint(px, py, pz, x1, y1, z1);
 		}
 
@@ -547,6 +528,8 @@ public interface Segment3afp<
 	}
 
 	/** Compute the distance between a point and a line.
+	 * If the line degenerates to a point, the distance between
+	 * the two point is returned.
 	 *
 	 * @param x1 x position of the first point of the line.
 	 * @param y1 y position of the first point of the line.
@@ -559,7 +542,6 @@ public interface Segment3afp<
 	 * @param pz z position of the point.
 	 * @return the distance between the point and the line.
 	 * @see #calculatesDistanceSquaredLinePoint(double, double, double, double, double, double, double, double, double)
-	 * @see #calculatesRelativeDistanceLinePoint(double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
@@ -568,6 +550,11 @@ public interface Segment3afp<
 		final var vx1 = x2 - x1;
 		final var vy1 = y2 - y1;
 		final var vz1 = z2 - z1;
+
+		if (MathUtil.isEpsilonZero(vx1) && MathUtil.isEpsilonZero(vy1) && MathUtil.isEpsilonZero(vz1)) {
+			// Degenerated line: same points
+			return Point3D.getDistancePointPoint(x1, y1, z1, px, py, pz);
+		}
 
 		final var vx2 = px - x1;
 		final var vy2 = py - y1;
@@ -735,13 +722,15 @@ public interface Segment3afp<
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static boolean isPointClosedToSegment(double x1, double y1, double z1, double x2, double y2, double z2, double x, double y,
+	static boolean isPointCloseToSegment(double x1, double y1, double z1, double x2, double y2, double z2, double x, double y,
 			double z, double hitDistance) {
 		assert hitDistance >= 0. : AssertMessages.positiveOrZeroParameter(9);
 		return calculatesDistanceSegmentPoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance;
 	}
 
-	/** Replies if a point is closed to a line.
+	/** Replies if a point is closed to a line. If the line degenerates to a point, then this
+	 * function is equivalent to test if the points are close to each other with a maximum
+	 * distance corresponding to {@code hitDistance}.
 	 *
 	 * @param x1 x location of the line beginning.
 	 * @param y1 y location of the line beginning.
@@ -758,7 +747,7 @@ public interface Segment3afp<
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static boolean isPointClosedToLine(double x1, double y1, double z1, double x2, double y2, double z2, double x, double y,
+	static boolean isPointCloseToLine(double x1, double y1, double z1, double x2, double y2, double z2, double x, double y,
 			double z, double hitDistance) {
 		assert hitDistance >= 0. : AssertMessages.positiveOrZeroParameter(9);
 		return calculatesDistanceLinePoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance;
@@ -797,7 +786,7 @@ public interface Segment3afp<
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static double calculatesProjectedPointOnLine(double px, double py, double pz, double s1x, double s1y, double s1z, double s2x,
+	static double findsProjectedPointOnLine(double px, double py, double pz, double s1x, double s1y, double s1z, double s2x,
 			double s2y, double s2z) {
 		final var vx = s2x - s1x;
 		final var vy = s2y - s1y;
@@ -805,48 +794,6 @@ public interface Segment3afp<
 		final var denomenator = vx * vx + vy * vy + vz * vz;
 		final var numerator = (px - s1x) * vx + (py - s1y) * vy + (pz - s1z) * vz;
 		return numerator / denomenator;
-	}
-
-	/**
-	 * Replies the relative distance from the given point to the given line.
-	 * The replied distance may be negative, depending on which side of
-	 * the line the point is.
-	 *
-	 * @param x1
-	 *            the X coordinate of the start point of the specified line segment
-	 * @param y1
-	 *            the Y coordinate of the start point of the specified line segment
-	 * @param z1
-	 *            the Z coordinate of the start point of the specified line segment
-	 * @param x2
-	 *            the X coordinate of the end point of the specified line segment
-	 * @param y2
-	 *            the Y coordinate of the end point of the specified line segment
-	 * @param z2
-	 *            the Z coordinate of the end point of the specified line segment
-	 * @param px
-	 *            the X coordinate of the specified point to be compared with the specified line segment
-	 * @param py
-	 *            the Y coordinate of the specified point to be compared with the specified line segment
-	 * @param pz
-	 *            the Z coordinate of the specified point to be compared with the specified line segment
-	 * @return the positive or negative distance from the point to the line
-	 * @see #ccw(double, double, double, double, double, double, double, double, double, double)
-	 * @see #calculatesSideLinePoint(double, double, double, double, double, double, double, double, double, double)
-	 */
-	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
-	static double calculatesRelativeDistanceLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
-			double py, double pz) {
-		final var x21 = x2 - x1;
-		final var y21 = y2 - y1;
-		final var z21 = z2 - z1;
-		final var denomenator = x21 * x21 + y21 * y21 + z21 * z21;
-		if (denomenator == 0.) {
-			return Point3D.getDistancePointPoint(px, py, pz, x1, y1, z1);
-		}
-		final var factor = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
-		return factor * Math.sqrt(denomenator);
 	}
 
 	/** Compute the interpolate point between the two points.
@@ -857,15 +804,15 @@ public interface Segment3afp<
 	 * @param p2x x coordinate of the second point.
 	 * @param p2y y coordinate of the second point.
 	 * @param p2z z coordinate of the second point.
-	 * @param factor is between 0 and 1; 0 for p1, and 1 for p2.
+	 * @param factor is 0 for p1, and 1 for p2. It is a point between p1 and p2 if in (0,1).
+	 *     It is a point before p1 if the factor is negative, and after p2 if the factor
+	 *     if greater than 1.
 	 * @param result the interpolated point.
 	 */
 	@Pure
 	static void interpolate(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double factor,
 			Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter();
-		assert factor >= 0. && factor <= 1.
-				: AssertMessages.outsideRangeInclusiveParameter(Double.valueOf(factor), Double.valueOf(0), Double.valueOf(1));
 		final var vx = p2x - p1x;
 		final var vy = p2y - p1y;
 		final var vz = p2z - p1z;
@@ -890,7 +837,7 @@ public interface Segment3afp<
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static void calculatesFarthestPointToPoint(double ax, double ay, double az, double bx, double by, double bz, double px, double py,
+	static void findsFarthestPointToPoint(double ax, double ay, double az, double bx, double by, double bz, double px, double py,
 			double pz, Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter();
 		final var xpa = px - ax;
@@ -925,7 +872,7 @@ public interface Segment3afp<
 			double ax, double ay, double az, double bx, double by, double bz, double px, double py, double pz,
 			Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter();
-		final var ratio = Segment3afp.calculatesProjectedPointOnLine(px, py, pz, ax, ay, az, bx, by, bz);
+		final var ratio = Segment3afp.findsProjectedPointOnLine(px, py, pz, ax, ay, az, bx, by, bz);
 		if (ratio <= 0.) {
 			result.set(ax, ay, az);
 		} else if (ratio >= 1.) {
@@ -983,7 +930,8 @@ public interface Segment3afp<
 	 * @param resultOnSecondSegment the point on the second segment. It can be {@code null}.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:methodlength"})
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:methodlength",
+		"checkstyle:cyclomaticcomplexity"})
 	static void findsClosestPointToSegment(
 			double ax, double ay, double az, double bx, double by, double bz,
 			double cx, double cy, double cz, double dx, double dy, double dz,
@@ -1004,12 +952,12 @@ public interface Segment3afp<
 		final var cdz = dz - cz;
 
 		// |ab|^2
-		final var abQuaredLength = Vector3D.dotProduct(abx, aby, abz, abx, aby, abz);
+		final var abSquaredLength = Vector3D.dotProduct(abx, aby, abz, abx, aby, abz);
 		// |cd|^2
 		final var cdSquaredLength = Vector3D.dotProduct(cdx, cdy, cdz, cdx, cdy, cdz);
 
 		// Case 0: both segments degenerate to points
-		if (MathUtil.isEpsilonZero(abQuaredLength) && MathUtil.isEpsilonZero(cdSquaredLength)) {
+		if (MathUtil.isEpsilonZero(abSquaredLength) && MathUtil.isEpsilonZero(cdSquaredLength)) {
 			if (resultOnFirstSegment != null) {
 				resultOnFirstSegment.set(ax, ay, az);
 			}
@@ -1019,7 +967,7 @@ public interface Segment3afp<
 			return;
 		}
 		// Case 1: S1 is a point; project C onto S2
-		if (MathUtil.isEpsilonZero(abQuaredLength)) {
+		if (MathUtil.isEpsilonZero(abSquaredLength)) {
 			if (resultOnFirstSegment != null) {
 				resultOnFirstSegment.set(ax, ay, az);
 			}
@@ -1049,21 +997,20 @@ public interface Segment3afp<
 		final var beta = Vector3D.dotProduct(abx, aby, abz, cdx, cdy, cdz);
 		final var fDotW0 = Vector3D.dotProduct(cdx, cdy, cdz, w0x, w0y, w0z);
 		// |d x e|^2  (>= 0)
-		final var denom  = abQuaredLength * cdSquaredLength - beta * beta;
+		final var denom  = abSquaredLength * cdSquaredLength - beta * beta;
 
 		double sfinal;
 		double tfinal;
 
 		if (MathUtil.isEpsilonZero(denom)) {
 			// Case 3: segments are (nearly) parallel
-			// Fix s = 0, find the best t, then re-derive s and clamp both.
-			sfinal = 0.;
 			tfinal = MathUtil.clamp(fDotW0 / cdSquaredLength, 0., 1.);
-			// (no need to re-derive s because it is already clamped to 0)
+			sfinal = MathUtil.clamp((beta * tfinal - eDotW0) / abSquaredLength, 0., 1.);
+			tfinal = MathUtil.clamp((beta * sfinal + fDotW0) / cdSquaredLength, 0., 1.);
 		} else {
 			// Case 4: general skew / crossing segments
 			final var sRaw = (beta * fDotW0 - cdSquaredLength * eDotW0) / denom;
-			final var tRaw = (abQuaredLength * fDotW0 - beta * eDotW0) / denom;
+			final var tRaw = (abSquaredLength * fDotW0 - beta * eDotW0) / denom;
 
 			// Check whether both parameters are already inside [0,1].
 			// If so we can skip all clamping branches (common hot path).
@@ -1081,7 +1028,7 @@ public interface Segment3afp<
 				// re-derive t
 				final var tFromS = MathUtil.clamp((beta * sfinal + fDotW0) / cdSquaredLength, 0., 1.);
 				// re-derive s
-				final var sFromT = MathUtil.clamp((beta * tfinal - eDotW0) / abQuaredLength, 0., 1.);
+				final var sFromT = MathUtil.clamp((beta * tfinal - eDotW0) / abSquaredLength, 0., 1.);
 
 				// Pick the boundary (s,t) pair with the smaller gap vector norm^2
 				var vx = w0x + abx * sfinal - cdx * tFromS;
@@ -1108,6 +1055,7 @@ public interface Segment3afp<
 		final var r2x = cx + cdx * tfinal;
 		final var r2y = cy + cdy * tfinal;
 		final var r2z = cz + cdz * tfinal;
+
 		if (resultOnFirstSegment != null) {
 			resultOnFirstSegment.set(r1x, r1y, r1z);
 		}
@@ -1137,10 +1085,58 @@ public interface Segment3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsLineLine(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
 			double z3, double x4, double y4, double z4) {
-		if (isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4)) {
-			return Point3D.isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3);
+		//		if (isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4)) {
+		//			return Point3D.isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3);
+		//		}
+		// We compute the 4 vectors
+		final var ax = x2 - x1;
+		final var ay = y2 - y1;
+		final var az = z2 - z1;
+
+		final var bx = x4 - x3;
+		final var by = y4 - y3;
+		final var bz = z4 - z3;
+
+		final var epsa = MathUtil.isEpsilonZero(ax) && MathUtil.isEpsilonZero(ay) && MathUtil.isEpsilonZero(az);
+		final var epsb = MathUtil.isEpsilonZero(bx) && MathUtil.isEpsilonZero(by) && MathUtil.isEpsilonZero(bz);
+
+		if (epsa) {
+			if (epsb) {
+				// The two segments degenerate to points
+				return MathUtil.isEpsilonEqual(x1, x3) && MathUtil.isEpsilonEqual(y1, y3) && MathUtil.isEpsilonEqual(z1, z3);
+			}
+			// First segment degenerates to point
+			return Segment3afp.isPointCloseToSegment(x3, y3, z3, x4, y4, z4, x1, y1, z1, GeomConstants.UNIT_VECTOR_EPSILON);
+		} else if (epsb) {
+			// Second segment degenerates to point
+			return Segment3afp.isPointCloseToSegment(x1, y1, z1, x2, y2, z2, x3, y3, z3, GeomConstants.UNIT_VECTOR_EPSILON);
 		}
-		return true;
+
+		final var cx = x3 - x1;
+		final var cy = y3 - y1;
+		final var cz = z3 - z1;
+
+		// v = a X b (right-handed cross product)
+		// Only the right-handed cross product contributes to the computation of the correct factor.
+		final var vx = ay * bz - az * by;
+		final var vy = az * bx - ax * bz;
+		final var vz = ax * by - ay * bx;
+
+		// If the cross product is zero then the two segments are parallel
+		final var vsqlength = vx * vx + vy * vy + vz * vz;
+		if (MathUtil.isEpsilonZero(vsqlength)) {
+			// Lines are parallel, are they colinear?
+			final var dx = ay * cz - cy * az;
+			final var dy = az * cx - cz * ax;
+			final var dz = ax * cy - cx * ay;
+			final var dl = dx * dx + dy * dy + dz * dz;
+			return MathUtil.isEpsilonZero(dl);
+		}
+
+		// w = c . v
+		final var w = Vector3D.dotProduct(cx, cy, cz, vx, vy, vz);
+		// If the determinant det(c,a,b) = c.(a x b) != 0 then the two segments are not colinear
+		return MathUtil.isEpsilonZero(w);
 	}
 
 	/** Replies if a segment and a line are intersecting.
@@ -1170,7 +1166,7 @@ public interface Segment3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSegmentLineWithEnds(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
 			double z3, double x4, double y4, double z4) {
-		final var factors = calculatesLineLineIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		final var factors = calculatesIntersectionFactorsLineLine(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
@@ -1204,7 +1200,7 @@ public interface Segment3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSegmentLineWithoutEnds(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
 			double z3, double x4, double y4, double z4) {
-		final var factors = calculatesLineLineIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		final var factors = calculatesIntersectionFactorsLineLine(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
@@ -1239,7 +1235,7 @@ public interface Segment3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSegmentSegmentWithoutEnds(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
-		final var factors = calculatesSegmentSegmentIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		final var factors = calculatesIntersectionFactorsSegmentSegment(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
@@ -1277,7 +1273,7 @@ public interface Segment3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSegmentSegmentWithEnds(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
-		final var factors = calculatesSegmentSegmentIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		final var factors = calculatesIntersectionFactorsSegmentSegment(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
@@ -1496,7 +1492,7 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver3D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(
 				this.getX1(),
@@ -1505,6 +1501,32 @@ public interface Segment3afp<
 				this.getX2(),
 				this.getY2(),
 				this.getZ2());
+	}
+
+	@Pure
+	@Override
+	@Unefficient
+	default double getDistanceSquared(AlignedBox3afp<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : AssertMessages.notNullParameter();
+		final var pointOnBox = new InnerComputationPoint3D();
+		final var pointOnSegment = new InnerComputationPoint3D();
+		AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
+				rectangle.getMinX(), rectangle.getMinY(), rectangle.getMinZ(),
+				rectangle.getMaxX(), rectangle.getMaxY(), rectangle.getMaxZ(),
+				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
+				pointOnBox, pointOnSegment);
+		return pointOnBox.getDistanceSquared(pointOnSegment);
+	}
+
+	@Pure
+	@Override
+	default double getDistanceSquared(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		var distance = calculatesDistanceSegmentPoint(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				sphere.getCenterX(), sphere.getCenterY(), sphere.getCenterZ());
+		distance = Math.max(distance - sphere.getRadius(), 0);
+		return distance * distance;
 	}
 
 	@Pure
@@ -1521,7 +1543,7 @@ public interface Segment3afp<
 	@Override
 	default double getDistanceL1(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		var ratio = calculatesProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
+		var ratio = findsProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
 				getY2(), getZ2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
 		final var vx = (getX2() - getX1()) * ratio;
@@ -1536,7 +1558,7 @@ public interface Segment3afp<
 	@Override
 	default double getDistanceLinf(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		var ratio = calculatesProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
+		var ratio = findsProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
 				getY2(), getZ2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
 		final var vx = (getX2() - getX1()) * ratio;
@@ -1747,37 +1769,37 @@ public interface Segment3afp<
 				// Now find the intersection point;
 				if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
 					// y > rymax
-					calculatesLinePlaneIntersection(
+					findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 1, 0, -rymax,
 							point);
 				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
 					// y < rymin
-					calculatesLinePlaneIntersection(
+					findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 1, 0, -rymin,
 							point);
 				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
 					// x > rxmax
-					calculatesLinePlaneIntersection(
+					findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							1, 0, 0, -rxmax,
 							point);
 				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
 					// x < rxmin
-					calculatesLinePlaneIntersection(
+					findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							1, 0, 0, -rxmin,
 							point);
 				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
 					// z > rzmax
-					calculatesLinePlaneIntersection(
+					findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 0, 1, -rzmax,
 							point);
 				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
 					// z < rzmin
-					calculatesLinePlaneIntersection(
+					findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 0, 1, -rzmin,
 							point);
@@ -1826,7 +1848,7 @@ public interface Segment3afp<
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-	static boolean calculatesLinePlaneIntersection(
+	static boolean findsIntersectionLinePlane(
 			double lx1, double ly1, double lz1, double lx2, double ly2, double lz2,
 			double a, double b, double c, double d,
 			Point3D<?, ?, ?> result) {
@@ -1845,6 +1867,13 @@ public interface Segment3afp<
 		final var s = Vector3D.dotProduct(nx, ny, nz, ux, uy, uz);
 		if (MathUtil.isEpsilonZero(s)) {
 			// line and plane are parallel
+			final var dist = -(a * lx1 + b * ly1 + c * lz1 + d);
+			if (MathUtil.isEpsilonZero(dist)) {
+				if (result != null) {
+					result.set(lx1, ly1, lz1);
+				}
+				return true;
+			}
 			return false;
 		}
 
@@ -1866,7 +1895,7 @@ public interface Segment3afp<
 		return true;
 	}
 
-	/** Calculate the factor that corrsponds to the intersection point between a line and a plane.
+	/** Calculate the factor that corresponds to the intersection point between a line and a plane.
 	 *
 	 * @param lx1 x coordinate of the first point of the line.
 	 * @param ly1 y coordinate of the first point of the line.
@@ -1878,12 +1907,12 @@ public interface Segment3afp<
 	 * @param b b component of the plane equation.
 	 * @param c c component of the plane equation.
 	 * @param d d component of the plane equation.
-	 * @return The factor; or {@link Double#NaN} if there is no intersection.
+	 * @return The factor; or {@link Double#NaN} if there is no intersection or infinite intersection (line is coplanar to the plan).
 	 * @since 18.0
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-	static double calculatesLinePlaneIntersectionFactor(
+	static double calculatesIntersectionFactorLinePlane(
 			double lx1, double ly1, double lz1, double lx2, double ly2, double lz2,
 			double a, double b, double c, double d) {
 		final var nx = a;
@@ -1985,10 +2014,14 @@ public interface Segment3afp<
 	@Unefficient
 	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
-		//final var point = getGeomFactory().newPoint();
-		//TODO Path3afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
-		throw new Error();
-		//return point;
+		final var point = getGeomFactory().newPoint();
+		if (Path3afp.findsClosestPointToSegment(
+				path.getPathIterator(path.getGeomFactory().getSplineApproximationRatio()),
+				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
+				null, point)) {
+			return point;
+		}
+		return null;
 	}
 
 	@Pure
@@ -1996,12 +2029,11 @@ public interface Segment3afp<
 	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : AssertMessages.notNullParameter();
 		final var point = getGeomFactory().newPoint();
-		final var boxPoint = new InnerComputationPoint3D();
-		AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+		AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 				rectangle.getMinY(), rectangle.getMinY(), rectangle.getMinZ(),
 				rectangle.getMaxX(), rectangle.getMaxY(), rectangle.getMaxZ(),
 				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
-				boxPoint, point);
+				null, point);
 		return point;
 	}
 
@@ -2020,7 +2052,7 @@ public interface Segment3afp<
 	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final var point = getGeomFactory().newPoint();
-		Segment3afp.calculatesFarthestPointToPoint(
+		Segment3afp.findsFarthestPointToPoint(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				pt.getX(), pt.getY(), pt.getZ(),

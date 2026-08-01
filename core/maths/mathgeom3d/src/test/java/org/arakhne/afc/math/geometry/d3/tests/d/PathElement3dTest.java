@@ -20,22 +20,27 @@
 
 package org.arakhne.afc.math.geometry.d3.tests.d;
 
+import org.arakhne.afc.math.geometry.base.d3.Point3D;
+import org.arakhne.afc.math.geometry.base.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
+import org.arakhne.afc.math.geometry.d3.d.AlignedBox3d;
 import org.arakhne.afc.math.geometry.d3.d.GeomFactory3d;
 import org.arakhne.afc.math.geometry.d3.d.PathElement3d;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
 import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase;
+import org.arakhne.afc.math.geometry.d3.tests.afp.TestShapeFactory3d;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 @DisplayName("PathElement3d")
 public class PathElement3dTest extends AbstractPathElement3dTestCase<PathElement3d, Point3d, Vector3d, Quaternion4d> {
 
-	static {
-		 FACTORY = new GeomFactory3d();
+	@Override
+	protected GeomFactory3afp<?, ?, ?, ?, ?> createFactory() {
+		return new GeomFactory3d();
 	}
 
 }

@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
@@ -206,29 +207,27 @@ public interface Sphere3afp<
 
 	/** Replies if a sphere and a line are intersecting. If the line is tangent to the sphere, there is intersection.
 	 *
-	 * @param x1 is the center of the sphere
-	 * @param y1 is the center of the sphere
-	 * @param z1 is the center of the sphere
-	 * @param radius is the radius of the sphere
-	 * @param x2 is the first point of the line.
-	 * @param y2 is the first point of the line.
-	 * @param z2 is the first point of the line.
-	 * @param x3 is the second point of the line.
-	 * @param y3 is the second point of the line.
-	 * @param z3 is the second point of the line.
-	 * @return {@code true} if the two shapes are intersecting; otherwise
-	 *     {@code false}
+	 * @param cx is the center of the sphere
+	 * @param cy is the center of the sphere
+	 * @param cz is the center of the sphere
+	 * @param cradius is the radius of the sphere
+	 * @param sx1 is the first point of the line.
+	 * @param sy1 is the first point of the line.
+	 * @param sz1 is the first point of the line.
+	 * @param sx2 is the second point of the line.
+	 * @param sy2 is the second point of the line.
+	 * @param sz2 is the second point of the line.
+	 * @return {@code true} if the two shapes are intersecting; otherwise {@code false}
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-    static boolean intersectsSphereLine(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
-            double x3, double y3, double z3) {
-		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		final var sd = Segment3afp.calculatesDistanceLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
-		if (Double.isNaN(sd)) {
-			return true;
+    static boolean intersectsSphereLine(double cx, double cy, double cz, double cradius, double sx1, double sy1, double sz1,
+            double sx2, double sy2, double sz2) {
+		if (cradius <= 0) {
+			return false;
 		}
-		return sd <= radius;
+		final var sd = Segment3afp.calculatesDistanceLinePoint(sx1, sy1, sz1, sx2, sy2, sz2, cx, cy, cz);
+		return sd <= cradius;
 	}
 
 	/** Replies if a sphere and a segment are intersecting.
@@ -391,7 +390,7 @@ public interface Sphere3afp<
 	}
 
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver3D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		final var x = getX();
 		final var y = getY();

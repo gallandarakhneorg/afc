@@ -20,21 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d3.tests.d;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.d.AlignedBox3d;
-import org.arakhne.afc.math.geometry.d3.d.Path3d;
 import org.arakhne.afc.math.geometry.d3.d.PlaneXY3d;
-import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
-import org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase;
 import org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPlaneXY3dTestCase;
 import org.arakhne.afc.math.geometry.d3.tests.afp.TestShapeFactory3d;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 @DisplayName("PlaneXY3d")

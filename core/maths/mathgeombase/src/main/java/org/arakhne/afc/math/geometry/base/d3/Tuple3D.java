@@ -41,7 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	extends Cloneable, Serializable, JsonableObject {
 
-	/** Clone this point.
+	/** Clone this tuple.
 	 *
 	 * @return the clone.
 	 */

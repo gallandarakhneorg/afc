@@ -90,7 +90,7 @@ public interface AlignedBox3afp<
 	 * @param closest is set with the closest point on the aligned box.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
-	static void findsClosestPointAlignedBoxPoint(double rminx, double rminy, double rminz, double rmaxx, double rmaxy,
+	static void findsClosestPointToAlignedBoxPoint(double rminx, double rminy, double rminz, double rmaxx, double rmaxy,
 			double rmaxz, double px, double py, double pz, Point3D<?, ?, ?> closest) {
 		assert rmaxx >= rminx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rminx), 3, Double.valueOf(rmaxx));
 		assert rmaxy >= rminy : AssertMessages.lowerEqualParameters(1, Double.valueOf(rminy), 4, Double.valueOf(rmaxy));
@@ -140,7 +140,7 @@ public interface AlignedBox3afp<
 	 * @param closest is set with the closest point on the first aligned box.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
-	static void findsClosestPointAlignedBoxAlignedBox(
+	static void findsClosestPointToAlignedBoxAlignedBox(
 			double rminx1, double rminy1, double rminz1, double rmaxx1, double rmaxy1, double rmaxz1,
 			double rminx2, double rminy2, double rminz2, double rmaxx2, double rmaxy2, double rmaxz2,
 			Point3D<?, ?, ?> closest) {
@@ -199,7 +199,7 @@ public interface AlignedBox3afp<
 	 * @since 18.0
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
-	static void findsFarthestPointAlignedBoxAlignedBox(
+	static void findsFarthestPointToAlignedBoxAlignedBox(
 			double rminx1, double rminy1, double rminz1, double rmaxx1, double rmaxy1, double rmaxz1,
 			double rminx2, double rminy2, double rminz2, double rmaxx2, double rmaxy2, double rmaxz2,
 			Point3D<?, ?, ?> farthest) {
@@ -239,7 +239,7 @@ public interface AlignedBox3afp<
 
 	/** Compute the point on the aligned box that is the closest to the sphere.
 	 * This function replies the closest point to the sphere center, i.e.,
-	 * it is equivalent to {@link #findsClosestPointAlignedBoxPoint(double, double, double,
+	 * it is equivalent to {@link #findsClosestPointToAlignedBoxPoint(double, double, double,
 	 * double, double, double, double, double, double, Point3D)}
 	 *
 	 * @param rminx the minimum x coordinate of the aligned box.
@@ -253,20 +253,20 @@ public interface AlignedBox3afp<
 	 * @param sz the z coordinate of the sphere center.
 	 * @param radius is the radius of the sphere.
 	 * @param closest is set with the closest point on the aligned box.
-	 * @see #findsClosestPointAlignedBoxSphere(double, double, double, double, double, double, double, double, double, double, Point3D)
+	 * @see #findsClosestPointToAlignedBoxSphere(double, double, double, double, double, double, double, double, double, double, Point3D)
 	 */
-	@Inline("findsClosestPointAlignedBoxPoint($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)")
+	@Inline("findsClosestPointToAlignedBoxPoint($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)")
 	@SuppressWarnings("checkstyle:parameternumber")
-	static void findsClosestPointAlignedBoxSphere(
+	static void findsClosestPointToAlignedBoxSphere(
 			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
 			double sx, double sy, double sz, double radius,
 			Point3D<?, ?, ?> closest) {
-		findsClosestPointAlignedBoxPoint(rminx, rminy, rminz, rmaxx, rmaxy, rmaxz, sx, sy, sz, closest);
+		findsClosestPointToAlignedBoxPoint(rminx, rminy, rminz, rmaxx, rmaxy, rmaxz, sx, sy, sz, closest);
 	}
 
 	/** Compute the point on the aligned box that is the farthest to the sphere.
 	 * This function replies the farthest point to the sphere center, i.e.,
-	 * it is equivalent to {@link #findsFarthestPointAlignedBoxPoint(double, double,
+	 * it is equivalent to {@link #findsFarthestPointToAlignedBoxPoint(double, double,
 	 * double, double, double, double, double, double, double, Point3D)}
 	 *
 	 * @param rminx the minimum x coordinate of the aligned box.
@@ -280,17 +280,48 @@ public interface AlignedBox3afp<
 	 * @param sz the z coordinate of the sphere center.
 	 * @param radius is the radius of the sphere.
 	 * @param farthest is set with the farthest point on the aligned box.
-	 * @see #findsFarthestPointAlignedBoxPoint(double, double, double, double, double, double, double, double, double, Point3D)
+	 * @see #findsFarthestPointToAlignedBoxPoint(double, double, double, double, double, double, double, double, double, Point3D)
 	 */
-	@Inline("findsFarthestPointAlignedBoxPoint($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)")
+	@Inline("findsFarthestPointToAlignedBoxPoint($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)")
 	@SuppressWarnings("checkstyle:parameternumber")
-	static void findsFarthestPointAlignedBoxSphere(
+	static void findsFarthestPointToAlignedBoxSphere(
 			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
 			double sx, double sy, double sz, double radius,
 			Point3D<?, ?, ?> farthest) {
-		findsFarthestPointAlignedBoxPoint(rminx, rminy, rminz, rmaxx, rmaxy, rmaxz, sx, sy, sz, farthest);
+		findsFarthestPointToAlignedBoxPoint(rminx, rminy, rminz, rmaxx, rmaxy, rmaxz, sx, sy, sz, farthest);
 	}
 
+	/** Compute the point on the aligned box that is the farthest to the segment.
+	 *
+	 * @param rminx the minimum x coordinate of the aligned box.
+	 * @param rminy the minimum y coordinate of the aligned box.
+	 * @param rminz the minimum z coordinate of the aligned box.
+	 * @param rmaxx the maximum x coordinate of the aligned box.
+	 * @param rmaxy the maximum y coordinate of the aligned box.
+	 * @param rmaxz the maximum z coordinate of the aligned box.
+	 * @param sx1 the x coordinate of the first point of the segment.
+	 * @param sy1 the y coordinate of the first point of the segment.
+	 * @param sz1 the z coordinate of the first point of the segment.
+	 * @param sx2 the x coordinate of the second point of the segment.
+	 * @param sy2 the y coordinate of the second point of the segment.
+	 * @param sz2 the z coordinate of the second point of the segment.
+	 * @param farthest is set with the farthest point on the aligned box.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
+	static void findsFarthestPointToAlignedBoxSegment(
+			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
+			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
+			Point3D<?, ?, ?> farthest) {
+		findsClosestPointToAlignedBoxSegment(
+				rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
+				sx1, sy1, sz1, sx2, sy2, sz2,
+				farthest, null);
+		findsFarthestPointToAlignedBoxPoint(
+				rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
+				farthest.getX(), farthest.getY(), farthest.getZ(),
+				farthest);
+	}
 
 	/** Replies the point on the aligned box that is closest to the segment.
 	 *
@@ -307,15 +338,17 @@ public interface AlignedBox3afp<
 	 * @param sy2 is the y coordinate of the second point of the segment.
 	 * @param sz2 is the z coordinate of the second point of the segment.
 	 * @param result the is point on the aligned box. It cannot be {@code null}.
+	 * @deprecated since 18.0, use the function with more arguments.
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static void findsClosestPointAlignedBoxSegment(
+	@Deprecated(since = "18.0", forRemoval = true)
+	static void findsClosestPointToAlignedBoxSegment(
 			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter(12);
-		findsClosestPointAlignedBoxSegment(
+		findsClosestPointToAlignedBoxSegment(
 				rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
 				sx1, sy1, sz1, sx2, sy2, sz2,
 				result, null);
@@ -342,7 +375,7 @@ public interface AlignedBox3afp<
 	@Pure
 	@Unefficient
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:methodlength"})
-	static void findsClosestPointAlignedBoxSegment(
+	static void findsClosestPointToAlignedBoxSegment(
 			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			Point3D<?, ?, ?> resultOnBox, Point3D<?, ?, ?> resultOnSegment) {
@@ -382,13 +415,13 @@ public interface AlignedBox3afp<
 		//-------------------- 2 INSIDES (box face)
 		//
 		case COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_INSIDE:
-			PlaneYZ3afp.findsClosestPointRectangleYZSegment(
+			PlaneYZ3afp.findsClosestPointToRectangleYZSegment(
 					rminy, rminz, rmaxy, rmaxz, rminx,
 					sx1, sy1, sz1, sx2, sy2, sz2,
 					resultOnBox, resultOnSegment);
 			break;
 		case COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_INSIDE:
-			PlaneYZ3afp.findsClosestPointRectangleYZSegment(
+			PlaneYZ3afp.findsClosestPointToRectangleYZSegment(
 					rminy, rminz, rmaxy, rmaxz, rmaxx,
 					sx1, sy1, sz1, sx2, sy2, sz2,
 					resultOnBox, resultOnSegment);
@@ -652,13 +685,13 @@ public interface AlignedBox3afp<
 				if ((code1 & COHEN_SUTHERLAND_LEFT) != 0 && (code2 & COHEN_SUTHERLAND_RIGHT) != 0) {
 					if ((rx1 - x0) >= (x1 - rx2)) {
 						code3 = code1;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								1, 0, 0, -rx1,
 								point);
 					} else {
 						code3 = code2;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								1, 0, 0, -rx2,
 								point);
@@ -666,13 +699,13 @@ public interface AlignedBox3afp<
 				} else if ((code1 & COHEN_SUTHERLAND_RIGHT) != 0 && (code2 & COHEN_SUTHERLAND_LEFT) != 0) {
 					if ((x0 - rx1) >= (rx2 - x1)) {
 						code3 = code1;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								1, 0, 0, -rx2,
 								point);
 					} else {
 						code3 = code2;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								1, 0, 0, -rx1,
 								point);
@@ -680,13 +713,13 @@ public interface AlignedBox3afp<
 				} else if ((code1 & COHEN_SUTHERLAND_BOTTOM) != 0 && (code2 & COHEN_SUTHERLAND_TOP) != 0) {
 					if ((ry1 - y0) >= (y1 - ry2)) {
 						code3 = code1;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								0, 1, 0, -ry1,
 								point);
 					} else {
 						code3 = code2;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								0, 1, 0, -ry2,
 								point);
@@ -694,13 +727,13 @@ public interface AlignedBox3afp<
 				} else if ((code1 & COHEN_SUTHERLAND_TOP) != 0 && (code2 & COHEN_SUTHERLAND_BOTTOM) != 0) {
 					if ((y0 - ry1) >= (ry2 - y1)) {
 						code3 = code1;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								0, 1, 0, -ry2,
 								point);
 					} else {
 						code3 = code2;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								0, 1, 0, -ry1,
 								point);
@@ -708,13 +741,13 @@ public interface AlignedBox3afp<
 				} else if ((code1 & COHEN_SUTHERLAND_FRONT) != 0 && (code2 & COHEN_SUTHERLAND_BACK) != 0) {
 					if ((rz1 - z0) >= (z1 - rz2)) {
 						code3 = code1;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								0, 0, 1, -rz1,
 								point);
 					} else {
 						code3 = code2;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								0, 0, 1, -rz2,
 								point);
@@ -722,86 +755,86 @@ public interface AlignedBox3afp<
 				} else if ((code1 & COHEN_SUTHERLAND_BACK) != 0 && (code2 & COHEN_SUTHERLAND_FRONT) != 0) {
 					if ((z0 - rz1) >= (rz2 - z1)) {
 						code3 = code1;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								0, 0, 1, -rz2,
 								point);
 					} else {
 						code3 = code2;
-						Segment3afp.calculatesLinePlaneIntersection(
+						Segment3afp.findsIntersectionLinePlane(
 								x0, y0, z0, x1, y1, z1,
 								0, 0, 1, -rz1,
 								point);
 					}
 				} else if ((code1 & COHEN_SUTHERLAND_LEFT) != 0) {
 					code3 = code1;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							1, 0, 0, -rx1,
 							point);
 				} else if ((code1 & COHEN_SUTHERLAND_RIGHT) != 0) {
 					code3 = code1;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							1, 0, 0, -rx2,
 							point);
 				} else if ((code2 & COHEN_SUTHERLAND_LEFT) != 0) {
 					code3 = code2;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							1, 0, 0, -rx1,
 							point);
 				} else if ((code2 & COHEN_SUTHERLAND_RIGHT) != 0) {
 					code3 = code2;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							1, 0, 0, -rx2,
 							point);
 				} else if ((code1 & COHEN_SUTHERLAND_BOTTOM) != 0) {
 					code3 = code1;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 1, 0, -ry1,
 							point);
 				} else if ((code1 & COHEN_SUTHERLAND_TOP) != 0) {
 					code3 = code1;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 1, 0, -ry2,
 							point);
 				} else if ((code2 & COHEN_SUTHERLAND_BOTTOM) != 0) {
 					code3 = code2;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 1, 0, -ry1,
 							point);
 				} else if ((code2 & COHEN_SUTHERLAND_TOP) != 0) {
 					code3 = code2;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 1, 0, -ry2,
 							point);
 				} else if ((code1 & COHEN_SUTHERLAND_FRONT) != 0) {
 					code3 = code1;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 0, 1, -rz1,
 							point);
 				} else if ((code1 & COHEN_SUTHERLAND_BACK) != 0) {
 					code3 = code1;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 0, 1, -rz2,
 							point);
 				} else if ((code2 & COHEN_SUTHERLAND_FRONT) != 0) {
 					code3 = code2;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 0, 1, -rz1,
 							point);
 				} else if ((code2 & COHEN_SUTHERLAND_BACK) != 0) {
 					code3 = code2;
-					Segment3afp.calculatesLinePlaneIntersection(
+					Segment3afp.findsIntersectionLinePlane(
 							x0, y0, z0, x1, y1, z1,
 							0, 0, 1, -rz2,
 							point);
@@ -849,7 +882,7 @@ public interface AlignedBox3afp<
 	 * @param farthest is set with the farthest point on the aligned box.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
-	static void findsFarthestPointAlignedBoxPoint(double rminx, double rminy, double rminz, double rmaxx, double rmaxy,
+	static void findsFarthestPointToAlignedBoxPoint(double rminx, double rminy, double rminz, double rmaxx, double rmaxy,
 			double rmaxz, double px, double py, double pz, Point3D<?, ?, ?> farthest) {
 		assert rmaxx >= rminx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rminx), 3, Double.valueOf(rmaxx));
 		assert rmaxy >= rminy : AssertMessages.lowerEqualParameters(1, Double.valueOf(rminy), 4, Double.valueOf(rmaxy));
@@ -907,13 +940,15 @@ public interface AlignedBox3afp<
 	}
 
 	/** Replies if an aligned box and a line are intersecting.
+	 * If the line degenerates to point, the function tests if the point is inside the box.
+	 * Therefore, it is equivalent to {@link #containsAlignedBoxPoint(double, double, double, double, double, double, double, double, double)}.
 	 *
-	 * @param rx1 is the first corner of the aligned box.
-	 * @param ry1 is the first corner of the aligned box.
-	 * @param rz1 is the first corner of the aligned box.
-	 * @param rx2 is the second corner of the aligned box.
-	 * @param ry2 is the second corner of the aligned box.
-	 * @param rz2 is the second corner of the aligned box.
+	 * @param rminx is the first corner of the aligned box.
+	 * @param rminy is the first corner of the aligned box.
+	 * @param rminz is the first corner of the aligned box.
+	 * @param rmaxx is the second corner of the aligned box.
+	 * @param rmaxy is the second corner of the aligned box.
+	 * @param rmaxz is the second corner of the aligned box.
 	 * @param sx1 is the first point of the line.
 	 * @param sy1 is the first point of the line.
 	 * @param sz1 is the first point of the line.
@@ -922,26 +957,30 @@ public interface AlignedBox3afp<
 	 * @param sz2 is the second point of the line.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
 	 *     {@code false}
-	 * @see "./doc-files/IntersectionLineBox.pdf"
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:localvariablename", "checkstyle:localfinalvariablename"})
 	static boolean intersectsAlignedBoxLine(
-			double rx1, double ry1, double rz1, double rx2, double ry2, double rz2,
+			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2) {
-		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 3, Double.valueOf(rx2));
-		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 4, Double.valueOf(ry2));
-		assert rz1 <= rz2 : AssertMessages.lowerEqualParameters(2, Double.valueOf(rz1), 5, Double.valueOf(rz2));
+		assert rminx <= rmaxx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rminx), 3, Double.valueOf(rmaxx));
+		assert rminy <= rmaxy : AssertMessages.lowerEqualParameters(1, Double.valueOf(rminy), 4, Double.valueOf(rmaxy));
+		assert rminz <= rmaxz : AssertMessages.lowerEqualParameters(2, Double.valueOf(rminz), 5, Double.valueOf(rmaxz));
+
+		if (MathUtil.isEpsilonEqual(sx1, sx2) && MathUtil.isEpsilonEqual(sy1, sy2) && MathUtil.isEpsilonEqual(sz1, sz2)) {
+			// Line degenerates to point
+			return containsAlignedBoxPoint(rminx, rminy, rminz, rmaxx, rmaxy, rmaxz, sx1, sy1, sz1);
+		}
 
 		// Get the centered form of the aligned box
 		// C: center point of the aligned box
 		// e: extent of the aligned box
-		final var Cx = (rx2 + rx1) * .5;
-		final var Cy = (ry2 + ry1) * .5;
-		final var Cz = (rz2 + rz1) * .5;
-		final var ex = (rx2 - rx1) * .5;
-		final var ey = (ry2 - ry1) * .5;
-		final var ez = (rz2 - rz1) * .5;
+		final var Cx = (rmaxx + rminx) * .5;
+		final var Cy = (rmaxy + rminy) * .5;
+		final var Cz = (rmaxz + rminz) * .5;
+		final var ex = (rmaxx - rminx) * .5;
+		final var ey = (rmaxy - rminy) * .5;
+		final var ez = (rmaxz - rminz) * .5;
 
 		// Transform the line to the aligned-box coordinate system
 		// P: the reference point of the line
@@ -968,13 +1007,15 @@ public interface AlignedBox3afp<
 	}
 
 	/** Replies if the aligned box is intersecting the segment.
+	 * If the segment degenerates to a point, the function is
+	 * equivalent to {@link #containsAlignedBoxPoint(double, double, double, double, double, double, double, double, double)}.
 	 *
-	 * @param rx1 is the first corner of the aligned box.
-	 * @param ry1 is the first corner of the aligned box.
-	 * @param rz1 is the first corner of the aligned box.
-	 * @param rx2 is the second corner of the aligned box.
-	 * @param ry2 is the second corner of the aligned box.
-	 * @param rz2 is the second corner of the aligned box.
+	 * @param rminx is the first corner of the aligned box.
+	 * @param rminy is the first corner of the aligned box.
+	 * @param rminz is the first corner of the aligned box.
+	 * @param rmaxx is the second corner of the aligned box.
+	 * @param rmaxy is the second corner of the aligned box.
+	 * @param rmaxz is the second corner of the aligned box.
 	 * @param sx1 is the first point of the segment.
 	 * @param sy1 is the first point of the segment.
 	 * @param sz1 is the first point of the segment.
@@ -983,26 +1024,32 @@ public interface AlignedBox3afp<
 	 * @param sz2 is the second point of the segment.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
 	 *     {@code false}
-	 * @see "./doc-files/IntersectionLineBox.pdf"
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:localvariablename", "checkstyle:localfinalvariablename"})
 	static boolean intersectsAlignedBoxSegment(
-			double rx1, double ry1, double rz1, double rx2, double ry2, double rz2,
+			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2) {
-		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 3, Double.valueOf(rx2));
-		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(ry1), 4, Double.valueOf(ry2));
-		assert rz1 <= rz2 : AssertMessages.lowerEqualParameters(2, Double.valueOf(rz1), 5, Double.valueOf(rz2));
+		assert rminx <= rmaxx : AssertMessages.lowerEqualParameters(0, Double.valueOf(rminx), 3, Double.valueOf(rmaxx));
+		assert rminy <= rmaxy : AssertMessages.lowerEqualParameters(1, Double.valueOf(rminy), 4, Double.valueOf(rmaxy));
+		assert rminz <= rmaxz : AssertMessages.lowerEqualParameters(2, Double.valueOf(rminz), 5, Double.valueOf(rmaxz));
+
+		if (MathUtil.isEpsilonEqual(sx1, sx2) && MathUtil.isEpsilonEqual(sy1, sy2) && MathUtil.isEpsilonEqual(sz1, sz2)) {
+			// Segment degenerates to point
+			return containsAlignedBoxPoint(
+					rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
+					sx1, sy1, sz1);
+		}
 
 		// Get the centered form of the aligned box
 		// C: center point of the aligned box
 		// boxE: extent of the aligned box
-		final var Cx = (rx2 + rx1) * .5;
-		final var Cy = (ry2 + ry1) * .5;
-		final var Cz = (rz2 + rz1) * .5;
-		final var boxEx = (rx2 - rx1) * .5;
-		final var boxEy = (ry2 - ry1) * .5;
-		final var boxEz = (rz2 - rz1) * .5;
+		final var Cx = (rmaxx + rminx) * .5;
+		final var Cy = (rmaxy + rminy) * .5;
+		final var Cz = (rmaxz + rminz) * .5;
+		final var boxEx = (rmaxx - rminx) * .5;
+		final var boxEy = (rmaxy - rminy) * .5;
+		final var boxEz = (rmaxz - rminz) * .5;
 
 		// Transform the segment to the aligned-box coordinate system and
 		// convert it to the center-direction-extent form of the segment
@@ -1138,7 +1185,7 @@ public interface AlignedBox3afp<
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:localvariablename", "checkstyle:localfinalvariablename"})
-	static double calculatesAlignedBoxPointDistanceSquared(
+	static double calculatesDistanceSquaredAlignedBoxPoint(
 			double rx1, double ry1, double rz1, double rx2, double ry2, double rz2,
 			double px, double py, double pz) {
 		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 3, Double.valueOf(rx2));
@@ -1187,7 +1234,7 @@ public interface AlignedBox3afp<
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:localvariablename", "checkstyle:localfinalvariablename"})
-	static double calculatesAlignedBoxPointDistanceL1(
+	static double calculatesDistanceL1AlignedBoxPoint(
 			double rx1, double ry1, double rz1, double rx2, double ry2, double rz2,
 			double px, double py, double pz) {
 		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 3, Double.valueOf(rx2));
@@ -1236,7 +1283,7 @@ public interface AlignedBox3afp<
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:localvariablename", "checkstyle:localfinalvariablename"})
-	static double calculatesAlignedBoxPointDistanceLinf(
+	static double calculatesDistanceLinfAlignedBoxPoint(
 			double rx1, double ry1, double rz1, double rx2, double ry2, double rz2,
 			double px, double py, double pz) {
 		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(rx1), 3, Double.valueOf(rx2));
@@ -1296,7 +1343,7 @@ public interface AlignedBox3afp<
 	@Override
 	default double getDistanceSquared(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		return calculatesAlignedBoxPointDistanceSquared(
+		return calculatesDistanceSquaredAlignedBoxPoint(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
 				pt.getX(), pt.getY(), pt.getZ());
@@ -1306,7 +1353,7 @@ public interface AlignedBox3afp<
 	@Override
 	default double getDistanceL1(Point3D<?, ?, ?> pt) {
 		assert pt != null :  AssertMessages.notNullParameter();
-		return calculatesAlignedBoxPointDistanceL1(
+		return calculatesDistanceL1AlignedBoxPoint(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
 				pt.getX(), pt.getY(), pt.getZ());
@@ -1316,7 +1363,7 @@ public interface AlignedBox3afp<
 	@Override
 	default double getDistanceLinf(Point3D<?, ?, ?> pt) {
 		assert pt != null :  AssertMessages.notNullParameter();
-		return calculatesAlignedBoxPointDistanceLinf(
+		return calculatesDistanceLinfAlignedBoxPoint(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
 				pt.getX(), pt.getY(), pt.getZ());
@@ -1526,54 +1573,18 @@ public interface AlignedBox3afp<
 	 * with the reference rectangular box.
 	 *
 	 * @param reference is the rectangular prism we want to avoid collision with.
-	 * @param result the displacement vector.
+	 * @param result the displacement vector. It can be {@code null}.
 	 */
 	default void avoidCollisionWith(AlignedBox3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?, ?> result) {
-		assert reference != null :  AssertMessages.notNullParameter();
-		assert result != null : AssertMessages.notNullParameter();
-		final var dx1 = reference.getMaxX() - getMinX();
-		final var dx2 = reference.getMinX() - getMaxX();
-		final var dy1 = reference.getMaxY() - getMinY();
-		final var dy2 = reference.getMinY() - getMaxY();
-		final var dz1 = reference.getMaxZ() - getMinZ();
-		final var dz2 = reference.getMinZ() - getMaxZ();
-
-		final var absdx1 = Math.abs(dx1);
-		final var absdx2 = Math.abs(dx2);
-		final var absdy1 = Math.abs(dy1);
-		final var absdy2 = Math.abs(dy2);
-		final var absdz1 = Math.abs(dz1);
-		final var absdz2 = Math.abs(dz2);
-
-		final var min = MathUtil.min(absdx1, absdx2, absdy1, absdy2, absdz1, absdz2);
-
-		var dx = 0.;
-		var dy = 0.;
-		var dz = 0.;
-
-		if (min == absdy1) {
-			dy = dy1;
-		} else if (min == absdy2) {
-			dy = dy2;
-		} else if (min == absdz1) {
-			dz = dz1;
-		} else if (min == absdz2) {
-			dz = dz2;
-		} else if (min == absdx1) {
-			dx = dx1;
-		} else {
-			dx = dx2;
-		}
-		set(
-				getMinX() + dx,
-				getMinY() + dy,
-				getMinZ() + dz,
-				getWidth(),
-				getHeight(),
-				getDepth());
-		if (result != null) {
-			result.set(dx, dy, dz);
-		}
+		assert reference != null : AssertMessages.notNullParameter(0);
+		final var newMin = new InnerComputationPoint3D();
+		final var newMax = new InnerComputationPoint3D();
+		Box3afp.avoidCollisionBoxBox(
+				getMinX(), getMinY(), getMinZ(),
+				getMaxX(), getMaxY(), getMaxZ(),
+				reference.getMinX(), reference.getMinY(), reference.getMinZ(),
+				reference.getMaxX(), reference.getMaxY(), reference.getMaxZ(),
+				newMin, newMax, result);
 	}
 
 	/** Move this aligned box to avoid collision
@@ -1587,64 +1598,15 @@ public interface AlignedBox3afp<
 	default void avoidCollisionWith(AlignedBox3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?, ?> displacementDirection,
 			Vector3D<?, ?, ?> result) {
 		assert reference != null : AssertMessages.notNullParameter(0);
-		assert result != null : AssertMessages.notNullParameter(2);
-		if (displacementDirection == null) {
-			avoidCollisionWith(reference, result);
-		} else if (displacementDirection.getLengthSquared() == 0) {
-			avoidCollisionWith(reference, displacementDirection);
-			if (result != null) {
-				result.set(displacementDirection);
-			}
-		} else {
-			final var dx1 = reference.getMaxX() - getMinX();
-			final var dx2 = reference.getMinX() - getMaxX();
-			final var dy1 = reference.getMaxY() - getMinY();
-			final var dy2 = reference.getMinY() - getMaxY();
-			final var dz1 = reference.getMaxZ() - getMinZ();
-			final var dz2 = reference.getMinZ() - getMaxZ();
-
-			final var absdx1 = Math.abs(dx1);
-			final var absdx2 = Math.abs(dx2);
-			final var absdy1 = Math.abs(dy1);
-			final var absdy2 = Math.abs(dy2);
-			final var absdz1 = Math.abs(dz1);
-			final var absdz2 = Math.abs(dz2);
-
-			final double dx;
-			final double dy;
-			final double dz;
-
-			if (displacementDirection.getX() < 0) {
-				dx = -Math.min(absdx1, absdx2);
-			} else {
-				dx = Math.min(absdx1, absdx2);
-			}
-
-			if (displacementDirection.getY() < 0) {
-				dy = -Math.min(absdy1, absdy2);
-			} else {
-				dy = Math.min(absdy1, absdy2);
-			}
-
-			if (displacementDirection.getZ() < 0) {
-				dz = -Math.min(absdz1, absdz2);
-			} else {
-				dz = Math.min(absdz1, absdz2);
-			}
-
-			set(
-					getMinX() + dx,
-					getMinY() + dy,
-					getMinZ() + dz,
-					getWidth(),
-					getHeight(),
-					getDepth());
-
-			displacementDirection.set(dx, dy, dz);
-			if (result != null) {
-				result.set(dx, dy, dz);
-			}
-		}
+		final var newMin = new InnerComputationPoint3D();
+		final var newMax = new InnerComputationPoint3D();
+		Box3afp.avoidCollisionBoxBox(
+				getMinX(), getMinY(), getMinZ(),
+				getMaxX(), getMaxY(), getMaxZ(),
+				reference.getMinX(), reference.getMinY(), reference.getMinZ(),
+				reference.getMaxX(), reference.getMaxY(), reference.getMaxZ(),
+				displacementDirection,
+				newMin, newMax, result);
 	}
 
 	@Pure
@@ -1652,7 +1614,7 @@ public interface AlignedBox3afp<
 	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P cp = getGeomFactory().newPoint();
-		findsClosestPointAlignedBoxPoint(
+		findsClosestPointToAlignedBoxPoint(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
 				pt.getX(), pt.getY(), pt.getZ(), cp);
@@ -1663,7 +1625,7 @@ public interface AlignedBox3afp<
 	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		final P cp = getGeomFactory().newPoint();
-		findsClosestPointAlignedBoxSphere(
+		findsClosestPointToAlignedBoxSphere(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
 				sphere.getX(), sphere.getY(), sphere.getZ(),
@@ -1683,7 +1645,7 @@ public interface AlignedBox3afp<
 	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> box) {
 		assert box != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
-		findsClosestPointAlignedBoxAlignedBox(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
+		findsClosestPointToAlignedBoxAlignedBox(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
 				box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX(), box.getMaxY(), box.getMaxZ(),
 				point);
 		return point;
@@ -1693,9 +1655,11 @@ public interface AlignedBox3afp<
 	default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
-		findsClosestPointAlignedBoxSegment(
+		findsClosestPointToAlignedBoxSegment(
 				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
-				segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2(), point);
+				segment.getX1(), segment.getY1(), segment.getZ1(),
+				segment.getX2(), segment.getY2(), segment.getZ2(),
+				point, null);
 		return point;
 	}
 
@@ -1704,7 +1668,7 @@ public interface AlignedBox3afp<
 	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
-		findsFarthestPointAlignedBoxPoint(
+		findsFarthestPointToAlignedBoxPoint(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
 				pt.getX(), pt.getY(), pt.getZ(),

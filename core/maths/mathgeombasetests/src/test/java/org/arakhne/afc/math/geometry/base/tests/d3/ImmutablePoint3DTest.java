@@ -20,16 +20,18 @@
 
 package org.arakhne.afc.math.geometry.base.tests.d3;
 
+import static org.junit.jupiter.api.Assumptions.*;
+
 import org.arakhne.afc.math.geometry.base.d3.ImmutablePoint3D;
 import org.arakhne.afc.math.geometry.base.d3.ImmutableQuaternion;
 import org.arakhne.afc.math.geometry.base.d3.ImmutableVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
-import org.arakhne.afc.math.geometry.base.tests.AbstractUnmodifiablePoint3DTestCase;
+import org.arakhne.afc.math.geometry.base.d3.Shape3D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractImmutablePoint3DTest;
 import org.junit.jupiter.api.DisplayName;
 
-@DisplayName("ImmutablePoint3D")
 @SuppressWarnings("all")
-public class ImmutablePoint3DTest extends AbstractUnmodifiablePoint3DTestCase<ImmutablePoint3D, ImmutableVector3D, ImmutableQuaternion> {
+public class ImmutablePoint3DTest extends AbstractImmutablePoint3DTest {
 	
 	@Override
 	public ImmutableVector3D createVector(final double tx, final double ty, final double tz) {
@@ -49,6 +51,12 @@ public class ImmutablePoint3DTest extends AbstractUnmodifiablePoint3DTestCase<Im
 	@Override
 	public boolean isIntCoordinates() {
 		return false;
+	}
+
+	@Override
+	public Shape3D createSphere(double x, double y, double z, double radius) {
+		assumeTrue(false, "Sphere creation not enabled. See unit tests in sub-projects");
+		return null;
 	}
 
 }

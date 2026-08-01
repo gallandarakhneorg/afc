@@ -82,6 +82,13 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	 */
 	double EPS = 0.000001;
 
+	/** Clone this quaternion.
+	 *
+	 * @return the clone.
+	 */
+	@Pure
+	RQ clone();
+
 	/**
 	 * Returns true if the L-infinite distance between the two quaternions is less than or equal to the epsilon parameter,
 	 * otherwise returns false.  The L-infinite

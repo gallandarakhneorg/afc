@@ -23,25 +23,26 @@ package org.arakhne.afc.math.geometry.d3.tests.afp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
-import org.arakhne.afc.math.geometry.d3.tests.AbstractMathTestCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -67,27 +68,27 @@ public abstract class AbstractPath3dPointCollectionTestCase<P extends Point3D<? 
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.factory = createFactory();
-		this.shape = this.factory.createPath();
-		this.shape.moveTo(1, 1, 0);
-		this.shape.lineTo(2, 2, 0);
-		this.shape.quadTo(3, 0, 0, 4, 3, 0);
-		this.shape.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
-		this.shape.closePath();
-		this.collection = this.shape.toCollection();
+		factory = createFactory();
+		shape = factory.createPath();
+		shape.moveTo(1, 1, 0);
+		shape.lineTo(2, 2, 0);
+		shape.quadTo(3, 0, 0, 4, 3, 0);
+		shape.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
+		shape.closePath();
+		collection = shape.toCollection();
 	}
 	
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.shape = null;
-		this.collection = null;
-		this.factory = null;
+		shape = null;
+		collection = null;
+		factory = null;
 	}
 	
 	private void assertCoords(double... coords) {
-		assertEquals(coords.length/3, this.shape.size());
-		for(int i=0, j=0; i<this.shape.size(); ++i) {
-			Point3D p = this.shape.getPointAt(i);
+		assertEquals(coords.length/3, shape.size());
+		for(int i=0, j=0; i<shape.size(); ++i) {
+			Point3D p = shape.getPointAt(i);
 			assertEpsilonEquals(coords[j++], p.getX());
 			assertEpsilonEquals(coords[j++], p.getY());
 			assertEpsilonEquals(coords[j++], p.getZ());
@@ -95,264 +96,546 @@ public abstract class AbstractPath3dPointCollectionTestCase<P extends Point3D<? 
 	}
 	
 	@DisplayName("size")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void size(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	assertEquals(7, this.collection.size());
-    	this.shape.removeLast();
-    	assertEquals(7, this.collection.size());
-    	this.shape.removeLast();
-    	assertEquals(4, this.collection.size());
-    	this.shape.clear();
-    	assertEquals(0, this.collection.size());
-    }
+	@Nested
+	public class Size {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertEquals(7, collection.size());
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	shape.removeLast();
+	    	assertEquals(7, collection.size());
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	shape.removeLast();
+	    	shape.removeLast();
+	    	assertEquals(4, collection.size());
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	shape.removeLast();
+	    	shape.removeLast();
+	    	shape.clear();
+	    	assertEquals(0, collection.size());
+	    }
+	}
 
 	@DisplayName("isEmpty")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void isEmpty(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	assertFalse(this.collection.isEmpty());
-    	this.shape.removeLast();
-    	assertFalse(this.collection.isEmpty());
-    	this.shape.removeLast();
-    	assertFalse(this.collection.isEmpty());
-    	this.shape.clear();
-    	assertTrue(this.collection.isEmpty());
-    }
+	@Nested
+	public class IsEmpty {
 
-	@DisplayName("contains(Object)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void containsObject(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	assertFalse(this.collection.contains(new Object()));
-    	assertTrue(this.collection.contains(this.factory.createPoint(2, 2, 0)));
-    	assertTrue(this.collection.contains(this.factory.createPoint(6, 5, 0)));
-    	assertFalse(this.collection.contains(this.factory.createPoint(-1, 6, 0)));
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertFalse(collection.isEmpty());
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	shape.removeLast();
+	    	assertFalse(collection.isEmpty());
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	shape.removeLast();
+	    	shape.removeLast();
+	    	assertFalse(collection.isEmpty());
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	shape.removeLast();
+	    	shape.removeLast();
+	    	shape.clear();
+	    	assertTrue(collection.isEmpty());
+	    }
+	}
+
+	@DisplayName("contains")
+	@Nested
+	public class Contains {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertFalse(collection.contains(new Object()));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertTrue(collection.contains(factory.createPoint(2, 2, 0)));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertTrue(collection.contains(factory.createPoint(6, 5, 0)));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertFalse(collection.contains(factory.createPoint(-1, 6, 0)));
+		}
     }
 
 	@DisplayName("iterator")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void iterator(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	Point3D p;
-    	Iterator<P> iterator = this.collection.iterator();
-    	assertTrue(iterator.hasNext());
-    	p = iterator.next();
-    	assertEpsilonEquals(1, p.getX());
-    	assertEpsilonEquals(1, p.getY());
-    	assertEpsilonEquals(0, p.getZ());
-    	assertTrue(iterator.hasNext());
-    	p = iterator.next();
-    	assertEpsilonEquals(2, p.getX());
-    	assertEpsilonEquals(2, p.getY());
-    	assertEpsilonEquals(0, p.getZ());
-    	assertTrue(iterator.hasNext());
-    	p = iterator.next();
-    	assertEpsilonEquals(3, p.getX());
-    	assertEpsilonEquals(3, p.getX());
-    	assertEpsilonEquals(0, p.getZ());
-    	assertTrue(iterator.hasNext());
-    	p = iterator.next();
-    	assertEpsilonEquals(4, p.getX());
-    	assertEpsilonEquals(3, p.getY());
-    	assertEpsilonEquals(0, p.getZ());
-    	assertTrue(iterator.hasNext());
-    	p = iterator.next();
-    	assertEpsilonEquals(5, p.getX());
-    	assertEpsilonEquals(-1, p.getY());
-    	assertEpsilonEquals(0, p.getZ());
-    	assertTrue(iterator.hasNext());
-    	p = iterator.next();
-    	assertEpsilonEquals(6, p.getX());
-    	assertEpsilonEquals(5, p.getY());
-    	assertEpsilonEquals(0, p.getZ());
-    	assertTrue(iterator.hasNext());
-    	p = iterator.next();
-    	assertEpsilonEquals(7, p.getX());
-    	assertEpsilonEquals(-5, p.getY());
-    	assertEpsilonEquals(0, p.getZ());
-    	assertFalse(iterator.hasNext());
-    }
+	@Nested
+	public class IteratorTest {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Iterator<P> iterator = collection.iterator();
+	    	assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Iterator<P> iterator = collection.iterator();
+	    	var p = iterator.next();
+	    	assertEpsilonEquals(1, p.getX());
+	    	assertEpsilonEquals(1, p.getY());
+	    	assertEpsilonEquals(0, p.getZ());
+	    	assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Iterator<P> iterator = collection.iterator();
+	    	var p = iterator.next();
+	    	p = iterator.next();
+	    	assertEpsilonEquals(2, p.getX());
+	    	assertEpsilonEquals(2, p.getY());
+	    	assertEpsilonEquals(0, p.getZ());
+	    	assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Iterator<P> iterator = collection.iterator();
+	    	var p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	assertEpsilonEquals(3, p.getX());
+	    	assertEpsilonEquals(3, p.getX());
+	    	assertEpsilonEquals(0, p.getZ());
+	    	assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Iterator<P> iterator = collection.iterator();
+	    	var p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	assertEpsilonEquals(4, p.getX());
+	    	assertEpsilonEquals(3, p.getY());
+	    	assertEpsilonEquals(0, p.getZ());
+	    	assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Iterator<P> iterator = collection.iterator();
+	    	var p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	assertEpsilonEquals(5, p.getX());
+	    	assertEpsilonEquals(-1, p.getY());
+	    	assertEpsilonEquals(0, p.getZ());
+	    	assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Iterator<P> iterator = collection.iterator();
+	    	var p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	assertEpsilonEquals(6, p.getX());
+	    	assertEpsilonEquals(5, p.getY());
+	    	assertEpsilonEquals(0, p.getZ());
+	    	assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Iterator<P> iterator = collection.iterator();
+	    	var p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	p = iterator.next();
+	    	assertEpsilonEquals(7, p.getX());
+	    	assertEpsilonEquals(-5, p.getY());
+	    	assertEpsilonEquals(0, p.getZ());
+	    	assertFalse(iterator.hasNext());
+		}
+	}
 
 	@DisplayName("toArray")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void toArray(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	Object[] tab = this.collection.toArray();
-    	assertEquals(7, tab.length);
-    	assertTrue(tab[0] instanceof Point3D);
-    	assertEpsilonEquals(1, ((Point3D) tab[0]).getX());
-    	assertEpsilonEquals(1, ((Point3D) tab[0]).getY());
-    	assertEpsilonEquals(0, ((Point3D) tab[0]).getZ());
-    	assertTrue(tab[1] instanceof Point3D);
-    	assertEpsilonEquals(2, ((Point3D) tab[1]).getX());
-    	assertEpsilonEquals(2, ((Point3D) tab[1]).getY());
-    	assertEpsilonEquals(0, ((Point3D) tab[1]).getZ());
-    	assertTrue(tab[2] instanceof Point3D);
-    	assertEpsilonEquals(3, ((Point3D) tab[2]).getX());
-    	assertEpsilonEquals(0, ((Point3D) tab[2]).getY());
-    	assertEpsilonEquals(0, ((Point3D) tab[2]).getZ());
-    	assertTrue(tab[3] instanceof Point3D);
-    	assertEpsilonEquals(4, ((Point3D) tab[3]).getX());
-    	assertEpsilonEquals(3, ((Point3D) tab[3]).getY());
-    	assertEpsilonEquals(0, ((Point3D) tab[3]).getZ());
-    	assertTrue(tab[4] instanceof Point3D);
-    	assertEpsilonEquals(5, ((Point3D) tab[4]).getX());
-    	assertEpsilonEquals(-1, ((Point3D) tab[4]).getY());
-    	assertEpsilonEquals(0, ((Point3D) tab[4]).getZ());
-    	assertTrue(tab[5] instanceof Point3D);
-    	assertEpsilonEquals(6, ((Point3D) tab[5]).getX());
-    	assertEpsilonEquals(5, ((Point3D) tab[5]).getY());
-    	assertEpsilonEquals(0, ((Point3D) tab[5]).getZ());
-    	assertTrue(tab[6] instanceof Point3D);
-    	assertEpsilonEquals(7, ((Point3D) tab[6]).getX());
-    	assertEpsilonEquals(-5, ((Point3D) tab[6]).getY());
-    	assertEpsilonEquals(0, ((Point3D) tab[6]).getZ());
+	@Nested
+	public class ToArray {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Object[] tab = collection.toArray();
+	    	assertEquals(7, tab.length);
+	    	assertTrue(tab[0] instanceof Point3D);
+	    	assertEpsilonEquals(1, ((Point3D) tab[0]).getX());
+	    	assertEpsilonEquals(1, ((Point3D) tab[0]).getY());
+	    	assertEpsilonEquals(0, ((Point3D) tab[0]).getZ());
+	    	assertTrue(tab[1] instanceof Point3D);
+	    	assertEpsilonEquals(2, ((Point3D) tab[1]).getX());
+	    	assertEpsilonEquals(2, ((Point3D) tab[1]).getY());
+	    	assertEpsilonEquals(0, ((Point3D) tab[1]).getZ());
+	    	assertTrue(tab[2] instanceof Point3D);
+	    	assertEpsilonEquals(3, ((Point3D) tab[2]).getX());
+	    	assertEpsilonEquals(0, ((Point3D) tab[2]).getY());
+	    	assertEpsilonEquals(0, ((Point3D) tab[2]).getZ());
+	    	assertTrue(tab[3] instanceof Point3D);
+	    	assertEpsilonEquals(4, ((Point3D) tab[3]).getX());
+	    	assertEpsilonEquals(3, ((Point3D) tab[3]).getY());
+	    	assertEpsilonEquals(0, ((Point3D) tab[3]).getZ());
+	    	assertTrue(tab[4] instanceof Point3D);
+	    	assertEpsilonEquals(5, ((Point3D) tab[4]).getX());
+	    	assertEpsilonEquals(-1, ((Point3D) tab[4]).getY());
+	    	assertEpsilonEquals(0, ((Point3D) tab[4]).getZ());
+	    	assertTrue(tab[5] instanceof Point3D);
+	    	assertEpsilonEquals(6, ((Point3D) tab[5]).getX());
+	    	assertEpsilonEquals(5, ((Point3D) tab[5]).getY());
+	    	assertEpsilonEquals(0, ((Point3D) tab[5]).getZ());
+	    	assertTrue(tab[6] instanceof Point3D);
+	    	assertEpsilonEquals(7, ((Point3D) tab[6]).getX());
+	    	assertEpsilonEquals(-5, ((Point3D) tab[6]).getY());
+	    	assertEpsilonEquals(0, ((Point3D) tab[6]).getZ());
+	    }
+
+		@DisplayName("(Point3D[]) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void pointarray_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	Point3D[] tab = new Point3D[5];
+	    	Point3D[] tab2 = collection.toArray(tab);
+	    	assertSame(tab, tab2);
+	    	assertEquals(5, tab.length);
+	    	assertEpsilonEquals(1, tab[0].getX());
+	    	assertEpsilonEquals(1, tab[0].getY());
+	    	assertEpsilonEquals(0, tab[0].getZ());
+	    	assertEpsilonEquals(2, tab[1].getX());
+	    	assertEpsilonEquals(2, tab[1].getY());
+	    	assertEpsilonEquals(0, tab[1].getZ());
+	    	assertEpsilonEquals(3, tab[2].getX());
+	    	assertEpsilonEquals(0, tab[2].getY());
+	    	assertEpsilonEquals(0, tab[2].getZ());
+	    	assertEpsilonEquals(4, tab[3].getX());
+	    	assertEpsilonEquals(3, tab[3].getY());
+	    	assertEpsilonEquals(0, tab[3].getZ());
+	    	assertEpsilonEquals(5, tab[4].getX());
+	    	assertEpsilonEquals(-1, tab[4].getY());
+	    	assertEpsilonEquals(0, tab[4].getZ());
+	    }
+	}
+
+	@DisplayName("add")
+	@Nested
+	public class Add {
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertTrue(collection.add(factory.createPoint(123, 456, 0)));
+	    	assertCoords(1, 1, 0, 2, 2, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0, 123, 456, 0);
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertTrue(collection.add(factory.createPoint(123, 456, 0)));
+	    	shape.clear();
+	    	assertCoords();
+	    	assertTrue(collection.add(factory.createPoint(123, 456, 0)));
+	    	assertCoords(123, 456, 0);
+	    	assertTrue(collection.add(factory.createPoint(789, 1011, 0)));
+	    	assertCoords(123, 456, 0, 789, 1011, 0);
+	    }
+	}
+
+	@DisplayName("remove")
+	@Nested
+	public class Remove {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertFalse(collection.remove(new Object()));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertTrue(collection.remove(factory.createPoint(2, 2, 0)));
+	    	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	collection.remove(factory.createPoint(2, 2, 0));
+	    	assertTrue(collection.remove(factory.createPoint(6, 5, 0)));
+	    	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0);
+	    }
+	}
+
+	@DisplayName("containsAll")
+	@Nested
+	public class ContainsAll {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertTrue(collection.containsAll(
+	    			Arrays.asList(factory.createPoint(1, 1, 0), factory.createPoint(6, 5, 0))));
+	    }
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	assertFalse(collection.containsAll(
+	    			Arrays.asList(factory.createPoint(1, 1, 0), factory.createPoint(6, 6, 0))));
+	    }
+	}
+
+	@DisplayName("addAll")
+	@Nested
+	public class AllAll {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	collection.addAll(
+	    			Arrays.asList(factory.createPoint(123, 456, 0), factory.createPoint(789, 1011, 0)));
+	    	assertCoords(1, 1, 0, 2, 2, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0, 123, 456, 0, 789, 1011, 0);
+		}
     }
 
-	@DisplayName("toArray(Point3D[])")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void toArrayArray(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	Point3D[] tab = new Point3D[5];
-    	Point3D[] tab2 = this.collection.toArray(tab);
-    	assertSame(tab, tab2);
-    	assertEquals(5, tab.length);
-    	assertEpsilonEquals(1, tab[0].getX());
-    	assertEpsilonEquals(1, tab[0].getY());
-    	assertEpsilonEquals(0, tab[0].getZ());
-    	assertEpsilonEquals(2, tab[1].getX());
-    	assertEpsilonEquals(2, tab[1].getY());
-    	assertEpsilonEquals(0, tab[1].getZ());
-    	assertEpsilonEquals(3, tab[2].getX());
-    	assertEpsilonEquals(0, tab[2].getY());
-    	assertEpsilonEquals(0, tab[2].getZ());
-    	assertEpsilonEquals(4, tab[3].getX());
-    	assertEpsilonEquals(3, tab[3].getY());
-    	assertEpsilonEquals(0, tab[3].getZ());
-    	assertEpsilonEquals(5, tab[4].getX());
-    	assertEpsilonEquals(-1, tab[4].getY());
-    	assertEpsilonEquals(0, tab[4].getZ());
-    }
+	@DisplayName("removeAll")
+	@Nested
+	public class RemoveAll {
 
-	@DisplayName("add(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void add(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	assertTrue(this.collection.add(this.factory.createPoint(123, 456, 0)));
-    	assertCoords(1, 1, 0, 2, 2, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0, 123, 456, 0);
-    	this.shape.clear();
-    	assertCoords();
-    	assertTrue(this.collection.add(this.factory.createPoint(123, 456, 0)));
-    	assertCoords(123, 456, 0);
-    	assertTrue(this.collection.add(this.factory.createPoint(789, 1011, 0)));
-    	assertCoords(123, 456, 0, 789, 1011, 0);
-    }
-
-	@DisplayName("remove(Object)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void remove(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	assertFalse(this.collection.remove(new Object()));
-    	assertTrue(this.collection.remove(this.factory.createPoint(2, 2, 0)));
-    	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0);
-    	assertTrue(this.collection.remove(this.factory.createPoint(6, 5, 0)));
-    	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0);
-    }
-
-	@DisplayName("containsAll(Collection)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void containsAll(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	assertTrue(this.collection.containsAll(
-    			Arrays.asList(this.factory.createPoint(1, 1, 0), this.factory.createPoint(6, 5, 0))));
-    	assertFalse(this.collection.containsAll(
-    			Arrays.asList(this.factory.createPoint(1, 1, 0), this.factory.createPoint(6, 6, 0))));
-    }
-
-	@DisplayName("addAll(Collection)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void addAll(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	this.collection.addAll(
-    			Arrays.asList(this.factory.createPoint(123, 456, 0), this.factory.createPoint(789, 1011, 0)));
-    	assertCoords(1, 1, 0, 2, 2, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0, 123, 456, 0, 789, 1011, 0);
-    }
-
-	@DisplayName("removeAll(Collection)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void removeAll(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	this.collection.removeAll(
-    			Arrays.asList(this.factory.createPoint(123, 456, 0), this.factory.createPoint(2, 2, 0)));
-    	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0);
-    }
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	collection.removeAll(
+	    			Arrays.asList(factory.createPoint(123, 456, 0), factory.createPoint(2, 2, 0)));
+	    	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0);
+	    }
+	}
 
 	@DisplayName("retainAll(Collection)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void retainAll(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	try {
-    		this.collection.retainAll(Collections.emptyList());
-    		fail("Expecting an exception"); //$NON-NLS-1$
-    	}
-    	catch(Throwable e1) {
-    		e1.equals(e1);
-    		// Expecting an exception
-    	}
+	@Nested
+	public class retainAll {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(Throwable.class, () -> {
+	    		collection.retainAll(Collections.emptyList());
+			});
+		}
     }
 
 	@DisplayName("clear")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-    public void clear(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-    	this.collection.clear();
-    	assertCoords();
-    }
-    
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void toIntArray(CoordinateSystem3D cs);
+	@Nested
+	public class Clear {
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void toIntArrayTransform3D(CoordinateSystem3D cs);
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	collection.clear();
+	    	assertCoords();
+	    }
+	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void toFloatArray(CoordinateSystem3D cs);
+	@DisplayName("toIntArray")
+	@Nested
+	public class ToIntArray {
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void toFloatArrayTransform3D(CoordinateSystem3D cs);
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	throw new UnsupportedOperationException();
+	    }
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void toDoubleArray(CoordinateSystem3D cs);
+		@DisplayName("(Transform3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	throw new UnsupportedOperationException();
+	    }
+	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void toDoubleArrayTransform3D(CoordinateSystem3D cs);
+	@DisplayName("toFloatArray")
+	@Nested
+	public class ToFloatArray {
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void toPointArray(CoordinateSystem3D cs);
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	throw new UnsupportedOperationException();
+	    }
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public abstract void toPointArrayTransform3D(CoordinateSystem3D cs);
+		@DisplayName("(Transform3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	throw new UnsupportedOperationException();
+	    }
+	}
+
+	@DisplayName("toDoubleArray")
+	@Nested
+	public class ToDoubleArray {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	throw new UnsupportedOperationException();
+	    }
+
+		@DisplayName("(Transform3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	throw new UnsupportedOperationException();
+	    }
+	}
+
+	@DisplayName("toPointArray")
+	@Nested
+	public class ToPointArray {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	throw new UnsupportedOperationException();
+	    }
+
+		@DisplayName("(Transform3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	    	throw new UnsupportedOperationException();
+	    }
+	}
 
 }

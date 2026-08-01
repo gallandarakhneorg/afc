@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
+import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
@@ -49,10 +50,10 @@ public interface Box3ai<
 		V extends Vector3D<? super V, ? super P, ? super Q>,
 		Q extends Quaternion<? super P, ? super V, ? super Q>,
 		B extends AlignedBox3ai<?, IE, P, V, Q, B>>
-		extends Shape3ai<IT, IE, P, V, Q, B> {
+		extends Shape3ai<IT, IE, P, V, Q, B>, BoundsReceiver3D {
 
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver3D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 	}

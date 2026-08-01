@@ -18,36 +18,36 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d3.tests.d;
+package org.arakhne.afc.math.geometry.base.tests;
 
-import org.arakhne.afc.math.geometry.base.tests.AbstractVector3DTestCase;
-import org.arakhne.afc.math.geometry.d3.d.Point3d;
-import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
-import org.arakhne.afc.math.geometry.d3.d.Vector3d;
+import org.arakhne.afc.math.geometry.base.d3.ImmutablePoint3D;
+import org.arakhne.afc.math.geometry.base.d3.ImmutableQuaternion;
+import org.arakhne.afc.math.geometry.base.d3.ImmutableVector3D;
+import org.arakhne.afc.math.geometry.base.d3.Point3D;
+import org.arakhne.afc.math.geometry.base.d3.Shape3D;
 import org.junit.jupiter.api.DisplayName;
 
 @SuppressWarnings("all")
-@DisplayName("Vector3d")
-public class Vector3dTest extends AbstractVector3DTestCase<Vector3d, Point3d, Quaternion4d, Vector3d> {
+public abstract class AbstractImmutablePoint3DTest extends AbstractUnmodifiablePoint3DTestCase<ImmutablePoint3D, ImmutableVector3D, ImmutableQuaternion> {
+	
+	@Override
+	public ImmutableVector3D createVector(final double tx, final double ty, final double tz) {
+		return new ImmutableVector3D(tx, ty, tz);
+	}
+
+	@Override
+	public ImmutablePoint3D createPoint(final double tx, final double ty, final double tz) {
+		return new ImmutablePoint3D(tx, ty, tz);
+	}
+	
+	@Override
+	public Point3D createTuple(double x, double y, double z) {
+		return new ImmutablePoint3D(x, y, z);
+	}
 
 	@Override
 	public boolean isIntCoordinates() {
 		return false;
-	}
-	
-	@Override
-	public Vector3d createVector(double x, double y, double z) {
-		return new Vector3d(x, y, z);
-	}
-
-	@Override
-	public Point3d createPoint(double x, double y, double z) {
-		return new Point3d(x, y, z);
-	}
-
-	@Override
-	public Vector3d createTuple(double x, double y, double z) {
-		return new Vector3d(x, y, z);
 	}
 
 }

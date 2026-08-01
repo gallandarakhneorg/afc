@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.base.PathElementType;
+import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
 import org.arakhne.afc.math.geometry.base.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
@@ -278,7 +279,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
-	public void toBoundingBox(AlignedBox3d box) {
+	public void toBoundingBox(BoundsReceiver3D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		var bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
@@ -288,7 +289,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
 		}
-		box.set(bb);
+		box.setFromCorners(bb.getMinX(), bb.getMinY(), bb.getMinZ(), bb.getMaxX(), bb.getMaxY(), bb.getMaxZ());
 	}
 
 	@Override
@@ -386,7 +387,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
-	public void closePath() {
+	public Path3d closePath() {
 		if (this.numTypes <= 0 || this.types[this.numTypes - 1] != PathElementType.CLOSE
 				&& this.types[this.numTypes - 1] != PathElementType.MOVE_TO) {
 			ensureSlots(true, 0);
@@ -395,6 +396,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 			this.isPolygon = null;
 			fireGeometryChange();
 		}
+		return this;
 	}
 
 	@Override
@@ -591,7 +593,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
-	public void moveTo(double x, double y, double z) {
+	public Path3d moveTo(double x, double y, double z) {
 		if (this.numTypes != 0) {
 			this.isPolyline = Boolean.FALSE;
 			this.isPolygon = Boolean.FALSE;
@@ -614,10 +616,11 @@ public class Path3d extends AbstractShape3d<Path3d>
 		this.logicalBounds = null;
 		this.length = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
-	public void lineTo(double x, double y, double z) {
+	public Path3d lineTo(double x, double y, double z) {
 		ensureSlots(true, 3);
 		this.types[this.numTypes++] = PathElementType.LINE_TO;
 		this.coords[this.numCoords++] = x;
@@ -631,10 +634,11 @@ public class Path3d extends AbstractShape3d<Path3d>
 		this.logicalBounds = null;
 		this.length = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
-	public void quadTo(double x1, double y1, double z1, double x2, double y2, double z2) {
+	public Path3d quadTo(double x1, double y1, double z1, double x2, double y2, double z2) {
 		ensureSlots(true, 6);
 		this.types[this.numTypes++] = PathElementType.QUAD_TO;
 		this.coords[this.numCoords++] = x1;
@@ -650,11 +654,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 		this.logicalBounds = null;
 		this.length = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override
 	@SuppressWarnings("checkstyle:parameternumber")
-	public void curveTo(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+	public Path3d curveTo(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
 		ensureSlots(true, 9);
 		this.types[this.numTypes++] = PathElementType.CURVE_TO;
 		this.coords[this.numCoords++] = x1;
@@ -673,6 +678,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 		this.logicalBounds = null;
 		this.length = null;
 		fireGeometryChange();
+		return this;
 	}
 
 	@Override

@@ -20,13 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.base.d3.ImmutableVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.base.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
-import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Vector with 3 double precision floating-point numbers.
@@ -252,68 +251,8 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Pure
 	@Override
-	public UnmodifiableVector3D<Vector3d, Point3d, Quaternion4d> toUnmodifiable() {
-		return new UnmodifiableVector3D<>() {
-
-			private static final long serialVersionUID = 6848610371671516804L;
-
-			@Override
-			public GeomFactory3D<Vector3d, Point3d, Quaternion4d> getGeomFactory() {
-				return Vector3d.this.getGeomFactory();
-			}
-
-			@Override
-			public Vector3d toUnitVector() {
-				return Vector3d.this.toUnitVector();
-			}
-
-			@Override
-			@SuppressWarnings("checkstyle:superclone")
-			public Vector3d clone() {
-				return Vector3d.this.getGeomFactory().newVector(Vector3d.this.getX(), Vector3d.this.getY(), Vector3d.this.getZ());
-			}
-
-			@Override
-			public double getX() {
-				return Vector3d.this.getX();
-			}
-
-			@Override
-			public int ix() {
-				return Vector3d.this.ix();
-			}
-
-			@Override
-			public double getY() {
-				return Vector3d.this.getY();
-			}
-
-			@Override
-			public int iy() {
-				return Vector3d.this.iy();
-			}
-
-			@Override
-			public double getZ() {
-				return Vector3d.this.getZ();
-			}
-
-			@Override
-			public int iz() {
-				return Vector3d.this.iz();
-			}
-
-			@Override
-			public String toString() {
-				return Vector3d.this.toString();
-			}
-
-			@Override
-			public void toJson(JsonBuffer buffer) {
-				Vector3d.this.toJson(buffer);
-			}
-
-		};
+	public UnmodifiableVector3D<?, ?, ?> toUnmodifiable() {
+		return new ImmutableVector3D(getX(), getY(), getZ());
 	}
 
 }

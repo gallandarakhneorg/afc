@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.d;
 
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.base.d3.ImmutableQuaternion;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationQuaternion;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.UnmodifiableQuaternion;
@@ -403,55 +404,8 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	}
 
 	@Override
-	public UnmodifiableQuaternion<Point3d, Vector3d, Quaternion4d> toUnmodifiable() {
-		return new UnmodifiableQuaternion<>() {
-			private static final long serialVersionUID = 8206237294816074755L;
-
-			@Override
-			public double getX() {
-				return Quaternion4d.this.getX();
-			}
-
-			@Override
-			public int ix() {
-				return Quaternion4d.this.ix();
-			}
-
-			@Override
-			public double getY() {
-				return Quaternion4d.this.getY();
-			}
-
-			@Override
-			public int iy() {
-				return Quaternion4d.this.iy();
-			}
-
-			@Override
-			public double getZ() {
-				return Quaternion4d.this.getZ();
-			}
-
-			@Override
-			public int iz() {
-				return Quaternion4d.this.iz();
-			}
-
-			@Override
-			public double getW() {
-				return Quaternion4d.this.getW();
-			}
-
-			@Override
-			public int iw() {
-				return Quaternion4d.this.iw();
-			}
-
-			@Override
-			public GeomFactory3D<Vector3d, Point3d, Quaternion4d> getGeomFactory() {
-				return Quaternion4d.this.getGeomFactory();
-			}
-		};
+	public UnmodifiableQuaternion<?, ?, ?> toUnmodifiable() {
+		return new ImmutableQuaternion(getX(), getY(), getZ(), getW());
 	}
 
 }

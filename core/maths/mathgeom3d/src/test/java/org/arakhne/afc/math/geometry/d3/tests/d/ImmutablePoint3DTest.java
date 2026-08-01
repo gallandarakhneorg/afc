@@ -20,34 +20,18 @@
 
 package org.arakhne.afc.math.geometry.d3.tests.d;
 
-import org.arakhne.afc.math.geometry.base.tests.AbstractVector3DTestCase;
-import org.arakhne.afc.math.geometry.d3.d.Point3d;
-import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
-import org.arakhne.afc.math.geometry.d3.d.Vector3d;
+import org.arakhne.afc.math.geometry.base.d3.Shape3D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractImmutablePoint3DTest;
+import org.arakhne.afc.math.geometry.d3.d.Sphere3d;
 import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("ImmutablePoint3D")
 @SuppressWarnings("all")
-@DisplayName("Vector3d")
-public class Vector3dTest extends AbstractVector3DTestCase<Vector3d, Point3d, Quaternion4d, Vector3d> {
+public class ImmutablePoint3DTest extends AbstractImmutablePoint3DTest {
 
 	@Override
-	public boolean isIntCoordinates() {
-		return false;
+	public Shape3D createSphere(double x, double y, double z, double radius) {
+		return new Sphere3d(x, y, z, radius);
 	}
 	
-	@Override
-	public Vector3d createVector(double x, double y, double z) {
-		return new Vector3d(x, y, z);
-	}
-
-	@Override
-	public Point3d createPoint(double x, double y, double z) {
-		return new Point3d(x, y, z);
-	}
-
-	@Override
-	public Vector3d createTuple(double x, double y, double z) {
-		return new Vector3d(x, y, z);
-	}
-
 }

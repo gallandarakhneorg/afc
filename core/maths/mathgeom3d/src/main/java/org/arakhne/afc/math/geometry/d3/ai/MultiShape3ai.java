@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.MultiShape3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
@@ -209,17 +210,30 @@ public interface MultiShape3ai<
 
 	@Pure
 	@Override
-	default void toBoundingBox(B box) {
+	default void toBoundingBox(BoundsReceiver3D box) {
 		assert box != null : AssertMessages.notNullParameter();
 		final var iterator = getBackendDataList().iterator();
 		if (iterator.hasNext()) {
-			iterator.next().toBoundingBox(box);
-			final B subbounds = getGeomFactory().newBox();
+			final var receiver = getGeomFactory().newBox();
+			var element = iterator.next();
+			element.toBoundingBox(receiver);
+			int minx = receiver.getMinX();
+			int miny = receiver.getMinY();
+			int minz = receiver.getMinZ();
+			int maxx = receiver.getMaxX();
+			int maxy = receiver.getMaxY();
+			int maxz = receiver.getMaxZ();
 			while (iterator.hasNext()) {
-				final var element = iterator.next();
-				element.toBoundingBox(subbounds);
-				box.setUnion(subbounds);
+				element = iterator.next();
+				element.toBoundingBox(receiver);
+		        minx = Math.min(minx, receiver.getMinX());
+		        miny = Math.min(miny, receiver.getMinY());
+		        minz = Math.min(minz, receiver.getMinZ());
+		        maxx = Math.max(maxx, receiver.getMaxX());
+		        maxy = Math.max(maxy, receiver.getMaxY());
+		        maxz = Math.max(maxz, receiver.getMaxZ());
 			}
+			box.setFromCorners(minx, miny, minz, maxx, maxy, maxz);
 		}
 	}
 

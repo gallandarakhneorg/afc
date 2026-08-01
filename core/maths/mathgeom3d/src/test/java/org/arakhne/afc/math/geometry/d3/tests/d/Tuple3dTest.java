@@ -20,8 +20,8 @@
 
 package org.arakhne.afc.math.geometry.d3.tests.d;
 
+import org.arakhne.afc.math.geometry.base.tests.AbstractTuple3DTestCase;
 import org.arakhne.afc.math.geometry.d3.d.Tuple3d;
-import org.arakhne.afc.math.geometry.d3.tests.AbstractTuple3DTestCase;
 import org.junit.jupiter.api.DisplayName;
 
 @SuppressWarnings("all")

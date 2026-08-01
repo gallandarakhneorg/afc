@@ -1534,13 +1534,14 @@ public interface Path3ai<
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
 	 * @param z the specified Y coordinate
+	 * @return {@code this}.
 	 */
-	void moveTo(int x, int y, int z);
+	IT moveTo(int x, int y, int z);
 
 	@Override
-	default void moveTo(Point3D<?, ?, ?> position) {
+	default IT moveTo(Point3D<?, ?, ?> position) {
 		assert position != null : AssertMessages.notNullParameter();
-		moveTo(position.ix(), position.iy(), position.iz());
+		return moveTo(position.ix(), position.iy(), position.iz());
 	}
 
 	/**
@@ -1551,13 +1552,14 @@ public interface Path3ai<
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
 	 * @param z the specified Y coordinate
+	 * @return {@code this}.
 	 */
-	void lineTo(int x, int y, int z);
+	IT lineTo(int x, int y, int z);
 
 	@Override
-	default void lineTo(Point3D<?, ?, ?> to) {
+	default IT lineTo(Point3D<?, ?, ?> to) {
 		assert to != null : AssertMessages.notNullParameter();
-		lineTo(to.ix(), to.iy(), to.iz());
+		return lineTo(to.ix(), to.iy(), to.iz());
 	}
 
 	/**
@@ -1574,14 +1576,15 @@ public interface Path3ai<
 	 * @param x2 the X coordinate of the final end point
 	 * @param y2 the Y coordinate of the final end point
 	 * @param z2 the Z coordinate of the final end point
+	 * @return {@code this}.
 	 */
-	void quadTo(int x1, int y1, int z1, int x2, int y2, int z2);
+	IT quadTo(int x1, int y1, int z1, int x2, int y2, int z2);
 
 	@Override
-	default void quadTo(Point3D<?, ?, ?> ctrl, Point3D<?, ?, ?> to) {
+	default IT quadTo(Point3D<?, ?, ?> ctrl, Point3D<?, ?, ?> to) {
 		assert ctrl != null : AssertMessages.notNullParameter(0);
 		assert to != null : AssertMessages.notNullParameter(1);
-		quadTo(ctrl.ix(), ctrl.iy(), ctrl.iz(), to.ix(), to.iy(), to.iz());
+		return quadTo(ctrl.ix(), ctrl.iy(), ctrl.iz(), to.ix(), to.iy(), to.iz());
 	}
 
 	/**
@@ -1601,18 +1604,19 @@ public interface Path3ai<
 	 * @param x3 the X coordinate of the final end point
 	 * @param y3 the Y coordinate of the final end point
 	 * @param z3 the Z coordinate of the final end point
+	 * @return {@code this}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
-	void curveTo(int x1, int y1, int z1,
+	IT curveTo(int x1, int y1, int z1,
 			int x2, int y2, int z2,
 			int x3, int y3, int z3);
 
 	@Override
-	default void curveTo(Point3D<?, ?, ?> ctrl1, Point3D<?, ?, ?> ctrl2, Point3D<?, ?, ?> to) {
+	default IT curveTo(Point3D<?, ?, ?> ctrl1, Point3D<?, ?, ?> ctrl2, Point3D<?, ?, ?> to) {
 		assert ctrl1 != null : AssertMessages.notNullParameter(0);
 		assert ctrl2 != null : AssertMessages.notNullParameter(1);
 		assert to != null : AssertMessages.notNullParameter(2);
-		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl1.iz(), ctrl2.ix(), ctrl2.iy(), ctrl2.iz(), to.ix(), to.iy(), to.iz());
+		return curveTo(ctrl1.ix(), ctrl1.iy(), ctrl1.iz(), ctrl2.ix(), ctrl2.iy(), ctrl2.iz(), to.ix(), to.iy(), to.iz());
 	}
 
 	@Pure

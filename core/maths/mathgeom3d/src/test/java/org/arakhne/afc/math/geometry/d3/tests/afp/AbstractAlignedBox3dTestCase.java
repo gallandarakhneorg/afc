@@ -31,6 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -43,15 +45,18 @@ import java.util.stream.Stream;
 
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Shape3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
-import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Box3afp;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.Resources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -65,3268 +70,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 	protected final T createShape() {
 		return (T) createAlignedBox(5, 8, 0, 5, 10, 10);
 	}
-
-	@DisplayName("intersectsAlignedBoxAlignedBox(double,double,double,double,double,double,double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticIntersectsAlignedBoxAlignedBox(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 1, 1, 1));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(0, 0, 0, 1, 1, 1, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 20, 0, 1, 22, 10));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(0, 20, 0, 10, 22, 1, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 5, 100, 10));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(0, 0, 0, 5, 100, 10, 5, 8, 0, 10, 18, 10));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 5.1, 100, 10));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(0, 0, 0, 5.1, 100, 10, 5, 8, 0, 10, 18, 10));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 0, 9.5, 15, 10));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 9, 0, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 0, 9.5, 15, 10));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 9, 0, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
-
-		//
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 12, 9.5, 15, 13));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 12, 9.5, 15, 13, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 10, 9.5, 15, 11));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 10, 9.5, 15, 11, 5, 8, 0, 10, 18, 10));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 9, 9.5, 15, 10));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 9, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 4, 9.5, 15, 5));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 4, 9.5, 15, 5, 5, 8, 0, 10, 18, 10));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 0, 9.5, 15, 1));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 0, 9.5, 15, 1, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, -1, 9.5, 15, 0));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, -1, 9.5, 15, 0, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, -2, 9.5, 15, -1));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, -2, 9.5, 15, -1, 5, 8, 0, 10, 18, 10));
-
-		//
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 1, 7, 10, 2));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 9, 1, 7, 10, 2, 5, 8, 0, 10, 18, 10));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 4, 7, -1, 11, 19, 11));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(4, 7, -1, 11, 19, 11, 5, 8, 0, 10, 18, 10));
-	}
-
-	@DisplayName("intersectsAlignedBoxLine(double,double,double,double,double,double,double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticIntersectsAlignedBoxLine(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 10, 2, 2));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 2, 2));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 5, 2));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 10, 2));
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 3, 3));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 14, 3));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 27, 3));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 3, 3));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 14, 3));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 27, 3));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, 12, 22, 13));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 11, 21, 12, 12, 22, 13));
-	}
-
-	@DisplayName("intersectsAlignedBoxSegment(double,double,double,double,double,double,double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticIntersectsAlignedBoxSegment(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 10, 2, 2));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 2, 2));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 5, 2));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 10, 2));
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 3, 3));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 14, 3));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 27, 3));
-
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 3, 3));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 14, 3));
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 27, 3));
-
-		assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, 12, 22, 13));
-		assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 11, 21, 12, 12, 22, 13));
-	}
-
-	@DisplayName("containsAlignedBoxAlignedBox(double,double,double,double,double,double,double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticContainsAlignedBoxAlignedBox(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 1, 1, 1));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(0, 0, 0, 1, 1, 1, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 20, 0, 1, 22, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(0, 20, 0, 10, 22, 1, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 5, 100, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(0, 0, 0, 5, 100, 10, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 5.1, 100, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(0, 0, 0, 5.1, 100, 10, 5, 8, 0, 10, 18, 10));
-
-		assertTrue(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 0, 9.5, 15, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 9, 0, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 0, 9.5, 15, 11));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 9, 0, 9.5, 15, 11, 5, 8, 0, 10, 18, 10));
-
-		//
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 12, 9.5, 15, 13));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 12, 9.5, 15, 13, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 10, 9.5, 15, 11));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 10, 9.5, 15, 11, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 9, 9.5, 15, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 9, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 4, 9.5, 15, 5));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 4, 9.5, 15, 5, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 0, 9.5, 15, 1));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 0, 9.5, 15, 1, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, -1, 9.5, 15, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, -1, 9.5, 15, 0, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, -2, 9.5, 15, -1));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, -2, 9.5, 15, -1, 5, 8, 0, 10, 18, 10));
-
-		//
-
-		assertTrue(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 1, 7, 10, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 9, 1, 7, 10, 2, 5, 8, 0, 10, 18, 10));
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 4, 7, -1, 11, 19, 11));
-		assertTrue(AlignedBox3afp.containsAlignedBoxAlignedBox(4, 7, -1, 11, 19, 11, 5, 8, 0, 10, 18, 10));
-	}
-
-	@DisplayName("containsAlignedBoxPoint(double,double,double,double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticContainsAlignedBoxPoint(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, 20));
-
-		//
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, 20));
-
-		//
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, 20));
-
-		//
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, -10));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, 0));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, 2));
-		assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, 20));
-
-		//
-
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, 20));
-		//
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, -10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, 0));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, 2));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, 10));
-		assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, 20));
-	}
-
-	@DisplayName("equals(Object)")
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void equalsObject(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equals(null));
-		assertFalse(this.shape.equals(new Object()));
-		assertFalse(this.shape.equals(createAlignedBox(0, 8, 0, 5, 12, 1)));
-		assertFalse(this.shape.equals(createAlignedBox(5, 8, 0, 5, 0, 1)));
-		assertFalse(this.shape.equals(createSegment(5, 8, 0, 5, 10, 1)));
-		assertTrue(this.shape.equals(this.shape));
-		assertTrue(this.shape.equals(createAlignedBox(5, 8, 0, 5, 10, 10)));
-	}
-
-	@DisplayName("equalsToShape(Shape3D)")
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void equalsToShape(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.equalsToShape(null));
-		assertFalse(this.shape.equalsToShape((T) createAlignedBox(0, 8, 0, 5, 12, 0)));
-		assertFalse(this.shape.equalsToShape((T) createAlignedBox(5, 8, 0, 5, 0, 0)));
-		assertTrue(this.shape.equalsToShape(this.shape));
-		assertTrue(this.shape.equalsToShape((T) createAlignedBox(5, 8, 0, 5, 10, 10)));
-	}
-
-	@DisplayName("add(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void addPoint3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.add(createPoint(123.456, 456.789, 0));
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(123.456, this.shape.getMaxX());
-		assertEpsilonEquals(456.789, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-
-		this.shape.add(createPoint(-123.456, 456.789, 0));
-		assertEpsilonEquals(-123.456, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(123.456, this.shape.getMaxX());
-		assertEpsilonEquals(456.789, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-
-		this.shape.add(createPoint(-123.456, -456.789, 0));
-		assertEpsilonEquals(-123.456, this.shape.getMinX());
-		assertEpsilonEquals(-456.789, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(123.456, this.shape.getMaxX());
-		assertEpsilonEquals(456.789, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-	}
-
-	@DisplayName("add(double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void addDoubleDouble(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.add(123.456, 456.789, 0);
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(123.456, this.shape.getMaxX());
-		assertEpsilonEquals(456.789, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-
-		this.shape.add(-123.456, 456.789, 0);
-		assertEpsilonEquals(-123.456, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(123.456, this.shape.getMaxX());
-		assertEpsilonEquals(456.789, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-
-		this.shape.add(-123.456, -456.789, 3);
-		assertEpsilonEquals(-123.456, this.shape.getMinX());
-		assertEpsilonEquals(-456.789, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(123.456, this.shape.getMaxX());
-		assertEpsilonEquals(456.789, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-	}
-
-	@DisplayName("setUnion(Box3afp)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void setUnion(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.setUnion(createAlignedBox(0, 0, 0, 12, 1, 0));
-		assertEpsilonEquals(0, this.shape.getMinX());
-		assertEpsilonEquals(0, this.shape.getMinY());
-		assertEpsilonEquals(12, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-	}
-
-	@DisplayName("createUnion(Box3afp)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void createUnion(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B union = this.shape.createUnion(createAlignedBox(0, 0, 0, 12, 1, 2));
-		assertNotSame(this.shape, union);
-		assertEpsilonEquals(0, union.getMinX());
-		assertEpsilonEquals(0, union.getMinY());
-		assertEpsilonEquals(0, union.getMinZ());
-		assertEpsilonEquals(12, union.getMaxX());
-		assertEpsilonEquals(18, union.getMaxY());
-		assertEpsilonEquals(10, union.getMaxZ());
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-	}
-
-	@DisplayName("setIntersection(Box3afp) without intersection")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void setIntersection_noIntersection(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.setIntersection(createAlignedBox(0, 0, 0, 12, 1, 0));
-		assertTrue(this.shape.isEmpty());
-	}
-
-	@DisplayName("setIntersection(Box3afp)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void setIntersection_intersection(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.setIntersection(createAlignedBox(0, 0, 0, 7, 10, 2));
-		assertFalse(this.shape.isEmpty());
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(7, this.shape.getMaxX());
-		assertEpsilonEquals(10, this.shape.getMaxY());
-		assertEpsilonEquals(2, this.shape.getMaxZ());
-	}
-
-	@DisplayName("createIntersection(Box3afp) without intersection")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void createIntersection_noIntersection(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B box = this.shape.createIntersection(createAlignedBox(0, -1, 0, 12, 1, 2));
-		assertNotSame(this.shape, box);
-		assertTrue(box.isEmpty());
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-
-		box = this.shape.createIntersection(createAlignedBox(0, 7, 0, 12, 1, 2));
-		assertNotSame(this.shape, box);
-		assertTrue(box.isEmpty());
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-	}
-
-	@DisplayName("createIntersection(Box3afp)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void createIntersection_intersection(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B box = this.shape.createIntersection(createAlignedBox(0, 0, 0, 7, 10, 2));
-		assertNotSame(this.shape, box);
-		assertEpsilonEquals(5, box.getMinX());
-		assertEpsilonEquals(8, box.getMinY());
-		assertEpsilonEquals(0, box.getMinZ());
-		assertEpsilonEquals(7, box.getMaxX());
-		assertEpsilonEquals(10, box.getMaxY());
-		assertEpsilonEquals(2, box.getMaxZ());
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-	}
-
-	@DisplayName("avoidCollisionWith(AlignedBox3afp,Vector3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void avoidCollisionWithAlignedBox3afpVector3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B r = createAlignedBox(0, 0, 0, 7, 10, 1);
-		assertTrue(this.shape.intersects(r));
-		assertTrue(r.intersects(this.shape));
-
-		Vector3D v = createVector(Double.NaN, Double.NaN, Double.NaN);
-		this.shape.avoidCollisionWith(r, v);
-
-		assertEpsilonEquals(0, v.getX());
-		assertEpsilonEquals(0, v.getY());
-		assertEpsilonEquals(1, v.getZ());
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(1, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(11, this.shape.getMaxZ());
-		assertFalse(this.shape.intersects(r));
-		assertFalse(r.intersects(this.shape));
-	}
-
-	@DisplayName("avoidCollisionWith(AlignedBox3afp,Vector3D,Vector3D) null displacement")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void avoidCollisionWithAlignedBox3afpVector3DVector3D_nullDisplacement(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B r = createAlignedBox(0, 0, 0, 7, 10, 1);
-		assertTrue(this.shape.intersects(r));
-		assertTrue(r.intersects(this.shape));
-
-		Vector3D v = createVector(Double.NaN, Double.NaN, Double.NaN);
-		this.shape.avoidCollisionWith(r, null, v);
-
-		assertEpsilonEquals(0, v.getX());
-		assertEpsilonEquals(0, v.getY());
-		assertEpsilonEquals(1, v.getZ());
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(1, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(11, this.shape.getMaxZ());
-		assertFalse(this.shape.intersects(r));
-		assertFalse(r.intersects(this.shape));
-	}
-
-	@DisplayName("avoidCollisionWith(AlignedBox3afp,Vector3D,Vector3D) no displacement")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void avoidCollisionWithAlignedBox3afpVector3DVector3D_noDisplacement(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B r = createAlignedBox(0, 0, 0, 7, 10, 1);
-		assertTrue(this.shape.intersects(r));
-		assertTrue(r.intersects(this.shape));
-
-		Vector3D v1 = createVector(0, 0, 0);
-		Vector3D v2 = createVector(Double.NaN, Double.NaN, Double.NaN);
-		this.shape.avoidCollisionWith(r, v1, v2);
-
-		assertEpsilonEquals(0, v1.getX());
-		assertEpsilonEquals(0, v1.getY());
-		assertEpsilonEquals(1, v1.getZ());
-		assertEpsilonEquals(0, v2.getX());
-		assertEpsilonEquals(0, v2.getY());
-		assertEpsilonEquals(1, v2.getZ());
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(1, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(11, this.shape.getMaxZ());
-		assertFalse(this.shape.intersects(r));
-		assertFalse(r.intersects(this.shape));
-	}
-
-	@DisplayName("avoidCollisionWith(AlignedBox3afp,Vector3D,Vector3D) displacement")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void avoidCollisionWithAlignedBox3afpVector3DVector3D_givenDisplacement(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B r = createAlignedBox(0, 0, 0, 7, 10, 1);
-		assertTrue(this.shape.intersects(r));
-		assertTrue(r.intersects(this.shape));
-
-		Vector3D v1 = createVector(-4, 4, 0);
-		Vector3D v2 = createVector(Double.NaN, Double.NaN, Double.NaN);
-		this.shape.avoidCollisionWith(r, v1, v2);
-
-		assertEpsilonEquals(-2, v1.getX());
-		assertEpsilonEquals(2, v1.getY());
-		assertEpsilonEquals(1, v1.getZ());
-		assertEpsilonEquals(-2, v2.getX());
-		assertEpsilonEquals(2, v2.getY());
-		assertEpsilonEquals(1, v2.getZ());
-		assertEpsilonEquals(3, this.shape.getMinX());
-		assertEpsilonEquals(10, this.shape.getMinY());
-		assertEpsilonEquals(1, this.shape.getMinZ());
-		assertEpsilonEquals(8, this.shape.getMaxX());
-		assertEpsilonEquals(20, this.shape.getMaxY());
-		assertEpsilonEquals(11, this.shape.getMaxZ());
-		assertFalse(this.shape.intersects(r));
-		assertFalse(r.intersects(this.shape));
-	}
-
-	@DisplayName("getClosestPointTo(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getClosestPointToPoint3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p;
-
-		p = this.shape.getClosestPointTo(createPoint(0, 0, -5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 0, -5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 100, -5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 100, -5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 10, -5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 0, -5));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(154, 17, -5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(9, 154, -5));
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(8, 18, -5));
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 12, -5));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = this.shape.getClosestPointTo(createPoint(0, 0, 0));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 0, 0));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 100, 0));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 100, 0));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 10, 0));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 0, 0));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(154, 17, 0));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(9, 154, 0));
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(8, 18, 0));
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 12, 0));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = this.shape.getClosestPointTo(createPoint(0, 0, 5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 0, 5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 100, 5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 100, 5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 10, 5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 0, 5));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(154, 17, 5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(9, 154, 5));
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(8, 18, 5));
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 12, 5));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		//
-
-		p = this.shape.getClosestPointTo(createPoint(0, 0, 10));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 0, 10));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 100, 10));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 100, 10));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 10, 10));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 0, 10));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(154, 17, 10));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(9, 154, 10));
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(8, 18, 10));
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 12, 10));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = this.shape.getClosestPointTo(createPoint(0, 0, 21));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 0, 21));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(100, 100, 21));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 100, 21));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(0, 10, 21));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 0, 21));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(154, 17, 21));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(9, 154, 21));
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(8, 18, 21));
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getClosestPointTo(createPoint(7, 12, 21));
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-	}
-
-	@DisplayName("getFarthestPointTo(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getFarthestPointTo(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p;
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 0, -5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 0, -5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 100, -5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 100, -5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 10, -5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 0, -5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(154, 17, -5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(9, 154, -5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(8, 18, -5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 12, -5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 0, 0));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 0, 0));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 100, 0));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 100, 0));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 10, 0));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 0, 0));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(154, 17, 0));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(9, 154, 0));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(8, 18, 0));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 12, 0));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 0, 5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 0, 5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 100, 5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 100, 5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 10, 5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 0, 5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(154, 17, 5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(9, 154, 5));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 12, 5));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 0, 10));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 0, 10));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 100, 10));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 100, 10));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 10, 10));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 0, 10));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(154, 17, 10));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(9, 154, 10));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(8, 18, 10));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 12, 10));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 0, 21));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 0, 21));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(100, 100, 21));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 100, 21));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(0, 10, 21));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 0, 21));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(154, 17, 21));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(9, 154, 21));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(8, 18, 21));
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = this.shape.getFarthestPointTo(createPoint(7, 12, 21));
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-	}
-
-	@DisplayName("getDistance(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getDistancePoint3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(9.43398, this.shape.getDistance(createPoint(0, 0, 0)));
-		assertEpsilonEquals(90.35486, this.shape.getDistance(createPoint(100, 0, 0)));
-		assertEpsilonEquals(121.75385, this.shape.getDistance(createPoint(100, 100, 0)));
-		assertEpsilonEquals(82.1523, this.shape.getDistance(createPoint(0, 100, 0)));
-		assertEpsilonEquals(5, this.shape.getDistance(createPoint(0, 10, 0)));
-		assertEpsilonEquals(8, this.shape.getDistance(createPoint(7, 0, 0)));
-		assertEpsilonEquals(144, this.shape.getDistance(createPoint(154, 17, 0)));
-		assertEpsilonEquals(136, this.shape.getDistance(createPoint(9, 154, 0)));
-		assertEpsilonEquals(0, this.shape.getDistance(createPoint(8, 18, 0)));
-		assertEpsilonEquals(0, this.shape.getDistance(createPoint(7, 12, 0)));
-	}
-
-	@DisplayName("getDistanceSquared(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getDistanceSquaredPoint3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(88.99998, this.shape.getDistanceSquared(createPoint(0, 0, 0)));
-		assertEpsilonEquals(8164, this.shape.getDistanceSquared(createPoint(100, 0, 0)));
-		assertEpsilonEquals(14823.99999, this.shape.getDistanceSquared(createPoint(100, 100, 0)));
-		assertEpsilonEquals(6749, this.shape.getDistanceSquared(createPoint(0, 100, 0)));
-		assertEpsilonEquals(25, this.shape.getDistanceSquared(createPoint(0, 10, 0)));
-		assertEpsilonEquals(64, this.shape.getDistanceSquared(createPoint(7, 0, 0)));
-		assertEpsilonEquals(20736, this.shape.getDistanceSquared(createPoint(154, 17, 0)));
-		assertEpsilonEquals(18496, this.shape.getDistanceSquared(createPoint(9, 154, 0)));
-		assertEpsilonEquals(0, this.shape.getDistanceSquared(createPoint(8, 18, 0)));
-		assertEpsilonEquals(0, this.shape.getDistanceSquared(createPoint(7, 12, 0)));
-	}
-
-	@DisplayName("getDistanceL1(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getDistanceL1(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(13, this.shape.getDistanceL1(createPoint(0, 0, 0)));
-		assertEpsilonEquals(98, this.shape.getDistanceL1(createPoint(100, 0, 0)));
-		assertEpsilonEquals(172, this.shape.getDistanceL1(createPoint(100, 100, 0)));
-		assertEpsilonEquals(87, this.shape.getDistanceL1(createPoint(0, 100, 0)));
-		assertEpsilonEquals(5, this.shape.getDistanceL1(createPoint(0, 10, 0)));
-		assertEpsilonEquals(8, this.shape.getDistanceL1(createPoint(7, 0, 0)));
-		assertEpsilonEquals(144, this.shape.getDistanceL1(createPoint(154, 17, 0)));
-		assertEpsilonEquals(136, this.shape.getDistanceL1(createPoint(9, 154, 0)));
-		assertEpsilonEquals(0, this.shape.getDistanceL1(createPoint(8, 18, 0)));
-		assertEpsilonEquals(0, this.shape.getDistanceL1(createPoint(7, 12, 0)));
-	}
-
-	@DisplayName("getDistanceLinf(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getDistanceLinf(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(8, this.shape.getDistanceLinf(createPoint(0, 0, 0)));
-		assertEpsilonEquals(90, this.shape.getDistanceLinf(createPoint(100, 0, 0)));
-		assertEpsilonEquals(90, this.shape.getDistanceLinf(createPoint(100, 100, 0)));
-		assertEpsilonEquals(82, this.shape.getDistanceLinf(createPoint(0, 100, 0)));
-		assertEpsilonEquals(5, this.shape.getDistanceLinf(createPoint(0, 10, 0)));
-		assertEpsilonEquals(8, this.shape.getDistanceLinf(createPoint(7, 0, 0)));
-		assertEpsilonEquals(144, this.shape.getDistanceLinf(createPoint(154, 17, 0)));
-		assertEpsilonEquals(136, this.shape.getDistanceLinf(createPoint(9, 154, 0)));
-		assertEpsilonEquals(0, this.shape.getDistanceLinf(createPoint(8, 18, 0)));
-		assertEpsilonEquals(0, this.shape.getDistanceLinf(createPoint(7, 12, 0)));
-	}
-
-	@DisplayName("set(AlignedBox3afp)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void setIT(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.set((T) createAlignedBox(123.456, 456.789, 0, 789.123, 159.753, 658.5));
-		assertEpsilonEquals(123.456, this.shape.getMinX());
-		assertEpsilonEquals(456.789, this.shape.getMinY());
-		assertEpsilonEquals(0., this.shape.getMinZ());
-		assertEpsilonEquals(912.579, this.shape.getMaxX());
-		assertEpsilonEquals(616.542, this.shape.getMaxY());
-		assertEpsilonEquals(658.5, this.shape.getMaxZ());
-	}
-
-	@DisplayName("contains(AlignedBox3afp")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void containsAlignedBox3afp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.contains(createAlignedBox(0, 0, 0, 1, 1, 0)));
-		assertFalse(createAlignedBox(0, 0, 0, 1, 1, 0).contains(this.shape));
-
-		assertFalse(this.shape.contains(createAlignedBox(0, 20, 0, 1, 2, 0)));
-		assertFalse(createAlignedBox(0, 20, 0, 1, 2, 0).contains(this.shape));
-
-		assertFalse(this.shape.contains(createAlignedBox(0, 0, 0, 5, 100, 0)));
-		assertFalse(createAlignedBox(0, 0, 0, 5, 100, 0).contains(this.shape));
-
-		assertFalse(this.shape.contains(createAlignedBox(0, 0, 0, 5.1, 100, 0)));
-		assertFalse(createAlignedBox(0, 0, 0, 5.1, 100, 0).contains(this.shape));
-
-		assertTrue(this.shape.contains(createAlignedBox(6, 9, 0, .5, 9, 0)));
-		assertFalse(createAlignedBox(6, 9, 0, .5, 9, 0).contains(this.shape));
-	}
-
-	@DisplayName("intersects(AlignedBox3afp")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void intersectsAlignedBox3afp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.intersects(createAlignedBox(0, 0, 0, 1, 1, 0)));
-		assertFalse(createAlignedBox(0, 0, 0, 1, 1, 0).intersects(this.shape));
-
-		assertFalse(this.shape.intersects(createAlignedBox(0, 20, 0, 1, 2, 0)));
-		assertFalse(createAlignedBox(0, 20, 0, 1, 2, 0).intersects(this.shape));
-
-		assertFalse(this.shape.intersects(createAlignedBox(0, 0, 0, 5, 100, 0)));
-		assertFalse(createAlignedBox(0, 0, 0, 5, 100, 0).intersects(this.shape));
-
-		assertTrue(this.shape.intersects(createAlignedBox(0, 0, 0, 5.1, 100, 1)));
-		assertTrue(createAlignedBox(0, 0, 0, 5.1, 100, 1).intersects(this.shape));
-
-		assertTrue(this.shape.intersects(createAlignedBox(6, 9, 0, .5, 9, 1)));
-		assertTrue(createAlignedBox(6, 9, 0, .5, 9, 1).intersects(this.shape));
-
-		assertTrue(this.shape.intersects(createAlignedBox(0, 0, 0, 5.1, 8.1, 1)));
-		assertTrue(createAlignedBox(0, 0, 0, 5.1, 8.1, 1).intersects(this.shape));
-	}
-
-	@DisplayName("intersects(Sphere3afp)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void intersectsSphere3afp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.intersects(createSphere(0, 0, 0, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 0, 0, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 5, 0, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 7, 0, 1)));
-		assertTrue(this.shape.intersects(createSphere(8, 8, 0, 1)));
-		assertTrue(this.shape.intersects(createSphere(8, 10, 0, 1)));
-		assertTrue(this.shape.intersects(createSphere(8, 18, 0, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 19, 0, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 25, 0, 1)));
-
-		assertFalse(this.shape.intersects(createSphere(0, 0, 5, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 0, 5, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 5, 5, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 7, 5, 1)));
-		assertTrue(this.shape.intersects(createSphere(8, 8, 5, 1)));
-		assertTrue(this.shape.intersects(createSphere(8, 10, 5, 1)));
-		assertTrue(this.shape.intersects(createSphere(8, 18, 5, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 19, 5, 1)));
-		assertFalse(this.shape.intersects(createSphere(8, 25, 5, 1)));
-	}
-
-	@DisplayName("intersects(MultiShape3D)")
-	public abstract void intersectsMultiShape3D(CoordinateSystem3D cs);
-
-	@DisplayName("intersects(Segment3afp)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void intersectsSegment3afp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertTrue(this.shape.intersects(createSegment(20, 45, 0, 43, 15, 0)));
-		assertTrue(this.shape.intersects(createSegment(20, 55, 0, 43, 15, 0)));
-		assertTrue(this.shape.intersects(createSegment(20, 0, 0, 43, 15, 0)));
-		assertTrue(this.shape.intersects(createSegment(0, 45, 0, 43, 15, 0)));
-		assertTrue(this.shape.intersects(createSegment(20, 45, 0, 60, 15, 0)));
-		assertTrue(this.shape.intersects(createSegment(5, 45, 0, 30, 55, 0)));
-		assertTrue(this.shape.intersects(createSegment(40, 55, 0, 60, 15, 0)));
-		assertTrue(this.shape.intersects(createSegment(40, 0, 0, 60, 40, 0)));
-		assertTrue(this.shape.intersects(createSegment(0, 40, 0, 20, 0, 0)));
-		assertTrue(this.shape.intersects(createSegment(0, 45, 0, 100, 15, 0)));
-		assertTrue(this.shape.intersects(createSegment(20, 100, 0, 43, 0, 0)));
-		assertFalse(this.shape.intersects(createSegment(20, 100, 0, 43, 101, 0)));
-		assertFalse(this.shape.intersects(createSegment(100, 45, 0, 102, 15, 0)));
-		assertFalse(this.shape.intersects(createSegment(20, 0, 0, 43, -2, 0)));
-		assertFalse(this.shape.intersects(createSegment(-100, 45, 0, -48, 15, 0)));
-		assertFalse(this.shape.intersects(createSegment(-100, 60, 0, -98, 61, 0)));
-	}
-	@DisplayName("intersects(Path3afp)")
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void intersectsPath3afp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp p;
-
-		p = createPath();
-		p.moveTo(-20, -20, 0);
-		p.lineTo(-20, 20, 0);
-		p.lineTo(20, 20, 0);
-		p.lineTo(20, -20, 0);
-		assertFalse(this.shape.intersects(p));
-		p.closePath();
-		assertTrue(this.shape.intersects(p));
-
-		p = createPath();
-		p.moveTo(-20, -20, 0);
-		p.lineTo(5, 8, 0);
-		p.lineTo(-20, 20, 0);
-		assertFalse(this.shape.intersects(p));
-		p.closePath();
-		assertFalse(this.shape.intersects(p));
-
-		p = createPath();
-		p.moveTo(-20, -20, 0);
-		p.lineTo(20, 20, 0);
-		p.lineTo(-20, 20, 0);
-		assertTrue(this.shape.intersects(p));
-		p.closePath();
-		assertTrue(this.shape.intersects(p));
-
-		p = createPath();
-		p.moveTo(-20, -20, 0);
-		p.lineTo(-20, 20, 0);
-		p.lineTo(20, -20, 0);
-		assertFalse(this.shape.intersects(p));
-		p.closePath();
-		assertFalse(this.shape.intersects(p));
-
-		p = createPath();
-		p.moveTo(-20, 20, 0);
-		p.lineTo(10, 8, 0);
-		p.lineTo(20, 18, 0);
-		assertTrue(this.shape.intersects(p));
-		p.closePath();
-		assertTrue(this.shape.intersects(p));
-
-		p = createPath();
-		p.moveTo(-20, 20, 0);
-		p.lineTo(20, 18, 0);
-		p.lineTo(10, 8, 0);
-		assertFalse(this.shape.intersects(p));
-		p.closePath();
-		assertTrue(this.shape.intersects(p));
-	}
-
-	@DisplayName("intersects(PathIterator3afp)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void intersectsPathIterator3afp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp<?, ?, ?, ?, ?, B> p;
-
-		p = createPath();
-		p.moveTo(-20, -20, 0);
-		p.lineTo(-20, 20, 0);
-		p.lineTo(20, 20, 0);
-		p.lineTo(20, -20, 0);
-		assertFalse(this.shape.intersects(p.getPathIterator()));
-		p.closePath();
-		assertTrue(this.shape.intersects(p.getPathIterator()));
-
-		p = createPath();
-		p.moveTo(-20, -20, 0);
-		p.lineTo(5, 8, 0);
-		p.lineTo(-20, 20, 0);
-		assertFalse(this.shape.intersects(p.getPathIterator()));
-		p.closePath();
-		assertFalse(this.shape.intersects(p.getPathIterator()));
-
-		p = createPath();
-		p.moveTo(-20, -20, 0);
-		p.lineTo(20, 20, 0);
-		p.lineTo(-20, 20, 0);
-		assertTrue(this.shape.intersects(p.getPathIterator()));
-		p.closePath();
-		assertTrue(this.shape.intersects(p.getPathIterator()));
-
-		p = createPath();
-		p.moveTo(-20, -20, 0);
-		p.lineTo(-20, 20, 0);
-		p.lineTo(20, -20, 0);
-		assertFalse(this.shape.intersects(p.getPathIterator()));
-		p.closePath();
-		assertFalse(this.shape.intersects(p.getPathIterator()));
-
-		p = createPath();
-		p.moveTo(-20, 20, 0);
-		p.lineTo(10, 8, 0);
-		p.lineTo(20, 18, 0);
-		assertTrue(this.shape.intersects(p.getPathIterator()));
-		p.closePath();
-		assertTrue(this.shape.intersects(p.getPathIterator()));
-
-		p = createPath();
-		p.moveTo(-20, 20, 0);
-		p.lineTo(20, 18, 0);
-		p.lineTo(10, 8, 0);
-		assertFalse(this.shape.intersects(p.getPathIterator()));
-		p.closePath();
-		assertTrue(this.shape.intersects(p.getPathIterator()));
-	}
-
-	@DisplayName("contains(double,double,double")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void containsDoubleDoubleDouble(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.set(10, 12, 0, 30, 25, 0);
-		assertFalse(this.shape.contains(20, 45, 0));
-		assertFalse(this.shape.contains(20, 55, 0));
-		assertFalse(this.shape.contains(20, 0, 0));
-		assertFalse(this.shape.contains(0, 45, 0));
-		assertFalse(this.shape.contains(5, 45, 0));
-		assertFalse(this.shape.contains(40, 55, 0));
-		assertFalse(this.shape.contains(40, 0, 0));
-		assertFalse(this.shape.contains(0, 40, 0));
-		assertFalse(this.shape.contains(20, 100, 0));
-		assertFalse(this.shape.contains(100, 45, 0));
-		assertFalse(this.shape.contains(-100, 45, 0));
-		assertFalse(this.shape.contains(-100, 60, 0));
-		assertTrue(this.shape.contains(10, 12, 0));
-		assertTrue(this.shape.contains(40, 12, 0));
-		assertTrue(this.shape.contains(40, 37, 0));
-		assertTrue(this.shape.contains(10, 37, 0));
-		assertTrue(this.shape.contains(35, 24, 0));
-	}
-
-	@DisplayName("contains(Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void containsPoint3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.set(10, 12, 0, 30, 25, 0);
-		assertFalse(this.shape.contains(createPoint(20, 45, 0)));
-		assertFalse(this.shape.contains(createPoint(20, 55, 0)));
-		assertFalse(this.shape.contains(createPoint(20, 0, 0)));
-		assertFalse(this.shape.contains(createPoint(0, 45, 0)));
-		assertFalse(this.shape.contains(createPoint(5, 45, 0)));
-		assertFalse(this.shape.contains(createPoint(40, 55, 0)));
-		assertFalse(this.shape.contains(createPoint(40, 0, 0)));
-		assertFalse(this.shape.contains(createPoint(0, 40, 0)));
-		assertFalse(this.shape.contains(createPoint(20, 100, 0)));
-		assertFalse(this.shape.contains(createPoint(100, 45, 0)));
-		assertFalse(this.shape.contains(createPoint(-100, 45, 0)));
-		assertFalse(this.shape.contains(createPoint(-100, 60, 0)));
-		assertTrue(this.shape.contains(createPoint(10, 12, 0)));
-		assertTrue(this.shape.contains(createPoint(40, 12, 0)));
-		assertTrue(this.shape.contains(createPoint(40, 37, 0)));
-		assertTrue(this.shape.contains(createPoint(10, 37, 0)));
-		assertTrue(this.shape.contains(createPoint(35, 24, 0)));
-	}
-
-	@DisplayName("inflate(double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void inflate(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.inflate(1, 2, 0, 3, 4, 4);
-		assertEpsilonEquals(4, this.shape.getMinX());
-		assertEpsilonEquals(6, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(13, this.shape.getMaxX());
-		assertEpsilonEquals(22, this.shape.getMaxY());
-		assertEpsilonEquals(14, this.shape.getMaxZ());
-
-		this.shape.inflate(1, 2, 10, 3, 4, 0);
-		assertEpsilonEquals(3, this.shape.getMinX());
-		assertEpsilonEquals(4, this.shape.getMinY());
-		assertEpsilonEquals(-10, this.shape.getMinZ());
-		assertEpsilonEquals(16, this.shape.getMaxX());
-		assertEpsilonEquals(26, this.shape.getMaxY());
-		assertEpsilonEquals(14, this.shape.getMaxZ());
-	}
-
-	@DisplayName("intersects(Shape3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void intersectsShape3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertFalse(this.shape.intersects((Shape3D) createAlignedBox(0, 0, 0, 5, 100, 0)));
-		assertTrue(this.shape.intersects((Shape3D) createAlignedBox(0, 0, 0, 5.1, 100, 1)));
-
-		assertFalse(this.shape.intersects((Shape3D) createSphere(-1, 1, -1, 5)));
-		assertTrue(this.shape.intersects((Shape3D) createSphere(-1, 1, -1, 10)));
-
-		assertFalse(this.shape.intersects((Shape3D) createSegment(18, 0, 3, 11, 18, 5)));
-		assertTrue(this.shape.intersects((Shape3D) createSegment(18, 0, 3, 11, 18, 5)));
-	}
-
-	@DisplayName("b += Vector3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void operator_addVector3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.operator_add(createVector(123.456, 456.789, 3.1));
-		assertEpsilonEquals(128.456, this.shape.getMinX());
-		assertEpsilonEquals(464.789, this.shape.getMinY());
-		assertEpsilonEquals(3.1, this.shape.getMinZ());
-		assertEpsilonEquals(133.456, this.shape.getMaxX());
-		assertEpsilonEquals(474.789, this.shape.getMaxY());
-		assertEpsilonEquals(13.1, this.shape.getMaxZ());
-	}
-
-	@DisplayName("b + Vector3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void operator_plusVector3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		T shape = this.shape.operator_plus(createVector(123.456, 456.789, 3.1));
-		assertNotSame(this.shape, shape);
-		assertEpsilonEquals(128.456, shape.getMinX());
-		assertEpsilonEquals(464.789, shape.getMinY());
-		assertEpsilonEquals(3.1, shape.getMinZ());
-		assertEpsilonEquals(133.456, shape.getMaxX());
-		assertEpsilonEquals(474.789, shape.getMaxY());
-		assertEpsilonEquals(13.1, shape.getMaxZ());
-	}
-
-	@DisplayName("b -= Vector3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void operator_removeVector3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.operator_remove(createVector(123.456, 456.789, 547.5));
-		assertEpsilonEquals(-118.456, this.shape.getMinX());
-		assertEpsilonEquals(-448.789, this.shape.getMinY());
-		assertEpsilonEquals(-547.5, this.shape.getMinZ());
-		assertEpsilonEquals(-113.456, this.shape.getMaxX());
-		assertEpsilonEquals(-438.789, this.shape.getMaxY());
-		assertEpsilonEquals(-537.5, this.shape.getMaxZ());
-	}
-
-	@DisplayName("b - Vector3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void operator_minusVector3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		T shape = this.shape.operator_minus(createVector(123.456, 456.789, 5));
-		assertNotSame(this.shape, shape);
-		assertEpsilonEquals(-118.456, shape.getMinX());
-		assertEpsilonEquals(-448.789, shape.getMinY());
-		assertEpsilonEquals(-5, shape.getMinZ());
-		assertEpsilonEquals(-113.456, shape.getMaxX());
-		assertEpsilonEquals(-438.789, shape.getMaxY());
-		assertEpsilonEquals(5, shape.getMaxZ());
-	}
-
-	@DisplayName("b && Point3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void operator_andPoint3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.set(10, 12, 0, 30, 25, 0);
-		assertFalse(this.shape.operator_and(createPoint(20, 45, 0)));
-		assertFalse(this.shape.operator_and(createPoint(20, 55, 0)));
-		assertFalse(this.shape.operator_and(createPoint(20, 0, 0)));
-		assertFalse(this.shape.operator_and(createPoint(0, 45, 0)));
-		assertFalse(this.shape.operator_and(createPoint(5, 45, 0)));
-		assertFalse(this.shape.operator_and(createPoint(40, 55, 0)));
-		assertFalse(this.shape.operator_and(createPoint(40, 0, 0)));
-		assertFalse(this.shape.operator_and(createPoint(0, 40, 0)));
-		assertFalse(this.shape.operator_and(createPoint(20, 100, 0)));
-		assertFalse(this.shape.operator_and(createPoint(100, 45, 0)));
-		assertFalse(this.shape.operator_and(createPoint(-100, 45, 0)));
-		assertFalse(this.shape.operator_and(createPoint(-100, 60, 0)));
-		assertTrue(this.shape.operator_and(createPoint(10, 12, 0)));
-		assertTrue(this.shape.operator_and(createPoint(40, 12, 0)));
-		assertTrue(this.shape.operator_and(createPoint(40, 37, 0)));
-		assertTrue(this.shape.operator_and(createPoint(10, 37, 0)));
-		assertTrue(this.shape.operator_and(createPoint(35, 24, 0)));
-	}
-
-	@DisplayName("b && Shape3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void operator_andShape3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertTrue(createAlignedBox(0, 0, 0, 5.1, 100, 0).operator_and(this.shape));
-	}
-
-	@DisplayName("b .. Point3D")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void operator_upToPoint3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(9.43398, this.shape.operator_upTo(createPoint(0, 0, 0)));
-		assertEpsilonEquals(90.35486, this.shape.operator_upTo(createPoint(100, 0, 0)));
-		assertEpsilonEquals(121.75385, this.shape.operator_upTo(createPoint(100, 100, 0)));
-		assertEpsilonEquals(82.1523, this.shape.operator_upTo(createPoint(0, 100, 0)));
-		assertEpsilonEquals(5, this.shape.operator_upTo(createPoint(0, 10, 0)));
-		assertEpsilonEquals(8, this.shape.operator_upTo(createPoint(7, 0, 0)));
-		assertEpsilonEquals(144, this.shape.operator_upTo(createPoint(154, 17, 0)));
-		assertEpsilonEquals(136, this.shape.operator_upTo(createPoint(9, 154, 0)));
-		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(8, 18, 0)));
-		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(7, 12, 0)));
-	}
-
-	@DisplayName("getCenter")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void getCenter(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p = this.shape.getCenter();
-		assertNotNull(p);
-		assertEpsilonEquals(7.5, p.getX());
-		assertEpsilonEquals(13, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-	}
-
-	@DisplayName("getCenterX")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getCenterX(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(7.5, this.shape.getCenterX());
-	}
-
-	@DisplayName("getCenterY")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getCenterY(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(13, this.shape.getCenterY());
-	}
-
-	@DisplayName("getCenterZ")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Override
-	public final void getCenterZ(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(5, this.shape.getCenterZ());
-	}
-
-	@DisplayName("setCenter(double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void setCenterDoubleDoubleDouble(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.setCenter(145, -47, 14);
-		assertEpsilonEquals(142.5, this.shape.getMinX());
-		assertEpsilonEquals(-52, this.shape.getMinY());
-		assertEpsilonEquals(9, this.shape.getMinZ());
-		assertEpsilonEquals(147.5, this.shape.getMaxX());
-		assertEpsilonEquals(-42, this.shape.getMaxY());
-		assertEpsilonEquals(19, this.shape.getMaxZ());
-	}
-
-	@DisplayName("setCenterX(double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void setCenterXDouble(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.setCenterX(145);
-		assertEpsilonEquals(142.5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(147.5, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-	}
-
-	@DisplayName("setCenterY(double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void setCenterYDouble(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.setCenterY(-47);
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(-52, this.shape.getMinY());
-		assertEpsilonEquals(0, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(-42, this.shape.getMaxY());
-		assertEpsilonEquals(10, this.shape.getMaxZ());
-	}
-
-	@DisplayName("setCenterZ(double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void setCenterZDouble(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.setCenterZ(-47);
-		assertEpsilonEquals(5, this.shape.getMinX());
-		assertEpsilonEquals(8, this.shape.getMinY());
-		assertEpsilonEquals(-52, this.shape.getMinZ());
-		assertEpsilonEquals(10, this.shape.getMaxX());
-		assertEpsilonEquals(18, this.shape.getMaxY());
-		assertEpsilonEquals(-42, this.shape.getMaxZ());
-	}
-
-	@DisplayName("set(double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void setDoubleDoubleDoubleDoubleDoubleDouble(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		this.shape.set(1, 2, -1, 1, 5, 6);
-		assertEpsilonEquals(1, this.shape.getMinX());
-		assertEpsilonEquals(2, this.shape.getMinY());
-		assertEpsilonEquals(-1, this.shape.getMinZ());
-		assertEpsilonEquals(2, this.shape.getMaxX());
-		assertEpsilonEquals(7, this.shape.getMaxY());
-		assertEpsilonEquals(5, this.shape.getMaxZ());
-
-		Vector3D v = createVector(1, 1, 1).toUnitVector();
-		this.shape.set(1, 2, v.getX(), v.getY(), 5, 6);
-		assertEpsilonEquals(1, this.shape.getMinX());
-		assertEpsilonEquals(2, this.shape.getMinY());
-		assertEpsilonEquals(0.5773502691896258, this.shape.getMinZ());
-		assertEpsilonEquals(1.5773502691896258, this.shape.getMaxX());
-		assertEpsilonEquals(7, this.shape.getMaxY());
-		assertEpsilonEquals(6.5773502691896258, this.shape.getMaxZ());
-	}
-
-	@DisplayName("calculatesAlignedBoxPointDistanceSquared(double,double,double,double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticCalculatesAlignedBoxPointDistanceSquared(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertEpsilonEquals(114., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5));
-		assertEpsilonEquals(8189., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5));
-		assertEpsilonEquals(14849., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5));
-		assertEpsilonEquals(6774., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5));
-		assertEpsilonEquals(50., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5));
-		assertEpsilonEquals(89., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5));
-		assertEpsilonEquals(20761., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5));
-		assertEpsilonEquals(18521., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5));
-		assertEpsilonEquals(25., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5));
-		assertEpsilonEquals(25., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5));
-
-		//
-
-		assertEpsilonEquals(89., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0));
-		assertEpsilonEquals(8164., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0));
-		assertEpsilonEquals(14824., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0));
-		assertEpsilonEquals(6749., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0));
-		assertEpsilonEquals(25., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0));
-		assertEpsilonEquals(64., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0));
-		assertEpsilonEquals(20736., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0));
-		assertEpsilonEquals(18496., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0));
-
-		//
-
-		assertEpsilonEquals(89., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5));
-		assertEpsilonEquals(8164., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5));
-		assertEpsilonEquals(14824., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5));
-		assertEpsilonEquals(6749., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5));
-		assertEpsilonEquals(25., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5));
-		assertEpsilonEquals(64., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5));
-		assertEpsilonEquals(20736., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5));
-		assertEpsilonEquals(18496., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5));
-
-		//
-
-		assertEpsilonEquals(89., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10));
-		assertEpsilonEquals(8164., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10));
-		assertEpsilonEquals(14824., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10));
-		assertEpsilonEquals(6749., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10));
-		assertEpsilonEquals(25., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10));
-		assertEpsilonEquals(64., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10));
-		assertEpsilonEquals(20736., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10));
-		assertEpsilonEquals(18496., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10));
-
-		//
-
-		assertEpsilonEquals(210., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21));
-		assertEpsilonEquals(8285., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21));
-		assertEpsilonEquals(14945., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21));
-		assertEpsilonEquals(6870., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21));
-		assertEpsilonEquals(146., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21));
-		assertEpsilonEquals(185., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21));
-		assertEpsilonEquals(20857., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21));
-		assertEpsilonEquals(18617., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21));
-		assertEpsilonEquals(121., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21));
-		assertEpsilonEquals(121., AlignedBox3afp.calculatesAlignedBoxPointDistanceSquared(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21));
-	}
-
-	@DisplayName("calculatesAlignedBoxPointDistanceL1(double,double,double,double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticCalculatesAlignedBoxPointDistanceL1(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertEpsilonEquals(18., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5));
-		assertEpsilonEquals(103., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5));
-		assertEpsilonEquals(177., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5));
-		assertEpsilonEquals(92., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5));
-		assertEpsilonEquals(10., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5));
-		assertEpsilonEquals(13., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5));
-		assertEpsilonEquals(149., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5));
-		assertEpsilonEquals(141., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5));
-
-		//
-
-		assertEpsilonEquals(13., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0));
-		assertEpsilonEquals(98., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0));
-		assertEpsilonEquals(172., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0));
-		assertEpsilonEquals(87., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0));
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0));
-		assertEpsilonEquals(144., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0));
-		assertEpsilonEquals(136., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0));
-
-		//
-
-		assertEpsilonEquals(13., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5));
-		assertEpsilonEquals(98., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5));
-		assertEpsilonEquals(172., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5));
-		assertEpsilonEquals(87., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5));
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5));
-		assertEpsilonEquals(144., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5));
-		assertEpsilonEquals(136., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5));
-
-		//
-
-		assertEpsilonEquals(13., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10));
-		assertEpsilonEquals(98., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10));
-		assertEpsilonEquals(172., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10));
-		assertEpsilonEquals(87., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10));
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10));
-		assertEpsilonEquals(144., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10));
-		assertEpsilonEquals(136., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10));
-
-		//
-
-		assertEpsilonEquals(24., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21));
-		assertEpsilonEquals(109., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21));
-		assertEpsilonEquals(183., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21));
-		assertEpsilonEquals(98., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21));
-		assertEpsilonEquals(16., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21));
-		assertEpsilonEquals(19., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21));
-		assertEpsilonEquals(155., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21));
-		assertEpsilonEquals(147., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21));
-		assertEpsilonEquals(11., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21));
-		assertEpsilonEquals(11., AlignedBox3afp.calculatesAlignedBoxPointDistanceL1(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21));
-	}
-
-	@DisplayName("calculatesAlignedBoxPointDistanceLinf(double,double,double,double,double,double,double,double,double)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticCalculatesAlignedBoxPointDistanceLinf(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5));
-		assertEpsilonEquals(82., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5));
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5));
-		assertEpsilonEquals(144., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5));
-		assertEpsilonEquals(136., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5));
-
-		//
-
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0));
-		assertEpsilonEquals(82., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0));
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0));
-		assertEpsilonEquals(144., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0));
-		assertEpsilonEquals(136., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0));
-
-		//
-
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5));
-		assertEpsilonEquals(82., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5));
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5));
-		assertEpsilonEquals(144., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5));
-		assertEpsilonEquals(136., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5));
-
-		//
-
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10));
-		assertEpsilonEquals(82., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10));
-		assertEpsilonEquals(5., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10));
-		assertEpsilonEquals(8., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10));
-		assertEpsilonEquals(144., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10));
-		assertEpsilonEquals(136., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10));
-		assertEpsilonEquals(0., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10));
-
-		//
-
-		assertEpsilonEquals(11., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21));
-		assertEpsilonEquals(90., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21));
-		assertEpsilonEquals(82., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21));
-		assertEpsilonEquals(11., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21));
-		assertEpsilonEquals(11., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21));
-		assertEpsilonEquals(144., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21));
-		assertEpsilonEquals(136., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21));
-		assertEpsilonEquals(11., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21));
-		assertEpsilonEquals(11., AlignedBox3afp.calculatesAlignedBoxPointDistanceLinf(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21));
-	}
-
-	@DisplayName("findsClosestPointAlignedBoxPoint(double,double,double,double,double,double,double,double,double,Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticFindsClosestPointAlignedBoxPoint(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p;
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-	}
-
-	@DisplayName("findsFarthestPointAlignedBoxPoint(double,double,double,double,double,double,double,double,double,Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticFindsFarthestPointAlignedBoxPoint(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p;
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-	}
-
-	@DisplayName("findsClosestPointAlignedBoxSphere(double,double,double,double,double,double,double,double,double,double,Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticFindsClosestPointAlignedBoxSphere(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p;
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5, 2, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5, 2, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0, 2, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0, 2, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5, 2, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, 2, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(5, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10, 2, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10, 2, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(10, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(17, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21, 2, p);
-		assertEpsilonEquals(9, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21, 2, p);
-		assertEpsilonEquals(8, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21, 2, p);
-		assertEpsilonEquals(7, p.getX());
-		assertEpsilonEquals(12, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-	}
-
-	@DisplayName("findsFarthestPointAlignedBoxSphere(double,double,double,double,double,double,double,double,double,double,Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticFindsFarthestPointAlignedBoxSphere(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D p;
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5,2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(10, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		//
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21, 2, p);
-		assertEpsilonEquals(5, p.getX());
-		assertEpsilonEquals(8, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-
-		p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21, 2, p);
-		assertEpsilonEquals(10, p.getX());
-		assertEpsilonEquals(18, p.getY());
-		assertEpsilonEquals(0, p.getZ());
-	}
-
+	
 	private static String readCsvCell(String[] columns, int index) {
 		try {
 			return columns[index].replaceAll("^\"", "").replaceAll("\"$", "");
@@ -3390,7 +134,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		return strCode.toString();
 	}
 
-	private static Stream<Arguments> staticFindsCloseFarePointAlignedBoxAlignedBoxArguments(String csvFileBasename) throws Exception {
+	private static Stream<Arguments> findsCloseFarePointAlignedBoxAlignedBoxArguments(String csvFileBasename) throws Exception {
 		final List<Arguments> args = new ArrayList<>();
 		final URL resource = Resources.getResource(AbstractAlignedBox3dTestCase.class, csvFileBasename);
 		assertNotNull(resource);
@@ -3411,123 +155,8897 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		return args.stream();
 	}
 
-	private static Stream<Arguments> staticFindsClosestPointAlignedBoxAlignedBoxArguments() throws Exception {
-		return staticFindsCloseFarePointAlignedBoxAlignedBoxArguments("staticFindsClosestPointAlignedBoxAlignedBoxArguments.csv");
-	}
+	@DisplayName("avoidCollisionWith")
+	@Nested
+	public class AvoidCollisionWithBoxBoxVector {
 
-	@DisplayName("findsClosestPointAlignedBoxAlignedBox(double,double,double,double,double,double,double,double,double,double,double,double,Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@MethodSource("staticFindsClosestPointAlignedBoxAlignedBoxArguments")
-	public final void staticFindsClosestPointAlignedBoxAlignedBox(String label,
-			Point3D min1, Point3D max1, Point3D min2, Point3D max2, Point3D expected) {
-		Point3D p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsClosestPointAlignedBoxAlignedBox(
-				min1.getX(), min1.getY(), min1.getZ(), max1.getX(), max1.getY(), max1.getZ(),
-				min2.getX(), min2.getY(), min2.getZ(), max2.getX(), max2.getY(), max2.getZ(),
-				p);
-		assertEpsilonEquals(expected, p, label);
-		assertEpsilonInRange(min1.getX(), max1.getX(), p.getX());
-		assertEpsilonInRange(min1.getY(), max1.getY(), p.getY());
-		assertEpsilonInRange(min1.getZ(), max1.getZ(), p.getZ());
-	}
+		private B box;
 
-	private static Stream<Arguments> staticFindsFarthestPointAlignedBoxAlignedBoxArguments() throws Exception {
-		return staticFindsCloseFarePointAlignedBoxAlignedBoxArguments("staticFindsFarthestPointAlignedBoxAlignedBoxArguments.csv");
-	}
+		private InnerComputationPoint3D newMin;
 
-	@DisplayName("findsFarthestPointAlignedBoxAlignedBox(double,double,double,double,double,double,double,double,double,double,double,double,Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@MethodSource("staticFindsFarthestPointAlignedBoxAlignedBoxArguments")
-	public final void staticFindsFarthestPointAlignedBoxAlignedBox(String label,
-			Point3D min1, Point3D max1, Point3D min2, Point3D max2, Point3D expected) {
-		Point3D p = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		AlignedBox3afp.findsFarthestPointAlignedBoxAlignedBox(
-				min1.getX(), min1.getY(), min1.getZ(), max1.getX(), max1.getY(), max1.getZ(),
-				min2.getX(), min2.getY(), min2.getZ(), max2.getX(), max2.getY(), max2.getZ(),
-				p);
-		assertEpsilonEquals(expected, p, label);
-		assertEpsilonInRange(min1.getX(), max1.getX(), p.getX());
-		assertEpsilonInRange(min1.getY(), max1.getY(), p.getY());
-		assertEpsilonInRange(min1.getZ(), max1.getZ(), p.getZ());
-	}
+		private InnerComputationPoint3D newMax;
 
+		private InnerComputationVector3D vect;
 
-	private static Stream<Arguments> staticReducesCohenSutherlandZoneAlignedBoxSegmentArguments() throws Exception {
-		final List<Arguments> args = new ArrayList<>();
-		final URL resource = Resources.getResource(AbstractAlignedBox3dTestCase.class, "staticReducesCohenSutherlandZoneAlignedBoxSegmentArguments.csv");
-		assertNotNull(resource);
-		try (final BufferedReader csvReader = new BufferedReader(new InputStreamReader(resource.openStream()))) {
-			// Read the header
-			csvReader.readLine();
-			String line = csvReader.readLine();
-			while (line != null) {
-				final String[] columns = line.split(",");
-				args.add(Arguments.of(
-						readCsvCell(columns, 0),
-						createTmpPoint(5, 8, 0),
-						createTmpPoint(10, 18, 10),
-						createTmpPoint(readCsvDouble(columns, 1), readCsvDouble(columns, 2), readCsvDouble(columns, 3)),
-						readCsvCSC(columns, 4),
-						createTmpPoint(readCsvDouble(columns, 5), readCsvDouble(columns, 6), readCsvDouble(columns, 7)),
-						readCsvCSC(columns, 8),
-						readCsvCSC(columns, 9),
-						createTmpPoint(readCsvDouble(columns, 10), readCsvDouble(columns, 11), readCsvDouble(columns, 12)),
-						createTmpPoint(readCsvDouble(columns, 13), readCsvDouble(columns, 14), readCsvDouble(columns, 15))));
-				line = csvReader.readLine();
-			}
+		@BeforeEach
+		public void setUp() {
+			this.box = createAlignedBox(0, 0, 0, 7, 10, 1);
+			this.newMin = new InnerComputationPoint3D();
+			this.newMax = new InnerComputationPoint3D();
+			this.vect = new InnerComputationVector3D();
+
+			assertTrue(getS().intersects(this.box));
+			assertTrue(this.box.intersects(getS()));
 		}
-		return args.stream();
-	}
+		
+		@DisplayName("(box1, box2, Vector3D)")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void testBoxBoxVector(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	
+			Box3afp.avoidCollisionBoxBox(
+					getS().getMinX(), getS().getMinY(), getS().getMinZ(),
+					getS().getMaxX(), getS().getMaxY(), getS().getMaxZ(),
+					this.box.getMinX(), this.box.getMinY(), this.box.getMinZ(),
+					this.box.getMaxX(), this.box.getMaxY(), this.box.getMaxZ(),
+					this.newMin, this.newMax, this.vect);
 
-	private static Stream<Arguments> staticFindsCloseFarePointAlignedBoxSegmentArguments(String csvFileBasename) throws Exception {
-		final List<Arguments> args = new ArrayList<>();
-		final URL resource = Resources.getResource(AbstractAlignedBox3dTestCase.class, csvFileBasename);
-		assertNotNull(resource);
-		try (final BufferedReader csvReader = new BufferedReader(new InputStreamReader(resource.openStream()))) {
-			String line = csvReader.readLine();
-			while (line != null) {
-				final String[] columns = line.split(",");
-				args.add(Arguments.of(
-						readCsvCell(columns, 0),
-						createTmpPoint(5, 8, 0),
-						createTmpPoint(10, 18, 10),
-						createTmpPoint(readCsvDouble(columns, 1), readCsvDouble(columns, 2), readCsvDouble(columns, 3)),
-						createTmpPoint(readCsvDouble(columns, 4), readCsvDouble(columns, 5), readCsvDouble(columns, 6)),
-						createTmpPoint(readCsvDouble(columns, 7), readCsvDouble(columns, 8), readCsvDouble(columns, 9))));
-				line = csvReader.readLine();
-			}
+			final var newShape = getS().clone();
+			newShape.setFromCorners(this.newMin, this.newMax);
+
+			assertEpsilonEquals(createVector(0, 0, 1), this.vect);
+			assertEpsilonEquals(5, newShape.getMinX());
+			assertEpsilonEquals(8, newShape.getMinY());
+			assertEpsilonEquals(1, newShape.getMinZ());
+			assertEpsilonEquals(10, newShape.getMaxX());
+			assertEpsilonEquals(18, newShape.getMaxY());
+			assertEpsilonEquals(11, newShape.getMaxZ());
+
+			assertFalse(newShape.intersects(this.box));
 		}
-		return args.stream();
+
+		@DisplayName("(box1, box2, null, Vector3D)")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void testBoxBoxNullVector(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			
+			Box3afp.avoidCollisionBoxBox(
+					getS().getMinX(), getS().getMinY(), getS().getMinZ(),
+					getS().getMaxX(), getS().getMaxY(), getS().getMaxZ(),
+					this.box.getMinX(), this.box.getMinY(), this.box.getMinZ(),
+					this.box.getMaxX(), this.box.getMaxY(), this.box.getMaxZ(),
+					null,
+					this.newMin, this.newMax, this.vect);
+
+			final var newShape = getS().clone();
+			newShape.setFromCorners(this.newMin, this.newMax);
+
+			assertEpsilonEquals(createVector(0, 0, 1), this.vect);
+			assertEpsilonEquals(5, newShape.getMinX());
+			assertEpsilonEquals(8, newShape.getMinY());
+			assertEpsilonEquals(1, newShape.getMinZ());
+			assertEpsilonEquals(10, newShape.getMaxX());
+			assertEpsilonEquals(18, newShape.getMaxY());
+			assertEpsilonEquals(11, newShape.getMaxZ());
+
+			assertFalse(newShape.intersects(this.box));
+		}
+
+		@DisplayName("(box1, box2, (0,0,0), Vector3D) no intersection")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void testBoxBoxZeroVector(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			
+			Box3afp.avoidCollisionBoxBox(
+					getS().getMinX(), getS().getMinY(), getS().getMinZ(),
+					getS().getMaxX(), getS().getMaxY(), getS().getMaxZ(),
+					this.box.getMinX(), this.box.getMinY(), this.box.getMinZ(),
+					this.box.getMaxX(), this.box.getMaxY(), this.box.getMaxZ(),
+					createVector(0, 0, 0),
+					this.newMin, this.newMax, this.vect);
+
+			final var newShape = getS().clone();
+			newShape.setFromCorners(this.newMin, this.newMax);
+
+			assertEpsilonEquals(createVector(0, 0, 1), this.vect);
+			assertEpsilonEquals(5, newShape.getMinX());
+			assertEpsilonEquals(8, newShape.getMinY());
+			assertEpsilonEquals(1, newShape.getMinZ());
+			assertEpsilonEquals(10, newShape.getMaxX());
+			assertEpsilonEquals(18, newShape.getMaxY());
+			assertEpsilonEquals(11, newShape.getMaxZ());
+			
+			assertFalse(newShape.intersects(this.box));
+		}
+
+		@DisplayName("(box1, box2, (-4,4,0), Vector3D) no intersection")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void avoidCollisionWithAlignedBox3afpVector3DVector3D_givenDisplacement(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+
+			var v = createVector(-4, 4, 0);
+			
+			Box3afp.avoidCollisionBoxBox(
+					getS().getMinX(), getS().getMinY(), getS().getMinZ(),
+					getS().getMaxX(), getS().getMaxY(), getS().getMaxZ(),
+					this.box.getMinX(), this.box.getMinY(), this.box.getMinZ(),
+					this.box.getMaxX(), this.box.getMaxY(), this.box.getMaxZ(),
+					v,
+					this.newMin, this.newMax, this.vect);
+
+			final var newShape = getS().clone();
+			newShape.setFromCorners(this.newMin, this.newMax);
+
+			assertEpsilonEquals(createVector(-2, 2, 1), v);
+			assertEpsilonEquals(createVector(-2, 2, 1), this.vect);
+			assertEpsilonEquals(3, newShape.getMinX());
+			assertEpsilonEquals(10, newShape.getMinY());
+			assertEpsilonEquals(1, newShape.getMinZ());
+			assertEpsilonEquals(8, newShape.getMaxX());
+			assertEpsilonEquals(20, newShape.getMaxY());
+			assertEpsilonEquals(11, newShape.getMaxZ());
+
+			assertFalse(newShape.intersects(this.box));
+		}
+
 	}
 
-	private static Stream<Arguments> staticFindsClosestPointAlignedBoxSegmentArguments() throws Exception {
-		return staticFindsCloseFarePointAlignedBoxSegmentArguments("staticFindsClosestPointAlignedBoxSegmentArguments.csv");
+	@DisplayName("intersectsAlignedBoxAlignedBox")
+	@Nested
+	public class IntersectsAlignedBoxAlignedBox {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 1, 1, 1));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(0, 0, 0, 1, 1, 1, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 20, 0, 1, 22, 10));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(0, 20, 0, 10, 22, 1, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 5, 100, 10));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(0, 0, 0, 5, 100, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 5.1, 100, 10));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(0, 0, 0, 5.1, 100, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 0, 9.5, 15, 10));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 9, 0, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 0, 9.5, 15, 10));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 9, 0, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 12, 9.5, 15, 13));
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 12, 9.5, 15, 13, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 10, 9.5, 15, 11));
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 10, 9.5, 15, 11, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 9, 9.5, 15, 10));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 9, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 4, 9.5, 15, 5));
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 4, 9.5, 15, 5, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 0, 9.5, 15, 1));
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, 0, 9.5, 15, 1, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, -1, 9.5, 15, 0));
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, -1, 9.5, 15, 0, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, -2, 9.5, 15, -1));
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 0, -2, 9.5, 15, -1, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 1, 7, 10, 2));
+		}
+
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(6, 9, 1, 7, 10, 2, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 4, 7, -1, 11, 19, 11));
+		}
+
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxAlignedBox(4, 7, -1, 11, 19, 11, 5, 8, 0, 10, 18, 10));
+		}
+
 	}
 
-	@DisplayName("findsFarthestPointAlignedBoxSegment(double,double,double,double,double,double,double,double,double,double,double,double,Point3D)")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void staticFindsFarthestPointAlignedBoxSegment(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		fail("TODO");
+	@DisplayName("intersectsAlignedBoxLine")
+	@Nested
+	public class IntersectsAlignedBoxLine {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 10, 2, 2));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 2, 2));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 5, 2));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 10, 2));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 3, 3));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 14, 3));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 27, 3));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 3, 3));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 14, 3));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 27, 3));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, 12, 22, 13));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(5, 8, 0, 10, 18, 10, /* */ 11, 21, 12, 12, 22, 13));
+		}
+
+		@DisplayName("#13 - line fully inside box")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					6, 9, 1, 9, 17, 9));
+		}
+
+		@DisplayName("#14 - line through opposite box corners (diagonal)")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#15 - line coplanar with face and crossing it")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// plane z=0 (box bottom face), y inside range
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					0, 10, 0, 20, 10, 0));
+		}
+
+		@DisplayName("#16 - line parallel to X and outside in Y")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					0, 30, 5, 20, 30, 5));
+		}
+
+		@DisplayName("#17 - line parallel to Z and outside in X")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					20, 10, -5, 20, 10, 15));
+		}
+
+		@DisplayName("#18 - tangent line touching at one corner")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// passes through corner (5,8,0)
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					5, 8, 0, 4, 7, -1));
+		}
+
+		@DisplayName("#19 - tangent line touching an edge")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// edge x=5,z=0, varying y
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					5, -100, 0, 5, 100, 0));
+		}
+
+		@DisplayName("#20 - degenerate line point inside box")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					7, 10, 3, 7, 10, 3));
+		}
+
+		@DisplayName("#21 - degenerate line point outside box")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxLine(
+					5, 8, 0, 10, 18, 10,
+					100, 100, 100, 100, 100, 100));
+		}
+
+		@DisplayName("#22 - reversed box corners")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(AssertionError.class, () -> {
+				AlignedBox3afp.intersectsAlignedBoxLine(
+					10, 18, 10, 5, 8, 0,
+					0, 0, 0, 12, 22, 13);
+			});
+		}
+
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@DisplayName("reducesCohenSutherlandZoneAlignedBoxSegment w/ special cases")
-	public final void reducesCohenSutherlandZoneAlignedBoxSegment(CoordinateSystem3D cs) {
-		var result1 = new InnerComputationPoint3D();
-		var result2 = new InnerComputationPoint3D();
+	@DisplayName("intersectsAlignedBoxSegment")
+	@Nested
+	public class IntersectsAlignedBoxSegment {
 
-		var zone = AlignedBox3afp.reducesCohenSutherlandZoneAlignedBoxSegment(
-				1, 2, 3, 2, 3, 4,
-				0, 0, 0, 4, 2.4, 5,
-				COHEN_SUTHERLAND_LEFT | COHEN_SUTHERLAND_BOTTOM | COHEN_SUTHERLAND_FRONT,
-				COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_BACK,
-				result1, result2);
-		assertEquals(COHEN_SUTHERLAND_RIGHT | COHEN_SUTHERLAND_INSIDE | COHEN_SUTHERLAND_INSIDE, zone);
-		assertEpsilonEquals(createPoint(2.4, 1.44, 3), result1);
-		assertEpsilonEquals(createPoint(4, 2.4, 5), result2);
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 10, 2, 2));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 2, 2));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 5, 2));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 1, 1, 1, 2, 10, 2));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 3, 3));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 14, 3));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 5, 27, 3));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 3, 3));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 14, 3));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 5, 0, 3, 6, 27, 3));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, 12, 22, 13));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(5, 8, 0, 10, 18, 10, /* */ 11, 21, 12, 12, 22, 13));
+		}
+
+		@DisplayName("#13 - segment fully inside the box")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					6, 9, 1, 9, 17, 9));
+		}
+
+		@DisplayName("#14 - segment crossing two opposite faces")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					0, 10, 5, 20, 10, 5));
+		}
+
+		@DisplayName("#15 - one endpoint on face, other outside")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// endpoint exactly on x=5 face
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					5, 12, 4, 2, 12, 4));
+		}
+
+		@DisplayName("#16 - one endpoint on corner, other outside")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					5, 8, 0, 0, 0, -5));
+		}
+
+		@DisplayName("#17 - segment parallel to X outside by Y")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					0, 30, 5, 20, 30, 5));
+		}
+
+		@DisplayName("#18 - segment parallel to Z outside by X")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					20, 10, -5, 20, 10, 15));
+		}
+
+		@DisplayName("#19 - degenerate segment (point) inside")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					7, 10, 3, 7, 10, 3));
+		}
+
+		@DisplayName("#20 - degenerate segment (point) on boundary")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					10, 18, 10, 10, 18, 10));
+		}
+
+		@DisplayName("#21 - degenerate segment (point) outside")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					100, 100, 100, 100, 100, 100));
+		}
+
+		@DisplayName("#22 - reversed segment endpoints should not change result")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			final boolean r1 = AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					0, 0, 0, 12, 22, 13);
+			final boolean r2 = AlignedBox3afp.intersectsAlignedBoxSegment(
+					5, 8, 0, 10, 18, 10,
+					12, 22, 13, 0, 0, 0);
+			assertEquals(r1, r2);
+			assertTrue(r1);
+		}
+
+		@DisplayName("#23 - reversed box corners")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(AssertionError.class, () -> {
+				AlignedBox3afp.intersectsAlignedBoxSegment(
+					10, 18, 10, 5, 8, 0,
+					0, 0, 0, 12, 22, 13);
+			});
+		}
+
+	}
+
+	@DisplayName("containsAlignedBoxAlignedBox")
+	@Nested
+	public class ContainsAlignedBoxAlignedBox {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 1, 1, 1));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(0, 0, 0, 1, 1, 1, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 20, 0, 1, 22, 10));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(0, 20, 0, 10, 22, 1, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 5, 100, 10));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(0, 0, 0, 5, 100, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 0, 0, 0, 5.1, 100, 10));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(0, 0, 0, 5.1, 100, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			assertTrue(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 0, 9.5, 15, 10));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 9, 0, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 0, 9.5, 15, 11));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 9, 0, 9.5, 15, 11, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 12, 9.5, 15, 13));
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 12, 9.5, 15, 13, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 10, 9.5, 15, 11));
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 10, 9.5, 15, 11, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 9, 9.5, 15, 10));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 9, 9.5, 15, 10, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 4, 9.5, 15, 5));
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 4, 9.5, 15, 5, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, 0, 9.5, 15, 1));
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, 0, 9.5, 15, 1, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, -1, 9.5, 15, 0));
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, -1, 9.5, 15, 0, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 0, -2, 9.5, 15, -1));
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 0, -2, 9.5, 15, -1, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			assertTrue(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 6, 9, 1, 7, 10, 2));
+		}
+
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(6, 9, 1, 7, 10, 2, 5, 8, 0, 10, 18, 10));
+		}
+
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxAlignedBox(5, 8, 0, 10, 18, 10, 4, 7, -1, 11, 19, 11));
+		}
+
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			assertTrue(AlignedBox3afp.containsAlignedBoxAlignedBox(4, 7, -1, 11, 19, 11, 5, 8, 0, 10, 18, 10));
+		}
+
+	}
+
+	@DisplayName("containsAlignedBoxPoint")
+	@Nested
+	public class ContainsAlignedBoxPoint {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -10));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 2));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 20));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, -10));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, 0));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, 2));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, 10));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 0, 20));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, -10));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, 0));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, 2));
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, 10));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 0, 20));
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, -10));
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, 0));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, 2));
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, 10));
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 0, 20));
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, -10));
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, 0));
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, 2));
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, 10));
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 0, 20));
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, -10));
+		}
+
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, 0));
+		}
+
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, 2));
+		}
+
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, 10));
+		}
+
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 8, 20));
+		}
+
+		@DisplayName("#31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, -10));
+		}
+
+		@DisplayName("#32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, 0));
+		}
+
+		@DisplayName("#33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, 2));
+		}
+
+		@DisplayName("#34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, 10));
+		}
+
+		@DisplayName("#35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 8, 20));
+		}
+
+		@DisplayName("#36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, -10));
+		}
+
+		@DisplayName("#37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, 0));
+		}
+
+		@DisplayName("#38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, 2));
+		}
+
+		@DisplayName("#39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, 10));
+		}
+
+		@DisplayName("#40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 8, 20));
+		}
+
+		@DisplayName("#41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, -10));
+		}
+
+		@DisplayName("#42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, 0));
+		}
+
+		@DisplayName("#43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, 2));
+		}
+
+		@DisplayName("#44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, 10));
+		}
+
+		@DisplayName("#45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 8, 20));
+		}
+
+		@DisplayName("#46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, -10));
+		}
+
+		@DisplayName("#47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, 0));
+		}
+
+		@DisplayName("#48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, 2));
+		}
+
+		@DisplayName("#49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, 10));
+		}
+
+		@DisplayName("#50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 8, 20));
+		}
+
+		@DisplayName("#51")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_51(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, -10));
+		}
+
+		@DisplayName("#52")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_52(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, 0));
+		}
+
+		@DisplayName("#53")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_53(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, 2));
+		}
+
+		@DisplayName("#54")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_54(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, 10));
+		}
+
+		@DisplayName("#55")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_55(CoordinateSystem3D cs) {
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 14, 20));
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		}
+
+		@DisplayName("#56")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_56(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, -10));
+		}
+
+		@DisplayName("#57")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_57(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, 0));
+		}
+
+		@DisplayName("#58")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_58(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, 2));
+		}
+
+		@DisplayName("#59")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_59(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, 10));
+		}
+
+		@DisplayName("#60")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_60(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 14, 20));
+		}
+
+		@DisplayName("#61")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_61(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, -10));
+		}
+
+		@DisplayName("#62")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_62(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, 0));
+		}
+
+		@DisplayName("#63")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_63(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, 2));
+		}
+
+		@DisplayName("#64")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_64(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, 10));
+		}
+
+		@DisplayName("#65")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_65(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 14, 20));
+		}
+
+		@DisplayName("#66")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_66(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, -10));
+		}
+
+		@DisplayName("#67")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_67(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, 0));
+		}
+
+		@DisplayName("#68")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_68(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, 2));
+		}
+
+		@DisplayName("#69")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_69(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, 10));
+		}
+
+		@DisplayName("#70")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_70(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 14, 20));
+		}
+
+		@DisplayName("#71")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_71(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, -10));
+		}
+
+		@DisplayName("#72")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_72(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, 0));
+		}
+
+		@DisplayName("#73")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_73(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, 2));
+		}
+
+		@DisplayName("#74")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_74(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, 10));
+		}
+
+		@DisplayName("#75")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_75(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 14, 20));
+		}
+
+		@DisplayName("#76")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_76(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, -10));
+		}
+
+		@DisplayName("#77")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_77(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, 0));
+		}
+
+		@DisplayName("#78")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_78(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, 2));
+		}
+
+		@DisplayName("#79")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_79(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, 10));
+		}
+
+		@DisplayName("#80")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_80(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 18, 20));
+		}
+
+		@DisplayName("#81")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_81(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, -10));
+		}
+
+		@DisplayName("#82")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_82(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, 0));
+		}
+
+		@DisplayName("#83")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_83(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, 2));
+		}
+
+		@DisplayName("#84")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_84(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, 10));
+		}
+
+		@DisplayName("#85")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_85(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 18, 20));
+		}
+
+		@DisplayName("#86")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_86(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, -10));
+		}
+
+		@DisplayName("#87")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_87(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, 0));
+		}
+
+		@DisplayName("#88")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_88(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, 2));
+		}
+
+		@DisplayName("#89")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_89(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, 10));
+		}
+
+		@DisplayName("#90")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_90(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 18, 20));
+		}
+
+		@DisplayName("#91")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_91(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, -10));
+		}
+
+		@DisplayName("#92")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_92(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, 0));
+		}
+
+		@DisplayName("#93")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_93(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, 2));
+		}
+
+		@DisplayName("#94")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_94(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, 10));
+		}
+
+		@DisplayName("#95")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_95(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 18, 20));
+		}
+
+		@DisplayName("#96")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_96(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, -10));
+		}
+
+		@DisplayName("#97")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_97(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, 0));
+		}
+
+		@DisplayName("#98")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_98(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, 2));
+		}
+
+		@DisplayName("#99")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_99(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, 10));
+		}
+
+		@DisplayName("#100")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_100(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 18, 20));
+		}
+
+		@DisplayName("#101")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_101(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, -10));
+		}
+
+		@DisplayName("#102")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_102(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, 0));
+		}
+
+		@DisplayName("#103")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_103(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, 2));
+		}
+
+		@DisplayName("#104")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_104(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, 10));
+		}
+
+		@DisplayName("#105")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_105(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 27, 20));
+		}
+
+		@DisplayName("#106")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_106(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, -10));
+		}
+
+		@DisplayName("#107")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_107(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, 0));
+		}
+
+		@DisplayName("#108")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_108(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, 2));
+		}
+
+		@DisplayName("#109")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_109(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, 10));
+		}
+
+		@DisplayName("#110")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_110(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 5, 27, 20));
+		}
+
+		@DisplayName("#111")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_111(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, -10));
+		}
+
+		@DisplayName("#112")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_112(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, 0));
+		}
+
+		@DisplayName("#113")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_113(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, 2));
+		}
+
+		@DisplayName("#114")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_114(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, 10));
+		}
+
+		@DisplayName("#115")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_115(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 6.5, 27, 20));
+		}
+
+		@DisplayName("#116")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_116(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, -10));
+		}
+
+		@DisplayName("#117")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_117(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, 0));
+		}
+
+		@DisplayName("#118")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_118(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, 2));
+		}
+
+		@DisplayName("#119")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_119(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, 10));
+		}
+
+		@DisplayName("#120")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_120(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 10, 27, 20));
+		}
+
+		@DisplayName("#121")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_121(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, -10));
+		}
+
+		@DisplayName("#122")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_122(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, 0));
+		}
+
+		@DisplayName("#123")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_123(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, 2));
+		}
+
+		@DisplayName("#124")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_124(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, 10));
+		}
+
+		@DisplayName("#125")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_125(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(AlignedBox3afp.containsAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 15, 27, 20));
+		}
+
+	}
+
+	@DisplayName("equals(Object)")
+	@Nested
+	public class EqualsObject {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().equals(null));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().equals(new Object()));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().equals(createAlignedBox(0, 8, 0, 5, 12, 1)));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().equals(createAlignedBox(5, 8, 0, 5, 0, 1)));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().equals(createSegment(5, 8, 0, 5, 10, 1)));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().equals(getS()));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().equals(createAlignedBox(5, 8, 0, 5, 10, 10)));
+		}
+	}
+
+	@DisplayName("equalsToShape")
+	@Nested
+	public class EqualsToShape {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().equalsToShape(null));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().equalsToShape((T) createAlignedBox(0, 8, 0, 5, 12, 0)));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().equalsToShape((T) createAlignedBox(5, 8, 0, 5, 0, 0)));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().equalsToShape(getS()));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().equalsToShape((T) createAlignedBox(5, 8, 0, 5, 10, 10)));
+		}
+	}
+
+	@DisplayName("add")
+	@Nested
+	public class Add {
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().add(createPoint(123.456, 456.789, 0));
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(123.456, getS().getMaxX());
+			assertEpsilonEquals(456.789, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().add(createPoint(-123.456, 456.789, 0));
+			assertEpsilonEquals(-123.456, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(123.456, getS().getMaxX());
+			assertEpsilonEquals(456.789, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+
+		@DisplayName("(Point3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().add(createPoint(-123.456, -456.789, 0));
+			assertEpsilonEquals(-123.456, getS().getMinX());
+			assertEpsilonEquals(-456.789, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(123.456, getS().getMaxX());
+			assertEpsilonEquals(456.789, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+
+		@DisplayName("(double,double,double) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().add(123.456, 456.789, 0);
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(123.456, getS().getMaxX());
+			assertEpsilonEquals(456.789, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+
+		@DisplayName("(double,double,double) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().add(-123.456, 456.789, 0);
+			assertEpsilonEquals(-123.456, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(123.456, getS().getMaxX());
+			assertEpsilonEquals(456.789, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+
+		@DisplayName("(double,double,double) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().add(-123.456, -456.789, 3);
+			assertEpsilonEquals(-123.456, getS().getMinX());
+			assertEpsilonEquals(-456.789, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(123.456, getS().getMaxX());
+			assertEpsilonEquals(456.789, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("setUnion")
+	@Nested
+	public class SetUnion {
+
+		@DisplayName("(Box3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().setUnion(createAlignedBox(0, 0, 0, 12, 1, 0));
+			assertEpsilonEquals(0, getS().getMinX());
+			assertEpsilonEquals(0, getS().getMinY());
+			assertEpsilonEquals(12, getS().getMaxX());
+			assertEpsilonEquals(18, getS().getMaxY());
+		}
+	}
+
+	@DisplayName("createUnion")
+	@Nested
+	public class CreateUnion {
+
+		@DisplayName("(Box3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			B union = getS().createUnion(createAlignedBox(0, 0, 0, 12, 1, 2));
+			assertNotSame(getS(), union);
+			assertEpsilonEquals(0, union.getMinX());
+			assertEpsilonEquals(0, union.getMinY());
+			assertEpsilonEquals(0, union.getMinZ());
+			assertEpsilonEquals(12, union.getMaxX());
+			assertEpsilonEquals(18, union.getMaxY());
+			assertEpsilonEquals(10, union.getMaxZ());
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(10, getS().getMaxX());
+			assertEpsilonEquals(18, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("setIntersection")
+	@Nested
+	public class SetIntersection {
+
+		@DisplayName("(Box3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().setIntersection(createAlignedBox(0, 0, 0, 12, 1, 0));
+			assertTrue(getS().isEmpty());
+		}
+
+		@DisplayName("(Box3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().setIntersection(createAlignedBox(0, 0, 0, 7, 10, 2));
+			assertFalse(getS().isEmpty());
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(7, getS().getMaxX());
+			assertEpsilonEquals(10, getS().getMaxY());
+			assertEpsilonEquals(2, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("createIntersection")
+	@Nested
+	public class CreateIntersection {
+
+		@DisplayName("(Box3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			B box = getS().createIntersection(createAlignedBox(0, -1, 0, 12, 1, 2));
+			assertNotSame(getS(), box);
+			assertTrue(box.isEmpty());
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(10, getS().getMaxX());
+			assertEpsilonEquals(18, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+
+		@DisplayName("(Box3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var box = getS().createIntersection(createAlignedBox(0, 7, 0, 12, 1, 2));
+			assertNotSame(getS(), box);
+			assertTrue(box.isEmpty());
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(10, getS().getMaxX());
+			assertEpsilonEquals(18, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+	
+		@DisplayName("(Box3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var box = getS().createIntersection(createAlignedBox(0, 0, 0, 7, 10, 2));
+			assertNotSame(getS(), box);
+			assertEpsilonEquals(5, box.getMinX());
+			assertEpsilonEquals(8, box.getMinY());
+			assertEpsilonEquals(0, box.getMinZ());
+			assertEpsilonEquals(7, box.getMaxX());
+			assertEpsilonEquals(10, box.getMaxY());
+			assertEpsilonEquals(2, box.getMaxZ());
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(10, getS().getMaxX());
+			assertEpsilonEquals(18, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("getClosestPointTo")
+	@Nested
+	public class GetClosestPointTo {
+
+		@DisplayName("(Shape3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Shpere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(AlignedBox3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Segment3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Path3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(MultiShape3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 0, -5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 0, -5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 100, -5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 100, -5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 10, -5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(10, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 0, -5));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(154, 17, -5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(17, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(9, 154, -5));
+			assertEpsilonEquals(9, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(8, 18, -5));
+			assertEpsilonEquals(8, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 12, -5));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(12, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 0, 0));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 0, 0));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 100, 0));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 100, 0));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 10, 0));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(10, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 0, 0));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(154, 17, 0));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(17, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(9, 154, 0));
+			assertEpsilonEquals(9, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(8, 18, 0));
+			assertEpsilonEquals(8, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 12, 0));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(12, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 0, 5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 0, 5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 100, 5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 100, 5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 10, 5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(10, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 0, 5));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(154, 17, 5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(17, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(9, 154, 5));
+			assertEpsilonEquals(9, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(8, 18, 5));
+			assertEpsilonEquals(8, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 12, 5));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(12, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 0, 10));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 0, 10));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 100, 10));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 100, 10));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 10, 10));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(10, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 0, 10));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(154, 17, 10));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(17, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(9, 154, 10));
+			assertEpsilonEquals(9, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(8, 18, 10));
+			assertEpsilonEquals(8, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 12, 10));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(12, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 0, 21));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 0, 21));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(100, 100, 21));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 100, 21));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(0, 10, 21));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(10, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 0, 21));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(154, 17, 21));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(17, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(9, 154, 21));
+			assertEpsilonEquals(9, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(8, 18, 21));
+			assertEpsilonEquals(8, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getClosestPointTo(createPoint(7, 12, 21));
+			assertEpsilonEquals(7, p.getX());
+			assertEpsilonEquals(12, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+	}
+
+	@DisplayName("getFarthestPointTo")
+	@Nested
+	public class GetFarthestPointTo {
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 0, -5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 0, -5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 100, -5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 100, -5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 10, -5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 0, -5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(154, 17, -5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(9, 154, -5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(8, 18, -5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 12, -5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 0, 0));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 0, 0));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 100, 0));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 100, 0));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 10, 0));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 0, 0));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(154, 17, 0));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(9, 154, 0));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(8, 18, 0));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 12, 0));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 0, 5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 0, 5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 100, 5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 100, 5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 10, 5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 0, 5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(154, 17, 5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(9, 154, 5));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPoint(Double.NaN, Double.NaN, Double.NaN);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, p);
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 12, 5));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(10, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 0, 10));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 0, 10));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 100, 10));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 100, 10));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 10, 10));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 0, 10));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(154, 17, 10));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(9, 154, 10));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(8, 18, 10));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 12, 10));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 0, 21));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 0, 21));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(100, 100, 21));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 100, 21));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(0, 10, 21));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 0, 21));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(154, 17, 21));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(9, 154, 21));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(8, 18, 21));
+			assertEpsilonEquals(5, p.getX());
+			assertEpsilonEquals(8, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+
+		@DisplayName("(Point3D) #50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = getS().getFarthestPointTo(createPoint(7, 12, 21));
+			assertEpsilonEquals(10, p.getX());
+			assertEpsilonEquals(18, p.getY());
+			assertEpsilonEquals(0, p.getZ());
+		}
+	}
+
+	@DisplayName("getDistance")
+	@Nested
+	public class GetDistance {
+
+		@DisplayName("(Shape3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Shpere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(AlignedBox3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Segment3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Path3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(MultiShape3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(9.43398, getS().getDistance(createPoint(0, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90.35486, getS().getDistance(createPoint(100, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(121.75385, getS().getDistance(createPoint(100, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(82.1523, getS().getDistance(createPoint(0, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5, getS().getDistance(createPoint(0, 10, 0)));
+		}
+
+		@DisplayName("(Point3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8, getS().getDistance(createPoint(7, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144, getS().getDistance(createPoint(154, 17, 0)));
+		}
+
+		@DisplayName("(Point3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136, getS().getDistance(createPoint(9, 154, 0)));
+		}
+
+		@DisplayName("(Point3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistance(createPoint(8, 18, 0)));
+		}
+
+		@DisplayName("(Point3D) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistance(createPoint(7, 12, 0)));
+		}
+	}
+
+	@DisplayName("getDistanceSquared")
+	@Nested
+	public class GetDistanceSquared {
+
+		@DisplayName("(Shape3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Shpere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(AlignedBox3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Segment3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Path3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(MultiShape3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(88.99998, getS().getDistanceSquared(createPoint(0, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8164, getS().getDistanceSquared(createPoint(100, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(14823.99999, getS().getDistanceSquared(createPoint(100, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6749, getS().getDistanceSquared(createPoint(0, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(25, getS().getDistanceSquared(createPoint(0, 10, 0)));
+		}
+
+		@DisplayName("(Point3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(64, getS().getDistanceSquared(createPoint(7, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(20736, getS().getDistanceSquared(createPoint(154, 17, 0)));
+		}
+
+		@DisplayName("(Point3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(18496, getS().getDistanceSquared(createPoint(9, 154, 0)));
+		}
+
+		@DisplayName("(Point3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceSquared(createPoint(8, 18, 0)));
+		}
+
+		@DisplayName("(Point3D) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceSquared(createPoint(7, 12, 0)));
+		}
+	}
+
+	@DisplayName("getDistanceL1")
+	@Nested
+	public class GetDistanceL1 {
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(13, getS().getDistanceL1(createPoint(0, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(98, getS().getDistanceL1(createPoint(100, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(172, getS().getDistanceL1(createPoint(100, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(87, getS().getDistanceL1(createPoint(0, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5, getS().getDistanceL1(createPoint(0, 10, 0)));
+		}
+
+		@DisplayName("(Point3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8, getS().getDistanceL1(createPoint(7, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144, getS().getDistanceL1(createPoint(154, 17, 0)));
+		}
+
+		@DisplayName("(Point3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136, getS().getDistanceL1(createPoint(9, 154, 0)));
+		}
+
+		@DisplayName("(Point3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceL1(createPoint(8, 18, 0)));
+		}
+
+		@DisplayName("(Point3D) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceL1(createPoint(7, 12, 0)));
+		}
+	}
+
+	@DisplayName("getDistanceLinf")
+	@Nested
+	public class GetDistanceLinf {
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8, getS().getDistanceLinf(createPoint(0, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90, getS().getDistanceLinf(createPoint(100, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90, getS().getDistanceLinf(createPoint(100, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(82, getS().getDistanceLinf(createPoint(0, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5, getS().getDistanceLinf(createPoint(0, 10, 0)));
+		}
+
+		@DisplayName("(Point3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8, getS().getDistanceLinf(createPoint(7, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144, getS().getDistanceLinf(createPoint(154, 17, 0)));
+		}
+
+		@DisplayName("(Point3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136, getS().getDistanceLinf(createPoint(9, 154, 0)));
+		}
+
+		@DisplayName("(Point3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceLinf(createPoint(8, 18, 0)));
+		}
+
+		@DisplayName("(Point3D) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceLinf(createPoint(7, 12, 0)));
+		}
+	}
+
+	@DisplayName("set")
+	@Nested
+	public class Set {
+
+		@DisplayName("(Shape3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set((T) createAlignedBox(123.456, 456.789, 0, 789.123, 159.753, 658.5));
+			assertEpsilonEquals(123.456, getS().getMinX());
+			assertEpsilonEquals(456.789, getS().getMinY());
+			assertEpsilonEquals(0., getS().getMinZ());
+			assertEpsilonEquals(912.579, getS().getMaxX());
+			assertEpsilonEquals(616.542, getS().getMaxY());
+			assertEpsilonEquals(658.5, getS().getMaxZ());
+		}
+
+		@DisplayName("(double,double,double,double,double,double) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void doubledoubledoubledoubledoubledouble_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(1, 2, -1, 1, 5, 6);
+			assertEpsilonEquals(1, getS().getMinX());
+			assertEpsilonEquals(2, getS().getMinY());
+			assertEpsilonEquals(-1, getS().getMinZ());
+			assertEpsilonEquals(2, getS().getMaxX());
+			assertEpsilonEquals(7, getS().getMaxY());
+			assertEpsilonEquals(5, getS().getMaxZ());
+		}
+
+		@DisplayName("(double,double,double,double,double,double) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void doubledoubledoubledoubledoubledouble_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Vector3D v = createVector(1, 1, 1).toUnitVector();
+			getS().set(1, 2, v.getX(), v.getY(), 5, 6);
+			assertEpsilonEquals(1, getS().getMinX());
+			assertEpsilonEquals(2, getS().getMinY());
+			assertEpsilonEquals(0.5773502691896258, getS().getMinZ());
+			assertEpsilonEquals(1.5773502691896258, getS().getMaxX());
+			assertEpsilonEquals(7, getS().getMaxY());
+			assertEpsilonEquals(6.5773502691896258, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("contains")
+	@Nested
+	public class Contains {
+
+		@DisplayName("(AlignedBox3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().contains(createAlignedBox(0, 0, 0, 1, 1, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createAlignedBox(0, 0, 0, 1, 1, 0).contains(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().contains(createAlignedBox(0, 20, 0, 1, 2, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createAlignedBox(0, 20, 0, 1, 2, 0).contains(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().contains(createAlignedBox(0, 0, 0, 5, 100, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createAlignedBox(0, 0, 0, 5, 100, 0).contains(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().contains(createAlignedBox(0, 0, 0, 5.1, 100, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createAlignedBox(0, 0, 0, 5.1, 100, 0).contains(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().contains(createAlignedBox(6, 9, 0, .5, 9, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createAlignedBox(6, 9, 0, .5, 9, 0).contains(getS()));
+		}
+
+		@DisplayName("(double,double,double) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(20, 45, 0));
+		}
+
+		@DisplayName("(double,double,double) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(20, 55, 0));
+		}
+
+		@DisplayName("(double,double,double) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(20, 0, 0));
+		}
+
+		@DisplayName("(double,double,double) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(0, 45, 0));
+		}
+
+		@DisplayName("(double,double,double) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(5, 45, 0));
+		}
+
+		@DisplayName("(double,double,double) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(40, 55, 0));
+		}
+
+		@DisplayName("(double,double,double) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(40, 0, 0));
+		}
+
+		@DisplayName("(double,double,double) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(0, 40, 0));
+		}
+
+		@DisplayName("(double,double,double) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(20, 100, 0));
+		}
+
+		@DisplayName("(double,double,double) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(100, 45, 0));
+		}
+
+		@DisplayName("(double,double,double) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(-100, 45, 0));
+		}
+
+		@DisplayName("(double,double,double) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(-100, 60, 0));
+		}
+
+		@DisplayName("(double,double,double) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(10, 12, 0));
+		}
+
+		@DisplayName("(double,double,double) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(40, 12, 0));
+		}
+
+		@DisplayName("(double,double,double) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(40, 37, 0));
+		}
+
+		@DisplayName("(double,double,double) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(10, 37, 0));
+		}
+
+		@DisplayName("(double,double,double) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void xyz_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(35, 24, 0));
+		}
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(20, 45, 0)));
+		}
+
+		@DisplayName("(Point3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(20, 55, 0)));
+		}
+
+		@DisplayName("(Point3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(20, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(0, 45, 0)));
+		}
+
+		@DisplayName("(Point3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(5, 45, 0)));
+		}
+
+		@DisplayName("(Point3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(40, 55, 0)));
+		}
+
+		@DisplayName("(Point3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(40, 0, 0)));
+		}
+
+		@DisplayName("(Point3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(0, 40, 0)));
+		}
+
+		@DisplayName("(Point3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(20, 100, 0)));
+		}
+
+		@DisplayName("(Point3D) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(100, 45, 0)));
+		}
+
+		@DisplayName("(Point3D) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(-100, 45, 0)));
+		}
+
+		@DisplayName("(Point3D) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_121(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertFalse(getS().contains(createPoint(-100, 60, 0)));
+		}
+
+		@DisplayName("(Point3D) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(createPoint(10, 12, 0)));
+		}
+
+		@DisplayName("(Point3D) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(createPoint(40, 12, 0)));
+		}
+
+		@DisplayName("(Point3D) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(createPoint(40, 37, 0)));
+		}
+
+		@DisplayName("(Point3D) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(createPoint(10, 37, 0)));
+		}
+
+		@DisplayName("(Point3D) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(10, 12, 0, 30, 25, 0);
+			assertTrue(getS().contains(createPoint(35, 24, 0)));
+		}
+	}
+
+	@DisplayName("intersects")
+	@Nested
+	public class Intersects {
+
+		@DisplayName("(AlignedBox3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createAlignedBox(0, 0, 0, 1, 1, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createAlignedBox(0, 0, 0, 1, 1, 0).intersects(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createAlignedBox(0, 20, 0, 1, 2, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createAlignedBox(0, 20, 0, 1, 2, 0).intersects(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createAlignedBox(0, 0, 0, 5, 100, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createAlignedBox(0, 0, 0, 5, 100, 0).intersects(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBox(0, 0, 0, 5.1, 100, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(createAlignedBox(0, 0, 0, 5.1, 100, 1).intersects(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBox(6, 9, 0, .5, 9, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(createAlignedBox(6, 9, 0, .5, 9, 1).intersects(getS()));
+		}
+
+		@DisplayName("(AlignedBox3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBox(0, 0, 0, 5.1, 8.1, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void box_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(createAlignedBox(0, 0, 0, 5.1, 8.1, 1).intersects(getS()));
+		}
+
+		@DisplayName("(Sphere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(0, 0, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 0, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 5, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 7, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(8, 8, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(8, 10, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(8, 18, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 19, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #99")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 25, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(0, 0, 5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 0, 5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 5, 5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 7, 5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(8, 8, 5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(8, 10, 5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(8, 18, 5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 19, 5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(8, 25, 5, 1)));
+		}
+
+		@DisplayName("(MultiShape3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
+
+		@DisplayName("(Segment3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(20, 45, 0, 43, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(20, 55, 0, 43, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(20, 0, 0, 43, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(0, 45, 0, 43, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(20, 45, 0, 60, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(5, 45, 0, 30, 55, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(40, 55, 0, 60, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(40, 0, 0, 60, 40, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(0, 40, 0, 20, 0, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(0, 45, 0, 100, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(20, 100, 0, 43, 0, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(20, 100, 0, 43, 101, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(100, 45, 0, 102, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(20, 0, 0, 43, -2, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(-100, 45, 0, -48, 15, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void segment_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(-100, 60, 0, -98, 61, 0)));
+		}
+
+		@DisplayName("(Path3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(-20, 20, 0);
+			p.lineTo(20, 20, 0);
+			p.lineTo(20, -20, 0);
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(-20, 20, 0);
+			p.lineTo(20, 20, 0);
+			p.lineTo(20, -20, 0);
+			p.closePath();
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(5, 8, 0);
+			p.lineTo(-20, 20, 0);
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(5, 8, 0);
+			p.lineTo(-20, 20, 0);
+			p.closePath();
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(20, 20, 0);
+			p.lineTo(-20, 20, 0);
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(20, 20, 0);
+			p.lineTo(-20, 20, 0);
+			p.closePath();
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(-20, 20, 0);
+			p.lineTo(20, -20, 0);
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(-20, 20, 0);
+			p.lineTo(20, -20, 0);
+			p.closePath();
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, 20, 0);
+			p.lineTo(10, 8, 0);
+			p.lineTo(20, 18, 0);
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, 20, 0);
+			p.lineTo(10, 8, 0);
+			p.lineTo(20, 18, 0);
+			p.closePath();
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, 20, 0);
+			p.lineTo(20, 18, 0);
+			p.lineTo(10, 8, 0);
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, 20, 0);
+			p.lineTo(20, 18, 0);
+			p.lineTo(10, 8, 0);
+			p.closePath();
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(PathIterator3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(-20, 20, 0);
+			p.lineTo(20, 20, 0);
+			p.lineTo(20, -20, 0);
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(-20, 20, 0);
+			p.lineTo(20, 20, 0);
+			p.lineTo(20, -20, 0);
+			p.closePath();
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(5, 8, 0);
+			p.lineTo(-20, 20, 0);
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(5, 8, 0);
+			p.lineTo(-20, 20, 0);
+			p.closePath();
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(20, 20, 0);
+			p.lineTo(-20, 20, 0);
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(20, 20, 0);
+			p.lineTo(-20, 20, 0);
+			p.closePath();
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(-20, 20, 0);
+			p.lineTo(20, -20, 0);
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, -20, 0);
+			p.lineTo(-20, 20, 0);
+			p.lineTo(20, -20, 0);
+			p.closePath();
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, 20, 0);
+			p.lineTo(10, 8, 0);
+			p.lineTo(20, 18, 0);
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, 20, 0);
+			p.lineTo(10, 8, 0);
+			p.lineTo(20, 18, 0);
+			p.closePath();
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, 20, 0);
+			p.lineTo(20, 18, 0);
+			p.lineTo(10, 8, 0);
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-20, 20, 0);
+			p.lineTo(20, 18, 0);
+			p.lineTo(10, 8, 0);
+			p.closePath();
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(Shape3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects((Shape3D) createAlignedBox(0, 0, 0, 5, 100, 0)));
+		}
+
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects((Shape3D) createAlignedBox(0, 0, 0, 5.1, 100, 1)));
+		}
+
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects((Shape3D) createSphere(-1, 1, -1, 5)));
+		}
+
+		@DisplayName("(Shape3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects((Shape3D) createSphere(-1, 1, -1, 10)));
+		}
+
+		@DisplayName("(Shape3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects((Shape3D) createSegment(18, 0, 3, 11, 18, 5)));
+		}
+
+		@DisplayName("(Shape3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects((Shape3D) createSegment(18, 0, 3, 11, 18, 5)));
+		}
+	}
+
+	@DisplayName("inflate")
+	@Nested
+	public class Inflate {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().inflate(1, 2, 0, 3, 4, 4);
+			assertEpsilonEquals(4, getS().getMinX());
+			assertEpsilonEquals(6, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(13, getS().getMaxX());
+			assertEpsilonEquals(22, getS().getMaxY());
+			assertEpsilonEquals(14, getS().getMaxZ());
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().inflate(1, 2, 10, 3, 4, 0);
+			assertEpsilonEquals(3, getS().getMinX());
+			assertEpsilonEquals(4, getS().getMinY());
+			assertEpsilonEquals(-10, getS().getMinZ());
+			assertEpsilonEquals(16, getS().getMaxX());
+			assertEpsilonEquals(26, getS().getMaxY());
+			assertEpsilonEquals(14, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("b += Vector3D")
+	@Nested
+	public class OperatorAddVector3D {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().operator_add(createVector(123.456, 456.789, 3.1));
+			assertEpsilonEquals(128.456, getS().getMinX());
+			assertEpsilonEquals(464.789, getS().getMinY());
+			assertEpsilonEquals(3.1, getS().getMinZ());
+			assertEpsilonEquals(133.456, getS().getMaxX());
+			assertEpsilonEquals(474.789, getS().getMaxY());
+			assertEpsilonEquals(13.1, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("b + Vector3D")
+	@Nested
+	public class OperatorPlusVector3D {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			T shape = getS().operator_plus(createVector(123.456, 456.789, 3.1));
+			assertNotSame(getS(), shape);
+			assertEpsilonEquals(128.456, shape.getMinX());
+			assertEpsilonEquals(464.789, shape.getMinY());
+			assertEpsilonEquals(3.1, shape.getMinZ());
+			assertEpsilonEquals(133.456, shape.getMaxX());
+			assertEpsilonEquals(474.789, shape.getMaxY());
+			assertEpsilonEquals(13.1, shape.getMaxZ());
+		}
+	}
+
+	@DisplayName("b -= Vector3D")
+	@Nested
+	public class OperatorRemoveVector3D {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().operator_remove(createVector(123.456, 456.789, 547.5));
+			assertEpsilonEquals(-118.456, getS().getMinX());
+			assertEpsilonEquals(-448.789, getS().getMinY());
+			assertEpsilonEquals(-547.5, getS().getMinZ());
+			assertEpsilonEquals(-113.456, getS().getMaxX());
+			assertEpsilonEquals(-438.789, getS().getMaxY());
+			assertEpsilonEquals(-537.5, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("b - Vector3D")
+	@Nested
+	public class OperatorMinusVector3D {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			T shape = getS().operator_minus(createVector(123.456, 456.789, 5));
+			assertNotSame(getS(), shape);
+			assertEpsilonEquals(-118.456, shape.getMinX());
+			assertEpsilonEquals(-448.789, shape.getMinY());
+			assertEpsilonEquals(-5, shape.getMinZ());
+			assertEpsilonEquals(-113.456, shape.getMaxX());
+			assertEpsilonEquals(-438.789, shape.getMaxY());
+			assertEpsilonEquals(5, shape.getMaxZ());
+		}
+	}
+
+	@DisplayName("b && Point3D")
+	@Nested
+	public class OperatorAndPoint3D {
+
+		@BeforeEach
+		public void setUp() {
+			getS().set(10, 12, 0, 30, 25, 0);
+		}
+		
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(20, 45, 0)));
+		}
+		
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(20, 55, 0)));
+		}
+		
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(20, 0, 0)));
+		}
+		
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(0, 45, 0)));
+		}
+		
+		@DisplayName("#55")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(5, 45, 0)));
+		}
+		
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(40, 55, 0)));
+		}
+		
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(40, 0, 0)));
+		}
+		
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(0, 40, 0)));
+		}
+		
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(20, 100, 0)));
+		}
+		
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(100, 45, 0)));
+		}
+		
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(-100, 45, 0)));
+		}
+		
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createPoint(-100, 60, 0)));
+		}
+		
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createPoint(10, 12, 0)));
+		}
+		
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createPoint(40, 12, 0)));
+		}
+		
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createPoint(40, 37, 0)));
+		}
+		
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createPoint(10, 37, 0)));
+		}
+		
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createPoint(35, 24, 0)));
+		}
+	}
+
+	@DisplayName("b && Shape3D")
+	@Nested
+	public class OperatorAndShape3D {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(createAlignedBox(0, 0, 0, 5.1, 100, 0).operator_and(getS()));
+		}
+	}
+
+	@DisplayName("b .. Point3D")
+	@Nested
+	public class OperatorUpToPoint3D {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(9.43398, getS().operator_upTo(createPoint(0, 0, 0)));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90.35486, getS().operator_upTo(createPoint(100, 0, 0)));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(121.75385, getS().operator_upTo(createPoint(100, 100, 0)));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(82.1523, getS().operator_upTo(createPoint(0, 100, 0)));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5, getS().operator_upTo(createPoint(0, 10, 0)));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8, getS().operator_upTo(createPoint(7, 0, 0)));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144, getS().operator_upTo(createPoint(154, 17, 0)));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136, getS().operator_upTo(createPoint(9, 154, 0)));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().operator_upTo(createPoint(8, 18, 0)));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().operator_upTo(createPoint(7, 12, 0)));
+		}
+	}
+
+	@DisplayName("getCenter")
+	@Nested
+	public class GetCenter {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Point3D p = getS().getCenter();
+			assertNotNull(p);
+			assertEpsilonEquals(7.5, p.getX());
+			assertEpsilonEquals(13, p.getY());
+			assertEpsilonEquals(5, p.getZ());
+		}
+	}
+
+	@DisplayName("getCenterX")
+	@Nested
+	public class GetCenterX {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(7.5, getS().getCenterX());
+		}
+	}
+
+	@DisplayName("getCenterY")
+	@Nested
+	public class GetCenterY {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(13, getS().getCenterY());
+		}
+	}
+
+	@DisplayName("getCenterZ")
+	@Nested
+	public class GetCenterZ {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5, getS().getCenterZ());
+		}
+	}
+
+	@DisplayName("setCenter")
+	@Nested
+	public class SetCenter {
+
+		@DisplayName("(double,double,double) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void doubledoubldouble_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().setCenter(145, -47, 14);
+			assertEpsilonEquals(142.5, getS().getMinX());
+			assertEpsilonEquals(-52, getS().getMinY());
+			assertEpsilonEquals(9, getS().getMinZ());
+			assertEpsilonEquals(147.5, getS().getMaxX());
+			assertEpsilonEquals(-42, getS().getMaxY());
+			assertEpsilonEquals(19, getS().getMaxZ());
+		}
+
+		@DisplayName("(Point3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void point_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().setCenter(createPoint(145, -47, 14));
+			assertEpsilonEquals(142.5, getS().getMinX());
+			assertEpsilonEquals(-52, getS().getMinY());
+			assertEpsilonEquals(9, getS().getMinZ());
+			assertEpsilonEquals(147.5, getS().getMaxX());
+			assertEpsilonEquals(-42, getS().getMaxY());
+			assertEpsilonEquals(19, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("setCenterX")
+	@Nested
+	public class SetCenterX {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().setCenterX(145);
+			assertEpsilonEquals(142.5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(147.5, getS().getMaxX());
+			assertEpsilonEquals(18, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("setCenterY")
+	@Nested
+	public class SetCenterY {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().setCenterY(-47);
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(-52, getS().getMinY());
+			assertEpsilonEquals(0, getS().getMinZ());
+			assertEpsilonEquals(10, getS().getMaxX());
+			assertEpsilonEquals(-42, getS().getMaxY());
+			assertEpsilonEquals(10, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("setCenterZ")
+	@Nested
+	public class SetCenterZ {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().setCenterZ(-47);
+			assertEpsilonEquals(5, getS().getMinX());
+			assertEpsilonEquals(8, getS().getMinY());
+			assertEpsilonEquals(-52, getS().getMinZ());
+			assertEpsilonEquals(10, getS().getMaxX());
+			assertEpsilonEquals(18, getS().getMaxY());
+			assertEpsilonEquals(-42, getS().getMaxZ());
+		}
+	}
+
+	@DisplayName("calculatesDistanceSquaredAlignedBoxPoint")
+	@Nested
+	public class CalculatesDistanceSquaredAlignedBoxPoint {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(114., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8189., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(14849., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6774., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(50., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(89., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(20761., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(18521., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(25., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(25., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(89., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8164., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(14824., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0));
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6749., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(25., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0));
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(64., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0));
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(20736., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(18496., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0));
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0));
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0));
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(89., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5));
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8164., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5));
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(14824., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5));
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6749., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5));
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(25., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5));
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(64., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5));
+		}
+
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(20736., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5));
+		}
+
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(18496., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5));
+		}
+
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5));
+		}
+
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5));
+		}
+
+		@DisplayName("#31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(89., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10));
+		}
+
+		@DisplayName("#32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8164., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10));
+		}
+
+		@DisplayName("#33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(14824., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10));
+		}
+
+		@DisplayName("#34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6749., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10));
+		}
+
+		@DisplayName("#35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(25., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10));
+		}
+
+		@DisplayName("#36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(64., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10));
+		}
+
+		@DisplayName("#37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(20736., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10));
+		}
+
+		@DisplayName("#38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(18496., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10));
+		}
+
+		@DisplayName("#39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10));
+		}
+
+		@DisplayName("#40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10));
+		}
+
+		@DisplayName("#41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(210., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21));
+		}
+
+		@DisplayName("#42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8285., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21));
+		}
+
+		@DisplayName("#43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(14945., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21));
+		}
+
+		@DisplayName("#44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6870., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21));
+		}
+
+		@DisplayName("#45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(146., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21));
+		}
+
+		@DisplayName("#46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(185., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21));
+		}
+
+		@DisplayName("#47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(20857., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21));
+		}
+
+		@DisplayName("#48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(18617., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21));
+		}
+
+		@DisplayName("#49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(121., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21));
+		}
+
+		@DisplayName("#50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(121., AlignedBox3afp.calculatesDistanceSquaredAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21));
+		}
+
+	}
+
+	@DisplayName("calculatesDistanceL1AlignedBoxPoint")
+	@Nested
+	public class CalculatesDistanceL1AlignedBoxPoint {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(18., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(103., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(177., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(92., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(10., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(13., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(149., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(141., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(13., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(98., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(172., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0));
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(87., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0));
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0));
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(144., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(136., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0));
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0));
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0));
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(13., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5));
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(98., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5));
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(172., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5));
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(87., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5));
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5));
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5));
+		}
+
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(144., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5));
+		}
+
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(136., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5));
+		}
+
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5));
+		}
+
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5));
+		}
+
+		@DisplayName("#31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(13., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10));
+		}
+
+		@DisplayName("#32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(98., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10));
+		}
+
+		@DisplayName("#33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(172., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10));
+		}
+
+		@DisplayName("#34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(87., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10));
+		}
+
+		@DisplayName("#35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10));
+		}
+
+		@DisplayName("#36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10));
+		}
+
+		@DisplayName("#37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(144., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10));
+		}
+
+		@DisplayName("#38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(136., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10));
+		}
+
+		@DisplayName("#39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10));
+		}
+
+		@DisplayName("#40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10));
+		}
+
+		@DisplayName("#41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(24., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21));
+		}
+
+		@DisplayName("#42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(109., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21));
+		}
+
+		@DisplayName("#43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(183., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21));
+		}
+
+		@DisplayName("#44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(98., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21));
+		}
+
+		@DisplayName("#45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(16., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21));
+		}
+
+		@DisplayName("#46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(19., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21));
+		}
+
+		@DisplayName("#47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(155., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21));
+		}
+
+		@DisplayName("#48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(147., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21));
+		}
+
+		@DisplayName("#49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(11., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21));
+		}
+
+		@DisplayName("#50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);	
+			assertEpsilonEquals(11., AlignedBox3afp.calculatesDistanceL1AlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21));
+		}
+
+	}
+
+	@DisplayName("calculatesDistanceLinfAlignedBoxPoint")
+	@Nested
+	public class CalculatesDistanceLinfAlignedBoxPoint {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(82., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0));
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(82., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0));
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0));
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0));
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0));
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0));
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5));
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5));
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5));
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(82., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5));
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5));
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5));
+		}
+
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5));
+		}
+
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5));
+		}
+
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5));
+		}
+
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5));
+		}
+
+		@DisplayName("#31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10));
+		}
+
+		@DisplayName("#32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10));
+		}
+
+		@DisplayName("#33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10));
+		}
+
+		@DisplayName("#34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(82., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10));
+		}
+
+		@DisplayName("#35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10));
+		}
+
+		@DisplayName("#36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10));
+		}
+
+		@DisplayName("#37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10));
+		}
+
+		@DisplayName("#38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10));
+		}
+
+		@DisplayName("#39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10));
+		}
+
+		@DisplayName("#40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10));
+		}
+
+		@DisplayName("#41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(11., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21));
+		}
+
+		@DisplayName("#42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21));
+		}
+
+		@DisplayName("#43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(90., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21));
+		}
+
+		@DisplayName("#44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(82., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21));
+		}
+
+		@DisplayName("#45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(11., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21));
+		}
+
+		@DisplayName("#46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(11., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21));
+		}
+
+		@DisplayName("#47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(144., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21));
+		}
+
+		@DisplayName("#48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(136., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21));
+		}
+
+		@DisplayName("#49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(11., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21));
+		}
+
+		@DisplayName("#50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(11., AlignedBox3afp.calculatesDistanceLinfAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21));
+		}
+
+	}
+
+	@DisplayName("findsClosestPointToAlignedBoxPoint")
+	@Nested
+	public class FindsClosestPointToAlignedBoxPoint {
+
+		private InnerComputationPoint3D p;
+
+		@BeforeEach
+		public void setUp() {
+			this.p = new InnerComputationPoint3D();
+		}
+		
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+		
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5, p);
+			assertEpsilonEquals(createPoint(10, 8, 0), p);
+		}
+		
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+		
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5, p);
+			assertEpsilonEquals(createPoint(5, 18, 0), p);
+		}
+		
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5, p);
+			assertEpsilonEquals(createPoint(5, 10, 0), p);
+		}
+		
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5, p);
+			assertEpsilonEquals(createPoint(7, 8, 0), p);
+		}
+		
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5, p);
+			assertEpsilonEquals(createPoint(10, 17, 0), p);
+		}
+		
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5, p);
+			assertEpsilonEquals(createPoint(9, 18, 0), p);
+		}
+		
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5, p);
+			assertEpsilonEquals(createPoint(8, 18, 0), p);
+		}
+		
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5, p);
+			assertEpsilonEquals(createPoint(7, 12, 0), p);
+		}
+		
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+		
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0, p);
+			assertEpsilonEquals(createPoint(10, 8, 0), p);
+		}
+		
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+		
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0, p);
+			assertEpsilonEquals(createPoint(5, 18, 0), p);
+		}
+		
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0, p);
+			assertEpsilonEquals(createPoint(5, 10, 0), p);
+		}
+		
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0, p);
+			assertEpsilonEquals(createPoint(7, 8, 0), p);
+		}
+		
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0, p);
+			assertEpsilonEquals(createPoint(10, 17, 0), p);
+		}
+		
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0, p);
+			assertEpsilonEquals(createPoint(9, 18, 0), p);
+		}
+		
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0, p);
+			assertEpsilonEquals(createPoint(8, 18, 0), p);
+		}
+		
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0, p);
+			assertEpsilonEquals(createPoint(7, 12, 0), p);
+		}
+		
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5, p);
+			assertEpsilonEquals(createPoint(5, 8, 5), p);
+		}
+		
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5, p);
+			assertEpsilonEquals(createPoint(10, 8, 5), p);
+		}
+		
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5, p);
+			assertEpsilonEquals(createPoint(10, 18, 5), p);
+		}
+		
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5, p);
+			assertEpsilonEquals(createPoint(5, 18, 5), p);
+		}
+		
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5, p);
+			assertEpsilonEquals(createPoint(5, 10, 5), p);
+		}
+		
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5, p);
+			assertEpsilonEquals(createPoint(7, 8, 5), p);
+		}
+		
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5, p);
+			assertEpsilonEquals(createPoint(10, 17, 5), p);
+		}
+		
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5, p);
+			assertEpsilonEquals(createPoint(9, 18, 5), p);
+		}
+		
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, p);
+			assertEpsilonEquals(createPoint(8, 18, 5), p);
+		}
+		
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5, p);
+			assertEpsilonEquals(createPoint(7, 12, 5), p);
+		}
+		
+		@DisplayName("#31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+		
+		@DisplayName("#32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+		
+		@DisplayName("#33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+		
+		@DisplayName("#34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+		
+		@DisplayName("#35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10, p);
+			assertEpsilonEquals(createPoint(5, 10, 10), p);
+		}
+		
+		@DisplayName("#36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10, p);
+			assertEpsilonEquals(createPoint(7, 8, 10), p);
+		}
+		
+		@DisplayName("#37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10, p);
+			assertEpsilonEquals(createPoint(10, 17, 10), p);
+		}
+		
+		@DisplayName("#38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10, p);
+			assertEpsilonEquals(createPoint(9, 18, 10), p);
+		}
+		
+		@DisplayName("#39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10, p);
+			assertEpsilonEquals(createPoint(8, 18, 10), p);
+		}
+		
+		@DisplayName("#40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10, p);
+			assertEpsilonEquals(createPoint(7, 12, 10), p);
+		}
+		
+		@DisplayName("#41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+		
+		@DisplayName("#42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+		
+		@DisplayName("#43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+		
+		@DisplayName("#44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+		
+		@DisplayName("#45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21, p);
+			assertEpsilonEquals(createPoint(5, 10, 10), p);
+		}
+		
+		@DisplayName("#46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21, p);
+			assertEpsilonEquals(createPoint(7, 8, 10), p);
+		}
+		
+		@DisplayName("#47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21, p);
+			assertEpsilonEquals(createPoint(10, 17, 10), p);
+		}
+		
+		@DisplayName("#48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21, p);
+			assertEpsilonEquals(createPoint(9, 18, 10), p);
+		}
+		
+		@DisplayName("#49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21, p);
+			assertEpsilonEquals(createPoint(8, 18, 10), p);
+		}
+		
+		@DisplayName("#50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21, p);
+			assertEpsilonEquals(createPoint(7, 12, 10), p);
+		}
+
+	}
+
+	@DisplayName("findsFarthestPointToAlignedBoxPoint")
+	@Nested
+	public class FindsFarthestPointToAlignedBoxPoint {
+	
+		private InnerComputationPoint3D p;
+
+		@BeforeEach
+		public void setUp() {
+			this.p = new InnerComputationPoint3D();
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10, p);
+			assertEpsilonEquals(createPoint(5, 18, 0), p);
+		}
+
+		@DisplayName("#33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10, p);
+			assertEpsilonEquals(createPoint(10, 8, 0), p);
+		}
+
+		@DisplayName("#35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21, p);
+			assertEpsilonEquals(createPoint(5, 18, 0), p);
+		}
+
+		@DisplayName("#43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21, p);
+			assertEpsilonEquals(createPoint(10, 8, 0), p);
+		}
+
+		@DisplayName("#45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxPoint(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+	}
+
+	@DisplayName("findsClosestPointToAlignedBoxSphere")
+	@Nested
+	public class FindsClosestPointToAlignedBoxSphere {
+
+		private InnerComputationPoint3D p;
+
+		@BeforeEach
+		public void setUp() {
+			this.p = new InnerComputationPoint3D();
+		}
+		
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+		
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 0), p);
+		}
+		
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+		
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 0), p);
+		}
+		
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5, 2, p);
+			assertEpsilonEquals(createPoint(5, 10, 0), p);
+		}
+		
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5, 2, p);
+			assertEpsilonEquals(createPoint(7, 8, 0), p);
+		}
+		
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5, 2, p);
+			assertEpsilonEquals(createPoint(10, 17, 0), p);
+		}
+		
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5, 2, p);
+			assertEpsilonEquals(createPoint(9, 18, 0), p);
+		}
+		
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5, 2, p);
+			assertEpsilonEquals(createPoint(8, 18, 0), p);
+		}
+		
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5, 2, p);
+			assertEpsilonEquals(createPoint(7, 12, 0), p);
+		}
+		
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+		
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 0), p);
+		}
+		
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+		
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 0), p);
+		}
+		
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0, 2, p);
+			assertEpsilonEquals(createPoint(5, 10, 0), p);
+		}
+		
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0, 2, p);
+			assertEpsilonEquals(createPoint(7, 8, 0), p);
+		}
+		
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0, 2, p);
+			assertEpsilonEquals(createPoint(10, 17, 0), p);
+		}
+		
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0, 2, p);
+			assertEpsilonEquals(createPoint(9, 18, 0), p);
+		}
+		
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0, 2, p);
+			assertEpsilonEquals(createPoint(8, 18, 0), p);
+		}
+		
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0, 2, p);
+			assertEpsilonEquals(createPoint(7, 12, 0), p);
+		}
+		
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 5), p);
+		}
+		
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 5), p);
+		}
+		
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 5), p);
+		}
+		
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 5), p);
+		}
+		
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5, 2, p);
+			assertEpsilonEquals(createPoint(5, 10, 5), p);
+		}
+		
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5, 2, p);
+			assertEpsilonEquals(createPoint(7, 8, 5), p);
+		}
+		
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5, 2, p);
+			assertEpsilonEquals(createPoint(10, 17, 5), p);
+		}
+		
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5, 2, p);
+			assertEpsilonEquals(createPoint(9, 18, 5), p);
+		}
+		
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, 2, p);
+			assertEpsilonEquals(createPoint(8, 18, 5), p);
+		}
+		
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5, 2, p);
+			assertEpsilonEquals(createPoint(7, 12, 5), p);
+		}
+		
+		@DisplayName("#31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+		
+		@DisplayName("#32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+		
+		@DisplayName("#33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+		
+		@DisplayName("#34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+		
+		@DisplayName("#35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10, 2, p);
+			assertEpsilonEquals(createPoint(5, 10, 10), p);
+		}
+		
+		@DisplayName("#36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10, 2, p);
+			assertEpsilonEquals(createPoint(7, 8, 10), p);
+		}
+		
+		@DisplayName("#37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10, 2, p);
+			assertEpsilonEquals(createPoint(10, 17, 10), p);
+		}
+		
+		@DisplayName("#38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10, 2, p);
+			assertEpsilonEquals(createPoint(9, 18, 10), p);
+		}
+		
+		@DisplayName("#39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10, 2, p);
+			assertEpsilonEquals(createPoint(8, 18, 10), p);
+		}
+		
+		@DisplayName("#40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10, 2, p);
+			assertEpsilonEquals(createPoint(7, 12, 10), p);
+		}
+		
+		@DisplayName("#41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+		
+		@DisplayName("#42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+		
+		@DisplayName("#43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+		
+		@DisplayName("#44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+		
+		@DisplayName("#45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21, 2, p);
+			assertEpsilonEquals(createPoint(5, 10, 10), p);
+		}
+		
+		@DisplayName("#46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21, 2, p);
+			assertEpsilonEquals(createPoint(7, 8, 10), p);
+		}
+		
+		@DisplayName("#47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21, 2, p);
+			assertEpsilonEquals(createPoint(10, 17, 10), p);
+		}
+		
+		@DisplayName("#48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21, 2, p);
+			assertEpsilonEquals(createPoint(9, 18, 10), p);
+		}
+		
+		@DisplayName("#49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21, 2, p);
+			assertEpsilonEquals(createPoint(8, 18, 10), p);
+		}
+		
+		@DisplayName("#50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsClosestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21, 2, p);
+			assertEpsilonEquals(createPoint(7, 12, 10), p);
+		}
+
+	}
+
+	@DisplayName("findsFarthestPointToAlignedBoxSphere")
+	@Nested
+	public class FindsFarthestPointToAlignedBoxSphere {
+
+		private InnerComputationPoint3D p;
+
+		@BeforeEach
+		public void setUp() {
+			this.p = new InnerComputationPoint3D();
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, -5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, -5, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, -5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, -5, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, -5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, -5,2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, -5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, -5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, -5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, -5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 0, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 0, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 0, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 0, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 0, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 0, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 0, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 0, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 0, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 0, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 5, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 10), p);
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 5, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 10), p);
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#27")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_27(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#28")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_28(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#29")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_29(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 5, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 10), p);
+		}
+
+		@DisplayName("#30")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_30(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 5, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 10), p);
+		}
+
+		@DisplayName("#31")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_31(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 10, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#32")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_32(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 10, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 0), p);
+		}
+
+		@DisplayName("#33")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_33(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 10, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#34")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_34(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 10, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 0), p);
+		}
+
+		@DisplayName("#35")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_35(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 10, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#36")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_36(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 10, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#37")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_37(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 10, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#38")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_38(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 10, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#39")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_39(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 10, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#40")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_40(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 10, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#41")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_41(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 0, 21, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#42")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_42(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 0, 21, 2, p);
+			assertEpsilonEquals(createPoint(5, 18, 0), p);
+		}
+
+		@DisplayName("#43")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_43(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 100, 100, 21, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#44")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_44(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 100, 21, 2, p);
+			assertEpsilonEquals(createPoint(10, 8, 0), p);
+		}
+
+		@DisplayName("#45")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_45(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 0, 10, 21, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#46")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_46(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 0, 21, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+		@DisplayName("#47")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_47(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 154, 17, 21, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#48")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_48(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 9, 154, 21, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#49")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_49(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 8, 18, 21, 2, p);
+			assertEpsilonEquals(createPoint(5, 8, 0), p);
+		}
+
+		@DisplayName("#50")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_50(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSphere(5, 8, 0, 10, 18, 10, /* */ 7, 12, 21, 2, p);
+			assertEpsilonEquals(createPoint(10, 18, 0), p);
+		}
+
+	}
+
+	@DisplayName("findsClosestPointToAlignedBoxAlignedBox")
+	@Nested
+	public class FindsClosestPointToAlignedBoxAlignedBox {
+		
+		private static Stream<Arguments> findsClosestPointToAlignedBoxAlignedBoxArguments() throws Exception {
+			return findsCloseFarePointAlignedBoxAlignedBoxArguments("FindsClosestPointToAlignedBoxAlignedBoxArguments.csv");
+		}
+		
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@MethodSource("findsClosestPointToAlignedBoxAlignedBoxArguments")
+		public final void test_1(String label,
+				Point3D min1, Point3D max1, Point3D min2, Point3D max2, Point3D expected) {
+			Point3D p = createPoint(Double.NaN, Double.NaN, Double.NaN);
+			AlignedBox3afp.findsClosestPointToAlignedBoxAlignedBox(
+					min1.getX(), min1.getY(), min1.getZ(), max1.getX(), max1.getY(), max1.getZ(),
+					min2.getX(), min2.getY(), min2.getZ(), max2.getX(), max2.getY(), max2.getZ(),
+					p);
+			assertEpsilonEquals(expected, p, label);
+			assertEpsilonInRange(min1.getX(), max1.getX(), p.getX());
+			assertEpsilonInRange(min1.getY(), max1.getY(), p.getY());
+			assertEpsilonInRange(min1.getZ(), max1.getZ(), p.getZ());
+		}
+	}
+
+	@DisplayName("findsFarthestPointToAlignedBoxAlignedBox")
+	@Nested
+	public class FindsFarthestPointToAlignedBoxAlignedBox {
+		
+		private static Stream<Arguments> findsFarthestPointToAlignedBoxAlignedBoxArguments() throws Exception {
+			return findsCloseFarePointAlignedBoxAlignedBoxArguments("FindsFarthestPointToAlignedBoxAlignedBoxArguments.csv");
+		}
+	
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@MethodSource("findsFarthestPointToAlignedBoxAlignedBoxArguments")
+		public final void test_1(String label,
+				Point3D min1, Point3D max1, Point3D min2, Point3D max2, Point3D expected) {
+			Point3D p = createPoint(Double.NaN, Double.NaN, Double.NaN);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxAlignedBox(
+					min1.getX(), min1.getY(), min1.getZ(), max1.getX(), max1.getY(), max1.getZ(),
+					min2.getX(), min2.getY(), min2.getZ(), max2.getX(), max2.getY(), max2.getZ(),
+					p);
+			assertEpsilonEquals(expected, p, label);
+			assertEpsilonInRange(min1.getX(), max1.getX(), p.getX());
+			assertEpsilonInRange(min1.getY(), max1.getY(), p.getY());
+			assertEpsilonInRange(min1.getZ(), max1.getZ(), p.getZ());
+		}
+	}
+
+	@DisplayName("findsFarthestPointToAlignedBoxSegment")
+	@Nested
+	public class FindsFarthestPointToAlignedBoxSegment {
+
+		private InnerComputationPoint3D result;
+
+		@BeforeEach
+		public void setUp() {
+			this.result = new InnerComputationPoint3D();
+		}
+		
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					2, 2, 2, 6, 2, 2,
+					result);
+			assertEpsilonEquals(createPoint(0, 0, 0), result);
+		}
+
+		@DisplayName("#2 - segment on opposite side of box (negative octant)")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					-2, -2, -2, -6, -2, -2,
+					result);
+			assertEpsilonEquals(createPoint(1, 1, 1), result);
+		}
+
+		@DisplayName("#3 - segment crossing box center, any corner is maximal")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					.5, .5, -10, .5, .5, 10,
+					result);
+			// All 8 corners are at same farthest distance from this central vertical segment.
+			final boolean isCorner =
+					(result.getX() == 0 || result.getX() == 1)
+					&& (result.getY() == 0 || result.getY() == 1)
+					&& (result.getZ() == 0 || result.getZ() == 1);
+			assertTrue(isCorner);
+		}
+
+		@DisplayName("#4 - segment reduced to point near (0,0,0), farthest is (1,1,1)")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+					result);
+			assertEpsilonEquals(createPoint(1, 1, 1), result);
+		}
+
+		@DisplayName("#5 - segment reduced to point near (1,1,1), farthest is (0,0,0)")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
+					result);
+			assertEpsilonEquals(createPoint(0, 0, 0), result);
+		}
+
+		@DisplayName("#6 - far segment along +X direction, farthest corner should minimize x")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					10, .5, .5, 20, .5, .5,
+					result);
+			// x=0 is mandatory; y/z may be 0 or 1 (tie)
+			assertEpsilonEquals(0., result.getX());
+			assertTrue(result.getY() == 0. || result.getY() == 1.);
+			assertTrue(result.getZ() == 0. || result.getZ() == 1.);
+		}
+
+		@DisplayName("#7 - far segment along -X direction, farthest corner should maximize x")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					-10, .5, .5, -20, .5, .5,
+					result);
+			assertEpsilonEquals(1., result.getX());
+			assertTrue(result.getY() == 0. || result.getY() == 1.);
+			assertTrue(result.getZ() == 0. || result.getZ() == 1.);
+		}
+
+		@DisplayName("#8 - translated box, translated geometry consistency")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					10, -2, 4, 11, -1, 5,
+					12, 0, 6, 16, 0, 6,
+					result);
+			// Same relative setup as #1 translated by (+10,-2,+4): expected corner (10,-2,4)
+			assertEpsilonEquals(createPoint(10, -2, 4), result);
+		}
+
+		@DisplayName("#9 - segment inside box near one corner -> opposite corner is farthest")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					0.2, 0.2, 0.2, 0.3, 0.2, 0.2,
+					result);
+			assertEpsilonEquals(createPoint(1, 1, 1), result);
+		}
+
+		@DisplayName("#10 - segment inside box near opposite corner -> opposite farthest corner")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			AlignedBox3afp.findsFarthestPointToAlignedBoxSegment(
+					0, 0, 0, 1, 1, 1,
+					0.8, 0.8, 0.8, 0.7, 0.8, 0.8,
+					result);
+			assertEpsilonEquals(createPoint(0, 0, 0), result);
+		}
+
 	}
 
 	@DisplayName("reducesCohenSutherlandZoneAlignedBoxSegment")
@@ -10508,14 +16026,9 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 
 	}
 
-	private static InnerComputationPoint3D reset(InnerComputationPoint3D p) {
-		p.set(Double.NaN, Double.NaN, Double.NaN);
-		return p;
-	}
-
-	@DisplayName("findsClosestPointAlignedBoxSegment(bx1,by1,bz1,bx2,by2,bz2, sx1,sy1,sz1,sx2,sy2,sz2, Point3D,Point3D)")
+	@DisplayName("findsClosestPointToAlignedBoxSegment")
 	@Nested
-	public class FindsClosestPointAlignedBoxSegment {
+	public class FindsClosestPointToAlignedBoxSegment {
 	
 		private InnerComputationPoint3D result1;
 
@@ -10527,12 +16040,32 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 			this.result2 = new InnerComputationPoint3D();
 		}
 		
+		private static InnerComputationPoint3D reset(InnerComputationPoint3D p) {
+			p.set(Double.NaN, Double.NaN, Double.NaN);
+			return p;
+		}
+
 		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		@DisplayName("#1")
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		    // Box offset only in x beyond the end: closest segment point (1,1,1)
+		    // box point (2,1,1) diff (1,0,0) -> distance² = 1
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
+					2, 0, 0, 3, 1, 1,
+					0, 0, 0, 1, 1, 1,
+					reset(result1), reset(result2));
+			assertEpsilonEquals(createPoint(2, 1, 1), result1);
+			assertEpsilonEquals(createPoint(1, 1, 1), result2);
+	    }
+
+	    @ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-BOTTOM-FRONT")
 		public final void lbf_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10545,7 +16078,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-BOTTOM-FRONT")
 		public final void ibf_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10558,7 +16091,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-BOTTOM-FRONT")
 		public final void rbf_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10571,7 +16104,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-BOTTOM-FRONT")
 		public final void lif_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10584,7 +16117,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-BOTTOM-FRONT")
 		public final void iif_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10597,7 +16130,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-BOTTOM-FRONT")
 		public final void rif_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10610,7 +16143,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-BOTTOM-FRONT")
 		public final void ltf_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10623,7 +16156,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-BOTTOM-FRONT")
 		public final void itf_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10636,7 +16169,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-BOTTOM-FRONT")
 		public final void rtf_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10649,7 +16182,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-BOTTOM-FRONT")
 		public final void lbi_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10662,7 +16195,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-BOTTOM-FRONT")
 		public final void ibi_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10675,7 +16208,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-BOTTOM-FRONT")
 		public final void rbi_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10688,7 +16221,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-BOTTOM-FRONT")
 		public final void lii_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10701,7 +16234,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-BOTTOM-FRONT")
 		public final void iii_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10714,7 +16247,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-BOTTOM-FRONT")
 		public final void rii_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10728,7 +16261,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-BOTTOM-FRONT")
 		public final void lti_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10741,7 +16274,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-BOTTOM-FRONT")
 		public final void iti_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10754,7 +16287,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-BOTTOM-FRONT")
 		public final void rti_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10767,7 +16300,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-BOTTOM-FRONT")
 		public final void lbb_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10780,7 +16313,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-BOTTOM-FRONT")
 		public final void ibb_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10793,7 +16326,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-BOTTOM-FRONT")
 		public final void rbb_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10806,7 +16339,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-BOTTOM-FRONT")
 		public final void lib_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10819,7 +16352,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-BOTTOM-FRONT")
 		public final void iib_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10832,7 +16365,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-BOTTOM-FRONT")
 		public final void rib_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10845,7 +16378,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-BOTTOM-FRONT")
 		public final void ltb_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10858,7 +16391,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-BOTTOM-FRONT")
 		public final void itb_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10871,7 +16404,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-BOTTOM-FRONT")
 		public final void rtb_lbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 1, 1,
 					reset(result1), reset(result2));
@@ -10884,7 +16417,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-BOTTOM-FRONT")
 		public final void lbf_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -10897,7 +16430,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-BOTTOM-FRONT")
 		public final void ibf_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -10910,7 +16443,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-BOTTOM-FRONT")
 		public final void rbf_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -10923,7 +16456,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-BOTTOM-FRONT")
 		public final void lif_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -10936,7 +16469,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-BOTTOM-FRONT")
 		public final void iif_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -10949,7 +16482,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-BOTTOM-FRONT")
 		public final void rif_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -10962,7 +16495,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-BOTTOM-FRONT")
 		public final void ltf_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -10975,7 +16508,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-BOTTOM-FRONT")
 		public final void itf_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -10988,7 +16521,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-BOTTOM-FRONT")
 		public final void rtf_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11001,7 +16534,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void lbi_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11014,7 +16547,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void ibi_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11027,7 +16560,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void rbi_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11040,7 +16573,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void lii_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11053,7 +16586,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void iii_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11066,7 +16599,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void rii_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11079,7 +16612,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void lti_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11092,7 +16625,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void iti_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11105,7 +16638,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-BOTTOM-FRONT")
 		public final void rti_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11118,7 +16651,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-BOTTOM-FRONT")
 		public final void lbb_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11131,7 +16664,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-BOTTOM-FRONT")
 		public final void ibb_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11144,7 +16677,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-BOTTOM-FRONT")
 		public final void rbb_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11157,7 +16690,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-BOTTOM-FRONT")
 		public final void lib_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11170,7 +16703,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-BOTTOM-FRONT")
 		public final void iib_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11183,7 +16716,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-BOTTOM-FRONT")
 		public final void rib_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11196,7 +16729,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-BOTTOM-FRONT")
 		public final void ltb_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11209,7 +16742,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-BOTTOM-FRONT")
 		public final void itb_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11222,7 +16755,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-BOTTOM-FRONT")
 		public final void rtb_ibf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 1, 1,
 					reset(result1), reset(result2));
@@ -11235,7 +16768,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-BOTTOM-FRONT")
 		public final void lbf_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11248,7 +16781,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-BOTTOM-FRONT")
 		public final void ibf_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11261,7 +16794,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-BOTTOM-FRONT")
 		public final void rbf_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11274,7 +16807,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-BOTTOM-FRONT")
 		public final void lif_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11287,7 +16820,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-BOTTOM-FRONT")
 		public final void iif_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11300,7 +16833,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-BOTTOM-FRONT")
 		public final void rif_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11313,7 +16846,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-BOTTOM-FRONT")
 		public final void ltf_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11326,7 +16859,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-BOTTOM-FRONT")
 		public final void itf_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11339,7 +16872,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-BOTTOM-FRONT")
 		public final void rtf_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11352,7 +16885,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void lbi_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11365,7 +16898,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void ibi_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11378,7 +16911,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void rbi_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11391,7 +16924,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void lii_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11404,7 +16937,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void iii_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11417,7 +16950,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void rii_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11430,7 +16963,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void lti_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11443,7 +16976,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void iti_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11456,7 +16989,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-BOTTOM-FRONT")
 		public final void rti_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11469,7 +17002,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-BOTTOM-FRONT")
 		public final void lbb_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11482,7 +17015,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-BOTTOM-FRONT")
 		public final void ibb_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11495,7 +17028,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-BOTTOM-FRONT")
 		public final void rbb_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11508,7 +17041,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-BOTTOM-FRONT")
 		public final void lib_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11521,7 +17054,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-BOTTOM-FRONT")
 		public final void iib_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11534,7 +17067,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-BOTTOM-FRONT")
 		public final void rib_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11547,7 +17080,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-BOTTOM-FRONT")
 		public final void ltb_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11560,7 +17093,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-BOTTOM-FRONT")
 		public final void itb_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11573,7 +17106,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-BOTTOM-FRONT")
 		public final void rtb_rbf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 1, 1,
 					reset(result1), reset(result2));
@@ -11586,7 +17119,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-INSIDE-FRONT")
 		public final void lbf_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11599,7 +17132,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-INSIDE-FRONT")
 		public final void ibf_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11612,7 +17145,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-INSIDE-FRONT")
 		public final void rbf_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11625,7 +17158,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-INSIDE-FRONT")
 		public final void lif_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11638,7 +17171,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-INSIDE-FRONT")
 		public final void iif_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11651,7 +17184,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-INSIDE-FRONT")
 		public final void rif_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11664,7 +17197,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-INSIDE-FRONT")
 		public final void ltf_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11677,7 +17210,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-INSIDE-FRONT")
 		public final void itf_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11690,7 +17223,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-INSIDE-FRONT")
 		public final void rtf_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11703,7 +17236,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-INSIDE-FRONT")
 		public final void lbi_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11716,7 +17249,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-INSIDE-FRONT")
 		public final void ibi_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11729,7 +17262,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-INSIDE-FRONT")
 		public final void rbi_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11742,7 +17275,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-INSIDE-FRONT")
 		public final void lii_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11755,7 +17288,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-INSIDE-FRONT")
 		public final void iii_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11768,7 +17301,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-INSIDE-FRONT")
 		public final void rii_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11781,7 +17314,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-INSIDE-FRONT")
 		public final void lti_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11794,7 +17327,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-INSIDE-FRONT")
 		public final void iti_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11807,7 +17340,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-INSIDE-FRONT")
 		public final void rti_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11820,7 +17353,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-INSIDE-FRONT")
 		public final void lbb_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11833,7 +17366,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-INSIDE-FRONT")
 		public final void ibb_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11846,7 +17379,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-INSIDE-FRONT")
 		public final void rbb_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11859,7 +17392,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-INSIDE-FRONT")
 		public final void lib_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11872,7 +17405,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-INSIDE-FRONT")
 		public final void iib_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11885,7 +17418,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-INSIDE-FRONT")
 		public final void rib_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11898,7 +17431,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-INSIDE-FRONT")
 		public final void ltb_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11911,7 +17444,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-INSIDE-FRONT")
 		public final void itb_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11924,7 +17457,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-INSIDE-FRONT")
 		public final void rtb_lif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11937,7 +17470,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-INSIDE-FRONT")
 		public final void lbf_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11950,7 +17483,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-INSIDE-FRONT")
 		public final void ibf_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11963,7 +17496,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-INSIDE-FRONT")
 		public final void rbf_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11976,7 +17509,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-INSIDE-FRONT")
 		public final void lif_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -11989,7 +17522,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-INSIDE-FRONT")
 		public final void iif_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12002,7 +17535,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-INSIDE-FRONT")
 		public final void rif_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12015,7 +17548,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-INSIDE-FRONT")
 		public final void ltf_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12028,7 +17561,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-INSIDE-FRONT")
 		public final void itf_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12041,7 +17574,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-INSIDE-FRONT")
 		public final void rtf_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12054,7 +17587,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-INSIDE-FRONT")
 		public final void lbi_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12067,7 +17600,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-INSIDE-FRONT")
 		public final void ibi_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12080,7 +17613,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-INSIDE-FRONT")
 		public final void rbi_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12093,7 +17626,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-INSIDE-FRONT")
 		public final void lii_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12106,7 +17639,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-INSIDE-FRONT")
 		public final void iii_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12119,7 +17652,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-INSIDE-FRONT")
 		public final void rii_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12132,7 +17665,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-INSIDE-FRONT")
 		public final void lti_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12145,7 +17678,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-INSIDE-FRONT")
 		public final void iti_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12158,7 +17691,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-INSIDE-FRONT")
 		public final void rti_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12171,7 +17704,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-INSIDE-FRONT")
 		public final void lbb_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12184,7 +17717,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-INSIDE-FRONT")
 		public final void ibb_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12197,7 +17730,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-INSIDE-FRONT")
 		public final void rbb_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12210,7 +17743,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-INSIDE-FRONT")
 		public final void lib_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12223,7 +17756,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-INSIDE-FRONT")
 		public final void iib_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12236,7 +17769,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-INSIDE-FRONT")
 		public final void rib_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12249,7 +17782,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-INSIDE-FRONT")
 		public final void ltb_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12262,7 +17795,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-INSIDE-FRONT")
 		public final void itb_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12275,7 +17808,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-INSIDE-FRONT")
 		public final void rtb_iif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12288,7 +17821,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-INSIDE-FRONT")
 		public final void lbf_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12301,7 +17834,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-INSIDE-FRONT")
 		public final void ibf_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12314,7 +17847,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-INSIDE-FRONT")
 		public final void rbf_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12327,7 +17860,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-INSIDE-FRONT")
 		public final void lif_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12340,7 +17873,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-INSIDE-FRONT")
 		public final void iif_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12353,7 +17886,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-INSIDE-FRONT")
 		public final void rif_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12366,7 +17899,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-INSIDE-FRONT")
 		public final void ltf_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12379,7 +17912,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-INSIDE-FRONT")
 		public final void itf_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12392,7 +17925,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-INSIDE-FRONT")
 		public final void rtf_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12405,7 +17938,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-INSIDE-FRONT")
 		public final void lbi_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12418,7 +17951,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-INSIDE-FRONT")
 		public final void ibi_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12431,7 +17964,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-INSIDE-FRONT")
 		public final void rbi_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12444,7 +17977,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-INSIDE-FRONT")
 		public final void lii_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12457,7 +17990,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-INSIDE-FRONT")
 		public final void iii_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12470,7 +18003,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-INSIDE-FRONT")
 		public final void rii_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12483,7 +18016,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-INSIDE-FRONT")
 		public final void lti_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12496,7 +18029,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-INSIDE-FRONT")
 		public final void iti_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12509,7 +18042,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-INSIDE-FRONT")
 		public final void rti_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12522,7 +18055,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-INSIDE-FRONT")
 		public final void lbb_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12535,7 +18068,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-INSIDE-FRONT")
 		public final void ibb_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12548,7 +18081,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-INSIDE-FRONT")
 		public final void rbb_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12561,7 +18094,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-INSIDE-FRONT")
 		public final void lib_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12574,7 +18107,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-INSIDE-FRONT")
 		public final void iib_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12587,7 +18120,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-INSIDE-FRONT")
 		public final void rib_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12600,7 +18133,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-INSIDE-FRONT")
 		public final void ltb_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12613,7 +18146,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-INSIDE-FRONT")
 		public final void itb_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12626,7 +18159,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-INSIDE-FRONT")
 		public final void rtb_rif(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 2.7, 1,
 					reset(result1), reset(result2));
@@ -12639,7 +18172,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-TOP-FRONT")
 		public final void lbf_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12652,7 +18185,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-TOP-FRONT")
 		public final void ibf_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12665,7 +18198,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-TOP-FRONT")
 		public final void rbf_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12678,7 +18211,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-TOP-FRONT")
 		public final void lif_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12691,7 +18224,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-TOP-FRONT")
 		public final void iif_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12704,7 +18237,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-TOP-FRONT")
 		public final void rif_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12717,7 +18250,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-TOP-FRONT")
 		public final void ltf_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12730,7 +18263,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-TOP-FRONT")
 		public final void itf_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12743,7 +18276,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-TOP-FRONT")
 		public final void rtf_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12756,7 +18289,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-TOP-FRONT")
 		public final void lbi_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12769,7 +18302,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-TOP-FRONT")
 		public final void ibi_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12782,7 +18315,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-TOP-FRONT")
 		public final void rbi_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12795,7 +18328,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-TOP-FRONT")
 		public final void lii_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12808,7 +18341,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-TOP-FRONT")
 		public final void iii_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12821,7 +18354,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-TOP-FRONT")
 		public final void rii_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12834,7 +18367,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-TOP-FRONT")
 		public final void lti_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12847,7 +18380,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-TOP-FRONT")
 		public final void iti_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12860,7 +18393,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-TOP-FRONT")
 		public final void rti_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12873,7 +18406,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-TOP-FRONT")
 		public final void lbb_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12886,7 +18419,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-TOP-FRONT")
 		public final void ibb_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12899,7 +18432,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-TOP-FRONT")
 		public final void rbb_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12912,7 +18445,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-TOP-FRONT")
 		public final void lib_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12925,7 +18458,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-TOP-FRONT")
 		public final void iib_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12938,7 +18471,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-TOP-FRONT")
 		public final void rib_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12951,7 +18484,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-TOP-FRONT")
 		public final void ltb_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12964,7 +18497,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-TOP-FRONT")
 		public final void itb_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12977,7 +18510,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-TOP-FRONT")
 		public final void rtb_ltf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 5, 1,
 					reset(result1), reset(result2));
@@ -12990,7 +18523,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-TOP-FRONT")
 		public final void lbf_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13003,7 +18536,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-TOP-FRONT")
 		public final void ibf_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13016,7 +18549,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-TOP-FRONT")
 		public final void rbf_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13029,7 +18562,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-TOP-FRONT")
 		public final void lif_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13042,7 +18575,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-TOP-FRONT")
 		public final void iif_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13055,7 +18588,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-TOP-FRONT")
 		public final void rif_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13068,7 +18601,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-TOP-FRONT")
 		public final void ltf_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13081,7 +18614,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-TOP-FRONT")
 		public final void itf_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13094,7 +18627,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-TOP-FRONT")
 		public final void rtf_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13107,7 +18640,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-TOP-FRONT")
 		public final void lbi_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13120,7 +18653,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-TOP-FRONT")
 		public final void ibi_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13133,7 +18666,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-TOP-FRONT")
 		public final void rbi_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13146,7 +18679,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-TOP-FRONT")
 		public final void lii_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13159,7 +18692,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-TOP-FRONT")
 		public final void iii_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13172,7 +18705,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-TOP-FRONT")
 		public final void rii_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13185,7 +18718,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-TOP-FRONT")
 		public final void lti_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13198,7 +18731,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-TOP-FRONT")
 		public final void iti_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13211,7 +18744,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-TOP-FRONT")
 		public final void rti_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13224,7 +18757,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-TOP-FRONT")
 		public final void lbb_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13237,7 +18770,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-TOP-FRONT")
 		public final void ibb_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13250,7 +18783,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-TOP-FRONT")
 		public final void rbb_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13263,7 +18796,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-TOP-FRONT")
 		public final void lib_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13276,7 +18809,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-TOP-FRONT")
 		public final void iib_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13289,7 +18822,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-TOP-FRONT")
 		public final void rib_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13302,7 +18835,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-TOP-FRONT")
 		public final void ltb_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13315,7 +18848,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-TOP-FRONT")
 		public final void itb_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13328,7 +18861,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-TOP-FRONT")
 		public final void rtb_itf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 5, 1,
 					reset(result1), reset(result2));
@@ -13341,7 +18874,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-TOP-FRONT")
 		public final void lbf_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13354,7 +18887,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-TOP-FRONT")
 		public final void ibf_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13367,7 +18900,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-TOP-FRONT")
 		public final void rbf_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13380,7 +18913,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-TOP-FRONT")
 		public final void lif_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13393,7 +18926,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-TOP-FRONT")
 		public final void iif_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13406,7 +18939,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-TOP-FRONT")
 		public final void rif_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13419,7 +18952,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-TOP-FRONT")
 		public final void ltf_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13432,7 +18965,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-TOP-FRONT")
 		public final void itf_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13445,7 +18978,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-TOP-FRONT")
 		public final void rtf_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13458,7 +18991,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-TOP-FRONT")
 		public final void lbi_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13471,7 +19004,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-TOP-FRONT")
 		public final void ibi_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13484,7 +19017,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-TOP-FRONT")
 		public final void rbi_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13497,7 +19030,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-TOP-FRONT")
 		public final void lii_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13510,7 +19043,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-TOP-FRONT")
 		public final void iii_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13523,7 +19056,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-TOP-FRONT")
 		public final void rii_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13536,7 +19069,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-TOP-FRONT")
 		public final void lti_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13549,7 +19082,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-TOP-FRONT")
 		public final void iti_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13562,7 +19095,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-TOP-FRONT")
 		public final void rti_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13575,7 +19108,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-TOP-FRONT")
 		public final void lbb_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13588,7 +19121,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-TOP-FRONT")
 		public final void ibb_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13601,7 +19134,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-TOP-FRONT")
 		public final void rbb_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13614,7 +19147,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-TOP-FRONT")
 		public final void lib_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13627,7 +19160,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-TOP-FRONT")
 		public final void iib_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13640,7 +19173,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-TOP-FRONT")
 		public final void rib_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13653,7 +19186,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-TOP-FRONT")
 		public final void ltb_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13666,7 +19199,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-TOP-FRONT")
 		public final void itb_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13679,7 +19212,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-TOP-FRONT")
 		public final void rtb_rtf(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 5, 1,
 					reset(result1), reset(result2));
@@ -13692,7 +19225,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-BOTTOM-INSIDE")
 		public final void lbf_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13705,7 +19238,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-BOTTOM-INSIDE")
 		public final void ibf_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13718,7 +19251,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-BOTTOM-INSIDE")
 		public final void rbf_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13731,7 +19264,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-BOTTOM-INSIDE")
 		public final void lif_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13744,7 +19277,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-BOTTOM-INSIDE")
 		public final void iif_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13757,7 +19290,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-BOTTOM-INSIDE")
 		public final void rif_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13770,7 +19303,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-BOTTOM-INSIDE")
 		public final void ltf_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13783,7 +19316,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-BOTTOM-INSIDE")
 		public final void itf_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13796,7 +19329,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-BOTTOM-INSIDE")
 		public final void rtf_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13809,7 +19342,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void lbi_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13822,7 +19355,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void ibi_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13835,7 +19368,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void rbi_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13848,7 +19381,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void lii_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13861,7 +19394,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void iii_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13874,7 +19407,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void rii_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13887,7 +19420,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void lti_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13900,7 +19433,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void iti_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13913,7 +19446,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-BOTTOM-INSIDE")
 		public final void rti_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13926,7 +19459,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-BOTTOM-INSIDE")
 		public final void lbb_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13939,7 +19472,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-BOTTOM-INSIDE")
 		public final void ibb_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13952,7 +19485,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-BOTTOM-INSIDE")
 		public final void rbb_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13965,7 +19498,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-BOTTOM-INSIDE")
 		public final void lib_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13978,7 +19511,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-BOTTOM-INSIDE")
 		public final void iib_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -13991,7 +19524,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-BOTTOM-INSIDE")
 		public final void rib_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -14004,7 +19537,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-BOTTOM-INSIDE")
 		public final void ltb_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -14017,7 +19550,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-BOTTOM-INSIDE")
 		public final void itb_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -14030,7 +19563,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-BOTTOM-INSIDE")
 		public final void rtb_lbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 1, 3.8,
 					reset(result1), reset(result2));
@@ -14043,12 +19576,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void lbf_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14056,12 +19589,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void ibf_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14069,12 +19602,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void rbf_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14082,12 +19615,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void lif_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.1668292682926829,2.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1668292682926829,1.3790243902439023,2.7712195121951217), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14095,12 +19628,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void iif_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5729268292682927,2.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5729268292682927,1.3790243902439023,2.7712195121951217), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14108,12 +19641,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void rif_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.843658536585366,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.843658536585366,1.3790243902439026,2.7712195121951213), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14121,12 +19654,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void ltf_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1.1555555555555554,1.7222222222222225,2.744444444444444), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.1555555555555554,1.7222222222222225,2.744444444444444), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14134,12 +19667,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void itf_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5733962264150945,2.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5733962264150945,1.6916981132075473,2.7890566037735844), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14147,12 +19680,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-BOTTOM-INSIDE")
 		public final void rtf_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8394339622641511,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.8394339622641511,1.6916981132075477,2.789056603773584), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14160,12 +19693,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void lbi_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14173,7 +19706,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void ibi_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
@@ -14186,12 +19719,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void rbi_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14199,12 +19732,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void lii_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.0,3.591150442477876), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7646017699115044,1.7309734513274337,3.591150442477876), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14212,12 +19745,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void iii_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5142857142857142,2.2,3.4571428571428573), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5142857142857142,2.2,3.4571428571428573), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14225,12 +19758,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void rii_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,3.5458483754512633), result1);
+			assertEpsilonEquals(createPoint(2.1718411552346573,1.8895306859205776,3.5458483754512633), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14238,12 +19771,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void lti_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.0,3.6472103004291845), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9888412017167382,1.9931330472103006,3.6472103004291845), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14251,12 +19784,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void iti_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5423076923076922,2.5,3.569230769230769), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5423076923076922,2.5,3.569230769230769), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14264,12 +19797,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-BOTTOM-INSIDE")
 		public final void rti_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9730769230769232,2.0777777777777775,3.634188034188034), result1);
+			assertEpsilonEquals(createPoint(1.9730769230769232,2.0777777777777775,3.634188034188034), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14277,12 +19810,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-BOTTOM-INSIDE")
 		public final void lbb_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14290,7 +19823,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-BOTTOM-INSIDE")
 		public final void ibb_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
@@ -14303,12 +19836,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-BOTTOM-INSIDE")
 		public final void rbb_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 1, 3.81,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,3.81), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14316,12 +19849,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-BOTTOM-INSIDE")
 		public final void lib_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9020134228187917,1.6107382550335572,4.323489932885906), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14329,12 +19862,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-BOTTOM-INSIDE")
 		public final void iib_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.551764705882353,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.551764705882353,1.6752941176470588,4.378823529411765), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14342,12 +19875,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-BOTTOM-INSIDE")
 		public final void rib_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.0275534441805227,1.665083135391924,4.370071258907363), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14355,12 +19888,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-BOTTOM-INSIDE")
 		public final void ltb_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0349442379182154,1.9182156133829,4.223791821561338), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14368,12 +19901,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-BOTTOM-INSIDE")
 		public final void itb_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5653658536585366,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5653658536585366,1.9004878048780491,4.215609756097561), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14381,12 +19914,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-BOTTOM-INSIDE")
 		public final void rtb_ibi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.911707317073171,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.9117073170731709,1.9004878048780491,4.215609756097561), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14394,12 +19927,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void lbf_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.266968325791855), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4072398190045248,0.8597285067873304,3.266968325791855), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14407,12 +19940,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void ibf_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.743494423791819), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.780669144981413,0.9851301115241639,3.7434944237918226), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14420,12 +19953,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void rbf_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3.8), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.8,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14433,12 +19966,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void lif_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0283828382838283,1.3858085808580858,2.7528052805280523), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14446,12 +19979,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void iif_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4061912658927582,1.4241017136539527,2.6488667772249856), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14459,12 +19992,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void rif_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.7148574893875073,1.3973317161916312,2.7215281989084295), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14472,12 +20005,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void ltf_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.040220385674931,1.7055096418732787,2.7688705234159774), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14485,12 +20018,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void itf_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4206203582350367,1.7587592835299257,2.691044124071647), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14498,12 +20031,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-BOTTOM-INSIDE")
 		public final void rtf_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.7171441991545326,1.718083607327384,2.7504931892907463), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14511,12 +20044,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void lbi_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.743891402714932), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4072398190045248,0.8597285067873303,3.743891402714932), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14524,12 +20057,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void ibi_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.7940520446096655), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.780669144981413,0.9851301115241639,3.7940520446096655), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14537,12 +20070,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void rbi_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,3.8), result1);
+			assertEpsilonEquals(createPoint(2.8,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14550,12 +20083,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void lii_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.0,3.537142857142857), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.96,1.92,3.537142857142857), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14563,12 +20096,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void iii_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6857142857142857,2.2,3.4571428571428573), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6857142857142857,2.2,3.4571428571428573), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14576,12 +20109,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void rii_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14589,12 +20122,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void lti_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3615384615384616,2.335714285714286,3.594505494505494), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3615384615384616,2.335714285714286,3.594505494505494), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14602,12 +20135,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void iti_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.9,2.8,3.523076923076923), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9,2.8,3.523076923076923), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14615,12 +20148,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-BOTTOM-INSIDE")
 		public final void rti_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.4823357664233576), result1);
+			assertEpsilonEquals(createPoint(2.5617518248175184,3.064817518248175,3.4823357664233576), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14628,12 +20161,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-BOTTOM-INSIDE")
 		public final void lbb_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.9683257918552037), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4072398190045248,0.8597285067873303,3.9683257918552037), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14641,12 +20174,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-BOTTOM-INSIDE")
 		public final void ibb_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.8178438661710032), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.780669144981413,0.9851301115241639,3.8178438661710032), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14654,12 +20187,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-BOTTOM-INSIDE")
 		public final void rbb_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3.8), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.8,1.0,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14667,12 +20200,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-BOTTOM-INSIDE")
 		public final void lib_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.4494117647058822,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.4494117647058824,1.6752941176470588,4.378823529411765), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14680,12 +20213,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-BOTTOM-INSIDE")
 		public final void iib_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.1155206286836936,1.73713163064833,4.4318271119842825), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14693,12 +20226,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-BOTTOM-INSIDE")
 		public final void rib_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.6383954154727793,1.7541547277936962,4.446418338108883), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14706,12 +20239,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-BOTTOM-INSIDE")
 		public final void ltb_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8302439024390245,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8302439024390247,1.9004878048780485,4.21560975609756), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14719,12 +20252,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-BOTTOM-INSIDE")
 		public final void itb_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.063258785942492,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.2683706070287544,2.0632587859424913,4.29073482428115), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14732,12 +20265,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-BOTTOM-INSIDE")
 		public final void rtb_rbi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 1, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.6885404101326897,1.9659831121833538,4.24583835946924), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14745,7 +20278,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-INSIDE-INSIDE")
 		public final void lbf_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
@@ -14758,12 +20291,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-INSIDE-INSIDE")
 		public final void ibf_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7388913330400353,2.054993400791905,2.8922129344478655), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14771,12 +20304,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-INSIDE-INSIDE")
 		public final void rbf_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.1084598698481565,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.938177874186551,2.1084598698481565,2.967462039045553), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14784,7 +20317,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-INSIDE-INSIDE")
 		public final void lif_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
@@ -14797,12 +20330,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-INSIDE-INSIDE")
 		public final void iif_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.6312176165803107,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7292746113989638,2.631217616580311,2.9287564766839376), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14810,12 +20343,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-INSIDE-INSIDE")
 		public final void rif_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,2.6342733188720175,3.0), result1);
+			assertEpsilonEquals(createPoint(0.9381778741865512,2.6342733188720175,2.9674620390455524), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14823,7 +20356,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-INSIDE-INSIDE")
 		public final void ltf_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
@@ -14836,12 +20369,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-INSIDE-INSIDE")
 		public final void itf_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7344615384615386,2.911015384615385,2.909046153846153), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14849,12 +20382,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-INSIDE-INSIDE")
 		public final void rtf_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,2.897180043383948,3.0), result1);
+			assertEpsilonEquals(createPoint(0.9381778741865512,2.897180043383948,2.9674620390455524), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14862,7 +20395,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-INSIDE-INSIDE")
 		public final void lbi_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
@@ -14875,12 +20408,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-INSIDE-INSIDE")
 		public final void ibi_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.0,3.684680337756333), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7882991556091677,1.9215922798552472,3.684680337756333), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14888,12 +20421,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-INSIDE-INSIDE")
 		public final void rbi_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0092592592592595,2.0125,3.6981481481481477), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0092592592592595,2.0125,3.6981481481481477), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14901,7 +20434,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-INSIDE-INSIDE")
 		public final void lii_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
@@ -14914,12 +20447,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-INSIDE-INSIDE")
 		public final void iii_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.25,2.4749999999999996,3.5), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.25,2.4749999999999996,3.5), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14927,12 +20460,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-INSIDE-INSIDE")
 		public final void rii_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5,2.55,3.5999999999999996), result1);
+			assertEpsilonEquals(createPoint(1.5,2.55,3.5999999999999996), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14940,12 +20473,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-INSIDE-INSIDE")
 		public final void lti_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.7, 3.8), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,2.7,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14953,12 +20486,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-INSIDE-INSIDE")
 		public final void iti_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.6298342541436464), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9254143646408839,3.0828729281767955,3.6298342541436464), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14966,12 +20499,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-INSIDE-INSIDE")
 		public final void rti_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.083333333333333,2.9625000000000004,3.683333333333333), result1);
+			assertEpsilonEquals(createPoint(1.083333333333333,2.9625000000000004,3.683333333333333), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14979,12 +20512,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-INSIDE-INSIDE")
 		public final void lbb_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.7, 3.8), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,2.7,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -14992,12 +20525,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-INSIDE-INSIDE")
 		public final void ibb_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7702980472764646,1.9701952723535459,4.124357656731758), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15005,12 +20538,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-INSIDE-INSIDE")
 		public final void rbb_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.084558823529412,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9558823529411766,2.0845588235294117,4.073529411764706), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15018,12 +20551,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-INSIDE-INSIDE")
 		public final void lib_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.7, 3.8), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,2.7,3.8), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15031,12 +20564,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-INSIDE-INSIDE")
 		public final void iib_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.609016393442623,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8032786885245901,2.609016393442623,4.163934426229508), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15044,12 +20577,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-INSIDE-INSIDE")
 		public final void rib_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,2.6316176470588237,4.0), result1);
+			assertEpsilonEquals(createPoint(0.9558823529411764,2.6316176470588237,4.073529411764706), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15057,7 +20590,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-INSIDE-INSIDE")
 		public final void ltb_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
@@ -15070,12 +20603,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-INSIDE-INSIDE")
 		public final void itb_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8107692307692307,2.9796923076923076,4.172923076923077), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15083,12 +20616,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-INSIDE-INSIDE")
 		public final void rtb_lii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,2.9051470588235295,4.0), result1);
+			assertEpsilonEquals(createPoint(0.9558823529411764,2.9051470588235295,4.073529411764706), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15096,12 +20629,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-INSIDE-INSIDE")
 		public final void lbf_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.431578947368421,2.4157894736842107,3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.431578947368421,2.4157894736842107,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15109,12 +20642,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-INSIDE-INSIDE")
 		public final void ibf_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5894736842105264,2.4157894736842107,3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5894736842105264,2.4157894736842107,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15122,12 +20655,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-INSIDE-INSIDE")
 		public final void rbf_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6947368421052633,2.4157894736842107,3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6947368421052633,2.4157894736842107,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15135,12 +20668,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-INSIDE-INSIDE")
 		public final void lif_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.431578947368421,2.668421052631579,3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.431578947368421,2.668421052631579,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15148,12 +20681,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-INSIDE-INSIDE")
 		public final void iif_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5894736842105264,2.668421052631579,3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5894736842105264,2.668421052631579,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15161,12 +20694,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-INSIDE-INSIDE")
 		public final void rif_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.694736842105263,2.668421052631579,3.4), result1);
+			assertEpsilonEquals(createPoint(1.694736842105263,2.668421052631579,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15174,12 +20707,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-INSIDE-INSIDE")
 		public final void ltf_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.431578947368421,2.794736842105263,3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.431578947368421,2.794736842105263,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15187,12 +20720,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-INSIDE-INSIDE")
 		public final void itf_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5894736842105264,2.794736842105263,3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5894736842105264,2.794736842105263,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15200,12 +20733,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-INSIDE-INSIDE")
 		public final void rtf_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.694736842105263,2.794736842105263,3.4), result1);
+			assertEpsilonEquals(createPoint(1.694736842105263,2.794736842105263,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15213,12 +20746,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void lbi_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3925925925925926,2.35,3.748148148148148), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3925925925925926,2.35,3.748148148148148), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15226,12 +20759,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void ibi_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.587037037037037,2.35,3.748148148148148), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.587037037037037,2.35,3.748148148148148), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15239,12 +20772,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void rbi_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.7166666666666668,2.35,3.748148148148148), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.7166666666666668,2.35,3.748148148148148), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15252,12 +20785,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void lii_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3,2.64375,3.7249999999999996), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3,2.64375,3.7249999999999996), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15265,12 +20798,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void iii_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.55,2.55,3.5999999999999996), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.55,2.55,3.5999999999999996), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15278,12 +20811,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void rii_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8,2.6333333333333337,3.7111111111111112), result1);
+			assertEpsilonEquals(createPoint(1.8,2.6333333333333337,3.7111111111111112), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15291,12 +20824,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void lti_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3333333333333335,2.85,3.7333333333333334), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3333333333333335,2.85,3.7333333333333334), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15304,12 +20837,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void iti_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5833333333333335,2.85,3.7333333333333334), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5833333333333335,2.85,3.7333333333333334), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15317,12 +20850,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-INSIDE-INSIDE")
 		public final void rti_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.75,2.85,3.7333333333333334), result1);
+			assertEpsilonEquals(createPoint(1.75,2.85,3.7333333333333334), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15330,12 +20863,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-INSIDE-INSIDE")
 		public final void lbb_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.4666666666666663,2.4749999999999996,3.9), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.4666666666666663,2.4749999999999996,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15343,12 +20876,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-INSIDE-INSIDE")
 		public final void ibb_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5916666666666668,2.4749999999999996,3.9), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5916666666666668,2.4749999999999996,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15356,12 +20889,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-INSIDE-INSIDE")
 		public final void rbb_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6750000000000003,2.4749999999999996,3.9), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6750000000000003,2.4749999999999996,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15369,12 +20902,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-INSIDE-INSIDE")
 		public final void lib_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.4666666666666668,2.675,3.9), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.4666666666666668,2.675,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15382,12 +20915,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-INSIDE-INSIDE")
 		public final void iib_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5916666666666668,2.675,3.9), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5916666666666668,2.675,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15395,12 +20928,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-INSIDE-INSIDE")
 		public final void rib_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6750000000000003,2.6750000000000003,3.9), result1);
+			assertEpsilonEquals(createPoint(1.6750000000000003,2.6750000000000003,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15408,12 +20941,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-INSIDE-INSIDE")
 		public final void ltb_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.4666666666666668,2.7750000000000004,3.9), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.4666666666666668,2.7750000000000004,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15421,12 +20954,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-INSIDE-INSIDE")
 		public final void itb_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5916666666666668,2.7750000000000004,3.9), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5916666666666668,2.7750000000000004,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15434,12 +20967,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-INSIDE-INSIDE")
 		public final void rtb_iii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6750000000000003,2.7750000000000004,3.9), result1);
+			assertEpsilonEquals(createPoint(1.6750000000000003,2.7750000000000004,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15447,12 +20980,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-INSIDE-INSIDE")
 		public final void lbf_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.121068650659452,2.045316198850186,2.878593168752113), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15460,12 +20993,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-INSIDE-INSIDE")
 		public final void ibf_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4686165670367206,2.011742100768574,2.8313407344150296), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15473,12 +21006,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-INSIDE-INSIDE")
 		public final void rbf_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0905024088093596,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.732278045423262,2.0905024088093604,2.9421885753613215), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15486,12 +21019,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-INSIDE-INSIDE")
 		public final void lif_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.628904847396768,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.1364452423698386,2.6289048473967687,2.8994614003590664), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15499,12 +21032,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-INSIDE-INSIDE")
 		public final void iif_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.62411655300682,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.471171729696218,2.62411655300682,2.838809671419714), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15512,12 +21045,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-INSIDE-INSIDE")
 		public final void rif_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.6322780454232624,3.0), result1);
+			assertEpsilonEquals(createPoint(2.732278045423262,2.6322780454232624,2.9421885753613215), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15525,12 +21058,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-INSIDE-INSIDE")
 		public final void ltf_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.9132854578096947,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.136445242369838,2.913285457809695,2.899461400359066), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15538,12 +21071,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-INSIDE-INSIDE")
 		public final void itf_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4661747343565525,2.9311097992916175,2.8242030696576155), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15551,12 +21084,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-INSIDE-INSIDE")
 		public final void rtf_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.9031658637302136,3.0), result1);
+			assertEpsilonEquals(createPoint(2.732278045423262,2.9031658637302136,2.9421885753613215), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15564,12 +21097,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void lbi_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.6908129543952413), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0356906807666886,1.9629874421678786,3.6908129543952413), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15577,12 +21110,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void ibi_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.669487750556793), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.375835189309577,1.819042316258352,3.669487750556793), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15590,12 +21123,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void rbi_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,3.6845528455284553), result1);
+			assertEpsilonEquals(createPoint(2.7134146341463414,1.920731707317073,3.6845528455284553), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15603,12 +21136,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void lii_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5,2.560714285714286,3.614285714285714), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5,2.560714285714286,3.614285714285714), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15616,12 +21149,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void iii_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.75,2.457692307692308,3.476923076923077), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.75,2.457692307692308,3.476923076923077), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15629,12 +21162,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void rii_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15642,12 +21175,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void lti_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.9333333333333336,2.9785714285714286,3.676190476190476), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9333333333333336,2.9785714285714286,3.676190476190476), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15655,12 +21188,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void iti_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,3.0,3.5904), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.1188000000000002,3.1715999999999998,3.5904), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15668,12 +21201,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-INSIDE-INSIDE")
 		public final void rti_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.5733333333333333), result1);
+			assertEpsilonEquals(createPoint(2.63,3.21,3.5733333333333333), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15681,12 +21214,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-INSIDE-INSIDE")
 		public final void lbb_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.061557030778515,1.9879299939649968,4.116475558237779), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15694,12 +21227,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-INSIDE-INSIDE")
 		public final void ibb_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4045105566218807,1.8785988483685219,4.165067178502879), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15707,12 +21240,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-INSIDE-INSIDE")
 		public final void rbb_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.7193877551020407,1.9744897959183676,4.122448979591836), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15720,12 +21253,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-INSIDE-INSIDE")
 		public final void lib_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.6198275862068967,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0517241379310347,2.6198275862068967,4.120689655172414), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15733,12 +21266,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-INSIDE-INSIDE")
 		public final void iib_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.5773162939297123,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.268370607028754,2.5773162939297127,4.29073482428115), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15746,12 +21279,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-INSIDE-INSIDE")
 		public final void rib_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.6058823529411765,4.0), result1);
+			assertEpsilonEquals(createPoint(2.705882352941176,2.6058823529411765,4.176470588235294), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15759,12 +21292,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-INSIDE-INSIDE")
 		public final void ltb_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.940517241379311,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0517241379310343,2.9405172413793106,4.120689655172414), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15772,12 +21305,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-INSIDE-INSIDE")
 		public final void itb_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.2885786802030457,3.054060913705584,4.272081218274112), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15785,12 +21318,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-INSIDE-INSIDE")
 		public final void rtb_rii(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 2.7, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.98235294117647,4.0), result1);
+			assertEpsilonEquals(createPoint(2.705882352941176,2.9823529411764707,4.1764705882352935), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15798,12 +21331,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-TOP-INSIDE")
 		public final void lbf_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.33887629125724367,3.3887629125724366,2.5754598135550517), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15811,12 +21344,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-TOP-INSIDE")
 		public final void ibf_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8348170128585559,3.32591493570722,2.5276953511374876), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15824,12 +21357,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-TOP-INSIDE")
 		public final void rbf_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.1612576064908722,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1612576064908722,3.3468559837728193,2.5436105476673427), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15837,12 +21370,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-TOP-INSIDE")
 		public final void lif_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.31375291375291375,4.031515151515151,2.3845221445221445), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15850,12 +21383,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-TOP-INSIDE")
 		public final void iif_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8936936936936937,3.9763963963963964,2.3039639639639637), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15863,12 +21396,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-TOP-INSIDE")
 		public final void rif_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.277358490566038,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.277358490566038,3.9894339622641506,2.3230188679245276), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15876,12 +21409,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-TOP-INSIDE")
 		public final void ltf_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.3321321321321321,4.52996996996997,2.524204204204204), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15889,12 +21422,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-TOP-INSIDE")
 		public final void itf_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.864367816091954,4.489885057471264,2.415402298850575), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15902,12 +21435,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-TOP-INSIDE")
 		public final void rtf_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2121951219512195,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.2121951219512195,4.501463414634147,2.446829268292683), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15915,12 +21448,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-TOP-INSIDE")
 		public final void lbi_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.6455445544554452), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.3069306930693069,3.0693069306930694,3.6455445544554452), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15928,12 +21461,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-TOP-INSIDE")
 		public final void ibi_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.05, 2.25, 3.58), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.05,2.25,3.58), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15941,12 +21474,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-TOP-INSIDE")
 		public final void rbi_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5,2.5,3.5999999999999996), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5,2.5,3.5999999999999996), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15954,12 +21487,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-TOP-INSIDE")
 		public final void lii_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.5175463623395147), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.14693295292439373,3.164051355206847,3.5175463623395147), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15967,12 +21500,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-TOP-INSIDE")
 		public final void iii_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3846153846153846,2.7,3.446153846153846), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3846153846153846,2.7,3.446153846153846), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15980,12 +21513,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-TOP-INSIDE")
 		public final void rii_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.495167286245353), result1);
+			assertEpsilonEquals(createPoint(2.024163568773234,3.0185873605947955,3.495167286245353), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -15993,12 +21526,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-TOP-INSIDE")
 		public final void lti_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.0,3.6,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16006,7 +21539,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-TOP-INSIDE")
 		public final void iti_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
@@ -16019,12 +21552,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-TOP-INSIDE")
 		public final void rti_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.410738255033557), result1);
+			assertEpsilonEquals(createPoint(2.446308724832215,3.6375838926174495,3.4107382550335568), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16032,12 +21565,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-TOP-INSIDE")
 		public final void lbb_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.3128512551517422,3.128512551517422,4.249156987635819), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16045,12 +21578,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-TOP-INSIDE")
 		public final void ibb_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8913994169096211,3.0430029154518943,4.269679300291545), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16058,12 +21591,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-TOP-INSIDE")
 		public final void rbb_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.2745839636913767,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2745839636913767,3.063540090771558,4.264750378214826), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16071,12 +21604,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-TOP-INSIDE")
 		public final void lib_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.1928994082840237,3.403076923076923,4.537041420118343), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16084,12 +21617,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-TOP-INSIDE")
 		public final void iib_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.1634146341463414,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1634146341463414,3.2751219512195124,4.596097560975609), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16097,12 +21630,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-TOP-INSIDE")
 		public final void rib_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.826829268292683,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.826829268292683,3.275121951219512,4.596097560975609), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16110,12 +21643,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-TOP-INSIDE")
 		public final void ltb_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.11780821917808222,3.9298630136986303,4.717260273972602), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16123,12 +21656,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-TOP-INSIDE")
 		public final void itb_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3941176470588235,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3941176470588235,3.7482352941176473,4.872941176470588), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16136,12 +21669,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-TOP-INSIDE")
 		public final void rtb_lti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.132432432432432,3.8572972972972974,4.779459459459459), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16149,12 +21682,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-TOP-INSIDE")
 		public final void lbf_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0709939148073024,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0709939148073022,3.3468559837728193,2.5436105476673427), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16162,12 +21695,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-TOP-INSIDE")
 		public final void ibf_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5669371196754565,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5669371196754565,3.346855983772819,2.5436105476673423), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16175,12 +21708,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-TOP-INSIDE")
 		public final void rbf_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8975659229208925,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8975659229208925,3.3468559837728193,2.5436105476673427), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16188,12 +21721,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-TOP-INSIDE")
 		public final void lif_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9804713804713805,3.993265993265993,2.3286195286195284), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16201,12 +21734,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-TOP-INSIDE")
 		public final void iif_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5611320754716982,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5611320754716982,3.9894339622641506,2.3230188679245276), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16214,12 +21747,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-TOP-INSIDE")
 		public final void rif_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9498113207547172,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.949811320754717,3.989433962264151,2.323018867924528), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16227,12 +21760,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-TOP-INSIDE")
 		public final void ltf_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0302439024390244,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0302439024390244,4.501463414634147,2.446829268292683), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16240,12 +21773,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-TOP-INSIDE")
 		public final void itf_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.564390243902439,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.564390243902439,4.501463414634147,2.446829268292683), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16253,12 +21786,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-TOP-INSIDE")
 		public final void rtf_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.920487804878049,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.9204878048780492,4.501463414634146,2.446829268292682), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16266,12 +21799,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-TOP-INSIDE")
 		public final void lbi_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.6409288824383164), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9637155297532657,3.011611030478955,3.6409288824383164), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16279,12 +21812,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-TOP-INSIDE")
 		public final void ibi_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.55, 2.5, 3.6), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.55,2.5,3.6), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16292,12 +21825,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-TOP-INSIDE")
 		public final void rbi_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.98,2.8888888888888893,3.631111111111111), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.98,2.8888888888888893,3.631111111111111), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16305,12 +21838,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-TOP-INSIDE")
 		public final void lii_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.5356223175965664), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5424892703862662,3.2815450643776822,3.5356223175965664), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16318,12 +21851,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-TOP-INSIDE")
 		public final void iii_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5115384615384615,2.7,3.4461538461538463), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5115384615384615,2.7,3.4461538461538463), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16331,12 +21864,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-TOP-INSIDE")
 		public final void rii_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.506208718626156), result1);
+			assertEpsilonEquals(createPoint(2.2610303830911493,3.090356671070013,3.506208718626156), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16344,12 +21877,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-TOP-INSIDE")
 		public final void lti_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.4672566371681413), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.26902654867256637,3.8353982300884955,3.4672566371681417), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16357,7 +21890,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-TOP-INSIDE")
 		public final void iti_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
@@ -16370,12 +21903,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-TOP-INSIDE")
 		public final void rti_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,3.6,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16383,12 +21916,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-TOP-INSIDE")
 		public final void lbb_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9820689655172412,3.068965517241379,4.263448275862069), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16396,12 +21929,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-TOP-INSIDE")
 		public final void ibb_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5612708018154313,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5612708018154313,3.063540090771558,4.264750378214826), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16409,12 +21942,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-TOP-INSIDE")
 		public final void rbb_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.9485627836611197,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9485627836611195,3.063540090771558,4.264750378214826), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16422,12 +21955,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-TOP-INSIDE")
 		public final void lib_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.6483271375464685,3.4535315985130115,4.513754646840148), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16435,12 +21968,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-TOP-INSIDE")
 		public final void iib_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5336585365853659,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5336585365853659,3.2751219512195124,4.596097560975609), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16448,12 +21981,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-TOP-INSIDE")
 		public final void rib_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.179356270810211,3.3263041065482795,4.572475027746948), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16461,12 +21994,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-TOP-INSIDE")
 		public final void ltb_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5261744966442954,4.060402684563758,4.605369127516778), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16474,12 +22007,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-TOP-INSIDE")
 		public final void itb_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5105882352941178,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5105882352941176,3.7482352941176473,4.872941176470588), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16487,12 +22020,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-TOP-INSIDE")
 		public final void rtb_iti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.326840855106888,3.8693586698337294,4.769121140142518), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16500,12 +22033,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-TOP-INSIDE")
 		public final void lbf_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.874239350912779,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8742393509127788,3.3468559837728193,2.5436105476673427), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16513,12 +22046,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-TOP-INSIDE")
 		public final void ibf_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(2, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.354972039873571,3.2883539995137365,2.49914903963044), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16526,12 +22059,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-TOP-INSIDE")
 		public final void rbf_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.6992157854793826,3.3202630913230458,2.5233999494055146), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16539,12 +22072,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-TOP-INSIDE")
 		public final void lif_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.711698113207547,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.7116981132075466,3.9894339622641506,2.3230188679245276), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16552,12 +22085,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-TOP-INSIDE")
 		public final void iif_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.272957623416339,3.9459152468326777,2.2594145915246826), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16565,12 +22098,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-TOP-INSIDE")
 		public final void rif_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.6805072804133396,3.964396430248943,2.2864255519023016), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16578,12 +22111,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-TOP-INSIDE")
 		public final void ltf_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8029268292682925,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8029268292682925,4.501463414634147,2.446829268292683), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16591,12 +22124,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-TOP-INSIDE")
 		public final void itf_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.3055831951354335,4.467551133222775,2.3547816473189607), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16604,12 +22137,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-TOP-INSIDE")
 		public final void rtf_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.6893875075803515,4.483808368708308,2.398908429351122), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16617,7 +22150,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-TOP-INSIDE")
 		public final void lbi_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
@@ -16630,12 +22163,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-TOP-INSIDE")
 		public final void ibi_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.559610340951667), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.018733608092919,1.9951292618958414,3.559610340951667), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16643,12 +22176,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-TOP-INSIDE")
 		public final void rbi_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,3.55703467516939), result1);
+			assertEpsilonEquals(createPoint(2.6177760063770426,1.9629334396173772,3.55703467516939), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16656,12 +22189,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-TOP-INSIDE")
 		public final void lii_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.5194520547945203), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8361643835616439,3.1764383561643834,3.5194520547945203), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16669,12 +22202,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-TOP-INSIDE")
 		public final void iii_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.65,2.7,3.4461538461538463), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.65,2.7,3.4461538461538463), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16682,12 +22215,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-TOP-INSIDE")
 		public final void rii_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16695,12 +22228,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-TOP-INSIDE")
 		public final void lti_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3.48), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5599999999999999,3.88,3.48), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16708,7 +22241,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-TOP-INSIDE")
 		public final void iti_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
@@ -16721,12 +22254,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-TOP-INSIDE")
 		public final void rti_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,3.6,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16734,12 +22267,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-TOP-INSIDE")
 		public final void lbb_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.715582450832073,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.7155824508320732,3.0635400907715593,4.264750378214826), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16747,7 +22280,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-TOP-INSIDE")
 		public final void ibb_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
@@ -16760,12 +22293,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-TOP-INSIDE")
 		public final void rbb_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.6814926498303806,3.024877497173012,4.274029400678477), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16773,12 +22306,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-TOP-INSIDE")
 		public final void lib_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.970573566084788,3.3012468827930173,4.584039900249376), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16786,12 +22319,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-TOP-INSIDE")
 		public final void iib_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.937560975609756,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.937560975609756,3.275121951219512,4.596097560975609), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16799,12 +22332,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-TOP-INSIDE")
 		public final void rib_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.5944511459589865,3.218576598311218,4.622195416164053), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16812,12 +22345,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-TOP-INSIDE")
 		public final void ltb_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7871886120996442,3.9935943060498222,4.662633451957295), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16825,12 +22358,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-TOP-INSIDE")
 		public final void itb_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6376470588235295,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6376470588235295,3.7482352941176473,4.872941176470588), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16838,12 +22371,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-TOP-INSIDE")
 		public final void rtb_rti(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 5, 3.8,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.5180515759312323,3.6842406876790834,4.927793696275072), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16851,12 +22384,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-BOTTOM-BACK")
 		public final void lbf_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.42857142857142855,0.8571428571428571,4.285714285714286), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16864,12 +22397,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-BOTTOM-BACK")
 		public final void ibf_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.6666666666666666,0.8333333333333334,4.166666666666667), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16877,12 +22410,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-BOTTOM-BACK")
 		public final void rbf_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8333333333333333,0.8333333333333334,4.166666666666667), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16890,12 +22423,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-BOTTOM-BACK")
 		public final void lif_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(0.2951120911429621,1.573686144799706,2.951120911429621), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(0.2951120911429621,1.573686144799706,2.951120911429621), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16903,12 +22436,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-BOTTOM-BACK")
 		public final void iif_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(0.9256080114449213,1.59585121602289,2.8719599427753932), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1, 2, 3), result1);
+			assertEpsilonEquals(createPoint(0.9256080114449213,1.59585121602289,2.8719599427753932), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16916,12 +22449,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-BOTTOM-BACK")
 		public final void rif_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3456973293768546,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.3456973293768548,1.5919881305637982,2.885756676557863), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16929,12 +22462,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-BOTTOM-BACK")
 		public final void ltf_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.0,3.323823109843081), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.33238231098430826,1.8716119828815971,3.3238231098430826), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16942,12 +22475,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-BOTTOM-BACK")
 		public final void itf_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.05, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9038461538461537,2.05,2.9807692307692313), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16955,12 +22488,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-BOTTOM-BACK")
 		public final void rtf_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2846153846153845,2.02,3.0384615384615383), result1);
+			assertEpsilonEquals(createPoint(1.2846153846153845,2.02,3.0384615384615383), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16968,12 +22501,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-BOTTOM-BACK")
 		public final void lbi_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.4540682414698162,0.9081364829396325,4.853018372703412), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16981,12 +22514,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-BOTTOM-BACK")
 		public final void ibi_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7412280701754387,0.7587719298245613,4.614035087719298), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -16994,12 +22527,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-BOTTOM-BACK")
 		public final void rbi_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9232804232804235,0.7883597883597883,4.661375661375661), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17007,12 +22540,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-BOTTOM-BACK")
 		public final void lii_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.21174004192872115,1.807127882599581,4.077568134171908), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17020,12 +22553,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-BOTTOM-BACK")
 		public final void iii_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3571428571428572,2.2,3.6285714285714286), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3571428571428572,2.2,3.6285714285714286), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17033,12 +22566,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-BOTTOM-BACK")
 		public final void rii_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9642857142857144,2.025,3.8285714285714283), result1);
+			assertEpsilonEquals(createPoint(1.9642857142857144,2.025,3.8285714285714283), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17046,12 +22579,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-BOTTOM-BACK")
 		public final void lti_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.249110320284698,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.25978647686832745,2.2491103202846974,4.2313167259786475), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17059,12 +22592,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-BOTTOM-BACK")
 		public final void iti_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.1971153846153846,2.8125,3.8846153846153846), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1971153846153846,2.8125,3.8846153846153846), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17072,12 +22605,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-BOTTOM-BACK")
 		public final void rti_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8749999999999998,2.7874999999999996,3.9), result1);
+			assertEpsilonEquals(createPoint(1.8749999999999998,2.7874999999999996,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17085,12 +22618,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-BOTTOM-BACK")
 		public final void lbb_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,1.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17098,12 +22631,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-BOTTOM-BACK")
 		public final void ibb_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,1.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17111,12 +22644,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-BOTTOM-BACK")
 		public final void rbb_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,1.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17124,12 +22657,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-BOTTOM-BACK")
 		public final void lib_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.23981900452488683,1.7285067873303168,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17137,12 +22670,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-BOTTOM-BACK")
 		public final void iib_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.2142857142857144,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2142857142857144,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17150,12 +22683,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-BOTTOM-BACK")
 		public final void rib_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9285714285714288,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.9285714285714288,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17163,12 +22696,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-BOTTOM-BACK")
 		public final void ltb_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.3323823109843081,1.871611982881598,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17176,12 +22709,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-BOTTOM-BACK")
 		public final void itb_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.2692307692307692,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2692307692307692,3.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17189,12 +22722,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-BOTTOM-BACK")
 		public final void rtb_lbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2692307692307692,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.2692307692307694,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17202,12 +22735,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-BOTTOM-BACK")
 		public final void lbf_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3538461538461537,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.353846153846154,0.8461538461538461,4.230769230769231), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17215,12 +22748,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-BOTTOM-BACK")
 		public final void ibf_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5846153846153848,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5846153846153848,0.8461538461538461,4.230769230769231), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17228,12 +22761,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-BOTTOM-BACK")
 		public final void rbf_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.7384615384615385,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.7384615384615385,0.8461538461538461,4.230769230769231), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17241,12 +22774,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-BOTTOM-BACK")
 		public final void lif_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(0.9300813008130082,1.5861788617886179,2.90650406504065), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(0.9300813008130082,1.5861788617886179,2.90650406504065), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17254,12 +22787,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-BOTTOM-BACK")
 		public final void iif_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5577151335311574,2.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5577151335311574,1.5919881305637982,2.885756676557864), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17267,12 +22800,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-BOTTOM-BACK")
 		public final void rif_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9805637982195845,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.9805637982195847,1.5919881305637982,2.8857566765578637), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17280,12 +22813,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-BOTTOM-BACK")
 		public final void ltf_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.0,3.090128755364804), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9888412017167378,1.9931330472103013,3.0901287553648054), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17293,12 +22826,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-BOTTOM-BACK")
 		public final void itf_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.560769230769231,2.02,3.0384615384615383), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.560769230769231,2.02,3.0384615384615383), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17306,12 +22839,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-BOTTOM-BACK")
 		public final void rtf_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9530769230769232,2.02,3.0384615384615383), result1);
+			assertEpsilonEquals(createPoint(1.9530769230769232,2.02,3.0384615384615383), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17319,12 +22852,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-BOTTOM-BACK")
 		public final void lbi_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3303370786516853,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3303370786516853,0.8314606741573033,4.730337078651685), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17332,12 +22865,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-BOTTOM-BACK")
 		public final void ibi_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5831460674157303,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5831460674157305,0.8314606741573034,4.730337078651686), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17345,12 +22878,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-BOTTOM-BACK")
 		public final void rbi_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.751685393258427,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.751685393258427,0.8314606741573033,4.730337078651685), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17358,12 +22891,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-BOTTOM-BACK")
 		public final void lii_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7050847457627119,1.7830508474576272,4.105084745762712), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17371,12 +22904,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-BOTTOM-BACK")
 		public final void iii_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5142857142857142,2.2,3.6285714285714286), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5142857142857142,2.2,3.6285714285714286), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17384,12 +22917,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-BOTTOM-BACK")
 		public final void rii_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.1673545966228893,1.8825515947467166,3.9913696060037522), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17397,12 +22930,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-BOTTOM-BACK")
 		public final void lti_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.3000000000000003,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7999999999999998,2.3000000000000003,4.199999999999999), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17410,12 +22943,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-BOTTOM-BACK")
 		public final void iti_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5302884615384613,2.8125,3.8846153846153846), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5302884615384613,2.8125,3.8846153846153846), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17423,12 +22956,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-BOTTOM-BACK")
 		public final void rti_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.5121661721068254,4.0), result1);
+			assertEpsilonEquals(createPoint(2.1234421364985163,2.512166172106825,4.069436201780415), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17436,12 +22969,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-BOTTOM-BACK")
 		public final void lbb_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17449,7 +22982,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-BOTTOM-BACK")
 		public final void ibb_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 1, 5,
 					reset(result1), reset(result2));
@@ -17462,12 +22995,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-BOTTOM-BACK")
 		public final void rbb_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 1, 3.81,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6,1.0,3.81), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17475,12 +23008,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-BOTTOM-BACK")
 		public final void lib_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7646017699115044,1.7309734513274337,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17488,12 +23021,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-BOTTOM-BACK")
 		public final void iib_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5285714285714285,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5285714285714287,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17501,12 +23034,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-BOTTOM-BACK")
 		public final void rib_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.1718411552346573,1.8895306859205776,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17514,12 +23047,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-BOTTOM-BACK")
 		public final void ltb_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9888412017167382,1.9931330472103006,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17527,12 +23060,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-BOTTOM-BACK")
 		public final void itb_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5615384615384615,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5615384615384615,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17540,12 +23073,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-BOTTOM-BACK")
 		public final void rtb_ibb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9461538461538461,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.9461538461538463,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17553,12 +23086,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-BOTTOM-BACK")
 		public final void lbf_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.283687943262411,0.8156028368794326,4.078014184397163), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17566,12 +23099,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-BOTTOM-BACK")
 		public final void ibf_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.563380281690141,0.8179848320693391,4.089924160346696), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17579,12 +23112,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-BOTTOM-BACK")
 		public final void rbf_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.751245688003066,0.8374856266768878,4.187428133384438), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17592,12 +23125,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-BOTTOM-BACK")
 		public final void lif_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6160237388724035,2.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6160237388724035,1.5919881305637982,2.8857566765578637), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17605,12 +23138,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-BOTTOM-BACK")
 		public final void iif_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.2355322862129148,1.6078883071553227,2.828970331588133), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17618,12 +23151,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-BOTTOM-BACK")
 		public final void rif_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.67090573012939,1.6024399260628466,2.8484288354898335), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17631,12 +23164,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-BOTTOM-BACK")
 		public final void ltf_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.7015384615384617,2.02,3.0384615384615383), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.7015384615384617,2.02,3.0384615384615383), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17644,12 +23177,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-BOTTOM-BACK")
 		public final void itf_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0754589733982765,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.262270513300862,2.075458973398276,2.9318096665417763), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17657,12 +23190,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-BOTTOM-BACK")
 		public final void rtf_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.061139896373057,3.0), result1);
+			assertEpsilonEquals(createPoint(2.677560781187724,2.061139896373057,2.959346353128737), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17670,12 +23203,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-BOTTOM-BACK")
 		public final void lbi_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.1024561403508772,0.7508771929824561,4.60140350877193), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17683,12 +23216,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-BOTTOM-BACK")
 		public final void ibi_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.3939047619047615,0.6876190476190476,4.500190476190476), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17696,12 +23229,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-BOTTOM-BACK")
 		public final void rbi_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.7309589041095887,0.7698630136986302,4.6317808219178085), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17709,12 +23242,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-BOTTOM-BACK")
 		public final void lii_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.0,3.9485714285714284), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.96,1.92,3.9485714285714284), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17722,12 +23255,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-BOTTOM-BACK")
 		public final void iii_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6857142857142855,2.2,3.628571428571428), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6857142857142855,2.2,3.628571428571428), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17735,12 +23268,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-BOTTOM-BACK")
 		public final void rii_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17748,12 +23281,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-BOTTOM-BACK")
 		public final void lti_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.025,2.6482142857142854,3.9857142857142858), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.025,2.6482142857142854,3.9857142857142858), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17761,12 +23294,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-BOTTOM-BACK")
 		public final void iti_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8937499999999998,2.8125,3.8846153846153846), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8937499999999998,2.8125,3.8846153846153846), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17774,12 +23307,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-BOTTOM-BACK")
 		public final void rti_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.7293430656934308), result1);
+			assertEpsilonEquals(createPoint(2.5617518248175184,3.064817518248175,3.7293430656934308), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17787,12 +23320,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-BOTTOM-BACK")
 		public final void lbb_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.4072398190045248,0.8597285067873303,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17800,12 +23333,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-BOTTOM-BACK")
 		public final void ibb_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.7806691449814127,0.9851301115241637,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17813,12 +23346,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-BOTTOM-BACK")
 		public final void rbb_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.8,1.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17826,12 +23359,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-BOTTOM-BACK")
 		public final void lib_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1.4494117647058822,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(0.96,1.92,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17839,12 +23372,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-BOTTOM-BACK")
 		public final void iib_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8714285714285714,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8714285714285712,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17852,12 +23385,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-BOTTOM-BACK")
 		public final void rib_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,4.0), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17865,12 +23398,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-BOTTOM-BACK")
 		public final void ltb_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.723076923076923,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.7230769230769227,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17878,12 +23411,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-BOTTOM-BACK")
 		public final void itb_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.6,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.,2.6,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17891,12 +23424,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-BOTTOM-BACK")
 		public final void rtb_rbb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 1, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.5617518248175184,3.0648175182481756,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17904,12 +23437,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-INSIDE-BACK")
 		public final void lbf_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.1920792079207922,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.40594059405940597,2.1920792079207922,4.0594059405940595), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17917,12 +23450,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-INSIDE-BACK")
 		public final void ibf_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.0,3.558504221954161), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7882991556091677,1.9215922798552472,3.5585042219541614), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17930,12 +23463,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-INSIDE-BACK")
 		public final void rbf_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0092592592592595,2.0125,3.7268518518518516), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0092592592592595,2.0125,3.7268518518518516), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17943,12 +23476,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-INSIDE-BACK")
 		public final void lif_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.6435643564356437,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.40594059405940597,2.6435643564356437,4.0594059405940595), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17956,12 +23489,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-INSIDE-BACK")
 		public final void iif_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.578846153846154,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9038461538461539,2.578846153846154,2.980769230769231), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17969,12 +23502,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-INSIDE-BACK")
 		public final void rif_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.15,2.6025,3.375), result1);
+			assertEpsilonEquals(createPoint(1.15,2.6025,3.375), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17982,12 +23515,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-INSIDE-BACK")
 		public final void ltf_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.869306930693069,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.40594059405940597,2.869306930693069,4.0594059405940595), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -17995,12 +23528,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-INSIDE-BACK")
 		public final void itf_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(0.90171577769489,3.061544199925401,2.99142111152555), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18008,12 +23541,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-INSIDE-BACK")
 		public final void rtf_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.083333333333333,2.9625000000000004,3.541666666666667), result1);
+			assertEpsilonEquals(createPoint(1.083333333333333,2.9625000000000004,3.541666666666667), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18021,12 +23554,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-INSIDE-BACK")
 		public final void lbi_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.33960396039603963,1.8338613861386142,4.486732673267326), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18034,12 +23567,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-INSIDE-BACK")
 		public final void ibi_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.867741935483871,1.7070967741935483,4.411612903225806), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18047,12 +23580,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-INSIDE-BACK")
 		public final void rbi_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.2086294416243655,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2086294416243655,1.7433502538071066,4.433096446700508), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18060,12 +23593,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-INSIDE-BACK")
 		public final void lii_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.5558718861209964,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.2597864768683274,2.5558718861209964,4.2313167259786475), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18073,12 +23606,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-INSIDE-BACK")
 		public final void iii_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3125,2.45625,3.7), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3125,2.45625,3.7), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18086,12 +23619,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-INSIDE-BACK")
 		public final void rii_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8749999999999998,2.4937500000000004,3.9), result1);
+			assertEpsilonEquals(createPoint(1.8749999999999998,2.4937500000000004,3.9), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18099,12 +23632,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-INSIDE-BACK")
 		public final void lti_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.276243093922652,3.1027624309392268,4.283977900552486), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18112,12 +23645,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-INSIDE-BACK")
 		public final void iti_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0548961424332344,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0548961424332344,3.199406528189911,4.112166172106825), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18125,12 +23658,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-INSIDE-BACK")
 		public final void rti_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6097922848664687,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.6097922848664687,3.199406528189911,4.112166172106825), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18138,12 +23671,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-INSIDE-BACK")
 		public final void lbb_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.7, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,2.7,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18151,12 +23684,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-INSIDE-BACK")
 		public final void ibb_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7882991556091677,1.9215922798552472,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18164,12 +23697,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-INSIDE-BACK")
 		public final void rbb_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0185185185185188,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0185185185185186,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18177,12 +23710,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-INSIDE-BACK")
 		public final void lib_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.7, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,2.7,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18190,12 +23723,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-INSIDE-BACK")
 		public final void iib_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.55, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1, 2.55, 5), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18203,12 +23736,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-INSIDE-BACK")
 		public final void rib_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.475,4.0), result1);
+			assertEpsilonEquals(createPoint(2.0,2.475,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18216,12 +23749,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-INSIDE-BACK")
 		public final void ltb_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.7, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5,2.7,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18229,12 +23762,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-INSIDE-BACK")
 		public final void itb_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9254143646408839,3.0828729281767955,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18242,12 +23775,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-INSIDE-BACK")
 		public final void rtb_lib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.166666666666666,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.1666666666666659,3.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18255,12 +23788,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-INSIDE-BACK")
 		public final void lbf_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.2325925925925927,2.08,3.8518518518518516), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2325925925925927,2.08,3.8518518518518516), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18268,12 +23801,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-INSIDE-BACK")
 		public final void ibf_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5770370370370372,2.08,3.8518518518518516), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5770370370370372,2.08,3.8518518518518516), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18281,12 +23814,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-INSIDE-BACK")
 		public final void rbf_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8066666666666666,2.08,3.8518518518518516), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8066666666666666,2.08,3.8518518518518516), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18294,12 +23827,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-INSIDE-BACK")
 		public final void lif_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.1400000000000001,2.61375,3.5625), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1400000000000001,2.61375,3.5625), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18307,12 +23840,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-INSIDE-BACK")
 		public final void iif_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.57,2.6100000000000003,3.5), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.57,2.6100000000000003,3.5), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18320,12 +23853,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-INSIDE-BACK")
 		public final void rif_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.87,2.6100000000000003,3.5), result1);
+			assertEpsilonEquals(createPoint(1.87,2.6100000000000003,3.5), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18333,12 +23866,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-INSIDE-BACK")
 		public final void ltf_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.1733333333333336,2.94,3.666666666666667), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1733333333333336,2.94,3.666666666666667), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18346,12 +23879,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-INSIDE-BACK")
 		public final void itf_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5733333333333333,2.9400000000000004,3.666666666666667), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5733333333333333,2.9400000000000004,3.666666666666667), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18359,12 +23892,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-INSIDE-BACK")
 		public final void rtf_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8399999999999999,2.9400000000000004,3.666666666666667), result1);
+			assertEpsilonEquals(createPoint(1.8399999999999999,2.9400000000000004,3.666666666666667), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18372,12 +23905,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-INSIDE-BACK")
 		public final void lbi_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0330964467005075,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0330964467005075,1.7433502538071064,4.433096446700508), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18385,12 +23918,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-INSIDE-BACK")
 		public final void ibi_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5645685279187818,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5645685279187818,1.7433502538071064,4.433096446700508), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18398,12 +23931,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-INSIDE-BACK")
 		public final void rbi_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.9188832487309644,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9188832487309646,1.7433502538071064,4.433096446700508), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18411,12 +23944,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-INSIDE-BACK")
 		public final void lii_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.5500000000000003,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.7999999999999998,2.55,4.199999999999999), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18424,12 +23957,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-INSIDE-BACK")
 		public final void iii_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.51875,2.45625,3.7), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.51875,2.45625,3.7), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18437,12 +23970,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-INSIDE-BACK")
 		public final void rii_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.525519287833828,4.0), result1);
+			assertEpsilonEquals(createPoint(2.1234421364985163,2.525519287833828,4.069436201780415), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18450,12 +23983,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-INSIDE-BACK")
 		public final void lti_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8364249578414841,3.1295109612141654,4.236424957841484), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18463,12 +23996,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-INSIDE-BACK")
 		public final void iti_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5445103857566767,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5445103857566767,3.199406528189911,4.112166172106825), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18476,12 +24009,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-INSIDE-BACK")
 		public final void rti_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.0801435406698565,3.1801435406698566,4.146411483253589), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18489,12 +24022,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-INSIDE-BACK")
 		public final void lbb_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.1851851851851851,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1851851851851851,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18502,12 +24035,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-INSIDE-BACK")
 		public final void ibb_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.574074074074074,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.574074074074074,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18515,12 +24048,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-INSIDE-BACK")
 		public final void rbb_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8333333333333335,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8333333333333335,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18528,12 +24061,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-INSIDE-BACK")
 		public final void lib_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.5875, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1,2.5875,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18541,7 +24074,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-INSIDE-BACK")
 		public final void iib_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
@@ -18554,12 +24087,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-INSIDE-BACK")
 		public final void rib_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.566666666666667,4.0), result1);
+			assertEpsilonEquals(createPoint(2.0,2.566666666666667,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18567,12 +24100,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-INSIDE-BACK")
 		public final void ltb_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0666666666666669,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0666666666666673,3.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18580,12 +24113,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-INSIDE-BACK")
 		public final void itb_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5666666666666669,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5666666666666667,3.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18593,12 +24126,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-INSIDE-BACK")
 		public final void rtb_iib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(1.9,3.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18606,12 +24139,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-INSIDE-BACK")
 		public final void lbf_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.6351619299405167), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0356906807666895,1.9629874421678792,3.6351619299405167), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18619,12 +24152,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-INSIDE-BACK")
 		public final void ibf_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.3685968819599093), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.3758351893095764,1.8190423162583516,3.3685968819599097), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18632,12 +24165,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-INSIDE-BACK")
 		public final void rbf_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.0,3.556910569105689), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.7134146341463414,1.9207317073170724,3.5569105691056895), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18645,12 +24178,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-INSIDE-BACK")
 		public final void lif_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8399999999999999,2.597142857142857,3.2857142857142856), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8399999999999999,2.597142857142857,3.2857142857142856), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18658,12 +24191,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-INSIDE-BACK")
 		public final void iif_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.5759085799925066,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.2622705133008614,2.5759085799925066,2.931809666541776), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18671,12 +24204,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-INSIDE-BACK")
 		public final void rif_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.5775607811877244,3.0), result1);
+			assertEpsilonEquals(createPoint(2.677560781187724,2.5775607811877244,2.959346353128737), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18684,12 +24217,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-INSIDE-BACK")
 		public final void ltf_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.9333333333333336,2.9785714285714286,3.4523809523809534), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9333333333333336,2.9785714285714286,3.4523809523809534), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18697,12 +24230,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-INSIDE-BACK")
 		public final void itf_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.2653454545454546,3.0701454545454547,2.943636363636364), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18710,12 +24243,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-INSIDE-BACK")
 		public final void rtf_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.6782625482625484,3.0652123552123554,2.9710424710424714), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18723,12 +24256,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-INSIDE-BACK")
 		public final void lbi_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8079187817258886,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8079187817258888,1.7433502538071073,4.433096446700508), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18736,12 +24269,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-INSIDE-BACK")
 		public final void ibi_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.289688041594454,1.6401213171577127,4.371923743500867), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18749,12 +24282,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-INSIDE-BACK")
 		public final void rbi_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.687424547283702,1.6868209255533202,4.399597585513078), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18762,12 +24295,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-INSIDE-BACK")
 		public final void lii_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.025,2.5098214285714286,3.9857142857142858), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.025,2.5098214285714286,3.9857142857142858), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18775,12 +24308,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-INSIDE-BACK")
 		public final void iii_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.74375,2.45625,3.7), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.74375,2.45625,3.7), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18788,12 +24321,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-INSIDE-BACK")
 		public final void rii_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18801,12 +24334,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-INSIDE-BACK")
 		public final void lti_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.246290801186944,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2462908011869436,3.199406528189911,4.112166172106825), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18814,12 +24347,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-INSIDE-BACK")
 		public final void iti_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0523715415019765,3.2175889328063243,4.079841897233202), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18827,12 +24360,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-INSIDE-BACK")
 		public final void rti_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.617052023121387,3.248843930635838,4.024277456647399), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18840,12 +24373,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-INSIDE-BACK")
 		public final void lbb_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0356906807666886,1.9629874421678786,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18853,12 +24386,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-INSIDE-BACK")
 		public final void ibb_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.3758351893095764,1.8190423162583518,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18866,12 +24399,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-INSIDE-BACK")
 		public final void rbb_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.7134146341463414,1.920731707317073,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18879,12 +24412,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-INSIDE-BACK")
 		public final void lib_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.6142857142857143,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.6142857142857143,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18892,12 +24425,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-INSIDE-BACK")
 		public final void iib_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.5153846153846153,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.5153846153846153,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18905,12 +24438,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-INSIDE-BACK")
 		public final void rib_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,4.0), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18918,12 +24451,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-INSIDE-BACK")
 		public final void ltb_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.9571428571428573,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.9571428571428573,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18931,12 +24464,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-INSIDE-BACK")
 		public final void itb_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.1188000000000002,3.1715999999999998,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18944,12 +24477,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-INSIDE-BACK")
 		public final void rtb_rib(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 2.7, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.63,3.21,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18957,12 +24490,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT LEFT-TOP-BACK")
 		public final void lbf_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.0693069306930694), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.3069306930693069,3.0693069306930694,3.0693069306930694), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18970,12 +24503,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT LEFT-TOP-BACK")
 		public final void ibf_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.980769230769231,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9038461538461539,2.980769230769231,2.980769230769231), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18983,12 +24516,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT LEFT-TOP-BACK")
 		public final void rbf_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.2999999999999998,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2999999999999998,3.0,3.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -18996,12 +24529,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT LEFT-TOP-BACK")
 		public final void lif_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.2664792252421119,3.7856919712589816,2.664792252421119), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19009,12 +24542,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT LEFT-TOP-BACK")
 		public final void iif_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9792429792429791,3.7539682539682544,2.6037851037851043), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19022,12 +24555,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT LEFT-TOP-BACK")
 		public final void rif_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, .5, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.4571788413098237,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.4571788413098237,3.755667506297229,2.607052896725441), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19035,12 +24568,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT LEFT-TOP-BACK")
 		public final void ltf_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.2693862550532892,4.35428151414921,2.6938625505328924), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19048,12 +24581,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT LEFT-TOP-BACK")
 		public final void itf_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9756795422031473,4.334048640915594,2.6216022889842634), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19061,12 +24594,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT LEFT-TOP-BACK")
 		public final void rtf_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, .5, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.4495548961424332,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(1.4495548961424332,4.335311572700297,2.626112759643917), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19074,12 +24607,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE LEFT-TOP-BACK")
 		public final void lbi_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,2.5978647686832734,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.25978647686832734,2.5978647686832734,4.2313167259786475), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19087,12 +24620,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE LEFT-TOP-BACK")
 		public final void ibi_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.102322206095791,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1023222060957911,1.9883889695210448,4.036284470246734), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19100,12 +24633,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE LEFT-TOP-BACK")
 		public final void rbi_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.704644412191582,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.704644412191582,1.9883889695210448,4.036284470246734), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19113,12 +24646,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE LEFT-TOP-BACK")
 		public final void lii_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.87018544935806), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.14693295292439376,3.1640513552068477,3.87018544935806), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19126,12 +24659,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE LEFT-TOP-BACK")
 		public final void iii_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.3846153846153846,2.7,3.5846153846153843), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.3846153846153846,2.7,3.5846153846153843), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19139,12 +24672,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE LEFT-TOP-BACK")
 		public final void rii_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.7806691449814127), result1);
+			assertEpsilonEquals(createPoint(2.024163568773234,3.0185873605947955,3.7806691449814127), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19152,12 +24685,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE LEFT-TOP-BACK")
 		public final void lti_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3.4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.0,3.6,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19165,7 +24698,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE LEFT-TOP-BACK")
 		public final void iti_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
@@ -19178,12 +24711,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE LEFT-TOP-BACK")
 		public final void rti_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, .5, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.442953020134228), result1);
+			assertEpsilonEquals(createPoint(2.446308724832215,3.6375838926174495,3.442953020134228), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19191,12 +24724,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK LEFT-TOP-BACK")
 		public final void lbb_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.3069306930693069,3.0693069306930694,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19204,7 +24737,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK LEFT-TOP-BACK")
 		public final void ibb_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, .5, 5, 5,
 					reset(result1), reset(result2));
@@ -19217,12 +24750,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK LEFT-TOP-BACK")
 		public final void rbb_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.7, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.7,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19230,12 +24763,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK LEFT-TOP-BACK")
 		public final void lib_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.14693295292439373,3.164051355206847,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19243,12 +24776,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK LEFT-TOP-BACK")
 		public final void iib_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.2692307692307692,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.2692307692307692,3.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19256,12 +24789,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK LEFT-TOP-BACK")
 		public final void rib_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, .5, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.024163568773234,3.0185873605947955,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19269,12 +24802,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK LEFT-TOP-BACK")
 		public final void ltb_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.0,3.6,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19282,12 +24815,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK LEFT-TOP-BACK")
 		public final void itb_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, .5, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5,3.6,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19295,12 +24828,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK LEFT-TOP-BACK")
 		public final void rtb_ltb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, .5, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.446308724832215,3.63758389261745,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19308,12 +24841,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT INSIDE-TOP-BACK")
 		public final void lbf_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.0116110304789547), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9637155297532657,3.011611030478955,3.011611030478955), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19321,12 +24854,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT INSIDE-TOP-BACK")
 		public final void ibf_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.56, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.56,3.0,3.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19334,12 +24867,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT INSIDE-TOP-BACK")
 		public final void rbf_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.9600000000000002,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.9600000000000002,3.0,3.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19347,12 +24880,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT INSIDE-TOP-BACK")
 		public final void lif_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8466200466200466,3.7757575757575754,2.6456876456876453), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19360,12 +24893,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT INSIDE-TOP-BACK")
 		public final void iif_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.552141057934509,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.552141057934509,3.75566750629723,2.6070528967254414), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19373,12 +24906,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT INSIDE-TOP-BACK")
 		public final void rif_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.0299662265888854,3.7578753454098868,2.6112987411728588), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19386,12 +24919,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT INSIDE-TOP-BACK")
 		public final void ltf_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8542005420054202,4.3474254742547425,2.669376693766938), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19399,12 +24932,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT INSIDE-TOP-BACK")
 		public final void itf_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5525222551928786,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5525222551928783,4.335311572700297,2.626112759643917), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19412,12 +24945,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT INSIDE-TOP-BACK")
 		public final void rtf_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 1.6, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.026503420957868,4.336550234065538,2.6305365502340656), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19425,12 +24958,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE INSIDE-TOP-BACK")
 		public final void lbi_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 2.5, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8,2.5,4.2), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19438,12 +24971,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE INSIDE-TOP-BACK")
 		public final void ibi_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.539767779390421,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.539767779390421,1.9883889695210453,4.036284470246734), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19451,12 +24984,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE INSIDE-TOP-BACK")
 		public final void rbi_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.091988130563799,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.123442136498516,2.0919881305638,4.069436201780416), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19464,12 +24997,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE INSIDE-TOP-BACK")
 		public final void lii_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(0.5548821548821549,3.3016835016835016,3.9548821548821547), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19477,12 +25010,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE INSIDE-TOP-BACK")
 		public final void iii_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5115384615384615,2.7,3.5846153846153843), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5115384615384615,2.7,3.5846153846153843), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19490,12 +25023,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE INSIDE-TOP-BACK")
 		public final void rii_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.2361303060217175,3.1622902270483713,3.869101678183613), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19503,12 +25036,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE INSIDE-TOP-BACK")
 		public final void lti_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.669026548672566), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.26902654867256637,3.8353982300884955,3.669026548672566), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19516,7 +25049,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE INSIDE-TOP-BACK")
 		public final void iti_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
@@ -19529,12 +25062,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE INSIDE-TOP-BACK")
 		public final void rti_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 1.6, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,3.6,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19542,12 +25075,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK INSIDE-TOP-BACK")
 		public final void lbb_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.9637155297532655,3.0116110304789547,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19555,12 +25088,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK INSIDE-TOP-BACK")
 		public final void ibb_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.54, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.54,2.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19568,12 +25101,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK INSIDE-TOP-BACK")
 		public final void rbb_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.777777777777782,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.7777777777777777,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19581,12 +25114,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK INSIDE-TOP-BACK")
 		public final void lib_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5424892703862663,3.2815450643776827,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19594,12 +25127,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK INSIDE-TOP-BACK")
 		public final void iib_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.523076923076923,3.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.523076923076923,3.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19607,12 +25140,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK INSIDE-TOP-BACK")
 		public final void rib_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.2610303830911493,3.090356671070013,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19620,12 +25153,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK INSIDE-TOP-BACK")
 		public final void ltb_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.26902654867256637,3.8353982300884955,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19633,12 +25166,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK INSIDE-TOP-BACK")
 		public final void itb_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5,3.6,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19646,12 +25179,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK INSIDE-TOP-BACK")
 		public final void rtb_itb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 1.6, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.5,3.6,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19659,12 +25192,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-FRONT RIGHT-TOP-BACK")
 		public final void lbf_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.6799999999999997,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.6799999999999997,3.0,3.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19672,12 +25205,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-FRONT RIGHT-TOP-BACK")
 		public final void ibf_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.9318096665417763,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.2622705133008614,2.931809666541776,2.931809666541776), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19685,12 +25218,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-FRONT RIGHT-TOP-BACK")
 		public final void rbf_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2.0,2.959346353128736,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.677560781187724,2.959346353128736,2.959346353128736), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19698,12 +25231,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-FRONT RIGHT-TOP-BACK")
 		public final void lif_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.4599496221662467,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.4599496221662465,3.755667506297229,2.60705289672544), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19711,12 +25244,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-FRONT RIGHT-TOP-BACK")
 		public final void iif_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.1688490284005977,3.7376980568011957,2.5724962630792225), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19724,12 +25257,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-FRONT RIGHT-TOP-BACK")
 		public final void rif_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.654568288854003,3.739591836734694,2.576138147566719), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19737,12 +25270,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-FRONT RIGHT-TOP-BACK")
 		public final void ltf_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.4706231454005936,3.0,3.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.4706231454005936,4.335311572700297,2.626112759643917), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19750,12 +25283,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-FRONT RIGHT-TOP-BACK")
 		public final void itf_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 3, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.1720069808027924,4.32369982547993,2.5846422338568935), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19763,12 +25296,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-FRONT RIGHT-TOP-BACK")
 		public final void rtf_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 0, 2.8, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.0), result1);
+			assertEpsilonEquals(createPoint(2.655378927911275,4.325101663585952,2.5896487985212566), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19776,12 +25309,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-INSIDE RIGHT-TOP-BACK")
 		public final void lbi_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.1134978229317851,2.0,4.0), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.1134978229317853,1.9883889695210453,4.036284470246734), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19789,12 +25322,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-INSIDE RIGHT-TOP-BACK")
 		public final void ibi_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.016,1.984615384615385,4.0350769230769234), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19802,12 +25335,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-INSIDE RIGHT-TOP-BACK")
 		public final void rbi_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.617287522603978,1.9547920433996382,4.025533453887884), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19815,12 +25348,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-INSIDE RIGHT-TOP-BACK")
 		public final void lii_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.8778082191780823), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8361643835616439,3.1764383561643834,3.8778082191780823), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19828,12 +25361,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-INSIDE RIGHT-TOP-BACK")
 		public final void iii_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.65,2.7,3.5846153846153843), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.65,2.7,3.5846153846153843), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19841,12 +25374,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-INSIDE RIGHT-TOP-BACK")
 		public final void rii_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19854,12 +25387,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-INSIDE RIGHT-TOP-BACK")
 		public final void lti_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.0,3.0,3.7199999999999998), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5599999999999999,3.88,3.7199999999999998), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19867,7 +25400,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-INSIDE RIGHT-TOP-BACK")
 		public final void iti_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
@@ -19880,12 +25413,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-INSIDE RIGHT-TOP-BACK")
 		public final void rti_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 3.4, 2.8, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,3.4), result1);
+			assertEpsilonEquals(createPoint(2.5,3.6,3.4), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19893,12 +25426,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-BOTTOM-BACK RIGHT-TOP-BACK")
 		public final void lbb_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 0, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.12, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.12,2,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19906,12 +25439,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-BOTTOM-BACK RIGHT-TOP-BACK")
 		public final void ibb_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 0, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0187336080929184,1.995129261895841,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19919,12 +25452,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-BOTTOM-BACK RIGHT-TOP-BACK")
 		public final void rbb_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 0, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(2, 2, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.6177760063770426,1.9629334396173772,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19932,12 +25465,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-INSIDE-BACK RIGHT-TOP-BACK")
 		public final void lib_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 2.4, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.8361643835616439,3.1764383561643834,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19945,12 +25478,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-INSIDE-BACK RIGHT-TOP-BACK")
 		public final void iib_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 2.4, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.8, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.8,3.0,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19958,12 +25491,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-INSIDE-BACK RIGHT-TOP-BACK")
 		public final void rib_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 2.4, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,2.4,4.0), result1);
+			assertEpsilonEquals(createPoint(2.5,2.4,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19971,12 +25504,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("LEFT-TOP-BACK RIGHT-TOP-BACK")
 		public final void ltb_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					0, 3.6, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(0.5599999999999999,3.88,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19984,12 +25517,12 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("INSIDE-TOP-BACK RIGHT-TOP-BACK")
 		public final void itb_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					1.5, 3.6, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
 			assertEpsilonEquals(createPoint(1.5, 3, 4), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(1.5,3.6,5.0), result2);
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -19997,14 +25530,31 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("RIGHT-TOP-BACK RIGHT-TOP-BACK")
 		public final void rtb_rtb(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			AlignedBox3afp.findsClosestPointAlignedBoxSegment(
+			AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 					1, 2, 3, 2, 3, 4,
 					2.5, 3.6, 5, 2.8, 5, 5,
 					reset(result1), reset(result2));
-			assertEpsilonEquals(createPoint(1, 2, 3), result1);
-			assertEpsilonEquals(createPoint(.5, 1, 1), result2);
+			assertEpsilonEquals(createPoint(2.0,3.0,4.0), result1);
+			assertEpsilonEquals(createPoint(2.5,3.6,5.0), result2);
 		}
 
+	}
+
+	@DisplayName("getType")
+	@Nested
+	public class GetType {
+
+		@DisplayName("(Class) #1")
+		@Test
+		public final void class_1() {
+			assertSame(Shape3DType.ALIGNED_BOX, getS().getType(Shape3DType.class));
+		}
+	
+		@DisplayName("() #1")
+		@Test
+		public final void empty_1() {
+			assertSame(Shape3DType.ALIGNED_BOX, getS().getType());
+		}
 	}
 
 }

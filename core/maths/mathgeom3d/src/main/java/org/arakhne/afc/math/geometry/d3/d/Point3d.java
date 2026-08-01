@@ -21,13 +21,12 @@
 package org.arakhne.afc.math.geometry.d3.d;
 
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.base.d3.ImmutablePoint3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.base.d3.UnmodifiablePoint3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
-import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Point with 3 double precision floating-point numbers.
@@ -269,63 +268,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Pure
 	@Override
-	public UnmodifiablePoint3D<Point3d, Vector3d, Quaternion4d> toUnmodifiable() {
-		return new UnmodifiablePoint3D<>() {
-
-			private static final long serialVersionUID = 3305735799920201356L;
-
-			@Override
-			public GeomFactory3D<Vector3d, Point3d, Quaternion4d> getGeomFactory() {
-				return Point3d.this.getGeomFactory();
-			}
-
-			@Override
-			@SuppressWarnings("checkstyle:superclone")
-			public Point3d clone() {
-				return Point3d.this.getGeomFactory().newPoint(Point3d.this.getX(), Point3d.this.getY(), Point3d.this.getZ());
-			}
-
-			@Override
-			public double getX() {
-				return Point3d.this.getX();
-			}
-
-			@Override
-			public int ix() {
-				return Point3d.this.ix();
-			}
-
-			@Override
-			public double getY() {
-				return Point3d.this.getY();
-			}
-
-			@Override
-			public int iy() {
-				return Point3d.this.iy();
-			}
-
-			@Override
-			public double getZ() {
-				return Point3d.this.getZ();
-			}
-
-			@Override
-			public int iz() {
-				return Point3d.this.iz();
-			}
-
-			@Override
-			public String toString() {
-				return Point3d.this.toString();
-			}
-
-			@Override
-			public void toJson(JsonBuffer buffer) {
-				Point3d.this.toJson(buffer);
-			}
-
-		};
+	public UnmodifiablePoint3D<?, ?, ?> toUnmodifiable() {
+		return new ImmutablePoint3D(getX(), getY(), getZ());
 	}
 
 }

@@ -20,17 +20,13 @@
 
 package org.arakhne.afc.math.geometry.d3.tests.d;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.Shape3D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractPoint3DTestCase;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
+import org.arakhne.afc.math.geometry.d3.d.Sphere3d;
 import org.arakhne.afc.math.geometry.d3.d.Vector3d;
-import org.arakhne.afc.math.geometry.d3.tests.AbstractPoint3DTestCase;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 @DisplayName("Point3d")
@@ -57,32 +53,8 @@ public class Point3dTest extends AbstractPoint3DTestCase<Point3d, Vector3d, Quat
 	}
 
 	@Override
-	public void operator_andShape3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		//TODO
-//		Shape3D shape = new Sphere3d(5, 8, 0, 5);
-//		assertFalse(createPoint(0,0, 0).operator_and(shape));
-//		assertFalse(createPoint(11,10, 0).operator_and(shape));
-//		assertFalse(createPoint(11,50, 0).operator_and(shape));
-//		assertFalse(createPoint(9,12, 0).operator_and(shape));
-//		assertTrue(createPoint(9,11, 0).operator_and(shape));
-//		assertTrue(createPoint(8,12, 0).operator_and(shape));
-//		assertTrue(createPoint(3,7, 0).operator_and(shape));
-//		assertFalse(createPoint(10,11, 0).operator_and(shape));
-//		assertTrue(createPoint(9,10, 0).operator_and(shape));
-		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	public void operator_upToShape3D(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		//TODO
-//		Shape3D shape = new Sphere3d(5, 8, 0, 5);
-//		assertEpsilonEquals(3.74643, createPoint(.5,.5, 0).operator_upTo(shape));
-//		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4, 0).operator_upTo(shape));
-//		assertEpsilonEquals(1.6483, createPoint(-1.2,5.6, 0).operator_upTo(shape));
-//		assertEpsilonEquals(0, createPoint(7.6,5.6, 0).operator_upTo(shape));
-		throw new UnsupportedOperationException();
+	public Shape3D createSphere(double x, double y, double z, double radius) {
+		return new Sphere3d(x, y, z, radius);
 	}
 
 }

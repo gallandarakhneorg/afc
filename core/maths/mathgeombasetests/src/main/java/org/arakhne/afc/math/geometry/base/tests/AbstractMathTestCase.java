@@ -20,11 +20,12 @@
 
 package org.arakhne.afc.math.geometry.base.tests;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import org.arakhne.afc.math.geometry.base.d1.Tuple1D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
@@ -51,7 +52,98 @@ import org.opentest4j.TestAbortedException;
  */
 @SuppressWarnings("all")
 public abstract class AbstractMathTestCase extends AbstractTestCase {
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Tuple1D<?, ?, ?, ?> expected, Tuple1D<?, ?, ?, ?> actual) {
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 18.0
+	 */
+	public void assertNotEpsilonEquals(Tuple1D<?, ?, ?, ?> expected, Tuple1D<?, ?, ?, ?> actual) {
+		assertNotEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Tuple1D<?, ?, ?, ?> expected, Tuple1D<?, ?, ?, ?> actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Tuple1D<?, ?, ?, ?> expected, Tuple1D<?, ?, ?, ?> actual, Supplier<String> message) {
+		if (expected == null) {
+			assertNull(actual);
+		} else {
+			assertNotNull(actual);
+			if (!isEpsilonEquals(expected.getX(), actual.getX())) {
+				failCompare(formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+						expected.toString(), actual.toString());
+			}
+			if (!isEpsilonEquals(expected.getY(), actual.getY())) {
+				failCompare(formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+						expected.toString(), actual.toString());
+			}
+		}
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertNotEpsilonEquals(Tuple1D<?, ?, ?, ?> expected, Tuple1D<?, ?, ?, ?> actual, String message) {
+		assertNotEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertNotEpsilonEquals(Tuple1D<?, ?, ?, ?> expected, Tuple1D<?, ?, ?, ?> actual, Supplier<String> message) {
+		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
+			failCompare(formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+					Objects.toString(expected), Objects.toString(actual));
+		}
+		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
+			failCompare(formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+					Objects.toString(expected), Objects.toString(actual));
+		}
+	}
 	
+	//--------------------------------------------------------------------------------
+
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 * 
@@ -93,11 +185,18 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @since 17.0
 	 */
 	public void assertEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual, Supplier<String> message) {
-		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
-			fail(formatFailMessage(message, "not same x value", expected, actual)); //$NON-NLS-1$
-		}
-		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
-			fail(formatFailMessage(message, "not same y value", expected, actual));  //$NON-NLS-1$
+		if (expected == null) {
+			assertNull(actual);
+		} else {
+			assertNotNull(actual);
+			if (!isEpsilonEquals(expected.getX(), actual.getX())) {
+				failCompare(formatFailMessage(message, "not same x value", expected, actual),  //$NON-NLS-1$
+						expected.toString(), actual.toString());
+			}
+			if (!isEpsilonEquals(expected.getY(), actual.getY())) {
+				failCompare(formatFailMessage(message, "not same y value", expected, actual),  //$NON-NLS-1$
+						expected.toString(), actual.toString());
+			}
 		}
 	}
 

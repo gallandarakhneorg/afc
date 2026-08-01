@@ -27,6 +27,10 @@ import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
 import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
+import org.arakhne.afc.math.geometry.d3.ai.MultiShape3ai;
+import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
+import org.arakhne.afc.math.geometry.d3.ai.Segment3ai;
+import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Type of 3D shape.
@@ -67,8 +71,7 @@ public enum Shape3DType {
 		@SuppressWarnings("rawtypes")
 		@Override
 		public Class<? extends Shape3D> getPreferredDiscreteShapeType() {
-			return null;
-			//TODO: return Sphere3ai.class;
+			return Sphere3ai.class;
 		}
 	},
 
@@ -84,8 +87,7 @@ public enum Shape3DType {
 		@SuppressWarnings("rawtypes")
 		@Override
 		public Class<? extends Shape3D> getPreferredDiscreteShapeType() {
-			return null;
-			//TODO: return Segment3ai.class;
+			return Segment3ai.class;
 		}
 	},
 
@@ -101,8 +103,7 @@ public enum Shape3DType {
 		@SuppressWarnings("rawtypes")
 		@Override
 		public Class<? extends Shape3D> getPreferredDiscreteShapeType() {
-			return null;
-			//TODO: return Path3ai.class;
+			return Path3ai.class;
 		}
 	},
 
@@ -118,8 +119,7 @@ public enum Shape3DType {
 		@SuppressWarnings("rawtypes")
 		@Override
 		public Class<? extends Shape3D> getPreferredDiscreteShapeType() {
-			return null;
-			//TODO: return MultiShape3ai.class;
+			return MultiShape3ai.class;
 		}
 	};
 

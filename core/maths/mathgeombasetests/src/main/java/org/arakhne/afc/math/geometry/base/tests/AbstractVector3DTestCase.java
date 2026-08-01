@@ -57,7 +57,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 	/** Assert that the result of the power operator is equal to an expected value.
 	 *
 	 * @param expected the expected value.
-	 * @param actual the poer computation result.
+	 * @param actual the peer computation result.
 	 */
 	public final void assertEpsilonEquals(double expected, PowerResult<?> actual) {
 		if (actual == null) {
@@ -74,7 +74,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 	 *
 	 * @param expectedX x coordinate of the expected value.
 	 * @param expectedY y coordinate of the expected value.
-	 * @param actual the poer computation result.
+	 * @param actual the peer computation result.
 	 */
 	public final void assertEpsilonEquals(double expectedX, double expectedY, PowerResult<?> actual) {
 		if (actual == null) {

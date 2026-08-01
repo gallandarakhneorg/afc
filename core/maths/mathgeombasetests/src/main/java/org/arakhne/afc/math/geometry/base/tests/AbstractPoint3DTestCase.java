@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Shape3D;
 import org.arakhne.afc.math.geometry.base.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,6 +54,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 	public abstract V createVector(double x, double y, double z);
 	
+	public abstract Shape3D createSphere(double x, double y, double z, double radius);
+
 	@DisplayName("isCollinearPoints")
 	@Nested
 	public class IsCollinearPoints {
@@ -509,16 +512,22 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 
 	@DisplayName("clone")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void testClonePoint(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Point3D origin = createPoint(23, 45, 0);
-		Tuple3D clone = origin.clone();
-		assertNotNull(clone);
-		assertNotSame(origin, clone);
-		assertEpsilonEquals(origin.getX(), clone.getX());
-		assertEpsilonEquals(origin.getY(), clone.getY());
+	@Nested
+	public class CloneTest {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Point3D origin = createPoint(23, 45, 0);
+			Tuple3D clone = origin.clone();
+			assertNotNull(clone);
+			assertNotSame(origin, clone);
+			assertEpsilonEquals(origin.getX(), clone.getX());
+			assertEpsilonEquals(origin.getY(), clone.getY());
+		}
+
 	}
 
 	@DisplayName("p + Vector3D")
@@ -1047,7 +1056,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.add(point, vector3);
-			assertFpPointEquals(3, -1, 0, point);
+			assertFpPointEquals(2, -3, 0, point);
 		}
 
 		@DisplayName("#4")
@@ -1123,7 +1132,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.add(vector3, point);
-			assertFpPointEquals(3, -1, 0, point);
+			assertFpPointEquals(2, -3, 0, point);
 		}
 
 		@DisplayName("#4")
@@ -1199,7 +1208,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.add(vector3);
-			assertFpPointEquals(3, -1, 0, point);
+			assertFpPointEquals(2, -3, 0, point);
 		}
 
 		@DisplayName("#4")
@@ -1208,7 +1217,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.add(vector1);
-			assertFpPointEquals(3, -1, 0, point);
+			assertFpPointEquals(1, 2, 0, point);
 		}
 
 		@DisplayName("#5")
@@ -1217,7 +1226,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.add(vector2);
-			assertFpPointEquals(4, 1, 0, point);
+			assertFpPointEquals(2, 4, 0, point);
 		}
 
 		@DisplayName("#6")
@@ -1226,7 +1235,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.add(vector3);
-			assertFpPointEquals(5, -4, 0, point);
+			assertFpPointEquals(2, -3, 0, point);
 		}
 
 	}
@@ -1278,7 +1287,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(2.5, vector3, point);
-			assertFpPointEquals(1, -15.5, 0, point);
+			assertFpPointEquals(3.5, -10.5, 0., point);
 		}
 
 		@DisplayName("With double coords #4")
@@ -1326,6 +1335,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void int_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assumeTrue(isIntCoordinates());
 			point.scaleAdd(-2.5, vector2, point);
 			assertIntPointEquals(-1, -3, 0, point);
 		}
@@ -1335,8 +1345,9 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void int_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assumeTrue(isIntCoordinates());
 			point.scaleAdd(2.5, vector3, point);
-			assertIntPointEquals(2, -15, 0, point);
+			assertIntPointEquals(4, -11, 0, point);
 		}
 
 		@DisplayName("With int coords #4")
@@ -1344,6 +1355,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void int_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assumeTrue(isIntCoordinates());
 			point.scaleAdd(-2.5, vector1, point2);
 			assertIntPointEquals(3, 0, 0, point);
 		}
@@ -1353,6 +1365,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void int_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assumeTrue(isIntCoordinates());
 			point.scaleAdd(2.5, vector2, point2);
 			assertIntPointEquals(6, 5, 0, point);
 		}
@@ -1362,6 +1375,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void int_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assumeTrue(isIntCoordinates());
 			point.scaleAdd(-2.5, vector3, point2);
 			assertIntPointEquals(1, 13, 0, point);
 		}
@@ -1391,7 +1405,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_1(CoordinateSystem3D cs) {
+		public final void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, vector1, point);
 			assertFpPointEquals(1, 2, 0, point);
@@ -1400,7 +1414,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_2(CoordinateSystem3D cs) {
+		public final void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, vector2, point);
 			assertFpPointEquals(-1, -2, 0, point);
@@ -1409,16 +1423,16 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_3(CoordinateSystem3D cs) {
+		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, vector3, point);
-			assertFpPointEquals(1, -12, 0, point);
+			assertFpPointEquals(3, -8, 0, point);
 		}
 
 		@DisplayName("#4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_4(CoordinateSystem3D cs) {
+		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, vector1, point2);
 			assertFpPointEquals(3, 0, 0, point);
@@ -1427,7 +1441,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_5(CoordinateSystem3D cs) {
+		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, vector2, point2);
 			assertFpPointEquals(5, 4, 0, point);
@@ -1436,7 +1450,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_6(CoordinateSystem3D cs) {
+		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, vector3, point2);
 			assertFpPointEquals(1, 10, 0, point);
@@ -1467,7 +1481,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_1(CoordinateSystem3D cs) {
+		public final void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, point, vector1);
 			assertFpPointEquals(2, 4, 0, point);
@@ -1476,25 +1490,25 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_2(CoordinateSystem3D cs) {
+		public final void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, point, vector2);
-			assertFpPointEquals(-3, -6, 0, point);
+			assertFpPointEquals(-1, -2, 0, point);
 		}
 
 		@DisplayName("#3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_3(CoordinateSystem3D cs) {
+		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, point, vector3);
-			assertFpPointEquals(-5, -17, 0, point);
+			assertFpPointEquals(3, -1, 0, point);
 		}
 
 		@DisplayName("#4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_4(CoordinateSystem3D cs) {
+		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, point2, vector1);
 			assertFpPointEquals(-6, 0, 0, point);
@@ -1503,7 +1517,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_5(CoordinateSystem3D cs) {
+		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, point2, vector2);
 			assertFpPointEquals(7, 2, 0, point);
@@ -1512,7 +1526,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void int_6(CoordinateSystem3D cs) {
+		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, point2, vector3);
 			assertFpPointEquals(-5, -5, 0, point);
@@ -1557,7 +1571,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(-2.5, point, vector2);
-			assertFpPointEquals(-5.25, -10.5, 0, point);
+			assertFpPointEquals(-1.5, -3, 0, point);
 		}
 
 		@DisplayName("With double coords #3")
@@ -1597,7 +1611,12 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(2.5, point, vector3);
-			assertFpPointEquals(-12.125, -31.25, 0, point);
+			assertFpPointEquals(3.5, 0, 0, point);
+//			this.point = createPoint(1, 2, 0);
+//			this.point2 = createPoint(3, 0, 0);
+//			this.vector1 = createVector(0, 0, 0);
+//			this.vector2 = createVector(1, 2, 0);
+//			this.vector3 = createVector(1, -5, 0);
 		}
 
 		@DisplayName("With int coords #1")
@@ -1683,7 +1702,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void double_1(CoordinateSystem3D cs) {
+		public final void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, vector1);
 			assertFpPointEquals(2, 4, 0, point);
@@ -1692,46 +1711,46 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void double_2(CoordinateSystem3D cs) {
+		public final void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, vector2);
-			assertFpPointEquals(-3, -6, 0, point);
+			assertFpPointEquals(-1, -2, 0, point);
 		}
 
 		@DisplayName("#3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void double_3(CoordinateSystem3D cs) {
+		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, vector3);
-			assertFpPointEquals(-5, -17, 0, point);
+			assertFpPointEquals(3, -1, 0, point);
 		}
 
 		@DisplayName("#4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void double_4(CoordinateSystem3D cs) {
+		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, vector1);
-			assertFpPointEquals(10, 34, 0, point);
+			assertFpPointEquals(-2, -4, 0, point);
 		}
 
 		@DisplayName("#5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void double_5(CoordinateSystem3D cs) {
+		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(2, vector2);
-			assertFpPointEquals(21, 70, 0, point);
+			assertFpPointEquals(3, 6, 0, point);
 		}
 
 		@DisplayName("#6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void double_6(CoordinateSystem3D cs) {
+		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.scaleAdd(-2, vector3);
-			assertFpPointEquals(-41, -145, 0, point);
+			assertFpPointEquals(-1, -9, 0, point);
 		}
 
 	}
@@ -1771,7 +1790,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(-2.5, vector2);
-			assertFpPointEquals(-5.25, -10.5, 0, point);
+			assertFpPointEquals(-1.5, -3.0, 0.0, point);
 		}
 
 		@DisplayName("With double coords #3")
@@ -1781,7 +1800,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(2.5, vector3);
-			assertFpPointEquals(-12.125, -31.25, 0, point);
+			assertFpPointEquals(3.5, 0, 0, point);
 		}
 
 		@DisplayName("With double coords #4")
@@ -1791,7 +1810,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(-2.5, vector1);
-			assertFpPointEquals(30.312, 78.125, 0, point);
+			assertFpPointEquals(-2.5, -5, 0, point);
 		}
 
 		@DisplayName("With double coords #5")
@@ -1801,7 +1820,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(2.5, vector2);
-			assertFpPointEquals(76.781, 197.312, 0, point);
+			assertFpPointEquals(3.5, 7, 0, point);
 		}
 
 		@DisplayName("With double coords #6")
@@ -1811,7 +1830,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(-2.5, vector3);
-			assertFpPointEquals(-190.95, -498.28, 0, point);
+			assertFpPointEquals(-1.5, -10, 0, point);
 		}
 
 		@DisplayName("With int coords #1")
@@ -1920,7 +1939,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.sub(point, vector3);
-			assertFpPointEquals(-1, 5, 0, point);
+			assertFpPointEquals(0, 7, 0, point);
 		}
 
 		@DisplayName("#4")
@@ -1929,7 +1948,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.sub(point2, vector1);
-			assertFpPointEquals(3, 0, 0, point);
+			assertFpPointEquals(-1, 2, -3, point);
 		}
 
 		@DisplayName("#5")
@@ -1938,7 +1957,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.sub(point2, vector2);
-			assertFpPointEquals(2, -2, 0, point);
+			assertFpPointEquals(-2, 0, -3, point);
 		}
 
 		@DisplayName("#6")
@@ -1947,7 +1966,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.sub(point2, vector3);
-			assertFpPointEquals(2, 5, 0, point);
+			assertFpPointEquals(-2, 7, -3, point);
 		}
 	}
 
@@ -1993,7 +2012,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.sub(vector3);
-			assertFpPointEquals(-1, 5, 0, point);
+			assertFpPointEquals(0, 7, 0, point);
 		}
 
 		@DisplayName("#4")
@@ -2002,7 +2021,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.sub(vector1);
-			assertFpPointEquals(-1, 5, 0, point);
+			assertFpPointEquals(1, 2, 0, point);
 		}
 
 		@DisplayName("#5")
@@ -2011,7 +2030,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.sub(vector2);
-			assertFpPointEquals(-2, 3, 0, point);
+			assertFpPointEquals(0, 0, 0, point);
 		}
 
 		@DisplayName("#6")
@@ -2020,7 +2039,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.sub(vector3);
-			assertFpPointEquals(-3, 8, 0, point);
+			assertFpPointEquals(0, 7, 0, point);
 		}
 
 	}
@@ -2067,7 +2086,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.operator_add(vector3);
-			assertFpPointEquals(3, -1, 0, point);
+			assertFpPointEquals(2, -3, 0, point);
 		}
 
 		@DisplayName("#4")
@@ -2076,7 +2095,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.operator_add(vector1);
-			assertFpPointEquals(3, -1, 0, point);
+			assertFpPointEquals(1, 2, 0, point);
 		}
 
 		@DisplayName("#5")
@@ -2085,7 +2104,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.operator_add(vector2);
-			assertFpPointEquals(4, 1, 0, point);
+			assertFpPointEquals(2, 4, 0, point);
 		}
 
 		@DisplayName("#6")
@@ -2094,7 +2113,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.operator_add(vector3);
-			assertFpPointEquals(5, -4, 0, point);
+			assertFpPointEquals(2, -3, 0, point);
 		}
 
 	}
@@ -2141,7 +2160,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.operator_remove(vector3);
-			assertFpPointEquals(-1, 5, 0, point);
+			assertFpPointEquals(0, 7, 0, point);
 		}
 
 		@DisplayName("#4")
@@ -2150,7 +2169,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.operator_remove(vector1);
-			assertFpPointEquals(-1, 5, 0, point);
+			assertFpPointEquals(1, 2, 0, point);
 		}
 
 		@DisplayName("#5")
@@ -2159,7 +2178,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.operator_remove(vector2);
-			assertFpPointEquals(-2, 3, 0, point);
+			assertFpPointEquals(0, 0, 0, point);
 		}
 
 		@DisplayName("#6")
@@ -2168,7 +2187,137 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			point.operator_remove(vector3);
-			assertFpPointEquals(-3, 8, 0, point);
+			assertFpPointEquals(0, 7, 0, point);
+		}
+
+	}
+
+	@DisplayName("p && Shape3D")
+	@Nested
+	public class OperatorAndShape3D {
+
+		private Shape3D shape;
+
+		@BeforeEach
+		public void setUp() {
+			shape = createSphere(5, 8, 0, 5);
+		}
+		
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createPoint(0,0, 0).operator_and(shape));
+		}
+		
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createPoint(11,10, 0).operator_and(shape));
+		}
+		
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createPoint(11,50, 0).operator_and(shape));
+		}
+		
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createPoint(9,12, 0).operator_and(shape));
+		}
+		
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(createPoint(9,11, 0).operator_and(shape));
+		}
+		
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(createPoint(8,12, 0).operator_and(shape));
+		}
+		
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(createPoint(3,7, 0).operator_and(shape));
+		}
+		
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(createPoint(10,11, 0).operator_and(shape));
+		}
+		
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(createPoint(9,10, 0).operator_and(shape));
+		}
+
+	}
+	
+	@DisplayName("p .. Shape3D")
+	@Nested
+	public class OperatorUpToShape3D {
+
+		private Shape3D shape;
+
+		@BeforeEach
+		public void setUp() {
+			shape = createSphere(5, 8, 0, 5);
+		}
+		
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(3.74643, createPoint(.5,.5, 0).operator_upTo(shape));
+		}
+		
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4, 0).operator_upTo(shape));
+		}
+		
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1.6483, createPoint(-1.2,5.6, 0).operator_upTo(shape));
+		}
+		
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, createPoint(7.6,5.6, 0).operator_upTo(shape));
 		}
 
 	}

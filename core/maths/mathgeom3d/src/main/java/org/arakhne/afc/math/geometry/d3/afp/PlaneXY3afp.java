@@ -286,7 +286,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 	 * @param sx2 x of segment end
 	 * @param sy2 y of segment end
 	 * @param sz2 z of segment end
-	 * @param resultRectangle is the closest point on the rectangle. It cannot be {@code null}.
+	 * @param resultRectangle is the closest point on the rectangle. It can be {@code null}.
 	 * @param resultSegment is the closest point on the segment. It can be {@code null}.
 	 * @return the squared distance between the plane and the segment.
 	 */
@@ -299,7 +299,10 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 			double sx1, double sy1, double sz1,
 			double sx2, double sy2, double sz2,
 			Point3D<?, ?, ?> resultRectangle, Point3D<?, ?, ?> resultSegment) {
-		assert resultRectangle != null : AssertMessages.notNullParameter(11);
+		assert resultRectangle != null || resultSegment != null
+				: AssertMessages.constraintViolation("at least on result argument must be not null"); //$NON-NLS-1$
+		assert resultRectangle != resultSegment
+				: AssertMessages.constraintViolation("resultRectangle != resultSegment"); //$NON-NLS-1$
 
 		// Step 1 – Fast path: does the segment pierce the plane z = z at a point inside the rectangle?
 
@@ -314,7 +317,9 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 				// Is the intersection XY-point inside the rectangle?
 				if (ix >= rx && ix <= rmaxx && iy >= ry && iy <= rmaxy) {
 					// Distance is 0; both closest points are the intersection.
-					resultRectangle.set(ix, iy, z);
+					if (resultRectangle != null) {
+						resultRectangle.set(ix, iy, z);
+					}
 					if (resultSegment != null) {
 						resultSegment.set(ix, iy, z);
 					}
@@ -396,7 +401,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 		var cry = MathUtil.clamp(sy1, ry, rmaxy);
 		// Closest point on segment to (crx, cry, z)
 		var ratio = MathUtil.clamp(
-				Segment3afp.calculatesProjectedPointOnLine(
+				Segment3afp.findsProjectedPointOnLine(
 						crx, cry, z,
 						sx1, sy1, sz1, sx2, sy2, sz2),
 				0., 1.);
@@ -427,7 +432,7 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 		cry = MathUtil.clamp(sy2, ry, rmaxy);
 		// Closest point on segment to (crx, cry, z)
 		ratio = MathUtil.clamp(
-				Segment3afp.calculatesProjectedPointOnLine(
+				Segment3afp.findsProjectedPointOnLine(
 						crx, cry, z,
 						sx1, sy1, sz1, sx2, sy2, sz2),
 				0., 1.);
@@ -450,7 +455,9 @@ public interface PlaneXY3afp<PT extends PlaneXY3afp<?, S, P, V, Q>,
 			bestRectangle.set(crx, cry, z);
 		}
 
-		resultRectangle.set(bestRectangle);
+		if (resultRectangle != null) {
+			resultRectangle.set(bestRectangle);
+		}
 		if (resultSegment != null) {
 			resultSegment.set(bestSegment);
 		}

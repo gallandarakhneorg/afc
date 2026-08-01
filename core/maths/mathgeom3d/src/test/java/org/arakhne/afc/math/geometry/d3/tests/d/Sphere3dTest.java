@@ -37,22 +37,4 @@ public class Sphere3dTest extends AbstractSphere3dTestCase<Sphere3d, AlignedBox3
 		return new BaseTestShapeFactory3d();
 	}
 
-	@Override
-	@Test
-	public void getClosestPointToShape3D(CoordinateSystem3D cs) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Test
-	public void getClosestPointToMultiShape3afp(CoordinateSystem3D cs) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Test
-	public void intersectsMultiShape3afp(CoordinateSystem3D cs) {
-		throw new UnsupportedOperationException();
-	}
-
 }
