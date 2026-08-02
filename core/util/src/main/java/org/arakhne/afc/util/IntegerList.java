@@ -500,7 +500,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			return false;
 		}
 
-		if (this.values.length == 2) {
+		if (this.values.length <= 2) {
 			this.values = null;
 			this.size = 0;
 		} else {

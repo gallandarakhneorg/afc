@@ -32,6 +32,8 @@ import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -40,6 +42,7 @@ import org.junit.jupiter.api.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("CollectionSizedIterator")
 @SuppressWarnings("all")
 public class CollectionSizedIteratorTest {
 
@@ -47,138 +50,371 @@ public class CollectionSizedIteratorTest {
 	private Collection<String> collection;
 	private CollectionSizedIterator<String> iterator;
 	
-	/**
-	 * @throws Exception
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.collection = new ArrayList<>();
-		this.collection.add(this.s1 = "s1");  //$NON-NLS-1$
-		this.collection.add(this.s2 = "s2");  //$NON-NLS-1$
-		this.collection.add(this.s3 = "s3");  //$NON-NLS-1$
-		this.collection.add(this.s4 = "s4");  //$NON-NLS-1$
-		this.collection.add(this.s5 = "s5");  //$NON-NLS-1$
-		this.iterator = new CollectionSizedIterator<>(this.collection);
+		collection = new ArrayList<>();
+		collection.add(s1 = "s1");  //$NON-NLS-1$
+		collection.add(s2 = "s2");  //$NON-NLS-1$
+		collection.add(s3 = "s3");  //$NON-NLS-1$
+		collection.add(s4 = "s4");  //$NON-NLS-1$
+		collection.add(s5 = "s5");  //$NON-NLS-1$
+		iterator = new CollectionSizedIterator<>(collection);
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.iterator = null;
-		this.collection = null;
-		this.s1 = this.s2 = this.s3 = this.s4 = this.s5 = null;
+		iterator = null;
+		collection = null;
+		s1 = s2 = s3 = s4 = s5 = null;
 	}
 
-	/**
-	 */
-	@Test
-	public void hasNext() {
-		assertTrue(this.iterator.hasNext());
-		this.iterator.next();
-		assertTrue(this.iterator.hasNext());
-		this.iterator.next();
-		assertTrue(this.iterator.hasNext());
-		this.iterator.next();
-		assertTrue(this.iterator.hasNext());
-		this.iterator.next();
-		assertTrue(this.iterator.hasNext());
-		this.iterator.next();
-		assertFalse(this.iterator.hasNext());
-	}
+	@DisplayName("hasNext")
+	@Nested
+	public class HasNext {
 
-	/**
-	 */
-	@Test
-	public void next() {
-		assertSame(this.s1, this.iterator.next());
-		assertSame(this.s2, this.iterator.next());
-		assertSame(this.s3, this.iterator.next());
-		assertSame(this.s4, this.iterator.next());
-		assertSame(this.s5, this.iterator.next());
-		try {
-			this.iterator.next();
-			fail("expecting NoSuchElementException");  //$NON-NLS-1$
+		@DisplayName("#1")
+		@Test
+		public void hasNext_1() {
+			assertTrue(iterator.hasNext());
 		}
-		catch(NoSuchElementException exception) {
-			// Expected exception
+
+		@DisplayName("#2")
+		@Test
+		public void hasNext_2() {
+			iterator.next();
+			assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void hasNext_3() {
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void hasNext_4() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void hasNext_5() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void hasNext_6() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertFalse(iterator.hasNext());
 		}
 	}
 
-	/**
-	 */
-	@Test
-	public void remove() {
-		assertSame(this.s1, this.iterator.next());
-		assertSame(this.s2, this.iterator.next());
-		this.iterator.remove();
-		assertSame(this.s3, this.iterator.next());
-		assertSame(this.s4, this.iterator.next());
-		this.iterator.remove();
-		assertSame(this.s5, this.iterator.next());
-		
-		assertEquals(3, this.collection.size());
-		assertTrue(this.collection.contains(this.s1));
-		assertFalse(this.collection.contains(this.s2));
-		assertTrue(this.collection.contains(this.s3));
-		assertFalse(this.collection.contains(this.s4));
-		assertTrue(this.collection.contains(this.s5));
+	@DisplayName("next")
+	@Nested
+	public class Next {
+
+		@DisplayName("#1")
+		@Test
+		public void next_1() {
+			assertSame(s1, iterator.next());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void next_2() {
+			iterator.next();
+			assertSame(s2, iterator.next());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void next_3() {
+			iterator.next();
+			iterator.next();
+			assertSame(s3, iterator.next());
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void next_4() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertSame(s4, iterator.next());
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void next_5() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertSame(s5, iterator.next());
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void next_6() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			try {
+				iterator.next();
+				fail("expecting NoSuchElementException");  //$NON-NLS-1$
+			}
+			catch(NoSuchElementException exception) {
+				// Expected exception
+			}
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void index() {
-		assertEquals(-1, this.iterator.index());
-		assertSame(this.s1, this.iterator.next());
-		assertEquals(0, this.iterator.index());
-		assertSame(this.s2, this.iterator.next());
-		assertEquals(1, this.iterator.index());
-		assertSame(this.s3, this.iterator.next());
-		assertEquals(2, this.iterator.index());
-		assertSame(this.s4, this.iterator.next());
-		assertEquals(3, this.iterator.index());
-		assertSame(this.s5, this.iterator.next());
-		assertEquals(4, this.iterator.index());
+	@DisplayName("remove")
+	@Nested
+	public class Remove {
+
+		@DisplayName("#1")
+		@Test
+		public void remove_1() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			iterator.remove();
+			
+			assertEquals(4, collection.size());
+			assertTrue(collection.contains(s1));
+			assertFalse(collection.contains(s2));
+			assertTrue(collection.contains(s3));
+			assertTrue(collection.contains(s4));
+			assertTrue(collection.contains(s5));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void remove_2() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			iterator.remove();
+			assertSame(s3, iterator.next());
+			assertSame(s4, iterator.next());
+			iterator.remove();
+			
+			assertEquals(3, collection.size());
+			assertTrue(collection.contains(s1));
+			assertFalse(collection.contains(s2));
+			assertTrue(collection.contains(s3));
+			assertFalse(collection.contains(s4));
+			assertTrue(collection.contains(s5));
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void rest() {
-		assertEquals(5, this.iterator.rest());
-		assertSame(this.s1, this.iterator.next());
-		assertEquals(4, this.iterator.rest());
-		assertSame(this.s2, this.iterator.next());
-		assertEquals(3, this.iterator.rest());
-		assertSame(this.s3, this.iterator.next());
-		assertEquals(2, this.iterator.rest());
-		assertSame(this.s4, this.iterator.next());
-		assertEquals(1, this.iterator.rest());
-		assertSame(this.s5, this.iterator.next());
-		assertEquals(0, this.iterator.rest());
+	@DisplayName("index")
+	@Nested
+	public class Index {
+
+		@DisplayName("#1")
+		@Test
+		public void index_1() {
+			assertEquals(-1, iterator.index());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void index_2() {
+			assertSame(s1, iterator.next());
+			assertEquals(0, iterator.index());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void index_3() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertEquals(1, iterator.index());
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void index_4() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertSame(s3, iterator.next());
+			assertEquals(2, iterator.index());
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void index_5() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertSame(s3, iterator.next());
+			assertSame(s4, iterator.next());
+			assertEquals(3, iterator.index());
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void index_6() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertSame(s3, iterator.next());
+			assertSame(s4, iterator.next());
+			assertSame(s5, iterator.next());
+			assertEquals(4, iterator.index());
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void totalSize() {
-		assertEquals(5, this.iterator.totalSize());
-		assertSame(this.s1, this.iterator.next());
-		assertEquals(5, this.iterator.totalSize());
-		assertSame(this.s2, this.iterator.next());
-		assertEquals(5, this.iterator.totalSize());
-		this.iterator.remove();
-		assertEquals(4, this.iterator.totalSize());
-		assertSame(this.s3, this.iterator.next());
-		assertEquals(4, this.iterator.totalSize());
-		assertSame(this.s4, this.iterator.next());
-		assertEquals(4, this.iterator.totalSize());
-		this.iterator.remove();
-		assertEquals(3, this.iterator.totalSize());
-		assertSame(this.s5, this.iterator.next());
-		assertEquals(3, this.iterator.totalSize());
+	@DisplayName("rest")
+	@Nested
+	public class Rest {
+
+		@DisplayName("#1")
+		@Test
+		public void rest_1() {
+			assertEquals(5, iterator.rest());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void rest_2() {
+			assertSame(s1, iterator.next());
+			assertEquals(4, iterator.rest());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void rest_3() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertEquals(3, iterator.rest());
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void rest_4() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertSame(s3, iterator.next());
+			assertEquals(2, iterator.rest());
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void rest_5() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertSame(s3, iterator.next());
+			assertSame(s4, iterator.next());
+			assertEquals(1, iterator.rest());
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void rest_6() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertSame(s3, iterator.next());
+			assertSame(s4, iterator.next());
+			assertSame(s5, iterator.next());
+			assertEquals(0, iterator.rest());
+		}
+	}
+
+	@DisplayName("totalSize")
+	@Nested
+	public class TotalSize {
+
+		@DisplayName("#1")
+		@Test
+		public void totalSize_1() {
+			assertEquals(5, iterator.totalSize());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void totalSize_2() {
+			assertSame(s1, iterator.next());
+			assertEquals(5, iterator.totalSize());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void totalSize_3() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			assertEquals(5, iterator.totalSize());
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void totalSize_4() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			iterator.remove();
+			assertEquals(4, iterator.totalSize());
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void totalSize_5() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			iterator.remove();
+			assertSame(s3, iterator.next());
+			assertEquals(4, iterator.totalSize());
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void totalSize_6() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			iterator.remove();
+			assertSame(s3, iterator.next());
+			assertSame(s4, iterator.next());
+			assertEquals(4, iterator.totalSize());
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void totalSize_7() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			iterator.remove();
+			assertSame(s3, iterator.next());
+			assertSame(s4, iterator.next());
+			iterator.remove();
+			assertEquals(3, iterator.totalSize());
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void totalSize_8() {
+			assertSame(s1, iterator.next());
+			assertSame(s2, iterator.next());
+			iterator.remove();
+			assertSame(s3, iterator.next());
+			assertSame(s4, iterator.next());
+			iterator.remove();
+			assertSame(s5, iterator.next());
+			assertEquals(3, iterator.totalSize());
+		}
 	}
 
 }

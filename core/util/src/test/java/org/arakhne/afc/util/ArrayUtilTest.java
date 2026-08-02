@@ -22,59 +22,84 @@ package org.arakhne.afc.util;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("ArrayUtil")
 @SuppressWarnings("all")
 public class ArrayUtilTest {
 
-	@Test
-	public void shuffleObjectArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "shuffle", Object[].class); //$NON-NLS-1$
+	@DisplayName("shuffle")
+	@Nested
+	public class Shuffle {
+
+		@DisplayName("(Object[])")
+		@Test
+		public void shuffleObjectArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "shuffle", Object[].class); //$NON-NLS-1$
+		}
+	
+		@DisplayName("(boolean[])")
+		@Test
+		public void shuffleBooleanArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "shuffle", boolean[].class); //$NON-NLS-1$
+		}
+	
+		@DisplayName("(byte[])")
+		@Test
+		public void shuffleByteArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "shuffle", byte[].class); //$NON-NLS-1$
+		}
+	
+		@DisplayName("(char[])")
+		@Test
+		public void shuffleCharArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "shuffle", char[].class); //$NON-NLS-1$
+		}
+	
+		@DisplayName("(int[])")
+		@Test
+		public void shuffleIntArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "shuffle", int[].class); //$NON-NLS-1$
+		}
+	
+		@DisplayName("(long[])")
+		@Test
+		public void shuffleLongArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "shuffle", long[].class); //$NON-NLS-1$
+		}
+	
+		@DisplayName("(float[])")
+		@Test
+		public void shuffleFloatArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "shuffle", float[].class); //$NON-NLS-1$
+		}
+	
+		@DisplayName("(double[])")
+		@Test
+		public void shuffleDoubleArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "shuffle", double[].class); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	public void shuffleBooleanArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "shuffle", boolean[].class); //$NON-NLS-1$
+	@DisplayName("sizedIterator")
+	@Nested
+	public class SizedIterator {
+
+		@Test
+		public void sizedIteratorObjectArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "sizedIterator", Object[].class); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	public void shuffleByteArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "shuffle", byte[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void shuffleCharArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "shuffle", char[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void shuffleIntArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "shuffle", int[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void shuffleLongArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "shuffle", long[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void shuffleFloatArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "shuffle", float[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void shuffleDoubleArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "shuffle", double[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void sizedIteratorObjectArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "sizedIterator", Object[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void iteratorObjectArray() {
-		assertInlineParameterUsage(ArrayUtil.class, "iterator", Object[].class); //$NON-NLS-1$
+	@DisplayName("iterator")
+	@Nested
+	public class Iterator {
+		@Test
+		public void iteratorObjectArray() {
+			assertInlineParameterUsage(ArrayUtil.class, "iterator", Object[].class); //$NON-NLS-1$
+		}
 	}
 
 }

@@ -30,6 +30,8 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -39,6 +41,7 @@ import org.junit.jupiter.api.Test;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("InformedArray")
 @SuppressWarnings("all")
 public class InformedArrayListTest {
 
@@ -46,287 +49,505 @@ public class InformedArrayListTest {
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.list = new InformedArrayList<>();
+		list = new InformedArrayList<>();
 	}
 	
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.list = null;
+		list = null;
 	}
 
-	@Test
-	public void extractClassFromCollection() {
-		for(int i=0; i<10; ++i) {
-			this.list.add(Integer.valueOf(i));
+	@DisplayName("extractClassFrom")
+	@Nested
+	public class ExtractClassFrom {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			for(int i=0; i<10; ++i) {
+				list.add(Integer.valueOf(i));
+			}
+			assertEquals(Integer.class, InformedArrayList.extractClassFrom(list));
 		}
-		assertEquals(Integer.class, InformedArrayList.extractClassFrom(this.list));
-		
-		for(int i=0; i<10; ++i) {
-			this.list.add(Long.valueOf(i));
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			for(int i=0; i<10; ++i) {
+				list.add(Integer.valueOf(i));
+			}
+			for(int i=0; i<10; ++i) {
+				list.add(Long.valueOf(i));
+			}
+			assertEquals(Number.class, InformedArrayList.extractClassFrom(list));
 		}
-		assertEquals(Number.class, InformedArrayList.extractClassFrom(this.list));
-		
-		for(int i=0; i<10; ++i) {
-			this.list.add(Integer.toHexString(i));
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			for(int i=0; i<10; ++i) {
+				list.add(Integer.valueOf(i));
+			}
+			for(int i=0; i<10; ++i) {
+				list.add(Long.valueOf(i));
+			}
+			for(int i=0; i<10; ++i) {
+				list.add(Integer.toHexString(i));
+			}
+			assertEquals(Object.class, InformedArrayList.extractClassFrom(list));
 		}
-		assertEquals(Object.class, InformedArrayList.extractClassFrom(this.list));
 	}
 	
-	@Test
-	public void updateComponentTypeE() {
-		assertNull(this.list.getElementType());
-		this.list.updateComponentType(Integer.valueOf(1));
-		assertEquals(Integer.class, this.list.getElementType());
-		this.list.updateComponentType(Float.valueOf(1f));
-		assertEquals(Number.class, this.list.getElementType());
-		this.list.updateComponentType(toString());
-		assertEquals(Object.class, this.list.getElementType());
+	@DisplayName("updateComponentType")
+	@Nested
+	public class UpdateComponentType {
+
+		@DisplayName("(Object) #1")
+		@Test
+		public void obj_1() {
+			assertNull(list.getElementType());
+		}
+
+		@DisplayName("(Object) #2")
+		@Test
+		public void obj_2() {
+			list.updateComponentType(Integer.valueOf(1));
+			assertEquals(Integer.class, list.getElementType());
+		}
+
+		@DisplayName("(Object) #3")
+		@Test
+		public void obj_3() {
+			list.updateComponentType(Integer.valueOf(1));
+			list.updateComponentType(Float.valueOf(1f));
+			assertEquals(Number.class, list.getElementType());
+		}
+
+		@DisplayName("(Object) #4")
+		@Test
+		public void obj_4() {
+			list.updateComponentType(Integer.valueOf(1));
+			list.updateComponentType(Float.valueOf(1f));
+			list.updateComponentType(toString());
+			assertEquals(Object.class, list.getElementType());
+		}
+
+		@DisplayName("(Collection) #1")
+		@Test
+		public void updateComponentTypeCollection_1() {
+			assertNull(list.getElementType());
+		}
+
+		@DisplayName("(Collection) #2")
+		@Test
+		public void updateComponentTypeCollection_2() {
+			list.updateComponentType(Arrays.asList(
+					Integer.valueOf(1),
+					Float.valueOf(1f)));
+			assertEquals(Number.class, list.getElementType());
+		}
+
+		@DisplayName("(Collection) #3")
+		@Test
+		public void updateComponentTypeCollection_3() {
+			list.updateComponentType(Arrays.asList(Integer.valueOf(1), Float.valueOf(1f)));
+			list.updateComponentType(Collections.singleton(toString()));
+			assertEquals(Object.class, list.getElementType());
+		}
 	}
 
-	@Test
-	public void updateComponentTypeCollection() {
-		assertNull(this.list.getElementType());
-		this.list.updateComponentType(Arrays.asList(
-				Integer.valueOf(1),
-				Float.valueOf(1f)));
-		assertEquals(Number.class, this.list.getElementType());
-		this.list.updateComponentType(Collections.singleton(toString()));
-		assertEquals(Object.class, this.list.getElementType());
-	}
+	@DisplayName("getElementType")
+	@Nested
+	public class GetElementType {
 
-	@Test
-	public void getElementType() {
-		assertNull(this.list.getElementType());
-	}
-	
-	@Test
-	public void addE() {
-		assertNull(this.list.getElementType());
-		
-		assertTrue(this.list.add(Integer.valueOf(1)));
-		assertEquals(Integer.class, this.list.getElementType());
-		assertEquals(1, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-
-		assertTrue(this.list.add(Float.valueOf(2f)));
-		assertEquals(Number.class, this.list.getElementType());
-		assertEquals(2, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-		assertEquals(Float.valueOf(2f), this.list.get(1));
-
-		assertTrue(this.list.add(toString()));
-		assertEquals(Object.class, this.list.getElementType());
-		assertEquals(3, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-		assertEquals(Float.valueOf(2f), this.list.get(1));
-		assertEquals(toString(), this.list.get(2));
-	}
-
-	@Test
-	public void addIntE() {
-		assertNull(this.list.getElementType());
-		
-		this.list.add(0, Integer.valueOf(1));
-		assertEquals(Integer.class, this.list.getElementType());
-		assertEquals(1, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-
-		this.list.add(0, Float.valueOf(2f));
-		assertEquals(Number.class, this.list.getElementType());
-		assertEquals(2, this.list.size());
-		assertEquals(Float.valueOf(2f), this.list.get(0));
-		assertEquals(Integer.valueOf(1), this.list.get(1));
-
-		this.list.add(1, toString());
-		assertEquals(Object.class, this.list.getElementType());
-		assertEquals(3, this.list.size());
-		assertEquals(Float.valueOf(2f), this.list.get(0));
-		assertEquals(toString(), this.list.get(1));
-		assertEquals(Integer.valueOf(1), this.list.get(2));
-	}
-
-	@Test
-	public void addAllCollection() {
-		assertNull(this.list.getElementType());
-
-		assertTrue(this.list.addAll(Arrays.asList(
-				Integer.valueOf(1), Float.valueOf(2f))));
-		assertEquals(Number.class, this.list.getElementType());
-		assertEquals(2, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-		assertEquals(Float.valueOf(2f), this.list.get(1));
-
-		assertTrue(this.list.addAll(Collections.singleton(toString())));
-		assertEquals(Object.class, this.list.getElementType());
-		assertEquals(3, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-		assertEquals(Float.valueOf(2f), this.list.get(1));
-		assertEquals(toString(), this.list.get(2));
-	}
-
-	@Test
-	public void addAllIntCollection() {
-		assertNull(this.list.getElementType());
-
-		assertTrue(this.list.addAll(0, Arrays.asList(
-				Integer.valueOf(1), Float.valueOf(2f))));
-		assertEquals(Number.class, this.list.getElementType());
-		assertEquals(2, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-		assertEquals(Float.valueOf(2f), this.list.get(1));
-
-		assertTrue(this.list.addAll(1, Collections.singleton(toString())));
-		assertEquals(Object.class, this.list.getElementType());
-		assertEquals(3, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-		assertEquals(toString(), this.list.get(1));
-		assertEquals(Float.valueOf(2f), this.list.get(2));
-	}
-
-	@Test
-	public void clear() {
-		this.list.add(Integer.valueOf(1));
-		this.list.add(Float.valueOf(2f));
-		assertEquals(Number.class, this.list.getElementType());
-		
-		this.list.clear();
-		
-		assertNull(this.list.getElementType());
-		assertEquals(0, this.list.size());
-	}
-
-	@Test
-	public void setIntE() {
-		this.list.add(Integer.valueOf(1));
-		this.list.add(Float.valueOf(2f));
-		assertEquals(Number.class, this.list.getElementType());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-		assertEquals(Float.valueOf(2f), this.list.get(1));
-		
-		this.list.set(1, Double.valueOf(3.));
-		
-		assertEquals(Number.class, this.list.getElementType());
-		assertEquals(2, this.list.size());
-		assertEquals(Integer.valueOf(1), this.list.get(0));
-		assertEquals(Double.valueOf(3.), this.list.get(1));
-
-		this.list.set(0, toString());
-		
-		assertEquals(Object.class, this.list.getElementType());
-		assertEquals(2, this.list.size());
-		assertEquals(toString(), this.list.get(0));
-		assertEquals(Double.valueOf(3.), this.list.get(1));
-	}
-
-	@Test
-	public void removeInt_noUpdate() {
-		assertFalse(this.list.isTypeRecomputedAfterRemoval());
-		this.list.add(Integer.valueOf(1));
-		this.list.add(Float.valueOf(2f));
-		this.list.add(toString());
-		assertEquals(Object.class, this.list.getElementType());
-
-		assertEquals(toString(), this.list.remove(2));
-		assertEquals(Object.class, this.list.getElementType());
-
-		assertEquals(Integer.valueOf(1), this.list.remove(0));
-		assertEquals(Object.class, this.list.getElementType());
-
-		assertEquals(Float.valueOf(2f), this.list.remove(0));
-		assertNull(this.list.getElementType());
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertNull(list.getElementType());
+		}
 	}
 	
-	@Test
-	public void removeInt_update() {
-		this.list.setTypeRecomputedAfterRemoval(true);
-		assertTrue(this.list.isTypeRecomputedAfterRemoval());
-		this.list.add(Integer.valueOf(1));
-		this.list.add(Float.valueOf(2f));
-		this.list.add(toString());
-		assertEquals(Object.class, this.list.getElementType());
+	@DisplayName("add")
+	@Nested
+	public class Add {
 
-		assertEquals(toString(), this.list.remove(2));
-		assertEquals(Number.class, this.list.getElementType());
+		@DisplayName("(Object) #1")
+		@Test
+		public void obj_1() {
+			assertTrue(list.add(Integer.valueOf(1)));
+			assertEquals(Integer.class, list.getElementType());
+			assertEquals(1, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+		}
 
-		assertEquals(Integer.valueOf(1), this.list.remove(0));
-		assertEquals(Float.class, this.list.getElementType());
+		@DisplayName("(Object) #2")
+		@Test
+		public void obj_2() {
+			list.add(Integer.valueOf(1));
+			assertTrue(list.add(Float.valueOf(2f)));
+			assertEquals(Number.class, list.getElementType());
+			assertEquals(2, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+			assertEquals(Float.valueOf(2f), list.get(1));
+		}
 
-		assertEquals(Float.valueOf(2f), this.list.remove(0));
-		assertNull(this.list.getElementType());
+		@DisplayName("(Object) #3")
+		@Test
+		public void obj_3() {
+			list.add(Integer.valueOf(1));
+			list.add(Float.valueOf(2f));
+			assertTrue(list.add(toString()));
+			assertEquals(Object.class, list.getElementType());
+			assertEquals(3, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+			assertEquals(Float.valueOf(2f), list.get(1));
+			assertEquals(toString(), list.get(2));
+		}
+
+		@DisplayName("(int,Object) #1")
+		@Test
+		public void addIntE_1() {
+			list.add(0, Integer.valueOf(1));
+			assertEquals(Integer.class, list.getElementType());
+			assertEquals(1, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+		}
+
+		@DisplayName("(int,Object) #2")
+		@Test
+		public void addIntE_2() {
+			list.add(0, Integer.valueOf(1));
+			list.add(0, Float.valueOf(2f));
+			assertEquals(Number.class, list.getElementType());
+			assertEquals(2, list.size());
+			assertEquals(Float.valueOf(2f), list.get(0));
+			assertEquals(Integer.valueOf(1), list.get(1));
+		}
+
+		@DisplayName("(int,Object) #3")
+		@Test
+		public void addIntE_3() {
+			list.add(0, Integer.valueOf(1));
+			list.add(0, Float.valueOf(2f));
+			list.add(1, toString());
+			assertEquals(Object.class, list.getElementType());
+			assertEquals(3, list.size());
+			assertEquals(Float.valueOf(2f), list.get(0));
+			assertEquals(toString(), list.get(1));
+			assertEquals(Integer.valueOf(1), list.get(2));
+		}
+	}
+
+	@DisplayName("addAll")
+	@Nested
+	public class AddAll {
+
+		@DisplayName("(Collection) #1")
+		@Test
+		public void collection_1() {
+			assertTrue(list.addAll(Arrays.asList(
+					Integer.valueOf(1), Float.valueOf(2f))));
+			assertEquals(Number.class, list.getElementType());
+			assertEquals(2, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+			assertEquals(Float.valueOf(2f), list.get(1));
+		}
+
+		@DisplayName("(Collection) #2")
+		@Test
+		public void collection_2() {
+			list.addAll(Arrays.asList(Integer.valueOf(1), Float.valueOf(2f)));
+			assertTrue(list.addAll(Collections.singleton(toString())));
+			assertEquals(Object.class, list.getElementType());
+			assertEquals(3, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+			assertEquals(Float.valueOf(2f), list.get(1));
+			assertEquals(toString(), list.get(2));
+		}
+
+		@DisplayName("(int,Collection) #1")
+		@Test
+		public void addAllIntCollection_1() {
+			assertTrue(list.addAll(0, Arrays.asList(
+					Integer.valueOf(1), Float.valueOf(2f))));
+			assertEquals(Number.class, list.getElementType());
+			assertEquals(2, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+			assertEquals(Float.valueOf(2f), list.get(1));
+		}
+
+		@DisplayName("(int,Collection) #2")
+		@Test
+		public void addAllIntCollection_2() {
+			list.addAll(0, Arrays.asList(Integer.valueOf(1), Float.valueOf(2f)));
+			assertTrue(list.addAll(1, Collections.singleton(toString())));
+			assertEquals(Object.class, list.getElementType());
+			assertEquals(3, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+			assertEquals(toString(), list.get(1));
+			assertEquals(Float.valueOf(2f), list.get(2));
+		}
+	}
+
+	@DisplayName("clear")
+	@Nested
+	public class Clear {
+
+		@BeforeEach
+		public void setUp() {
+			list.add(Integer.valueOf(1));
+			list.add(Float.valueOf(2f));
+			assertEquals(Number.class, list.getElementType());
+		}
+		
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			list.clear();
+			assertNull(list.getElementType());
+			assertEquals(0, list.size());
+		}
+	}
+
+	@DisplayName("set")
+	@Nested
+	public class Set {
+
+		@BeforeEach
+		public void setUp() {
+			list.add(Integer.valueOf(1));
+			list.add(Float.valueOf(2f));
+			assertEquals(Number.class, list.getElementType());
+			assertEquals(Integer.valueOf(1), list.get(0));
+			assertEquals(Float.valueOf(2f), list.get(1));
+		}
+		
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			list.set(1, Double.valueOf(3.));
+			assertEquals(Number.class, list.getElementType());
+			assertEquals(2, list.size());
+			assertEquals(Integer.valueOf(1), list.get(0));
+			assertEquals(Double.valueOf(3.), list.get(1));
+		}	
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			list.set(1, Double.valueOf(3.));
+			list.set(0, toString());
+			assertEquals(Object.class, list.getElementType());
+			assertEquals(2, list.size());
+			assertEquals(toString(), list.get(0));
+			assertEquals(Double.valueOf(3.), list.get(1));
+		}
+	}
+
+	@DisplayName("remove")
+	@Nested
+	public class Remove {
+
+		private void prepare1() {
+			assertFalse(list.isTypeRecomputedAfterRemoval());
+			list.add(Integer.valueOf(1));
+			list.add(Float.valueOf(2f));
+			list.add(toString());
+			assertEquals(Object.class, list.getElementType());
+		}
+		
+		@DisplayName("(int) #1")
+		@Test
+		public void removeInt_noUpdate_1() {
+			prepare1();
+			assertEquals(toString(), list.remove(2));
+			assertEquals(Object.class, list.getElementType());
+		}
+		
+		@DisplayName("(int) #2")
+		@Test
+		public void removeInt_noUpdate_2() {
+			prepare1();
+			list.remove(2);
+			assertEquals(Integer.valueOf(1), list.remove(0));
+			assertEquals(Object.class, list.getElementType());
+		}
+		
+		@DisplayName("(int) #3")
+		@Test
+		public void removeInt_noUpdate_3() {
+			prepare1();
+			list.remove(2);
+			list.remove(0);
+			assertEquals(Float.valueOf(2f), list.remove(0));
+			assertNull(list.getElementType());
+		}
+
+		private void prepare2() {
+			list.setTypeRecomputedAfterRemoval(true);
+			assertTrue(list.isTypeRecomputedAfterRemoval());
+			list.add(Integer.valueOf(1));
+			list.add(Float.valueOf(2f));
+			list.add(toString());
+			assertEquals(Object.class, list.getElementType());
+		}
+
+		@DisplayName("(int) #4")
+		@Test
+		public void removeInt_update_4() {
+			prepare2();
+			assertEquals(toString(), list.remove(2));
+			assertEquals(Number.class, list.getElementType());
+		}
+
+		@DisplayName("(int) #5")
+		@Test
+		public void removeInt_update_5() {
+			prepare2();
+			list.remove(2);
+			assertEquals(Integer.valueOf(1), list.remove(0));
+			assertEquals(Float.class, list.getElementType());
+		}
+
+		@DisplayName("(int) #6")
+		@Test
+		public void removeInt_update_6() {
+			prepare2();
+			list.remove(2);
+			list.remove(0);
+			assertEquals(Float.valueOf(2f), list.remove(0));
+			assertNull(list.getElementType());
+		}
+		
+		@DisplayName("(Object) #1")
+		@Test
+		public void removeObject_noUpdate_1() {
+			prepare1();
+			assertTrue(list.remove(toString()));
+			assertEquals(Object.class, list.getElementType());
+		}
+		
+		@DisplayName("(Object) #2")
+		@Test
+		public void removeObject_noUpdate_2() {
+			prepare1();
+			list.remove(toString());
+			assertTrue(list.remove(Integer.valueOf(1)));
+			assertEquals(Object.class, list.getElementType());
+		}
+		
+		@DisplayName("(Object) #3")
+		@Test
+		public void removeObject_noUpdate_3() {
+			prepare1();
+			list.remove(toString());
+			list.remove(Integer.valueOf(1));
+			assertTrue(list.remove(Float.valueOf(2f)));
+			assertNull(list.getElementType());
+		}
+		
+		@DisplayName("(Object) #4")
+		@Test
+		public void removeObject_update_4() {
+			prepare2();
+			assertTrue(list.remove(toString()));
+			assertEquals(Number.class, list.getElementType());
+		}
+		
+		@DisplayName("(Object) #5")
+		@Test
+		public void removeObject_update_5() {
+			prepare2();
+			list.remove(toString());
+			assertTrue(list.remove(Integer.valueOf(1)));
+			assertEquals(Float.class, list.getElementType());
+		}
+		
+		@DisplayName("(Object) #6")
+		@Test
+		public void removeObject_update_6() {
+			prepare2();
+			list.remove(toString());
+			list.remove(Integer.valueOf(1));
+			assertTrue(list.remove(Float.valueOf(2f)));
+			assertNull(list.getElementType());
+		}
 	}
 	
-	@Test
-	public void removeObject_noUpdate() {
-		assertFalse(this.list.isTypeRecomputedAfterRemoval());
-		this.list.add(Integer.valueOf(1));
-		this.list.add(Float.valueOf(2f));
-		this.list.add(toString());
-		assertEquals(Object.class, this.list.getElementType());
+	@DisplayName("removeRange")
+	@Nested
+	public class RemoveRange {
 
-		assertTrue(this.list.remove(toString()));
-		assertEquals(Object.class, this.list.getElementType());
+		private void prepare1() {
+			assertFalse(list.isTypeRecomputedAfterRemoval());
+			list.add(Integer.valueOf(1));
+			list.add(Float.valueOf(2f));
+			list.add(toString());
+			assertEquals(Object.class, list.getElementType());
+		}
+		
+		@DisplayName("(int,int) #1")
+		@Test
+		public void removeInt_noUpdate_1() {
+			prepare1();
+			list.removeRange(2, 3);
+			assertEquals(Object.class, list.getElementType());
+		}
+		
+		@DisplayName("(int,int) #2")
+		@Test
+		public void removeInt_noUpdate_2() {
+			prepare1();
+			list.removeRange(2, 3);
+			list.removeRange(0, 1);
+			assertEquals(Object.class, list.getElementType());
+		}
+		
+		@DisplayName("(int,int) #3")
+		@Test
+		public void removeInt_noUpdate_3() {
+			prepare1();
+			list.removeRange(2, 3);
+			list.removeRange(0, 1);
+			list.removeRange(0, 1);
+			assertNull(list.getElementType());
+		}
 
-		assertTrue(this.list.remove(Integer.valueOf(1)));
-		assertEquals(Object.class, this.list.getElementType());
+		private void prepare2() {
+			list.setTypeRecomputedAfterRemoval(true);
+			assertTrue(list.isTypeRecomputedAfterRemoval());
+			list.add(Integer.valueOf(1));
+			list.add(Float.valueOf(2f));
+			list.add(toString());
+			assertEquals(Object.class, list.getElementType());
+		}
 
-		assertTrue(this.list.remove(Float.valueOf(2f)));
-		assertNull(this.list.getElementType());
-	}
-	
-	@Test
-	public void removeObject_update() {
-		this.list.setTypeRecomputedAfterRemoval(true);
-		assertTrue(this.list.isTypeRecomputedAfterRemoval());
-		this.list.add(Integer.valueOf(1));
-		this.list.add(Float.valueOf(2f));
-		this.list.add(toString());
-		assertEquals(Object.class, this.list.getElementType());
+		@DisplayName("(int,int) #4")
+		@Test
+		public void removeRangeIntInt_update_4() {
+			prepare2();
+			list.removeRange(2,3);
+			assertEquals(Number.class, list.getElementType());
+		}
 
-		assertTrue(this.list.remove(toString()));
-		assertEquals(Number.class, this.list.getElementType());
+		@DisplayName("(int,int) #5")
+		@Test
+		public void removeRangeIntInt_update_5() {
+			prepare2();
+			list.removeRange(2,3);
+			list.removeRange(0,1);
+			assertEquals(Float.class, list.getElementType());
+		}
 
-		assertTrue(this.list.remove(Integer.valueOf(1)));
-		assertEquals(Float.class, this.list.getElementType());
-
-		assertTrue(this.list.remove(Float.valueOf(2f)));
-		assertNull(this.list.getElementType());
-	}
-	
-	@Test
-	public void removeRangeIntInt_noUpdate() {
-		assertFalse(this.list.isTypeRecomputedAfterRemoval());
-		this.list.add(Integer.valueOf(1));
-		this.list.add(Float.valueOf(2f));
-		this.list.add(toString());
-		assertEquals(Object.class, this.list.getElementType());
-
-		this.list.removeRange(2,3);
-		assertEquals(Object.class, this.list.getElementType());
-
-		this.list.removeRange(0,1);
-		assertEquals(Object.class, this.list.getElementType());
-
-		this.list.removeRange(0, 1);
-		assertNull(this.list.getElementType());
-	}
-
-	@Test
-	public void removeRangeIntInt_update() {
-		this.list.setTypeRecomputedAfterRemoval(true);
-		assertTrue(this.list.isTypeRecomputedAfterRemoval());
-		this.list.add(Integer.valueOf(1));
-		this.list.add(Float.valueOf(2f));
-		this.list.add(toString());
-		assertEquals(Object.class, this.list.getElementType());
-
-		this.list.removeRange(2,3);
-		assertEquals(Number.class, this.list.getElementType());
-
-		this.list.removeRange(0,1);
-		assertEquals(Float.class, this.list.getElementType());
-
-		this.list.removeRange(0, 1);
-		assertNull(this.list.getElementType());
+		@DisplayName("(int,int) #6")
+		@Test
+		public void removeRangeIntInt_update_6() {
+			prepare2();
+			list.removeRange(2,3);
+			list.removeRange(0,1);
+			list.removeRange(0, 1);
+			assertNull(list.getElementType());
+		}
 	}
 
 }

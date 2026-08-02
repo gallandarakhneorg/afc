@@ -31,6 +31,8 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /** 
@@ -39,91 +41,136 @@ import org.junit.jupiter.api.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("SingleIterator")
 @SuppressWarnings("all")
 public class SingleIteratorTest {
 
 	private String s1;
 	private SingleIterator<String> iterator;
 	
-	/**
-	 * @throws Exception
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.s1 = UUID.randomUUID().toString();
-		this.iterator = new SingleIterator<>(this.s1);
+		s1 = UUID.randomUUID().toString();
+		iterator = new SingleIterator<>(s1);
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.iterator = null;
-		this.s1 = null;
+		iterator = null;
+		s1 = null;
 	}
 
-	/**
-	 */
-	@Test
-	public void hasNext() {
-		assertTrue(this.iterator.hasNext());
-		this.iterator.next();
-		assertFalse(this.iterator.hasNext());
-	}
+	@DisplayName("hasNext")
+	@Nested
+	public class HasNext {
 
-	/**
-	 */
-	@Test
-	public void next() {
-		assertSame(this.s1, this.iterator.next());
-		try {
-			this.iterator.next();
-			fail("expecting NoSuchElementException");  //$NON-NLS-1$
+		@DisplayName("#1")
+		@Test
+		public void hasNext_1() {
+			assertTrue(iterator.hasNext());
 		}
-		catch(NoSuchElementException exception) {
-			// expected exception
+
+		@DisplayName("#2")
+		@Test
+		public void hasNext_2() {
+			iterator.next();
+			assertFalse(iterator.hasNext());
 		}
 	}
 
-	/**
-	 */
-	@Test
-	public void remove() {
-		try {
-			this.iterator.remove();
-			fail("expecting UnsupportedOperationException");  //$NON-NLS-1$
+	@DisplayName("next")
+	@Nested
+	public class Next {
+
+		@DisplayName("#1")
+		@Test
+		public void next_1() {
+			assertSame(s1, iterator.next());
 		}
-		catch(UnsupportedOperationException exception) {
-			// exepcted exception
+
+		@DisplayName("#2")
+		@Test
+		public void next_2() {
+			iterator.next();
+			try {
+				iterator.next();
+				fail("expecting NoSuchElementException");  //$NON-NLS-1$
+			}
+			catch(NoSuchElementException exception) {
+				// expected exception
+			}
 		}
 	}
 
-	/**
-	 */
-	@Test
-	public void index() {
-		assertEquals(-1, this.iterator.index());
-		this.iterator.next();
-		assertEquals(0, this.iterator.index());
+	@DisplayName("remove")
+	@Nested
+	public class Remove {
+
+		@DisplayName("#1")
+		@Test
+		public void remove() {
+			try {
+				iterator.remove();
+				fail("expecting UnsupportedOperationException");  //$NON-NLS-1$
+			}
+			catch(UnsupportedOperationException exception) {
+				// exepcted exception
+			}
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void rest() {
-		assertEquals(1, this.iterator.rest());
-		this.iterator.next();
-		assertEquals(0, this.iterator.rest());
+	@DisplayName("index")
+	@Nested
+	public class Index {
+
+		@DisplayName("#1")
+		@Test
+		public void index_1() {
+			assertEquals(-1, iterator.index());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void index_2() {
+			iterator.next();
+			assertEquals(0, iterator.index());
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void totalSize() {
-		assertEquals(1, this.iterator.totalSize());
-		this.iterator.next();
-		assertEquals(1, this.iterator.totalSize());
+	@DisplayName("rest")
+	@Nested
+	public class Rest {
+
+		@DisplayName("#1")
+		@Test
+		public void rest_1() {
+			assertEquals(1, iterator.rest());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void rest_2() {
+			iterator.next();
+			assertEquals(0, iterator.rest());
+		}
+	}
+
+	@DisplayName("totalSize")
+	@Nested
+	public class TotalSize {
+
+		@DisplayName("#1")
+		@Test
+		public void totalSize_1() {
+			assertEquals(1, iterator.totalSize());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void totalSize_2() {
+			iterator.next();
+			assertEquals(1, iterator.totalSize());
+		}
 	}
 	
 }
