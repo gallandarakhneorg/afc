@@ -22,11 +22,14 @@ package org.arakhne.afc.vmutil;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("LibraryLoader")
 @SuppressWarnings("all")
 public class LibraryLoaderTest {
 
+	@DisplayName("loadPlatformDependentLibrary")
 	@Test
 	public void loadPlatformDependentLibraryString() {
 		assertInlineParameterUsage(LibraryLoader.class, "loadPlatformDependentLibrary", String.class); //$NON-NLS-1$

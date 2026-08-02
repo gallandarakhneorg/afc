@@ -22,2189 +22,3401 @@ package org.arakhne.afc.vmutil;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLStreamHandler;
-import java.net.URLStreamHandlerFactory;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.vmutil.resource.Handler;
-import org.arakhne.afc.vmutil.resource.HandlerProvider;
-
-
+@DisplayName("FileSystem")
 @SuppressWarnings("all")
-public class FileSystemTest {
+public class FileSystemTest extends AbstractFileSystemTestCase {
 
-	private boolean oldLibraryLoaderState;
+	@DisplayName("makeAbsolute")
+	@Nested
+	public class MakeAbsolute {
 
-	public static void assertEquals(Object a, Object b) {
-		if (!Objects.equals(a, b)) {
-			fail("not equal"); //$NON-NLS-1$
+		@DisplayName("(File, URL) #1")
+		@Test
+		public void makeAbsoluteFileURL_httpAsRoot_1() throws Exception {
+			final URL root = newURL("http://maven.arakhne.org/myroot"); //$NON-NLS-1$
+			assertNull(FileSystem.makeAbsolute((File)null, root));
+		}
+
+		@DisplayName("(File, URL) #2")
+		@Test
+		public void makeAbsoluteFileURL_httpAsRoot_2() throws Exception {
+			final URL root = newURL("http://maven.arakhne.org/myroot"); //$NON-NLS-1$
+			assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
+					FileSystem.makeAbsolute(new File("a" + File.separator + "b" + File.separator + "c"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							createFileInJarUrlWithSpaces()));  
+		}
+
+		@Test
+		@DisplayName("(File, URL) #3")
+		public void makeAbsoluteFileURL_noRoot_3() throws Exception {
+			assertNull(FileSystem.makeAbsolute((File)null, (URL)null));
+		}
+
+		@Test
+		@DisplayName("(File, URL) #4")
+		public void makeAbsoluteFileURL_noRoot_4() throws Exception {
+			assertEquals(newURL("file:" + fromFileToUrl(getCurrentDir(), false) + "/toto"),  //$NON-NLS-1$ //$NON-NLS-2$
+					FileSystem.makeAbsolute(new File("toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #1")
+		public void makeAbsoluteURLFile_noRoot_1() throws Exception {
+			assertNull(FileSystem.makeAbsolute((URL)null, (File)null));
+		}
+
+		@Test
+		@DisplayName("(URL, File) #2")
+		public void makeAbsoluteURLFile_noRoot_2() throws Exception {
+			assertEquals(newURL("file:/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("file:/toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #3")
+		public void makeAbsoluteURLFile_noRoot_3() throws Exception {
+			assertEquals(newURL("file:toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("file:toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #4")
+		public void makeAbsoluteURLFile_noRoot_4() throws Exception {
+			assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #5")
+		public void makeAbsoluteURLFile_noRoot_5() throws Exception {
+			assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #6")
+		public void makeAbsoluteURLFile_noRoot_6() throws Exception {
+			assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #7")
+		public void makeAbsoluteURLFile_noRoot_7() throws Exception {
+			assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #8")
+		public void makeAbsoluteURLFile_noRoot_8() throws Exception {
+			assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #9")
+		public void makeAbsoluteURLFile_noRoot_9() throws Exception {
+			assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #10")
+		public void makeAbsoluteURLFile_noRoot_10() throws Exception {
+			assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #11")
+		public void makeAbsoluteURLFile_noRoot_11() throws Exception {
+			assertEquals(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #12")
+		public void makeAbsoluteURLFile_root_12() throws Exception {
+			var root = new File(File.separator+"myroot"); //$NON-NLS-1$
+			assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #13")
+		public void makeAbsoluteURLFile_root_13() throws Exception {
+			var root = new File(File.separator+"myroot"); //$NON-NLS-1$
+			assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #14")
+		public void makeAbsoluteURLFile_root_14() throws Exception {
+			var root = new File(File.separator+"myroot"); //$NON-NLS-1$
+			assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #15")
+		public void makeAbsoluteURLFile_root_15() throws Exception {
+			var root = new File(File.separator+"myroot"); //$NON-NLS-1$
+			assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #16")
+		public void makeAbsoluteURLFile_root_16() throws Exception {
+			var root = new File(File.separator+"myroot"); //$NON-NLS-1$
+			assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, File) #17")
+		public void makeAbsoluteURLFile_root_17() throws Exception {
+			var root = new File(File.separator+"myroot"); //$NON-NLS-1$
+			assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #1")
+		public void makeAbsoluteURLURL_notroot_1() throws Exception {
+			assertNull(FileSystem.makeAbsolute((URL)null, (URL)null));
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #2")
+		public void makeAbsoluteURLURL_notroot_2() throws Exception {
+			assertEquals(newURL("file:/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("file:/toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #3")
+		public void makeAbsoluteURLURL_notroot_3() throws Exception {
+			assertEquals(newURL("file:toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("file:toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #4")
+		public void makeAbsoluteURLURL_notroot_4() throws Exception {
+			assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #5")
+		public void makeAbsoluteURLURL_notroot_5() throws Exception {
+			assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #6")
+		public void makeAbsoluteURLURL_notroot_6() throws Exception {
+			assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #7")
+		public void makeAbsoluteURLURL_notroot_7() throws Exception {
+			assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #8")
+		public void makeAbsoluteURLURL_notroot_8() throws Exception {
+			assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #9")
+		public void makeAbsoluteURLURL_notroot_9() throws Exception {
+			assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #10")
+		public void makeAbsoluteURLURL_notroot_10() throws Exception {
+			assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #11")
+		public void makeAbsoluteURLURL_notroot_11() throws Exception {
+			assertEquals(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #12")
+		public void makeAbsoluteURLURL_fileAsRoot_12() throws Exception {
+			URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
+			assertNull(FileSystem.makeAbsolute((URL)null, root));
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #13")
+		public void makeAbsoluteURLURL_fileAsRoot_13() throws Exception {
+			URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
+			assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #14")
+		public void makeAbsoluteURLURL_fileAsRoot_14() throws Exception {
+			URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
+			assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #15")
+		public void makeAbsoluteURLURL_fileAsRoot_15() throws Exception {
+			URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
+			assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #16")
+		public void makeAbsoluteURLURL_fileAsRoot_16() throws Exception {
+			URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
+			assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #17")
+		public void makeAbsoluteURLURL_fileAsRoot_17() throws Exception {
+			URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
+			assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #18")
+		public void makeAbsoluteURLURL_fileAsRoot_18() throws Exception {
+			URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
+			assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #19")
+		public void makeAbsoluteURLURL_httpAsRoot_19() throws Exception {
+			URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
+			assertNull(FileSystem.makeAbsolute((URL)null, root));
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #20")
+		public void makeAbsoluteURLURL_httpAsRoot_20() throws Exception {
+			URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
+			assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #21")
+		public void makeAbsoluteURLURL_httpAsRoot_21() throws Exception {
+			URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
+			assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #22")
+		public void makeAbsoluteURLURL_httpAsRoot_22() throws Exception {
+			URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
+			assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #23")
+		public void makeAbsoluteURLURL_httpAsRoot_23() throws Exception {
+			URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
+			assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #24")
+		public void makeAbsoluteURLURL_httpAsRoot_24() throws Exception {
+			URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
+			assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #25")
+		public void makeAbsoluteURLURL_httpAsRoot_25() throws Exception {
+			URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
+			assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, URL) #26")
+		public void makeAbsoluteURLURL_httpAsRoot_26() throws Exception {
+			URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
+			assertEquals(newURL("jar:http://maven.arakhne.org/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(File, File) #1")
+		public void makeAbsoluteFileFile_noRoot_1() {
+			assertNull(FileSystem.makeAbsolute((File)null, (File)null));
+		}
+
+		@Test
+		@DisplayName("(File, File) #2")
+		public void makeAbsoluteFileFile_noRoot_2() {
+			assertEquals(new File(File.separator+"toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(new File(File.separator+"toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(File, File) #3")
+		public void makeAbsoluteFileFile_noRoot_3() {
+			assertEquals(new File("toto"),  //$NON-NLS-1$
+					FileSystem.makeAbsolute(new File("toto"), (File)null)); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("makeAbsolute(File, File) #4")
+		public void makeAbsoluteFileFile_root_4() {
+			File root = new File(File.separator+"myroot"); //$NON-NLS-1$
+			assertNull(FileSystem.makeAbsolute((File)null, root));
 		}
 	}
 
-	public static String getCurrentDir() throws IOException {
-		return new File(".").getCanonicalPath(); //$NON-NLS-1$
-	}
+	@DisplayName("makeRelative")
+	@Nested
+	public class MakeRelative {
 
-	/** Replace file separator by "/"
-	 *
-	 * @param filename
-	 * @return
-	 */
-	public static String fromFileToUrl(String filename, boolean removeStartSlash) {
-		String result = filename.replaceAll("[/\\\\]", Matcher.quoteReplacement("/")); //$NON-NLS-1$ //$NON-NLS-2$
-		if (removeStartSlash) {
-			if (result.startsWith("/")) { //$NON-NLS-1$
-				result = result.substring(1);
-			}
-		} else {
-			if (!result.startsWith("/")) { //$NON-NLS-1$
-				result = "/" + result; //$NON-NLS-1$
-			}
-		}
-		return result;
-	}
-
-	/** Replace "/" by the file separator.
-	 *
-	 * @param filename
-	 * @return
-	 */
-	public static File normFile(String filename) {
-		return new File(fromUrlToFile(filename));
-	}
-
-	public static void assertNormedFile(String expected, File actual) {
-		assertEquals(normFile(expected), actual);
-	}
-
-	/** Replace "/" by the file separator.
-	 *
-	 * @param filename
-	 * @return
-	 */
-	public static String fromUrlToFile(String filename) {
-		return filename.replaceAll(Pattern.quote("/"), Matcher.quoteReplacement(File.separator)); //$NON-NLS-1$
-	}
-
-	/** Remove root slash
-	 */
-	public static String removeRootSlash(String filename) {
-		if (filename != null && filename.startsWith("/")) { //$NON-NLS-1$
-			return filename.substring(1);
-		}
-		return filename;
-	}
-
-	private static URL newURL(String url) throws Exception {
-		return new URL(url);
-	}
+		@DisplayName("Root: ~/")
+		@Nested
+		public class RootHomeDirectory {
+			private File root;
+			private URL rootUrl;
 	
-	private static URL newURL(String protocol, String host, String path) throws Exception {
-		return new URL(protocol, host, path);
+			@BeforeEach
+			public void setUp() throws Exception {
+				root = FileSystem.getUserHomeDirectory();
+				rootUrl = root.toURI().toURL();
+			}
+	
+			@Test
+			@DisplayName("(File, File) #1")
+			public void makeRelativeFileFile_1() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"); //$NON-NLS-1$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a"); //$NON-NLS-1$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+	
+			@Test
+			@DisplayName("(File, File) #2")
+			public void makeRelativeFileFile_2() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"b"); //$NON-NLS-1$ //$NON-NLS-2$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a","b"); //$NON-NLS-1$ //$NON-NLS-2$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+	
+			@Test
+			@DisplayName("(File, File) #3")
+			public void makeRelativeFileFile_3() throws Exception {
+				var abs = new File("a","b"); //$NON-NLS-1$ //$NON-NLS-2$
+				var rel = new File("a","b"); //$NON-NLS-1$ //$NON-NLS-2$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+
+			@Test
+			@DisplayName("(File, URL) #1")
+			public void makeRelativeFileURL_1() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"); //$NON-NLS-1$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a"); //$NON-NLS-1$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+
+			@Test
+			@DisplayName("(File, URL) #2")
+			public void makeRelativeFileURL_2() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"b"); //$NON-NLS-1$ //$NON-NLS-2$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a","b"); //$NON-NLS-1$ //$NON-NLS-2$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+
+			@Test
+			@DisplayName("(File, URL) #3")
+			public void makeRelativeFileURL_3() throws Exception {
+				var abs = new File("a","b"); //$NON-NLS-1$ //$NON-NLS-2$
+				var rel = new File("a","b"); //$NON-NLS-1$ //$NON-NLS-2$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+
+			@Test
+			@DisplayName("(URL, URL) #1")
+			public void makeRelativeURLURL_1() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a").toURI().toURL(); //$NON-NLS-1$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a"); //$NON-NLS-1$
+				assertEquals(rel, FileSystem.makeRelative(abs, rootUrl));
+			}
+
+			@Test
+			@DisplayName("(URL, URL) #2")
+			public void makeRelativeURLURL_2() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"b").toURI().toURL(); //$NON-NLS-1$ //$NON-NLS-2$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a","b"); //$NON-NLS-1$ //$NON-NLS-2$
+				assertEquals(rel, FileSystem.makeRelative(abs, rootUrl));
+			}
+		}
+	
+		@DisplayName("Root: ~/zz/abc/")
+		@Nested
+		public class Root1 {
+
+			private File root;
+			private URL rootUrl;
+
+			@BeforeEach
+			public void setUp() throws Exception {
+				root = new File(FileSystem.getUserHomeDirectory(), "zz"+File.separator+"abc"); //$NON-NLS-1$ //$NON-NLS-2$
+				rootUrl = root.toURI().toURL();
+			}
+	
+			@Test
+			@DisplayName("(File, File) #1")
+			public void makeRelativeFileFile_1() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"); //$NON-NLS-1$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+"a"); //$NON-NLS-1$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+
+			@Test
+			@DisplayName("(File, File) #2")
+			public void makeRelativeFileFile_2() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+"a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+
+			@Test
+			@DisplayName("(File, URL) #1")
+			public void makeRelativeFileURL_1() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"); //$NON-NLS-1$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+"a"); //$NON-NLS-1$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+
+			@Test
+			@DisplayName("(File, URL) #2")
+			public void makeRelativeFileURL_2() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+"a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				assertEquals(rel, FileSystem.makeRelative(abs, root));
+			}
+
+			@Test
+			@DisplayName("(URL, URL) #1")
+			public void makeRelativeURLURL_1() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a").toURI().toURL(); //$NON-NLS-1$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+"a"); //$NON-NLS-1$
+				assertEquals(rel, FileSystem.makeRelative(abs, rootUrl));
+			}
+
+			@Test
+			@DisplayName("(URL, URL) #2")
+			public void makeRelativeURLURL_2() throws Exception {
+				var abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"zz"+File.separator+"bc").toURI().toURL(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				var rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+FileSystem.PARENT_DIRECTORY+File.separator
+						+"a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				assertEquals(rel, FileSystem.makeRelative(abs, rootUrl));
+			}
+		}
 	}
 
-	/** @return "http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag"
-	 */
-	protected URL createHttpUrl() throws Exception {
-		return newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag"); //$NON-NLS-1$
-	}
+	@DisplayName("convertFileToURL")
+	@Nested
+	public class ConvertFileToURL {
 
-	/** @return "/home/test/j.jar"
-	 */
-	protected String createJarFilenameForUrl() {
-		return "/home/test/j.jar"; //$NON-NLS-1$
-	}
+		@Test
+		@DisplayName("(File)")
+		public void file() throws Exception {
+			handlesResourceUrl();
+			try {
+				File f1 = new File("/toto"); //$NON-NLS-1$
+				URL u1 = newURL("file:/toto"); //$NON-NLS-1$
+				URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				URL u2e = newURL("resource:org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				File f2 = FileSystem.convertURLToFile(u2);
+				assertEquals(u1, FileSystem.convertFileToURL(f1));
+				assertEquals(u2e, FileSystem.convertFileToURL(f2));
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
 
-	/** @return "/inner/myjar.jar"
-	 */
-	protected String createJarInJarFilenameForUrl() {
-		return "/inner/myjar.jar"; //$NON-NLS-1$
-	}
-
-	/** @return "/org/arakhne/afc/vmutil/file.x.z.z"
-	 */
-	protected String createInJarFilename() {
-		return "/org/arakhne/afc/vmutil/file.x.z.z"; //$NON-NLS-1$
-	}
-
-	/** @return "jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z"
-	 */
-	protected URL createFileInJarUrl() throws Exception {
-		return newURL("jar:file:" + createJarFilenameForUrl() + "!" + createInJarFilename()); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	/** @return "jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z"
-	 */
-	protected URL createFileInJarInJarUrl() throws Exception {
-		return newURL("jar:jar:file:" + createJarFilenameForUrl() + "!" //$NON-NLS-1$ //$NON-NLS-2$
-				+ createJarInJarFilenameForUrl() + "!" + createInJarFilename()); //$NON-NLS-1$
-	}
-
-	/** @return "/the path/to/file with space.toto"
-	 */
-	protected String createJarFilenameForUrlWithSpaces() {
-		return "/the path/to/file with space.toto"; //$NON-NLS-1$
-	}
-
-	/** @return "file:/the path/to/file with space.toto"
-	 */
-	protected URL createFileUrlWithSpacesHardCoded() throws Exception {
-		return newURL("file:" + createJarFilenameForUrlWithSpaces()); //$NON-NLS-1$
-	}
-
-	/** @return "jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z"
-	 */
-	protected URL createFileInJarUrlWithSpaces() throws Exception {
-		return newURL("jar:file:" + createJarFilenameForUrlWithSpaces() + "!" + createInJarFilename()); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@BeforeEach
-	public void setUp() throws Exception {
-		// Disable native library loading during unit tests
-		this.oldLibraryLoaderState = LibraryLoader.isEnable();
-		LibraryLoader.setEnable(false);
-	}
-
-	@AfterEach
-	public void tearDown() throws Exception {
-		// Restore library loading state
-		LibraryLoader.setEnable(this.oldLibraryLoaderState);
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(File, URL)")
-	public void makeAbsoluteFileURL_httpAsRoot() throws Exception {
-		final URL root = newURL("http://maven.arakhne.org/myroot"); //$NON-NLS-1$
-
-		assertNull(FileSystem.makeAbsolute((File)null, root));
-
-		assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new File("a" + File.separator + "b" + File.separator + "c"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						createFileInJarUrlWithSpaces()));  
-	}
-
-	@Test
-	@DisplayName("makeRelative(File, File)")
-	public void makeRelativeFileFile() throws Exception {
-		File root, abs, rel;
-
-		root = FileSystem.getUserHomeDirectory();
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"); //$NON-NLS-1$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a"); //$NON-NLS-1$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"b"); //$NON-NLS-1$ //$NON-NLS-2$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a","b"); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-		abs = new File("a","b"); //$NON-NLS-1$ //$NON-NLS-2$
-		rel = new File("a","b"); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-
-
-		root = new File(FileSystem.getUserHomeDirectory(), "zz"+File.separator+"abc"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"); //$NON-NLS-1$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+"a"); //$NON-NLS-1$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-
-
-		root = new File(FileSystem.getUserHomeDirectory(), "zz"+File.separator+"abc"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+"a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-	}
-
-	@Test
-	@DisplayName("makeRelative(File, URL)")
-	public void makeRelativeFileURL() throws Exception {
-		File abs, rel;
-		URL root;
-
-		root = FileSystem.getUserHomeDirectory().toURI().toURL();
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"); //$NON-NLS-1$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a"); //$NON-NLS-1$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"b"); //$NON-NLS-1$ //$NON-NLS-2$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a","b"); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-		abs = new File("a","b"); //$NON-NLS-1$ //$NON-NLS-2$
-		rel = new File("a","b"); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-
-
-		root = FileSystem.join(FileSystem.getUserHomeDirectory().toURI().toURL(), "zz", "abc"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"); //$NON-NLS-1$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+"a"); //$NON-NLS-1$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-
-
-		root = FileSystem.join(FileSystem.getUserHomeDirectory().toURI().toURL(), "zz", "abc"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+"a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-	}
-
-	@Test
-	@DisplayName("convertURLToFile(File)")
-	public void convertFileToURLFile() throws Exception {
-		handlesResourceUrl();
-		try {
-			File f1 = new File("/toto"); //$NON-NLS-1$
-			URL u1 = newURL("file:/toto"); //$NON-NLS-1$
-			URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
-			URL u2e = newURL("resource:org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
-			File f2 = FileSystem.convertURLToFile(u2);
+		@Test
+		@DisplayName("(File) - Issue 173")
+		public void convertFileToURLFile_issue173() throws Exception {
+			File f1 = new File("./myfile.txt"); //$NON-NLS-1$
+			URL u1 = newURL("file:./myfile.txt"); //$NON-NLS-1$
 			assertEquals(u1, FileSystem.convertFileToURL(f1));
-			assertEquals(u2e, FileSystem.convertFileToURL(f2));
-		} finally {
-			unhandlesResourceUrl();
 		}
 	}
 
-	private static volatile TestingHandler handler;
-	
-	private void handlesResourceUrl() throws Exception {
-		if (FileSystem.class.getModule().getName() == null) {
-			// Special testing framework that is not loading the library into a module.
-			if (handler == null) {
-				handler = new TestingHandler();
-				URL.setURLStreamHandlerFactory(handler);
-				handler.isActive = true;
-			}
+	@DisplayName("getParentURL")
+	@Nested
+	public class GetParentURL {
+
+		@Test
+		@DisplayName("(URL) #1")
+		public void test_1() throws Exception {
+			assertEquals(
+					newURL("http://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("http://www.arakhne.org"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #2")
+		public void test_2() throws Exception {
+			assertEquals(
+					newURL("http://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("http://www.arakhne.org/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #3")
+		public void test_3() throws Exception {
+			assertEquals(
+					newURL("http://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("http://www.arakhne.org/toto"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #4")
+		public void test_4() throws Exception {
+			assertEquals(
+					newURL("http://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("http://www.arakhne.org/toto/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #5")
+		public void test_5() throws Exception {
+			assertEquals(
+					newURL("http://www.arakhne.org/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("http://www.arakhne.org/toto/titi"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #6")
+		public void test_6() throws Exception {
+			assertEquals(
+					newURL("http://www.arakhne.org/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("http://www.arakhne.org/toto/titi/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #7")
+		public void test_7() throws Exception {
+			assertEquals(
+					newURL("https://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("https://www.arakhne.org"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #8")
+		public void test_8() throws Exception {
+			assertEquals(
+					newURL("https://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("https://www.arakhne.org/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #9")
+		public void test_9() throws Exception {
+			assertEquals(
+					newURL("https://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("https://www.arakhne.org/toto"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #10")
+		public void test_10() throws Exception {
+			assertEquals(
+					newURL("https://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("https://www.arakhne.org/toto/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #11")
+		public void test_11() throws Exception {
+			assertEquals(
+					newURL("https://www.arakhne.org/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("https://www.arakhne.org/toto/titi"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #12")
+		public void test_12() throws Exception {
+			assertEquals(
+					newURL("https://www.arakhne.org/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("https://www.arakhne.org/toto/titi/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #13")
+		public void test_13() throws Exception {
+			assertEquals(
+					newURL("ftp://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("ftp://www.arakhne.org"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #14")
+		public void test_14() throws Exception {
+			assertEquals(
+					newURL("ftp://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("ftp://www.arakhne.org/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #15")
+		public void test_15() throws Exception {
+			assertEquals(
+					newURL("ftp://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("ftp://www.arakhne.org/toto"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #16")
+		public void test_16() throws Exception {
+			assertEquals(
+					newURL("ftp://www.arakhne.org/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("ftp://www.arakhne.org/toto/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #17")
+		public void test_17() throws Exception {
+			assertEquals(
+					newURL("ftp://www.arakhne.org/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("ftp://www.arakhne.org/toto/titi"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #18")
+		public void test_18() throws Exception {
+			assertEquals(
+					newURL("ftp://www.arakhne.org/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("ftp://www.arakhne.org/toto/titi/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #19")
+		public void test_19() throws Exception {
+			assertEquals(
+					newURL("file:/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:/toto/titi"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #20")
+		public void test_20() throws Exception {
+			assertEquals(
+					newURL("file:/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:/toto/titi/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #21")
+		public void test_21() throws Exception {
+			assertEquals(
+					newURL("file:/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:/toto"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #22")
+		public void test_22() throws Exception {
+			assertEquals(
+					newURL("file:/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:/toto/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #23")
+		public void test_23() throws Exception {
+			assertEquals(
+					newURL("file:./toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:./toto/titi"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #24")
+		public void test_24() throws Exception {
+			assertEquals(
+					newURL("file:./toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:./toto/titi/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #25")
+		public void test_25() throws Exception {
+			assertEquals(
+					newURL("file:./"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:./toto"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #26")
+		public void test_26() throws Exception {
+			assertEquals(
+					newURL("file:./"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:./toto/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #27")
+		public void test_27() throws Exception {
+			assertEquals(
+					newURL("file:../"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:."))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #28")
+		public void test_28() throws Exception {
+			assertEquals(
+					newURL("file:../"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:./"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #29")
+		public void test_29() throws Exception {
+			assertEquals(
+					newURL("file:../"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:toto"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #30")
+		public void test_30() throws Exception {
+			assertEquals(
+					newURL("file:../"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("file:toto/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #31")
+		public void test_31() throws Exception {
+			assertEquals(
+					newURL("jar:file:test.jar!/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("jar:file:test.jar!/toto/titi"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #32")
+		public void test_32() throws Exception {
+			assertEquals(
+					newURL("jar:file:test.jar!/toto/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("jar:file:test.jar!/toto/titi/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #33")
+		public void test_33() throws Exception {
+			assertEquals(
+					newURL("jar:file:test.jar!/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("jar:file:test.jar!/toto"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #34")
+		public void test_34() throws Exception {
+			assertEquals(
+					newURL("jar:file:test.jar!/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("jar:file:test.jar!/toto/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #35")
+		public void test_35() throws Exception {
+			assertEquals(
+					newURL("jar:file:test.jar!/"),  //$NON-NLS-1$
+					FileSystem.getParentURL(newURL("jar:file:test.jar!/"))); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #36")
+		public void test_36() throws Exception {
+			assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/"),   //$NON-NLS-1$
+					FileSystem.getParentURL(createFileInJarUrlWithSpaces()));
 		}
 	}
 
-	private void unhandlesResourceUrl() throws Exception {
-		if (FileSystem.class.getModule().getName() == null) {
-			// Special testing framework that is not loading the library into a module.
-			if (handler != null) {
-				handler.isActive = false;
-			}
-		}
-	}
-
-	/** Testing handler.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 17.0
-	 */
-	private static class TestingHandler implements URLStreamHandlerFactory {
-
-		public volatile boolean isActive;
-		
-		@Override
-		public URLStreamHandler createURLStreamHandler(String protocol) {
-			if (this.isActive && URISchemeType.RESOURCE.isScheme(protocol)) {
-				return new Handler();
-			}
-			return null;
-		}
-		
-	}
-
-	@Test
-	@DisplayName("convertURLToFile(File) - Issue 173")
-	public void convertFileToURLFile_issue173() throws Exception {
-		File f1 = new File("./myfile.txt"); //$NON-NLS-1$
-		URL u1 = newURL("file:./myfile.txt"); //$NON-NLS-1$
-		assertEquals(u1, FileSystem.convertFileToURL(f1));
-	}
-
-	@Test
-	@DisplayName("getParentURL(URL)")
-	public void getParentURLURL() throws Exception {
-		assertEquals(
-				newURL("http://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("http://www.arakhne.org"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("http://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("http://www.arakhne.org/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("http://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("http://www.arakhne.org/toto"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("http://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("http://www.arakhne.org/toto/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("http://www.arakhne.org/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("http://www.arakhne.org/toto/titi"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("http://www.arakhne.org/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("http://www.arakhne.org/toto/titi/"))); //$NON-NLS-1$
-
-		assertEquals(
-				newURL("https://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("https://www.arakhne.org"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("https://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("https://www.arakhne.org/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("https://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("https://www.arakhne.org/toto"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("https://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("https://www.arakhne.org/toto/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("https://www.arakhne.org/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("https://www.arakhne.org/toto/titi"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("https://www.arakhne.org/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("https://www.arakhne.org/toto/titi/"))); //$NON-NLS-1$
-
-		assertEquals(
-				newURL("ftp://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("ftp://www.arakhne.org"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("ftp://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("ftp://www.arakhne.org/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("ftp://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("ftp://www.arakhne.org/toto"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("ftp://www.arakhne.org/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("ftp://www.arakhne.org/toto/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("ftp://www.arakhne.org/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("ftp://www.arakhne.org/toto/titi"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("ftp://www.arakhne.org/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("ftp://www.arakhne.org/toto/titi/"))); //$NON-NLS-1$
-
-		assertEquals(
-				newURL("file:/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:/toto/titi"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:/toto/titi/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:/toto"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:/toto/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:./toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:./toto/titi"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:./toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:./toto/titi/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:./"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:./toto"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:./"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:./toto/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:../"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:."))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:../"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:./"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:../"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:toto"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("file:../"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("file:toto/"))); //$NON-NLS-1$
-
-		assertEquals(
-				newURL("jar:file:test.jar!/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("jar:file:test.jar!/toto/titi"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("jar:file:test.jar!/toto/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("jar:file:test.jar!/toto/titi/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("jar:file:test.jar!/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("jar:file:test.jar!/toto"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("jar:file:test.jar!/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("jar:file:test.jar!/toto/"))); //$NON-NLS-1$
-		assertEquals(
-				newURL("jar:file:test.jar!/"),  //$NON-NLS-1$
-				FileSystem.getParentURL(newURL("jar:file:test.jar!/"))); //$NON-NLS-1$
-
-		assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/"),   //$NON-NLS-1$
-				FileSystem.getParentURL(createFileInJarUrlWithSpaces()));
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(File, URL) - no root")
-	public void makeAbsoluteFileURL_noRoot() throws Exception {
-		assertNull(FileSystem.makeAbsolute((File)null, (URL)null));
-
-		assertEquals(newURL("file:" + fromFileToUrl(getCurrentDir(), false) + "/toto"),  //$NON-NLS-1$ //$NON-NLS-2$
-				FileSystem.makeAbsolute(new File("toto"), (URL)null)); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(URL, File) - no root")
-	public void makeAbsoluteURLFile_noRoot() throws Exception {
-		assertNull(FileSystem.makeAbsolute((URL)null, (File)null));
-
-		assertEquals(newURL("file:/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("file:/toto"), (File)null)); //$NON-NLS-1$
-		assertEquals(newURL("file:toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("file:toto"), (File)null)); //$NON-NLS-1$
-
-		assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), (File)null)); //$NON-NLS-1$
-		assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), (File)null)); //$NON-NLS-1$
-
-		assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), (File)null)); //$NON-NLS-1$
-		assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), (File)null)); //$NON-NLS-1$
-
-		assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), (File)null)); //$NON-NLS-1$
-		assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), (File)null)); //$NON-NLS-1$
-
-		assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (File)null)); //$NON-NLS-1$
-		assertEquals(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (File)null)); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(URL, File) - root")
-	public void makeAbsoluteURLFile_root() throws Exception {
-		File root = new File(File.separator+"myroot"); //$NON-NLS-1$
-
-		assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-
-		assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-
-		assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(URL, URL) - no root")
-	public void makeAbsoluteURLURL_notroot() throws Exception {
-		assertNull(FileSystem.makeAbsolute((URL)null, (URL)null));
-
-		assertEquals(newURL("file:/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("file:/toto"), (URL)null)); //$NON-NLS-1$
-		assertEquals(newURL("file:toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("file:toto"), (URL)null)); //$NON-NLS-1$
-
-		assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), (URL)null)); //$NON-NLS-1$
-		assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), (URL)null)); //$NON-NLS-1$
-
-		assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), (URL)null)); //$NON-NLS-1$
-		assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), (URL)null)); //$NON-NLS-1$
-
-		assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), (URL)null)); //$NON-NLS-1$
-		assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), (URL)null)); //$NON-NLS-1$
-
-		assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
-		assertEquals(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(URL, URL) - file as root")
-	public void makeAbsoluteURLURL_fileAsRoot() throws Exception {
-		URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
-
-		assertNull(FileSystem.makeAbsolute((URL)null, root));
-
-		assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-
-		assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-
-		assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(URL, URL) - http as root")
-	public void makeAbsoluteURLURL_httpAsRoot() throws Exception {
-		URL root = newURL("http://maven.arakhne.org"); //$NON-NLS-1$
-
-		assertNull(FileSystem.makeAbsolute((URL)null, root));
-
-		assertEquals(newURL("http://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("http://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("http://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-
-		assertEquals(newURL("https://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("https://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("https://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-
-		assertEquals(newURL("ftp://www.arakhne.org/toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/toto"), root)); //$NON-NLS-1$
-		assertEquals(newURL("ftp://www.arakhne.org/./toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
-
-		assertEquals(newURL("jar:http://maven.arakhne.org/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(File, File) - no root")
-	public void makeAbsoluteFileFile_noRoot() {
-		assertNull(FileSystem.makeAbsolute((File)null, (File)null));
-
-		assertEquals(new File(File.separator+"toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(new File(File.separator+"toto"), (File)null)); //$NON-NLS-1$
-		assertEquals(new File("toto"),  //$NON-NLS-1$
-				FileSystem.makeAbsolute(new File("toto"), (File)null)); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("makeAbsolute(File, File) - root")
-	public void makeAbsoluteFileFile_root() {
-		File root = new File(File.separator+"myroot"); //$NON-NLS-1$
-
-		assertNull(FileSystem.makeAbsolute((File)null, root));
-	}
-
-	@Test
 	@DisplayName("jreBehaviorRelatedToURL")
-	public void jreBehaviorRelatedToURL() throws Exception {
-		// The following test permits to check if a specific behavior of URL
-		// is still present in the JRE.
-		URL rr = newURL("file://marbre.jpg"); //$NON-NLS-1$
-		assertEquals("file", rr.getProtocol()); //$NON-NLS-1$
-		assertEquals("marbre.jpg", rr.getAuthority()); //$NON-NLS-1$
-		assertEquals("", rr.getPath()); //$NON-NLS-1$
-	}
+	@Nested
+	public class JreBehaviorRelatedToURL {
 
-	@Test
-	@DisplayName("convertURLToFile")
-	public void convertURLToFile() throws Exception {
-		try {
-			FileSystem.convertURLToFile(newURL("http://www.arakhne.org")); //$NON-NLS-1$
-			fail("not a file URL"); //$NON-NLS-1$
-		}
-		catch(IllegalArgumentException exception) {
-			//
-		}
-
-		assertEquals(new File("toto").getCanonicalPath(),  //$NON-NLS-1$
-				FileSystem.convertURLToFile(newURL("file:./toto")).getCanonicalPath()); //$NON-NLS-1$
-
-		assertEquals(new File("toto").getCanonicalPath(),  //$NON-NLS-1$
-				FileSystem.convertURLToFile(newURL("file:toto")).getCanonicalPath()); //$NON-NLS-1$
-
-		assertEquals(new File("toto").getCanonicalPath(),  //$NON-NLS-1$
-				FileSystem.convertURLToFile(newURL("file:./abs/../toto")).getCanonicalPath()); //$NON-NLS-1$
-
-		assertEquals(new File("/toto").getCanonicalPath(),  //$NON-NLS-1$
-				FileSystem.convertURLToFile(newURL("file:/toto")).getCanonicalPath()); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("convertStringToURL")
-	public void convertStringToURL() throws Exception {
-		handlesResourceUrl();
-		try {
-			assertNull(FileSystem.convertStringToURL(null, true));
-			assertNull(FileSystem.convertStringToURL("", true)); //$NON-NLS-1$
-			assertNull(FileSystem.convertStringToURL(null, false));
-			assertNull(FileSystem.convertStringToURL("", false)); //$NON-NLS-1$
-	
-			URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false); //$NON-NLS-1$
-			assertNotNull(rr);
+		@DisplayName("#1")
+		@Test
+		public void test_1() throws Exception {
+			// The following test permits to check if a specific behavior of URL
+			// is still present in the JRE.
+			URL rr = newURL("file://marbre.jpg"); //$NON-NLS-1$
 			assertEquals("file", rr.getProtocol()); //$NON-NLS-1$
-			assertEquals("", rr.getAuthority()); //$NON-NLS-1$
-			assertEquals("", rr.getHost()); //$NON-NLS-1$
-			assertNull(rr.getQuery());
-			assertEquals("marbre.jpg", rr.getPath()); //$NON-NLS-1$
-	
-			assertEquals(newURL("http", "www.arakhne.org", "/"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("http://www.arakhne.org/", true)); //$NON-NLS-1$
-			assertEquals(newURL("http", "www.arakhne.org", "/"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("http://www.arakhne.org/", false)); //$NON-NLS-1$
-	
-			// CAUTION: testing right-formed jar URL.
-			assertEquals(newURL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true)); //$NON-NLS-1$
-			assertEquals(newURL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)); //$NON-NLS-1$
-	
-			// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
-			assertEquals(newURL("file", "", "/home/test/j.jar"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("jar:/home/test/j.jar", true)); //$NON-NLS-1$
-			assertEquals(newURL("file", "", "/home/test/j.jar"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("jar:/home/test/j.jar", false)); //$NON-NLS-1$
-	
-			// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
-			assertEquals(newURL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true)); //$NON-NLS-1$
-			assertEquals(newURL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)); //$NON-NLS-1$
-	
-			URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
-			assertNotNull(testResource);
-	
-			assertEquals(testResource,
-					FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
-			assertEquals(null,
-					FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
-	
-			assertEquals(testResource,
-					FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
-			assertEquals(null,
-					FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
-	
-			assertEquals(testResource,
-					FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
-			assertEquals(newURL("file", "", "/org/arakhne/afc/vmutil/test.txt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
-	
-			assertEquals(testResource,
-					FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
-			assertEquals(newURL("file","", "org/arakhne/afc/vmutil/test.txt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
-		} finally {
-			unhandlesResourceUrl();
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() throws Exception {
+			// The following test permits to check if a specific behavior of URL
+			// is still present in the JRE.
+			URL rr = newURL("file://marbre.jpg"); //$NON-NLS-1$
+			assertEquals("marbre.jpg", rr.getAuthority()); //$NON-NLS-1$
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() throws Exception {
+			// The following test permits to check if a specific behavior of URL
+			// is still present in the JRE.
+			URL rr = newURL("file://marbre.jpg"); //$NON-NLS-1$
+			assertEquals("", rr.getPath()); //$NON-NLS-1$
 		}
 	}
 
-	@Test
-	@DisplayName("join(URL, String...)")
-	public void joinURLStringArray() throws Exception {
-		assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z/a/b/c?toto#frag"), FileSystem.join(createHttpUrl(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), FileSystem.join(createFileInJarUrl(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertEquals(newURL("file:/the%20path/to/file%20with%20space.toto/a/b/c"), FileSystem.join(createFileUrlWithSpacesHardCoded(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), FileSystem.join(createFileInJarUrlWithSpaces(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-	}
+	@DisplayName("convertURLToFile")
+	@Nested
+	public class ConvertURLToFile {
 
-	@Test
-	@DisplayName("join(URL, File...)")
-	public void joinURLFileArray() throws Exception {
-		assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z/a/b/c?toto#frag"), //$NON-NLS-1$
-				FileSystem.join(createHttpUrl(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
-				FileSystem.join(createFileInJarUrl(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(newURL("file:/the%20path/to/file%20with%20space.toto/a/b/c"), //$NON-NLS-1$
-				FileSystem.join(createFileUrlWithSpacesHardCoded(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
-				FileSystem.join(createFileInJarUrlWithSpaces(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}
-
-	@Test
-	@DisplayName("split(URL)")
-	public void splitURL() throws Exception {
-		assertArrayEquals(new String[] {"", "path", "to", "file.x.z.z"}, FileSystem.split(createHttpUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertArrayEquals(new String[] {"", "org", "arakhne", "afc", "vmutil", "file.x.z.z"}, FileSystem.split(createFileInJarUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		assertArrayEquals(new String[] {"", "the path", "to", "file with space.toto"}, FileSystem.split(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertArrayEquals(new String[] {"", "org", "arakhne", "afc", "vmutil", "file.x.z.z"}, FileSystem.split(createFileInJarUrlWithSpaces())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		assertArrayEquals(new String[] {"", "a.b.c"}, FileSystem.split(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[] {""}, FileSystem.split(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	@DisplayName("extensions(URL)")
-	public void extensionsURL() throws Exception {
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createHttpUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createFileInJarUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[] {"toto"}, FileSystem.extensions(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createFileInJarUrlWithSpaces())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[0], FileSystem.extensions(newURL("file://"))); //$NON-NLS-1$
-	}
-
-	@Test
-	@DisplayName("extensions(String)")
-	public void extensionsString() {
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[0], FileSystem.extensions("file://")); //$NON-NLS-1$
-
-		assertArrayEquals(new String[] {"dae"}, FileSystem.extensions("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertArrayEquals(new String[] {"dae"}, FileSystem.extensions("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertArrayEquals(new String[] {"dae"}, FileSystem.extensions("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	@DisplayName("extension(URL)")
-	public void extensionURL() throws Exception {
-		assertEquals(".z", FileSystem.extension(createHttpUrl())); //$NON-NLS-1$
-		assertEquals(".z", FileSystem.extension(createFileInJarUrl())); //$NON-NLS-1$
-		assertEquals(".toto", FileSystem.extension(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
-		assertEquals(".z", FileSystem.extension(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
-		assertEquals(".c", FileSystem.extension(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("", FileSystem.extension(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	@DisplayName("extension(String)")
-	public void extensionString() {
-		assertEquals(".z", FileSystem.extension("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".z", FileSystem.extension("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".z", FileSystem.extension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".z", FileSystem.extension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".z", FileSystem.extension("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".c", FileSystem.extension("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".c", FileSystem.extension("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".c", FileSystem.extension("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("", FileSystem.extension("file://")); //$NON-NLS-1$ //$NON-NLS-2$
-
-		assertEquals(".dae", FileSystem.extension("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".dae", FileSystem.extension("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(".dae", FileSystem.extension("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	@DisplayName("hasExtension(URL, String)")
-	public void hasExtensionURL() throws Exception {
-		assertTrue(FileSystem.hasExtension(createHttpUrl(), ".z")); //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createHttpUrl(), "z")); //$NON-NLS-1$
-		assertFalse(FileSystem.hasExtension(createHttpUrl(), ".c")); //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createFileInJarUrl(), ".z")); //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createFileInJarUrl(), "z")); //$NON-NLS-1$
-		assertFalse(FileSystem.hasExtension(createFileInJarUrl(), ".c")); //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), ".toto")); //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), "toto")); //$NON-NLS-1$
-		assertFalse(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), ".zip")); //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createFileInJarUrlWithSpaces(), ".z")); //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createFileInJarUrlWithSpaces(), "z")); //$NON-NLS-1$
-		assertFalse(FileSystem.hasExtension(createFileInJarUrlWithSpaces(), ".c")); //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(newURL("file:///a.b.c/"), ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension(newURL("file:///a.b.c/"), "c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension(newURL("file:///a.b.c/"), ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension(newURL("file://"), ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	@DisplayName("hasExtension(String, String)")
-	public void hasExtensionString() {
-		assertTrue(FileSystem.hasExtension("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag", "z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z", "z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", "z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", "z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z", "z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("file:///a.b.c/", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("file:///a.b.c/", "c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("file:///a.b.c/", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("file:a.b.c", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("file:a.b.c", "c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("file:a.b.c", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("a.b.c", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("a.b.c", "c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("a.b.c", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("file://", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
-
-		assertTrue(FileSystem.hasExtension("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", "dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", "dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertTrue(FileSystem.hasExtension("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", "dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertFalse(FileSystem.hasExtension("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	@DisplayName("removeExtension(URL)")
-	public void removeExtensionURL() throws Exception {
-		assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z?toto#frag"), FileSystem.removeExtension(createHttpUrl())); //$NON-NLS-1$
-		assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z"), FileSystem.removeExtension(createFileInJarUrl())); //$NON-NLS-1$
-		assertEquals(newURL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
-		assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z"), FileSystem.removeExtension(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
-		assertEquals(newURL("file:///a.b"), FileSystem.removeExtension(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("file", "", ""), FileSystem.removeExtension(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-	}
-
-	@Test
-	@DisplayName("replaceExtension(URL, String)")
-	public void replaceExtensionURLString() throws Exception {
-		assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.xyz?toto#frag"), FileSystem.replaceExtension(createHttpUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.xyz"), FileSystem.replaceExtension(createFileInJarUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesHardCoded(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.xyz"), FileSystem.replaceExtension(createFileInJarUrlWithSpaces(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("file:///a.b.xyz"), FileSystem.replaceExtension(newURL("file:///a.b.c/"), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(newURL("file", "", ""), FileSystem.replaceExtension(newURL("file://"), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-	}
-
-	@Test
-	@DisplayName("addExtension(URL, String)")
-	public void addExtensionURLString() throws Exception {
-		assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z.xyz?toto#frag"), FileSystem.addExtension(createHttpUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z.xyz"), FileSystem.addExtension(createFileInJarUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesHardCoded(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z.xyz"), FileSystem.addExtension(createFileInJarUrlWithSpaces(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(newURL("file:///a.b.c.xyz"), FileSystem.addExtension(newURL("file:///a.b.c/"), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(newURL("file", "", ""), FileSystem.addExtension(newURL("file://"), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-	}
-
-	@Test
-	@DisplayName("basename(URL)")
-	public void basenameURL() throws Exception {
-		assertEquals("file.x.z", FileSystem.basename(createHttpUrl())); //$NON-NLS-1$
-		assertEquals("file.x.z", FileSystem.basename(createFileInJarUrl())); //$NON-NLS-1$
-		assertEquals("file with space", FileSystem.basename(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
-		assertEquals("file.x.z", FileSystem.basename(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
-		assertEquals("a.b", FileSystem.basename(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("", FileSystem.basename(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
-
-		URL url = newURL("file", "", "D:\\vivus_test\\export dae\\yup\\terrain_physx.dae");    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		try {
-			assertEquals("terrain_physx", FileSystem.basename(url)); //$NON-NLS-1$
-			fail("expecting assertion failure"); //$NON-NLS-1$
+		@DisplayName("#1")
+		@Test
+		public void convertURLToFile_1() throws Exception {
+			try {
+				FileSystem.convertURLToFile(newURL("http://www.arakhne.org")); //$NON-NLS-1$
+				fail("not a file URL"); //$NON-NLS-1$
+			}
+			catch(IllegalArgumentException exception) {
+				//
+			}
 		}
-		catch(AssertionError exception) {
-			//
+
+		@DisplayName("#2")
+		@Test
+		public void convertURLToFile_2() throws Exception {
+			assertEquals(new File("toto").getCanonicalPath(),  //$NON-NLS-1$
+					FileSystem.convertURLToFile(newURL("file:./toto")).getCanonicalPath()); //$NON-NLS-1$
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void convertURLToFile_3() throws Exception {
+			assertEquals(new File("toto").getCanonicalPath(),  //$NON-NLS-1$
+					FileSystem.convertURLToFile(newURL("file:toto")).getCanonicalPath()); //$NON-NLS-1$
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void convertURLToFile_4() throws Exception {
+			assertEquals(new File("toto").getCanonicalPath(),  //$NON-NLS-1$
+					FileSystem.convertURLToFile(newURL("file:./abs/../toto")).getCanonicalPath()); //$NON-NLS-1$
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void convertURLToFile_5() throws Exception {
+			assertEquals(new File("/toto").getCanonicalPath(),  //$NON-NLS-1$
+					FileSystem.convertURLToFile(newURL("file:/toto")).getCanonicalPath()); //$NON-NLS-1$
 		}
 	}
 
-	@Test
-	@DisplayName("basename(String)")
-	public void basenameString() {
-		assertEquals("file.x.z", FileSystem.basename("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file.x.z", FileSystem.basename("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file.x.z", FileSystem.basename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file.x.z", FileSystem.basename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file.x.z", FileSystem.basename("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a.b", FileSystem.basename("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a.b", FileSystem.basename("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a.b", FileSystem.basename("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("", FileSystem.basename("file://")); //$NON-NLS-1$ //$NON-NLS-2$
+	@DisplayName("convertStringToURL")
+	@Nested
+	public class ConvertStringToURL {
 
-		assertEquals("terrain_physx", FileSystem.basename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("terrain_physx", FileSystem.basename("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("terrain_physx", FileSystem.basename("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		@DisplayName("#1")
+		@Test
+		public void convertStringToURL_1() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertNull(FileSystem.convertStringToURL(null, true));
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void convertStringToURL_2() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertNull(FileSystem.convertStringToURL("", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void convertStringToURL_3() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertNull(FileSystem.convertStringToURL(null, false));
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void convertStringToURL_4() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertNull(FileSystem.convertStringToURL("", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void convertStringToURL_5() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false); //$NON-NLS-1$
+				assertNotNull(rr);
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void convertStringToURL_6() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false); //$NON-NLS-1$
+				assertEquals("file", rr.getProtocol()); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void convertStringToURL_7() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false); //$NON-NLS-1$
+				assertEquals("", rr.getAuthority()); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void convertStringToURL_8() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false); //$NON-NLS-1$
+				assertEquals("", rr.getHost()); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void convertStringToURL_9() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false); //$NON-NLS-1$
+				assertNull(rr.getQuery());
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void convertStringToURL_10() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false); //$NON-NLS-1$
+				assertEquals("marbre.jpg", rr.getPath()); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void convertStringToURL_11() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(newURL("http", "www.arakhne.org", "/"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("http://www.arakhne.org/", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void convertStringToURL_12() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(newURL("http", "www.arakhne.org", "/"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("http://www.arakhne.org/", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void convertStringToURL_13() throws Exception {
+			handlesResourceUrl();
+			try {
+				// CAUTION: testing right-formed jar URL.
+				assertEquals(newURL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void convertStringToURL_14() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(newURL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void convertStringToURL_15() throws Exception {
+			handlesResourceUrl();
+			try {
+				// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
+				assertEquals(newURL("file", "", "/home/test/j.jar"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("jar:/home/test/j.jar", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void convertStringToURL_16() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(newURL("file", "", "/home/test/j.jar"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("jar:/home/test/j.jar", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void convertStringToURL_17() throws Exception {
+			handlesResourceUrl();
+			try {
+				// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
+				assertEquals(newURL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void convertStringToURL_18() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(newURL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#19")
+		@Test
+		public void convertStringToURL_19() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				assertNotNull(testResource);
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#20")
+		@Test
+		public void convertStringToURL_20() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				assertEquals(testResource,
+						FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#21")
+		@Test
+		public void convertStringToURL_21() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(null,
+						FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#22")
+		@Test
+		public void convertStringToURL_22() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				assertEquals(testResource,
+						FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#23")
+		@Test
+		public void convertStringToURL_23() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(null,
+						FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#24")
+		@Test
+		public void convertStringToURL_24() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				assertEquals(testResource,
+						FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#25")
+		@Test
+		public void convertStringToURL_25() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(newURL("file", "", "/org/arakhne/afc/vmutil/test.txt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#26")
+		@Test
+		public void convertStringToURL_26() throws Exception {
+			handlesResourceUrl();
+			try {
+				URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				assertEquals(testResource,
+						FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@DisplayName("#27")
+		@Test
+		public void convertStringToURL_27() throws Exception {
+			handlesResourceUrl();
+			try {
+				assertEquals(newURL("file","", "org/arakhne/afc/vmutil/test.txt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
 	}
 
-	@Test
-	@DisplayName("largeBasename(URL)")
-	public void largeBasenameURL() throws Exception {
-		assertEquals("file.x.z.z", FileSystem.largeBasename(createHttpUrl())); //$NON-NLS-1$
-		assertEquals("file.x.z.z", FileSystem.largeBasename(createFileInJarUrl())); //$NON-NLS-1$
-		assertEquals("file with space.toto", FileSystem.largeBasename(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
-		assertEquals("file.x.z.z", FileSystem.largeBasename(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
-		assertEquals("a.b.c", FileSystem.largeBasename(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("", FileSystem.largeBasename(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
+	@DisplayName("join")
+	@Nested
+	public class Join {
+
+		@DisplayName("(URL, String...) #1")
+		@Test
+		public void joinURLStringArray_1() throws Exception {
+			assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z/a/b/c?toto#frag"), FileSystem.join(createHttpUrl(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+
+		@DisplayName("(URL, String...) #2")
+		@Test
+		public void joinURLStringArray_2() throws Exception {
+			assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), FileSystem.join(createFileInJarUrl(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+
+		@DisplayName("(URL, String...) #3")
+		@Test
+		public void joinURLStringArray_3() throws Exception {
+			assertEquals(newURL("file:/the%20path/to/file%20with%20space.toto/a/b/c"), FileSystem.join(createFileUrlWithSpacesHardCoded(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+
+		@DisplayName("(URL, String...) #4")
+		@Test
+		public void joinURLStringArray_4() throws Exception {
+			assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), FileSystem.join(createFileInJarUrlWithSpaces(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+
+		@Test
+		@DisplayName("(URL, File...) #1")
+		public void joinURLFileArray_1() throws Exception {
+			assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z/a/b/c?toto#frag"), //$NON-NLS-1$
+					FileSystem.join(createHttpUrl(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Test
+		@DisplayName("(URL, File...) #2")
+		public void joinURLFileArray_2() throws Exception {
+			assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
+					FileSystem.join(createFileInJarUrl(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Test
+		@DisplayName("(URL, File...) #3")
+		public void joinURLFileArray_3() throws Exception {
+			assertEquals(newURL("file:/the%20path/to/file%20with%20space.toto/a/b/c"), //$NON-NLS-1$
+					FileSystem.join(createFileUrlWithSpacesHardCoded(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Test
+		@DisplayName("(URL, File...) #4")
+		public void joinURLFileArray_4() throws Exception {
+			assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
+					FileSystem.join(createFileInJarUrlWithSpaces(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
 	}
 
-	@Test
-	@DisplayName("largeBasename(String)")
-	public void largeBasenameString() {
-		assertEquals("file.x.z.z", FileSystem.largeBasename("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file.x.z.z", FileSystem.largeBasename("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file.x.z.z", FileSystem.largeBasename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file.x.z.z", FileSystem.largeBasename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file.x.z.z", FileSystem.largeBasename("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a.b.c", FileSystem.largeBasename("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a.b.c", FileSystem.largeBasename("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a.b.c", FileSystem.largeBasename("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("", FileSystem.largeBasename("file://")); //$NON-NLS-1$ //$NON-NLS-2$
+	@DisplayName("split")
+	@Nested
+	public class Split {
 
-		assertEquals("terrain_physx.dae", FileSystem.largeBasename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("terrain_physx.dae", FileSystem.largeBasename("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("terrain_physx.dae", FileSystem.largeBasename("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		@Test
+		@DisplayName("(URL) #1")
+		public void splitURL_1() throws Exception {
+			assertArrayEquals(new String[] {"", "path", "to", "file.x.z.z"}, FileSystem.split(createHttpUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+
+		@Test
+		@DisplayName("(URL) #2")
+		public void splitURL_2() throws Exception {
+			assertArrayEquals(new String[] {"", "org", "arakhne", "afc", "vmutil", "file.x.z.z"}, FileSystem.split(createFileInJarUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		}
+
+		@Test
+		@DisplayName("(URL) #3")
+		public void splitURL_3() throws Exception {
+			assertArrayEquals(new String[] {"", "the path", "to", "file with space.toto"}, FileSystem.split(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+
+		@Test
+		@DisplayName("(URL) #4")
+		public void splitURL_4() throws Exception {
+			assertArrayEquals(new String[] {"", "org", "arakhne", "afc", "vmutil", "file.x.z.z"}, FileSystem.split(createFileInJarUrlWithSpaces())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		}
+
+		@Test
+		@DisplayName("(URL) #5")
+		public void splitURL_5() throws Exception {
+			assertArrayEquals(new String[] {"", "a.b.c"}, FileSystem.split(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Test
+		@DisplayName("(URL) #6")
+		public void splitURL_6() throws Exception {
+			assertArrayEquals(new String[] {""}, FileSystem.split(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	}
 
-	@Test
-	@DisplayName("shortBasename(URL)")
-	public void shortBasenameURL() throws Exception {
-		assertEquals("file", FileSystem.shortBasename(createHttpUrl())); //$NON-NLS-1$
-		assertEquals("file", FileSystem.shortBasename(createFileInJarUrl())); //$NON-NLS-1$
-		assertEquals("file with space", FileSystem.shortBasename(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
-		assertEquals("file", FileSystem.shortBasename(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
-		assertEquals("a", FileSystem.shortBasename(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("", FileSystem.shortBasename(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+	@DisplayName("extensions")
+	@Nested
+	public class Extensions {
 
-	@Test
-	@DisplayName("shortBasename(String)")
-	public void shortBasenameString() {
-		assertEquals("file", FileSystem.shortBasename("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file", FileSystem.shortBasename("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file", FileSystem.shortBasename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file", FileSystem.shortBasename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("file", FileSystem.shortBasename("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a", FileSystem.shortBasename("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a", FileSystem.shortBasename("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("a", FileSystem.shortBasename("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("", FileSystem.shortBasename("file://")); //$NON-NLS-1$ //$NON-NLS-2$
+		@Test
+		@DisplayName("(URL) #1")
+		public void extensionsURL_1() throws Exception {
+			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createHttpUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
 
-		assertEquals("terrain_physx", FileSystem.shortBasename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("terrain_physx", FileSystem.shortBasename("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("terrain_physx", FileSystem.shortBasename("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+		@Test
+		@DisplayName("(URL) #2")
+		public void extensionsURL_2() throws Exception {
+			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createFileInJarUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
 
-	@Test
-	@DisplayName("toShortestURL(URL)")
-	public void toShortestURLURL() throws Exception {
-		handlesResourceUrl();
-		try {
-			File f1 = new File("/toto"); //$NON-NLS-1$
-			URL u1 = f1.toURI().toURL();
-			URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
-			URL u2e = newURL("resource:org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+		@Test
+		@DisplayName("(URL) #3")
+		public void extensionsURL_3() throws Exception {
+			assertArrayEquals(new String[] {"toto"}, FileSystem.extensions(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #4")
+		public void extensionsURL_4() throws Exception {
+			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createFileInJarUrlWithSpaces())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Test
+		@DisplayName("(URL) #5")
+		public void extensionsURL_5() throws Exception {
+			assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Test
+		@DisplayName("(URL) #6")
+		public void extensionsURL_6() throws Exception {
+			assertArrayEquals(new String[0], FileSystem.extensions(newURL("file://"))); //$NON-NLS-1$
+		}
 	
-			URL actual;
+		@Test
+		@DisplayName("(String) #1")
+		public void extensionsString_1() {
+			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+		
+		@Test
+		@DisplayName("(String) #2")
+		public void extensionsString_2() {
+			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+		
+		@Test
+		@DisplayName("(String) #3")
+		public void extensionsString_3() {
+			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+		
+		@Test
+		@DisplayName("(String) #4")
+		public void extensionsString_4() {
+			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+		
+		@Test
+		@DisplayName("(String) #5")
+		public void extensionsString_5() {
+			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+		
+		@Test
+		@DisplayName("(String) #6")
+		public void extensionsString_6() {
+			assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		
+		@Test
+		@DisplayName("(String) #7")
+		public void extensionsString_7() {
+			assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		
+		@Test
+		@DisplayName("(String) #8")
+		public void extensionsString_8() {
+			assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		
+		@Test
+		@DisplayName("(String) #9")
+		public void extensionsString_9() {
+			assertArrayEquals(new String[0], FileSystem.extensions("file://")); //$NON-NLS-1$
+		}
+		
+		@Test
+		@DisplayName("(String) #10")
+		public void extensionsString_10() {
+			assertArrayEquals(new String[] {"dae"}, FileSystem.extensions("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #11")
+		public void extensionsString_11() {
+			assertArrayEquals(new String[] {"dae"}, FileSystem.extensions("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #12")
+		public void extensionsString_12() {
+			assertArrayEquals(new String[] {"dae"}, FileSystem.extensions("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+
+	@DisplayName("extension")
+	@Nested
+	public class Extension {
+
+		@Test
+		@DisplayName("(URL) #1")
+		public void extensionURL_1() throws Exception {
+			assertEquals(".z", FileSystem.extension(createHttpUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #2")
+		public void extensionURL_2() throws Exception {
+			assertEquals(".z", FileSystem.extension(createFileInJarUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #3")
+		public void extensionURL_3() throws Exception {
+			assertEquals(".toto", FileSystem.extension(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #4")
+		public void extensionURL_4() throws Exception {
+			assertEquals(".z", FileSystem.extension(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #5")
+		public void extensionURL_5() throws Exception {
+			assertEquals(".c", FileSystem.extension(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL) #6")
+		public void extensionURL_6() throws Exception {
+			assertEquals("", FileSystem.extension(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	
-			actual = FileSystem.toShortestURL(u1);
-			assertEquals(u1, actual);
+		@Test
+		@DisplayName("(String) #1")
+		public void extensionString_1() {
+			assertEquals(".z", FileSystem.extension("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #2")
+		public void extensionString_2() {
+			assertEquals(".z", FileSystem.extension("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #3")
+		public void extensionString_3() {
+			assertEquals(".z", FileSystem.extension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #4")
+		public void extensionString_4() {
+			assertEquals(".z", FileSystem.extension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #5")
+		public void extensionString_5() {
+			assertEquals(".z", FileSystem.extension("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #6")
+		public void extensionString_6() {
+			assertEquals(".c", FileSystem.extension("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #7")
+		public void extensionString_7() {
+			assertEquals(".c", FileSystem.extension("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #8")
+		public void extensionString_8() {
+			assertEquals(".c", FileSystem.extension("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #9")
+		public void extensionString_9() {
+			assertEquals("", FileSystem.extension("file://")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #10")
+		public void extensionString_10() {
+			assertEquals(".dae", FileSystem.extension("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #11")
+		public void extensionString_11() {
+			assertEquals(".dae", FileSystem.extension("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #12")
+		public void extensionString_12() {
+			assertEquals(".dae", FileSystem.extension("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+
+	@DisplayName("hasExtension")
+	@Nested
+	public class HasExtension {
+
+		@Test
+		@DisplayName("(URL, String) #1")
+		public void hasExtensionURL_1() throws Exception {
+			assertTrue(FileSystem.hasExtension(createHttpUrl(), ".z")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #2")
+		public void hasExtensionURL_2() throws Exception {
+			assertTrue(FileSystem.hasExtension(createHttpUrl(), "z")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #3")
+		public void hasExtensionURL_3() throws Exception {
+			assertFalse(FileSystem.hasExtension(createHttpUrl(), ".c")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #4")
+		public void hasExtensionURL_4() throws Exception {
+			assertTrue(FileSystem.hasExtension(createFileInJarUrl(), ".z")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #5")
+		public void hasExtensionURL_5() throws Exception {
+			assertTrue(FileSystem.hasExtension(createFileInJarUrl(), "z")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #6")
+		public void hasExtensionURL_6() throws Exception {
+			assertFalse(FileSystem.hasExtension(createFileInJarUrl(), ".c")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #7")
+		public void hasExtensionURL_7() throws Exception {
+			assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), ".toto")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #8")
+		public void hasExtensionURL_8() throws Exception {
+			assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), "toto")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #9")
+		public void hasExtensionURL_9() throws Exception {
+			assertFalse(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), ".zip")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #10")
+		public void hasExtensionURL_10() throws Exception {
+			assertTrue(FileSystem.hasExtension(createFileInJarUrlWithSpaces(), ".z")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #11")
+		public void hasExtensionURL_11() throws Exception {
+			assertTrue(FileSystem.hasExtension(createFileInJarUrlWithSpaces(), "z")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #12")
+		public void hasExtensionURL_12() throws Exception {
+			assertFalse(FileSystem.hasExtension(createFileInJarUrlWithSpaces(), ".c")); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #13")
+		public void hasExtensionURL_13() throws Exception {
+			assertTrue(FileSystem.hasExtension(newURL("file:///a.b.c/"), ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #14")
+		public void hasExtensionURL_14() throws Exception {
+			assertTrue(FileSystem.hasExtension(newURL("file:///a.b.c/"), "c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #15")
+		public void hasExtensionURL_15() throws Exception {
+			assertFalse(FileSystem.hasExtension(newURL("file:///a.b.c/"), ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #16")
+		public void hasExtensionURL_16() throws Exception {
+			assertFalse(FileSystem.hasExtension(newURL("file://"), ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	
-			actual = FileSystem.toShortestURL(u2);
-			assertEquals(u2e, actual);
-		} finally {
-			unhandlesResourceUrl();
+		@Test
+		@DisplayName("(String, String) #1")
+		public void hasExtensionString_1() {
+			assertTrue(FileSystem.hasExtension("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #2")
+		public void hasExtensionString_2() {
+			assertTrue(FileSystem.hasExtension("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag", "z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #3")
+		public void hasExtensionString_3() {
+			assertFalse(FileSystem.hasExtension("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #4")
+		public void hasExtensionString_4() {
+			assertTrue(FileSystem.hasExtension("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #5")
+		public void hasExtensionString_5() {
+			assertTrue(FileSystem.hasExtension("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z", "z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #6")
+		public void hasExtensionString_6() {
+			assertFalse(FileSystem.hasExtension("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #7")
+		public void hasExtensionString_7() {
+			assertTrue(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #8")
+		public void hasExtensionString_8() {
+			assertTrue(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", "z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #9")
+		public void hasExtensionString_9() {
+			assertFalse(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #10")
+		public void hasExtensionString_10() {
+			assertTrue(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #11")
+		public void hasExtensionString_11() {
+			assertTrue(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", "z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #12")
+		public void hasExtensionString_12() {
+			assertFalse(FileSystem.hasExtension("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #13")
+		public void hasExtensionString_13() {
+			assertTrue(FileSystem.hasExtension("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #14")
+		public void hasExtensionString_14() {
+			assertTrue(FileSystem.hasExtension("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z", "z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #15")
+		public void hasExtensionString_15() {
+			assertFalse(FileSystem.hasExtension("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #16")
+		public void hasExtensionString_16() {
+			assertTrue(FileSystem.hasExtension("file:///a.b.c/", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #17")
+		public void hasExtensionString_17() {
+			assertTrue(FileSystem.hasExtension("file:///a.b.c/", "c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #18")
+		public void hasExtensionString_18() {
+			assertFalse(FileSystem.hasExtension("file:///a.b.c/", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #19")
+		public void hasExtensionString_19() {
+			assertTrue(FileSystem.hasExtension("file:a.b.c", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #20")
+		public void hasExtensionString_20() {
+			assertTrue(FileSystem.hasExtension("file:a.b.c", "c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #21")
+		public void hasExtensionString_21() {
+			assertFalse(FileSystem.hasExtension("file:a.b.c", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #22")
+		public void hasExtensionString_22() {
+			assertTrue(FileSystem.hasExtension("a.b.c", ".c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #23")
+		public void hasExtensionString_23() {
+			assertTrue(FileSystem.hasExtension("a.b.c", "c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #24")
+		public void hasExtensionString_24() {
+			assertFalse(FileSystem.hasExtension("a.b.c", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #25")
+		public void hasExtensionString_25() {
+			assertFalse(FileSystem.hasExtension("file://", ".z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #26")
+		public void hasExtensionString_26() {
+			assertTrue(FileSystem.hasExtension("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #27")
+		public void hasExtensionString_27() {
+			assertTrue(FileSystem.hasExtension("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", "dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #28")
+		public void hasExtensionString_28() {
+			assertFalse(FileSystem.hasExtension("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #29")
+		public void hasExtensionString_29() {
+			assertTrue(FileSystem.hasExtension("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #30")
+		public void hasExtensionString_30() {
+			assertTrue(FileSystem.hasExtension("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", "dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #31")
+		public void hasExtensionString_31() {
+			assertFalse(FileSystem.hasExtension("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #32")
+		public void hasExtensionString_32() {
+			assertTrue(FileSystem.hasExtension("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #33")
+		public void hasExtensionString_33() {
+			assertTrue(FileSystem.hasExtension("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", "dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String, String) #34")
+		public void hasExtensionString_34() {
+			assertFalse(FileSystem.hasExtension("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae", ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
+	@DisplayName("removeExtension")
+	@Nested
+	public class RemoveExtension {
 
-	@Test
-	@DisplayName("makeRelative(URL, URL)")
-	public void makeRelativeURLURL() throws Exception {
-		File rel;
-		URL root, abs;
-
-		root = FileSystem.getUserHomeDirectory().toURI().toURL();
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a").toURI().toURL(); //$NON-NLS-1$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a"); //$NON-NLS-1$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"b").toURI().toURL(); //$NON-NLS-1$ //$NON-NLS-2$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator+"a","b"); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-		root = FileSystem.join(FileSystem.getUserHomeDirectory().toURI().toURL(), "zz", "abc"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a").toURI().toURL(); //$NON-NLS-1$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+"a"); //$NON-NLS-1$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-
-
-
-		root = FileSystem.join(FileSystem.getUserHomeDirectory().toURI().toURL(), "zz", "abc"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		abs = new File(FileSystem.getUserHomeDirectory(), "a"+File.separator+"zz"+File.separator+"bc").toURI().toURL(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		rel = new File(FileSystem.CURRENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+FileSystem.PARENT_DIRECTORY+File.separator
-				+"a"+File.separator+"zz"+File.separator+"bc"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(rel, FileSystem.makeRelative(abs, root));
-	}
-
-	@Test
-	@DisplayName("makeCanonical(URL)")
-	public void makeCanonicalURL() throws Exception {
-		assertEquals(
-				createHttpUrl(), 
-				FileSystem.makeCanonicalURL(createHttpUrl()));
-
-		assertEquals(
-				createFileInJarUrl(), 
-				FileSystem.makeCanonicalURL(createFileInJarUrl()));
-
-		assertEquals(
-				newURL("file:/a/b/c/d/e"),  //$NON-NLS-1$
-				FileSystem.makeCanonicalURL(newURL("file:/a/b/./c/./d/e"))); //$NON-NLS-1$
-
-		assertEquals(
-				newURL("file:/a/d/e"),  //$NON-NLS-1$
-				FileSystem.makeCanonicalURL(newURL("file:/a/b/../c/../d/e"))); //$NON-NLS-1$
-
-		assertEquals(
-				newURL("file:/a/b/d/e"),  //$NON-NLS-1$
-				FileSystem.makeCanonicalURL(newURL("file:/a/b/./c/../d/e"))); //$NON-NLS-1$
-
-		assertEquals(
-				newURL("file:../a/b/c/d/e"),  //$NON-NLS-1$
-				FileSystem.makeCanonicalURL(newURL("file:../a/b/./c/./d/e"))); //$NON-NLS-1$
-
-		assertEquals(
-				newURL("file:../a/c/d/e"),  //$NON-NLS-1$
-				FileSystem.makeCanonicalURL(newURL("file:../a/b/../c/./d/e"))); //$NON-NLS-1$
-	}
-
-	private String readInputStream(InputStream is) throws IOException {
-		StringBuilder b = new StringBuilder();
-		byte[] buffer = new byte[2048];
-		int len;
-		while ((len=is.read(buffer))>0) {
-			b.append(new String(buffer, 0, len));
+		@Test
+		@DisplayName("(URL) #1")
+		public void removeExtensionURL_1() throws Exception {
+			assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z?toto#frag"), FileSystem.removeExtension(createHttpUrl())); //$NON-NLS-1$
 		}
-		is.close();
-		return b.toString();
-	}
 
-	private void createZip(File testArchive) throws IOException {
-		File testDir = null;
-		try {
-			testDir = FileSystem.createTempDirectory("unittest", null); //$NON-NLS-1$
-			FileSystem.copy(FileSystemTest.class.getResource("test.txt"), testDir); //$NON-NLS-1$
-			FileSystem.copy(FileSystemTest.class.getResource("test2.txt"), testDir); //$NON-NLS-1$
-			File subdir = new File(testDir, "subdir"); //$NON-NLS-1$
-			subdir.mkdirs();
-			FileSystem.copy(FileSystemTest.class.getResource("test.txt"), subdir); //$NON-NLS-1$
-			FileSystem.zipFile(testDir, testArchive);
-		} finally {
-			FileSystem.delete(testDir);
+		@Test
+		@DisplayName("(URL) #2")
+		public void removeExtensionURL_2() throws Exception {
+			assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z"), FileSystem.removeExtension(createFileInJarUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #3")
+		public void removeExtensionURL_3() throws Exception {
+			assertEquals(newURL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #4")
+		public void removeExtensionURL_4() throws Exception {
+			assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z"), FileSystem.removeExtension(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #5")
+		public void removeExtensionURL_5() throws Exception {
+			assertEquals(newURL("file:///a.b"), FileSystem.removeExtension(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL) #6")
+		public void removeExtensionURL_6() throws Exception {
+			assertEquals(newURL("file", "", ""), FileSystem.removeExtension(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		}
 	}
 
-	@Test
-	@DisplayName("zipFile(File)")
-	public void zipFileFile() throws IOException {
-		File testArchive = null;
+	@DisplayName("replaceExtension")
+	@Nested
+	public class ReplaceExtension {
 
-		try {
+		@Test
+		@DisplayName("(URL, String) #1")
+		public void replaceExtensionURLString_1() throws Exception {
+			assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.xyz?toto#frag"), FileSystem.replaceExtension(createHttpUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #2")
+		public void replaceExtensionURLString_2() throws Exception {
+			assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.xyz"), FileSystem.replaceExtension(createFileInJarUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #3")
+		public void replaceExtensionURLString_3() throws Exception {
+			assertEquals(newURL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesHardCoded(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #4")
+		public void replaceExtensionURLString_4() throws Exception {
+			assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.xyz"), FileSystem.replaceExtension(createFileInJarUrlWithSpaces(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #5")
+		public void replaceExtensionURLString_5() throws Exception {
+			assertEquals(newURL("file:///a.b.xyz"), FileSystem.replaceExtension(newURL("file:///a.b.c/"), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #6")
+		public void replaceExtensionURLString_6() throws Exception {
+			assertEquals(newURL("file", "", ""), FileSystem.replaceExtension(newURL("file://"), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		}
+	}
+
+	@DisplayName("addExtension")
+	@Nested
+	public class AddExtension {
+
+		@Test
+		@DisplayName("(URL, String) #1")
+		public void addExtensionURLString_1() throws Exception {
+			assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z.xyz?toto#frag"), FileSystem.addExtension(createHttpUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #2")
+		public void addExtensionURLString_2() throws Exception {
+			assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z.xyz"), FileSystem.addExtension(createFileInJarUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #3")
+		public void addExtensionURLString_3() throws Exception {
+			assertEquals(newURL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesHardCoded(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #4")
+		public void addExtensionURLString_4() throws Exception {
+			assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z.xyz"), FileSystem.addExtension(createFileInJarUrlWithSpaces(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #5")
+		public void addExtensionURLString_5() throws Exception {
+			assertEquals(newURL("file:///a.b.c.xyz"), FileSystem.addExtension(newURL("file:///a.b.c/"), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Test
+		@DisplayName("(URL, String) #6")
+		public void addExtensionURLString_6() throws Exception {
+			assertEquals(newURL("file", "", ""), FileSystem.addExtension(newURL("file://"), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		}
+	}
+
+	@DisplayName("basename")
+	@Nested
+	public class Basename {
+
+		@Test
+		@DisplayName("(URL) #1")
+		public void basenameURL_1() throws Exception {
+			assertEquals("file.x.z", FileSystem.basename(createHttpUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #2")
+		public void basenameURL_2() throws Exception {
+			assertEquals("file.x.z", FileSystem.basename(createFileInJarUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #3")
+		public void basenameURL_3() throws Exception {
+			assertEquals("file with space", FileSystem.basename(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #4")
+		public void basenameURL_4() throws Exception {
+			assertEquals("file.x.z", FileSystem.basename(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #5")
+		public void basenameURL_5() throws Exception {
+			assertEquals("a.b", FileSystem.basename(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL) #6")
+		public void basenameURL_6() throws Exception {
+			assertEquals("", FileSystem.basename(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL) #7")
+		public void basenameURL_7() throws Exception {
+			URL url = newURL("file", "", "D:\\vivus_test\\export dae\\yup\\terrain_physx.dae");    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			try {
+				assertEquals("terrain_physx", FileSystem.basename(url)); //$NON-NLS-1$
+				fail("expecting assertion failure"); //$NON-NLS-1$
+			}
+			catch(AssertionError exception) {
+				//
+			}
+		}
+	
+		@Test
+		@DisplayName("(String) #1")
+		public void basenameString_1() {
+			assertEquals("file.x.z", FileSystem.basename("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #2")
+		public void basenameString_2() {
+			assertEquals("file.x.z", FileSystem.basename("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #3")
+		public void basenameString_3() {
+			assertEquals("file.x.z", FileSystem.basename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #4")
+		public void basenameString_4() {
+			assertEquals("file.x.z", FileSystem.basename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #5")
+		public void basenameString_5() {
+			assertEquals("file.x.z", FileSystem.basename("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #6")
+		public void basenameString_6() {
+			assertEquals("a.b", FileSystem.basename("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #7")
+		public void basenameString_7() {
+			assertEquals("a.b", FileSystem.basename("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #8")
+		public void basenameString_8() {
+			assertEquals("a.b", FileSystem.basename("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #9")
+		public void basenameString_9() {
+			assertEquals("", FileSystem.basename("file://")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #10")
+		public void basenameString_10() {
+			assertEquals("terrain_physx", FileSystem.basename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #11")
+		public void basenameString_11() {
+			assertEquals("terrain_physx", FileSystem.basename("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #12")
+		public void basenameString_12() {
+			assertEquals("terrain_physx", FileSystem.basename("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+
+	@DisplayName("largeBasename")
+	@Nested
+	public class LargeBasename {
+
+		@Test
+		@DisplayName("(URL) #1")
+		public void largeBasenameURL_1() throws Exception {
+			assertEquals("file.x.z.z", FileSystem.largeBasename(createHttpUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #2")
+		public void largeBasenameURL_2() throws Exception {
+			assertEquals("file.x.z.z", FileSystem.largeBasename(createFileInJarUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #3")
+		public void largeBasenameURL_3() throws Exception {
+			assertEquals("file with space.toto", FileSystem.largeBasename(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #4")
+		public void largeBasenameURL_4() throws Exception {
+			assertEquals("file.x.z.z", FileSystem.largeBasename(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #5")
+		public void largeBasenameURL_5() throws Exception {
+			assertEquals("a.b.c", FileSystem.largeBasename(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL) #6")
+		public void largeBasenameURL_6() throws Exception {
+			assertEquals("", FileSystem.largeBasename(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@Test
+		@DisplayName("(String) #1")
+		public void largeBasenameString_1() {
+			assertEquals("file.x.z.z", FileSystem.largeBasename("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #2")
+		public void largeBasenameString_2() {
+			assertEquals("file.x.z.z", FileSystem.largeBasename("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #3")
+		public void largeBasenameString_3() {
+			assertEquals("file.x.z.z", FileSystem.largeBasename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #4")
+		public void largeBasenameString_4() {
+			assertEquals("file.x.z.z", FileSystem.largeBasename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #5")
+		public void largeBasenameString_5() {
+			assertEquals("file.x.z.z", FileSystem.largeBasename("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #6")
+		public void largeBasenameString_6() {
+			assertEquals("a.b.c", FileSystem.largeBasename("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #7")
+		public void largeBasenameString_7() {
+			assertEquals("a.b.c", FileSystem.largeBasename("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #8")
+		public void largeBasenameString_8() {
+			assertEquals("a.b.c", FileSystem.largeBasename("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #9")
+		public void largeBasenameString_9() {
+			assertEquals("", FileSystem.largeBasename("file://")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #10")
+		public void largeBasenameString_10() {
+			assertEquals("terrain_physx.dae", FileSystem.largeBasename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #11")
+		public void largeBasenameString_11() {
+			assertEquals("terrain_physx.dae", FileSystem.largeBasename("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #12")
+		public void largeBasenameString_12() {
+			assertEquals("terrain_physx.dae", FileSystem.largeBasename("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+
+	@DisplayName("shortBasename")
+	@Nested
+	public class ShortBasename {
+
+		@Test
+		@DisplayName("(URL) #1")
+		public void shortBasenameURL_1() throws Exception {
+			assertEquals("file", FileSystem.shortBasename(createHttpUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #2")
+		public void shortBasenameURL_2() throws Exception {
+			assertEquals("file", FileSystem.shortBasename(createFileInJarUrl())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #3")
+		public void shortBasenameURL_3() throws Exception {
+			assertEquals("file with space", FileSystem.shortBasename(createFileUrlWithSpacesHardCoded())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #4")
+		public void shortBasenameURL_4() throws Exception {
+			assertEquals("file", FileSystem.shortBasename(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
+		}
+
+		@Test
+		@DisplayName("(URL) #5")
+		public void shortBasenameURL_5() throws Exception {
+			assertEquals("a", FileSystem.shortBasename(newURL("file:///a.b.c/"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@Test
+		@DisplayName("(URL) #6")
+		public void shortBasenameURL_6() throws Exception {
+			assertEquals("", FileSystem.shortBasename(newURL("file://"))); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@Test
+		@DisplayName("(String) #1")
+		public void shortBasenameString_1() {
+			assertEquals("file", FileSystem.shortBasename("http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #2")
+		public void shortBasenameString_2() {
+			assertEquals("file", FileSystem.shortBasename("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #3")
+		public void shortBasenameString_3() {
+			assertEquals("file", FileSystem.shortBasename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #4")
+		public void shortBasenameString_4() {
+			assertEquals("file", FileSystem.shortBasename("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #5")
+		public void shortBasenameString_5() {
+			assertEquals("file", FileSystem.shortBasename("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #6")
+		public void shortBasenameString_6() {
+			assertEquals("a", FileSystem.shortBasename("file:///a.b.c/")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #7")
+		public void shortBasenameString_7() {
+			assertEquals("a", FileSystem.shortBasename("file:a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #8")
+		public void shortBasenameString_8() {
+			assertEquals("a", FileSystem.shortBasename("a.b.c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #9")
+		public void shortBasenameString_9() {
+			assertEquals("", FileSystem.shortBasename("file://")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #10")
+		public void shortBasenameString_10() {
+			assertEquals("terrain_physx", FileSystem.shortBasename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #11")
+		public void shortBasenameString_11() {
+			assertEquals("terrain_physx", FileSystem.shortBasename("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		@Test
+		@DisplayName("(String) #12")
+		public void shortBasenameString_12() {
+			assertEquals("terrain_physx", FileSystem.shortBasename("file:\\D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+
+	@DisplayName("toShortestURL")
+	@Nested
+	public class ToShortestURL {
+
+		@Test
+		@DisplayName("(URL) #1")
+		public void toShortestURLURL_1() throws Exception {
+			handlesResourceUrl();
+			try {
+				File f1 = new File("/toto"); //$NON-NLS-1$
+				URL u1 = f1.toURI().toURL();
+				URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				URL u2e = newURL("resource:org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				var actual = FileSystem.toShortestURL(u1);
+				assertEquals(u1, actual);
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+
+		@Test
+		@DisplayName("(URL) #2")
+		public void toShortestURLURL_2() throws Exception {
+			handlesResourceUrl();
+			try {
+				File f1 = new File("/toto"); //$NON-NLS-1$
+				URL u1 = f1.toURI().toURL();
+				URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				URL u2e = newURL("resource:org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+				var actual = FileSystem.toShortestURL(u2);
+				assertEquals(u2e, actual);
+			} finally {
+				unhandlesResourceUrl();
+			}
+		}
+	}
+
+	@DisplayName("makeCanonical")
+	@Nested
+	public class MakeCanonicalURL {
+
+		@DisplayName("(URL) #1")
+		@Test
+		public void makeCanonicalURL_1() throws Exception {
+			assertEquals(
+					createHttpUrl(), 
+					FileSystem.makeCanonicalURL(createHttpUrl()));
+		}
+
+		@DisplayName("(URL) #2")
+		@Test
+		public void makeCanonicalURL_2() throws Exception {
+			assertEquals(
+					createFileInJarUrl(), 
+					FileSystem.makeCanonicalURL(createFileInJarUrl()));
+		}
+
+		@DisplayName("(URL) #3")
+		@Test
+		public void makeCanonicalURL_3() throws Exception {
+			assertEquals(
+					newURL("file:/a/b/c/d/e"),  //$NON-NLS-1$
+					FileSystem.makeCanonicalURL(newURL("file:/a/b/./c/./d/e"))); //$NON-NLS-1$
+		}
+
+		@DisplayName("(URL) #4")
+		@Test
+		public void makeCanonicalURL_4() throws Exception {
+			assertEquals(
+					newURL("file:/a/d/e"),  //$NON-NLS-1$
+					FileSystem.makeCanonicalURL(newURL("file:/a/b/../c/../d/e"))); //$NON-NLS-1$
+		}
+
+		@DisplayName("(URL) #5")
+		@Test
+		public void makeCanonicalURL_5() throws Exception {
+			assertEquals(
+					newURL("file:/a/b/d/e"),  //$NON-NLS-1$
+					FileSystem.makeCanonicalURL(newURL("file:/a/b/./c/../d/e"))); //$NON-NLS-1$
+		}
+
+		@DisplayName("(URL) #6")
+		@Test
+		public void makeCanonicalURL_6() throws Exception {
+			assertEquals(
+					newURL("file:../a/b/c/d/e"),  //$NON-NLS-1$
+					FileSystem.makeCanonicalURL(newURL("file:../a/b/./c/./d/e"))); //$NON-NLS-1$
+		}
+
+		@DisplayName("(URL) #7")
+		@Test
+		public void makeCanonicalURL_7() throws Exception {
+			assertEquals(
+					newURL("file:../a/c/d/e"),  //$NON-NLS-1$
+					FileSystem.makeCanonicalURL(newURL("file:../a/b/../c/./d/e"))); //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("zipFile")
+	@Nested
+	public class ZipFileTest {
+
+		private File testArchive;
+
+		@BeforeEach
+		public void setUp() throws Exception {
 			testArchive = File.createTempFile("unittest", ".zip"); //$NON-NLS-1$ //$NON-NLS-2$
-
 			createZip(testArchive);
+		}
 
-			try (ZipFile zipFile = new ZipFile(testArchive)) {
+		@AfterEach
+		public void tearDown() throws Exception {
+			if (testArchive != null) {
+				FileSystem.delete(testArchive);
+			}
+		}
 
+		@Test
+		@DisplayName("(File) #1")
+		public void zipFileFile_1() throws IOException {
+			try (var zipFile = new ZipFile(testArchive)) {
 				ZipEntry zipEntry = zipFile.getEntry("test.txt"); //$NON-NLS-1$
 				assertNotNull(zipEntry);
 				assertEquals("TEST1: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); //$NON-NLS-1$
+			}
+		}
 
-				zipEntry = zipFile.getEntry("test2.txt"); //$NON-NLS-1$
+		@Test
+		@DisplayName("(File) #2")
+		public void zipFileFile_2() throws IOException {
+			try (var zipFile = new ZipFile(testArchive)) {
+				var zipEntry = zipFile.getEntry("test2.txt"); //$NON-NLS-1$
 				assertNotNull(zipEntry);
 				assertEquals("TEST2: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); //$NON-NLS-1$
+			}
+		}
 
-				zipEntry = zipFile.getEntry("subdir/test.txt"); //$NON-NLS-1$
+		@Test
+		@DisplayName("(File) #3")
+		public void zipFileFile_3() throws IOException {
+			try (var zipFile = new ZipFile(testArchive)) {
+				var zipEntry = zipFile.getEntry("subdir/test.txt"); //$NON-NLS-1$
 				assertNotNull(zipEntry);
 				assertEquals("TEST1: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); //$NON-NLS-1$
 			}
-		} finally {
-			FileSystem.delete(testArchive);
 		}
-	}
+	}	
+	
+	@DisplayName("unzipFile")
+	@Nested
+	public class UnzipFile {
 
-	@Test
-	@DisplayName("unzipFile(File)")
-	public void testUnzipFileFile() throws IOException {
-		File testArchive = null;
-		try {
+		private File testArchive;
+		private File testDir;
+		private File subDir;
+
+		@BeforeEach
+		public void setUp() throws Exception {
 			testArchive = File.createTempFile("unittest", ".zip"); //$NON-NLS-1$ //$NON-NLS-2$
-
 			createZip(testArchive);
 
-			File testDir = FileSystem.createTempDirectory("unittest", null); //$NON-NLS-1$
+			testDir = FileSystem.createTempDirectory("unittest", null); //$NON-NLS-1$
 			FileSystem.deleteOnExit(testDir);
-			File subDir = new File(testDir, "subdir"); //$NON-NLS-1$
+			subDir = new File(testDir, "subdir"); //$NON-NLS-1$
 
 			FileSystem.unzipFile(testArchive, testDir);
 
 			assertTrue(testDir.isDirectory());
 			assertTrue(subDir.isDirectory());
+		}
 
+		@AfterEach
+		public void tearDown() throws Exception {
+			if (testArchive != null) {
+				FileSystem.delete(testArchive);
+			}
+		}
+
+		@Test
+		@DisplayName("(File) #1")
+		public void testUnzipFileFile_1() throws IOException {
 			String txt;
-
 			File file = new File(testDir, "test.txt"); //$NON-NLS-1$
 			try (FileInputStream fis = new FileInputStream(file)) {
 				txt = readInputStream(fis);
 			}
 			assertEquals("TEST1: FOR UNIT TEST ONLY", txt); //$NON-NLS-1$
+		}
 
-			file = new File(testDir, "test2.txt"); //$NON-NLS-1$
+		@Test
+		@DisplayName("(File) #2")
+		public void testUnzipFileFile_2() throws IOException {
+			String txt;
+			var file = new File(testDir, "test2.txt"); //$NON-NLS-1$
 			try (FileInputStream fis = new FileInputStream(file)) {
 				txt = readInputStream(fis);
 			}
 			assertEquals("TEST2: FOR UNIT TEST ONLY", txt); //$NON-NLS-1$
+		}
 
-			file = new File(subDir, "test.txt"); //$NON-NLS-1$
+		@Test
+		@DisplayName("(File) #3")
+		public void testUnzipFileFile_3() throws IOException {
+			String txt;
+			var file = new File(subDir, "test.txt"); //$NON-NLS-1$
 			try (FileInputStream fis = new FileInputStream(file)) {
 				txt = readInputStream(fis);
 			}
 			assertEquals("TEST1: FOR UNIT TEST ONLY", txt); //$NON-NLS-1$
-		} finally {
-			FileSystem.delete(testArchive);
 		}
 	}
 
-	@Test
 	@DisplayName("getFileExtensionCharacter")
-	public void getFileExtensionCharacter() {
-		assertInlineParameterUsage(FileSystem.class, "getFileExtensionCharacter"); //$NON-NLS-1$
+	@Nested
+	public class GetFileExtensionCharacter {
+
+		@DisplayName("#1")
+		@Test
+		public void getFileExtensionCharacter() {
+			assertInlineParameterUsage(FileSystem.class, "getFileExtensionCharacter"); //$NON-NLS-1$
+		}
 	}
 
-	@Test
 	@DisplayName("isWindowsNativeFilename")
-	public void isWindowNativeFilename() {
-		assertFalse(FileSystem.isWindowsNativeFilename("D:/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("D|\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("/")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("\\\\")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("\\\\\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$
+	@Nested
+	public class IsWindowsNativeFilename {
 
-		assertTrue(FileSystem.isWindowsNativeFilename("file:C:\\a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file://C:\\a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file:C:a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file://C:a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file:\\a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file://\\a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file:a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file://a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file:\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file://\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$
+		@DisplayName("#1")
+		@Test
+		public void getFileExtensionCharacter_1() {
+			assertFalse(FileSystem.isWindowsNativeFilename("D:/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$
+		}
 
-		assertTrue(FileSystem.isWindowsNativeFilename("C:\\a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("C:a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file://C:a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("\\a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("a\\b\\c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$
+		@DisplayName("#2")
+		@Test
+		public void getFileExtensionCharacter_2() {
+			assertTrue(FileSystem.isWindowsNativeFilename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$
+		}
 
-		assertFalse(FileSystem.isWindowsNativeFilename("file:C:/a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file://C:/a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file:C:a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file://C:a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file:/a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file:///a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file:a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file://a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file://host/a/b/c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file:////host/a/b/c.txt")); //$NON-NLS-1$
+		@DisplayName("#3")
+		@Test
+		public void getFileExtensionCharacter_3() {
+			assertTrue(FileSystem.isWindowsNativeFilename("D|\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$
+		}
 
-		assertTrue(FileSystem.isWindowsNativeFilename("C:c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file:C:c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file:c.txt")); //$NON-NLS-1$
-		assertTrue(FileSystem.isWindowsNativeFilename("file://C:c.txt")); //$NON-NLS-1$
-		assertFalse(FileSystem.isWindowsNativeFilename("file://c.txt")); //$NON-NLS-1$
+		@DisplayName("#4")
+		@Test
+		public void getFileExtensionCharacter_4() {
+			assertFalse(FileSystem.isWindowsNativeFilename("/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void getFileExtensionCharacter_5() {
+			assertFalse(FileSystem.isWindowsNativeFilename("/")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void getFileExtensionCharacter_6() {
+			assertTrue(FileSystem.isWindowsNativeFilename("\\\\")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void getFileExtensionCharacter_7() {
+			assertTrue(FileSystem.isWindowsNativeFilename("\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void getFileExtensionCharacter_8() {
+			assertTrue(FileSystem.isWindowsNativeFilename("\\\\\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void getFileExtensionCharacter_9() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file:C:\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void getFileExtensionCharacter_10() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file://C:\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void getFileExtensionCharacter_11() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file:C:a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void getFileExtensionCharacter_12() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file://C:a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void getFileExtensionCharacter_13() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file:\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#14")
+		@Test
+		public void getFileExtensionCharacter_14() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file://\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#15")
+		@Test
+		public void getFileExtensionCharacter_15() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file:a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void getFileExtensionCharacter_16() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file://a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#17")
+		@Test
+		public void getFileExtensionCharacter_17() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file:\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#18")
+		@Test
+		public void getFileExtensionCharacter_18() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file://\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#19")
+		@Test
+		public void getFileExtensionCharacter_19() {
+			assertTrue(FileSystem.isWindowsNativeFilename("C:\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#20")
+		@Test
+		public void getFileExtensionCharacter_20() {
+			assertTrue(FileSystem.isWindowsNativeFilename("C:a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#21")
+		@Test
+		public void getFileExtensionCharacter_21() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file://C:a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#22")
+		@Test
+		public void getFileExtensionCharacter_22() {
+			assertTrue(FileSystem.isWindowsNativeFilename("\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#23")
+		@Test
+		public void getFileExtensionCharacter_23() {
+			assertTrue(FileSystem.isWindowsNativeFilename("a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#24")
+		@Test
+		public void getFileExtensionCharacter_24() {
+			assertTrue(FileSystem.isWindowsNativeFilename("\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#25")
+		@Test
+		public void getFileExtensionCharacter_25() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file:C:/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#26")
+		@Test
+		public void getFileExtensionCharacter_26() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file://C:/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#27")
+		@Test
+		public void getFileExtensionCharacter_27() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file:C:a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#28")
+		@Test
+		public void getFileExtensionCharacter_28() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file://C:a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#29")
+		@Test
+		public void getFileExtensionCharacter_29() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file:/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#30")
+		@Test
+		public void getFileExtensionCharacter_30() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file:///a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#31")
+		@Test
+		public void getFileExtensionCharacter_31() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file:a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#32")
+		@Test
+		public void getFileExtensionCharacter_32() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file://a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#33")
+		@Test
+		public void getFileExtensionCharacter_33() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file://host/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#34")
+		@Test
+		public void getFileExtensionCharacter_34() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file:////host/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#35")
+		@Test
+		public void getFileExtensionCharacter_35() {
+			assertTrue(FileSystem.isWindowsNativeFilename("C:c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#36")
+		@Test
+		public void getFileExtensionCharacter_36() {
+			assertFalse(FileSystem.isWindowsNativeFilename("c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#37")
+		@Test
+		public void getFileExtensionCharacter_37() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file:C:c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#38")
+		@Test
+		public void getFileExtensionCharacter_38() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file:c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#39")
+		@Test
+		public void getFileExtensionCharacter_39() {
+			assertTrue(FileSystem.isWindowsNativeFilename("file://C:c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#40")
+		@Test
+		public void getFileExtensionCharacter_40() {
+			assertFalse(FileSystem.isWindowsNativeFilename("file://c.txt")); //$NON-NLS-1$
+		}
 	}
 
-	@Test
 	@DisplayName("normalizeWindowsNativeFilename")
-	public void normalizeWindowNativeFilename() {
-		assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+	@Nested
+	public class NormalizeWindowsNativeFilename {
 
-		assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		@DisplayName("#1")
+		public void normalizeWindowNativeFilename_1() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file:C:/a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file://C:/a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file:C:a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file://C:a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file:/a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file:///a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file:a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file://a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file://host/a/b/c.txt")); //$NON-NLS-1$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file:////host/a/b/c.txt")); //$NON-NLS-1$
+		@DisplayName("#2")
+		public void normalizeWindowNativeFilename_2() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
-		assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("c.txt")); //$NON-NLS-1$
-		assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file:c.txt")); //$NON-NLS-1$
-		assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNull(FileSystem.normalizeWindowsNativeFilename("file://c.txt")); //$NON-NLS-1$
+		@DisplayName("#3")
+		public void normalizeWindowNativeFilename_3() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#4")
+		public void normalizeWindowNativeFilename_4() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#5")
+		public void normalizeWindowNativeFilename_5() {
+			assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#6")
+		public void normalizeWindowNativeFilename_6() {
+			assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#7")
+		public void normalizeWindowNativeFilename_7() {
+			assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#8")
+		public void normalizeWindowNativeFilename_8() {
+			assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#9")
+		public void normalizeWindowNativeFilename_9() {
+			assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#10")
+		public void normalizeWindowNativeFilename_10() {
+			assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#11")
+		public void normalizeWindowNativeFilename_11() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#12")
+		public void normalizeWindowNativeFilename_12() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#13")
+		public void normalizeWindowNativeFilename_13() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#14")
+		public void normalizeWindowNativeFilename_14() {
+			assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#15")
+		public void normalizeWindowNativeFilename_15() {
+			assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#16")
+		public void normalizeWindowNativeFilename_16() {
+			assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#17")
+		public void normalizeWindowNativeFilename_17() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file:C:/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#18")
+		public void normalizeWindowNativeFilename_18() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file://C:/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#19")
+		public void normalizeWindowNativeFilename_19() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file:C:a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#20")
+		public void normalizeWindowNativeFilename_20() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file://C:a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#21")
+		public void normalizeWindowNativeFilename_21() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file:/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#22")
+		public void normalizeWindowNativeFilename_22() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file:///a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#23")
+		public void normalizeWindowNativeFilename_23() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file:a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#24")
+		public void normalizeWindowNativeFilename_24() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file://a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#25")
+		public void normalizeWindowNativeFilename_25() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file://host/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#26")
+		public void normalizeWindowNativeFilename_26() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file:////host/a/b/c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#27")
+		public void normalizeWindowNativeFilename_27() {
+			assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#28")
+		public void normalizeWindowNativeFilename_28() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#29")
+		public void normalizeWindowNativeFilename_29() {
+			assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#30")
+		public void normalizeWindowNativeFilename_30() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file:c.txt")); //$NON-NLS-1$
+		}
+
+		@DisplayName("#31")
+		public void normalizeWindowNativeFilename_31() {
+			assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#32")
+		public void normalizeWindowNativeFilename_32() {
+			assertNull(FileSystem.normalizeWindowsNativeFilename("file://c.txt")); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	@DisplayName("convertStringToFile(String)")
-	public void convertStringToFile() {
-		assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/", FileSystem.convertStringToFile("/")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//", FileSystem.convertStringToFile("\\\\")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("////vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("\\\\\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+	@DisplayName("convertStringToFile")
+	@Nested
+	public class ConvertStringToFile {
 
-		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file://\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file://a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file:\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file://\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		@DisplayName("(String) #1")
+		@Test
+		public void convertStringToFile_1() {
+			assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
-		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		@DisplayName("(String) #2")
+		@Test
+		public void convertStringToFile_2() {
+			assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
-		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:/C:/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:/C:a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:///a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file:a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file://a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("host/a/b/c.txt", FileSystem.convertStringToFile("file://host/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file:////host/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		@DisplayName("(String) #3")
+		@Test
+		public void convertStringToFile_3() {
+			assertNormedFile("/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
-		assertNormedFile("C:c.txt", FileSystem.convertStringToFile("C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("c.txt", FileSystem.convertStringToFile("c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file:C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("c.txt", FileSystem.convertStringToFile("file:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file://C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertNormedFile("c.txt", FileSystem.convertStringToFile("file://c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		@DisplayName("(String) #4")
+		@Test
+		public void convertStringToFile_4() {
+			assertNormedFile("/", FileSystem.convertStringToFile("/")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #5")
+		@Test
+		public void convertStringToFile_5() {
+			assertNormedFile("//", FileSystem.convertStringToFile("\\\\")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #6")
+		@Test
+		public void convertStringToFile_6() {
+			assertNormedFile("//vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #7")
+		@Test
+		public void convertStringToFile_7() {
+			assertNormedFile("////vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("\\\\\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #8")
+		@Test
+		public void convertStringToFile_8() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #9")
+		@Test
+		public void convertStringToFile_9() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #10")
+		@Test
+		public void convertStringToFile_10() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #11")
+		@Test
+		public void convertStringToFile_11() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #12")
+		@Test
+		public void convertStringToFile_12() {
+			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #13")
+		@Test
+		public void convertStringToFile_13() {
+			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file://\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #14")
+		@Test
+		public void convertStringToFile_14() {
+			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #15")
+		@Test
+		public void convertStringToFile_15() {
+			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file://a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #16")
+		@Test
+		public void convertStringToFile_16() {
+			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file:\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #17")
+		@Test
+		public void convertStringToFile_17() {
+			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file://\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #18")
+		@Test
+		public void convertStringToFile_18() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("C:\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #19")
+		@Test
+		public void convertStringToFile_19() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #20")
+		@Test
+		public void convertStringToFile_20() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #21")
+		@Test
+		public void convertStringToFile_21() {
+			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #22")
+		@Test
+		public void convertStringToFile_22() {
+			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #23")
+		@Test
+		public void convertStringToFile_23() {
+			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("\\\\host\\a\\b\\c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #24")
+		@Test
+		public void convertStringToFile_24() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #25")
+		@Test
+		public void convertStringToFile_25() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:/C:/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #26")
+		@Test
+		public void convertStringToFile_26() {
+			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #27")
+		@Test
+		public void convertStringToFile_27() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #28")
+		@Test
+		public void convertStringToFile_28() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:/C:a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #29")
+		@Test
+		public void convertStringToFile_29() {
+			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #30")
+		@Test
+		public void convertStringToFile_30() {
+			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #31")
+		@Test
+		public void convertStringToFile_31() {
+			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:///a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #32")
+		@Test
+		public void convertStringToFile_32() {
+			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file:a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #33")
+		@Test
+		public void convertStringToFile_33() {
+			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file://a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #34")
+		@Test
+		public void convertStringToFile_34() {
+			assertNormedFile("host/a/b/c.txt", FileSystem.convertStringToFile("file://host/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #35")
+		@Test
+		public void convertStringToFile_35() {
+			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file:////host/a/b/c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #36")
+		@Test
+		public void convertStringToFile_36() {
+			assertNormedFile("C:c.txt", FileSystem.convertStringToFile("C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #37")
+		@Test
+		public void convertStringToFile_37() {
+			assertNormedFile("c.txt", FileSystem.convertStringToFile("c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #38")
+		@Test
+		public void convertStringToFile_38() {
+			assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file:C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #39")
+		@Test
+		public void convertStringToFile_39() {
+			assertNormedFile("c.txt", FileSystem.convertStringToFile("file:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #40")
+		@Test
+		public void convertStringToFile_40() {
+			assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file://C:c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #41")
+		@Test
+		public void convertStringToFile_41() {
+			assertNormedFile("c.txt", FileSystem.convertStringToFile("file://c.txt")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	}
 
-	@Test
-	@DisplayName("isJarURL(URL)")
-	public void isJarURLURL() throws Exception {
-		assertFalse(FileSystem.isJarURL(createHttpUrl()));
-		assertTrue(FileSystem.isJarURL(createFileInJarUrl()));
-		assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesHardCoded()));  
+	@DisplayName("isJarURL")
+	@Nested
+	public class IsJarURL {
 
-		assertInlineParameterUsage(FileSystem.class, "isJarURL", URL.class); //$NON-NLS-1$
+		@DisplayName("(URL) #1")
+		@Test
+		public void isJarURLURL_1() throws Exception {
+			assertFalse(FileSystem.isJarURL(createHttpUrl()));
+		}
+
+		@DisplayName("(URL) #2")
+		@Test
+		public void isJarURLURL_2() throws Exception {
+			assertTrue(FileSystem.isJarURL(createFileInJarUrl()));
+		}
+
+		@DisplayName("(URL) #3")
+		@Test
+		public void isJarURLURL_3() throws Exception {
+			assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesHardCoded()));  
+		}
+
+		@DisplayName("(URL) #4")
+		@Test
+		public void isJarURLURL_4() throws Exception {
+			assertInlineParameterUsage(FileSystem.class, "isJarURL", URL.class); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	@DisplayName("getJarURL(URL)")
-	public void getJarURLURL() throws Exception {
-		assertNull(FileSystem.getJarURL(createHttpUrl()));
-		assertEquals(newURL("file:" + createJarFilenameForUrl()), FileSystem.getJarURL(createFileInJarUrl())); //$NON-NLS-1$
+	@DisplayName("getJarURL")
+	@Nested
+	public class GetJarURL {
 
-		assertEquals(newURL("file:" + createJarFilenameForUrlWithSpaces()), FileSystem.getJarURL(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
-		assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
+		@DisplayName("(URL) #1")
+		@Test
+		public void getJarURLURL_1() throws Exception {
+			assertNull(FileSystem.getJarURL(createHttpUrl()));
+		}
+
+		@DisplayName("(URL) #2")
+		@Test
+		public void getJarURLURL_2() throws Exception {
+			assertEquals(newURL("file:" + createJarFilenameForUrl()), FileSystem.getJarURL(createFileInJarUrl())); //$NON-NLS-1$
+		}
+
+		@DisplayName("(URL) #3")
+		@Test
+		public void getJarURLURL_3() throws Exception {
+			assertEquals(newURL("file:" + createJarFilenameForUrlWithSpaces()), FileSystem.getJarURL(createFileInJarUrlWithSpaces())); //$NON-NLS-1$
+		}
+
+		@DisplayName("(URL) #4")
+		@Test
+		public void getJarURLURL_4() throws Exception {
+			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
+		}
 	}
 
-	@Test
-	@DisplayName("getJarFile(URL)")
-	public void getJarFileURL() throws Exception {
-		assertNull(FileSystem.getJarFile(createHttpUrl()));
-		assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarUrl()));
+	@DisplayName("getJarFile")
+	@Nested
+	public class GetJarFile {
 
-		assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarUrlWithSpaces()));  
-		assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
+		@DisplayName("(URL) #1")
+		@Test
+		public void getJarFileURL_1() throws Exception {
+			assertNull(FileSystem.getJarFile(createHttpUrl()));
+		}
+
+		@DisplayName("(URL) #2")
+		@Test
+		public void getJarFileURL_2() throws Exception {
+			assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarUrl()));
+		}
+
+		@DisplayName("(URL) #3")
+		@Test
+		public void getJarFileURL_3() throws Exception {
+			assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarUrlWithSpaces()));  
+		}
+
+		@DisplayName("(URL) #4")
+		@Test
+		public void getJarFileURL_4() throws Exception {
+			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
+		}
 	}
 
-	@Test
-	@DisplayName("dirname(URL)")
-	public void dirnameURL() throws Exception {
-		assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/"), //$NON-NLS-1$
-				FileSystem.dirname(createHttpUrl()));
-		assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/"), //$NON-NLS-1$
-				FileSystem.dirname(createFileInJarUrl()));
-		assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/"), //$NON-NLS-1$
-				FileSystem.dirname(createFileInJarUrlWithSpaces()));
-	}
+	@DisplayName("dirname")
+	@Nested
+	public class Dirname {
 
-	private static abstract class AbstractFileSystemTest {
-
-		protected abstract OperatingSystem getOS();
-
-		protected abstract String getSeparator();
-
-		/** Create a file.
-		 */
-		public File newFile(String filename, boolean addRootSlash) {
-			String fn;
-
-			if (OperatingSystem.getCurrentOS() == getOS()) {
-				fn = filename;
-			} else if (getOS() == OperatingSystem.WIN) {
-				fn = filename.replaceAll(Pattern.quote(FileSystem.WINDOWS_SEPARATOR_STRING),
-						Matcher.quoteReplacement(File.separator));
-				if (addRootSlash && Pattern.matches("^[a-zA-Z]\\:.*$", fn)) { //$NON-NLS-1$
-					fn = File.separator + fn;
-				}
-			} else {
-				fn = filename.replaceAll(Pattern.quote(FileSystem.UNIX_SEPARATOR_STRING),
-						Matcher.quoteReplacement(File.separator));
-				if (addRootSlash && !fn.startsWith(File.separator)) {
-					fn = File.separator + fn;
-				}
-			}
-			return new File(fn);
-		}
-
-		/** @return "/home/test.x.z.z" or "C:\home\test.x.z.z" or "/home/test.x.z.z"
-		 */
-		protected abstract String getAbsoluteStandardFilename();
-
-		/** @return "/home" or "C:\home" or "/home"
-		 */
-		protected abstract String getAbsoluteFoldername();
-
-		/** @return "/" or "C:\" or "/"
-		 */
-		protected abstract String getRootnameWithSeparator();
-
-		/** @return "" or "C:" or ""
-		 */
-		protected abstract String getRootnameWithoutSeparator();
-
-		/** @return "/the path/to/file with space.toto" or "C:\the path\to\file with space.toto" or "/the path/to/file with space.toto"
-		 */
-		protected abstract String getStandardFilenameWithSpaces();
-
-		/** @return "file:/home/test.x.z.z" or "file:C:\home\test.x.z.z" or "file:/home/test.x.z.z"
-		 */
-		protected URL createAbsoluteStandardFileUrl() throws Exception {
-			return newURL("file:" + fromFileToUrl(getAbsoluteStandardFilename(), false)); //$NON-NLS-1$
-		}
-
-		/** @return "file:/home" or "file:C:\home" or "file:/home"
-		 */
-		protected URL createAbsoluteFolderUrl() throws Exception {
-			return newURL("file:" + fromFileToUrl(getAbsoluteFoldername(), false)); //$NON-NLS-1$
-		}
-
-		/** @return "/the path/to/file with space.toto" or "C:\the path\to\file with space.toto" or "/the path/to/file with space.toto"
-		 */
-		protected URL createFileUrlWithSpacesWithFile(boolean replaceSpaceChars, boolean addRootSlash) throws Exception {
-			String filename = getStandardFilenameWithSpaces();
-			String fn;
-			if (getOS() == OperatingSystem.WIN) {
-				// A root slash is mandatory because the path starts with a disk name.
-				fn = filename.replaceAll(Pattern.quote(FileSystem.WINDOWS_SEPARATOR_STRING),
-						Matcher.quoteReplacement(FileSystem.URL_PATH_SEPARATOR));
-				if (addRootSlash) {
-					fn = "/" + fn; //$NON-NLS-1$
-				}
-			} else {
-				fn = filename.replaceAll(Pattern.quote(FileSystem.UNIX_SEPARATOR_STRING),
-						Matcher.quoteReplacement(FileSystem.URL_PATH_SEPARATOR));
-			}
-			if (replaceSpaceChars) {
-				fn = fn.replaceAll(Pattern.quote(" "), //$NON-NLS-1$
-						Matcher.quoteReplacement("%20")); //$NON-NLS-1$
-			}
-			return newURL("file:" + fn); //$NON-NLS-1$
-		}
-
+		@DisplayName("(URL) #1")
 		@Test
-		@DisplayName("isJarURL(URL)")
-		public void isJarURLURL() throws Exception {
-			assertFalse(FileSystem.isJarURL(createAbsoluteStandardFileUrl()));
-			assertFalse(FileSystem.isJarURL(createAbsoluteFolderUrl()));
-			assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesWithFile(true, true)));
+		public void dirnameURL_1() throws Exception {
+			assertEquals(newURL("http://toto:titi@www.arakhne.org/path/to/"), //$NON-NLS-1$
+					FileSystem.dirname(createHttpUrl()));
 		}
 
+		@DisplayName("(URL) #2")
 		@Test
-		@DisplayName("getJarURL(URL)")
-		public void getJarURLURL() throws Exception {
-			assertNull(FileSystem.getJarURL(createAbsoluteStandardFileUrl()));
-			assertNull(FileSystem.getJarURL(createAbsoluteFolderUrl()));
+		public void dirnameURL_2() throws Exception {
+			assertEquals(newURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/"), //$NON-NLS-1$
+					FileSystem.dirname(createFileInJarUrl()));
 		}
 
+		@DisplayName("(URL) #3")
 		@Test
-		@DisplayName("getJarFile(URL)")
-		public void getJarFileURL() throws Exception {
-			assertNull(FileSystem.getJarFile(createAbsoluteStandardFileUrl()));
-			assertNull(FileSystem.getJarFile(createAbsoluteFolderUrl()));
-			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesWithFile(true, true)));
+		public void dirnameURL_3() throws Exception {
+			assertEquals(newURL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/"), //$NON-NLS-1$
+					FileSystem.dirname(createFileInJarUrlWithSpaces()));
 		}
-
-		@Test
-		@DisplayName("toJarURL(File, String)")
-		public void toJarURLFileString() throws Exception {
-			assertEquals(newURL("jar:file:" //$NON-NLS-1$
-					+ fromFileToUrl(getAbsoluteStandardFilename(), false)
-					+ "!/" //$NON-NLS-1$
-					+ removeRootSlash(getAbsoluteStandardFilename())),
-					FileSystem.toJarURL(newFile(getAbsoluteStandardFilename(), true),
-							getAbsoluteStandardFilename()));
-		}
-
-		@Test
-		@DisplayName("toJarURL(File, File)")
-		public void toJarURLFileFile() throws Exception {
-			assertEquals(newURL("jar:file:" //$NON-NLS-1$
-					+ fromFileToUrl(getAbsoluteStandardFilename(), false)
-					+ "!/" //$NON-NLS-1$
-					+ fromFileToUrl(getAbsoluteStandardFilename(), true)),
-					FileSystem.toJarURL(newFile(getAbsoluteStandardFilename(), true),
-							newFile(getAbsoluteStandardFilename(), true)));
-		}
-
-		@Test
-		@DisplayName("toJarURL(URL, String)")
-		public void toJarURLURLString() throws Exception {
-			assertEquals(newURL("jar:file:" //$NON-NLS-1$
-					+ fromFileToUrl(getAbsoluteStandardFilename(), false)
-					+ "!/" //$NON-NLS-1$
-					+ removeRootSlash(getAbsoluteStandardFilename())),
-					FileSystem.toJarURL(newFile(getAbsoluteStandardFilename(), true).toURI().toURL(),
-							getAbsoluteStandardFilename()));
-		}
-
-		@Test
-		@DisplayName("toJarURL(URL, File)")
-		public void toJarURLURLFile() throws Exception {
-			assertEquals(newURL("jar:file:" //$NON-NLS-1$
-					+ fromFileToUrl(getAbsoluteStandardFilename(), false)
-					+ "!/" //$NON-NLS-1$
-					+ fromFileToUrl(getAbsoluteStandardFilename(), true)),
-					FileSystem.toJarURL(newFile(getAbsoluteStandardFilename(), true).toURI().toURL(),
-							newFile(getAbsoluteStandardFilename(), true)));
-		}
-
-		@Test
-		@DisplayName("dirname(File)")
-		public void dirnameFile() throws Exception {
-			assertEquals(newURL("file", "", fromFileToUrl(getAbsoluteFoldername(), false)), //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.dirname(newFile(getAbsoluteStandardFilename(), false)));
-			assertEquals(newURL("file", "", fromFileToUrl(getRootnameWithSeparator(), false)), //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.dirname(newFile(getAbsoluteFoldername(), false)));
-		}
-
-		@Test
-		@DisplayName("dirname(URL)")
-		public void dirnameURL() throws Exception {
-			assertEquals(newURL("file", "", fromFileToUrl(getAbsoluteFoldername(), false) + "/"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					FileSystem.dirname(createAbsoluteStandardFileUrl()));
-			assertEquals(newURL("file", "", fromFileToUrl(getRootnameWithSeparator(), false)), //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.dirname(createAbsoluteFolderUrl()));
-		}
-
-		@Test
-		@DisplayName("split(File)")
-		public void splitFile() throws Exception {
-			assertArrayEquals(new String[] {getRootnameWithoutSeparator(), "home", "test.x.z.z"}, FileSystem.split(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$ //$NON-NLS-2$
-			assertArrayEquals(new String[] {getRootnameWithoutSeparator(), "home"}, FileSystem.split(newFile(getAbsoluteFoldername(), false))); //$NON-NLS-1$
-			assertArrayEquals(new String[] {getRootnameWithoutSeparator(), "the path", "to", "file with space.toto"}, FileSystem.split(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-
-		@Test
-		@DisplayName("split(URL)")
-		public void splitURL() throws Exception {
-			assertArrayEquals(new String[] {getRootnameWithoutSeparator(), "home", "test.x.z.z"}, FileSystem.split(createAbsoluteStandardFileUrl())); //$NON-NLS-1$ //$NON-NLS-2$
-			assertArrayEquals(new String[] {getRootnameWithoutSeparator(), "home"}, FileSystem.split(createAbsoluteFolderUrl())); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("extensions(URL)")
-		public void extensionsURL() throws Exception {
-			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createAbsoluteStandardFileUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			assertArrayEquals(new String[0], FileSystem.extensions(createAbsoluteFolderUrl()));
-			assertArrayEquals(new String[] {"toto"}, FileSystem.extensions(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("extensions(File)")
-		public void extensionsFile() {
-			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			assertArrayEquals(new String[0], FileSystem.extensions(newFile(getAbsoluteFoldername(), false)));
-			assertArrayEquals(new String[] {"toto"}, FileSystem.extensions(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("extensions(String)")
-		public void extensionsString() {
-			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(getAbsoluteStandardFilename())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			assertArrayEquals(new String[0], FileSystem.extensions(getAbsoluteFoldername()));
-			assertArrayEquals(new String[] {"toto"}, FileSystem.extensions(getStandardFilenameWithSpaces())); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("extension(URL)")
-		public void extensionURL() throws Exception {
-			assertEquals(".z", FileSystem.extension(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
-			assertEquals("", FileSystem.extension(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals(".toto", FileSystem.extension(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("extension(File)")
-		public void extensionFile() {
-			assertEquals(".z", FileSystem.extension(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$
-			assertEquals("", FileSystem.extension(newFile(getAbsoluteFoldername(), false))); //$NON-NLS-1$
-			assertEquals(".toto", FileSystem.extension(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("extension(String)")
-		public void extensionString() {
-			assertEquals(".z", FileSystem.extension(getAbsoluteStandardFilename())); //$NON-NLS-1$
-			assertEquals("", FileSystem.extension(getAbsoluteFoldername())); //$NON-NLS-1$
-			assertEquals(".toto", FileSystem.extension(getStandardFilenameWithSpaces())); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("hasExtension(URL)")
-		public void hasExtensionURL() throws Exception {
-			assertTrue(FileSystem.hasExtension(createAbsoluteStandardFileUrl(), ".z")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(createAbsoluteStandardFileUrl(), "z")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(createAbsoluteStandardFileUrl(), ".c")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(createAbsoluteFolderUrl(), ".z")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(true, true), ".toto")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(true, true), "toto")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(true, true), ".z")); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("hasExtension(File)")
-		public void hasExtensionFile() {
-			assertTrue(FileSystem.hasExtension(newFile(getAbsoluteStandardFilename(), false), ".z")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(newFile(getAbsoluteStandardFilename(), false), "z")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(newFile(getAbsoluteStandardFilename(), false), ".c")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(newFile(getAbsoluteFoldername(), false), ".z")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(newFile(getStandardFilenameWithSpaces(), false), ".toto")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(newFile(getStandardFilenameWithSpaces(), false), "toto")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(newFile(getStandardFilenameWithSpaces(), false), ".z")); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("hasExtension(String)")
-		public void hasExtensionString() {
-			assertTrue(FileSystem.hasExtension(getAbsoluteStandardFilename(), ".z")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(getAbsoluteStandardFilename(), "z")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(getAbsoluteStandardFilename(), ".c")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(getAbsoluteFoldername(), ".z")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(getStandardFilenameWithSpaces(), ".toto")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(getStandardFilenameWithSpaces(), "toto")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(getStandardFilenameWithSpaces(), ".c")); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("basename(URL)")
-		public void basenameURL() throws Exception {
-			assertEquals("test.x.z", FileSystem.basename(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
-			assertEquals("home", FileSystem.basename(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals("file with space", FileSystem.basename(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("basename(File)")
-		public void basenameFile() {
-			assertEquals("test.x.z", FileSystem.basename(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$
-			assertEquals("home", FileSystem.basename(newFile(getAbsoluteFoldername(), false))); //$NON-NLS-1$
-			assertEquals("file with space", FileSystem.basename(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("basename(String)")
-		public void basenameString() {
-			assertEquals("test.x.z", FileSystem.basename(getAbsoluteStandardFilename())); //$NON-NLS-1$
-			assertEquals("home", FileSystem.basename(getAbsoluteFoldername())); //$NON-NLS-1$
-			assertEquals("file with space", FileSystem.basename(getStandardFilenameWithSpaces())); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("largeBasename(URL)")
-		public void largeBasenameURL() throws Exception {
-			assertEquals("test.x.z.z", FileSystem.largeBasename(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
-			assertEquals("home", FileSystem.largeBasename(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals("file with space.toto", FileSystem.largeBasename(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("largeBasename(File)")
-		public void largeBasenameFile() {
-			assertEquals("test.x.z.z", FileSystem.largeBasename(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$
-			assertEquals("home", FileSystem.largeBasename(newFile(getAbsoluteFoldername(), false))); //$NON-NLS-1$
-			assertEquals("file with space.toto", FileSystem.largeBasename(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("largeBasename(String)")
-		public void largeBasenameString() {
-			assertEquals("test.x.z.z", FileSystem.largeBasename(getAbsoluteStandardFilename())); //$NON-NLS-1$
-			assertEquals("home", FileSystem.largeBasename(getAbsoluteFoldername())); //$NON-NLS-1$
-			assertEquals("file with space.toto", FileSystem.largeBasename(getStandardFilenameWithSpaces())); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("shortBasename(URL)")
-		public void shortBasenameURL() throws Exception {
-			assertEquals("test", FileSystem.shortBasename(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
-			assertEquals("home", FileSystem.shortBasename(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals("file with space", FileSystem.shortBasename(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("shortBasename(File)")
-		public void shortBasenameFile() {
-			assertEquals("test", FileSystem.shortBasename(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$
-			assertEquals("home", FileSystem.shortBasename(newFile(getAbsoluteFoldername(), false))); //$NON-NLS-1$
-			assertEquals("file with space", FileSystem.shortBasename(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("shortBasename(String)")
-		public void shortBasenameString() {
-			assertEquals("test", FileSystem.shortBasename(getAbsoluteStandardFilename())); //$NON-NLS-1$
-			assertEquals("home", FileSystem.shortBasename(getAbsoluteFoldername())); //$NON-NLS-1$
-			assertEquals("file with space", FileSystem.shortBasename(getStandardFilenameWithSpaces())); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("join(File, String...)")
-		public void joinFileStringArray() {
-			File base = newFile(getAbsoluteFoldername(), false);
-			assertEquals(new File(new File(base, "home"), "test.x.z.z"),   //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.join(base,
-							"",  //$NON-NLS-1$
-							"home",  //$NON-NLS-1$
-							"test.x.z.z")); //$NON-NLS-1$
-		}
-
-
-		@Test
-		@DisplayName("join(File, File...)")
-		public void joinFileFileArray() {
-			File base = newFile(getAbsoluteFoldername(), false);
-			assertEquals(new File(new File(base, "home"), "test.x.z.z"),   //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.join(base,
-							new File("home"),  //$NON-NLS-1$
-							new File("test.x.z.z"))); //$NON-NLS-1$
-			assertEquals(new File(new File(base, "home"), "test.x.z.z"),   //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.join(base,
-							new File(File.separator+"home"),  //$NON-NLS-1$
-							new File("test.x.z.z"))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("join(URL, String...)")
-		public void joinURLStringArray() throws Exception {
-			URL base;
-
-			base = newURL("file:" + fromFileToUrl(getAbsoluteStandardFilename(), false) + "/a/b/c"); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(base, FileSystem.join(createAbsoluteStandardFileUrl(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-			base = newURL("file:" + fromFileToUrl(getAbsoluteFoldername(), false) + "/a/b/c"); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(base, FileSystem.join(createAbsoluteFolderUrl(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-			base = newFile(getStandardFilenameWithSpaces() + "/a/b/c", true).toURI().toURL(); //$NON-NLS-1$
-			assertEquals(base, FileSystem.join(createFileUrlWithSpacesWithFile(false, true), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-
-		@Test
-		@DisplayName("join(URL, File...)")
-		public void joinURLFileArray() throws Exception {
-			URL base;
-
-			base = newURL("file:" + fromFileToUrl(getAbsoluteStandardFilename(), false) + "/a/b/c"); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(base, FileSystem.join(createAbsoluteStandardFileUrl(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-			base = newURL("file:" + fromFileToUrl(getAbsoluteFoldername(), false) + "/a/b/c"); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(base, FileSystem.join(createAbsoluteFolderUrl(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-			base = newFile(getStandardFilenameWithSpaces() + "/a/b/c", true).toURI().toURL(); //$NON-NLS-1$
-			assertEquals(base, FileSystem.join(createFileUrlWithSpacesWithFile(true, true), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-
-		@Test
-		@DisplayName("convertStringToURL(String)")
-		public void convertStringToURL() throws Exception {
-			URL base;
-
-			base = createAbsoluteStandardFileUrl();
-			assertEquals(base, FileSystem.convertStringToURL(base.toString(), false));
-
-			base = createAbsoluteFolderUrl();
-			assertEquals(base, FileSystem.convertStringToURL(base.toString(), false));
-
-			base = createFileUrlWithSpacesWithFile(true, true);
-			assertEquals(base, FileSystem.convertStringToURL(base.toString(), false));
-		}
-
-		@Test
-		@DisplayName("convertURLToFile(URL)")
-		public void convertURLToFile() throws Exception {
-			File base;
-
-			base = newFile(getAbsoluteStandardFilename(), false);
-			assertEquals(base, FileSystem.convertURLToFile(createAbsoluteStandardFileUrl()));
-
-			base = newFile(getAbsoluteFoldername(), false);
-			assertEquals(base, FileSystem.convertURLToFile(createAbsoluteFolderUrl()));
-		}
-
-		@Test
-		@DisplayName("convertFileToURL(File)")
-		public void convertFileToURLFile() throws Exception {
-			assertEquals(createAbsoluteStandardFileUrl(),  
-					FileSystem.convertFileToURL(newFile(getAbsoluteStandardFilename(), true)));
-			assertEquals(createAbsoluteFolderUrl(),
-					FileSystem.convertFileToURL(newFile(getAbsoluteFoldername(), true)));
-			assertEquals(createFileUrlWithSpacesWithFile(getOS() != OperatingSystem.WIN, false),  
-					FileSystem.convertFileToURL(newFile(getStandardFilenameWithSpaces(), false)));
-		}
-
-		@Test
-		@DisplayName("makeAbsolute(File, URL) - no root")
-		public void makeAbsoluteFileURL_noRoot() throws Exception {
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator(), false) + "toto"),  //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(newFile(getRootnameWithSeparator() + "toto", true), (URL)null)); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("makeAbsolute(File, URL) - http as root")
-		public void makeAbsoluteFileURL_httpAsRoot() throws Exception {
-			final URL root = newURL("http://maven.arakhne.org/myroot"); //$NON-NLS-1$
-
-			assertEquals(newURL("http://maven.arakhne.org/myroot/toto"),  //$NON-NLS-1$
-					FileSystem.makeAbsolute(newFile("toto", false), root)); //$NON-NLS-1$
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "toto", false)),  //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(newFile(getRootnameWithSeparator() + "toto", true), root)); //$NON-NLS-1$
-
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "a/b/c", false)),   //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(newFile(getRootnameWithSeparator()
-							+ "a" + File.separator + "b" + File.separator + "c", true), root)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-
-		@Test
-		@DisplayName("makeAbsolute(File, URL) - file as root")
-		public void makeAbsoluteFileURL_fileAsRoot() throws Exception {
-			URL root = newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "myroot", false)); //$NON-NLS-1$ //$NON-NLS-2$
-
-			assertNull(FileSystem.makeAbsolute((File)null, root));
-
-			assertEquals(newURL("file:/toto"),  //$NON-NLS-1$
-					FileSystem.makeAbsolute(new File("/toto"), root)); //$NON-NLS-1$
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "myroot/toto", false)),  //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(new File("toto"), root)); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("makeAbsolute(URL, URL) - http as root")
-		public void makeAbsoluteURLURL_httpAsRoot() throws Exception {
-			final URL root = newURL("http://maven.arakhne.org/myroot"); //$NON-NLS-1$
-
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "toto", false)),  //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "toto", false)), root)); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("http://maven.arakhne.org/myroot/toto"),  //$NON-NLS-1$
-					FileSystem.makeAbsolute(newURL("file:toto"), root)); //$NON-NLS-1$
-
-			assertEquals(newURL("jar:file:" + fromFileToUrl(getRootnameWithSeparator() //$NON-NLS-1$
-					+ "home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)),  //$NON-NLS-1$
-					FileSystem.makeAbsolute(newURL("jar:file:" + fromFileToUrl(getRootnameWithSeparator() //$NON-NLS-1$
-							+ "home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)), root)); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("makeAbsolute(URL, URL) - file as root")
-		public void makeAbsoluteURLURL_fileAsRoot() throws Exception {
-			URL root = newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "myroot", false)); //$NON-NLS-1$ //$NON-NLS-2$
-
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "toto", false)),  //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "toto", false)), root)); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "myroot/toto", false)),  //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(newURL("file:toto"), root)); //$NON-NLS-1$
-
-			assertEquals(newURL("jar:file:" + fromFileToUrl(getRootnameWithSeparator() //$NON-NLS-1$
-					+ "home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)),  //$NON-NLS-1$
-					FileSystem.makeAbsolute(newURL("jar:file:" + fromFileToUrl(getRootnameWithSeparator() //$NON-NLS-1$
-							+ "home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)), root)); //$NON-NLS-1$
-
-			assertEquals(newURL("jar:file:" + fromFileToUrl(getRootnameWithSeparator() //$NON-NLS-1$
-					+ "myroot/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)),  //$NON-NLS-1$
-					FileSystem.makeAbsolute(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("makeAbsolute(File, File) - root")
-		public void makeAbsoluteFileFile_root() {
-			File root = newFile(getRootnameWithSeparator() + "myroot", true); //$NON-NLS-1$
-
-			assertEquals(newFile(getRootnameWithSeparator() + "toto", true),   //$NON-NLS-1$
-					FileSystem.makeAbsolute(newFile(getRootnameWithSeparator() + "toto", true), root)); //$NON-NLS-1$
-
-			assertEquals(newFile(getRootnameWithSeparator() + "myroot" + getSeparator() + "toto", true),   //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(new File("toto"), root)); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("makeAbsolute(URL, File) - root")
-		public void makeAbsoluteURLFile_root() throws Exception {
-			File root = newFile(getRootnameWithSeparator() + "myroot", true); //$NON-NLS-1$
-
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "toto", false)),  //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "toto", false)), root)); //$NON-NLS-1$ //$NON-NLS-2$
-
-			assertEquals(newURL("file:" + fromFileToUrl(getRootnameWithSeparator() + "myroot/toto", false)),  //$NON-NLS-1$ //$NON-NLS-2$
-					FileSystem.makeAbsolute(newURL("file:toto"), root)); //$NON-NLS-1$
-
-			assertEquals(newURL("jar:file:" + fromFileToUrl(getRootnameWithSeparator() //$NON-NLS-1$
-					+ "home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)),  //$NON-NLS-1$
-					FileSystem.makeAbsolute(newURL("jar:file:" + fromFileToUrl(getRootnameWithSeparator() //$NON-NLS-1$
-							+ "home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)), root)); //$NON-NLS-1$
-			
-			assertEquals(newURL("jar:file:" + fromFileToUrl(getRootnameWithSeparator() //$NON-NLS-1$
-					+ "myroot/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)),  //$NON-NLS-1$
-					FileSystem.makeAbsolute(newURL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
-		}
-
-	}
-
-	public static class UnixFilenameStandardFileSystemTest extends AbstractFileSystemTest {
-
-		public UnixFilenameStandardFileSystemTest() throws Exception {
-			super();
-		}
-
-		@Override
-		protected String getAbsoluteStandardFilename() {
-			return "/home/test.x.z.z"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getAbsoluteFoldername() {
-			return "/home"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getRootnameWithSeparator() {
-			return "/"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getRootnameWithoutSeparator() {
-			return ""; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getSeparator() {
-			return "/"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getStandardFilenameWithSpaces() {
-			return "/the path/to/file with space.toto"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected OperatingSystem getOS() {
-			return OperatingSystem.LINUX;
-		}
-
-		@Test
-		@DisplayName("removeExtension(URL)")
-		public void removeExtensionURL() throws Exception {
-			assertEquals(newURL("file:/home/test.x.z"), FileSystem.removeExtension(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
-			assertEquals(newURL("file:/home"), FileSystem.removeExtension(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals(newURL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("removeExtension(File)")
-		public void removeExtensionFile() {
-			assertEquals(new File("/home/test.x.z"), FileSystem.removeExtension(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$
-			assertEquals(new File("/home"), FileSystem.removeExtension(newFile(getAbsoluteFoldername(), false))); //$NON-NLS-1$
-			assertEquals(new File("/the path/to/file with space"), FileSystem.removeExtension(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("replaceExtension(URL, String)")
-		public void replaceExtensionURL() throws Exception {
-			assertEquals(newURL("file:/home/test.x.z.xyz"), FileSystem.replaceExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/home.xyz"), FileSystem.replaceExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesWithFile(true, true), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("replaceExtension(File, String)")
-		public void replaceExtensionFile() {
-			assertEquals(new File("/home/test.x.z.xyz"), FileSystem.replaceExtension(newFile(getAbsoluteStandardFilename(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new File("/home.xyz"), FileSystem.replaceExtension(newFile(getAbsoluteFoldername(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new File("/the path/to/file with space.xyz"), FileSystem.replaceExtension(newFile(getStandardFilenameWithSpaces(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("addExtension(URL, String)")
-		public void addExtensionURL() throws Exception {
-			assertEquals(newURL("file:/home/test.x.z.z.xyz"), FileSystem.addExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/home.xyz"), FileSystem.addExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesWithFile(true, true), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("addExtension(File, String)")
-		public void addExtensionFile() {
-			assertEquals(new File("/home/test.x.z.z.xyz"), FileSystem.addExtension(newFile(getAbsoluteStandardFilename(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new File("/home.xyz"), FileSystem.addExtension(newFile(getAbsoluteFoldername(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new File("/the path/to/file with space.toto.xyz"), FileSystem.addExtension(newFile(getStandardFilenameWithSpaces(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-	}
-
-	public static class WindowsFilenameStandardFileSystemTest extends AbstractFileSystemTest {
-
-		public WindowsFilenameStandardFileSystemTest() throws Exception {
-			super();
-		}
-
-		@Override
-		protected String getAbsoluteStandardFilename() {
-			return "C:\\home\\test.x.z.z"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getAbsoluteFoldername() {
-			return "C:\\home"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getRootnameWithSeparator() {
-			return "C:\\"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getRootnameWithoutSeparator() {
-			return "C:"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getSeparator() {
-			return "\\"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getStandardFilenameWithSpaces() {
-			return "C:\\the path\\to\\file with space.toto"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected OperatingSystem getOS() {
-			return OperatingSystem.WIN;
-		}
-
-		@Test
-		@DisplayName("removeExtension(URL)")
-		public void removeExtensionURL() throws Exception {
-			assertEquals(newURL("file:/C:/home/test.x.z"), FileSystem.removeExtension(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
-			assertEquals(newURL("file:/C:/home"), FileSystem.removeExtension(createAbsoluteFolderUrl())); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("removeExtension(File)")
-		public void removeExtensionFile() {
-			assertEquals(newFile("C:\\home\\test.x.z", false), FileSystem.removeExtension(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$
-			assertEquals(newFile("C:\\home", false), FileSystem.removeExtension(newFile(getAbsoluteFoldername(), false))); //$NON-NLS-1$
-			assertEquals(newFile("C:\\the path\\to\\file with space", false), FileSystem.removeExtension(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("replaceExtension(URL, String)")
-		public void replaceExtensionURL() throws Exception {
-			assertEquals(newURL("file:/C:/home/test.x.z.xyz"), FileSystem.replaceExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/C:/home.xyz"), FileSystem.replaceExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("replaceExtension(File, String)")
-		public void replaceExtensionFile() {
-			assertEquals(newFile("C:\\home\\test.x.z.xyz", false), FileSystem.replaceExtension(newFile(getAbsoluteStandardFilename(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newFile("C:\\home.xyz", false), FileSystem.replaceExtension(newFile(getAbsoluteFoldername(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newFile("C:\\the path\\to\\file with space.xyz", false), FileSystem.replaceExtension(newFile(getStandardFilenameWithSpaces(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("addExtension(URL, String)")
-		public void addExtensionURL() throws Exception {
-			assertEquals(newURL("file:/C:/home/test.x.z.z.xyz"), FileSystem.addExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/C:/home.xyz"), FileSystem.addExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("addExtension(File, String)")
-		public void addExtensionFile() {
-			assertEquals(newFile("C:\\home\\test.x.z.z.xyz", false), FileSystem.addExtension(newFile(getAbsoluteStandardFilename(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newFile("C:\\home.xyz", false), FileSystem.addExtension(newFile(getAbsoluteFoldername(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newFile("C:\\the path\\to\\file with space.toto.xyz", false), FileSystem.addExtension(newFile(getStandardFilenameWithSpaces(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-	}
-
-	public static class OSXFilenameStandardFileSystemTest extends AbstractFileSystemTest {
-
-		public OSXFilenameStandardFileSystemTest() throws Exception {
-			super();
-		}
-
-		@Override
-		protected String getAbsoluteStandardFilename() {
-			return "/home/test.x.z.z"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getAbsoluteFoldername() {
-			return "/home"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getRootnameWithSeparator() {
-			return "/"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getRootnameWithoutSeparator() {
-			return ""; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getSeparator() {
-			return "/"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected String getStandardFilenameWithSpaces() {
-			return "/the path/to/file with space.toto"; //$NON-NLS-1$
-		}
-
-		@Override
-		protected OperatingSystem getOS() {
-			return OperatingSystem.MACOSX;
-		}
-
-		@Test
-		@DisplayName("removeExtension(URL)")
-		public void removeExtensionURL() throws Exception {
-			assertEquals(newURL("file:/home/test.x.z"), FileSystem.removeExtension(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
-			assertEquals(newURL("file:/home"), FileSystem.removeExtension(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals(newURL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("removeExtension(File)")
-		public void removeExtensionFile() {
-			assertEquals(new File("/home/test.x.z"), FileSystem.removeExtension(newFile(getAbsoluteStandardFilename(), false))); //$NON-NLS-1$
-			assertEquals(new File("/home"), FileSystem.removeExtension(newFile(getAbsoluteFoldername(), false))); //$NON-NLS-1$
-			assertEquals(new File("/the path/to/file with space"), FileSystem.removeExtension(newFile(getStandardFilenameWithSpaces(), false))); //$NON-NLS-1$
-		}
-
-		@Test
-		@DisplayName("replaceExtension(URL, String)")
-		public void replaceExtensionURL() throws Exception {
-			assertEquals(newURL("file:/home/test.x.z.xyz"), FileSystem.replaceExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/home.xyz"), FileSystem.replaceExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesWithFile(true, true), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("replaceExtension(File, String)")
-		public void replaceExtensionFile() {
-			assertEquals(new File("/home/test.x.z.xyz"), FileSystem.replaceExtension(newFile(getAbsoluteStandardFilename(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new File("/home.xyz"), FileSystem.replaceExtension(newFile(getAbsoluteFoldername(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new File("/the path/to/file with space.xyz"), FileSystem.replaceExtension(newFile(getStandardFilenameWithSpaces(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("addExtension(URL, String)")
-		public void addExtensionURL() throws Exception {
-			assertEquals(newURL("file:/home/test.x.z.z.xyz"), FileSystem.addExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/home.xyz"), FileSystem.addExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(newURL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesWithFile(true, true), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		@Test
-		@DisplayName("replaceExtension(File, String)")
-		public void addExtensionFile() {
-			assertEquals(new File("/home/test.x.z.z.xyz"), FileSystem.addExtension(newFile(getAbsoluteStandardFilename(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new File("/home.xyz"), FileSystem.addExtension(newFile(getAbsoluteFoldername(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new File("/the path/to/file with space.toto.xyz"), FileSystem.addExtension(newFile(getStandardFilenameWithSpaces(), false), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
 	}
 
 }

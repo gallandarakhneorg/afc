@@ -20,13 +20,24 @@
 
 package org.arakhne.afc.vmutil;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+@DisplayName("ColorNames")
 @SuppressWarnings("all")
 public class ColorNamesTest {
 
@@ -180,38 +191,75 @@ public class ColorNamesTest {
 		"yellow", //$NON-NLS-1$
 		"yellowgreen", //$NON-NLS-1$
 	};
-
-	@Test
-	public void getColorNames() {
-		Set<String> names = new TreeSet<>(ColorNames.getColorNames());
-		for (String nm : NAMES) {
-			assertTrue(names.remove(nm), "Missed name: " + nm); //$NON-NLS-1$
+	
+	private static Stream<Arguments> provideNames() {
+		final List<Arguments> arguments = new ArrayList<>();
+		for (final var nm : NAMES) {
+			arguments.add(Arguments.of(nm));
 		}
-		assertEquals(0, names.size());
+		return arguments.stream();
 	}
 
-	@Test
-	public void getColorFromNameStringInt() {
-		for (String nm : NAMES) {
-			assertNotEquals(0xFFFFFF, ColorNames.getColorFromName(nm, 0xFFFFFF), "Invalid color: " + nm); //$NON-NLS-1$
+	@DisplayName("getColorNames")
+	@Nested
+	public class GetColorNames {
+
+		@DisplayName("(String)")
+		@ParameterizedTest(name = "{index}: {0} => {1}")
+		@MethodSource("org.arakhne.afc.vmutil.ColorNamesTest#provideNames")
+		public void getColorNames(String name) {
+			var names = ColorNames.getColorNames();
+			assertTrue(names.contains(name), "Missed name: " + name); //$NON-NLS-1$
+		}
+
+		@DisplayName("size")
+		@Test
+		public void size() {
+			var names = ColorNames.getColorNames();
+			assertEquals(148, names.size());
 		}
 	}
 
-	@Test
-	public void getColorFromNameString() {
-		for (String nm : NAMES) {
-			assertNotNull(ColorNames.getColorFromName(nm), "Invalid color: " + nm); //$NON-NLS-1$
+	@DisplayName("getColorFromName")
+	@Nested
+	public class GetColorFromName {
+
+		@DisplayName("(String,int)")
+		@ParameterizedTest(name = "{index}: {0} => {1}")
+		@MethodSource("org.arakhne.afc.vmutil.ColorNamesTest#provideNames")
+		public void getColorFromNameStringInt(String name) {
+			assertNotEquals(0xFFFFFF, ColorNames.getColorFromName(name, 0xFFFFFF), "Invalid color: " + name); //$NON-NLS-1$
+		}
+	
+		@DisplayName("(String)")
+		@ParameterizedTest(name = "{index}: {0} => {1}")
+		@MethodSource("org.arakhne.afc.vmutil.ColorNamesTest#provideNames")
+		public void getColorFromNameString(String name) {
+			assertNotNull(ColorNames.getColorFromName(name), "Invalid color: " + name); //$NON-NLS-1$
 		}
 	}
 
-	@Test
-	public void getColorNameFromValue() {
-		assertEquals("red", ColorNames.getColorNameFromValue(0xFFFF0000)); //$NON-NLS-1$
-		assertNull(ColorNames.getColorNameFromValue(0xFF0000));
-		assertEquals("lime", ColorNames.getColorNameFromValue(0xFF00FF00)); //$NON-NLS-1$
-		assertNull(ColorNames.getColorNameFromValue(0x00FF00));
-		assertEquals("blue", ColorNames.getColorNameFromValue(0xFF0000FF)); //$NON-NLS-1$
-		assertNull(ColorNames.getColorNameFromValue(0x0000FF));
+	@DisplayName("getColorNameFromValue")
+	@Nested
+	public class GetColorNameFromValue {
+
+		@DisplayName("red")
+		public void red(String name) {
+			assertEquals("red", ColorNames.getColorNameFromValue(0xFFFF0000)); //$NON-NLS-1$
+			assertNull(ColorNames.getColorNameFromValue(0xFF0000));
+		}
+
+		@DisplayName("lime")
+		public void lime(String name) {
+			assertEquals("lime", ColorNames.getColorNameFromValue(0xFF00FF00)); //$NON-NLS-1$
+			assertNull(ColorNames.getColorNameFromValue(0x00FF00));
+		}
+
+		@DisplayName("blue")
+		public void blue(String name) {
+			assertEquals("blue", ColorNames.getColorNameFromValue(0xFF0000FF)); //$NON-NLS-1$
+			assertNull(ColorNames.getColorNameFromValue(0x0000FF));
+		}
 	}
 
 }

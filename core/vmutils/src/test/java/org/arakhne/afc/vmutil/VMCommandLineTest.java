@@ -36,8 +36,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("VMCommandLine")
 @SuppressWarnings("all")
 public class VMCommandLineTest {
 
@@ -56,261 +59,607 @@ public class VMCommandLineTest {
 	public void setUp() throws Exception {
 		VMCommandLine.saveVMParameters((Class<?>)null, new String[0]);
 	}
+
+	@DisplayName("saveVMParameters")
+	@Nested
+	public class SaveVMParameters {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertTrue(Arrays.equals(new String[0], VMCommandLine.getCommandLineParameters()));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
+			assertTrue(Arrays.equals(commandLine, VMCommandLine.getCommandLineParameters()));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine2);
+			assertTrue(Arrays.equals(commandLine2, VMCommandLine.getCommandLineParameters()));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void saveVMParametersClassStringArray() {
+			assertInlineParameterUsage(VMCommandLine.class, "saveVMParameters", Class.class, String[].class); //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("saveVMParametersIfNotSet")
+	@Nested
+	public class SaveVMParametersIfNotSet {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertTrue(Arrays.equals(new String[0], VMCommandLine.getCommandLineParameters()));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			VMCommandLine.saveVMParametersIfNotSet(VMCommandLineTest.class, commandLine);
+			assertTrue(Arrays.equals(commandLine, VMCommandLine.getCommandLineParameters()));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			VMCommandLine.saveVMParametersIfNotSet(VMCommandLineTest.class, commandLine2);
+			assertTrue(Arrays.equals(commandLine2, VMCommandLine.getCommandLineParameters()));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void saveVMParametersIfNotSetClassStringArray() {
+			assertInlineParameterUsage(VMCommandLine.class, "saveVMParametersIfNotSet", Class.class, String[].class); //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("shiftCommandLineParameters")
+	@Nested
+	public class ShiftCommandLineParameters {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
+			assertEquals("-D=true", VMCommandLine.shiftCommandLineParameters());  //$NON-NLS-1$
+			assertTrue(Arrays.equals(new String[] { 
+					"-v", "clean", "-v",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"-F", "-b", "-v", "package",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"-F", "123", "-nob", "installters",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"-S", "-b", "--", "-v"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					VMCommandLine.getCommandLineParameters()));
+		}
+	}
+
+	@DisplayName("getCommandLineOptions")
+	@Nested
+	public class GetCommandLineOptions {
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEquals(Collections.emptyMap(), VMCommandLine.getCommandLineOptions());
+		}
+	}
+
+	@DisplayName("splitOptionsAndParameters")
+	@Nested
+	public class SplitOptionsAndParameters {
+
+		private Map<String,List<Object>> options;
+		private String[] parameters;
+
+		@BeforeEach
+		public void setUp() {
+			VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
+			VMCommandLine.splitOptionsAndParameters(optionDefinitions);
+			options = VMCommandLine.getCommandLineOptions();
+			parameters = VMCommandLine.getCommandLineParameters();
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertNotNull(options);
+			assertEquals(5, options.size());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertTrue(options.containsKey("D"));  //$NON-NLS-1$
+			var values = options.get("D");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(1, values.size());
+			assertEquals(true, values.get(0));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertTrue(options.containsKey("v"));  //$NON-NLS-1$
+			var values = options.get("v");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(1, values.size());
+			assertEquals((long)3, values.get(0));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertTrue(options.containsKey("F"));  //$NON-NLS-1$
+			var values = options.get("F");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(2, values.size());
+			assertEquals(0., values.get(0));
+			assertEquals(123., values.get(1));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			assertTrue(options.containsKey("b"));  //$NON-NLS-1$
+			var values = options.get("b");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(1, values.size());
+			assertEquals(false, values.get(0));
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void test_6() {
+			assertTrue(options.containsKey("S"));  //$NON-NLS-1$
+			var values = options.get("S");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(1, values.size());
+			assertEquals("-b", values.get(0));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#7")
+		@Test
+		public void test_7() {
+			var values = options.get("nob");  //$NON-NLS-1$
+			assertNull(values);
+		}
+
+		@DisplayName("#8")
+		@Test
+		public void test_8() {
+			assertNotNull(parameters);
+		}
+
+		@DisplayName("#9")
+		@Test
+		public void test_9() {
+			assertEquals(4, parameters.length);
+		}
+
+		@DisplayName("#10")
+		@Test
+		public void test_10() {
+			assertEquals("clean", parameters[0]);  //$NON-NLS-1$
+		}
+
+		@DisplayName("#11")
+		@Test
+		public void test_11() {
+			assertEquals("package", parameters[1]);  //$NON-NLS-1$
+		}
+
+		@DisplayName("#12")
+		@Test
+		public void test_12() {
+			assertEquals("installters", parameters[2]);  //$NON-NLS-1$
+		}
+
+		@DisplayName("#13")
+		@Test
+		public void test_13() {
+			assertEquals("-v", parameters[3]);  //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("getCommandLineOption")
+	@Nested
+	public class GetCommandLineOption {
+
+		private List<Object> values;
+
+		@BeforeEach
+		public void setUp() {
+			assertEquals(new ArrayList<>(0), VMCommandLine.getCommandLineOption("S")); //$NON-NLS-1$
+			VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
+			VMCommandLine.splitOptionsAndParameters(optionDefinitions);
+			values = VMCommandLine.getCommandLineOption("S");  //$NON-NLS-1$
+		}
+		
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertNotNull(values);
+		}
+		
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEquals(1, values.size());
+		}
+		
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEquals("-b", values.get(0)); //$NON-NLS-1$
+		}
+		
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertEquals(new ArrayList<>(0), VMCommandLine.getCommandLineOption("nob")); //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("hasCommandLineOption")
+	@Nested
+	public class HasCommandLineOption {
+
+		@BeforeEach
+		public void setUp() {
+			assertEquals(new ArrayList<>(0), VMCommandLine.getCommandLineOption("S")); //$NON-NLS-1$
+			VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
+			VMCommandLine.splitOptionsAndParameters(optionDefinitions);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertTrue(VMCommandLine.hasCommandLineOption("S"));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertFalse(VMCommandLine.hasCommandLineOption("nob"));  //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("getParameters")
+	@Nested
+	public class GetParameters {
+
+		@DisplayName("#1")
+		@Test
+		public void testVMCommandLineClassOfQStringArray() {
+			VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, commandLine);
+			assertTrue(Arrays.equals(commandLine, c.getParameters()));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void vmCommandLineClassOfQStringArrayStringArray() {
+			VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+			assertTrue(Arrays.equals(new String[] {
+					"clean", "package", "installters", "-v"  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			}, c.getParameters()));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void getParameters() {
+			VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+			assertNotSame(commandLine, c.getParameters());
+		}
+	}
+
+	@DisplayName("hasOption")
+	@Nested
+	public class HasOption {
+
+		private VMCommandLine c;
+
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertTrue(c.hasOption("S"));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertTrue(c.hasOption("b"));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertFalse(c.hasOption("nob"));  //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("getFirstOptionValue")
+	@Nested
+	public class GetFirstOptionValue {
+
+		private VMCommandLine c;
+
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEquals("-b", c.getFirstOptionValue("S"));   //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEquals(false, c.getFirstOptionValue("b"));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEquals(0., c.getFirstOptionValue("F"));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertNull(c.getFirstOptionValue("nob"));  //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("getOptionValues")
+	@Nested
+	public class GetOptionValues {
+
+		private VMCommandLine c;
+
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			var values = c.getOptionValues("D");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(1, values.size());
+			assertEquals(true, values.get(0));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			var values = c.getOptionValues("v");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(1, values.size());
+			assertEquals((long)3, values.get(0));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			var values = c.getOptionValues("F");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(2, values.size());
+			assertEquals(0., values.get(0));
+			assertEquals(123., values.get(1));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			var values = c.getOptionValues("b");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(1, values.size());
+			assertEquals(false, values.get(0));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			var values = c.getOptionValues("S");  //$NON-NLS-1$
+			assertNotNull(values);
+			assertEquals(1, values.size());
+			assertEquals("-b", values.get(0)); //$NON-NLS-1$
+			assertEquals(new ArrayList<>(0), c.getOptionValues("nob")); //$NON-NLS-1$	
+		}
+	}
+
+	@DisplayName("shiftParameters")
+	@Nested
+	public class ShiftParameters {
+
+		private VMCommandLine c;
+
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEquals("clean", c.shiftParameters());  //$NON-NLS-1$
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			c.shiftParameters();
+			assertNotSame(commandLine, c.getParameters());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			c.shiftParameters();
+			assertTrue(Arrays.equals(new String[] {
+					"package", "installters", "-v"  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}, c.getParameters()));
+		}
+	}
+
+	@DisplayName("getParameterCount")
+	@Nested
+	public class GetParameterCount {
+
+		private VMCommandLine c;
+
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEquals(4, c.getParameterCount());
+		}
+	}
+
+	@DisplayName("getParameterAt")
+	@Nested
+	public class GetParameterAt {
+
+		private VMCommandLine c;
+
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertEquals("clean", c.getParameterAt(0));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertEquals("package", c.getParameterAt(1));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertEquals("installters", c.getParameterAt(2));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertEquals("-v", c.getParameterAt(3));  //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("isParameterExists")
+	@Nested
+	public class IsParameterExists {
+
+		private VMCommandLine c;
+
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertTrue(c.isParameterExists(0));
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void test_2() {
+			assertTrue(c.isParameterExists(1));
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void test_3() {
+			assertTrue(c.isParameterExists(2));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void test_4() {
+			assertTrue(c.isParameterExists(3));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void test_5() {
+			assertFalse(c.isParameterExists(5));
+		}
+	}
+
+	@DisplayName("launchVMWithClassPath")
+	@Nested
+	public class launchVMWithClassPath {
+
+		private VMCommandLine c;
+
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertInlineParameterUsage(VMCommandLine.class, "launchVMWithClassPath", Class.class, String.class, String[].class); //$NON-NLS-1$
+		}
 	
-	/**
-	 */
-	@Test
-	public void saveVMParameters() {
-		assertTrue(Arrays.equals(new String[0], VMCommandLine.getCommandLineParameters()));
-		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
-		assertTrue(Arrays.equals(commandLine, VMCommandLine.getCommandLineParameters()));
-		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine2);
-		assertTrue(Arrays.equals(commandLine2, VMCommandLine.getCommandLineParameters()));
+		@DisplayName("#2")
+		@Test
+		public void launchVMWithClassPathClassFileArrayStringArray() {
+			assertInlineParameterUsage(VMCommandLine.class, "launchVMWithClassPath", Class.class, File[].class, String[].class); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	public void saveVMParametersIfNotSet() {
-		assertTrue(Arrays.equals(new String[0], VMCommandLine.getCommandLineParameters()));
-		VMCommandLine.saveVMParametersIfNotSet(VMCommandLineTest.class, commandLine);
-		assertTrue(Arrays.equals(commandLine, VMCommandLine.getCommandLineParameters()));
-		VMCommandLine.saveVMParametersIfNotSet(VMCommandLineTest.class, commandLine2);
-		assertTrue(Arrays.equals(commandLine, VMCommandLine.getCommandLineParameters()));
-	}
+	@DisplayName("launchVM")
+	@Nested
+	public class LaunchVM {
 
-	@Test
-	public void shiftCommandLineParameters() {
-		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
-		assertEquals("-D=true", VMCommandLine.shiftCommandLineParameters());  //$NON-NLS-1$
-		assertTrue(Arrays.equals(new String[] { 
-				"-v", "clean", "-v",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				"-F", "-b", "-v", "package",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				"-F", "123", "-nob", "installters",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				"-S", "-b", "--", "-v"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				VMCommandLine.getCommandLineParameters()));
-	}
+		private VMCommandLine c;
 
-	@Test
-	public void getCommandLineOptions() {
-		assertEquals(Collections.emptyMap(), VMCommandLine.getCommandLineOptions());
-	}
+		@BeforeEach
+		public void setUp() {
+			c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
+		}
 
-	@Test
-	public void splitOptionsAndParameters() {
-		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
-		VMCommandLine.splitOptionsAndParameters(optionDefinitions);
-
-		Map<String,List<Object>> options = VMCommandLine.getCommandLineOptions();
-		String[] parameters = VMCommandLine.getCommandLineParameters();
-		List<Object> values;
-		
-		assertNotNull(options);
-		assertEquals(5, options.size());
-		
-		assertTrue(options.containsKey("D"));  //$NON-NLS-1$
-		values = options.get("D");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals(true, values.get(0));
-
-		assertTrue(options.containsKey("v"));  //$NON-NLS-1$
-		values = options.get("v");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals((long)3, values.get(0));
-
-		assertTrue(options.containsKey("F"));  //$NON-NLS-1$
-		values = options.get("F");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(2, values.size());
-		assertEquals(0., values.get(0));
-		assertEquals(123., values.get(1));
-
-		assertTrue(options.containsKey("b"));  //$NON-NLS-1$
-		values = options.get("b");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals(false, values.get(0));
-
-		assertTrue(options.containsKey("S"));  //$NON-NLS-1$
-		values = options.get("S");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals("-b", values.get(0));  //$NON-NLS-1$
-		
-		values = options.get("nob");  //$NON-NLS-1$
-		assertNull(values);
-
-		assertNotNull(parameters);
-		assertEquals(4, parameters.length);
-		assertEquals("clean", parameters[0]);  //$NON-NLS-1$
-		assertEquals("package", parameters[1]);  //$NON-NLS-1$
-		assertEquals("installters", parameters[2]);  //$NON-NLS-1$
-		assertEquals("-v", parameters[3]);  //$NON-NLS-1$
-	}
-
-	@Test
-	public void getCommandLineOption() {
-		assertEquals(new ArrayList<>(0), VMCommandLine.getCommandLineOption("S")); //$NON-NLS-1$
-		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
-		VMCommandLine.splitOptionsAndParameters(optionDefinitions);
-		
-		List<Object> values;
-		values = VMCommandLine.getCommandLineOption("S");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals("-b", values.get(0)); //$NON-NLS-1$
-
-		assertEquals(new ArrayList<>(0), VMCommandLine.getCommandLineOption("nob")); //$NON-NLS-1$
-	}
-
-	@Test
-	public void hasCommandLineOption() {
-		assertFalse(VMCommandLine.hasCommandLineOption("S"));  //$NON-NLS-1$
-		
-		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
-		VMCommandLine.splitOptionsAndParameters(optionDefinitions);
-		
-		assertTrue(VMCommandLine.hasCommandLineOption("S"));  //$NON-NLS-1$
-		assertFalse(VMCommandLine.hasCommandLineOption("nob"));  //$NON-NLS-1$
-	}
-
-	@Test
-	public void testVMCommandLineClassOfQStringArray() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, commandLine);
-		assertTrue(Arrays.equals(commandLine, c.getParameters()));
-	}
-
-	@Test
-	public void vmCommandLineClassOfQStringArrayStringArray() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		assertTrue(Arrays.equals(new String[] {
-				"clean", "package", "installters", "-v"  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		}, c.getParameters()));
-	}
-
-	@Test
-	public void hasOption() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		assertTrue(c.hasOption("S"));  //$NON-NLS-1$
-		assertTrue(c.hasOption("b"));  //$NON-NLS-1$
-		assertFalse(c.hasOption("nob"));  //$NON-NLS-1$
-	}
-
-	@Test
-	public void getFirstOptionValue() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		assertEquals("-b", c.getFirstOptionValue("S"));   //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(false, c.getFirstOptionValue("b"));  //$NON-NLS-1$
-		assertEquals(0., c.getFirstOptionValue("F"));  //$NON-NLS-1$
-		assertNull(c.getFirstOptionValue("nob"));  //$NON-NLS-1$
-	}
-
-	@Test
-	public void getOptionValues() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		List<Object> values;
-
-		values = c.getOptionValues("D");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals(true, values.get(0));
-
-		values = c.getOptionValues("v");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals((long)3, values.get(0));
-
-		values = c.getOptionValues("F");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(2, values.size());
-		assertEquals(0., values.get(0));
-		assertEquals(123., values.get(1));
-
-		values = c.getOptionValues("b");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals(false, values.get(0));
-
-		values = c.getOptionValues("S");  //$NON-NLS-1$
-		assertNotNull(values);
-		assertEquals(1, values.size());
-		assertEquals("-b", values.get(0)); //$NON-NLS-1$
-		assertEquals(new ArrayList<>(0), c.getOptionValues("nob")); //$NON-NLS-1$
-
-	}
-
-	@Test
-	public void getParameters() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		assertNotSame(commandLine, c.getParameters());
-		assertTrue(Arrays.equals(new String[] {
-				"clean", "package", "installters", "-v"  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		}, c.getParameters()));
-	}
-
-	@Test
-	public void shiftParameters() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		assertEquals("clean", c.shiftParameters());  //$NON-NLS-1$
-		assertNotSame(commandLine, c.getParameters());
-		assertTrue(Arrays.equals(new String[] {
-				"package", "installters", "-v"  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}, c.getParameters()));
-	}
-
-	@Test
-	public void getParameterCount() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		assertEquals(4, c.getParameterCount());
-	}
-
-	@Test
-	public void getParameterAt() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		assertEquals("clean", c.getParameterAt(0));  //$NON-NLS-1$
-		assertEquals("package", c.getParameterAt(1));  //$NON-NLS-1$
-		assertEquals("installters", c.getParameterAt(2));  //$NON-NLS-1$
-		assertEquals("-v", c.getParameterAt(3));  //$NON-NLS-1$
-	}
-
-	@Test
-	public void isParameterExists() {
-		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
-		assertTrue(c.isParameterExists(0));
-		assertTrue(c.isParameterExists(1));
-		assertTrue(c.isParameterExists(2));
-		assertTrue(c.isParameterExists(3));
-		assertFalse(c.isParameterExists(5));
-	}
-
-	@Test
-	public void launchVMWithClassPathClassStringStringArray() {
-		assertInlineParameterUsage(VMCommandLine.class, "launchVMWithClassPath", Class.class, String.class, String[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void launchVMWithClassPathClassFileArrayStringArray() {
-		assertInlineParameterUsage(VMCommandLine.class, "launchVMWithClassPath", Class.class, File[].class, String[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void launchVMClassStringArray() {
-		assertInlineParameterUsage(VMCommandLine.class, "launchVM", Class.class, String[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void launchVMStringStringArray() {
-		assertInlineParameterUsage(VMCommandLine.class, "launchVM", String.class, String[].class); //$NON-NLS-1$
-	}
+		@DisplayName("#1")
+		@Test
+		public void test_1() {
+			assertInlineParameterUsage(VMCommandLine.class, "launchVM", Class.class, String[].class); //$NON-NLS-1$
+		}
 	
-	@Test
-	public void saveVMParametersClassStringArray() {
-		assertInlineParameterUsage(VMCommandLine.class, "saveVMParameters", Class.class, String[].class); //$NON-NLS-1$
-	}
-
-	@Test
-	public void saveVMParametersIfNotSetClassStringArray() {
-		assertInlineParameterUsage(VMCommandLine.class, "saveVMParametersIfNotSet", Class.class, String[].class); //$NON-NLS-1$
+		@DisplayName("#2")
+		@Test
+		public void launchVMStringStringArray() {
+			assertInlineParameterUsage(VMCommandLine.class, "launchVM", String.class, String[].class); //$NON-NLS-1$
+		}
 	}
 
 }

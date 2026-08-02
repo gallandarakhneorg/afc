@@ -22,31 +22,38 @@ package org.arakhne.afc.vmutil;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("OperatingSystem")
 @SuppressWarnings("all")
 public class OperatingSystemTest {
 
+	@DisplayName("getCurrentOSName")
 	@Test
 	public void getCurrentOSName() {
 		assertInlineParameterUsage(OperatingSystem.class, "getCurrentOSName"); //$NON-NLS-1$
 	}
 
+	@DisplayName("getCurrentOSVersion")
 	@Test
 	public void getCurrentOSVersion() {
 		assertInlineParameterUsage(OperatingSystem.class, "getCurrentOSVersion"); //$NON-NLS-1$
 	}
 
+	@DisplayName("getOSSerialNumber")
 	@Test
 	public void getOSSerialNumber() {
 		assertInlineParameterUsage(OperatingSystem.class, "getOSSerialNumber"); //$NON-NLS-1$
 	}
 
+	@DisplayName("getOSUUID")
 	@Test
 	public void getOSUUID() {
 		assertInlineParameterUsage(OperatingSystem.class, "getOSUUID"); //$NON-NLS-1$
 	}
 
+	@DisplayName("is64BitOperatingSystem")
 	@Test
 	public void is64BitOperatingSystem() {
 		assertInlineParameterUsage(OperatingSystem.class, "is64BitOperatingSystem"); //$NON-NLS-1$

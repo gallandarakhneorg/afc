@@ -42,6 +42,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.vmutil.Resources;
@@ -60,83 +62,190 @@ public class URLConnectionTest {
 		// Force the usage of the specific file handler.
 		resourceUrl = new URL(resourceUrl.getProtocol(), null, -1, resourceUrl.getPath(), new Handler());
 		assertNotNull(resourceUrl);
-		this.connection = new URLConnection(resourceUrl);
+		connection = new URLConnection(resourceUrl);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.connection = null;
+		connection = null;
 	}
 
-	@Test
-	public void getHeaderFieldKeyInt() {
-		assertEquals("content-type", this.connection.getHeaderFieldKey(0));  //$NON-NLS-1$
-		assertEquals("content-length", this.connection.getHeaderFieldKey(1));  //$NON-NLS-1$
-		assertEquals("last-modified", this.connection.getHeaderFieldKey(2));  //$NON-NLS-1$
-		assertNull(this.connection.getHeaderFieldKey(3));
-	}
+	@DisplayName("getHeaderFieldKey")
+	@Nested
+	public class GetHeaderFieldKey {
 
-	@Test
-	public void getHeaderFieldInt() {
-		assertEquals("text/plain", this.connection.getHeaderField(0));  //$NON-NLS-1$
-		assertEquals("25", this.connection.getHeaderField(1));  //$NON-NLS-1$
-		assertNotNull(this.connection.getHeaderField(2));
-		assertNull(this.connection.getHeaderField(3));
-	}
-
-	@Test
-	public void getHeaderFieldString() {
-		assertEquals("text/plain", this.connection.getHeaderField("content-type"));   //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("25", this.connection.getHeaderField("content-length"));   //$NON-NLS-1$ //$NON-NLS-2$
-		assertNotNull(this.connection.getHeaderField("last-modified"));  //$NON-NLS-1$
-		assertNull(this.connection.getHeaderField("expires"));  //$NON-NLS-1$
-	}
-
-	@Test
-	public void getHeaderFields() {
-		Map<?,?> map = this.connection.getHeaderFields();
-		assertNotNull(map);
-		assertEquals(3, map.size());
-		assertEquals(Collections.singletonList("text/plain"), map.get("content-type"));   //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(Collections.singletonList("25"), map.get("content-length"));   //$NON-NLS-1$ //$NON-NLS-2$
-		assertNotNull(map.get("last-modified"));  //$NON-NLS-1$
-		assertNull(map.get("expires"));  //$NON-NLS-1$
-	}
-
-	@Test
-	public void getInputStream() throws IOException {
-		String line;
-		try (InputStream is = this.connection.getInputStream()) {
-			try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-				line = br.readLine();
-			}
+		@DisplayName("#1")
+		@Test
+		public void getHeaderFieldKeyInt_1() {
+			assertEquals("content-type", connection.getHeaderFieldKey(0));  //$NON-NLS-1$
 		}
-		assertEquals("TEST1: FOR UNIT TEST ONLY", line);  //$NON-NLS-1$
+
+		@DisplayName("#2")
+		@Test
+		public void getHeaderFieldKeyInt_2() {
+			assertEquals("content-length", connection.getHeaderFieldKey(1));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void getHeaderFieldKeyInt_3() {
+			assertEquals("last-modified", connection.getHeaderFieldKey(2));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void getHeaderFieldKeyInt_4() {
+			assertNull(connection.getHeaderFieldKey(3));
+		}
 	}
 
-	@Test
-	public void getOutputStream() throws IOException {
-		File tmpFile = File.createTempFile("unittest", ".txt");   //$NON-NLS-1$ //$NON-NLS-2$
-		tmpFile.deleteOnExit();
+	@DisplayName("getHeaderField")
+	@Nested
+	public class GetHeaderField {
 
-		URLConnection con = new URLConnection(tmpFile.toURI().toURL());
-		con.setDoOutput(true);
+		@DisplayName("(int) #1")
+		@Test
+		public void getHeaderFieldInt_1() {
+			assertEquals("text/plain", connection.getHeaderField(0));  //$NON-NLS-1$
+		}
 
-		try (OutputStream os = con.getOutputStream()) {
-			try (OutputStreamWriter osw = new OutputStreamWriter(os)) {
-				try (BufferedWriter bw = new BufferedWriter(osw)) {
-					bw.write("HELLO WORLD!");  //$NON-NLS-1$
+		@DisplayName("(int) #2")
+		@Test
+		public void getHeaderFieldInt_2() {
+			assertEquals("25", connection.getHeaderField(1));  //$NON-NLS-1$
+		}
+
+		@DisplayName("(int) #3")
+		@Test
+		public void getHeaderFieldInt_3() {
+			assertNotNull(connection.getHeaderField(2));
+		}
+
+		@DisplayName("(int) #4")
+		@Test
+		public void getHeaderFieldInt_4() {
+			assertNull(connection.getHeaderField(3));
+		}
+
+		@DisplayName("(String) #1")
+		@Test
+		public void getHeaderFieldString_1() {
+			assertEquals("text/plain", connection.getHeaderField("content-type"));   //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #2")
+		@Test
+		public void getHeaderFieldString_2() {
+			assertEquals("25", connection.getHeaderField("content-length"));   //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("(String) #3")
+		@Test
+		public void getHeaderFieldString_3() {
+			assertNotNull(connection.getHeaderField("last-modified"));  //$NON-NLS-1$
+		}
+
+		@DisplayName("(String) #4")
+		@Test
+		public void getHeaderFieldString_4() {
+			assertNull(connection.getHeaderField("expires"));  //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("getHeaderFields")
+	@Nested
+	public class GetHeaderFields {
+
+		private Map<?,?> map;
+
+		@BeforeEach
+		public void setUp() {
+			map = connection.getHeaderFields();
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void getHeaderFields_1() {
+			assertNotNull(map);
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void getHeaderFields_2() {
+			assertEquals(3, map.size());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void getHeaderFields_3() {
+			assertEquals(Collections.singletonList("text/plain"), map.get("content-type"));   //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void getHeaderFields_4() {
+			assertEquals(Collections.singletonList("25"), map.get("content-length"));   //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void getHeaderFields_5() {
+			assertNotNull(map.get("last-modified"));  //$NON-NLS-1$
+		}
+
+		@DisplayName("#6")
+		@Test
+		public void getHeaderFields_6() {
+			assertNull(map.get("expires"));  //$NON-NLS-1$
+		}
+	}
+
+	@DisplayName("getInputStream")
+	@Nested
+	public class GetInputStream {
+
+		@DisplayName("#1")
+		@Test
+		public void getInputStream() throws IOException {
+			String line;
+			try (InputStream is = connection.getInputStream()) {
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+					line = br.readLine();
 				}
 			}
+			assertEquals("TEST1: FOR UNIT TEST ONLY", line);  //$NON-NLS-1$
+		}
 		}
 
-		assertEquals(12, tmpFile.length());
+	@DisplayName("getOutputStream")
+	@Nested
+	public class GetOutputStream {
 
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(tmpFile))) {
-			line = br.readLine();
+		@DisplayName("#1")
+		@Test
+		public void getOutputStream() throws IOException {
+			File tmpFile = File.createTempFile("unittest", ".txt");   //$NON-NLS-1$ //$NON-NLS-2$
+			tmpFile.deleteOnExit();
+	
+			URLConnection con = new URLConnection(tmpFile.toURI().toURL());
+			con.setDoOutput(true);
+	
+			try (OutputStream os = con.getOutputStream()) {
+				try (OutputStreamWriter osw = new OutputStreamWriter(os)) {
+					try (BufferedWriter bw = new BufferedWriter(osw)) {
+						bw.write("HELLO WORLD!");  //$NON-NLS-1$
+					}
+				}
+			}
+	
+			assertEquals(12, tmpFile.length());
+	
+			String line;
+			try (BufferedReader br = new BufferedReader(new FileReader(tmpFile))) {
+				line = br.readLine();
+			}
+			assertEquals("HELLO WORLD!", line);  //$NON-NLS-1$
 		}
-		assertEquals("HELLO WORLD!", line);  //$NON-NLS-1$
 	}
 
 }

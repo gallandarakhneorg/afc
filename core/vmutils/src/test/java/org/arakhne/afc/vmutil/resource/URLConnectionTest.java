@@ -27,19 +27,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.URL;
-import java.net.URLStreamHandler;
-import java.util.Map;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.vmutil.file.HandlerProvider;
-
+@DisplayName("URLConnection")
 @SuppressWarnings("all")
 public class URLConnectionTest {
 
@@ -61,6 +56,7 @@ public class URLConnectionTest {
 		this.connection = null;
 	}
 
+	@DisplayName("getInputStream")
 	@Test
 	public void getInputStream() throws IOException {
 		String line;

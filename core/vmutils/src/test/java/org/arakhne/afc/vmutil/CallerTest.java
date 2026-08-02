@@ -29,142 +29,152 @@ import java.lang.module.ModuleDescriptor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Caller")
 @SuppressWarnings("all")
 public class CallerTest {
 
 	private InnerCallerTest caller;
 	
-	/**
-	 * @throws Exception
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
 		this.caller = new InnerCallerTest();
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
 		this.caller = null;
 	}
 	
-	/**
-	 * @return caller
-	 */
 	static String innerTestGetCallerMethod() {
 		String m = Caller.getCallerMethod();
 		assertNotNull(m);
 		return m;
 	}
 
-	/**
-	 * @return caller
-	 */
 	static Class<?> innerTestGetCallerClass() {
 		Class<?> c = Caller.getCallerClass();
 		assertNotNull(c);
 		return c;
 	}
 
-	/**
-	 * @param level
-	 * @return caller
-	 */
 	static Class<?> innerTestGetCallerClass(int level) {
 		Class<?> c = Caller.getCallerClass(level);
 		assertNotNull(c);
 		return c;
 	}
 
-	/**
-	 * @param level
-	 * @return caller
-	 */
 	static String innerTestGetCallerMethod(int level) {
 		String m = Caller.getCallerMethod(level);
 		assertNotNull(m);
 		return m;
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	@DisplayName("getCallerMethod()")
-	public void getCallerMethod() throws Exception {
-    	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
-    			this.caller.innerinnerTestGetCallerMethod());
+	@DisplayName("getCallerMethod")
+	@Nested
+	public class GetCallerMethod {
+
+		@DisplayName("()")
+		@Test
+		public void getCallerMethod() throws Exception {
+	    	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
+	    			caller.innerinnerTestGetCallerMethod());
+		}
+
+		@Test
+		@DisplayName("(int) #1")
+		public void getCallerMethodInt_1() throws Exception {
+	    	assertEquals("innerTestGetCallerMethod",  //$NON-NLS-1$
+	    			caller.innerinnerTestGetCallerMethod(0));
+		}
+
+		@Test
+		@DisplayName("(int) #2")
+		public void getCallerMethodInt_2() throws Exception {
+	    	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
+	    			caller.innerinnerTestGetCallerMethod(1));
+		}
+
+		@Test
+		@DisplayName("(int) #3")
+		public void getCallerMethodInt_3() throws Exception {
+	    	assertEquals("getCallerMethodInt_3",  //$NON-NLS-1$
+	    			caller.innerinnerTestGetCallerMethod(2));
+		}
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	@DisplayName("getCallerClass()")
-	public void getCallerClass() throws Exception {
-    	assertEquals(InnerCallerTest.class, this.caller.innerinnerTestGetCallerClass());
+	@DisplayName("getCallerClass")
+	@Nested
+	public class GetCallerClass {
+
+		@DisplayName("()")
+		@Test
+		public void getCallerClass() throws Exception {
+	    	assertEquals(InnerCallerTest.class, caller.innerinnerTestGetCallerClass());
+		}
+
+		@Test
+		@DisplayName("(int) #1")
+		public void getCallerClassInt_1() throws Exception {
+	    	assertEquals(CallerTest.class, caller.innerinnerTestGetCallerClass(0));
+		}
+
+		@Test
+		@DisplayName("(int) #2")
+		public void getCallerClassInt_2() throws Exception {
+	    	assertEquals(InnerCallerTest.class, caller.innerinnerTestGetCallerClass(1));
+		}
+
+		@Test
+		@DisplayName("(int) #3")
+		public void getCallerClassInt_3() throws Exception {
+	    	assertEquals(GetCallerClass.class, caller.innerinnerTestGetCallerClass(2));
+		}
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	@DisplayName("getCallerClass(int)")
-	public void getCallerClassInt() throws Exception {
-    	assertEquals(CallerTest.class, this.caller.innerinnerTestGetCallerClass(0));
-    	assertEquals(InnerCallerTest.class, this.caller.innerinnerTestGetCallerClass(1));
-    	assertEquals(CallerTest.class, this.caller.innerinnerTestGetCallerClass(2));
-	}
-	
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	@DisplayName("getCallerMethod(int)")
-	public void getCallerMethodInt() throws Exception {
-    	assertEquals("innerTestGetCallerMethod",  //$NON-NLS-1$
-    			this.caller.innerinnerTestGetCallerMethod(0));
-    	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
-    			this.caller.innerinnerTestGetCallerMethod(1));
-    	assertEquals("getCallerMethodInt",  //$NON-NLS-1$
-    			this.caller.innerinnerTestGetCallerMethod(2));
-	}
+	@DisplayName("Caller.MODULE_NAME")
+	@Nested
+	public class VmutilsModuleName {
 
-	@Test
-	@DisplayName("Caller.class.getModule().name() == Caller.MODULE_NAME")
-	public void vmutilsModuleName() throws Exception {
-		final Module module = Caller.class.getModule();
-		if (module != null) {
-			final ModuleDescriptor descriptor = module.getDescriptor();
-			if (descriptor != null) {
-				final String name = descriptor.name();
-				assertEquals(name, Caller.MODULE_NAME);
+		@Test
+		@DisplayName("Caller.class.getModule().name() == Caller.MODULE_NAME")
+		public void vmutilsModuleName() throws Exception {
+			final Module module = Caller.class.getModule();
+			if (module != null) {
+				final ModuleDescriptor descriptor = module.getDescriptor();
+				if (descriptor != null) {
+					final String name = descriptor.name();
+					assertEquals(name, Caller.MODULE_NAME);
+				} else {
+					assumeFalse(true, "The testing framework does not support modules");
+				}
 			} else {
 				assumeFalse(true, "The testing framework does not support modules");
 			}
-		} else {
-			assumeFalse(true, "The testing framework does not support modules");
 		}
 	}
 
-	@Test
-	@DisplayName("findClassForFirstCallerOutsideVmutilModule()")
-	public void findClassForFirstCallerOutsideVmutilModule() throws Exception {
-		// Depending on the test framework (Junit with Maven, or Junit within Eclipse)
-		// The testing code is not (or is) considered as part of the module
-		Class<?> expected = Caller.getCallerClass();
+	@DisplayName("findClassForFirstCallerOutsideVmutilModule")
+	@Nested
+	public class FindClassForFirstCallerOutsideVmutilModule {
 
-		final Module module = CallerTest.class.getModule();
-		if (module != null && !Caller.MODULE_NAME.equals(module.getName())) {
-			expected = CallerTest.class;
+		@DisplayName("#1")
+		@Test
+		public void findClassForFirstCallerOutsideVmutilModule() throws Exception {
+			// Depending on the test framework (Junit with Maven, or Junit within Eclipse)
+			// The testing code is not (or is) considered as part of the module
+			Class<?> expected = Caller.getCallerClass();
+	
+			final Module module = CallerTest.class.getModule();
+			if (module != null && !Caller.MODULE_NAME.equals(module.getName())) {
+				expected = CallerTest.class;
+			}
+	
+			Class<?> c = Caller.findClassForFirstCallerOutsideVmutilModule();
+			assertEquals(expected, c);
 		}
-
-		Class<?> c = Caller.findClassForFirstCallerOutsideVmutilModule();
-		assertEquals(expected, c);
 	}
 
 	/**

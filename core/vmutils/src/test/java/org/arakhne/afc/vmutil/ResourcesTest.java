@@ -28,8 +28,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Resources")
 @SuppressWarnings("all")
 public class ResourcesTest {
 
@@ -39,89 +42,194 @@ public class ResourcesTest {
 	private static final String TEST_NAME_4 = "/test.txt";  //$NON-NLS-1$
 	private static final String PACKAGE_NAME = "org.arakhne.afc.vmutil";  //$NON-NLS-1$
 	
-	@Test
-	public void getResourceString() {
-		assertNull(Resources.getResource(null));
+	@DisplayName("getResource")
+	@Nested
+	public class GetResource {
 
-		URL u1 = Resources.getResource(TEST_NAME_1);
-		assertNotNull(u1);
+		@DisplayName("(String) #1")
+		@Test
+		public void string_1() {
+			assertNull(Resources.getResource(null));
+		}
 
-		URL u2 = Resources.getResource(TEST_NAME_2);
-		assertNotNull(u2);
+		@DisplayName("(String) #2")
+		@Test
+		public void string_2() {
+			URL u1 = Resources.getResource(TEST_NAME_1);
+			assertNotNull(u1);
+		}
 
-		assertEquals(u1,u2);
+		@DisplayName("(String) #3")
+		@Test
+		public void string_3() {
+			URL u2 = Resources.getResource(TEST_NAME_2);
+			assertNotNull(u2);
+		}
+
+		@DisplayName("(String) #4")
+		@Test
+		public void string_4() {
+			URL u1 = Resources.getResource(TEST_NAME_1);
+			URL u2 = Resources.getResource(TEST_NAME_2);
+			assertEquals(u1,u2);
+		}
+
+		@DisplayName("(Class,String) #1")
+		@Test
+		public void test_1() {
+			assertNull(Resources.getResource(ResourcesTest.class, null));
+		}
+
+		@DisplayName("(Class,String) #2")
+		@Test
+		public void test_2() {
+			URL u1 = Resources.getResource(ResourcesTest.class, TEST_NAME_1);
+			assertNotNull(u1);
+		}
+
+		@DisplayName("(Class,String) #3")
+		@Test
+		public void test_3() {
+			URL u2 = Resources.getResource(ResourcesTest.class, TEST_NAME_2);
+			assertNotNull(u2);
+		}
+
+		@DisplayName("(Class,String) #4")
+		@Test
+		public void test_4() {
+			URL u3 = Resources.getResource(ResourcesTest.class, TEST_NAME_3);
+			assertNotNull(u3);
+		}
+
+		@DisplayName("(Class,String) #5")
+		@Test
+		public void test_5() {
+			URL u1 = Resources.getResource(ResourcesTest.class, TEST_NAME_1);
+			URL u2 = Resources.getResource(ResourcesTest.class, TEST_NAME_2);
+			assertEquals(u1,u2);
+		}
+
+		@DisplayName("(Class,String) #6")
+		@Test
+		public void test_6() {
+			URL u1 = Resources.getResource(ResourcesTest.class, TEST_NAME_1);
+			URL u3 = Resources.getResource(ResourcesTest.class, TEST_NAME_3);
+			assertEquals(u1,u3);
+		}
+
+		@DisplayName("(Class,String) #7")
+		@Test
+		public void test_7() {
+			assertNull(Resources.getResource((Class<?>)null, null));
+		}
+
+		@DisplayName("(Class,String) #8")
+		@Test
+		public void test_8() {
+			var u1 = Resources.getResource((Class<?>)null, TEST_NAME_1);
+			assertNull(u1);
+		}
+
+		@DisplayName("(Class,String) #9")
+		@Test
+		public void test_9() {
+			var u2 = Resources.getResource((Class<?>)null, TEST_NAME_2);
+			assertNull(u2);
+		}
 	}
 
-	@Test
-	public void getResourceClassString() {
-		assertNull(Resources.getResource(ResourcesTest.class, null));
+	@DisplayName("getResourceAsStream")
+	@Nested
+	public class GetResourceAsStream {
 
-		URL u1 = Resources.getResource(ResourcesTest.class, TEST_NAME_1);
-		assertNotNull(u1);
-
-		URL u2 = Resources.getResource(ResourcesTest.class, TEST_NAME_2);
-		assertNotNull(u2);
-
-		URL u3 = Resources.getResource(ResourcesTest.class, TEST_NAME_3);
-		assertNotNull(u3);
-
-		assertEquals(u1,u2);
-		assertEquals(u1,u3);
-
-		assertNull(Resources.getResource((Class<?>)null, null));
-
-		u1 = Resources.getResource((Class<?>)null, TEST_NAME_1);
-		assertNull(u1);
-
-		u2 = Resources.getResource((Class<?>)null, TEST_NAME_2);
-		assertNull(u2);
-	}
-
-	@Test
-	public void getResourceAsStreamString() throws IOException {
-		assertNull(Resources.getResourceAsStream(null));
-
-		try (InputStream is = Resources.getResourceAsStream(TEST_NAME_1)) {
-			assertNotNull(is);
+		@DisplayName("(String) #1")
+		@Test
+		public void string_1() throws IOException {
+			assertNull(Resources.getResourceAsStream(null));
 		}
 
-		try (InputStream is = Resources.getResourceAsStream(TEST_NAME_2)) {
-			assertNotNull(is);
-		}
-	}
-
-	@Test
-	public void getResourceAsStreamClassString() throws IOException {
-		assertNull(Resources.getResourceAsStream(ResourcesTest.class, null));
-
-		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_1)) {
-			assertNotNull(is);
+		@DisplayName("(String) #2")
+		@Test
+		public void string_2() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream(TEST_NAME_1)) {
+				assertNotNull(is);
+			}
 		}
 
-		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_2)) {
-			assertNotNull(is);
+		@DisplayName("(String) #3")
+		@Test
+		public void string_3() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream(TEST_NAME_2)) {
+				assertNotNull(is);
+			}
 		}
 
-		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_3)) {
-			assertNotNull(is);
+		@DisplayName("(Class,String) #1")
+		@Test
+		public void classstring_1() throws IOException {
+			assertNull(Resources.getResourceAsStream(ResourcesTest.class, null));
 		}
 
-		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_4)) {
-			assertNotNull(is);
+		@DisplayName("(Class,String) #2")
+		@Test
+		public void classstring_2() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_1)) {
+				assertNotNull(is);
+			}
 		}
 
-		assertNull(Resources.getResourceAsStream((Class<?>)null, null));
-
-		try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_1)) {
-			assertNull(is);
+		@DisplayName("(Class,String) #3")
+		@Test
+		public void classstring_3() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_2)) {
+				assertNotNull(is);
+			}
 		}
 
-		try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_2)) {
-			assertNull(is);
+		@DisplayName("(Class,String) #4")
+		@Test
+		public void classstring_4() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_3)) {
+				assertNotNull(is);
+			}
 		}
 
-		try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_3)) {
-			assertNull(is);
+		@DisplayName("(Class,String) #5")
+		@Test
+		public void classstring_5() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_4)) {
+				assertNotNull(is);
+			}
+		}
+
+		@DisplayName("(Class,String) #6")
+		@Test
+		public void classstring_6() throws IOException {
+			assertNull(Resources.getResourceAsStream((Class<?>)null, null));
+		}
+
+		@DisplayName("(Class,String) #7")
+		@Test
+		public void classstring_7() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_1)) {
+				assertNull(is);
+			}
+		}
+
+		@DisplayName("(Class,String) #8")
+		@Test
+		public void classstring_8() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_2)) {
+				assertNull(is);
+			}
+		}
+
+		@DisplayName("(Class,String) #9")
+		@Test
+		public void classstring_9() throws IOException {
+			try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_3)) {
+				assertNull(is);
+			}
 		}
 	}
 

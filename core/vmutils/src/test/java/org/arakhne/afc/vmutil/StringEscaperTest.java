@@ -22,77 +22,102 @@ package org.arakhne.afc.vmutil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("StringEscaper")
 @SuppressWarnings("all")
 public class StringEscaperTest {
 
-	@Test
-	public void escape_01() {
-		StringEscaper escaper = new StringEscaper();
-		assertEquals("abc", escaper.escape("abc")); //$NON-NLS-1$ //$NON-NLS-2$
+	@DisplayName("escape")
+	@Nested
+	public class Escape {
+	
+		@DisplayName("abc")
+		@Test
+		public void escape_01() {
+			StringEscaper escaper = new StringEscaper();
+			assertEquals("abc", escaper.escape("abc")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@DisplayName("a\nb\tc")
+		@Test
+		public void escape_02() {
+			StringEscaper escaper = new StringEscaper();
+			assertEquals("a\\nb\\tc", escaper.escape("a\nb\tc")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@DisplayName("a\\nbc\\T")
+		@Test
+		public void escape_03() {
+			StringEscaper escaper = new StringEscaper();
+			assertEquals("a\\\\nbc\\\\T", escaper.escape("a\\nbc\\T")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@DisplayName("ab/c")
+		@Test
+		public void escape_04() {
+			StringEscaper escaper = new StringEscaper();
+			assertEquals("ab/c", escaper.escape("ab/c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@DisplayName("ab\"c")
+		@Test
+		public void escape_05() {
+			StringEscaper escaper = new StringEscaper();
+			assertEquals("ab\\\"c", escaper.escape("ab\"c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@DisplayName("ab'c")
+		@Test
+		public void escape_06() {
+			StringEscaper escaper = new StringEscaper();
+			assertEquals("ab'c", escaper.escape("ab'c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@DisplayName("ab\u0004c")
+		@Test
+		public void escape_07() {
+			StringEscaper escaper = new StringEscaper();
+			assertEquals("ab\\u0004c", escaper.escape("ab\u0004c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	
+		@DisplayName("ab\\u0004c")
+		@Test
+		public void escape_08() {
+			StringEscaper escaper = new StringEscaper();
+			assertEquals("ab\\\\u0004c", escaper.escape("ab\\u0004c")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	}
 
-	@Test
-	public void escape_02() {
-		StringEscaper escaper = new StringEscaper();
-		assertEquals("a\\nb\\tc", escaper.escape("a\nb\tc")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+	@DisplayName("formatHex")
+	@Nested
+	public class FormatHex {
 
-	@Test
-	public void escape_03() {
-		StringEscaper escaper = new StringEscaper();
-		assertEquals("a\\\\nbc\\\\T", escaper.escape("a\\nbc\\T")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	public void escape_04() {
-		StringEscaper escaper = new StringEscaper();
-		assertEquals("ab/c", escaper.escape("ab/c")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	public void escape_05() {
-		StringEscaper escaper = new StringEscaper();
-		assertEquals("ab\\\"c", escaper.escape("ab\"c")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	public void escape_06() {
-		StringEscaper escaper = new StringEscaper();
-		assertEquals("ab'c", escaper.escape("ab'c")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	public void escape_07() {
-		StringEscaper escaper = new StringEscaper();
-		assertEquals("ab\\u0004c", escaper.escape("ab\u0004c")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	public void escape_08() {
-		StringEscaper escaper = new StringEscaper();
-		assertEquals("ab\\\\u0004c", escaper.escape("ab\\u0004c")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Test
-	public void formatHex_01() {
-		assertEquals("4f", StringEscaper.formatHex(0x4F, 1)); //$NON-NLS-1$
-	}
-
-	@Test
-	public void formatHex_02() {
-		assertEquals("4f", StringEscaper.formatHex(0x4F, 2)); //$NON-NLS-1$
-	}
-
-	@Test
-	public void formatHex_03() {
-		assertEquals("04f", StringEscaper.formatHex(0x4F, 3)); //$NON-NLS-1$
-	}
-
-	@Test
-	public void formatHex_04() {
-		assertEquals("004f", StringEscaper.formatHex(0x4F, 4)); //$NON-NLS-1$
+		@DisplayName("Length: 1")
+		@Test
+		public void formatHex_01() {
+			assertEquals("4f", StringEscaper.formatHex(0x4F, 1)); //$NON-NLS-1$
+		}
+	
+		@DisplayName("Length: 2")
+		@Test
+		public void formatHex_02() {
+			assertEquals("4f", StringEscaper.formatHex(0x4F, 2)); //$NON-NLS-1$
+		}
+	
+		@DisplayName("Length: 3")
+		@Test
+		public void formatHex_03() {
+			assertEquals("04f", StringEscaper.formatHex(0x4F, 3)); //$NON-NLS-1$
+		}
+	
+		@DisplayName("Length: 4")
+		@Test
+		public void formatHex_04() {
+			assertEquals("004f", StringEscaper.formatHex(0x4F, 4)); //$NON-NLS-1$
+		}
 	}
 
 }
