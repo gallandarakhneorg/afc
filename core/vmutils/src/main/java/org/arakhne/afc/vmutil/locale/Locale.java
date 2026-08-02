@@ -89,6 +89,46 @@ public final class Locale {
 		//
 	}
 
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	private static String searchForValue(boolean enableSuperClassSearch, boolean enableEnclosingClassSearch,
+			ClassLoader classLoader, Class<?> resource, String key, String defaultValue, Object... params) {
+		final var res0 = detectResourceClass(resource);
+		if (res0 == null) {
+			return key;
+		}
+		var val = getStringWithDefaultFrom(classLoader, res0.getCanonicalName(), key, null, params);
+		if (val == null && classLoader != resource.getClassLoader()) {
+			val = getStringWithDefaultFrom(resource.getClassLoader(), res0.getCanonicalName(), key, null, params);
+		}
+		if (val != null) {
+			return val;
+		}
+
+		if (enableSuperClassSearch) {
+			var res1 = res0.getSuperclass();
+			while (res1 != null && !Object.class.equals(res1) && val == null) {
+				val = getStringWithDefaultFrom(classLoader, res1.getCanonicalName(), key, null, params);
+				res1 = res1.getSuperclass();
+			}
+			if (val != null) {
+				return val;
+			}
+		}
+
+		if (enableEnclosingClassSearch) {
+			var res2 = res0.getEnclosingClass();
+			while (res2 != null && val == null) {
+				val = getStringWithDefaultFrom(classLoader, res2.getCanonicalName(), key, null, params);
+				res2 = res2.getEnclosingClass();
+			}
+			if (val != null) {
+				return val;
+			}
+		}
+
+		return defaultValue;
+	}
+
 	/** Replies the charsets for decoding that must be used prior to the installed charsets.
 	 *
 	 * @return the priorized decoding charsets.
@@ -271,24 +311,7 @@ public final class Locale {
 	 */
 	@Pure
 	public static String getString(ClassLoader classLoader, Class<?> resource, String key, Object... params) {
-		var res = detectResourceClass(resource);
-		if (res == null) {
-			return key;
-		}
-		var val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
-		if (val == null && classLoader != resource.getClassLoader()) {
-			val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
-		}
-		while (res != null && val == null) {
-			res = res.getSuperclass();
-			if (res != null) {
-				val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
-			}
-		}
-		if (val == null) {
-			return key;
-		}
-		return val;
+		return searchForValue(true, true, classLoader, resource, key, key, params);
 	}
 
 	/**
@@ -354,24 +377,7 @@ public final class Locale {
 	@Pure
 	public static String getStringWithDefault(ClassLoader classLoader, Class<?> resource, String key,
 			String defaultValue, Object... params) {
-		var res = detectResourceClass(resource);
-		if (res == null) {
-			return defaultValue;
-		}
-		var val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
-		if (val == null && classLoader != resource.getClassLoader()) {
-			val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
-		}
-		while (res != null && val == null) {
-			res = res.getSuperclass();
-			if (res != null) {
-				val = getStringWithDefaultFrom(classLoader, res.getCanonicalName(), key, null, params);
-			}
-		}
-		if (val == null) {
-			return defaultValue;
-		}
-		return val;
+		return searchForValue(true, true, classLoader, resource, key, defaultValue, params);
 	}
 
 	/**
