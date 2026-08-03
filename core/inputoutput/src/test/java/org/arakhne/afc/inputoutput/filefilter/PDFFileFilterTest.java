@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import org.junit.jupiter.api.DisplayName;
+
+@DisplayName("PDFFileFilter")
 @SuppressWarnings("all")
 public class PDFFileFilterTest extends AbstractBaseFileFilterTest {
 

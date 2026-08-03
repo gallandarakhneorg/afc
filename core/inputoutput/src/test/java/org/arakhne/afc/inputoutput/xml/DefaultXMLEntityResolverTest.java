@@ -24,14 +24,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.net.URL;
 
+import org.arakhne.afc.testtools.AbstractTestCase;
+import org.arakhne.afc.vmutil.Resources;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.InputSource;
 
-import org.arakhne.afc.testtools.AbstractTestCase;
-import org.arakhne.afc.vmutil.Resources;
-
+@DisplayName("DefaultXMLEntityResolver")
 @SuppressWarnings("all")
 public class DefaultXMLEntityResolverTest extends AbstractTestCase {
 
@@ -47,20 +49,27 @@ public class DefaultXMLEntityResolverTest extends AbstractTestCase {
 		this.resolver = null;
 	}
 	
-	@Test
-	public void resolveEntityStringString_resourceUrl() throws Exception {
-		URL resource = Resources.getResource(getClass(), "xmlResource.txt"); //$NON-NLS-1$
-		InputSource src = this.resolver.resolveEntity(null, resource.toString());
-		assertNotNull(src);
-		assertNotNull(src.getByteStream());
-	}
+	@DisplayName("resolveEntity")
+	@Nested
+	public class ResolveEntity {
 
-	@Test
-	public void resolveEntityStringString_resourceName() throws Exception {
-		String resource = getClass().getPackage().getName().replace('.', '/') + "/xmlResource.txt"; //$NON-NLS-1$
-		InputSource src = this.resolver.resolveEntity(null, resource);
-		assertNotNull(src);
-		assertNotNull(src.getByteStream());
+		@DisplayName("#1")
+		@Test
+		public void resolveEntityStringString_resourceUrl() throws Exception {
+			URL resource = Resources.getResource(getClass(), "xmlResource.txt"); //$NON-NLS-1$
+			InputSource src = resolver.resolveEntity(null, resource.toString());
+			assertNotNull(src);
+			assertNotNull(src.getByteStream());
+		}
+	
+		@DisplayName("#2")
+		@Test
+		public void resolveEntityStringString_resourceName() throws Exception {
+			String resource = getClass().getPackage().getName().replace('.', '/') + "/xmlResource.txt"; //$NON-NLS-1$
+			InputSource src = resolver.resolveEntity(null, resource);
+			assertNotNull(src);
+			assertNotNull(src.getByteStream());
+		}
 	}
 
 }

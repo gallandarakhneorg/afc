@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import org.junit.jupiter.api.DisplayName;
+
+@DisplayName("GXLFileFilter")
 @SuppressWarnings("all")
 public class GXLFileFilterTest extends AbstractBaseFileFilterTest {
 

@@ -25,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
@@ -32,14 +34,20 @@ public abstract class AbstractFileFilterTest extends AbstractBaseFileFilterTest 
 
 	protected abstract boolean isFile(URL url) throws Exception;
 	
-	@Test
-	public void isFile_valid() throws Exception {
-		assertTrue(isFile(this.resource));
-	}
+	@DisplayName("isFile")
+	@Nested
+	public class IsFile {
 
-	@Test
-	public void isFile_invalid() throws Exception {
-		assertFalse(isFile(this.nothing));
+		@DisplayName("Valid")
+		@Test
+		public void isFile_valid() throws Exception {
+			assertTrue(isFile(resource));
+		}
+	
+		@DisplayName("Invalid")
+		@Test
+		public void isFile_invalid() throws Exception {
+			assertFalse(isFile(nothing));
+		}
 	}
-
 }

@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import org.junit.jupiter.api.DisplayName;
+
+@DisplayName("DOTFileFilter")
 @SuppressWarnings("all")
 public class DOTFileFilterTest extends AbstractBaseFileFilterTest {
 

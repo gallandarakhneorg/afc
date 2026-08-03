@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import org.junit.jupiter.api.DisplayName;
+
+@DisplayName("JAVAFileFilter")
 @SuppressWarnings("all")
 public class JAVAFileFilterTest extends AbstractBaseFileFilterTest {
 

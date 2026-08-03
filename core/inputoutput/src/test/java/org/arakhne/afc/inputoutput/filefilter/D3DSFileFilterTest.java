@@ -22,6 +22,9 @@ package org.arakhne.afc.inputoutput.filefilter;
 
 import java.net.URL;
 
+import org.junit.jupiter.api.DisplayName;
+
+@DisplayName("D3DSFileFilter")
 @SuppressWarnings("all")
 public class D3DSFileFilterTest extends AbstractFileFilterTest {
 

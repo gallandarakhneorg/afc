@@ -29,6 +29,7 @@ import java.net.URL;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.vmutil.FileSystem;
@@ -65,6 +66,7 @@ public abstract class AbstractBaseFileFilterTest {
 		this.nothing = null;
 	}
 	
+	@DisplayName("acceptFile")
 	@Test
 	public void acceptFile() throws Exception {
 		AbstractFileFilter filter = getFilter();

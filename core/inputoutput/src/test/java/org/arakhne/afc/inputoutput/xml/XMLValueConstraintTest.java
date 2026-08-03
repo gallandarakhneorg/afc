@@ -31,9 +31,12 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
+@DisplayName("XMLValueConstraint")
 @SuppressWarnings("all")
 public class XMLValueConstraintTest {
 
@@ -45,9 +48,9 @@ public class XMLValueConstraintTest {
 	
 	@BeforeEach
 	public void setUp() {
-		this.name = UUID.randomUUID().toString();
-		this.value = UUID.randomUUID();
-		this.constraint = new XMLValueConstraint<UUID>(this.name, this.value) {
+		name = UUID.randomUUID().toString();
+		value = UUID.randomUUID();
+		constraint = new XMLValueConstraint<UUID>(name, value) {
 
 			@Override
 			protected UUID convertValue(String stringValue) {
@@ -59,34 +62,41 @@ public class XMLValueConstraintTest {
 	
 	@AfterEach
 	public void tearDown() {
-		this.constraint = null;
-		this.name = null;
+		constraint = null;
+		name = null;
 	}
 	
-	@Test
-	public void isValidElement_valid() {
-		Element element = mock(Element.class);
-		when(element.getAttribute(anyString())).then((inv) -> {
-			if (this.name.equals(inv.getArgument(0))) {
-				return this.value.toString();
-			}
-			fail("Invalid attribute name"); //$NON-NLS-1$
-			return null;
-		});
-		assertTrue(this.constraint.isValidElement(element));
-	}
+	@DisplayName("isValidElement")
+	@Nested
+	public class IsValidElement {
 
-	@Test
-	public void isValidElement_invalid() {
-		Element element = mock(Element.class);
-		when(element.getAttribute(anyString())).then((inv) -> {
-			if (this.name.equals(inv.getArgument(0))) {
-				return UUID.randomUUID().toString();
-			}
-			fail("Invalid attribute name"); //$NON-NLS-1$
-			return null;
-		});
-		assertFalse(this.constraint.isValidElement(element));
+		@DisplayName("Valid")
+		@Test
+		public void isValidElement_valid() {
+			Element element = mock(Element.class);
+			when(element.getAttribute(anyString())).then((inv) -> {
+				if (name.equals(inv.getArgument(0))) {
+					return value.toString();
+				}
+				fail("Invalid attribute name"); //$NON-NLS-1$
+				return null;
+			});
+			assertTrue(constraint.isValidElement(element));
+		}
+	
+		@DisplayName("Invalid")
+		@Test
+		public void isValidElement_invalid() {
+			Element element = mock(Element.class);
+			when(element.getAttribute(anyString())).then((inv) -> {
+				if (name.equals(inv.getArgument(0))) {
+					return UUID.randomUUID().toString();
+				}
+				fail("Invalid attribute name"); //$NON-NLS-1$
+				return null;
+			});
+			assertFalse(constraint.isValidElement(element));
+		}
 	}
 
 }

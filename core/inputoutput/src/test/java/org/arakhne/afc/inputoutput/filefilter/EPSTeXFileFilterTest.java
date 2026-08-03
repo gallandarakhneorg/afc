@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import org.junit.jupiter.api.DisplayName;
+
+@DisplayName("EPSTeXFileFilter")
 @SuppressWarnings("all")
 public class EPSTeXFileFilterTest extends AbstractBaseFileFilterTest {
 
