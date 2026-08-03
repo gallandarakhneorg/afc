@@ -25,12 +25,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import org.arakhne.afc.math.tree.node.QuadTreeNode.DefaultQuadTreeNode;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -39,6 +40,7 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("QuadTreeNode")
 @SuppressWarnings("all")
 public class QuadTreeNodeTest {
 
@@ -51,326 +53,372 @@ public class QuadTreeNodeTest {
 	private DefaultQuadTreeNode<Object> node;
 	private DefaultQuadTreeNode<Object> newNode;
 	
-	/**
-	 * 
-	 * @throws Exception
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.root = new NodeStub("root");  //$NON-NLS-1$
-		this.child1 = new NodeStub("child1");  //$NON-NLS-1$
-		this.child2 = new NodeStub("child2");  //$NON-NLS-1$
-		this.node = new NodeStub("node");  //$NON-NLS-1$
-		this.newNode = new NodeStub("newNode");  //$NON-NLS-1$
+		root = new NodeStub("root");  //$NON-NLS-1$
+		child1 = new NodeStub("child1");  //$NON-NLS-1$
+		child2 = new NodeStub("child2");  //$NON-NLS-1$
+		node = new NodeStub("node");  //$NON-NLS-1$
+		newNode = new NodeStub("newNode");  //$NON-NLS-1$
 		
-		this.root.setFirstChild(this.child1);
-		this.root.setThirdChild(this.child2);
-		this.child1.setFourthChild(this.node);
+		root.setFirstChild(child1);
+		root.setThirdChild(child2);
+		child1.setFourthChild(node);
 	
-		this.listener.reset();
-		this.root.addTreeNodeListener(this.listener);
+		listener.reset();
+		root.addTreeNodeListener(listener);
 	}
 	
-	/**
-	 * 
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.root.removeTreeNodeListener(this.listener);
-		this.root.clear();
-		this.root = this.child1 = this.child2 = this.node = this.newNode = null;
-		this.listener.reset();
+		root.removeTreeNodeListener(listener);
+		root.clear();
+		root = child1 = child2 = node = newNode = null;
+		listener.reset();
 	}
 
-	/**
-	 */
-	@Test
-	public void getChildCount() {
-		assertEquals(4, this.root.getChildCount());
-		assertEquals(4, this.child1.getChildCount());
-		assertEquals(4, this.child2.getChildCount());
-		assertEquals(4, this.node.getChildCount());
+	@DisplayName("getChildCount")
+	@Nested
+	public class GetChildCount {
+
+		@DisplayName("#1")
+		@Test
+		public void getChildCount_1() {
+			assertEquals(4, root.getChildCount());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void getChildCount_2() {
+			assertEquals(4, child1.getChildCount());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void getChildCount_3() {
+			assertEquals(4, child2.getChildCount());
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void getChildCount_4() {
+			assertEquals(4, node.getChildCount());
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void getNotNullChildCount() {
-		assertEquals(2, this.root.getNotNullChildCount());
-		assertEquals(1, this.child1.getNotNullChildCount());
-		assertEquals(0, this.child2.getNotNullChildCount());
-		assertEquals(0, this.node.getNotNullChildCount());
+	@DisplayName("getNotNullChildCount")
+	@Nested
+	public class GetNotNullChildCount {
+
+		@DisplayName("#1")
+		@Test
+		public void getNotNullChildCount_1() {
+			assertEquals(2, root.getNotNullChildCount());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void getNotNullChildCount_2() {
+			assertEquals(1, child1.getNotNullChildCount());
+		}
+
+		@DisplayName("#3")
+		@Test
+		public void getNotNullChildCount_3() {
+			assertEquals(0, child2.getNotNullChildCount());
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void getNotNullChildCount_4() {
+			assertEquals(0, node.getNotNullChildCount());
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void setFirstChild_newNode() {
-		this.node.setFirstChild(this.newNode);
-		
-		assertSame(this.newNode, this.node.getFirstChild());
-		assertSame(this.node, this.newNode.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(0, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(1, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.newNode, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(0, this.listener.additionEvent.get(0).getChildIndex());
+	@DisplayName("setFirstChild")
+	@Nested
+	public class SetFirstChild {
 
-		assertSame(this.newNode, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.newNode, this.listener.parentEvent.get(0).getChildNode());
-		assertNull(this.listener.parentEvent.get(0).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(0).getNewParent());
+		@DisplayName("#1")
+		@Test
+		public void setFirstChild_newNode() {
+			node.setFirstChild(newNode);
+			
+			assertSame(newNode, node.getFirstChild());
+			assertSame(node, newNode.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(0, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(1, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(newNode, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(0, listener.additionEvent.get(0).getChildIndex());
+	
+			assertSame(newNode, listener.parentEvent.get(0).getSource());
+			assertSame(newNode, listener.parentEvent.get(0).getChildNode());
+			assertNull(listener.parentEvent.get(0).getOldParent());
+			assertSame(node, listener.parentEvent.get(0).getNewParent());
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void setFirstChild_moveNode() {
+			node.setFirstChild(child2);
+			
+			assertSame(child2, node.getFirstChild());
+			assertSame(node, child2.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(1, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(2, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(child2, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(0, listener.additionEvent.get(0).getChildIndex());
+
+			assertSame(child2, listener.parentEvent.get(0).getSource());
+			assertSame(child2, listener.parentEvent.get(0).getChildNode());
+			assertSame(root, listener.parentEvent.get(0).getOldParent());
+			assertNull(listener.parentEvent.get(0).getNewParent());
+
+			assertSame(child2, listener.parentEvent.get(1).getSource());
+			assertSame(child2, listener.parentEvent.get(1).getChildNode());
+			assertNull(listener.parentEvent.get(1).getOldParent());
+			assertSame(node, listener.parentEvent.get(1).getNewParent());
+
+			assertSame(root, listener.removalEvent.get(0).getSource());
+			assertSame(child2, listener.removalEvent.get(0).getChild());
+			assertSame(root, listener.removalEvent.get(0).getParentNode());
+			assertSame(2, listener.removalEvent.get(0).getChildIndex());
+		}
 	}
 	
-	/**
-	 */
-	@Test
-	public void setFirstChild_moveNode() {
-		this.node.setFirstChild(this.child2);
-		
-		assertSame(this.child2, this.node.getFirstChild());
-		assertSame(this.node, this.child2.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(1, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(2, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(0, this.listener.additionEvent.get(0).getChildIndex());
+	@DisplayName("setSecondChild")
+	@Nested
+	public class SetSecondChild {
 
-		assertSame(this.child2, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(0).getChildNode());
-		assertSame(this.root, this.listener.parentEvent.get(0).getOldParent());
-		assertNull(this.listener.parentEvent.get(0).getNewParent());
-
-		assertSame(this.child2, this.listener.parentEvent.get(1).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(1).getChildNode());
-		assertNull(this.listener.parentEvent.get(1).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(1).getNewParent());
-
-		assertSame(this.root, this.listener.removalEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.removalEvent.get(0).getChild());
-		assertSame(this.root, this.listener.removalEvent.get(0).getParentNode());
-		assertSame(2, this.listener.removalEvent.get(0).getChildIndex());
-	}
-
-	/**
-	 */
-	@Test
-	public void setSecondChild_newNode() {
-		this.node.setSecondChild(this.newNode);
-		
-		assertSame(this.newNode, this.node.getSecondChild());
-		assertSame(this.node, this.newNode.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(0, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(1, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.newNode, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(1, this.listener.additionEvent.get(0).getChildIndex());
-
-		assertSame(this.newNode, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.newNode, this.listener.parentEvent.get(0).getChildNode());
-		assertNull(this.listener.parentEvent.get(0).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(0).getNewParent());
-	}
+		@DisplayName("#1")
+		@Test
+		public void setSecondChild_newNode() {
+			node.setSecondChild(newNode);
+			
+			assertSame(newNode, node.getSecondChild());
+			assertSame(node, newNode.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(0, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(1, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(newNode, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(1, listener.additionEvent.get(0).getChildIndex());
 	
-	/**
-	 */
-	@Test
-	public void setSecondChild_moveNode() {
-		this.node.setSecondChild(this.child2);
+			assertSame(newNode, listener.parentEvent.get(0).getSource());
+			assertSame(newNode, listener.parentEvent.get(0).getChildNode());
+			assertNull(listener.parentEvent.get(0).getOldParent());
+			assertSame(node, listener.parentEvent.get(0).getNewParent());
+		}
 		
-		assertSame(this.child2, this.node.getSecondChild());
-		assertSame(this.node, this.child2.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(1, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(2, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(1, this.listener.additionEvent.get(0).getChildIndex());
-
-		assertSame(this.child2, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(0).getChildNode());
-		assertSame(this.root, this.listener.parentEvent.get(0).getOldParent());
-		assertNull(this.listener.parentEvent.get(0).getNewParent());
-
-		assertSame(this.child2, this.listener.parentEvent.get(1).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(1).getChildNode());
-		assertNull(this.listener.parentEvent.get(1).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(1).getNewParent());
-
-		assertSame(this.root, this.listener.removalEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.removalEvent.get(0).getChild());
-		assertSame(this.root, this.listener.removalEvent.get(0).getParentNode());
-		assertSame(2, this.listener.removalEvent.get(0).getChildIndex());
-	}
-
-	/**
-	 */
-	@Test
-	public void setThirdChild_newNode() {
-		this.node.setThirdChild(this.newNode);
-		
-		assertSame(this.newNode, this.node.getThirdChild());
-		assertSame(this.node, this.newNode.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(0, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(1, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.newNode, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(2, this.listener.additionEvent.get(0).getChildIndex());
-
-		assertSame(this.newNode, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.newNode, this.listener.parentEvent.get(0).getChildNode());
-		assertNull(this.listener.parentEvent.get(0).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(0).getNewParent());
-	}
+		@DisplayName("#2")
+		@Test
+		public void setSecondChild_moveNode() {
+			node.setSecondChild(child2);
+			
+			assertSame(child2, node.getSecondChild());
+			assertSame(node, child2.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(1, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(2, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(child2, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(1, listener.additionEvent.get(0).getChildIndex());
 	
-	/**
-	 */
-	@Test
-	public void setThirdChild_moveNode() {
-		this.node.setThirdChild(this.child2);
-		
-		assertSame(this.child2, this.node.getThirdChild());
-		assertSame(this.node, this.child2.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(1, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(2, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(2, this.listener.additionEvent.get(0).getChildIndex());
-
-		assertSame(this.child2, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(0).getChildNode());
-		assertSame(this.root, this.listener.parentEvent.get(0).getOldParent());
-		assertNull(this.listener.parentEvent.get(0).getNewParent());
-
-		assertSame(this.child2, this.listener.parentEvent.get(1).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(1).getChildNode());
-		assertNull(this.listener.parentEvent.get(1).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(1).getNewParent());
-
-		assertSame(this.root, this.listener.removalEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.removalEvent.get(0).getChild());
-		assertSame(this.root, this.listener.removalEvent.get(0).getParentNode());
-		assertSame(2, this.listener.removalEvent.get(0).getChildIndex());
-	}
-
-	/**
-	 */
-	@Test
-	public void setFourthChild_newNode() {
-		this.node.setFourthChild(this.newNode);
-		
-		assertSame(this.newNode, this.node.getFourthChild());
-		assertSame(this.node, this.newNode.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(0, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(1, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.newNode, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(3, this.listener.additionEvent.get(0).getChildIndex());
-
-		assertSame(this.newNode, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.newNode, this.listener.parentEvent.get(0).getChildNode());
-		assertNull(this.listener.parentEvent.get(0).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(0).getNewParent());
-	}
+			assertSame(child2, listener.parentEvent.get(0).getSource());
+			assertSame(child2, listener.parentEvent.get(0).getChildNode());
+			assertSame(root, listener.parentEvent.get(0).getOldParent());
+			assertNull(listener.parentEvent.get(0).getNewParent());
 	
-	/**
-	 */
-	@Test
-	public void setFourthChild_moveNode() {
-		this.node.setFourthChild(this.child2);
-		
-		assertSame(this.child2, this.node.getFourthChild());
-		assertSame(this.node, this.child2.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(1, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(2, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(3, this.listener.additionEvent.get(0).getChildIndex());
-
-		assertSame(this.child2, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(0).getChildNode());
-		assertSame(this.root, this.listener.parentEvent.get(0).getOldParent());
-		assertNull(this.listener.parentEvent.get(0).getNewParent());
-
-		assertSame(this.child2, this.listener.parentEvent.get(1).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(1).getChildNode());
-		assertNull(this.listener.parentEvent.get(1).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(1).getNewParent());
-
-		assertSame(this.root, this.listener.removalEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.removalEvent.get(0).getChild());
-		assertSame(this.root, this.listener.removalEvent.get(0).getParentNode());
-		assertSame(2, this.listener.removalEvent.get(0).getChildIndex());
+			assertSame(child2, listener.parentEvent.get(1).getSource());
+			assertSame(child2, listener.parentEvent.get(1).getChildNode());
+			assertNull(listener.parentEvent.get(1).getOldParent());
+			assertSame(node, listener.parentEvent.get(1).getNewParent());
+	
+			assertSame(root, listener.removalEvent.get(0).getSource());
+			assertSame(child2, listener.removalEvent.get(0).getChild());
+			assertSame(root, listener.removalEvent.get(0).getParentNode());
+			assertSame(2, listener.removalEvent.get(0).getChildIndex());
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void moveToNodeInt() {
-		assertTrue(this.child2.moveTo(this.node, 0));
-		
-		assertSame(this.child2, this.node.getFirstChild());
-		assertSame(this.node, this.child2.getParentNode());
-		
-		assertEquals(1, this.listener.additionEvent.size());
-		assertEquals(1, this.listener.removalEvent.size());
-		assertEquals(0, this.listener.dataEvent.size());
-		assertEquals(1, this.listener.parentEvent.size());
-		
-		assertSame(this.node, this.listener.additionEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.additionEvent.get(0).getChild());
-		assertSame(this.node, this.listener.additionEvent.get(0).getParentNode());
-		assertSame(0, this.listener.additionEvent.get(0).getChildIndex());
+	@DisplayName("setThirdChild")
+	@Nested
+	public class SetThirdChild {
 
-		assertSame(this.child2, this.listener.parentEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.parentEvent.get(0).getChildNode());
-		assertSame(this.root, this.listener.parentEvent.get(0).getOldParent());
-		assertSame(this.node, this.listener.parentEvent.get(0).getNewParent());
+		@DisplayName("#1")
+		@Test
+		public void setThirdChild_newNode() {
+			node.setThirdChild(newNode);
+			
+			assertSame(newNode, node.getThirdChild());
+			assertSame(node, newNode.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(0, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(1, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(newNode, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(2, listener.additionEvent.get(0).getChildIndex());
+	
+			assertSame(newNode, listener.parentEvent.get(0).getSource());
+			assertSame(newNode, listener.parentEvent.get(0).getChildNode());
+			assertNull(listener.parentEvent.get(0).getOldParent());
+			assertSame(node, listener.parentEvent.get(0).getNewParent());
+		}
+		
+		@DisplayName("#2")
+		@Test
+		public void setThirdChild_moveNode() {
+			node.setThirdChild(child2);
+			
+			assertSame(child2, node.getThirdChild());
+			assertSame(node, child2.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(1, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(2, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(child2, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(2, listener.additionEvent.get(0).getChildIndex());
+	
+			assertSame(child2, listener.parentEvent.get(0).getSource());
+			assertSame(child2, listener.parentEvent.get(0).getChildNode());
+			assertSame(root, listener.parentEvent.get(0).getOldParent());
+			assertNull(listener.parentEvent.get(0).getNewParent());
+	
+			assertSame(child2, listener.parentEvent.get(1).getSource());
+			assertSame(child2, listener.parentEvent.get(1).getChildNode());
+			assertNull(listener.parentEvent.get(1).getOldParent());
+			assertSame(node, listener.parentEvent.get(1).getNewParent());
+	
+			assertSame(root, listener.removalEvent.get(0).getSource());
+			assertSame(child2, listener.removalEvent.get(0).getChild());
+			assertSame(root, listener.removalEvent.get(0).getParentNode());
+			assertSame(2, listener.removalEvent.get(0).getChildIndex());
+		}
+	}
 
-		assertSame(this.root, this.listener.removalEvent.get(0).getSource());
-		assertSame(this.child2, this.listener.removalEvent.get(0).getChild());
-		assertSame(this.root, this.listener.removalEvent.get(0).getParentNode());
-		assertSame(2, this.listener.removalEvent.get(0).getChildIndex());
+	@DisplayName("setFourthChild")
+	@Nested
+	public class SetFourthChild {
+
+		@DisplayName("#1")
+		@Test
+		public void setFourthChild_newNode() {
+			node.setFourthChild(newNode);
+			
+			assertSame(newNode, node.getFourthChild());
+			assertSame(node, newNode.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(0, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(1, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(newNode, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(3, listener.additionEvent.get(0).getChildIndex());
+	
+			assertSame(newNode, listener.parentEvent.get(0).getSource());
+			assertSame(newNode, listener.parentEvent.get(0).getChildNode());
+			assertNull(listener.parentEvent.get(0).getOldParent());
+			assertSame(node, listener.parentEvent.get(0).getNewParent());
+		}
+		
+		@DisplayName("#2")
+		@Test
+		public void setFourthChild_moveNode() {
+			node.setFourthChild(child2);
+			
+			assertSame(child2, node.getFourthChild());
+			assertSame(node, child2.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(1, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(2, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(child2, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(3, listener.additionEvent.get(0).getChildIndex());
+	
+			assertSame(child2, listener.parentEvent.get(0).getSource());
+			assertSame(child2, listener.parentEvent.get(0).getChildNode());
+			assertSame(root, listener.parentEvent.get(0).getOldParent());
+			assertNull(listener.parentEvent.get(0).getNewParent());
+	
+			assertSame(child2, listener.parentEvent.get(1).getSource());
+			assertSame(child2, listener.parentEvent.get(1).getChildNode());
+			assertNull(listener.parentEvent.get(1).getOldParent());
+			assertSame(node, listener.parentEvent.get(1).getNewParent());
+	
+			assertSame(root, listener.removalEvent.get(0).getSource());
+			assertSame(child2, listener.removalEvent.get(0).getChild());
+			assertSame(root, listener.removalEvent.get(0).getParentNode());
+			assertSame(2, listener.removalEvent.get(0).getChildIndex());
+		}
+	}
+
+	@DisplayName("moveTo")
+	@Nested
+	public class MoveTo {
+
+		@DisplayName("#1")
+		@Test
+		public void moveToNodeInt() {
+			assertTrue(child2.moveTo(node, 0));
+			
+			assertSame(child2, node.getFirstChild());
+			assertSame(node, child2.getParentNode());
+			
+			assertEquals(1, listener.additionEvent.size());
+			assertEquals(1, listener.removalEvent.size());
+			assertEquals(0, listener.dataEvent.size());
+			assertEquals(1, listener.parentEvent.size());
+			
+			assertSame(node, listener.additionEvent.get(0).getSource());
+			assertSame(child2, listener.additionEvent.get(0).getChild());
+			assertSame(node, listener.additionEvent.get(0).getParentNode());
+			assertSame(0, listener.additionEvent.get(0).getChildIndex());
+	
+			assertSame(child2, listener.parentEvent.get(0).getSource());
+			assertSame(child2, listener.parentEvent.get(0).getChildNode());
+			assertSame(root, listener.parentEvent.get(0).getOldParent());
+			assertSame(node, listener.parentEvent.get(0).getNewParent());
+	
+			assertSame(root, listener.removalEvent.get(0).getSource());
+			assertSame(child2, listener.removalEvent.get(0).getChild());
+			assertSame(root, listener.removalEvent.get(0).getParentNode());
+			assertSame(2, listener.removalEvent.get(0).getChildIndex());
+		}
 	}
 
 	/**
@@ -389,13 +437,13 @@ public class QuadTreeNodeTest {
 		 * @param name1
 		 */
 		public NodeStub(String name1) {
-			this.name = name1;
+			name = name1;
 		}
 		
 		@Override
 		public void toJson(JsonBuffer buffer) {
 			super.toJson(buffer);
-			buffer.add("name", this.name); //$NON-NLS-1$
+			buffer.add("name", name); //$NON-NLS-1$
 		}
 		
 	}

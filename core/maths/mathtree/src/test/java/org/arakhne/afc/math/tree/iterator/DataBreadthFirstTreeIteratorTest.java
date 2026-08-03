@@ -30,29 +30,51 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
+
+/*
+ * <pre>{@code 
+ * root
+ * + child1                  a
+ * | + child11               b
+ * | \ child12               cd
+ * |   + child121            efg
+ * |   | + child1211         h
+ * |   | \ child1212         i
+ * |   |   + child12121      jk
+ * |   |   \ child12122      lmn
+ * |   \ child122 
+ * \ child2
+ *   + child21               o
+ *   | + child211            qr
+ *   | \ null 
+ *   \ child22               p
+ *     + null 
+ *     \ child222            st
+ * }</pre>
+ */
 /** <pre><code>
  * - root
  * a - child1
+ * - child2
  * b - child11
  * cd - child12
+ * o - child21
+ * p - child22
  * efg - child121
+ * - child122
+ * qr - child211
+ * st - child222
  * h - child1211
  * i - child1212
  * jk - child12121
  * lmn - child12122
- * - child122
- * - child2
- * o - child21
- * qr - child211
- * p - child22
- * st - child222
  * </code></pre>
  *
  * @author $Author: sgalland$
@@ -60,19 +82,19 @@ import org.junit.jupiter.api.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@DisplayName("PrefixDataDepthFirstTreeIterator")
+@DisplayName("DataBreadthFirstTreeIterator")
 @SuppressWarnings("all")
-public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIteratorTest {
+public class DataBreadthFirstTreeIteratorTest extends AbstractDataTreeIteratorTest {
 
-	private PrefixDataDepthFirstTreeIterator<Object,DefaultBinaryTreeNode<Object>> iterator;
-
+	private DataBreadthFirstTreeIterator<Object,DefaultBinaryTreeNode<Object>> iterator;
+	
 	@BeforeEach
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		iterator = new PrefixDataDepthFirstTreeIterator<>(tree);
+		iterator = new DataBreadthFirstTreeIterator<>(tree);
 	}
-
+	
 	@AfterEach
 	@Override
 	public void tearDown() throws Exception {
@@ -128,7 +150,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("e", iterator.next());  //$NON-NLS-1$
+			assertEquals("o", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#6")
@@ -138,7 +160,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("f", iterator.next());  //$NON-NLS-1$
+			assertEquals("p", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#7")
@@ -148,7 +170,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("g", iterator.next());  //$NON-NLS-1$
+			assertEquals("e", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#8")
@@ -158,7 +180,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("h", iterator.next());  //$NON-NLS-1$
+			assertEquals("f", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#9")
@@ -168,7 +190,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("i", iterator.next());  //$NON-NLS-1$
+			assertEquals("g", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#10")
@@ -178,7 +200,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("j", iterator.next());  //$NON-NLS-1$
+			assertEquals("q", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#11")
@@ -188,7 +210,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("k", iterator.next());  //$NON-NLS-1$
+			assertEquals("r", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#12")
@@ -198,7 +220,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("l", iterator.next());  //$NON-NLS-1$
+			assertEquals("s", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#13")
@@ -208,7 +230,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("m", iterator.next());  //$NON-NLS-1$
+			assertEquals("t", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#14")
@@ -218,7 +240,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("n", iterator.next());  //$NON-NLS-1$
+			assertEquals("h", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#15")
@@ -228,7 +250,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("o", iterator.next());  //$NON-NLS-1$
+			assertEquals("i", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#16")
@@ -238,7 +260,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("q", iterator.next());  //$NON-NLS-1$
+			assertEquals("j", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#17")
@@ -248,7 +270,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("r", iterator.next());  //$NON-NLS-1$
+			assertEquals("k", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#18")
@@ -258,7 +280,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("p", iterator.next());  //$NON-NLS-1$
+			assertEquals("l", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#19")
@@ -268,7 +290,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("s", iterator.next());  //$NON-NLS-1$
+			assertEquals("m", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#20")
@@ -278,7 +300,7 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 				iterator.next();
 			}
 			assertTrue(iterator.hasNext());
-			assertEquals("t", iterator.next());  //$NON-NLS-1$
+			assertEquals("n", iterator.next());  //$NON-NLS-1$
 		}
 
 		@DisplayName("#21")
@@ -297,12 +319,12 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 
 		@BeforeEach
 		public void setUp() {
-			// Move to "l"
+			// Move to "s"
 			Object last = null;
 			for (int i = 0; i < 12; ++i) {
 				last = iterator.next();
 			}
-			assertEquals("l", last);
+			assertEquals("s", last);
 		}
 
 		@DisplayName("#1")
@@ -321,13 +343,13 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 			assertSame("i", it.next());
 			assertSame("j", it.next());
 			assertSame("k", it.next());
+			assertSame("l", it.next());
 			assertSame("m", it.next());
 			assertSame("n", it.next());
 			assertSame("o", it.next());
 			assertSame("q", it.next());
 			assertSame("r", it.next());
 			assertSame("p", it.next());
-			assertSame("s", it.next());
 			assertSame("t", it.next());
 			assertFalse(it.hasNext());
 		}

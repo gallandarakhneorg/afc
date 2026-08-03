@@ -30,7 +30,7 @@ import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
- * <pre>{@code 
+ * <pre><code> 
  * root
  * + child1
  * | + child11 
@@ -48,7 +48,7 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  *   \ child22
  *     + null 
  *     \ child222
- * }</pre>
+ * </code></pre>
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -58,58 +58,23 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
 @SuppressWarnings("all")
 public abstract class AbstractTreeIteratorTest {
 
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> root;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child1;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child11;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child12;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child121;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child1211;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child1212;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child12121;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child12122;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child122;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child2;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child21;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child211;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child22;
-	/**
-	 */
 	protected DefaultBinaryTreeNode<Object> child222;
-	/**
-	 */
 	protected LinkedTree<Object,DefaultBinaryTreeNode<Object>> tree;
 	
-	/**
-	 * @throws Exception
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
 		this.root = new NodeStub("root");  //$NON-NLS-1$
@@ -146,9 +111,6 @@ public abstract class AbstractTreeIteratorTest {
 		this.tree = new LinkedTree<>(this.root);
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
 		this.root = null;
@@ -169,16 +131,6 @@ public abstract class AbstractTreeIteratorTest {
 		this.tree = null;
 	}
 	
-	/**
-	 */
-	@Test
-	public abstract void iterate();
-
-	/**
-	 */
-	@Test
-	public abstract void remove();
-
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$

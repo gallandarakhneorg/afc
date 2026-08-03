@@ -22,24 +22,44 @@ package org.arakhne.afc.math.tree.iterator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
-
-/**
+/** <pre><code>
+ * root
+ * child1
+ * child11
+ * child12
+ * child121
+ * child1211
+ * child1212
+ * child12121
+ * child12122
+ * child122
+ * child2
+ * child21
+ * child211
+ * child22
+ * child222
+ * </code></pre>
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("PrefixDepthFirstTreeIterator")
 @SuppressWarnings("all")
 public class PrefixDepthFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 
@@ -49,112 +69,300 @@ public class PrefixDepthFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		this.iterator = new PrefixDepthFirstTreeIterator<>(this.tree);
+		iterator = new PrefixDepthFirstTreeIterator<>(tree);
 	}
 
 	@AfterEach
 	@Override
 	public void tearDown() throws Exception {
-		this.iterator = null;
+		iterator = null;
 		super.tearDown();
 	}
 
-	@Test
-	@Override
-	public void iterate() {
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.root, this.iterator.next());
+	@DisplayName("iterate")
+	@Nested
+	public class Iterate {
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child1, this.iterator.next());
+		@DisplayName("#1")
+		@Test
+		public void iterate_1() {
+			assertTrue(iterator.hasNext());
+			assertSame(root, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child11, this.iterator.next());
+		@DisplayName("#2")
+		@Test
+		public void iterate_2() {
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child1, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child12, this.iterator.next());
+		@DisplayName("#3")
+		@Test
+		public void iterate_3() {
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child11, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child121, this.iterator.next());
+		@DisplayName("#4")
+		@Test
+		public void iterate_4() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child12, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child1211, this.iterator.next());
+		@DisplayName("#5")
+		@Test
+		public void iterate_5() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child121, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child1212, this.iterator.next());
+		@DisplayName("#6")
+		@Test
+		public void iterate_6() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child1211, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child12121, this.iterator.next());
+		@DisplayName("#7")
+		@Test
+		public void iterate_7() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child1212, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child12122, this.iterator.next());
+		@DisplayName("#8")
+		@Test
+		public void iterate_8() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child12121, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child122, this.iterator.next());
+		@DisplayName("#9")
+		@Test
+		public void iterate_9() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child12122, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child2, this.iterator.next());
+		@DisplayName("#10")
+		@Test
+		public void iterate_10() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child122, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child21, this.iterator.next());
+		@DisplayName("#11")
+		@Test
+		public void iterate_11() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child2, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child211, this.iterator.next());
+		@DisplayName("#12")
+		@Test
+		public void iterate_12() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child21, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child22, this.iterator.next());
+		@DisplayName("#13")
+		@Test
+		public void iterate_13() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child211, iterator.next());
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertSame(this.child222, this.iterator.next());
+		@DisplayName("#14")
+		@Test
+		public void iterate_14() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child22, iterator.next());
+		}
 
-		assertFalse(this.iterator.hasNext());
+		@DisplayName("#15")
+		@Test
+		public void iterate_15() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+			assertSame(child222, iterator.next());
+		}
+
+		@DisplayName("#16")
+		@Test
+		public void iterate_16() {
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertFalse(iterator.hasNext());
+		}
 	}
 	
-	@Test
-	@Override
-	public void remove() {
-		assertSame(this.root, this.iterator.next());
-		assertSame(this.child1, this.iterator.next());
-		assertSame(this.child11, this.iterator.next());
-		assertSame(this.child12, this.iterator.next());
-		assertSame(this.child121, this.iterator.next());
-		assertSame(this.child1211, this.iterator.next());
-		assertSame(this.child1212, this.iterator.next());
-		assertSame(this.child12121, this.iterator.next());
-		assertSame(this.child12122, this.iterator.next());
-		assertSame(this.child122, this.iterator.next());
-		assertSame(this.child2, this.iterator.next());
-		assertSame(this.child21, this.iterator.next());
+	@DisplayName("remove")
+	@Nested
+	public class Remove {
 
-		this.iterator.remove();
-		try {
-			this.iterator.remove();
-			fail("Expecting NoSuchElementException");  //$NON-NLS-1$
+		@BeforeEach
+		public void setUp() {
+			for (int i = 0; i < 12; ++i) {
+				iterator.next();
+			}
 		}
-		catch(NoSuchElementException e) {
-			// Expected exception
+		
+		@DisplayName("#1")
+		@Test
+		public void remove_1() {
+			iterator.remove();
+			assertSame(child211, iterator.next());
+			assertSame(child22, iterator.next());
+			assertSame(child222, iterator.next());
+			assertFalse(iterator.hasNext());
 		}
 
-		assertSame(this.child211, this.iterator.next());
-		assertSame(this.child22, this.iterator.next());
-		assertSame(this.child222, this.iterator.next());
-		assertFalse(this.iterator.hasNext());
+		@DisplayName("#2")
+		@Test
+		public void remove_2() {
+			iterator.remove();
+			assertThrows(NoSuchElementException.class, () -> iterator.remove());
+		}
 
-		Iterator<DefaultBinaryTreeNode<Object>> it = this.tree.broadFirstIterator();
-		assertSame(this.root, it.next());
-		assertSame(this.child1, it.next());
-		assertSame(this.child2, it.next());
-		assertSame(this.child11, it.next());
-		assertSame(this.child12, it.next());
-		assertSame(this.child22, it.next());
-		assertSame(this.child121, it.next());
-		assertSame(this.child122, it.next());
-		assertSame(this.child222, it.next());
-		assertSame(this.child1211, it.next());
-		assertSame(this.child1212, it.next());
-		assertSame(this.child12121, it.next());
-		assertSame(this.child12122, it.next());
-		assertFalse(it.hasNext());
+		@DisplayName("#3")
+		@Test
+		public void remove_3() {
+			iterator.remove();
+			var it = tree.depthFirstIterator();
+			assertSame(root, it.next());
+			assertSame(child1, it.next());
+			assertSame(child11, it.next());
+			assertSame(child12, it.next());
+			assertSame(child121, it.next());
+			assertSame(child1211, it.next());
+			assertSame(child1212, it.next());
+			assertSame(child12121, it.next());
+			assertSame(child12122, it.next());
+			assertSame(child122, it.next());
+			assertSame(child2, it.next());
+			assertSame(child22, it.next());
+			assertSame(child222, it.next());
+			assertFalse(it.hasNext());
+		}
 	}
 	
 }

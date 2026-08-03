@@ -22,24 +22,45 @@ package org.arakhne.afc.math.tree.iterator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
-
-/**
+/** <pre><code>
+ * b - child11
+ * a - child1
+ * h - child1211
+ * efg - child121
+ * jk - child12121
+ * i - child1212
+ * lmn - child12122
+ * cd - child12
+ * - child122
+ * - root
+ * qr - child211
+ * o - child21
+ * - child2
+ * p - child22
+ * st - child222
+ * </code></pre>
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("InfixDataDepthFirstTreeIterator")
 @SuppressWarnings("all")
 public class InfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIteratorTest {
 
@@ -49,198 +70,274 @@ public class InfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterato
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		this.iterator = new InfixDataDepthFirstTreeIterator<>(this.tree);
+		iterator = new InfixDataDepthFirstTreeIterator<>(tree);
 	}
 	
 	@AfterEach
 	@Override
 	public void tearDown() throws Exception {
-		this.iterator = null;
+		iterator = null;
 		super.tearDown();
 	}
 
-	@Test
-	@Override
-	public void iterate() {
-		assertTrue(this.iterator.hasNext());
-		assertEquals("b", this.iterator.next());  //$NON-NLS-1$
+	@DisplayName("iterate")
+	@Nested
+	public class Iterate {
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("a", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#1")
+		@Test
+		public void iterate_1() {
+			assertTrue(iterator.hasNext());
+			assertEquals("b", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("h", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#2")
+		@Test
+		public void iterate_2() {
+			for (int i = 1; i < 2; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("a", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("e", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#3")
+		@Test
+		public void iterate_3() {
+			for (int i = 1; i < 3; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("h", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("f", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#4")
+		@Test
+		public void iterate_4() {
+			for (int i = 1; i < 4; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("e", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("g", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#5")
+		@Test
+		public void iterate_5() {
+			for (int i = 1; i < 5; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("f", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("j", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#6")
+		@Test
+		public void iterate_6() {
+			for (int i = 1; i < 6; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("g", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("k", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#7")
+		@Test
+		public void iterate_7() {
+			for (int i = 1; i < 7; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("j", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("i", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#8")
+		@Test
+		public void iterate_8() {
+			for (int i = 1; i < 8; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("k", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("l", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#9")
+		@Test
+		public void iterate_9() {
+			for (int i = 1; i < 9; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("i", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("m", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#10")
+		@Test
+		public void iterate_10() {
+			for (int i = 1; i < 10; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("l", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("n", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#11")
+		@Test
+		public void iterate_11() {
+			for (int i = 1; i < 11; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("m", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("c", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#12")
+		@Test
+		public void iterate_12() {
+			for (int i = 1; i < 12; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("n", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("d", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#13")
+		@Test
+		public void iterate_13() {
+			for (int i = 1; i < 13; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("c", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("q", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#14")
+		@Test
+		public void iterate_14() {
+			for (int i = 1; i < 14; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("d", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("r", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#15")
+		@Test
+		public void iterate_15() {
+			for (int i = 1; i < 15; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("q", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("o", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#16")
+		@Test
+		public void iterate_16() {
+			for (int i = 1; i < 16; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("r", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("p", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#17")
+		@Test
+		public void iterate_17() {
+			for (int i = 1; i < 17; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("o", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("s", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#18")
+		@Test
+		public void iterate_18() {
+			for (int i = 1; i < 18; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("p", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertTrue(this.iterator.hasNext());
-		assertEquals("t", this.iterator.next());  //$NON-NLS-1$
+		@DisplayName("#19")
+		@Test
+		public void iterate_19() {
+			for (int i = 1; i < 19; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("s", iterator.next());  //$NON-NLS-1$
+		}
 
-		assertFalse(this.iterator.hasNext());
+		@DisplayName("#20")
+		@Test
+		public void iterate_20() {
+			for (int i = 1; i < 20; ++i) {
+				iterator.next();
+			}
+			assertTrue(iterator.hasNext());
+			assertEquals("t", iterator.next());  //$NON-NLS-1$
+		}
+
+		@DisplayName("#21")
+		@Test
+		public void iterate_21() {
+			for (int i = 1; i < 21; ++i) {
+				iterator.next();
+			}
+			assertFalse(iterator.hasNext());
+		}
 	}
 	
-	@Test
-	@Override
-	public void remove() {
-		//
-		// Remove o
-		//
-		assertEquals("b", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("a", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("h", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("e", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("f", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("g", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("j", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("k", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("i", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("l", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("m", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("n", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("c", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("d", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("q", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("r", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("o", this.iterator.next());  //$NON-NLS-1$
+	@DisplayName("remove")
+	@Nested
+	public class Remove {
 
-		this.iterator.remove();
-		try {
-			this.iterator.remove();
-			fail("Expecting NoSuchElementException");  //$NON-NLS-1$
-		}
-		catch(NoSuchElementException e) {
-			// Expected exception
+		@BeforeEach
+		public void setUp() {
+			// Move to "n"
+			Object last = null;
+			for (int i = 0; i < 12; ++i) {
+				last = iterator.next();
+			}
+			assertEquals("n", last);
 		}
 
-		assertEquals("p", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("s", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("t", this.iterator.next());  //$NON-NLS-1$
-		assertFalse(this.iterator.hasNext());
-
-		Iterator<Object> it = this.tree.dataBroadFirstIterator();
-		assertEquals("a", it.next());  //$NON-NLS-1$
-		assertEquals("b", it.next());  //$NON-NLS-1$
-		assertEquals("c", it.next());  //$NON-NLS-1$
-		assertEquals("d", it.next());  //$NON-NLS-1$
-		assertEquals("p", it.next());  //$NON-NLS-1$
-		assertEquals("e", it.next());  //$NON-NLS-1$
-		assertEquals("f", it.next());  //$NON-NLS-1$
-		assertEquals("g", it.next());  //$NON-NLS-1$
-		assertEquals("q", it.next());  //$NON-NLS-1$
-		assertEquals("r", it.next());  //$NON-NLS-1$
-		assertEquals("s", it.next());  //$NON-NLS-1$
-		assertEquals("t", it.next());  //$NON-NLS-1$
-		assertEquals("h", it.next());  //$NON-NLS-1$
-		assertEquals("i", it.next());  //$NON-NLS-1$
-		assertEquals("j", it.next());  //$NON-NLS-1$
-		assertEquals("k", it.next());  //$NON-NLS-1$
-		assertEquals("l", it.next());  //$NON-NLS-1$
-		assertEquals("m", it.next());  //$NON-NLS-1$
-		assertEquals("n", it.next());  //$NON-NLS-1$
-		assertFalse(it.hasNext());
-
-		//
-		// Remove f
-		//
-		this.iterator = new InfixDataDepthFirstTreeIterator<>(this.tree);
-
-		assertEquals("b", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("a", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("h", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("e", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("f", this.iterator.next());  //$NON-NLS-1$
-
-		this.iterator.remove();
-		try {
-			this.iterator.remove();
-			fail("Expecting NoSuchElementException");  //$NON-NLS-1$
-		}
-		catch(NoSuchElementException e) {
-			// Expected exception
+		@DisplayName("#1")
+		@Test
+		public void remove_1() {
+			iterator.remove();
+			var it = tree.dataDepthFirstIterator();
+			assertSame("a", it.next());
+			assertSame("b", it.next());
+			assertSame("c", it.next());
+			assertSame("d", it.next());
+			assertSame("e", it.next());
+			assertSame("f", it.next());
+			assertSame("g", it.next());
+			assertSame("h", it.next());
+			assertSame("i", it.next());
+			assertSame("j", it.next());
+			assertSame("k", it.next());
+			assertSame("l", it.next());
+			assertSame("m", it.next());
+			assertSame("o", it.next());
+			assertSame("q", it.next());
+			assertSame("r", it.next());
+			assertSame("p", it.next());
+			assertSame("s", it.next());
+			assertSame("t", it.next());
+			assertFalse(it.hasNext());
 		}
 
-		assertEquals("g", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("j", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("k", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("i", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("l", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("m", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("n", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("c", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("d", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("q", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("r", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("p", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("s", this.iterator.next());  //$NON-NLS-1$
-		assertEquals("t", this.iterator.next());  //$NON-NLS-1$
-		assertFalse(this.iterator.hasNext());
-
-		it = this.tree.dataBroadFirstIterator();
-		assertEquals("a", it.next());  //$NON-NLS-1$
-		assertEquals("b", it.next());  //$NON-NLS-1$
-		assertEquals("c", it.next());  //$NON-NLS-1$
-		assertEquals("d", it.next());  //$NON-NLS-1$
-		assertEquals("p", it.next());  //$NON-NLS-1$
-		assertEquals("e", it.next());  //$NON-NLS-1$
-		assertEquals("g", it.next());  //$NON-NLS-1$
-		assertEquals("q", it.next());  //$NON-NLS-1$
-		assertEquals("r", it.next());  //$NON-NLS-1$
-		assertEquals("s", it.next());  //$NON-NLS-1$
-		assertEquals("t", it.next());  //$NON-NLS-1$
-		assertEquals("h", it.next());  //$NON-NLS-1$
-		assertEquals("i", it.next());  //$NON-NLS-1$
-		assertEquals("j", it.next());  //$NON-NLS-1$
-		assertEquals("k", it.next());  //$NON-NLS-1$
-		assertEquals("l", it.next());  //$NON-NLS-1$
-		assertEquals("m", it.next());  //$NON-NLS-1$
-		assertEquals("n", it.next());  //$NON-NLS-1$
-		assertFalse(it.hasNext());
+		@DisplayName("#2")
+		@Test
+		public void remove_2() {
+			iterator.remove();
+			assertThrows(NoSuchElementException.class, () -> iterator.remove());
+		}
 	}
 	
 }
