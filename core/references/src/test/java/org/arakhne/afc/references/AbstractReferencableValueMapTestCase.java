@@ -34,7 +34,8 @@ import org.junit.jupiter.api.BeforeEach;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractReferencableValueMapTestCase extends AbstractMapTestCase<String,String> {
+@SuppressWarnings("all")
+public abstract class AbstractReferencableValueMapTestCase<MAP extends Map<String, String>> extends AbstractMapTestCase<MAP> {
 
 	/** Force the garbarge collector to run.
 	 */
@@ -69,35 +70,26 @@ public abstract class AbstractReferencableValueMapTestCase extends AbstractMapTe
 		super.tearDown();
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected String createKeyInstance(String prefix) {
 		return prefix+UUID.randomUUID().toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected String createValueInstance(String prefix) {
 		return prefix+UUID.randomUUID().toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected void initMapWith(Map<String, String> toAdd) {
-		super.initMapWith(toAdd);
+	protected void initMapWith(Map<String, String> toAdd, Map<String, String> reference) {
+		super.initMapWith(toAdd, reference);
 		if (this.looseReferences) {
-			int loosedCount = this.RANDOM.nextInt(this.reference.size())+5;
-			for(int i=0; !this.reference.isEmpty() && i<loosedCount; ++i) {
-				int idx = this.RANDOM.nextInt(this.reference.size());
-				String key = key(this.reference, idx);
+			int loosedCount = RANDOM.nextInt(reference.size())+5;
+			for(int i=0; !reference.isEmpty() && i<loosedCount; ++i) {
+				int idx = RANDOM.nextInt(reference.size());
+				String key = key(reference, idx);
 				this.loosedKeys.add(key);
-				this.reference.remove(key);
+				reference.remove(key);
 			}
 			freeMemory();
 		}

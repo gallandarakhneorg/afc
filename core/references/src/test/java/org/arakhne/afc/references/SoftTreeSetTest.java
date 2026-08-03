@@ -22,12 +22,15 @@ package org.arakhne.afc.references;
 
 import java.util.Set;
 
+import org.junit.jupiter.api.DisplayName;
+
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("SoftTreeSet")
 public class SoftTreeSetTest extends AbstractCollectionTestCase<Set<String>> {
 
 	/**

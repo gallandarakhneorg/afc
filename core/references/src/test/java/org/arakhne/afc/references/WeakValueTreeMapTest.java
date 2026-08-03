@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.references;
 
-import java.util.Map;
+import org.junit.jupiter.api.DisplayName;
 
 /**
  * @author $Author: sgalland$
@@ -28,7 +28,8 @@ import java.util.Map;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class WeakValueTreeMapTest extends AbstractReferencableValueMapTestCase {
+@DisplayName("WeakValueTreeMap")
+public class WeakValueTreeMapTest extends AbstractReferencableValueMapTestCase<WeakValueTreeMap<String, String>> {
 
 	/**
 	 */
@@ -40,7 +41,7 @@ public class WeakValueTreeMapTest extends AbstractReferencableValueMapTestCase {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Map<String,String> createMap() {
+	protected WeakValueTreeMap<String,String> createMap() {
 		return new WeakValueTreeMap<>();
 	}
 

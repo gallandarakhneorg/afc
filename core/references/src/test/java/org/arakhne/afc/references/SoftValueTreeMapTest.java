@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.references;
 
-import java.util.Map;
+import org.junit.jupiter.api.DisplayName;
 
 /**
  * @author $Author: sgalland$
@@ -28,7 +28,8 @@ import java.util.Map;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SoftValueTreeMapTest extends AbstractReferencableValueMapTestCase {
+@DisplayName("SoftValueTreeMap")
+public class SoftValueTreeMapTest extends AbstractReferencableValueMapTestCase<SoftValueTreeMap<String, String>> {
 
 	/**
 	 */
@@ -37,7 +38,7 @@ public class SoftValueTreeMapTest extends AbstractReferencableValueMapTestCase {
 	}
 
 	@Override
-	protected Map<String,String> createMap() {
+	protected SoftValueTreeMap<String,String> createMap() {
 		return new SoftValueTreeMap<>();
 	}
 
