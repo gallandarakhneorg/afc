@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -91,6 +92,8 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	 * @throws MathException when error in the math definition.
 	 */
 	@Pure
+	@Inline(value = "StochasticGenerator.generateRandomValue(new ExponentialStochasticLaw(($1), ($2)))",
+		imported = {StochasticGenerator.class, ExponentialStochasticLaw.class})
 	public static double random(double lambda, double xmin) throws MathException {
 		return StochasticGenerator.generateRandomValue(new ExponentialStochasticLaw(lambda, xmin));
 	}

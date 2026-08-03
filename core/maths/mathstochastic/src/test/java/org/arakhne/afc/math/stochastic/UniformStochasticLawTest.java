@@ -22,13 +22,16 @@ package org.arakhne.afc.math.stochastic;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 
+@DisplayName("UniformStochasticLaw")
 @SuppressWarnings("all")
 public class UniformStochasticLawTest extends AbstractTestCase {
 
+	@DisplayName("random")
 	@Test
 	public void random() {
 		assertInlineParameterUsage(UniformStochasticLaw.class, "random", double.class, double.class); //$NON-NLS-1$

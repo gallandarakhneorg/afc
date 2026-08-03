@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -98,6 +99,8 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	 * @throws MathException when error in math definition.
 	 */
 	@Pure
+	@Inline(value = "StochasticGenerator.generateRandomValue(new ParetoStochasticLaw(($1), ($2)))",
+		imported = {StochasticGenerator.class, ParetoStochasticLaw.class})
 	public static double random(double k, double xmin) throws MathException {
 		return StochasticGenerator.generateRandomValue(new ParetoStochasticLaw(k, xmin));
 	}

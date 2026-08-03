@@ -23,18 +23,30 @@ package org.arakhne.afc.math.stochastic;
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 
-@DisplayName("TriangularStochasticLaw")
+@DisplayName("LinearStochasticLaw")
 @SuppressWarnings("all")
-public class TriangularStochasticLawTest extends AbstractTestCase {
+public class LinearStochasticLawTest extends AbstractTestCase {
 
 	@DisplayName("random")
-	@Test
-	public void random() {
-		assertInlineParameterUsage(TriangularStochasticLaw.class, "random", double.class, double.class, double.class); //$NON-NLS-1$
+	@Nested
+	public class Random {
+
+		@DisplayName("(double,double)")
+		@Test
+		public void doubledouble() {
+			assertInlineParameterUsage(LinearStochasticLaw.class, "random", double.class, double.class); //$NON-NLS-1$
+		}
+
+		@DisplayName("(double,double,boolean)")
+		@Test
+		public void doubledoubleboolean() {
+			assertInlineParameterUsage(LinearStochasticLaw.class, "random", double.class, double.class, boolean.class); //$NON-NLS-1$
+		}
 	}
 	
 }

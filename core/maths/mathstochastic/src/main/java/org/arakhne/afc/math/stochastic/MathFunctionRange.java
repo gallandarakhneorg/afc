@@ -51,30 +51,30 @@ public class MathFunctionRange {
 
 	/** A bounding set with with two bounds.
 	 *
-	 * @param min1 is the minimal value
-	 * @param max1 is the maximal value
+	 * @param min is the minimal value
+	 * @param max is the maximal value
 	 */
-	public MathFunctionRange(double min1, double max1) {
-		this(min1, true, max1, true);
+	public MathFunctionRange(double min, double max) {
+		this(min, true, max, true);
 	}
 
 	/** A bounding set with with two bounds.
 	 *
-	 * @param min1 is the minimal value
-	 * @param includeMin1 indicates if the minimal value is inside the bounds or outside.
-	 * @param max1 is the maximal value
-	 * @param includeMax1 indicates if the maximal value is inside the bounds or outside.
+	 * @param min is the minimal value
+	 * @param includeMin indicates if the minimal value is inside the bounds or outside.
+	 * @param max is the maximal value
+	 * @param includeMax indicates if the maximal value is inside the bounds or outside.
 	 */
-	public MathFunctionRange(double min1, boolean includeMin1, double max1, boolean includeMax1) {
-		if (min1 < max1) {
-			this.min = min1;
-			this.max = max1;
+	public MathFunctionRange(double min, boolean includeMin, double max, boolean includeMax) {
+		if (min < max) {
+			this.min = min;
+			this.max = max;
 		} else {
-			this.min = max1;
-			this.max = min1;
+			this.min = max;
+			this.max = min;
 		}
-		this.includeMin = this.min != Double.NEGATIVE_INFINITY && includeMin1;
-		this.includeMax = this.max != Double.POSITIVE_INFINITY && includeMax1;
+		this.includeMin = this.min != Double.NEGATIVE_INFINITY && includeMin;
+		this.includeMax = this.max != Double.POSITIVE_INFINITY && includeMax;
 	}
 
 	/** Create a set of bounds that correspond to the specified discrete values.
@@ -104,7 +104,8 @@ public class MathFunctionRange {
 	@Pure
 	public static MathFunctionRange[] createSet(double... values) {
 		final var bounds = new MathFunctionRange[values.length / 2];
-		for (int i = 0, j = 0; i < values.length; i += 2, ++j) {
+		final var max = values.length - 1;
+		for (int i = 0, j = 0; i < max; i += 2, ++j) {
 			bounds[j] = new MathFunctionRange(values[i], values[i + 1]);
 		}
 		return bounds;

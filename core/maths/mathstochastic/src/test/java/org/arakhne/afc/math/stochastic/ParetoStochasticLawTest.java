@@ -27,14 +27,14 @@ import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 
-@DisplayName("TriangularStochasticLaw")
+@DisplayName("ParetoStochasticLaw")
 @SuppressWarnings("all")
-public class TriangularStochasticLawTest extends AbstractTestCase {
+public class ParetoStochasticLawTest extends AbstractTestCase {
 
 	@DisplayName("random")
 	@Test
 	public void random() {
-		assertInlineParameterUsage(TriangularStochasticLaw.class, "random", double.class, double.class, double.class); //$NON-NLS-1$
+		assertInlineParameterUsage(ParetoStochasticLaw.class, "random", double.class, double.class); //$NON-NLS-1$
 	}
 	
 }

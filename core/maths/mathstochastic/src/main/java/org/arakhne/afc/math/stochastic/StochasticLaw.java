@@ -71,7 +71,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 		final var svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
-				return Float.parseFloat(svalue);
+				return Double.parseDouble(svalue);
 			} catch (AssertionError e) {
 				throw e;
 			} catch (Throwable e) {
@@ -95,7 +95,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 		final var svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
-				return Float.parseFloat(svalue);
+				return Double.parseDouble(svalue);
 			} catch (AssertionError e) {
 				throw e;
 			} catch (Throwable e) {
@@ -118,7 +118,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 		final var svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
-				return Float.parseFloat(svalue);
+				return Double.parseDouble(svalue);
 			} catch (AssertionError e) {
 				throw e;
 			} catch (Throwable e) {

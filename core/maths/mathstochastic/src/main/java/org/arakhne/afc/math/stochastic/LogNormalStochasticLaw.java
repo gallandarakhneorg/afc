@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -93,6 +94,8 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	 * @throws MathException when error in the math definition.
 	 */
 	@Pure
+	@Inline(value = "StochasticGenerator.generateRandomValue(new LogNormalStochasticLaw(($1), ($2)))",
+		imported = {StochasticGenerator.class, LogNormalStochasticLaw.class})
 	public static double random(double mean, double standardDeviation) throws MathException {
 		return StochasticGenerator.generateRandomValue(new LogNormalStochasticLaw(mean, standardDeviation));
 	}

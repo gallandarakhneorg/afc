@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -121,6 +122,8 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @throws MathException when error in the math definition.
 	 */
 	@Pure
+	@Inline(value = "StochasticGenerator.generateRandomValue(new LinearStochasticLaw(($1), ($2), ($3)))",
+		imported = {StochasticGenerator.class, LinearStochasticLaw.class})
 	public static double random(double minX, double maxX, boolean ascendent) throws MathException {
 		return StochasticGenerator.generateRandomValue(new LinearStochasticLaw(minX, maxX, ascendent));
 	}
@@ -136,6 +139,8 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @throws MathException when error in the math definition.
 	 */
 	@Pure
+	@Inline(value = "StochasticGenerator.generateRandomValue(new LinearStochasticLaw(($1), ($2)))",
+		imported = {StochasticGenerator.class, LinearStochasticLaw.class})
 	public static double random(double minX, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new LinearStochasticLaw(minX, maxX));
 	}

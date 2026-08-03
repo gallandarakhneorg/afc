@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -83,6 +84,8 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	 * @throws MathException when error in the math definition.
 	 */
 	@Pure
+	@Inline(value = "StochasticGenerator.generateRandomValue(new BernoulliStochasticLaw($1))",
+		imported = {StochasticGenerator.class, BernoulliStochasticLaw.class})
 	public static double random(double p) throws MathException {
 		return StochasticGenerator.generateRandomValue(new BernoulliStochasticLaw(p));
 	}

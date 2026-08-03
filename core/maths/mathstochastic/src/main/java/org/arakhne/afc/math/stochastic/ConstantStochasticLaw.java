@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -47,10 +48,10 @@ public class ConstantStochasticLaw extends StochasticLaw {
 
 	/** Create a constant stochastic law.
 	 *
-	 * @param value1 is the value replied by this law.
+	 * @param value is the value replied by this law.
 	 */
-	public ConstantStochasticLaw(double value1) {
-		this.value = value1;
+	public ConstantStochasticLaw(double value) {
+		this.value = value;
 	}
 
 	/**
@@ -92,6 +93,20 @@ public class ConstantStochasticLaw extends StochasticLaw {
 	public void toJson(JsonBuffer buffer) {
 		buffer.add(NAME_NAME, getLawName());
 		buffer.add(VALUE_NAME, Double.valueOf(this.value));
+	}
+
+	/** Replies a random value that respect
+	 * the current stochastic law.
+	 *
+	 * @param value is the value replied by this law.
+	 * @return a value depending of the stochastic law parameters
+	 * @throws MathException when error in the math definition.
+	 */
+	@Pure
+	@Inline(value = "StochasticGenerator.generateRandomValue(new ConstantStochasticLaw($1))",
+		imported = {StochasticGenerator.class, ConstantStochasticLaw.class})
+	public static double random(double value) throws MathException {
+		return StochasticGenerator.generateRandomValue(new ConstantStochasticLaw(value));
 	}
 
 }
