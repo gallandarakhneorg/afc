@@ -29,13 +29,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import org.arakhne.afc.math.graph.astar.AStar.CloseComparator;
 import org.arakhne.afc.testtools.AbstractTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
+@DisplayName("AStar w/ not oriented graph")
 @SuppressWarnings("all")
 public class AStarNotOrientedTest extends AbstractTestCase {
 
@@ -43,245 +45,449 @@ public class AStarNotOrientedTest extends AbstractTestCase {
 	private AStarNodeStub A, B, C, D, E;
 	private AStarEdgeStub AB, CA, DA, EC;
 	private AStarHeuristicStub h;
-	
-	/**
-	 * @throws Exception
-	 */
+
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.h = new AStarHeuristicStub();
-		this.astar = new AStar<>(this.h, AStarPathStub.class);
-		this.A = new AStarNodeStub("A", 0, 0);  //$NON-NLS-1$
-		this.B = new AStarNodeStub("B", 20, 0);  //$NON-NLS-1$
-		this.C = new AStarNodeStub("C", 0, 20);  //$NON-NLS-1$
-		this.D = new AStarNodeStub("D", 20, 20);  //$NON-NLS-1$
-		this.E = new AStarNodeStub("E", 10, 40);  //$NON-NLS-1$
-		this.AB = new AStarEdgeStub("A-B", this.A, this.B, false);  //$NON-NLS-1$
-		this.CA = new AStarEdgeStub("C-A", this.C, this.A, false);  //$NON-NLS-1$
-		this.DA = new AStarEdgeStub("D-A", this.D, this.A, false);  //$NON-NLS-1$
-		this.EC = new AStarEdgeStub("E-C", this.E, this.C, false);  //$NON-NLS-1$
+		h = new AStarHeuristicStub();
+		astar = new AStar<>(h, AStarPathStub.class);
+		A = new AStarNodeStub("A", 0, 0);  //$NON-NLS-1$
+		B = new AStarNodeStub("B", 20, 0);  //$NON-NLS-1$
+		C = new AStarNodeStub("C", 0, 20);  //$NON-NLS-1$
+		D = new AStarNodeStub("D", 20, 20);  //$NON-NLS-1$
+		E = new AStarNodeStub("E", 10, 40);  //$NON-NLS-1$
+		AB = new AStarEdgeStub("A-B", A, B, false);  //$NON-NLS-1$
+		CA = new AStarEdgeStub("C-A", C, A, false);  //$NON-NLS-1$
+		DA = new AStarEdgeStub("D-A", D, A, false);  //$NON-NLS-1$
+		EC = new AStarEdgeStub("E-C", E, C, false);  //$NON-NLS-1$
 		reset();
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.astar = null;
-		this.AB = this.CA = this.DA = this.EC = null;
-		this.A = this.B = this.C = this.D = this.E = null;
-		this.h = null;
+		astar = null;
+		AB = CA = DA = EC = null;
+		A = B = C = D = E = null;
+		h = null;
 	}
 	
 	private void reset() {
-		this.A.setArrivalConnection(null);
-		this.A.setCost(Double.NaN);
-		this.A.setEstimatedCost(Double.NaN);
-		this.B.setArrivalConnection(null);
-		this.B.setCost(Double.NaN);
-		this.B.setEstimatedCost(Double.NaN);
-		this.C.setArrivalConnection(null);
-		this.C.setCost(Double.NaN);
-		this.C.setEstimatedCost(Double.NaN);
-		this.D.setArrivalConnection(null);
-		this.D.setCost(Double.NaN);
-		this.D.setEstimatedCost(Double.NaN);
-		this.E.setArrivalConnection(null);
-		this.E.setCost(Double.NaN);
-		this.E.setEstimatedCost(Double.NaN);
+		A.setArrivalConnection(null);
+		A.setCost(Double.NaN);
+		A.setEstimatedCost(Double.NaN);
+		B.setArrivalConnection(null);
+		B.setCost(Double.NaN);
+		B.setEstimatedCost(Double.NaN);
+		C.setArrivalConnection(null);
+		C.setCost(Double.NaN);
+		C.setEstimatedCost(Double.NaN);
+		D.setArrivalConnection(null);
+		D.setCost(Double.NaN);
+		D.setEstimatedCost(Double.NaN);
+		E.setArrivalConnection(null);
+		E.setCost(Double.NaN);
+		E.setEstimatedCost(Double.NaN);
 	}
 	
 	private static double dist(double a, double b) {
 		return Math.hypot(a, b);
 	}
-	
-	/**
-	 */
-	@Test
-	public void estimatePTPT() {
-		double dDist = dist(20f,20f);
-		double mlDist = dist(10f,40f);
-		double msDist = dist(10f,20f);
-		
-		assertEpsilonEquals(0f, 				this.astar.estimate(this.A, this.A));
-		assertEpsilonEquals(20f, 				this.astar.estimate(this.A, this.B));
-		assertEpsilonEquals(20f, 				this.astar.estimate(this.A, this.C));
-		assertEpsilonEquals(dDist,				this.astar.estimate(this.A, this.D));
-		assertEpsilonEquals(mlDist,				this.astar.estimate(this.A, this.E));
 
-		assertEpsilonEquals(20f, 				this.astar.estimate(this.B, this.A));
-		assertEpsilonEquals(0f, 				this.astar.estimate(this.B, this.B));
-		assertEpsilonEquals(dDist,				this.astar.estimate(this.B, this.C));
-		assertEpsilonEquals(20f,				this.astar.estimate(this.B, this.D));
-		assertEpsilonEquals(mlDist,				this.astar.estimate(this.B, this.E));
+	@DisplayName("estimate")
+	@Nested
+	public class Estimate {
 
-		assertEpsilonEquals(20f, 				this.astar.estimate(this.C, this.A));
-		assertEpsilonEquals(dDist, 				this.astar.estimate(this.C, this.B));
-		assertEpsilonEquals(0f,					this.astar.estimate(this.C, this.C));
-		assertEpsilonEquals(20f,				this.astar.estimate(this.C, this.D));
-		assertEpsilonEquals(msDist,				this.astar.estimate(this.C, this.E));
+		private double dDist;
+		private double mlDist;
+		private double msDist;
 
-		assertEpsilonEquals(dDist, 				this.astar.estimate(this.D, this.A));
-		assertEpsilonEquals(20f, 				this.astar.estimate(this.D, this.B));
-		assertEpsilonEquals(20f,				this.astar.estimate(this.D, this.C));
-		assertEpsilonEquals(0f,					this.astar.estimate(this.D, this.D));
-		assertEpsilonEquals(msDist,				this.astar.estimate(this.D, this.E));
+		@BeforeEach
+		public void setUp() {
+			dDist = dist(20f,20f);
+			mlDist = dist(10f,40f);
+			msDist = dist(10f,20f);
+		}
 
-		assertEpsilonEquals(mlDist,				this.astar.estimate(this.E, this.A));
-		assertEpsilonEquals(mlDist,				this.astar.estimate(this.E, this.B));
-		assertEpsilonEquals(msDist,				this.astar.estimate(this.E, this.C));
-		assertEpsilonEquals(msDist,				this.astar.estimate(this.E, this.D));
-		assertEpsilonEquals(0f,					this.astar.estimate(this.E, this.E));
+		@DisplayName("(PT,PT) #1")
+		@Test
+		public void estimatePTPT_1() {
+			assertEpsilonEquals(0f, 				astar.estimate(A, A));
+		}
+
+		@DisplayName("(PT,PT) #2")
+		@Test
+		public void estimatePTPT_2() {
+			assertEpsilonEquals(20f, 				astar.estimate(A, B));
+		}
+
+		@DisplayName("(PT,PT) #3")
+		@Test
+		public void estimatePTPT_3() {
+			assertEpsilonEquals(20f, 				astar.estimate(A, C));
+		}
+
+		@DisplayName("(PT,PT) #4")
+		@Test
+		public void estimatePTPT_4() {
+			assertEpsilonEquals(dDist,				astar.estimate(A, D));
+		}
+
+		@DisplayName("(PT,PT) #5")
+		@Test
+		public void estimatePTPT_5() {
+			assertEpsilonEquals(mlDist,				astar.estimate(A, E));
+		}
+
+		@DisplayName("(PT,PT) #6")
+		@Test
+		public void estimatePTPT_6() {
+			assertEpsilonEquals(20f, 				astar.estimate(B, A));
+		}
+
+		@DisplayName("(PT,PT) #7")
+		@Test
+		public void estimatePTPT_7() {
+			assertEpsilonEquals(0f, 				astar.estimate(B, B));
+		}
+
+		@DisplayName("(PT,PT) #8")
+		@Test
+		public void estimatePTPT_8() {
+			assertEpsilonEquals(dDist,				astar.estimate(B, C));
+		}
+
+		@DisplayName("(PT,PT) #9")
+		@Test
+		public void estimatePTPT_9() {
+			assertEpsilonEquals(20f,				astar.estimate(B, D));
+		}
+
+		@DisplayName("(PT,PT) #10")
+		@Test
+		public void estimatePTPT_10() {
+			assertEpsilonEquals(mlDist,				astar.estimate(B, E));
+		}
+
+		@DisplayName("(PT,PT) #11")
+		@Test
+		public void estimatePTPT_11() {
+			assertEpsilonEquals(20f, 				astar.estimate(C, A));
+		}
+
+		@DisplayName("(PT,PT) #12")
+		@Test
+		public void estimatePTPT_12() {
+			assertEpsilonEquals(dDist, 				astar.estimate(C, B));
+		}
+
+		@DisplayName("(PT,PT) #13")
+		@Test
+		public void estimatePTPT_13() {
+			assertEpsilonEquals(0f,					astar.estimate(C, C));
+		}
+
+		@DisplayName("(PT,PT) #14")
+		@Test
+		public void estimatePTPT_14() {
+			assertEpsilonEquals(20f,				astar.estimate(C, D));
+		}
+
+		@DisplayName("(PT,PT) #15")
+		@Test
+		public void estimatePTPT_15() {
+			assertEpsilonEquals(msDist,				astar.estimate(C, E));
+		}
+
+		@DisplayName("(PT,PT) #16")
+		@Test
+		public void estimatePTPT_16() {
+			assertEpsilonEquals(dDist, 				astar.estimate(D, A));
+		}
+
+		@DisplayName("(PT,PT) #17")
+		@Test
+		public void estimatePTPT_17() {
+			assertEpsilonEquals(20f, 				astar.estimate(D, B));
+		}
+
+		@DisplayName("(PT,PT) #18")
+		@Test
+		public void estimatePTPT_18() {
+			assertEpsilonEquals(20f,				astar.estimate(D, C));
+		}
+
+		@DisplayName("(PT,PT) #19")
+		@Test
+		public void estimatePTPT_19() {
+			assertEpsilonEquals(0f,					astar.estimate(D, D));
+		}
+
+		@DisplayName("(PT,PT) #20")
+		@Test
+		public void estimatePTPT_20() {
+			assertEpsilonEquals(msDist,				astar.estimate(D, E));
+		}
+
+		@DisplayName("(PT,PT) #21")
+		@Test
+		public void estimatePTPT_21() {
+			assertEpsilonEquals(mlDist,				astar.estimate(E, A));
+		}
+
+		@DisplayName("(PT,PT) #22")
+		@Test
+		public void estimatePTPT_22() {
+			assertEpsilonEquals(mlDist,				astar.estimate(E, B));
+		}
+
+		@DisplayName("(PT,PT) #23")
+		@Test
+		public void estimatePTPT_23() {
+			assertEpsilonEquals(msDist,				astar.estimate(E, C));
+		}
+
+		@DisplayName("(PT,PT) #24")
+		@Test
+		public void estimatePTPT_24() {
+			assertEpsilonEquals(msDist,				astar.estimate(E, D));
+		}
+
+		@DisplayName("(PT,PT) #25")
+		@Test
+		public void estimatePTPT_25() {
+			assertEpsilonEquals(0f,					astar.estimate(E, E));
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void newPathPTST() {
-		AStarPathStub path = this.astar.newPath(this.A, this.AB);
-		assertNotNull(path);
-		assertEquals(1, path.size());
-		assertEquals(this.A, path.getFirstPoint());
-		assertEquals(this.B, path.getLastPoint());
-		assertEquals(this.AB, path.getFirstSegment());
-		assertEquals(this.AB, path.getLastSegment());
+	@DisplayName("newPath")
+	@Nested
+	public class NewPath {
+
+		private AStarPathStub path;
+
+		@BeforeEach
+		public void setUp() {
+			path = astar.newPath(A, AB);
+		}
+		
+		@DisplayName("(PT,ST) #1")
+		@Test
+		public void newPathPTST_1() {
+			assertNotNull(path);
+		}
+		
+		@DisplayName("(PT,ST) #2")
+		@Test
+		public void newPathPTST_2() {
+			assertEquals(1, path.size());
+		}
+		
+		@DisplayName("(PT,ST) #3")
+		@Test
+		public void newPathPTST_3() {
+			assertEquals(A, path.getFirstPoint());
+		}
+		
+		@DisplayName("(PT,ST) #4")
+		@Test
+		public void newPathPTST_4() {
+			assertEquals(B, path.getLastPoint());
+		}
+		
+		@DisplayName("(PT,ST) #5")
+		@Test
+		public void newPathPTST_5() {
+			assertEquals(AB, path.getFirstSegment());
+		}
+		
+		@DisplayName("(PT,ST) #6")
+		@Test
+		public void newPathPTST_6() {
+			assertEquals(AB, path.getLastSegment());
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void findPathPTPT() {
-		List<AStarNode<AStarEdgeStub,AStarNodeStub>> list;
-		
-		reset();
-		this.A.setCost(0f);
-		this.A.setEstimatedCost(this.h.evaluate(this.A, this.B));
-		list = this.astar.findPath(this.A, this.B);
-		
-		assertNotNull(list);
-		assertEquals(2, list.size());
-		assertTrue(list.contains(this.A));
-		assertTrue(list.contains(this.B));
+	@DisplayName("findPath")
+	@Nested
+	public class FindPath {
 
-		reset();
-		this.A.setCost(0f);
-		this.A.setEstimatedCost(this.h.evaluate(this.A, this.C));
-		list = this.astar.findPath(this.A, this.C);
-		
-		assertNotNull(list);
-		assertEquals(2, list.size());
-		assertTrue(list.contains(this.A));
-		assertTrue(list.contains(this.C));
+		@BeforeEach
+		public void setUp() {
+			reset();
+		}
 
-		reset();
-		this.A.setCost(0f);
-		this.A.setEstimatedCost(this.h.evaluate(this.A, this.D));
-		list = this.astar.findPath(this.A, this.D);
-		
-		assertNotNull(list);
-		assertEquals(2, list.size());
-		assertTrue(list.contains(this.A));
-		assertTrue(list.contains(this.D));
+		@DisplayName("(PT,PT) #1")
+		@Test
+		public void findPathPTPT_1() {
+			A.setCost(0f);
+			A.setEstimatedCost(h.evaluate(A, B));
+			var list = astar.findPath(A, B);
+			
+			assertNotNull(list);
+			assertEquals(2, list.size());
+			assertTrue(list.contains(A));
+			assertTrue(list.contains(B));
+		}
 
-		reset();
-		this.A.setCost(0f);
-		this.A.setEstimatedCost(this.h.evaluate(this.A, this.E));
-		list = this.astar.findPath(this.A, this.E);
-		
-		assertNotNull(list);
-		assertEquals(3, list.size());
-		assertTrue(list.contains(this.A));
-		assertTrue(list.contains(this.C));
-		assertTrue(list.contains(this.E));
+		@DisplayName("(PT,PT) #2")
+		@Test
+		public void findPathPTPT_2() {
+			A.setCost(0f);
+			A.setEstimatedCost(h.evaluate(A, C));
+			var list = astar.findPath(A, C);
+			
+			assertNotNull(list);
+			assertEquals(2, list.size());
+			assertTrue(list.contains(A));
+			assertTrue(list.contains(C));
+		}
+
+		@DisplayName("(PT,PT) #3")
+		@Test
+		public void findPathPTPT_3() {
+			A.setCost(0f);
+			A.setEstimatedCost(h.evaluate(A, D));
+			var list = astar.findPath(A, D);
+			
+			assertNotNull(list);
+			assertEquals(2, list.size());
+			assertTrue(list.contains(A));
+			assertTrue(list.contains(D));
+		}
+
+		@DisplayName("(PT,PT) #4")
+		@Test
+		public void findPathPTPT_4() {
+			A.setCost(0f);
+			A.setEstimatedCost(h.evaluate(A, E));
+			var list = astar.findPath(A, E);
+			
+			assertNotNull(list);
+			assertEquals(3, list.size());
+			assertTrue(list.contains(A));
+			assertTrue(list.contains(C));
+			assertTrue(list.contains(E));
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void createPathPTPTList() {
-		CloseComparator<AStarEdgeStub,AStarNodeStub> cComparator = new CloseComparator<>();
-		AStarPathStub path;
-		List<AStarNode<AStarEdgeStub,AStarNodeStub>> list = new ArrayList<>();
-		
-		reset();
-		this.B.setArrivalConnection(this.AB);
-		list.clear();
-		list.add(this.A);
-		list.add(this.B);
-		Collections.sort(list, cComparator);
-		path = this.astar.createPath(this.A, this.B, list);
-		assertNotNull(path);
-		assertEquals(1, path.size());
-		assertSame(this.AB, path.get(0));
+	@DisplayName("createPath")
+	@Nested
+	public class CreatePath {
 
-		reset();
-		this.C.setArrivalConnection(this.CA);
-		this.E.setArrivalConnection(this.EC);
-		list.clear();
-		list.add(this.A);
-		list.add(this.C);
-		list.add(this.E);
-		Collections.sort(list, cComparator);
-		path = this.astar.createPath(this.A, this.E, list);
-		assertNotNull(path);
-		assertEquals(2, path.size());
-		assertSame(this.CA, path.get(0));
-		assertSame(this.EC, path.get(1));
+		private CloseComparator<AStarEdgeStub,AStarNodeStub> cComparator;
+		private List<AStarNode<AStarEdgeStub,AStarNodeStub>> list;
 
-		reset();
-		this.D.setArrivalConnection(this.DA);
-		list.clear();
-		list.add(this.A);
-		list.add(this.D);
-		Collections.sort(list, cComparator);
-		path = this.astar.createPath(this.A, this.D, list);
-		assertNotNull(path);
-		assertEquals(1, path.size());
-		assertSame(this.DA, path.get(0));
+		@BeforeEach
+		public void setUp() {
+			cComparator = new CloseComparator<>();
+			list = new ArrayList<>();
+			reset();
+		}
 
-		reset();
-		this.C.setArrivalConnection(this.CA);
-		list.clear();
-		list.add(this.A);
-		list.add(this.C);
-		Collections.sort(list, cComparator);
-		path = this.astar.createPath(this.A, this.C, list);
-		assertNotNull(path);
-		assertEquals(1, path.size());
-		assertSame(this.CA, path.get(0));
+		@DisplayName("(PT,PT,List) #1")
+		@Test
+		public void createPathPTPTList_1() {
+			B.setArrivalConnection(AB);
+			list.clear();
+			list.add(A);
+			list.add(B);
+			Collections.sort(list, cComparator);
+			var path = astar.createPath(A, B, list);
+			assertNotNull(path);
+			assertEquals(1, path.size());
+			assertSame(AB, path.get(0));
+		}
+
+		@DisplayName("(PT,PT,List) #2")
+		@Test
+		public void createPathPTPTList_2() {
+			C.setArrivalConnection(CA);
+			E.setArrivalConnection(EC);
+			list.clear();
+			list.add(A);
+			list.add(C);
+			list.add(E);
+			Collections.sort(list, cComparator);
+			var path = astar.createPath(A, E, list);
+			assertNotNull(path);
+			assertEquals(2, path.size());
+			assertSame(CA, path.get(0));
+			assertSame(EC, path.get(1));
+		}
+
+		@DisplayName("(PT,PT,List) #3")
+		@Test
+		public void createPathPTPTList_3() {
+			D.setArrivalConnection(DA);
+			list.clear();
+			list.add(A);
+			list.add(D);
+			Collections.sort(list, cComparator);
+			var path = astar.createPath(A, D, list);
+			assertNotNull(path);
+			assertEquals(1, path.size());
+			assertSame(DA, path.get(0));
+		}
+
+		@DisplayName("(PT,PT,List) #4")
+		@Test
+		public void createPathPTPTList_4() {
+			C.setArrivalConnection(CA);
+			list.clear();
+			list.add(A);
+			list.add(C);
+			Collections.sort(list, cComparator);
+			var path = astar.createPath(A, C, list);
+			assertNotNull(path);
+			assertEquals(1, path.size());
+			assertSame(CA, path.get(0));
+		}
 	}
 
-	/**
-	 */
-	@Test
-	public void solvePTPT() {
-		AStarPathStub path;
-		
-		reset();
-		path = this.astar.solve(this.A, this.B);
-		assertNotNull(path);
-		assertEquals(1, path.size());
-		assertSame(this.AB, path.get(0));
+	@DisplayName("solve")
+	@Nested
+	public class Solve {
 
-		reset();
-		path = this.astar.solve(this.A, this.E);
-		assertNotNull(path);
-		assertEquals(2, path.size());
-		assertSame(this.CA, path.get(0));
-		assertSame(this.EC, path.get(1));
+		@BeforeEach
+		public void setUp() {
+			reset();
+		}
 
-		reset();
-		path = this.astar.solve(this.A, this.D);
-		assertNotNull(path);
-		assertEquals(1, path.size());
-		assertSame(this.DA, path.get(0));
+		@DisplayName("(PT,PT) #1")
+		@Test
+		public void solvePTPT_1() {
+			var path = astar.solve(A, B);
+			assertNotNull(path);
+			assertEquals(1, path.size());
+			assertSame(AB, path.get(0));
+		}
 
-		reset();
-		path = this.astar.solve(this.A, this.C);
-		assertNotNull(path);
-		assertEquals(1, path.size());
-		assertSame(this.CA, path.get(0));
+		@DisplayName("(PT,PT) #2")
+		@Test
+		public void solvePTPT_2() {
+			var path = astar.solve(A, E);
+			assertNotNull(path);
+			assertEquals(2, path.size());
+			assertSame(CA, path.get(0));
+			assertSame(EC, path.get(1));
+		}
+
+		@DisplayName("(PT,PT) #3")
+		@Test
+		public void solvePTPT_3() {
+			var path = astar.solve(A, D);
+			assertNotNull(path);
+			assertEquals(1, path.size());
+			assertSame(DA, path.get(0));
+		}
+
+		@DisplayName("(PT,PT) #4")
+		@Test
+		public void solvePTPT_4() {
+			var path = astar.solve(A, C);
+			assertNotNull(path);
+			assertEquals(1, path.size());
+			assertSame(CA, path.get(0));
+		}
 	}
 	
 }
