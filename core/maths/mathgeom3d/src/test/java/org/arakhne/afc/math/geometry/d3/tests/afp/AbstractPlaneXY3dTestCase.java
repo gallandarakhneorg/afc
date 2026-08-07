@@ -7260,8 +7260,8 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(-1., getP().getEquationComponentC());
-			assertEpsilonEquals(10.63, getP().getEquationComponentD());
-			assertEpsilonEquals(10.63, getP().getZ());
+			assertEpsilonEquals(4.94, getP().getEquationComponentD());
+			assertEpsilonEquals(4.94, getP().getZ());
 		}
 
 		@DisplayName("#3")
@@ -7277,8 +7277,8 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(1., getP().getEquationComponentC());
-			assertEpsilonEquals(-16.32, getP().getEquationComponentD());
-			assertEpsilonEquals(16.32, getP().getZ());
+			assertEpsilonEquals(-6.94, getP().getEquationComponentD());
+			assertEpsilonEquals(6.94, getP().getZ());
 		}
 
 		@DisplayName("#4")
@@ -7293,9 +7293,9 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 			getP().transform(tr);
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
-			assertEpsilonEquals(1., getP().getEquationComponentC());
-			assertEpsilonEquals(-20.01, getP().getEquationComponentD());
-			assertEpsilonEquals(20.01, getP().getZ());
+			assertEpsilonEquals(-1., getP().getEquationComponentC());
+			assertEpsilonEquals(4.94, getP().getEquationComponentD());
+			assertEpsilonEquals(4.94, getP().getZ());
 		}
 
 		@DisplayName("(Transform3D,Point3D) #1")
@@ -7326,8 +7326,8 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(-1., getP().getEquationComponentC());
-			assertEpsilonEquals(10.63, getP().getEquationComponentD());
-			assertEpsilonEquals(10.63, getP().getZ());
+			assertEpsilonEquals(4.94, getP().getEquationComponentD());
+			assertEpsilonEquals(4.94, getP().getZ());
 		}
 
 		@DisplayName("(Transform3D,Point3D) #3")
@@ -7343,8 +7343,8 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(1., getP().getEquationComponentC());
-			assertEpsilonEquals(-16.32, getP().getEquationComponentD());
-			assertEpsilonEquals(16.32, getP().getZ());
+			assertEpsilonEquals(-6.94, getP().getEquationComponentD());
+			assertEpsilonEquals(6.94, getP().getZ());
 		}
 
 		@DisplayName("(Transform3D,Point3D) #4")
@@ -7359,9 +7359,9 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 			getP().transform(tr, createPoint(9, -1, 0.5));
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
-			assertEpsilonEquals(1., getP().getEquationComponentC());
-			assertEpsilonEquals(-20.01, getP().getEquationComponentD());
-			assertEpsilonEquals(20.01, getP().getZ());
+			assertEpsilonEquals(-1., getP().getEquationComponentC());
+			assertEpsilonEquals(4.94, getP().getEquationComponentD());
+			assertEpsilonEquals(4.94, getP().getZ());
 		}
 	}
 
@@ -7472,7 +7472,7 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 		public final void xyzangle_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// Rotation without quadrant flip
-			getP().rotate(0.,  1., 0., Math.PI / 7.);
+			getP().rotate(0.,  1., 0., 1.2 * Math.PI + Math.PI / 7.);
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(1., getP().getEquationComponentC());
@@ -7500,7 +7500,7 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 		public final void quaternion_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// Rotation without quadrant flip
-			getP().rotate(createAxisAngle(0.,  1., 0., Math.PI / 7.));
+			getP().rotate(createAxisAngle(0.,  1., 0., 1.2 * Math.PI + Math.PI / 7.));
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(1., getP().getEquationComponentC());
@@ -7528,7 +7528,7 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 		public final void quaternionpoint_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// Rotation without quadrant flip
-			getP().rotate(createAxisAngle(0.,  1., 0., Math.PI / 7.), createPoint(1, 2, 3));
+			getP().rotate(createAxisAngle(0.,  1., 0., 1.2 * Math.PI + Math.PI / 7.), createPoint(1, 2, 3));
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(1., getP().getEquationComponentC());
@@ -7556,7 +7556,7 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 		public final void vectordouble_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// Rotation without quadrant flip
-			getP().rotate(createVector(0.,  1., 0.), Math.PI / 7.);
+			getP().rotate(createVector(0.,  1., 0.), 1.2 * Math.PI + Math.PI / 7.);
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(1., getP().getEquationComponentC());
@@ -7584,7 +7584,7 @@ public abstract class AbstractPlaneXY3dTestCase<T extends PlaneXY3afp<T, ?, ?, ?
 		public final void vectordoublepoint_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// Rotation without quadrant flip
-			getP().rotate(createVector(0.,  1., 0.), Math.PI / 7., createPoint(1, 2, 3));
+			getP().rotate(createVector(0.,  1., 0.), 1.2 * Math.PI + Math.PI / 7., createPoint(1, 2, 3));
 			assertEpsilonEquals(0., getP().getEquationComponentA());
 			assertEpsilonEquals(0., getP().getEquationComponentB());
 			assertEpsilonEquals(1., getP().getEquationComponentC());

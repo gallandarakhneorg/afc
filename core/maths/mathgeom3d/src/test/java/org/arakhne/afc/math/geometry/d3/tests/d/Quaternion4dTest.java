@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.tests.d;
 
 import org.arakhne.afc.math.geometry.base.tests.AbstractQuaternionTestCase;
 import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
+import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.junit.jupiter.api.DisplayName;
 
 /**
@@ -33,7 +34,7 @@ import org.junit.jupiter.api.DisplayName;
  */
 @SuppressWarnings("all")
 @DisplayName("Quaternion4d")
-public class Quaternion4dTest extends AbstractQuaternionTestCase<Quaternion4d> {
+public class Quaternion4dTest extends AbstractQuaternionTestCase<Quaternion4d, Vector3d> {
 
 	@Override
 	public boolean isIntCoordinates() {
@@ -48,6 +49,11 @@ public class Quaternion4dTest extends AbstractQuaternionTestCase<Quaternion4d> {
 	@Override
 	public Quaternion4d createQuaternion() {
 		return new Quaternion4d();
+	}
+
+	@Override
+	public Vector3d createVector(double x, double y, double z) {
+		return new Vector3d(x, y, z);
 	}
 
 }
