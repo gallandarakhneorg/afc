@@ -86,6 +86,7 @@
 		<!-- Javadoc must be present for public/package/protected classes/methods/fields. -->
 		<module name="JavadocStyle">
 			<property name="scope" value="package" />
+			 <property name="checkHtml" value="false"/>
 		</module>
 
 		<!-- Enforce the format of the tags @author and @version. -->
@@ -124,10 +125,15 @@
 		<module name="SummaryJavadoc">
 			<property name="forbiddenSummaryFragments"
 				value="^@return the *|^This method returns |^A [{]@code [a-zA-Z0-9]+[}]( is a )" />
+			<!-- Ignore MathML tags -->	
+			<property name="violateExecutionOnNonTightHtml" value="false"/>        
 		</module>
 
 		<!-- Ensure every paragraph is followed by a blank line. -->
-		<module name="JavadocParagraph" />
+		<module name="JavadocParagraph">
+			<!-- Ignore MathML tags -->	
+			<property name="violateExecutionOnNonTightHtml" value="false"/>        
+		</module>
 
 		<!-- Check the order of the @ clauses -->
 		<module name="AtclauseOrder">
