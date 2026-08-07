@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.ai;
 
 import org.arakhne.afc.math.geometry.base.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.base.d3.ImmutableQuaternion;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.UnmodifiableQuaternion;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
@@ -168,8 +169,8 @@ public class InnerComputationQuaternionai implements Quaternion<InnerComputation
 	}
 
 	@Override
-	public UnmodifiableQuaternion<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> toUnmodifiable() {
-		throw new UnsupportedOperationException();
+	public UnmodifiableQuaternion<?, ?, ?> toUnmodifiable() {
+		return new ImmutableQuaternion(getX(), getY(), getZ(), getW());
 	}
 
 	@Pure

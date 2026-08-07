@@ -279,8 +279,8 @@ public class InnerComputationQuaternion implements Quaternion<InnerComputationPo
 	}
 
 	@Override
-	public UnmodifiableQuaternion<InnerComputationPoint3D, InnerComputationVector3D, InnerComputationQuaternion> toUnmodifiable() {
-		throw new UnsupportedOperationException();
+	public UnmodifiableQuaternion<?, ?, ?> toUnmodifiable() {
+		return new ImmutableQuaternion(getX(), getY(), getZ(), getW());
 	}
 
 	@Override

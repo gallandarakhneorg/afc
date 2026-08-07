@@ -24,8 +24,6 @@ import java.io.Serializable;
 
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.GnuOctaveUtil;
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
@@ -34,23 +32,104 @@ import org.arakhne.afc.vmutil.json.JsonableObject;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** A 4 element unit quaternion represented by x, y, z, w coordinates.
- * The quaternion is always normalized.
+/**
+ * A unit quaternion in 4D form, represented by four components {@code (x, y, z, w)} and
+ * constrained to have unit length.
  *
- * <h3>Other Rotation Representations</h3>
+ * <p>A quaternion extends complex numbers and is commonly used to represent
+ * 3D rotations in a compact, stable, and interpolation-friendly way.
+ * This class stores a quaternion as:
+ *
+ * <p style="margin-left:1em">
+ * <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+ *   <mi>q</mi><mo>=</mo><mi>x</mi><mi>i</mi><mo>+</mo><mi>y</mi><mi>j</mi>
+ *   <mo>+</mo><mi>z</mi><mi>k</mi><mo>+</mo><mi>w</mi>
+ * </math>
+ *
+ * <p>where {@code (x, y, z)} is the vector part and {@code w} is the scalar part.
+ *
+ * <h2>Normalization invariant</h2>
+ *
+ * <p>This type represents only normalized (unit) quaternions. Therefore:
+ *
+ * <p style="margin-left:1em">
+ * <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+ *   <msup><mi>x</mi><mn>2</mn></msup>
+ *   <mo>+</mo>
+ *   <msup><mi>y</mi><mn>2</mn></msup>
+ *   <mo>+</mo>
+ *   <msup><mi>z</mi><mn>2</mn></msup>
+ *   <mo>+</mo>
+ *   <msup><mi>w</mi><mn>2</mn></msup>
+ *   <mo>=</mo>
+ *   <mn>1</mn>
+ * </math>
+ *
+ * <p>Maintaining this invariant is essential for valid rotation behavior.
+ *
+ * <h2>Rotation interpretation</h2>
+ *
+ * <p>A unit quaternion can encode a rotation by angle
+ * <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>&#x03B8;</mi></math>
+ * around a unit axis
+ * <math xmlns="http://www.w3.org/1998/Math/MathML">
+ *   <mrow><mo>(</mo><msub><mi>u</mi><mi>x</mi></msub><mo>,</mo><msub><mi>u</mi><mi>y</mi>
+ *   </msub><mo>,</mo><msub><mi>u</mi><mi>z</mi></msub><mo>)</mo></mrow>
+ * </math>:
+ *
+ * <p style="margin-left:1em">
+ * <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+ *   <mi>x</mi><mo>=</mo><msub><mi>u</mi><mi>x</mi></msub><mi>sin</mi><mo>(</mo><mi>&#x03B8;</mi><mo>/</mo><mn>2</mn><mo>)</mo>
+ *   <mspace width="1em"/>
+ *   <mi>y</mi><mo>=</mo><msub><mi>u</mi><mi>y</mi></msub><mi>sin</mi><mo>(</mo><mi>&#x03B8;</mi><mo>/</mo><mn>2</mn><mo>)</mo>
+ *   <mspace width="1em"/>
+ *   <mi>z</mi><mo>=</mo><msub><mi>u</mi><mi>z</mi></msub><mi>sin</mi><mo>(</mo><mi>&#x03B8;</mi><mo>/</mo><mn>2</mn><mo>)</mo>
+ *   <mspace width="1em"/>
+ *   <mi>w</mi><mo>=</mo><mi>cos</mi><mo>(</mo><mi>&#x03B8;</mi><mo>/</mo><mn>2</mn><mo>)</mo>
+ * </math>
+ *
+ * <h2>Conjugate and inverse</h2>
+ *
+ * <p>For a unit quaternion:
+ *
+ * <p style="margin-left:1em">
+ * <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+ *   <msup><mi>q</mi><mrow><mo>-</mo><mn>1</mn></mrow></msup>
+ *   <mo>=</mo>
+ *   <mover><mi>q</mi><mo>&#x00AF;</mo></mover>
+ *   <mo>=</mo>
+ *   <mo>(</mo><mo>-</mo><mi>x</mi><mo>,</mo><mo>-</mo><mi>y</mi><mo>,</mo><mo>-</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo>
+ * </math>
+ *
+ * <p>This property makes inversion efficient when composing or undoing rotations.
+ *
+ * <h2>Notes</h2>
+ * <ul>
+ *   <li>{@code q} and {@code -q} represent the same spatial rotation.</li>
+ *   <li>Use normalization-preserving operations to avoid numerical drift.</li>
+ *   <li>Quaternion composition is not commutative:
+ *     <math xmlns="http://www.w3.org/1998/Math/MathML">
+ *       <mi>p</mi><mi>q</mi><mo>&#x2260;</mo><mi>q</mi><mi>p</mi>
+ *     </math>.
+ *   </li>
+ * </ul>
+ *
+ * <h2>Other Rotation Representations</h2>
  *
  * <p>Other representations of an rotation are available from this class:
  * axis-angle, and Euler angles.
  *
- * <h4>Axis Angles</h4>
- * The axis–angle representation of a rotation parameterizes a rotation in a three-dimensional
+ * <h3>Axis Angles</h3>
+ *
+ * <p>The axis–angle representation of a rotation parameterizes a rotation in a three-dimensional
  * Euclidean space by two values: a unit vector, indicating the direction of an axis of rotation, and
  * an angle describing the magnitude of the rotation about the axis.
  * The rotation occurs in the sense prescribed by the (left/right)-hand rule.
  * <img src="doc-files/axis_angle.png" alt="[Axis-Angle Representation]">
  *
- * <h4>Euler Angles</h4>
- * The term "Euler Angle" is used for any representation of 3 dimensional
+ * <h3>Euler Angles</h3>
+ *
+ * <p>The term "Euler Angle" is used for any representation of 3 dimensional
  * rotations where the rotation is decomposed into 3 separate angles.
  *
  * <p>There is no single set of conventions and standards in this area,
@@ -231,46 +310,25 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	 * @param w the w coordinate of the quaternion.
 	 * @param system the coordinate system to use as the reference for the Euler angles.
 	 * @return the Euler angles.
+	 * @throws IllegalArgumentException if the system is not valid.
 	 * @since 18.0
 	 */
 	static EulerAngles computeEulerAngles(double x, double y, double z, double w, CoordinateSystem3D system) {
 		// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
-		// Standard used: XZY_RIGHT_HAND
-		final var q = system.toSystem(new QuaternionComponents(x, y, z, w), CoordinateSystem3D.XZY_RIGHT_HAND);
-
-		final var sqw = q.w * q.w;
-		final var sqx = q.x * q.x;
-		final var sqy = q.y * q.y;
-		final var sqz = q.z * q.z;
-		// if normalized is one, otherwise is correction factor
-		final var unit = sqx + sqy + sqz + sqw;
-		final var test = q.x * q.y + q.z * q.w;
-
-		if (MathUtil.compareEpsilon(test, .5 * unit) >= 0) {
-			// singularity at north pole
-			return new EulerAngles(
-					// heading
-					2. * Math.atan2(q.x, q.w),
-					// attitude
-					MathConstants.DEMI_PI,
-					0.,
-					system);
+		// Standard used on the website: XZY_RIGHT_HAND
+		final var cs = system == null ? CoordinateSystem3D.getDefaultCoordinateSystem() : system;
+		switch (cs) {
+		case XZY_RIGHT_HAND:
+			return EulerAnglesTools.computeEulerAnglesXZYR(x, y, z, w);
+		case XZY_LEFT_HAND:
+			return EulerAnglesTools.computeEulerAnglesXZYL(x, y, z, w);
+		case XYZ_LEFT_HAND:
+			return EulerAnglesTools.computeEulerAnglesXYZL(x, y, z, w);
+		case XYZ_RIGHT_HAND:
+			return EulerAnglesTools.computeEulerAnglesXYZR(x, y, z, w);
+		default:
+			throw new IllegalArgumentException();
 		}
-		if (MathUtil.compareEpsilon(test, -.5 * unit) <= 0) {
-			// singularity at south pole
-			return new EulerAngles(
-					// heading
-					-2. * Math.atan2(q.x, q.w),
-					// attitude
-					-MathConstants.DEMI_PI,
-					0.,
-					system);
-		}
-		return new EulerAngles(
-				Math.atan2(2. * q.y * q.w - 2. * q.x * q.z, sqx - sqy - sqz + sqw),
-				Math.asin(2. * test / unit),
-				Math.atan2(2. * q.x * q.w - 2. * q.y * q.z, -sqx + sqy - sqz + sqw),
-				system);
 	}
 
 	/** Replies the X coordinate.
@@ -280,21 +338,13 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	@Pure
 	double getX();
 
-	/** Replies the X coordinate.
-	 *
-	 * @return x
-	 * @since 18.0
-	 */
-	@Pure
-	int ix();
-
-	/** Set the X coordinate.
+	/** Set the X coordinate. This function does not ensure that the quaternion is normalized.
 	 *
 	 * @param x x coordinate.
 	 */
 	void setX(double x);
 
-	/** Set the X coordinate.
+	/** Set the X coordinate. This function does not ensure that the quaternion is normalized.
 	 *
 	 * @param x x coordinate.
 	 * @since 18.0
@@ -308,21 +358,13 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	@Pure
 	double getY();
 
-	/** Replies the Y coordinate.
-	 *
-	 * @return y
-	 * @since 18.0
-	 */
-	@Pure
-	int iy();
-
-	/** Set the Y coordinate.
+	/** Set the Y coordinate. This function does not ensure that the quaternion is normalized.
 	 *
 	 * @param y y coordinate.
 	 */
 	void setY(double y);
 
-	/** Set the Y coordinate.
+	/** Set the Y coordinate. This function does not ensure that the quaternion is normalized.
 	 *
 	 * @param y y coordinate.
 	 * @since 18.0
@@ -336,21 +378,13 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	@Pure
 	double getZ();
 
-	/** Replies the Z coordinate.
-	 *
-	 * @return z
-	 * @since 18.0
-	 */
-	@Pure
-	int iz();
-
-	/** Set the Z coordinate.
+	/** Set the Z coordinate. This function does not ensure that the quaternion is normalized.
 	 *
 	 * @param z z coordinate.
 	 */
 	void setZ(double z);
 
-	/** Set the Z coordinate.
+	/** Set the Z coordinate. This function does not ensure that the quaternion is normalized.
 	 *
 	 * @param z z coordinate.
 	 * @since 18.0
@@ -364,21 +398,13 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	@Pure
 	double getW();
 
-	/** Replies the W coordinate.
-	 *
-	 * @return w
-	 * @since 18.0
-	 */
-	@Pure
-	int iw();
-
-	/** Set the W coordinate.
+	/** Set the W coordinate. This function does not ensure that the quaternion is normalized.
 	 *
 	 * @param w w coordinate.
 	 */
 	void setW(double w);
 
-	/** Set the W coordinate.
+	/** Set the W coordinate. This function does not ensure that the quaternion is normalized.
 	 *
 	 * @param w w coordinate.
 	 * @since 18.0
@@ -410,14 +436,14 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 
 	/**
 	 * Sets the value of this quaternion to the conjugate of quaternion q1.
-	 * The result is the quaternion {@code (-x, -y, -z, w)}.
+	 * The result is the quaternion {@code (-x, -y, -z, w)} without normalization.
 	 * @param quaternion the source vector
 	 */
 	void conjugate(Quaternion<?, ?, ?> quaternion);
 
 	/**
 	 * Sets the value of this quaternion to the conjugate of itself.
-	 * The result is the quaternion {@code (-x, -y, -z, w)}.
+	 * The result is the quaternion {@code (-x, -y, -z, w)} without normalization.
 	 */
 	default void conjugate() {
 		conjugate(this);
@@ -489,7 +515,7 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 		normalize(this);
 	}
 
-	/** Set the quaternion coordinates.
+	/** Set the quaternion coordinates. The quaternion is normalized after the call to this function.
 	 *
 	 * @param x x coordinate.
 	 * @param y y coordinate.
@@ -498,7 +524,7 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	 */
 	void set(double x, double y, double z, double w);
 
-	/** Set the quaternion coordinates.
+	/** Set the quaternion coordinates. The quaternion is normalized after the call to this function.
 	 *
 	 * @param quat the quaternion to copy.
 	 */
@@ -510,6 +536,8 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	/**
 	 * Sets the value of this quaternion to the equivalent rotation
 	 * of the Axis-Angle arguments.
+	 * The quaternion is normalized after the call to this function.
+	 *
 	 * @param axis is the axis of rotation.
 	 * @param angle is the rotation around the axis.
 	 */
@@ -522,6 +550,8 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	/**
 	 * Sets the value of this quaternion to the equivalent rotation
 	 * of the Axis-Angle arguments.
+	 * The quaternion is normalized after the call to this function.
+	 *
 	 * @param x is the x coordinate of the rotation axis
 	 * @param y is the y coordinate of the rotation axis
 	 * @param z is the z coordinate of the rotation axis
@@ -534,6 +564,7 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 
 	/** Sets the value of this quaternion to the equivalent rotation
 	 * of the Axis-Angle arguments.
+	 * The quaternion is normalized after the call to this function.
 	 *
 	 * @param axisangle the Axis-Angle object.
 	 * @since 18.0
@@ -780,6 +811,23 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	}
 
 	/**
+	 * Replies the inverse (-this) of the current quaternion, i.e., {@code (-x, -y, -z, w)}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the inverse of the quaternion.
+	 * @since 18.0
+	 * @see #inverse()
+	 */
+	@Pure
+	@XtextOperator("(-)")
+	default RQ operator_minus() {
+		return getGeomFactory().newQuaternion(-getX(), -getY(), -getZ(), getW());
+	}
+
+	/**
 	 * Sets the value of the quaternion to the quaternion product of
 	 * this quaternion and quaternion (r = this * quaternion).
 	 *
@@ -815,6 +863,22 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	@Inline("operator_divide($1)")
 	default RQ $div(Quaternion<?, ?, ?> quaternion) {
 		return operator_divide(quaternion);
+	}
+
+	/** Replies the inverse (-this) of the current quaternion, i.e., {@code (-x, -y, -z, w)}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @return the inverse of the quaternion.
+	 * @since 18.0
+	 * @see #inverse()
+	 */
+	@Pure
+	@ScalaOperator("(-)")
+	@Inline("operator_minus()")
+	default RQ $minus() {
+		return operator_minus();
 	}
 
 	/** Replies this quaternion with a Geogebra-compatible form.
@@ -856,6 +920,155 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	 */
 	record EulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
 		//
+	}
+
+	/** Tools related to the computation of of Euler Angles.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 18.0
+	 */
+	final class EulerAnglesTools {
+
+		private static final Creator EULER_ANGLE_XZY_R_CREATOR = (a, b, h) -> new EulerAngles(a, b, h, CoordinateSystem3D.XZY_RIGHT_HAND);
+
+		private static final Creator EULER_ANGLE_XZY_L_CREATOR = (a, b, h) -> new EulerAngles(-a, -b, -h, CoordinateSystem3D.XZY_LEFT_HAND);
+
+		private static final Creator EULER_ANGLE_XYZ_L_CREATOR = (a, b, h) -> new EulerAngles(a, b, h, CoordinateSystem3D.XYZ_LEFT_HAND);
+
+		private static final Creator EULER_ANGLE_XYZ_R_CREATOR = (a, b, h) -> new EulerAngles(-a, -b, -h, CoordinateSystem3D.XYZ_RIGHT_HAND);
+
+		private EulerAnglesTools() {
+			//
+		}
+
+		private static EulerAngles computeEulerAnglesXZY(double x, double y, double z, double w, Creator creator) {
+			// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
+			// Order of application angles: Heading / Attitude / Bank
+			// Heading = rotation about y axis
+			// Attitude = rotation about z axis
+			// Bank = rotation about x axis
+			// Order: YZX
+			final var sinAttitude = Math.clamp(2. * (w * z - x * y), -1., 1.);
+
+			// Gimbal lock: attitude = +-90 deg, heading/bank axes align -> only their sum/difference is defined.
+			if (Math.abs(sinAttitude) > 0.9999999) {
+				final var heading = (sinAttitude > 0. ? -2. : 2.) * Math.atan2(x, w);
+				return creator.createEulerAngles(Math.asin(sinAttitude), 0., heading);
+			}
+
+			final var heading = Math.atan2(2. * (x * z + w * y), 1. - 2. * (y * y + z * z));
+			final var attitude = Math.asin(sinAttitude);
+			final var bank = Math.atan2(2. * (w * x + y * z), 1. - 2. * (x * x + z * z));
+			return creator.createEulerAngles(attitude, bank, heading);
+		}
+
+		private static EulerAngles computeEulerAnglesXYZ(double x, double y, double z, double w, Creator creator) {
+			// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
+			// Coordinate system: X (front), Y (up), Z (right) -> left-handed
+			// Order of application angles: Heading / Attitude / Bank
+			// Heading = rotation about z axis
+			// Attitude = rotation about y axis
+			// Bank = rotation about x axis
+			// Order: ZYX
+			final var sinAttitude = Math.clamp(-2. * (x * z + w * y), -1., 1.);
+
+			// Gimbal lock: attitude = +-90 deg, heading/bank axes align -> only their sum/difference is defined.
+			if (Math.abs(sinAttitude) > 0.9999999) {
+				final var heading = (sinAttitude > 0. ? 2. : -2.) * Math.atan2(x, w);
+				return creator.createEulerAngles(Math.asin(sinAttitude), 0., heading);
+			}
+
+			final var heading = Math.atan2(2. * (x * y - w * z), 1. - 2. * (y * y + z * z));
+			final var attitude = Math.asin(sinAttitude);
+			final var bank = Math.atan2(2. * (y * z - w * x), 1. - 2. * (x * x + y * y));
+			return creator.createEulerAngles(attitude, bank, heading);
+		}
+
+		/** Convert quaternion to Euler angles assuming the {@link CoordinateSystem3D#XZY_RIGHT_HAND XZY right-handed coordinate system}.
+		 *
+		 * @param x x coordinate of the quaternion.
+		 * @param y y coordinate of the quaternion.
+		 * @param z z coordinate of the quaternion.
+		 * @param w w coordinate of the quaternion.
+		 * @return the Euler angles.
+		 */
+		public static EulerAngles computeEulerAnglesXZYR(double x, double y, double z, double w) {
+			// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
+			// Order of application angles: Heading / Attitude / Bank
+			// Heading = rotation about y axis
+			// Attitude = rotation about z axis
+			// Bank = rotation about x axis
+			// Order: YZX
+			return computeEulerAnglesXZY(x, y, z, w, EULER_ANGLE_XZY_R_CREATOR);
+		}
+
+		/** Convert quaternion to Euler angles assuming the {@link CoordinateSystem3D#XZY_LEFT_HAND XZY left-handed coordinate system}.
+		 *
+		 * @param x x coordinate of the quaternion.
+		 * @param y y coordinate of the quaternion.
+		 * @param z z coordinate of the quaternion.
+		 * @param w w coordinate of the quaternion.
+		 * @return the Euler angles.
+		 */
+		public static EulerAngles computeEulerAnglesXZYL(double x, double y, double z, double w) {
+			// Coordinate system: X (front), Z (up), Y (left) -> left-handed
+			// Order of application angles: Heading / Attitude / Bank
+			// Heading = rotation about y axis
+			// Attitude = rotation about z axis
+			// Bank = rotation about x axis
+			// Order: YZX
+			// Note: relative to the right-handed variant, flipping the Y axis reverses the sign
+			// of all three angles (same underlying quaternion components x, y, z, w).
+			return computeEulerAnglesXZY(x, y, z, w, EULER_ANGLE_XZY_L_CREATOR);
+		}
+
+		/** Convert quaternion to Euler angles assuming the {@link CoordinateSystem3D#XYZ_LEFT_HAND XYZ left-handed coordinate system}.
+		 *
+		 * @param x x coordinate of the quaternion.
+		 * @param y y coordinate of the quaternion.
+		 * @param z z coordinate of the quaternion.
+		 * @param w w coordinate of the quaternion.
+		 * @return the Euler angles.
+		 */
+		public static EulerAngles computeEulerAnglesXYZL(double x, double y, double z, double w) {
+			// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
+			// Coordinate system: X (front), Y (up), Z (right) -> left-handed
+			// Order of application angles: Heading / Attitude / Bank
+			// Heading = rotation about z axis
+			// Attitude = rotation about y axis
+			// Bank = rotation about x axis
+			// Order: ZYX
+			return computeEulerAnglesXYZ(x, y, z, w, EULER_ANGLE_XYZ_L_CREATOR);
+		}
+
+		/** Convert quaternion to Euler angles assuming the {@link CoordinateSystem3D#XYZ_RIGHT_HAND XYZ right-handed coordinate system}.
+		 *
+		 * @param x x coordinate of the quaternion.
+		 * @param y y coordinate of the quaternion.
+		 * @param z z coordinate of the quaternion.
+		 * @param w w coordinate of the quaternion.
+		 * @return the Euler angles.
+		 */
+		public static EulerAngles computeEulerAnglesXYZR(double x, double y, double z, double w) {
+			// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
+			// Coordinate system: X (front), Y (up), Z (right) -> left-handed
+			// Order of application angles: Heading / Attitude / Bank
+			// Heading = rotation about z axis
+			// Attitude = rotation about y axis
+			// Bank = rotation about x axis
+			// Order: ZYX
+			// Note: relative to the left-handed variant, flipping the Z axis reverses the sign
+			// of all three angles (same underlying quaternion components x, y, z, w).
+			return computeEulerAnglesXYZ(x, y, z, w, EULER_ANGLE_XYZ_R_CREATOR);
+		}
+
+		private interface Creator {
+			EulerAngles createEulerAngles(double attitude, double bank, double heading);
+		}
+
 	}
 
 	/** A representation of axis-angle.
