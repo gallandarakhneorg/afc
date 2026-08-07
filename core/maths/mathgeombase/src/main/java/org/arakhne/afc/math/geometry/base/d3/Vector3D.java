@@ -1155,7 +1155,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("/")
-	@Inline("operator_divide($1)")
 	default RV $div(double scale) {
 		return operator_divide(scale);
 	}
@@ -1171,7 +1170,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RV $minus(Vector3D<?, ?, ?> v) {
 		return operator_minus(v);
 	}
@@ -1186,7 +1184,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("(-)")
-	@Inline("operator_minus()")
 	default RV $minus() {
 		return operator_minus();
 	}
@@ -1202,7 +1199,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("*")
-	@Inline("operator_multiply($1)")
 	default RV $times(double scale) {
 		return operator_multiply(scale);
 	}
@@ -1218,7 +1214,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("*")
-	@Inline("operator_multiply($1)")
 	default double $times(Vector3D<?, ?, ?> v) {
 		return operator_multiply(v);
 	}
@@ -1234,7 +1229,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default RP $plus(Point3D<?, ?, ?> point) {
 		return operator_plus(point);
 	}
@@ -1250,7 +1244,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default RV $plus(Vector3D<?, ?, ?> vector) {
 		return operator_plus(vector);
 	}
@@ -1271,7 +1264,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("^")
-	@Inline("operator_power($1)")
 	default PowerResult<RV> $up(int power) {
 		return operator_power(power);
 	}
@@ -1288,7 +1280,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 */
 	@Pure
 	@ScalaOperator("^")
-	@Inline("operator_power($1)")
 	default double $up(Vector3D<?, ?, ?> v) {
 		return operator_power(v);
 	}

@@ -473,8 +473,8 @@ public enum IntersectionType {
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	public  IntersectionType $and(IntersectionType right) {
-		return and(this, right);
+	public  IntersectionType $amp$amp(IntersectionType right) {
+		return operator_and(right);
 	}
 
 	/** Compute the AND-combinaison of two intersection types.
@@ -523,8 +523,8 @@ public enum IntersectionType {
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	public static IntersectionType $and(IntersectionType left, IntersectionType right) {
-		return and(left, right);
+	public static IntersectionType $amp$amp(IntersectionType left, IntersectionType right) {
+		return operator_and(left, right);
 	}
 
 	/** Compute the OR-combinaison of two intersection types.
@@ -679,7 +679,7 @@ public enum IntersectionType {
 	@Pure
 	@ScalaOperator("||")
 	public static IntersectionType $or(IntersectionType f1, IntersectionType f2) {
-		return or(f1, f2);
+		return operator_or(f1, f2);
 	}
 
 	/** Compute the OR-combinaison of two intersection types.
@@ -730,7 +730,7 @@ public enum IntersectionType {
 	@Pure
 	@ScalaOperator("||")
 	public IntersectionType $or(IntersectionType f2) {
-		return or(this, f2);
+		return operator_or(this, f2);
 	}
 
 	/** Invert the intersection classification.
@@ -792,7 +792,7 @@ public enum IntersectionType {
 	@Pure
 	@ScalaOperator("!")
 	public IntersectionType $bang() {
-		return invert(this);
+		return operator_not(this);
 	}
 
 
@@ -814,7 +814,7 @@ public enum IntersectionType {
 	@Pure
 	@ScalaOperator("!")
 	public static IntersectionType $bang(IntersectionType t) {
-		return invert(t);
+		return operator_not(t);
 	}
 
 }

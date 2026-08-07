@@ -601,7 +601,6 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("operator_and($1)")
 	default boolean $amp$amp(Shape3D<?, ?, ?, ?, ?, ?> shape) {
 		return operator_and(shape);
 	}
@@ -617,7 +616,6 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RV $minus(Point3D<?, ?, ?> pt) {
 		return operator_minus(pt);
 	}
@@ -633,7 +631,6 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RP $minus(Vector3D<?, ?, ?> v) {
 		return operator_minus(v);
 	}
@@ -649,7 +646,6 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default RP $plus(Vector3D<?, ?, ?> v) {
 		return operator_plus(v);
 	}

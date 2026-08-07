@@ -1212,7 +1212,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("*")
-	@Inline("operator_multiply($1)")
 	default double $times(Vector2D<?, ?> v) {
 		return operator_multiply(v);
 	}
@@ -1232,7 +1231,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("*")
-	@Inline("operator_multiply($1)")
 	default RV $times(double factor) {
 		return operator_multiply(factor);
 	}
@@ -1247,7 +1245,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("(-)")
-	@Inline("operator_minus()")
 	default RV $minus() {
 		return operator_minus();
 	}
@@ -1263,7 +1260,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RV $minus(Vector2D<?, ?> v) {
 		return operator_minus(v);
 	}
@@ -1283,7 +1279,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RV $minus(double scalar) {
 		return operator_minus(scalar);
 	}
@@ -1299,7 +1294,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RP $minus(Point2D<?, ?> point) {
 		return operator_minus(point);
 	}
@@ -1318,7 +1312,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("/")
-	@Inline("operator_divide($1)")
 	default RV $div(double factor) {
 		return operator_divide(factor);
 	}
@@ -1334,7 +1327,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default RV $plus(Vector2D<?, ?> v) {
 		return operator_plus(v);
 	}
@@ -1350,7 +1342,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default RP $plus(Point2D<?, ?> pt) {
 		return operator_plus(pt);
 	}
@@ -1370,7 +1361,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default RV $plus(double scalar) {
 		return operator_plus(scalar);
 	}
@@ -1386,7 +1376,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("^")
-	@Inline("operator_power($1)")
 	default double $up(Vector2D<?, ?> v) {
 		return operator_power(v);
 	}
@@ -1406,7 +1395,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@ScalaOperator("^")
-	@Inline("operator_power($1)")
 	default PowerResult<RV> $up(int power) {
 		return operator_power(power);
 	}

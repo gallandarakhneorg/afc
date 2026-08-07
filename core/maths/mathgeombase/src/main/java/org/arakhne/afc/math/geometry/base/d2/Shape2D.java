@@ -397,7 +397,6 @@ public interface Shape2D<
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default IT $plus(Vector2D<?, ?> v) {
 		return operator_plus(v);
 	}
@@ -450,7 +449,6 @@ public interface Shape2D<
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default IT $minus(Vector2D<?, ?> v) {
 		return operator_minus(v);
 	}
@@ -483,7 +481,6 @@ public interface Shape2D<
 	 */
 	@Pure
 	@ScalaOperator("*")
-	@Inline("operator_multiply($1)")
 	default ST $times(Transform2D t) {
 		return operator_multiply(t);
 	}
@@ -538,7 +535,6 @@ public interface Shape2D<
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("operator_and($1)")
 	default boolean $amp$amp(Point2D<?, ?> point) {
 		return operator_and(point);
 	}
@@ -558,7 +554,6 @@ public interface Shape2D<
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("operator_and($1)")
 	default boolean $amp$amp(Shape2D<?, ?, ?, ?, ?, ?> shape) {
 		return operator_and(shape);
 	}

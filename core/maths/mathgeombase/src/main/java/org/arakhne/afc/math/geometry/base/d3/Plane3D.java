@@ -509,7 +509,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default PT $plus(Vector3D<?, ?, ?> v) {
 		return operator_plus(v);
 	}
@@ -526,7 +525,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default PT $plus(double distance) {
 		return operator_plus(distance);
 	}
@@ -597,7 +595,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default PT $minus(Vector3D<?, ?, ?> v) {
 		return operator_minus(v);
 	}
@@ -612,7 +609,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("(-)")
-	@Inline("operator_minus($1)")
 	default PT $minus() {
 		return operator_minus();
 	}
@@ -629,7 +625,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default PT $minus(double distance) {
 		return operator_minus(distance);
 	}
@@ -739,7 +734,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("*")
-	@Inline("operator_multiply($1)")
 	default PT $times(Quaternion<?, ?, ?> quaternion) {
 		return operator_multiply(quaternion);
 	}
@@ -755,7 +749,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("*")
-	@Inline("operator_multiply($1)")
 	default PT $times(Transform3D t) {
 		return operator_multiply(t);
 	}
@@ -805,9 +798,8 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("intersects($1)")
 	default boolean $amp$amp(Point3D<?, ?, ?> point) {
-		return intersects(point);
+		return operator_and(point);
 	}
 
 	/** Replies if the given plane has an intersection with this plane: {@code this && plane}
@@ -821,9 +813,8 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("intersects($1)")
 	default boolean $amp$amp(Plane3D<?, ?, ?, ?, ?> plane) {
-		return intersects(plane);
+		return operator_and(plane);
 	}
 
 	/** Replies if this plane and the given plane are equal: {@code this == plane}.

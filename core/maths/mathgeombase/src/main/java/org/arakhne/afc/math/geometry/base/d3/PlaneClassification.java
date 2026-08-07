@@ -247,9 +247,8 @@ public enum PlaneClassification {
 	 */
 	@Pure
 	@ScalaOperator("||")
-	@Inline("or($1)")
 	public PlaneClassification $bar$bar(PlaneClassification f2) {
-		return or(f2);
+		return operator_or(f2);
 	}
 
 	/** Compute the AND-combinaison of two classification types.
@@ -305,9 +304,8 @@ public enum PlaneClassification {
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("and($1)")
 	public PlaneClassification $amp$amp(PlaneClassification f2) {
-		return and(f2);
+		return operator_and(f2);
 	}
 
 	/** Replies the invert of this classification: {@code !this}.
@@ -336,9 +334,8 @@ public enum PlaneClassification {
 	 */
 	@Pure
 	@ScalaOperator("!")
-	@Inline("invert()")
 	public PlaneClassification $bang() {
-		return invert();
+		return operator_not();
 	}
 
 }

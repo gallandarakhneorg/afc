@@ -1523,9 +1523,8 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("intersects($1)")
 	default boolean $amp$amp(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		return intersects(sphere);
+		return operator_and(sphere);
 	}
 
 	/** Replies if the given segment is intersecting the plane.
@@ -1539,9 +1538,8 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("intersects($1)")
 	default boolean $amp$amp(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-		return intersects(segment);
+		return operator_and(segment);
 	}
 
 	/** Replies if the given axis-aligned box is intersecting the plane.
@@ -1555,9 +1553,8 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("intersects($1)")
 	default boolean $amp$amp(Box3afp<?, ?, ?, ?, ?, ?> box) {
-		return intersects(box);
+		return operator_and(box);
 	}
 
 }

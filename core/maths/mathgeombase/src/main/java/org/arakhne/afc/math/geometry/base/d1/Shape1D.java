@@ -311,7 +311,6 @@ public interface Shape1D<
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default IT $plus(Vector1D<?, ?, ?> v) {
 		return operator_plus(v);
 	}
@@ -363,7 +362,6 @@ public interface Shape1D<
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default IT $minus(Vector1D<?, ?, ?> v) {
 		return operator_minus(v);
 	}
@@ -416,9 +414,8 @@ public interface Shape1D<
 	 */
 	@Pure
 	@ScalaOperator("&&")
-	@Inline("contains($1)")
 	default boolean $amp$amp(Point1D<?, ?, ?> point) {
-		return contains(point);
+		return operator_and(point);
 	}
 
 	/** Replies if the given shape has an intersection with this shape: {@code this && b}
@@ -437,9 +434,8 @@ public interface Shape1D<
 	@Pure
 	@Unefficient
 	@ScalaOperator("&&")
-	@Inline("intersects($1)")
 	default boolean $amp$amp(Shape1D<?, ?, ?, ?, ?, ?> shape) {
-		return intersects(shape);
+		return operator_and(shape);
 	}
 
 	/** Replies the distance between the given point and this shape: {@code this .. p}

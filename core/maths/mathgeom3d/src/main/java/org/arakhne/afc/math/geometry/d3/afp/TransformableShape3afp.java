@@ -66,9 +66,10 @@ public interface TransformableShape3afp<
 	@Override
 	@Pure
 	@ScalaOperator("*")
-	@Inline("createTransformedShape($1)")
 	default ST $times(Transform3D t) {
-		return createTransformedShape(t);
+		return operator_multiply(t);
+	}
+
 	}
 
 }

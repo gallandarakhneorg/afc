@@ -841,7 +841,6 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	 */
 	@Pure
 	@ScalaOperator("*")
-	@Inline("operator_multiply($1)")
 	default RQ $times(Quaternion<?, ?, ?> quaternion) {
 		return operator_multiply(quaternion);
 	}
@@ -860,7 +859,6 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	 */
 	@Pure
 	@ScalaOperator("/")
-	@Inline("operator_divide($1)")
 	default RQ $div(Quaternion<?, ?, ?> quaternion) {
 		return operator_divide(quaternion);
 	}
@@ -876,7 +874,6 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	 */
 	@Pure
 	@ScalaOperator("(-)")
-	@Inline("operator_minus()")
 	default RQ $minus() {
 		return operator_minus();
 	}

@@ -460,7 +460,6 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default RP $plus(Vector2D<?, ?> v) {
 		return operator_plus(v);
 	}
@@ -479,7 +478,6 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("+")
-	@Inline("operator_plus($1)")
 	default RP $plus(double scalar) {
 		return operator_plus(scalar);
 	}
@@ -494,7 +492,6 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RP $minus(Vector2D<?, ?> v) {
 		return operator_minus(v);
 	}
@@ -513,7 +510,6 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RP $minus(double scalar) {
 		return operator_minus(scalar);
 	}
@@ -528,7 +524,6 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@ScalaOperator("-")
-	@Inline("operator_minus($1)")
 	default RV $minus(Point2D<?, ?> pt) {
 		return operator_minus(pt);
 	}
