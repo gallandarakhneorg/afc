@@ -125,11 +125,6 @@ public class InnerComputationQuaternion implements Quaternion<InnerComputationPo
 	}
 
 	@Override
-	public int ix() {
-		return (int) Math.round(this.x);
-	}
-
-	@Override
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -142,11 +137,6 @@ public class InnerComputationQuaternion implements Quaternion<InnerComputationPo
 	@Override
 	public double getY() {
 		return this.y;
-	}
-
-	@Override
-	public int iy() {
-		return (int) Math.round(this.y);
 	}
 
 	@Override
@@ -165,11 +155,6 @@ public class InnerComputationQuaternion implements Quaternion<InnerComputationPo
 	}
 
 	@Override
-	public int iz() {
-		return (int) Math.round(this.z);
-	}
-
-	@Override
 	public void setZ(int z) {
 		this.z = z;
 	}
@@ -182,11 +167,6 @@ public class InnerComputationQuaternion implements Quaternion<InnerComputationPo
 	@Override
 	public double getW() {
 		return this.w;
-	}
-
-	@Override
-	public int iw() {
-		return (int) Math.round(this.w);
 	}
 
 	@Override

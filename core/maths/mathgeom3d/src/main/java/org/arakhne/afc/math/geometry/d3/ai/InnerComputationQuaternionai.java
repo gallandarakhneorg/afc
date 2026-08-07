@@ -94,11 +94,6 @@ public class InnerComputationQuaternionai implements Quaternion<InnerComputation
 	}
 
 	@Override
-	public int ix() {
-		return this.x;
-	}
-
-	@Override
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -110,11 +105,6 @@ public class InnerComputationQuaternionai implements Quaternion<InnerComputation
 
 	@Override
 	public double getY() {
-		return this.y;
-	}
-
-	@Override
-	public int iy() {
 		return this.y;
 	}
 
@@ -134,11 +124,6 @@ public class InnerComputationQuaternionai implements Quaternion<InnerComputation
 	}
 
 	@Override
-	public int iz() {
-		return this.z;
-	}
-
-	@Override
 	public void setZ(int z) {
 		this.z = z;
 	}
@@ -150,11 +135,6 @@ public class InnerComputationQuaternionai implements Quaternion<InnerComputation
 
 	@Override
 	public double getW() {
-		return this.w;
-	}
-
-	@Override
-	public int iw() {
 		return this.w;
 	}
 

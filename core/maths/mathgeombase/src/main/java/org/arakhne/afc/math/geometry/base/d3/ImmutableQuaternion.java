@@ -138,18 +138,8 @@ public final class ImmutableQuaternion implements UnmodifiableQuaternion<Immutab
 	}
 
 	@Override
-	public int ix() {
-		return (int) this.x;
-	}
-
-	@Override
 	public double getY() {
 		return this.y;
-	}
-
-	@Override
-	public int iy() {
-		return (int) this.y;
 	}
 
 	@Override
@@ -158,18 +148,8 @@ public final class ImmutableQuaternion implements UnmodifiableQuaternion<Immutab
 	}
 
 	@Override
-	public int iz() {
-		return (int) this.z;
-	}
-
-	@Override
 	public double getW() {
 		return this.w;
-	}
-
-	@Override
-	public int iw() {
-		return (int) this.w;
 	}
 
 	@Override

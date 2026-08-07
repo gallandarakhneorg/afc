@@ -183,11 +183,6 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	}
 
 	@Override
-	public int ix() {
-		return (int) this.x;
-	}
-
-	@Override
 	public void setX(double x) {
 		this.x = x;
 	}
@@ -200,11 +195,6 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	@Override
 	public double getY() {
 		return this.y;
-	}
-
-	@Override
-	public int iy() {
-		return (int) this.y;
 	}
 
 	@Override
@@ -223,11 +213,6 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	}
 
 	@Override
-	public int iz() {
-		return (int) this.z;
-	}
-
-	@Override
 	public void setZ(double z) {
 		this.z =  z;
 	}
@@ -240,11 +225,6 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 	@Override
 	public double getW() {
 		return this.w;
-	}
-
-	@Override
-	public int iw() {
-		return (int) this.w;
 	}
 
 	@Override
