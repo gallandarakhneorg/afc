@@ -67,11 +67,11 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static final double EPSILON = 10 * 1.110223024E-16;
 
-	private int decimalPrecision = DEFAULT_DECIMAL_COUNT;
-
 	/** Random number sequence.
 	 */
-	private final Random random = new Random();
+	private static final Random RANDOM = new Random();
+
+	private int decimalPrecision = DEFAULT_DECIMAL_COUNT;
 
 	/** Logger for unit tests.
 	 */
@@ -81,8 +81,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 *
 	 * @return the random number generator.
 	 */
-	public Random getRandom() {
-		return this.random;
+	public static Random getRandom() {
+		return RANDOM;
 	}
 
 	/** Set the epsilon used be testing floating-point values.
@@ -1448,7 +1448,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @return the selected values (possible duplicated)
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T[] extractRandomValues(T[] availableValues) {
+	public static <T> T[] extractRandomValues(T[] availableValues) {
 		final var count = getRandom().nextInt(500);
 		final var tab = new ArrayList<T>(count);
 		for (var i = 0; i < count; ++i) {
@@ -1465,7 +1465,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 *
 	 * @return a random string.
 	 */
-	public String randomString() {
+	public static String randomString() {
 		return randomString(-1);
 	}
 
@@ -1474,7 +1474,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param maxSize is the max length of the string.
 	 * @return a random string with a max length.
 	 */
-	public String randomString(int maxSize) {
+	public static String randomString(int maxSize) {
 		final var b = new StringBuilder();
 		final var count = getRandom().nextInt(maxSize <= 0 ? 255 : maxSize - 1) + 1;
 		for (var i = 0; i < count; ++i) {
@@ -1490,7 +1490,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param type is the type of the enumeration
 	 * @return a value from the specified enumeration.
 	 */
-	public <E extends Enum<E>> E randomEnum(Class<E> type) {
+	public static <E extends Enum<E>> E randomEnum(Class<E> type) {
 		final var constants = type.getEnumConstants();
 		return constants[getRandom().nextInt(constants.length)];
 	}

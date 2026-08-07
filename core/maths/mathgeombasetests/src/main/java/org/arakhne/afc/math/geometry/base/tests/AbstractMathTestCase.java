@@ -25,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.d1.Tuple1D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationVector2D;
@@ -303,6 +305,89 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		return isEpsilonEquals(expected.getX(), actual.getX())
 				&& isEpsilonEquals(expected.getY(), actual.getY())
 				&& isEpsilonEquals(expected.getZ(), actual.getZ());
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 */
+	public void assertEpsilonEquals(Quaternion.EulerAngles expected, Quaternion.EulerAngles actual) {
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public void assertEpsilonEquals(Quaternion.EulerAngles expected, Quaternion.EulerAngles actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Quaternion.EulerAngles expected, Quaternion.EulerAngles actual, Supplier<String> message) {
+		if (!isEpsilonEquals(expected, actual)) {
+			failCompare(
+					formatFailMessage(message, "not same euler anglaes", toString(expected), toString(actual)),  //$NON-NLS-1$
+					toString(expected),
+					toString(actual));
+		}
+	}
+	
+	private static String toString(Quaternion.EulerAngles angles) {
+		final var buffer = new StringBuilder();
+		if (angles == null) {
+			buffer.append("null");
+		} else {
+			buffer.append("[heading=")
+				.append(angles.heading())
+				.append("~>")
+				.append(normalizeRadians(angles.heading()))
+				.append("; attitude=")
+				.append(angles.attitude())
+				.append("~>")
+				.append(normalizeRadians(angles.attitude()))
+				.append("; bank=")
+				.append(angles.bank())
+				.append("~>")
+				.append(normalizeRadians(angles.bank()))
+				.append("; system=")
+				.append(angles.system().toString());
+		}
+		return buffer.toString();
+	}
+
+	private static double normalizeRadians(double angle) {
+		return MathUtil.clampCyclic(angle, 0., MathConstants.TWO_PI);
+	}
+
+	/** Replies if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @return the test result.
+	 * @since 18.0
+	 */
+	public boolean isEpsilonEquals(Quaternion.EulerAngles expected, Quaternion.EulerAngles actual) {
+		return (expected == null && actual == null)
+				|| (expected != null
+				&& actual != null
+				&& isEpsilonEquals(normalizeRadians(expected.attitude()), normalizeRadians(actual.attitude()))
+				&& isEpsilonEquals(normalizeRadians(expected.bank()), normalizeRadians(actual.bank()))
+				&& isEpsilonEquals(normalizeRadians(expected.heading()), normalizeRadians(actual.heading())));
 	}
 
 	/** Test if the actual vector is colinear to the expected vector with
@@ -1229,7 +1314,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	    }
 	}
 	
-	/** Assume that the given tuple is mutable.
+	/** Assume that the given tuple is not mutable.
 	 * 
 	 * @param tuple the tuple.
 	 */
@@ -1254,13 +1339,41 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		}
 	}
 	
-	/** Assume that the given tuple is mutable.
+	/** Assume that the given tuple is not mutable.
 	 * 
 	 * @param tuple the tuple.
 	 */
 	public void assumeImmutable(Tuple3D<?> tuple) {
 		try {
 			tuple.add(0, 0, 0);
+		} catch (UnsupportedOperationException exception) {
+			return;
+		}
+		throw new TestAbortedException("Object is mutable"); //$NON-NLS-1$
+	}
+
+	/** Assume that the given quaternion is mutable.
+	 * 
+	 * @param quaternion the quaternion.
+	 * @since 18.0
+	 */
+	public void assumeMutable(Quaternion<?, ?, ?> quaternion) {
+		try {
+			quaternion.conjugate();
+			quaternion.conjugate();
+		} catch (UnsupportedOperationException exception) {
+			throw new TestAbortedException("Object is immutable"); //$NON-NLS-1$
+		}
+	}
+	
+	/** Assume that the given quaternion is not mutable.
+	 * 
+	 * @param quaternion the quaternion.
+	 * @since 18.0
+	 */
+	public void assumeImmutable(Quaternion<?, ?, ?> quaternion) {
+		try {
+			quaternion.conjugate();
 		} catch (UnsupportedOperationException exception) {
 			return;
 		}
