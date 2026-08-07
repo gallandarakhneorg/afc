@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.base.d3.PointVector3DReceiver;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
+import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -1508,6 +1509,54 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	@XtextOperator("&&")
 	@Inline("intersects($1)")
 	default boolean operator_and(Box3afp<?, ?, ?, ?, ?, ?> box) {
+		return intersects(box);
+	}
+
+	/** Replies if the given sphere is intersecting the plane.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param sphere the sphere to test.
+	 * @return {@code true} if the elements are intersecting. Otherwise, {@code false}.
+	 * @see #intersects(Sphere3afp)
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("intersects($1)")
+	default boolean $amp$amp(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		return intersects(sphere);
+	}
+
+	/** Replies if the given segment is intersecting the plane.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param segment the segment to test.
+	 * @return {@code true} if the elements are intersecting. Otherwise, {@code false}.
+	 * @see #intersects(Segment3afp)
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("intersects($1)")
+	default boolean $amp$amp(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
+		return intersects(segment);
+	}
+
+	/** Replies if the given axis-aligned box is intersecting the plane.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param box the box to test.
+	 * @return {@code true} if the elements are intersecting. Otherwise, {@code false}.
+	 * @see #intersects(Box3afp)
+	 */
+	@Pure
+	@ScalaOperator("&&")
+	@Inline("intersects($1)")
+	default boolean $amp$amp(Box3afp<?, ?, ?, ?, ?, ?> box) {
 		return intersects(box);
 	}
 
