@@ -171,10 +171,11 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 
 	@Override
 	public void set(double x, double y, double z, double w) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.w = w;
+		final double mag = 1. / Math.sqrt(x * x + y * y + z * z + w * w);
+		this.x = x * mag;
+		this.y = y * mag;
+		this.z = z * mag;
+		this.w = w * mag;
 	}
 
 	@Override
