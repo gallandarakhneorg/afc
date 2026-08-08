@@ -27,6 +27,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.extensions.xtext.Tuple2DExtensions;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -65,7 +66,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@Inline(value = "$3.isUnitVector(($1), ($2), $4.UNIT_VECTOR_EPSILON)",
-			imported = {Vector2D.class, MathConstants.class})
+		imported = {Vector2D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y) {
 		return isUnitVector(x, y, GeomConstants.UNIT_VECTOR_EPSILON);
 	}
@@ -88,7 +89,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@Inline(value = "$4.isEpsilonEqual(($1) * ($1) + ($2) * ($2), 1., ($3))",
-			imported = {MathUtil.class})
+		imported = {MathUtil.class})
 	static boolean isUnitVector(double x, double y, double epsilon) {
 		return MathUtil.isEpsilonEqual(x * x + y * y, 1., epsilon);
 	}
@@ -122,7 +123,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@Inline(value = "$5.isOrthogonal(($1), ($2), ($3), ($4), $6.ORTHOGONAL_VECTOR_EPSILON)",
-			imported = {Vector2D.class, MathConstants.class})
+		imported = {Vector2D.class, MathConstants.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2) {
 		return isOrthogonal(x1, y1, x2, y2, GeomConstants.ORTHOGONAL_VECTOR_EPSILON);
 	}
@@ -141,7 +142,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@Inline(value = "$7.isEpsilonZero($6.dotProduct(($1), ($2), ($3), ($4)), ($5))",
-			imported = {Vector2D.class, MathUtil.class})
+		imported = {Vector2D.class, MathUtil.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2, double epsilon) {
 		return MathUtil.isEpsilonZero(dotProduct(x1, y1, x2, y2), epsilon);
 	}
@@ -177,7 +178,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@Inline(value = "MathUtil.isEpsilonZero(($1) * ($4) - ($3) * ($2))",
-			imported = {MathUtil.class})
+		imported = {MathUtil.class})
 	static boolean isCollinearVectors(double x1, double y1, double x2, double y2) {
 		// Test if three points are colinears
 		// iff det( [ x1 x2 ]
@@ -345,7 +346,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@Inline(value = "Vector2D.signedAngle(1, 0, ($3) - ($1), ($4) - ($2))",
-			imported = {Vector2D.class})
+		imported = {Vector2D.class})
 	static double angleOfVector(double x1, double y1, double x2, double y2) {
 		return signedAngle(
 				1, 0,
@@ -365,7 +366,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@Inline(value = "Vector2D.signedAngle(1, 0, ($1), ($2))",
-			imported = {Vector2D.class})
+		imported = {Vector2D.class})
 	static double angleOfVector(double x, double y) {
 		return signedAngle(
 				1, 0,
@@ -492,11 +493,15 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * <p>If the power is even, the result is a scalar.
 	 * If the power is odd, the result is a vector.
 	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
 	 * @param power the power factor.
 	 * @return the power of this vector.
 	 * @see "http://www.euclideanspace.com/maths/algebra/vectors/vecAlgebra/powers/index.htm"
 	 */
 	@Pure
+	@GroovyOperator("**")
 	default PowerResult<RV> power(int power) {
 		final var isEven = power % 2 == 0;
 		final int evenPower;
@@ -515,6 +520,22 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 		final var r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven);
 		return new PowerResult<>(r);
 
+	}
+
+	/** Perp product of this vector and the given vector: {@code this ** v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the other vector.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #perp(Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("**")
+	default double power(Vector2D<?, ?> v) {
+		return operator_power(v);
 	}
 
 	/**
@@ -1397,6 +1418,168 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	@ScalaOperator("^")
 	default PowerResult<RV> $up(int power) {
 		return operator_power(power);
+	}
+
+	/** Dot product: {@code this * v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @since 18.0
+	 * @see #dot(Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default double multiply(Vector2D<?, ?> v) {
+		return operator_multiply(v);
+	}
+
+	/** Scale this vector: {@code this * factor}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param factor the scaling factor.
+	 * @return the scaled vector.
+	 * @since 18.0
+	 * @see #scale(double)
+	 * @see Tuple2DExtensions#operator_multiply(double, Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default RV multiply(double factor) {
+		return operator_multiply(factor);
+	}
+
+	/** Negation of this vector: {@code -this}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @return the result.
+	 * @since 18.0
+	 * @see #negate(Tuple2D)
+	 */
+	@Pure
+	@GroovyOperator("(-)")
+	default RV negative() {
+		return operator_minus();
+	}
+
+	/** Subtract a vector to this vector: {@code this - v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @since 18.0
+	 * @see #sub(Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RV minus(Vector2D<?, ?> v) {
+		return operator_minus(v);
+	}
+
+	/** Subtract a vector to this scalar: {@code this - scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #sub(Vector2D)
+	 * @see Tuple2DExtensions#operator_minus(double, Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RV minus(double scalar) {
+		return operator_minus(scalar);
+	}
+
+	/** Subtract a vector to this point: {@code this - point}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param point the point.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #sub(Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RP minus(Point2D<?, ?> point) {
+		return operator_minus(point);
+	}
+
+	/** Scale this vector: {@code this / factor}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param factor the scaling factor
+	 * @return the scaled vector.
+	 * @since 18.0
+	 * @see Tuple2DExtensions#operator_divide(double, Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("/")
+	default RV div(double factor) {
+		return operator_divide(factor);
+	}
+
+	/** Sum of this vector and the given vector: {@code this + v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @since 18.0
+	 * @see #add(Vector2D, Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RV plus(Vector2D<?, ?> v) {
+		return operator_plus(v);
+	}
+
+	/** Add this vector to a point: {@code this + p}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param pt the point.
+	 * @return the result.
+	 * @since 18.0
+	 * @see Point2D#add(Vector2D, Point2D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RP plus(Point2D<?, ?> pt) {
+		return operator_plus(pt);
+	}
+
+	/** Sum of this vector and the given scalar: {@code this + scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #add(Vector2D, Vector2D)
+	 * @see Tuple2DExtensions#operator_plus(double, Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RV plus(double scalar) {
+		return operator_plus(scalar);
 	}
 
 	/** Result of the power of a Vector2D.

@@ -24,6 +24,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -40,6 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:methodcount")
 public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ>,
 		RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 		RQ extends Quaternion<? super RP, ? super RV, ? super RQ>>
@@ -531,11 +533,15 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	 * <p>If the power is even, the result is a scalar.
 	 * If the power is odd, the result is a vector.
 	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
 	 * @param power the power factor.
 	 * @return the power of this vector.
 	 * @see "http://www.euclideanspace.com/maths/algebra/vectors/vecAlgebra/powers/index.htm"
 	 */
 	@Pure
+	@GroovyOperator("**")
 	default PowerResult<RV> power(int power) {
 		final var isEven = power % 2 == 0;
 		final int evenPower;
@@ -554,7 +560,22 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 		}
 		final var r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven, getZ() * resultForEven);
 		return new PowerResult<>(r);
+	}
 
+	/** Perp product of this vector and the given vector: {@code this ** v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the other vector.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #perp(Vector3D)
+	 */
+	@Pure
+	@GroovyOperator("**")
+	default double power(Vector3D<?, ?, ?> v) {
+		return operator_power(v);
 	}
 
 	/**
@@ -1072,7 +1093,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 		return this;
 	}
 
-
 	/** Sum of this vector and the given vector: {@code this + v}
 	 *
 	 * <p>This function is an implementation of the operator for
@@ -1282,6 +1302,116 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP, ? super RQ
 	@ScalaOperator("^")
 	default double $up(Vector3D<?, ?, ?> v) {
 		return operator_power(v);
+	}
+
+	/** Dot product: {@code this * v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @since 18.0
+	 * @see #dot(Vector3D)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default double multiply(Vector3D<?, ?, ?> v) {
+		return operator_multiply(v);
+	}
+
+	/** Scale this vector: {@code this * f}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scale the scaling factor.
+	 * @return the scaled vector.
+	 * @since 18.0
+	 * @see #scale(double)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default RV multiply(double scale) {
+		return operator_multiply(scale);
+	}
+
+	/** Subtract a vector to this vector: {@code this - v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @since 18.0
+	 * @see #sub(Vector3D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RV minus(Vector3D<?, ?, ?> v) {
+		return operator_minus(v);
+	}
+
+	/** Negation of this vector: {@code -this}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @return the result.
+	 * @since 18.0
+	 * @see #negate(Tuple3D)
+	 */
+	@Pure
+	@GroovyOperator("(-)")
+	default RV negative() {
+		return operator_minus();
+	}
+
+	/** Scale this vector: {@code this / f}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scale the scaling factor
+	 * @return the scaled vector.
+	 * @since 18.0
+	 */
+	@Pure
+	@GroovyOperator("/")
+	default RV div(double scale) {
+		return operator_divide(scale);
+	}
+
+	/** Sum of this vector and the given vector: {@code this + v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @since 18.0
+	 * @see #add(Vector3D, Vector3D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RV plus(Vector3D<?, ?, ?> v) {
+		return operator_plus(v);
+	}
+
+	/** Add this vector to a point: {@code this + p}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param point the point.
+	 * @return the result.
+	 * @since 18.0
+	 * @see Point3D#add(Vector3D, Point3D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RP plus(Point3D<?, ?, ?> point) {
+		return operator_plus(point);
 	}
 
 	/** Result of the power of a Vector3D.

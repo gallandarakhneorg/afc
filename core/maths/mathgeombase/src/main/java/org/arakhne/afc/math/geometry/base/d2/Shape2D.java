@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -581,5 +582,53 @@ public interface Shape2D<
 	 * @since 18.0
 	 */
 	String toGeogebra();
+
+	/** Create a new shape by translating this shape of the given vector: {@code this + v}
+	 *
+     * <p>This function is an implementation of the operator for
+     * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the transformed shape.
+	 * @since 18.0
+	 * @see #translate(Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default IT plus(Vector2D<?, ?> v) {
+		return operator_plus(v);
+	}
+
+	/** Create a new shape by translating this shape of the given vector: {@code this - v}
+	 *
+     * <p>This function is an implementation of the operator for
+     * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the transformed shape.
+	 * @since 18.0
+	 * @see #translate(Vector2D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default IT minus(Vector2D<?, ?> v) {
+		return operator_minus(v);
+	}
+
+	/** Create a new shape by applying the given transformation: {@code this * t}
+	 *
+     * <p>This function is an implementation of the operator for
+     * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param t the transformation
+	 * @return the transformed shape.
+	 * @since 18.0
+	 * @see #createTransformedShape(Transform2D)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default ST multiply(Transform2D t) {
+		return operator_multiply(t);
+	}
 
 }

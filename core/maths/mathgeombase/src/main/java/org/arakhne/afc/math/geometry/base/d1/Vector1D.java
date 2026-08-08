@@ -25,6 +25,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.base.extensions.xtext.Tuple2DExtensions;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -708,6 +709,158 @@ public interface Vector1D<
 	@Pure
 	@ScalaOperator("+")
 	default RV $plus(double scalar) {
+		return operator_plus(scalar);
+	}
+
+	/** Scale this vector: {@code this / factor}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * <p>The operation {@code scalar / this} is supported by {@link Tuple2DExtensions#operator_divide(double, Vector1D)}.
+	 *
+	 * @param factor the scaling factor
+	 * @return the scaled vector.
+	 * @ince 18.0
+	 * @see Tuple2DExtensions#operator_divide(double, Vector1D)
+	 */
+	@Pure
+	@GroovyOperator("/")
+	default RV div(double factor) {
+		return operator_divide(factor);
+	}
+
+	/** Negation of this vector: {@code -this}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @return the result.
+	 * @since 18.0
+	 * @see #negate(Tuple2D)
+	 */
+	@Pure
+	@GroovyOperator("(-)")
+	default RV minus() {
+		return operator_minus();
+	}
+
+	/** Subtract a vector to this vector: {@code this - v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @since 18.0
+	 * @see #sub(Vector1D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RV minus(Vector1D<?, ?, ?> v) {
+		return operator_minus(v);
+	}
+
+	/** Subtract a vector to this scalar: {@code this - scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * <p>The operation {@code scalar - this} is supported by {@link Tuple2DExtensions#operator_minus(double, Vector1D)}.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #sub(Vector1D)
+	 * @see Tuple2DExtensions#operator_minus(double, Vector1D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RV minus(double scalar) {
+		return operator_minus(scalar);
+	}
+
+	/** Subtract a vector to this point: {@code this - point}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param point the point.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #sub(Vector1D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RP minus(Point1D<?, ?, ?> point) {
+		return operator_minus(point);
+	}
+
+	/** Scale this vector: {@code this * factor}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * <p>The operation {@code factor * this} is supported by {@link Tuple2DExtensions#operator_multiply(double, Vector1D)}.
+	 *
+	 * @param factor the scaling factor.
+	 * @return the scaled vector.
+	 * @since 18.0
+	 * @see #scale(double)
+	 * @see Tuple2DExtensions#operator_multiply(double, Vector1D)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default RV multiply(double factor) {
+		return operator_multiply(factor);
+	}
+
+	/** Sum of this vector and the given vector: {@code this + v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @since 18.0
+	 * @see #add(Vector1D, Vector1D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RV plus(Vector1D<?, ?, ?> v) {
+		return operator_plus(v);
+	}
+
+	/** Add this vector to a point: {@code this + p}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param pt the point.
+	 * @return the result.
+	 * @since 18.0
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RP plus(Point1D<?, ?, ?> pt) {
+		return operator_plus(pt);
+	}
+
+	/** Sum of this vector and the given scalar: {@code this + scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * <p>The operation {@code scalar + this} is supported by {@link Tuple2DExtensions#operator_plus(double, Vector1D)}.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #add(Vector1D, Vector1D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RV plus(double scalar) {
 		return operator_plus(scalar);
 	}
 

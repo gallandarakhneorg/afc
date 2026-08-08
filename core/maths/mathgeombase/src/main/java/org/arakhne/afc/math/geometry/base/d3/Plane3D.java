@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.base.d3;
 
 import java.io.Serializable;
 
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -43,6 +44,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 18.0
  */
+@SuppressWarnings("checkstyle:methodcount")
 public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 		S extends Shape3D<?, ?, P, V, Q, ?>,
 		P extends Point3D<? super P, ? super V, ? super Q>,
@@ -888,6 +890,119 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	@Inline("getDistanceTo($1)")
 	default double operator_upTo(Plane3D<?, ?, ?, ?, ?> plane) {
 		return getDistanceTo(plane);
+	}
+
+	/** Create a new plane by translating this plane of the given vector: {@code this + v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the transformed plane.
+	 * @since 18.0
+	 * @see #translate(Vector3D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default PT plus(Vector3D<?, ?, ?> v) {
+		return operator_plus(v);
+	}
+
+	/** Create a new plane by translating this plane of the given distance along the plane normal
+	 * vector: {@code this + distance N}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param distance the positive or negative distance to add to the {@code d} component of the plane equation.
+	 * @return the transformed plane.
+	 * @since 18.0
+	 * @see #translate(double)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default PT plus(double distance) {
+		return operator_plus(distance);
+	}
+
+	/** Create a new plane by translating this plane of the given vector: {@code this - v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector
+	 * @return the transformed plane.
+	 * @since 18.0
+	 * @see #translate(Vector3D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default PT minus(Vector3D<?, ?, ?> v) {
+		return operator_minus(v);
+	}
+
+	/** Create a new plane by translating this plane of the given distance along the plane normal
+	 * vector: {@code this - distance N}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param distance the positive or negative distance to subtract to the {@code d} component of the plane equation.
+	 * @return the transformed plane.
+	 * @since 18.0
+	 * @see #translate(double)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default PT minus(double distance) {
+		return operator_minus(distance);
+	}
+
+	/** Negation of this plane: {@code -this}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @return the result.
+	 * @since 18.0
+	 * @see #negate()
+	 */
+	@Pure
+	@GroovyOperator("(-)")
+	default PT negative() {
+		return operator_minus();
+	}
+
+	/** Create a new plane by applying the given rotation: {@code this * q}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param quaternion the rotation quaternion
+	 * @return the transformed shape.
+	 * @since 18.0
+	 * @see #rotate(Quaternion)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default PT multiply(Quaternion<?, ?, ?> quaternion) {
+		return operator_multiply(quaternion);
+	}
+
+	/** Create a new plane by applying the given transformation: {@code this * t}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param t the 3D transformation matrix to apply to the plane.
+	 * @return the transformed shape.
+	 * @since 18.0
+	 * @see #transform(Transform3D)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default PT multiply(Transform3D t) {
+		return operator_multiply(t);
 	}
 
 }

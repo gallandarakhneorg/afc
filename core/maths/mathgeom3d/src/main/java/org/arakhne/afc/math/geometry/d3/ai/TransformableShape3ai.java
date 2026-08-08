@@ -25,6 +25,7 @@ import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.TransformableShape3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -67,6 +68,13 @@ public interface TransformableShape3ai<
 	@Pure
 	@ScalaOperator("*")
 	default ST $times(Transform3D t) {
+		return operator_multiply(t);
+	}
+
+	@Override
+	@Pure
+	@GroovyOperator("*")
+	default ST multiply(Transform3D t) {
 		return operator_multiply(t);
 	}
 

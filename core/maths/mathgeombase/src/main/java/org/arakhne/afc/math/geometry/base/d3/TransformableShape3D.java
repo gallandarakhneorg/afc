@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.base.d3;
 
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -83,6 +84,20 @@ public interface TransformableShape3D<
 	@Pure
 	@ScalaOperator("*")
 	ST $times(Transform3D t);
+
+	/** Create a new shape by applying the given transformation: {@code this * t}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param t the transformation
+	 * @return the transformed shape.
+	 * @since 18.0
+	 * @see #createTransformedShape(Transform3D)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	ST multiply(Transform3D t);
 
     /** Apply the transformation to the shape and reply the result.
      * This function does not change the current shape.

@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.base.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.base.extensions.xtext.MatrixExtensions;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -3926,6 +3927,162 @@ public class Matrix3d implements Serializable, Cloneable {
 				getM00(), getM01(), getM02(),
 				getM10(), getM11(), getM12(),
 				getM20(), getM21(), getM22());
+	}
+
+	/** Replies the division of this matrix by the given scalar: {@code this / scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the division of the matrix by the scalar.
+	 * @since 18.0
+	 * @see #mul(double)
+	 * @see MatrixExtensions#operator_divide(double, Matrix3d)
+	 */
+	@Pure
+	@GroovyOperator("/")
+	public Matrix3d div(double scalar) {
+		return operator_divide(scalar);
+	}
+
+	/** Replies the substraction of the given matrix to this matrix: {@code this - matrix}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the result of the substraction.
+	 * @since 18.0
+	 * @see #sub(Matrix3d)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	public Matrix3d minus(Matrix3d matrix) {
+		return operator_minus(matrix);
+	}
+
+	/** Replies the substraction of the given scalar to this matrix: {@code this - scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result of the substraction.
+	 * @since 18.0
+	 * @see #add(double)
+	 * @see MatrixExtensions#operator_minus(double, Matrix3d)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	public Matrix3d minus(double scalar) {
+		return operator_minus(scalar);
+	}
+
+	/** Replies the negation of this matrix: {@code -this}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @return the negation of this matrix.
+	 * @see #negate()
+	 */
+	@Pure
+	@XtextOperator("(-)")
+	public Matrix3d negative() {
+		return operator_minus();
+	}
+
+	/** Increment this matrix: {@code this++}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @since 18.0
+	 * @see #add(double)
+	 */
+	@GroovyOperator("++")
+	public void next() {
+		operator_plusPlus();
+	}
+
+	/** Increment this matrix: {@code this--}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @since 18.0
+	 * @see #add(double)
+	 */
+	@GroovyOperator("--")
+	public void previous() {
+		operator_moinsMoins();
+	}
+
+	/** Replies the multiplication of the given matrix and this matrix: {@code this * matrix}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the multiplication of the matrices.
+	 * @since 18.0
+	 * @see #mul(Matrix3d)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	public Matrix3d multiply(Matrix3d matrix) {
+		return operator_multiply(matrix);
+	}
+
+	/** Replies the multiplication of the given scalar and this matrix: {@code this * scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the multiplication of the scalar and the matrix.
+	 * @since 18.0
+	 * @see #mul(Matrix3d)
+	 * @see MatrixExtensions#operator_multiply(double, Matrix3d)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	public Matrix3d multiply(double scalar) {
+		return operator_multiply(scalar);
+	}
+
+	/** Replies the addition of the given matrix to this matrix: {@code this + matrix}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the sum of the matrices.
+	 * @since 18.0
+	 * @see #add(Matrix3d)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	public Matrix3d plus(Matrix3d matrix) {
+		return operator_plus(matrix);
+	}
+
+	/** Replies the addition of the given scalar to this matrix: {@code this + scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the sum of the matrix and the scalar.
+	 * @since 18.0
+	 * @see #add(double)
+	 * @see MatrixExtensions#operator_plus(double, Matrix3d)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	public Matrix3d plus(double scalar) {
+		return operator_plus(scalar);
 	}
 
 }

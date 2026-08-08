@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.base.d3;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -666,6 +667,53 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
 	default RP operator_mappedTo(Plane3D<?, ?, ? extends RP, ? extends RV, ? extends RQ> plane) {
 		assert plane != null : AssertMessages.notNullParameter();
 		return plane.getProjection(this);
+	}
+
+	/** Sum of this point and a vector: {@code this + v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector to add
+	 * @return the result.
+	 * @since 18.0
+	 * @see #add(Point3D, Vector3D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RP plus(Vector3D<?, ?, ?> v) {
+		return operator_plus(v);
+	}
+
+	/** Subtract the v vector to this point: {@code this - v}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector to Subtract.
+	 * @return the result.
+	 * @since 18.0
+	 * @see #sub(Point3D, Vector3D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RP minus(Vector3D<?, ?, ?> v) {
+		return operator_minus(v);
+	}
+
+	/** Subtract the p point to this point: {@code this - p}
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param pt the point to Subtract
+	 * @return the vector from the p to this.
+	 * @see Vector3D#sub(Point3D, Point3D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RV minus(Point3D<?, ?, ?> pt) {
+		return operator_minus(pt);
 	}
 
 }

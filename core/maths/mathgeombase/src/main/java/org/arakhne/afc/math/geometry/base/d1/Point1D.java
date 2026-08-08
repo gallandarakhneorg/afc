@@ -24,6 +24,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.base.extensions.xtext.Tuple2DExtensions;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -526,6 +527,86 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	@ScalaOperator("-")
 	default RV $minus(Point2D<?, ?> pt) {
 		return operator_minus(pt);
+	}
+
+	/** Subtract the v vector to this point: {@code this - v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector to substract.
+	 * @return the result.
+	 * @since 18.0
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RP minus(Vector2D<?, ?> v) {
+		return operator_minus(v);
+	}
+
+	/** Subtract the scalar to this point: {@code this - scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * <p>The operation {@code scalar - this} is supported by {@link Tuple2DExtensions#operator_minus(double, Point2D)}.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result.
+	 * @since 18.0
+	 * @see Tuple2DExtensions#operator_minus(double, Point2D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RP minus(double scalar) {
+		return operator_minus(scalar);
+	}
+
+	/** Subtract the p point to this point: {@code this - p}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param pt the point to substract
+	 * @return the vector from the p to this.
+	 * @since 18.0
+	 * @see Vector2D#sub(Point2D, Point2D)
+	 */
+	@Pure
+	@GroovyOperator("-")
+	default RV minus(Point2D<?, ?> pt) {
+		return operator_minus(pt);
+	}
+
+	/** Sum of this point and a vector: {@code this + v}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param v the vector to add
+	 * @return the result.
+	 * @since 18.0
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RP plus(Vector2D<?, ?> v) {
+		return operator_plus(v);
+	}
+
+	/** Sum of this point and a scalar: {@code this + scalar}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param scalar the scalar
+	 * @return the result.
+	 * @since 18.0
+	 * @see Tuple2DExtensions#operator_plus(double, Point2D)
+	 */
+	@Pure
+	@GroovyOperator("+")
+	default RP plus(double scalar) {
+		return operator_plus(scalar);
 	}
 
 }

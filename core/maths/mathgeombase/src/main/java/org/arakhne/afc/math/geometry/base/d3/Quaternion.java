@@ -25,6 +25,7 @@ import java.io.Serializable;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.GnuOctaveUtil;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
@@ -885,6 +886,58 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 	 */
 	default String toGeogebra() {
 		return GeogebraUtil.toTupleDefinition(4, getX(), getY(), getZ(), getW());
+	}
+
+	/**
+	 * Sets the value of the quaternion to the quaternion product of
+	 * this quaternion and quaternion (r = this * quaternion).
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param quaternion the other quaternion
+	 * @return the result of the multiplication.
+	 * @since 18.0
+	 * @see #mul(Quaternion)
+	 */
+	@Pure
+	@GroovyOperator("*")
+	default RQ multiply(Quaternion<?, ?, ?> quaternion) {
+		return operator_multiply(quaternion);
+	}
+
+	/**
+	 * Sets the value of the quaternion to the quaternion division of
+	 * this quaternion and quaternion (r = this / quaternion).
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param quaternion the other quaternion
+	 * @return the result of the division.
+	 * @since 18.0
+	 * @see #mulInverse(Quaternion)
+	 */
+	@Pure
+	@GroovyOperator("/")
+	default RQ div(Quaternion<?, ?, ?> quaternion) {
+		return operator_divide(quaternion);
+	}
+
+	/**
+	 * Replies the inverse (-this) of the current quaternion, i.e., {@code (-x, -y, -z, w)}.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @return the inverse of the quaternion.
+	 * @since 18.0
+	 * @see #inverse()
+	 */
+	@Pure
+	@GroovyOperator("(-)")
+	default RQ negative() {
+		return operator_minus();
 	}
 
 	/** A representation of Euler Angles.
