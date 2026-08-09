@@ -47,12 +47,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+/**
+ * @param <V> the type for the vectors to be tested.
+ * @param <P> the type for the points to be used during the tests.
+ * @param <Q> the type for the quaternions to be used during the tests.
+ */
 @SuppressWarnings("all")
 public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? super P, ? super Q>,
 	P extends Point3D<? super P, ? super V, ? super Q>,
-	Q extends Quaternion<? super P, ? super V, ? super Q>,
-	TT extends Tuple3D>
-	extends AbstractTuple3DTestCase<TT> {
+	Q extends Quaternion<? super P, ? super V, ? super Q>>
+	extends AbstractTuple3DTestCase<V> {
 
 	/** Assert that the result of the power operator is equal to an expected value.
 	 *
@@ -93,8 +97,6 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 					actual.toString());
 		}
 	}
-
-	public abstract V createVector(double x, double y, double z);
 
 	public abstract P createPoint(double x, double y, double z);
 
@@ -321,9 +323,9 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(1, 2, 0);
-			this.vector2 = createVector(3, 4, 0);
-			this.vector3 = createVector(1, -2, 0);
+			this.vector = createTuple(1, 2, 0);
+			this.vector2 = createTuple(3, 4, 0);
+			this.vector3 = createTuple(1, -2, 0);
 		}
 
 		@DisplayName("#1")
@@ -362,9 +364,9 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(1, 2, 0);
-			this.vector2 = createVector(3, 4, 0);
-			this.vector3 = createVector(1, -2, 0);
+			this.vector = createTuple(1, 2, 0);
+			this.vector2 = createTuple(3, 4, 0);
+			this.vector3 = createTuple(1, -2, 0);
 		}
 
 		@DisplayName("#1")
@@ -403,9 +405,9 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(1, 2, 0);
-			this.vector2 = createVector(0, 0, 0);
-			this.vector3 = createVector(-1, 1, 0);
+			this.vector = createTuple(1, 2, 0);
+			this.vector2 = createTuple(0, 0, 0);
+			this.vector3 = createTuple(-1, 1, 0);
 		}
 
 		@DisplayName("#1")
@@ -444,9 +446,9 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(1, 2, 0);
-			this.vector2 = createVector(0, 0, 0);
-			this.vector3 = createVector(Math.sqrt(2.) / 2., Math.sqrt(2.) / 2., 0);
+			this.vector = createTuple(1, 2, 0);
+			this.vector2 = createTuple(0, 0, 0);
+			this.vector3 = createTuple(Math.sqrt(2.) / 2., Math.sqrt(2.) / 2., 0);
 		}
 
 		@DisplayName("With double coords #1")
@@ -516,10 +518,10 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(1, 2, 0);
-			this.vector2 = createVector(-2, 1, 0);
-			this.vector3 = createVector(1, 1, 0);
-			this.vector4 = createVector(1, 0, 0);
+			this.vector = createTuple(1, 2, 0);
+			this.vector2 = createTuple(-2, 1, 0);
+			this.vector3 = createTuple(1, 1, 0);
+			this.vector4 = createTuple(1, 0, 0);
 		}
 
 		@DisplayName("#1")
@@ -577,8 +579,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			
 			@BeforeEach
 			public void setUp() {
-				this.v1 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
-				this.v2 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
+				this.v1 = createTuple(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
+				this.v2 = createTuple(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
 			}
 	
 			@DisplayName("#1")
@@ -647,8 +649,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			
 			@BeforeEach
 			public void setUp() {
-				this.v1 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);;
-				this.v2 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
+				this.v1 = createTuple(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);;
+				this.v2 = createTuple(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
 			}
 
 			@DisplayName("#1")
@@ -742,7 +744,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_1(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeFalse(isIntCoordinates());
-				assertFalse(createVector(7.15161,6.7545, 0).isUnitVector());
+				assertFalse(createTuple(7.15161,6.7545, 0).isUnitVector());
 			}
 	
 			@DisplayName("#2")
@@ -751,7 +753,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_2(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeFalse(isIntCoordinates());
-				assertTrue(createVector(0,-1, 0).isUnitVector());
+				assertTrue(createTuple(0,-1, 0).isUnitVector());
 			}
 	
 			@DisplayName("#3")
@@ -760,7 +762,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_3(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeFalse(isIntCoordinates());
-				assertTrue((createVector(Math.sqrt(2)/2,Math.sqrt(2)/2,0)).isUnitVector());
+				assertTrue((createTuple(Math.sqrt(2)/2,Math.sqrt(2)/2,0)).isUnitVector());
 			}
 	
 			@DisplayName("#4")
@@ -769,7 +771,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_4(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeFalse(isIntCoordinates());
-				assertTrue((createVector(1,0,0)).isUnitVector()); 
+				assertTrue((createTuple(1,0,0)).isUnitVector()); 
 			}
 
 		}
@@ -784,7 +786,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_1(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeTrue(isIntCoordinates());
-				assertFalse(createVector(7.15161,6.7545, 0).isUnitVector());
+				assertFalse(createTuple(7.15161,6.7545, 0).isUnitVector());
 			}
 
 			@DisplayName("#2")
@@ -793,7 +795,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_2(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeTrue(isIntCoordinates());
-				assertTrue(createVector(0,-1, 0).isUnitVector());
+				assertTrue(createTuple(0,-1, 0).isUnitVector());
 			}
 
 			@DisplayName("#3")
@@ -802,7 +804,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_3(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeTrue(isIntCoordinates());
-				assertFalse(createVector(0.72700, 0.68663, 0).isUnitVector());
+				assertFalse(createTuple(0.72700, 0.68663, 0).isUnitVector());
 			}
 
 			@DisplayName("#4")
@@ -811,7 +813,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_4(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeTrue(isIntCoordinates());
-				assertFalse((createVector(Math.sqrt(2)/2,Math.sqrt(2)/2, Math.sqrt(2)/2)).isUnitVector());
+				assertFalse((createTuple(Math.sqrt(2)/2,Math.sqrt(2)/2, Math.sqrt(2)/2)).isUnitVector());
 			}
 
 			@DisplayName("#5")
@@ -820,7 +822,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			public final void test_5(CoordinateSystem3D cs) {
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assumeTrue(isIntCoordinates());
-				assertTrue((createVector(1,0,0)).isUnitVector()); 
+				assertTrue((createTuple(1,0,0)).isUnitVector()); 
 			}
 
 		}
@@ -835,7 +837,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		
 		@BeforeEach
 		public void setUp() {
-			this.origin = createVector(2, 3, 0);
+			this.origin = createTuple(2, 3, 0);
 			assumeMutable(origin);
 		}
 
@@ -859,22 +861,27 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			Vector3D immutable = origin.toUnmodifiable();
 			assertEpsilonEquals(origin, immutable);
 			origin.add(1, 2, 0);
-			assertEpsilonEquals(createVector(2, 3, 0), immutable);
+			assertEpsilonEquals(createTuple(2, 3, 0), immutable);
 		}
 
 	}
 
 	@DisplayName("clone")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public final void testCloneVector(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Vector3D origin = createVector(23, 45, 0);
-		Tuple3D clone = origin.clone();
-		assertNotNull(clone);
-		assertNotSame(origin, clone);
-		assertEpsilonEquals(origin.getX(), clone.getX());
-		assertEpsilonEquals(origin.getY(), clone.getY());
+	@Nested
+	public class Clone {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Vector3D origin = createTuple(23, 45, 0);
+			Tuple3D clone = origin.clone();
+			assertNotNull(clone);
+			assertNotSame(origin, clone);
+			assertEpsilonEquals(origin.getX(), clone.getX());
+			assertEpsilonEquals(origin.getY(), clone.getY());
+		}
 	}
 
 	@DisplayName("toUnitVector")
@@ -887,7 +894,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public final void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			Vector3D origin = createVector(23, 45, 0);
+			Vector3D origin = createTuple(23, 45, 0);
 			Vector3D unitVector = origin.toUnitVector();
 			assertNotNull(unitVector);
 			assertNotSame(origin, unitVector);
@@ -901,7 +908,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public final void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D origin = createVector(23, 45, 0);
+			Vector3D origin = createTuple(23, 45, 0);
 			Vector3D unitVector = origin.toUnitVector();
 			assertNotNull(unitVector);
 			assertNotSame(origin, unitVector);
@@ -915,7 +922,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D origin = createVector(-45, 0, 0);
+			Vector3D origin = createTuple(-45, 0, 0);
 			Vector3D unitVector = origin.toUnitVector();
 			assertNotNull(unitVector);
 			assertNotSame(origin, unitVector);
@@ -933,7 +940,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.origin = createVector(23, 45, 0);
+			this.origin = createTuple(23, 45, 0);
 		}
 		
 		@DisplayName("With double coords #1")
@@ -1180,7 +1187,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(49, -2, 0);
+			this.vector = createTuple(49, -2, 0);
 		}
 		
 		@DisplayName("#1")
@@ -1204,7 +1211,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(vector.operator_equals(createVector(49, -3, 0)));
+			assertFalse(vector.operator_equals(createTuple(49, -3, 0)));
 		}
 		
 		@DisplayName("#4")
@@ -1212,7 +1219,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(vector.operator_equals(createVector(0, 0, 0)));
+			assertFalse(vector.operator_equals(createTuple(0, 0, 0)));
 		}
 		
 		@DisplayName("#5")
@@ -1220,7 +1227,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(vector.operator_equals(createVector(49, -2, 0)));
+			assertTrue(vector.operator_equals(createTuple(49, -2, 0)));
 		}
 
 	}
@@ -1233,7 +1240,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(49, -2, 0);
+			this.vector = createTuple(49, -2, 0);
 		}
 		
 		@DisplayName("#1")
@@ -1257,7 +1264,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(vector.operator_notEquals(createVector(49, -3, 0)));
+			assertTrue(vector.operator_notEquals(createTuple(49, -3, 0)));
 		}
 		
 		@DisplayName("#4")
@@ -1265,7 +1272,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(vector.operator_notEquals(createVector(0, 0, 0)));
+			assertTrue(vector.operator_notEquals(createTuple(0, 0, 0)));
 		}
 		
 		@DisplayName("#5")
@@ -1273,7 +1280,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(vector.operator_notEquals(createVector(49, -2, 0)));
+			assertFalse(vector.operator_notEquals(createTuple(49, -2, 0)));
 		}
 	}
 
@@ -1285,7 +1292,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(49, -2, 0);
+			this.vector = createTuple(49, -2, 0);
 		}
 
 		@DisplayName("#1")
@@ -1309,7 +1316,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(vector.equals((Object) createVector(49, -3, 0)));
+			assertFalse(vector.equals((Object) createTuple(49, -3, 0)));
 		}
 
 		@DisplayName("#4")
@@ -1317,7 +1324,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(vector.equals((Object) createVector(0, 0, 0)));
+			assertFalse(vector.equals((Object) createTuple(0, 0, 0)));
 		}
 
 		@DisplayName("#5")
@@ -1325,7 +1332,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(vector.equals((Object) createVector(49, -2, 0)));
+			assertTrue(vector.equals((Object) createTuple(49, -2, 0)));
 		}
 
 	}
@@ -1341,10 +1348,10 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(1, 2, 0);
-			this.vector2 = createVector(-2, 1, 0);
-			this.vector3 = createVector(1, 1, 0);
-			this.vector4 = createVector(1, 0, 0);
+			this.vector = createTuple(1, 2, 0);
+			this.vector2 = createTuple(-2, 1, 0);
+			this.vector3 = createTuple(1, 1, 0);
+			this.vector4 = createTuple(1, 0, 0);
 		}
 
 		@DisplayName("#1")
@@ -1402,8 +1409,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			
 			@BeforeEach
 			public void setUp() {
-				this.v1 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
-				this.v2 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
+				this.v1 = createTuple(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
+				this.v2 = createTuple(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
 			}
 			
 			@DisplayName("#1")
@@ -1472,8 +1479,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			
 			@BeforeEach
 			public void setUp() {
-				this.v1 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
-				this.v2 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
+				this.v1 = createTuple(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
+				this.v2 = createTuple(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
 			}
 			
 			@DisplayName("#1")
@@ -1566,8 +1573,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			
 			@BeforeEach
 			public void setUp() {
-				this.v1 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
-				this.v2 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
+				this.v1 = createTuple(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
+				this.v2 = createTuple(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
 			}
 
 			@DisplayName("#1")
@@ -1616,8 +1623,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			
 			@BeforeEach
 			public void setUp() {
-				this.v1 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
-				this.v2 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
+				this.v1 = createTuple(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
+				this.v2 = createTuple(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
 			}
 
 			@DisplayName("#1")
@@ -1704,7 +1711,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		
 		@BeforeEach
 		public void setUp() {
-			this.vect = createVector(45, -78, 0);
+			this.vect = createTuple(45, -78, 0);
 		}
 		
 		@DisplayName("#1")
@@ -1744,7 +1751,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vect = createVector(45, -78, 0);
+			this.vect = createTuple(45, -78, 0);
 		}
 
 		@DisplayName("#1")
@@ -1777,7 +1784,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vect = createVector(45, -78, 0);
+			this.vect = createTuple(45, -78, 0);
 		}
 		
 		@DisplayName("With int coords #1")
@@ -1846,15 +1853,15 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 	@Nested
 	public class OperatorElvisVector3D {
 
-		private Vector3D orig1 = createVector(45, -78, 0);
-		private Vector3D orig2 = createVector(0, 0, 0);
-		private Vector3D param = createVector(-5, -1.4, 0);
+		private Vector3D orig1 = createTuple(45, -78, 0);
+		private Vector3D orig2 = createTuple(0, 0, 0);
+		private Vector3D param = createTuple(-5, -1.4, 0);
 
 		@BeforeEach
 		public void setUp() {
-			this.orig1 = createVector(45, -78, 0);
-			this.orig2 = createVector(0, 0, 0);
-			this.param = createVector(-5, -1.4, 0);
+			this.orig1 = createTuple(45, -78, 0);
+			this.orig2 = createTuple(0, 0, 0);
+			this.param = createTuple(-5, -1.4, 0);
 		}
 
 		@DisplayName("#1")
@@ -1924,10 +1931,10 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void SetUp() {
-			this.vect = createVector(0, 0, 0);
-			this.vect2 = createVector(-1, 0, 0);
-			this.vector = createVector(-1.2, -1.2, 0);
-			this.vector2 = createVector(-2.0, -1.5, 0);
+			this.vect = createTuple(0, 0, 0);
+			this.vect2 = createTuple(-1, 0, 0);
+			this.vector = createTuple(-1.2, -1.2, 0);
+			this.vector2 = createTuple(-2.0, -1.5, 0);
 		}
 
 		@DisplayName("With double coords #1")
@@ -1983,10 +1990,10 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void SetUp() {
-			this.vector = createVector(0, 0, 0);
-			this.vector2 = createVector(-1, 0, 0);
-			this.vector3 = createVector(1.2, 1.2, 0);
-			this.vector4 = createVector(2.0, 1.5, 0);
+			this.vector = createTuple(0, 0, 0);
+			this.vector2 = createTuple(-1, 0, 0);
+			this.vector3 = createTuple(1.2, 1.2, 0);
+			this.vector4 = createTuple(2.0, 1.5, 0);
 		}
 
 		@DisplayName("With double coords #1")
@@ -2041,9 +2048,9 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void SetUp() {
-			this.vector = createVector(1, 2, 0);
-			this.vector2 = createVector(3, 4, 0);
-			this.vector3 = createVector(1, -2, 0);
+			this.vector = createTuple(1, 2, 0);
+			this.vector2 = createTuple(3, 4, 0);
+			this.vector3 = createTuple(1, -2, 0);
 		}
 
 		@DisplayName("#1")
@@ -2079,7 +2086,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		
 		@BeforeEach
 		public void setUp() {
-			this.origin = createVector(23, 45, 0);
+			this.origin = createTuple(23, 45, 0);
 		}
 
 		@DisplayName("With double coords #1")
@@ -2340,9 +2347,9 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void setUp() {
 			this.point = createPoint(1, 2, 0);
 			this.point2 = createPoint(3, 0, 0);
-			this.vector1 = createVector(0, 0, 0);
-			this.vector2 = createVector(1, 2, 0);
-			this.vector3 = createVector(1, -5, 0);
+			this.vector1 = createTuple(0, 0, 0);
+			this.vector2 = createTuple(1, 2, 0);
+			this.vector3 = createTuple(1, -5, 0);
 		}
 
 		@DisplayName("#1")
@@ -2413,11 +2420,11 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(0, 0, 0);
-			this.vector2 = createVector(-1, 0, 0);
-			this.vector3 = createVector(1.2, 1.2, 0);
-			this.vector4 = createVector(2.0, 1.5, 0);
-			this.vector5 = createVector(0.0, 0.0, 0);
+			this.vector = createTuple(0, 0, 0);
+			this.vector2 = createTuple(-1, 0, 0);
+			this.vector3 = createTuple(1.2, 1.2, 0);
+			this.vector4 = createTuple(2.0, 1.5, 0);
+			this.vector5 = createTuple(0.0, 0.0, 0);
 			assumeMutable(this.vector);
 		}
 
@@ -2474,10 +2481,10 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(0, 0, 0);
-			this.vector2 = createVector(-1, 0, 0);
-			this.vector3 = createVector(1.2, 1.2, 0);
-			this.vector4 = createVector(2.0, 1.5, 0);
+			this.vector = createTuple(0, 0, 0);
+			this.vector2 = createTuple(-1, 0, 0);
+			this.vector3 = createTuple(1.2, 1.2, 0);
+			this.vector4 = createTuple(2.0, 1.5, 0);
 			assumeMutable(this.vector);
 		}
 
@@ -2533,9 +2540,9 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(-1, 0, 0);
-			this.vector2 = createVector(1, 1.2, 0);
-			this.vector3 = createVector(0, 0, 0);
+			this.vector = createTuple(-1, 0, 0);
+			this.vector2 = createTuple(1, 1.2, 0);
+			this.vector3 = createTuple(0, 0, 0);
 			assumeMutable(this.vector);
 		}
 
@@ -2631,9 +2638,9 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vect = createVector(1, 2, 1);
-			this.vector = createVector(-1, 1, 0);
-			this.newPoint = createVector(34, 35, 36);
+			this.vect = createTuple(1, 2, 1);
+			this.vector = createTuple(-1, 1, 0);
+			this.newPoint = createTuple(34, 35, 36);
 			assumeMutable(this.vector);
 		}
 
@@ -2728,8 +2735,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(1, 0, -1);
-			this.newPoint = createVector(1, 2, 1);
+			this.vector = createTuple(1, 0, -1);
+			this.newPoint = createTuple(1, 2, 1);
 			assumeMutable(this.vector);
 		}
 
@@ -2771,8 +2778,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(1, 0, 1);
-			this.newPoint = createVector(1, 2, 1);
+			this.vector = createTuple(1, 0, 1);
+			this.newPoint = createTuple(1, 2, 1);
 			assumeMutable(this.vector);
 		}
 
@@ -2850,11 +2857,11 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vect = createVector(0, 0, 0);
-			this.vect2 = createVector(1, 0, 0);
-			this.vector = createVector(-1.2, -1.2, 0);
-			this.vector2 = createVector(2.0, 1.5, 0);
-			this.newPoint = createVector(0.0, 0.0, 0);
+			this.vect = createTuple(0, 0, 0);
+			this.vect2 = createTuple(1, 0, 0);
+			this.vector = createTuple(-1.2, -1.2, 0);
+			this.vector2 = createTuple(2.0, 1.5, 0);
+			this.newPoint = createTuple(0.0, 0.0, 0);
 			assumeMutable(this.vector);
 		}
 
@@ -2916,7 +2923,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 			this.point2 = createPoint(1, 0, 0);
 			this.vector = createPoint(-1.2, -1.2, 0);
 			this.vector2 = createPoint(2.0, 1.5, 0);
-			this.newPoint = createVector(0.0, 0.0, 0);
+			this.newPoint = createTuple(0.0, 0.0, 0);
 			assumeMutable(this.vector);
 		}
 
@@ -2973,10 +2980,10 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vect = createVector(0, 0, 0);
-			this.vect2 = createVector(1, 0, 0);
-			this.vector = createVector(-1.2, -1.2, 0);
-			this.vector2 = createVector(2.0, 1.5, 0);
+			this.vect = createTuple(0, 0, 0);
+			this.vect2 = createTuple(1, 0, 0);
+			this.vector = createTuple(-1.2, -1.2, 0);
+			this.vector2 = createTuple(2.0, 1.5, 0);
 			assumeMutable(this.vector);
 		}
 
@@ -3028,7 +3035,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			assumeMutable(createVector(1, 2, 0));
+			assumeMutable(createTuple(1, 2, 0));
 		}
 		
 		@DisplayName("With double coords #1")
@@ -3037,7 +3044,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			var vector = createVector(1, 2, 0);
+			var vector = createTuple(1, 2, 0);
 			vector.normalize();
 			assertFpVectorEquals(1/Math.sqrt(5),2/Math.sqrt(5), 0, vector);
 		}
@@ -3048,7 +3055,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void double_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			var vector2 = createVector(0, 0, 0);
+			var vector2 = createTuple(0, 0, 0);
 			vector2.normalize();
 			assertZero(vector2.getX());
 			assertZero(vector2.getY());
@@ -3060,7 +3067,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void double_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			var vector3 = createVector(-1, 1, 0);
+			var vector3 = createTuple(-1, 1, 0);
 			vector3.normalize();
 			assertFpVectorEquals(-1/Math.sqrt(2),1/Math.sqrt(2), 0, vector3);
 		}
@@ -3071,7 +3078,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void int_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			var vector = createVector(1,2, 0);
+			var vector = createTuple(1,2, 0);
 			vector.normalize();
 			assertIntVectorEquals(0, 1, 0, vector);
 		}
@@ -3082,7 +3089,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void int_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D vector2 = createVector(0,0, 0);
+			Vector3D vector2 = createTuple(0,0, 0);
 			vector2.normalize();
 			assertIntVectorEquals(0, 0, 0, vector2);
 		}
@@ -3093,7 +3100,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void int_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D vector3 = createVector(-1,1, 0);
+			Vector3D vector3 = createTuple(-1,1, 0);
 			vector3.normalize();
 			assertIntVectorEquals(-1, 1, 0, vector3);
 		}
@@ -3104,7 +3111,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void int_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D vector4 = createVector(0,-5, 0);
+			Vector3D vector4 = createTuple(0,-5, 0);
 			vector4.normalize();
 			assertIntVectorEquals(0, -1, 0, vector4);
 		}
@@ -3117,7 +3124,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			assumeMutable(createVector(1, 2, 0));
+			assumeMutable(createTuple(1, 2, 0));
 		}
 
 		@DisplayName("With double coords #1")
@@ -3126,8 +3133,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			Vector3D vector = createVector(0,0, 0);
-			vector.normalize(createVector(1,2,0));
+			Vector3D vector = createTuple(0,0, 0);
+			vector.normalize(createTuple(1,2,0));
 			assertFpVectorEquals(1/Math.sqrt(5),2/Math.sqrt(5), 0, vector);
 		}
 	
@@ -3137,8 +3144,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void double_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			Vector3D vector2 = createVector(0,0, 0);
-			vector2.normalize(createVector(0,0,0));
+			Vector3D vector2 = createTuple(0,0, 0);
+			vector2.normalize(createTuple(0,0,0));
 			assertZero(vector2.getX());
 			assertZero(vector2.getY());
 		}
@@ -3149,8 +3156,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void double_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			Vector3D vector3 = createVector(0,0, 0);
-			vector3.normalize(createVector(-1,1,0));
+			Vector3D vector3 = createTuple(0,0, 0);
+			vector3.normalize(createTuple(-1,1,0));
 			assertFpVectorEquals(-1/Math.sqrt(2),1/Math.sqrt(2), 0, vector3);
 		}
 
@@ -3160,8 +3167,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void int_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D vector = createVector(0,0, 0);
-			vector.normalize(createVector(1,2,0));
+			Vector3D vector = createTuple(0,0, 0);
+			vector.normalize(createTuple(1,2,0));
 			assertIntVectorEquals(0, 1, 0, vector);
 		}
 
@@ -3171,8 +3178,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void int_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D vector2 = createVector(0,0, 0);
-			vector2.normalize(createVector(0,0,0));
+			Vector3D vector2 = createTuple(0,0, 0);
+			vector2.normalize(createTuple(0,0,0));
 			assertIntVectorEquals(0, 0, 0, vector2);
 		}
 
@@ -3182,8 +3189,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void int_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D vector3 = createVector(0,0, 0);
-			vector3.normalize(createVector(-1,1,0));
+			Vector3D vector3 = createTuple(0,0, 0);
+			vector3.normalize(createTuple(-1,1,0));
 			assertIntVectorEquals(-1, 1, 0, vector3);
 		}
 
@@ -3193,8 +3200,8 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void int_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D vector4 = createVector(0,0, 0);
-			vector4.normalize(createVector(0,-5,0));
+			Vector3D vector4 = createTuple(0,0, 0);
+			vector4.normalize(createTuple(0,-5,0));
 			assertIntVectorEquals(0, -1, 0, vector4);
 		}
 
@@ -3206,7 +3213,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		
 		@BeforeEach
 		public void setUp() {
-			assumeMutable(createVector(1, 2, 0));
+			assumeMutable(createTuple(1, 2, 0));
 		}
 
 		@DisplayName("With double coords #1")
@@ -3215,7 +3222,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			Vector3D vector = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
+			Vector3D vector = createTuple(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
 			Vector3D oldVector = (Vector3D) vector.clone();
 			
 			double length = oldVector.getLength();
@@ -3244,7 +3251,7 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 		public void setLength_ifi(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			Vector3D vector = createVector(0, 2, 0);
+			Vector3D vector = createTuple(0, 2, 0);
 			
 			int newLength = 5;
 			
@@ -3266,10 +3273,10 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vector = createVector(0, 0, 0);
-			this.vector2 = createVector(-1, 0, 0);
-			this.vector3 = createVector(1.2, 1.2, 0);
-			this.vector4 = createVector(2.0, 1.5, 0);
+			this.vector = createTuple(0, 0, 0);
+			this.vector2 = createTuple(-1, 0, 0);
+			this.vector3 = createTuple(1.2, 1.2, 0);
+			this.vector4 = createTuple(2.0, 1.5, 0);
 			assumeMutable(this.vector);
 		}
 
@@ -3325,10 +3332,10 @@ public abstract class AbstractVector3DTestCase<V extends Vector3D<? super V, ? s
 
 		@BeforeEach
 		public void setUp() {
-			this.vect = createVector(0, 0, 0);
-			this.vect2 = createVector(-1, 0, 0);
-			this.vector = createVector(-1.2, -1.2, 0);
-			this.vector2 = createVector(-2.0, -1.5, 0);
+			this.vect = createTuple(0, 0, 0);
+			this.vect2 = createTuple(-1, 0, 0);
+			this.vector = createTuple(-1.2, -1.2, 0);
+			this.vector2 = createTuple(-2.0, -1.5, 0);
 			assumeMutable(this.vector);
 		}
 

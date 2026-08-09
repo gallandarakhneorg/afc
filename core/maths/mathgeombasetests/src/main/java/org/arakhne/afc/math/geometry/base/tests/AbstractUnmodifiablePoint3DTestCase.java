@@ -38,7 +38,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? super P, ? super V, ? super Q>,
 			V extends Vector3D<? super V, ? super P, ? super Q>,
 			Q extends Quaternion<? super P, ? super V, ? super Q>>
-               extends AbstractPoint3DTestCase<P, V, Q, Point3D> {
+		extends AbstractPoint3DTestCase<P, V, Q> {
 
 	@DisplayName("add(Point3D,Vector3D)")
 	@Nested
@@ -55,7 +55,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void double_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().add(createPoint(1,2,3), createVector(4,5,6)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().add(createTuple(1,2,3), createVector(4,5,6)));
 		}
 		
 		@DisplayName("With int coords")
@@ -64,7 +64,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().add(createPoint(1,2,3), createVector(4,5,6)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().add(createTuple(1,2,3), createVector(4,5,6)));
 		}
 
 	}
@@ -84,7 +84,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void double_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().add(createVector(1,2,3), createPoint(4,5,6)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().add(createVector(1,2,3), createTuple(4,5,6)));
 		}
 		
 		@DisplayName("With int coords")
@@ -93,7 +93,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().add(createVector(1,2,3), createPoint(4,5,6)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().add(createVector(1,2,3), createTuple(4,5,6)));
 		}
 
 	}
@@ -142,7 +142,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void double_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1., createVector(1,2,3), createPoint(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1., createVector(1,2,3), createTuple(1,2,3)));
 		}
 		
 		@DisplayName("With int coords")
@@ -151,7 +151,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1., createVector(1,2,3), createPoint(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1., createVector(1,2,3), createTuple(1,2,3)));
 		}
 
 	}
@@ -171,7 +171,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void double_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1, createVector(1,2,3), createPoint(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1, createVector(1,2,3), createTuple(1,2,3)));
 		}
 		
 		@DisplayName("With int coords")
@@ -180,7 +180,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1, createVector(1,2,3), createPoint(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1, createVector(1,2,3), createTuple(1,2,3)));
 		}
 
 	}
@@ -200,7 +200,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void double_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1, createPoint(1,2,3), createVector(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1, createTuple(1,2,3), createVector(1,2,3)));
 		}
 		
 		@DisplayName("With int coords")
@@ -209,7 +209,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1, createPoint(1,2,3), createVector(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1, createTuple(1,2,3), createVector(1,2,3)));
 		}
 
 	}
@@ -229,7 +229,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void double_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1., createPoint(1,2,3), createVector(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1., createTuple(1,2,3), createVector(1,2,3)));
 		}
 		
 		@DisplayName("With int coords")
@@ -238,7 +238,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1., createPoint(1,2,3), createVector(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().scaleAdd(1., createTuple(1,2,3), createVector(1,2,3)));
 		}
 
 	}
@@ -316,7 +316,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void double_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeFalse(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().sub(createPoint(1,2,3), createVector(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().sub(createTuple(1,2,3), createVector(1,2,3)));
 		}
 		
 		@DisplayName("With int coords")
@@ -325,7 +325,7 @@ public abstract class AbstractUnmodifiablePoint3DTestCase<P extends Point3D<? su
 		public final void int_1(CoordinateSystem2D cs) {
 			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assumeTrue(isIntCoordinates());
-			assertThrows(UnsupportedOperationException.class, () -> getT().sub(createPoint(1,2,3), createVector(1,2,3)));
+			assertThrows(UnsupportedOperationException.class, () -> getT().sub(createTuple(1,2,3), createVector(1,2,3)));
 		}
 
 	}

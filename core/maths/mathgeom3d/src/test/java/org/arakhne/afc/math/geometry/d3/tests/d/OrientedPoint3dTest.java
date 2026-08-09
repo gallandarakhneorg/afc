@@ -35,7 +35,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
 @DisplayName("OrientedPoint3d")
-public class OrientedPoint3dTest extends AbstractOrientedPoint3DTestCase<OrientedPoint3d, Vector3d, Quaternion4d, OrientedPoint3d> {
+public class OrientedPoint3dTest extends AbstractOrientedPoint3DTestCase<OrientedPoint3d, Vector3d, Quaternion4d> {
 
 	@Override
 	public boolean isIntCoordinates() {
@@ -45,11 +45,6 @@ public class OrientedPoint3dTest extends AbstractOrientedPoint3DTestCase<Oriente
 	@Override
 	public Vector3d createVector(double x, double y, double z) {
 		return new Vector3d(x, y, z);
-	}
-
-	@Override
-	public OrientedPoint3d createPoint(double x, double y, double z) {
-		return new OrientedPoint3d(x, y, z);
 	}
 
 	@Override

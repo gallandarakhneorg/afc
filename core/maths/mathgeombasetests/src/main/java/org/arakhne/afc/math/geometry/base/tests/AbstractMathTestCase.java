@@ -676,7 +676,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @return the random point.
 	 * @since 17.0
 	 */
-	public Point2D randomPoint2d() {
+	public static Point2D randomPoint2d() {
 		return new InnerComputationPoint2D(
 				getRandom().nextDouble() * 1000 - 500,
 				getRandom().nextDouble() * 1000 - 500);
@@ -687,7 +687,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @return the random vector.
 	 * @since 17.0
 	 */
-	public Vector2D randomVector2d() {
+	public static Vector2D randomVector2d() {
 		return new InnerComputationVector2D(
 				getRandom().nextDouble() * 1000 - 500,
 				getRandom().nextDouble() * 1000 - 500);
@@ -698,7 +698,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @return the random point.
 	 * @since 17.0
 	 */
-	public Point3D randomPoint3d() {
+	public static Point3D randomPoint3d() {
 		return new InnerComputationPoint3D(
 		        getRandom().nextDouble() * 1000 - 500,
 		        getRandom().nextDouble() * 1000 - 500,
@@ -709,7 +709,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 *
 	 * @return the random vector.
 	 */
-	public Vector3D randomVector3d() {
+	public static Vector3D randomVector3d() {
 	    return new InnerComputationVector3D(
                 getRandom().nextDouble() * 1000 - 500,
                 getRandom().nextDouble() * 1000 - 500,
@@ -721,7 +721,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @return the random matrix.
 	 * @since 17.0
 	 */
-	public Matrix2d randomMatrix2d() {
+	public static Matrix2d randomMatrix2d() {
 		return new Matrix2d(
 				getRandom().nextDouble() * 1000 - 500,
 				getRandom().nextDouble() * 1000 - 500,
@@ -735,7 +735,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @return the random matrix.
 	 * @since 17.0
 	 */
-	public Matrix3d randomMatrix3d() {
+	public static Matrix3d randomMatrix3d() {
 		return new Matrix3d(
 				getRandom().nextDouble() * 1000 - 500,
 				getRandom().nextDouble() * 1000 - 500,
@@ -754,7 +754,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @return the random matrix.
 	 * @since 17.0
 	 */
-	public Matrix4d randomMatrix4d() {
+	public static Matrix4d randomMatrix4d() {
 		return new Matrix4d(
 				getRandom().nextDouble() * 1000 - 500,
 				getRandom().nextDouble() * 1000 - 500,

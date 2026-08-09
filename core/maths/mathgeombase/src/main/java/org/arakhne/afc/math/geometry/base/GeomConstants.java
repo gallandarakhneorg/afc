@@ -96,6 +96,13 @@ public final class GeomConstants {
 	 */
 	public static final double COLINEAR_LINE_EPSILON = 1e-10;
 
+	/**
+	 * Number precision for testing 3D distances.
+	 *
+	 * @since 18.0
+	 */
+	public static final double DISTANCE_EPSILON = 1e-5;
+
 	private GeomConstants() {
 		//
 	}

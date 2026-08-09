@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d3.tests.afp;
 
+import static org.arakhne.afc.math.geometry.base.GeomConstants.DISTANCE_EPSILON;
 import static org.arakhne.afc.math.geometry.base.GeomConstants.SPLINE_APPROXIMATION_RATIO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -58,7 +59,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 @SuppressWarnings("all")
 public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B>, B extends AlignedBox3afp<?, ?, ?, ?, ?, B>>
-		extends AbstractShape3dTestCase<T, B> {
+extends AbstractShape3dTestCase<T, B> {
 
 	@Override
 	protected T createShape() {
@@ -74,6 +75,36 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		//	t,0,1)
 		path.curveTo(5, -1, 3, 6, 5, 5, 7, -5, 2);
 		return path;
+	}
+
+	private static Stream<Arguments> proposeArguments7Points() {
+		final List<Arguments> args = new ArrayList<>();
+		for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
+			for (int i = 0; i < 100; ++i) {
+				Point3D p1 = randomPoint3d();
+				Point3D p2 = randomPoint3d();
+				Point3D p3 = randomPoint3d();
+				Point3D p4 = randomPoint3d();
+				Point3D p5 = randomPoint3d();
+				Point3D p6 = randomPoint3d();
+				Point3D p7 = randomPoint3d();
+				args.add(Arguments.of(cs, p1, p2, p3, p4, p5, p6, p7));
+			}
+		}
+		return args.stream();
+	}
+
+	private static Stream<Arguments> proposeArguments3Coords() {
+		final List<Arguments> args = new ArrayList<>();
+		for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
+			for (int i = 0; i < 100; ++i) {
+				double dx = getRandom().nextDouble() * 20.;
+				double dy = getRandom().nextDouble() * 20.;
+				double dz = getRandom().nextDouble() * 20.;
+				args.add(Arguments.of(cs, dx, dy, dz));
+			}
+		}
+		return args.stream();
 	}
 
 	@DisplayName("getType")
@@ -102,7 +133,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		public void setUp() {
 			this.box = createAlignedBox(0, 0, 0, 0, 0, 0);
 		}
-		
+
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -248,7 +279,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("calculatesDrawableElementBoundingBox")
 	@Nested
 	public class CalculatesDrawableElementBoundingBox {
-		
+
 		private B box;
 
 		@BeforeEach
@@ -1183,7 +1214,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("findsClosestPointToPoint(PathIterator3afp,double,double,double,Point3D) close path")
 	@Nested
 	public class FindsClosestPointToPoint {
-		
+
 		private Point3D result;
 
 		@BeforeEach
@@ -1505,7 +1536,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			this.result1 = createPoint(Double.NaN, Double.NaN, Double.NaN);;
 			this.result2 = createPoint(Double.NaN, Double.NaN, Double.NaN);;
 		}
-		
+
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1518,7 +1549,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(0, 0, 0), result1);
 			assertEpsilonEquals(createPoint(-1.4461538462, 1.4153846154, 0.4615384615), result2);
 		}
-		
+
 		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1531,7 +1562,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(0, 0, 0), result1);
 			assertEpsilonEquals(createPoint(-2, 1, 5), result2);
 		}
-		
+
 		@DisplayName("#3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1543,7 +1574,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(0.6328774470367391, 0.31643872351836955, -3.1643872351836952), result1);
 			assertEpsilonEquals(createPoint(-0.5872888174, 2.059533387, -3.23411102172), result2);
 		}
-		
+
 		@DisplayName("#4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1555,7 +1586,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(0.0380952380952381, 0.01904761904761905, -0.190476190476190), result1);
 			assertEpsilonEquals(createPoint(1, 0, 0), result2);
 		}
-		
+
 		@DisplayName("#5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1567,7 +1598,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(5.75, 1.078125, 3.3125), result1);
 			assertEpsilonEquals(createPoint(2.9701152913, 2.1890169903, 6.09450849515), result2);
 		}
-		
+
 		@DisplayName("#6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1579,7 +1610,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(1.202170841513377, 0.47065261978031625, -4.34131435506932), result1);
 			assertEpsilonEquals(createPoint(1.36368752711, 0.404097252349, -4.393854121), result2);
 		}
-		
+
 		@DisplayName("#7")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1591,7 +1622,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(0.05714285714285714, 0.02857142857142857, -0.2857142857142857), result1);
 			assertEpsilonEquals(createPoint(1, 1, 0), result2);
 		}
-		
+
 		@DisplayName("#8")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1603,7 +1634,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(5.53286881, 1.2138319933, 3.022991748), result1);
 			assertEpsilonEquals(createPoint(2.58030691858, 2.58030691858, 5.8779482881), result2);
 		}
-		
+
 		@DisplayName("#9")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1615,7 +1646,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(1, .5, -5), result1);
 			assertEpsilonEquals(createPoint(1, 1, -5), result2);
 		}
-		
+
 		@DisplayName("#10")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1627,7 +1658,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(4.840444885643851, 1.4436409922956546, 1.4300824432249362), result1);
 			assertEpsilonEquals(createPoint(4.170049959369438, 1.67149994195634, 1.67149994195634), result2);
 		}
-		
+
 		@DisplayName("#11")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1639,7 +1670,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(5.75, 1.078125, 3.3125), result1);
 			assertEpsilonEquals(createPoint(3.86871408045977, 1.2410201149425286, 5.6205100574712645), result2);
 		}
-		
+
 		@DisplayName("#12")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1651,7 +1682,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(4.154833414196007, 2.4774372270884744, -1.2548641941817131), result1);
 			assertEpsilonEquals(createPoint(4.666435034231865, 2.3806214774740937, -1.4290677837888595), result2);
 		}
-		
+
 		@DisplayName("#13")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1663,7 +1694,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(5.489624176405976, 1.240859889746265, 2.965332235207968), result1);
 			assertEpsilonEquals(createPoint(4.424105585054724, 1.32638646564068, 3.8045617611719145), result2);
 		}
-		
+
 		@DisplayName("#14")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1675,7 +1706,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(createPoint(5.75, 1.078125, 3.3125), result1);
 			assertEpsilonEquals(createPoint(4.141245860927152, 0.8863824503311264, 6.745136589403973), result2);
 		}
-		
+
 		@DisplayName("#15")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1692,7 +1723,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("findsFarthestPointToPoint(PathIterator3afp,double,double,double,Point3D) close path")
 	@Nested
 	public class FindsFarthestPointToPoint {
-		
+
 		private Point3D result;
 
 		@BeforeEach
@@ -1990,7 +2021,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("calculatesLength")
 	@Nested
 	public class CalculatesLength {
-		
+
 		@DisplayName("Open path")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2015,7 +2046,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("add")
 	@Nested
 	public class Add {
-		
+
 		@DisplayName("(Iterator) Open path")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2027,11 +2058,11 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			p2.lineTo(0, 8, 7);
 			p2.lineTo(5, -3, 8);
 			p2.closePath();
-	
+
 			Iterator<? extends PathElement3afp> iterator = p2.getPathIterator();
 			iterator.next();
 			getS().add(iterator);
-	
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
@@ -2043,7 +2074,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.CLOSE, 0, 0, 0);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(Iterator) close-after path")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2055,14 +2086,14 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			p2.lineTo(0, 8, 7);
 			p2.lineTo(5, -3, 8);
 			p2.closePath();
-	
+
 			Iterator<? extends PathElement3afp> iterator = p2.getPathIterator();
 			iterator.next();
-	
+
 			getS().add(iterator);
-	
+
 			getS().closePath();
-	
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
@@ -2074,26 +2105,26 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.CLOSE, 0, 0, 0);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(Iterator) close-before path")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void addIterator_closeBefore(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-	
+
 			Path3afp<?, ?, ?, ?, ?, B> p2 = createPath();
 			p2.moveTo(7, -5, 2);
 			p2.lineTo(4, 6, 18);
 			p2.lineTo(0, 8, 7);
 			p2.lineTo(5, -3, 8);
 			p2.closePath();
-	
+
 			Iterator<? extends PathElement3afp> iterator = p2.getPathIterator();
 			iterator.next();
-	
+
 			getS().add(iterator);
-	
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
@@ -2111,7 +2142,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("curveTo")
 	@Nested
 	public class CurveTo {
-		
+
 		@DisplayName("(x,y,z, x,y,z, x,y,z) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2122,7 +2153,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 				tmpShape.curveTo(15, 145, 0, 50, 20, 0, 0, 0, 0);
 			});
 		}
-		
+
 		@DisplayName("(x,y,z, x,y,z, x,y,z) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2137,7 +2168,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.CURVE_TO, 123.456, 456.789, 0, 789.123, 159.753, -18, 456.852, 963.789, 24);
 			assertNoElement(pi);
 		}
-		
+
 		@DisplayName("(Point3D,Point3D,Point3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2148,7 +2179,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 				tmpShape.curveTo(createPoint(15, 145, 0), createPoint(50, 20, 0), createPoint(0, 0, 0));
 			});
 		}
-	
+
 		@DisplayName("(Point3D,Point3D,Point3D) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2168,7 +2199,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("getCoordAt")
 	@Nested
 	public class GetCoordAt {
-		
+
 		@DisplayName("(int) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2337,11 +2368,11 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertTrue(getS().getCoordAt(20)==2);
 		}
 	}
-	
+
 	@DisplayName("getPointAt")
 	@Nested
 	public class GetPointAt {
-		
+
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2486,7 +2517,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("size")
 	@Nested
 	public class Size {
-		
+
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2499,7 +2530,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("getPathElementCount")
 	@Nested
 	public class GetPathElementCount {
-		
+
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2512,7 +2543,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@DisplayName("getPathElementTypeAt")
 	@Nested
 	public class GetPathElementTypeAt {
-		
+
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2625,14 +2656,14 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().toBoundingBox(box);
 			assertEpsilonEquals(0, box.getMinX());
 			assertEpsilonEquals(7, box.getMaxX());
-	
+
 			assertEpsilonEquals(-5, box.getMinY());
 			assertEpsilonEquals(3, box.getMaxY());
-	
+
 			assertEpsilonEquals(-5, box.getMinZ());
 			assertEpsilonEquals(3.421875, box.getMaxZ());
 		}
-	
+
 		@DisplayName("() #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2641,10 +2672,10 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			B box = getS().toBoundingBox();
 			assertEpsilonEquals(0, box.getMinX());
 			assertEpsilonEquals(7, box.getMaxX());
-	
+
 			assertEpsilonEquals(-5, box.getMinY());
 			assertEpsilonEquals(3, box.getMaxY());
-	
+
 			assertEpsilonEquals(-5, box.getMinZ());
 			assertEpsilonEquals(3.421875, box.getMaxZ());
 		}
@@ -2807,7 +2838,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.LINE_TO, 7.0, -5.0, 2.0);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(double) close path #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2840,7 +2871,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.CLOSE, 0., 0., 0.);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(Transform3D, double) no-transform #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2870,7 +2901,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.LINE_TO, 7.0, -5.0, 2.0);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(Transform3D,double) identity-transform #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2900,7 +2931,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.LINE_TO, 7.0, -5.0, 2.0);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(Transform3D,double) translation #3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2974,7 +3005,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 				tmpShape.lineTo(15, 145, 0);
 			});
 		}
-	
+
 		@DisplayName("(double,double,double) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2989,7 +3020,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.LINE_TO, 123.456, 456.789, 0);
 			assertNoElement(pi);	
 		}
-	
+
 		@DisplayName("(Point3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3000,7 +3031,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 				tmpShape.lineTo(createPoint(15, 145, 0));
 			});
 		}
-		
+
 		@DisplayName("(Point3D) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3035,7 +3066,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.MOVE_TO, 123.456, 456.789, 0);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(Point3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3066,7 +3097,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 				tmpShape.quadTo(15, 145, 0, 50, 20, 0);
 			});
 		}
-	
+
 		@DisplayName("(double,double,double,double,double,double) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3081,7 +3112,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.QUAD_TO, 123.456, 456.789, 0, 789.123, 159.753, 62);
 			assertNoElement(pi);
 		}
-		
+
 		@DisplayName("(Point3D,Point3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3092,7 +3123,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 				tmpShape.quadTo(createPoint(15, 145, 0), createPoint(50, 20, 0));
 			});
 		}
-	
+
 		@DisplayName("(Point3D,Point3D) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3125,7 +3156,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.QUAD_TO, 3, 0, 2, 4, 3, -2);
 			assertNoElement(pi);
 		}
-		
+
 		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3149,9 +3180,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@EnumSource(CoordinateSystem3D.class)
 		public final void doubledoubledouble_outside(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		
+
 			assertFalse(getS().remove(1005, -1, 0));
-					
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
@@ -3159,45 +3190,45 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.CURVE_TO, 5, -1, 3, 6, 5, 5, 7, -5, 2);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(double,double,double) w/ lineTo")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void doubledoubledouble_lineTo(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		
+
 			assertTrue(getS().remove(1, .5, -5));
-					
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.QUAD_TO, 3, 0, 2, 4, 3, -2);
 			assertElement(pi, PathElementType.CURVE_TO, 5, -1, 3, 6, 5, 5, 7, -5, 2);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(double,double,double) w/ moveTo")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void doubledoubledouble_moveTo(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			
+
 			assertTrue(getS().remove(0., 0., 0.));
-					
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
 			assertElement(pi, PathElementType.QUAD_TO, 3, 0, 2, 4, 3, -2);
 			assertElement(pi, PathElementType.CURVE_TO, 5, -1, 3, 6, 5, 5, 7, -5, 2);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(double,double,double) w/ quadTo - control")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void doubledoubledouble_quadTo_ctrl(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			
+
 			assertTrue(getS().remove(3, 0, 2));
-					
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
@@ -3205,30 +3236,30 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.CURVE_TO, 5, -1, 3, 6, 5, 5, 7, -5, 2);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(double,double,double) w/ quadTo - end")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void doubledoubledouble_quadTo_end(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			
+
 			assertTrue(getS().remove(4, 3, -2));
-					
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
 			assertElement(pi, PathElementType.CURVE_TO, 5, -1, 3, 6, 5, 5, 7, -5, 2);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(double,double,double) w/ curveTo - control1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void doubledoubledouble_curveTo_ctrl1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			
+
 			assertTrue(getS().remove(5, -1, 3));
-					
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
@@ -3236,15 +3267,15 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.QUAD_TO, 6, 5, 5, 7, -5, 2);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(double,double,double) w/ curveTo - control2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void doubledoubledouble_curveTo_ctrl2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			
+
 			assertTrue(getS().remove(6, 5, 5));
-					
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
@@ -3252,15 +3283,15 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.QUAD_TO, 5, -1, 3, 7, -5, 2);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(double,double,double) w/ curveTo - end")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void doubledoubledouble_curveTo_end(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			
+
 			assertTrue(getS().remove(7, -5, 2));
-					
+
 			PathIterator3afp pi = getS().getPathIterator();
 			assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 			assertElement(pi, PathElementType.LINE_TO, 1, .5, -5);
@@ -3288,7 +3319,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertElement(pi, PathElementType.CURVE_TO, 5, -1, 3, 6, 5, 5, 2, 2, 4);
 			assertNoElement(pi);
 		}
-	
+
 		@DisplayName("(Point3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3310,26 +3341,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@Nested
 	public class Transform {
 
-		private Stream<Arguments> proposeArguments() {
-			final List<Arguments> args = new ArrayList<>();
-			for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
-				for (int i = 0; i < 100; ++i) {
-					Point3D p1 = randomPoint3d();
-					Point3D p2 = randomPoint3d();
-					Point3D p3 = randomPoint3d();
-					Point3D p4 = randomPoint3d();
-					Point3D p5 = randomPoint3d();
-					Point3D p6 = randomPoint3d();
-					Point3D p7 = randomPoint3d();
-					args.add(Arguments.of(cs, p1, p2, p3, p4, p5, p6, p7));
-				}
-			}
-			return args.stream();
-		}
-
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase#proposeArguments7Points")
 		public final void test_1(CoordinateSystem3D cs, Point3D p1, Point3D p2, Point3D p3, Point3D p4,
 				Point3D p5, Point3D p6, Point3D p7) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
@@ -3339,9 +3353,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			path.quadTo(p3.getX(), p3.getY(), p3.getZ(), p4.getX(),p4.getY(), p4.getZ());
 			path.curveTo(p5.getX(), p5.getY(), p5.getZ(), p6.getX(), p6.getY(), p6.getZ(), p7.getX(), p7.getY(), p7.getZ());
 			path.closePath();
-			
+
 			Transform3D trans = new Transform3D(randomMatrix4d());
-			
+
 			trans.transform(p1);
 			trans.transform(p2);
 			trans.transform(p3);
@@ -3349,16 +3363,16 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			trans.transform(p5);
 			trans.transform(p6);
 			trans.transform(p7);
-			
+
 			Path3afp pathTrans = createPath();
 			pathTrans.moveTo(p1.getX(), p1.getY(), p1.getZ());
 			pathTrans.lineTo(p2.getX(), p2.getY(), p2.getZ());
 			pathTrans.quadTo(p3.getX(), p3.getY(), p3.getZ(), p4.getX(), p4.getY(), p4.getZ());
 			pathTrans.curveTo(p5.getX(), p5.getY(), p5.getZ(), p6.getX(), p6.getY(), p6.getZ(), p7.getX(), p7.getY(), p7.getZ());
 			pathTrans.closePath();
-			
+
 			path.transform(trans);
-			
+
 			assertNotSame(path, pathTrans);
 			assertTrue(path.equalsToPathIterator(pathTrans.getPathIterator()));
 		}
@@ -3368,26 +3382,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@Nested
 	public class CreateTransformedShape {
 
-		private Stream<Arguments> proposeArguments() {
-			final List<Arguments> args = new ArrayList<>();
-			for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
-				for (int i = 0; i < 100; ++i) {
-					Point3D p1 = randomPoint3d();
-					Point3D p2 = randomPoint3d();
-					Point3D p3 = randomPoint3d();
-					Point3D p4 = randomPoint3d();
-					Point3D p5 = randomPoint3d();
-					Point3D p6 = randomPoint3d();
-					Point3D p7 = randomPoint3d();
-					args.add(Arguments.of(cs, p1, p2, p3, p4, p5, p6, p7));
-				}
-			}
-			return args.stream();
-		}
-
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase#proposeArguments7Points()")
 		public final void test_1(CoordinateSystem3D cs, Point3D p1, Point3D p2, Point3D p3, Point3D p4,
 				Point3D p5, Point3D p6, Point3D p7) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
@@ -3397,9 +3394,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			path.quadTo(p3.getX(), p3.getY(), p3.getZ(), p4.getX(),p4.getY(), p4.getZ());
 			path.curveTo(p5.getX(), p5.getY(), p5.getZ(), p6.getX(), p6.getY(), p6.getZ(), p7.getX(), p7.getY(), p7.getZ());
 			path.closePath();
-			
+
 			Transform3D trans = new Transform3D(randomMatrix4d());
-			
+
 			trans.transform(p1);
 			trans.transform(p2);
 			trans.transform(p3);
@@ -3407,16 +3404,16 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			trans.transform(p5);
 			trans.transform(p6);
 			trans.transform(p7);
-			
+
 			Path3afp expectedTrans = createPath();
 			expectedTrans.moveTo(p1.getX(), p1.getY(), p1.getZ());
 			expectedTrans.lineTo(p2.getX(), p2.getY(), p2.getZ());
 			expectedTrans.quadTo(p3.getX(), p3.getY(), p3.getZ(), p4.getX(), p4.getY(), p4.getZ());
 			expectedTrans.curveTo(p5.getX(), p5.getY(), p5.getZ(), p6.getX(), p6.getY(), p6.getZ(), p7.getX(), p7.getY(), p7.getZ());
 			expectedTrans.closePath();
-	
+
 			Path3afp pathTrans = path.createTransformedShape(trans);
-			
+
 			assertNotSame(path, pathTrans);
 			assertTrue(expectedTrans.equalsToPathIterator(pathTrans.getPathIterator()));
 		}
@@ -5449,7 +5446,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		public void setUp() {
 			this.result = new InnerComputationPoint3D();
 		}
-		
+
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5459,7 +5456,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					-2, 1, 0, -1, 2, 1, result);
 			assertEpsilonEquals(createPoint(0, 0, 0), result);
 		}
-		
+
 		@DisplayName("#2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5469,7 +5466,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					-2, 1, 5, -1, 2, 6, result);
 			assertEpsilonEquals(createPoint(0, 0, 0), result);
 		}
-		
+
 		@DisplayName("#3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5479,7 +5476,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					-2, 1, -5, -1, 2, -4, result);
 			assertEpsilonEquals(createPoint(0.74285714286,0.371428571429,-3.714285714286), result);
 		}
-		
+
 		@DisplayName("#4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5489,7 +5486,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, 0, 0, 2, 1, 1, result);
 			assertEpsilonEquals(createPoint(0.0384615384615,0.0192307692308,-0.192307692308), result);
 		}
-		
+
 		@DisplayName("#5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5499,7 +5496,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, 0, 5, 2, 1, 6, result);
 			assertEpsilonEquals(createPoint(5.375, 1.3125, 2.8125), result);
 		}
-		
+
 		@DisplayName("#6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5509,7 +5506,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, 0, -5, 2, 1, -4, result);
 			assertEpsilonEquals(createPoint(1.0,0.5,-5.0), result);
 		}
-		
+
 		@DisplayName("#7")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5519,7 +5516,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, 1, 0, 2, 2, 1, result);
 			assertEpsilonEquals(createPoint(2.75,0.875,-0.75), result);
 		}
-		
+
 		@DisplayName("#8")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5529,7 +5526,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, 1, 5, 2, 2, 6, result);
 			assertEpsilonEquals(createPoint(5.375, 1.3125, 2.8125), result);
 		}
-		
+
 		@DisplayName("#9")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5539,7 +5536,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, 1, -5, 2, 2, -4, result);
 			assertEpsilonEquals(createPoint(1, .5, -5), result);
 		}
-		
+
 		@DisplayName("#10")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5549,7 +5546,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					3, 0, 0, 4, 1, 1, result);
 			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
 		}
-		
+
 		@DisplayName("#11")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5559,7 +5556,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					3, 0, 5, 4, 1, 6, result);
 			assertEpsilonEquals(createPoint(5.75, 1.078125, 3.3125), result);
 		}
-		
+
 		@DisplayName("#12")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5569,7 +5566,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					3, 0, -5, 4, 1, -4, result);
 			assertEpsilonEquals(createPoint(1.45269664935,0.43428597026,-3.5250851102), result);
 		}
-		
+
 		@DisplayName("#13")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5579,7 +5576,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, -4, 0, 2, -3, 1, result);
 			assertEpsilonEquals(createPoint(0, 0, 0), result);
 		}
-		
+
 		@DisplayName("#14")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5589,7 +5586,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, -4, 5, 2, -3, 6, result);
 			assertEpsilonEquals(createPoint(6.58707187157,-1.752498609,2.94485775418), result);
 		}
-		
+
 		@DisplayName("#15")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5599,7 +5596,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					1, -4, -5, 2, -3, -4, result);
 			assertEpsilonEquals(createPoint(0.74285714286,0.371428571429,-3.71428571429), result);
 		}
-		
+
 		@DisplayName("#16")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5619,7 +5616,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					-2, 1, 0, 1, 3.1, .1, result);
 			assertEpsilonEquals(createPoint(0.019801980198,0.009900990099,-0.09900990099), result);
 		}
-		
+
 		@DisplayName("#18")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5629,7 +5626,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					-2, 1, 0, 3, 1.1, .1, result);
 			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
 		}
-		
+
 		@DisplayName("#19")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5639,7 +5636,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					-2, 1, 0, 5, 1.1, .1, result);
 			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
 		}
-		
+
 		@DisplayName("#20")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5649,7 +5646,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					-2, 1, 0, 7, 1.1, .1, result);
 			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
 		}
-		
+
 		@DisplayName("#21")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5659,7 +5656,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 					-2, 1, 0, 13, 1.1, .1, result);
 			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
 		}
-		
+
 		@DisplayName("#22")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6068,7 +6065,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		public void setUp() {
 			this.result = new InnerComputationPoint3D();
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6076,7 +6073,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(2., getS().getDistanceSquared(createAlignedBoxFromPoints(-2, 1, 0, -1, 2, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6084,7 +6081,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(27., getS().getDistanceSquared(createAlignedBoxFromPoints(-2, 1, 5, -1, 2, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6092,7 +6089,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(3.5142857143, getS().getDistanceSquared(createAlignedBoxFromPoints(-2, 1, -5, -1, 2, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6100,7 +6097,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.96153846154, getS().getDistanceSquared(createAlignedBoxFromPoints(1, 0, 0, 2, 1, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6108,7 +6105,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(16.2734375, getS().getDistanceSquared(createAlignedBoxFromPoints(1, 0, 5, 2, 1, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6116,7 +6113,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(1, 0, -5, 2, 1, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #7")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6124,7 +6121,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(1.140625, getS().getDistanceSquared(createAlignedBoxFromPoints(1, 1, 0, 2, 2, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #8")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6132,7 +6129,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(16.17578125, getS().getDistanceSquared(createAlignedBoxFromPoints(1, 1, 5, 2, 2, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #9")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6140,7 +6137,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.25, getS().getDistanceSquared(createAlignedBoxFromPoints(1, 1, -5, 2, 2, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #10")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6148,7 +6145,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.3577270508, getS().getDistanceSquared(createAlignedBoxFromPoints(3, 0, 0, 4, 1, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #11")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6156,7 +6153,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(5.91625977, getS().getDistanceSquared(createAlignedBoxFromPoints(3, 0, 5, 4, 1, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #12")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6164,7 +6161,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(2.6196918115, getS().getDistanceSquared(createAlignedBoxFromPoints(3, 0, -5, 4, 1, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #13")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6172,7 +6169,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(10.0, getS().getDistanceSquared(createAlignedBoxFromPoints(1, -4, 0, 2, -3, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #14")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6180,7 +6177,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(26.821097726, getS().getDistanceSquared(createAlignedBoxFromPoints(1, -4, 5, 2, -3, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #15")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6188,7 +6185,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(11.5142857143, getS().getDistanceSquared(createAlignedBoxFromPoints(1, -4, -5, 2, -3, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #16")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6204,7 +6201,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.9900990099, getS().getDistanceSquared(createAlignedBoxFromPoints(-2, 1, 0, 1, 3.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #18")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6212,7 +6209,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.331252441, getS().getDistanceSquared(createAlignedBoxFromPoints(-2, 1, 0, 3, 1.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #19")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6220,7 +6217,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.319289551, getS().getDistanceSquared(createAlignedBoxFromPoints(-2, 1, 0, 5, 1.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #20")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6228,7 +6225,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.319289551, getS().getDistanceSquared(createAlignedBoxFromPoints(-2, 1, 0, 7, 1.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #21")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6236,7 +6233,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.319289551, getS().getDistanceSquared(createAlignedBoxFromPoints(-2, 1, 0, 13, 1.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #22")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6768,7 +6765,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		public void setUp() {
 			this.result = new InnerComputationPoint3D();
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6776,7 +6773,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(1.414213562, getS().getDistance(createAlignedBoxFromPoints(-2, 1, 0, -1, 2, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6784,7 +6781,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(5.196152423, getS().getDistance(createAlignedBoxFromPoints(-2, 1, 5, -1, 2, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6792,7 +6789,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(1.87464282312, getS().getDistance(createAlignedBoxFromPoints(-2, 1, -5, -1, 2, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6800,7 +6797,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.98058067569, getS().getDistance(createAlignedBoxFromPoints(1, 0, 0, 2, 1, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6808,7 +6805,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(4.0340348908, getS().getDistance(createAlignedBoxFromPoints(1, 0, 5, 2, 1, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6816,7 +6813,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(1, 0, -5, 2, 1, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #7")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6824,7 +6821,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(1.06800046816, getS().getDistance(createAlignedBoxFromPoints(1, 1, 0, 2, 2, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #8")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6832,7 +6829,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(4.0219126358, getS().getDistance(createAlignedBoxFromPoints(1, 1, 5, 2, 2, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #9")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6840,7 +6837,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.5, getS().getDistance(createAlignedBoxFromPoints(1, 1, -5, 2, 2, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #10")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6848,7 +6845,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.59810287642, getS().getDistance(createAlignedBoxFromPoints(3, 0, 0, 4, 1, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #11")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6856,7 +6853,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(2.43233627725, getS().getDistance(createAlignedBoxFromPoints(3, 0, 5, 4, 1, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #12")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6864,7 +6861,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(1.61854620308, getS().getDistance(createAlignedBoxFromPoints(3, 0, -5, 4, 1, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #13")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6872,7 +6869,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(3.16227766017, getS().getDistance(createAlignedBoxFromPoints(1, -4, 0, 2, -3, 1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #14")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6880,7 +6877,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(5.178908932, getS().getDistance(createAlignedBoxFromPoints(1, -4, 5, 2, -3, 6)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #15")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6888,7 +6885,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(3.39327065149, getS().getDistance(createAlignedBoxFromPoints(1, -4, -5, 2, -3, -4)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #16")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6904,7 +6901,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.99503719021, getS().getDistance(createAlignedBoxFromPoints(-2, 1, 0, 1, 3.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #18")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6912,7 +6909,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.57554534262, getS().getDistance(createAlignedBoxFromPoints(-2, 1, 0, 3, 1.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #19")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6920,7 +6917,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.5650571217, getS().getDistance(createAlignedBoxFromPoints(-2, 1, 0, 5, 1.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #20")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6928,7 +6925,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.5650571217, getS().getDistance(createAlignedBoxFromPoints(-2, 1, 0, 7, 1.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #21")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6936,7 +6933,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(0.5650571217, getS().getDistance(createAlignedBoxFromPoints(-2, 1, 0, 13, 1.1, .1)));
 		}
-		
+
 		@DisplayName("(AlignedBox3afp) #22")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7789,22 +7786,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@Nested
 	public class Translate {
 
-		private Stream<Arguments> proposeArguments() {
-			final List<Arguments> args = new ArrayList<>();
-			for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
-				for (int i = 0; i < 100; ++i) {
-					double dx = getRandom().nextDouble() * 20.;
-					double dy = getRandom().nextDouble() * 20.;
-					double dz = getRandom().nextDouble() * 20.;
-					args.add(Arguments.of(cs, dx, dy, dz));
-				}
-			}
-			return args.stream();
-		}
-
 		@DisplayName("(double,double,double)")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase#proposeArguments3Coords")
 		public final void test_1(CoordinateSystem3D cs, Double dx, Double dy, Double dz) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp p2 = createPath();
@@ -7815,11 +7799,10 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().translate(dx, dy, dz);
 			assertTrue(getS().equals(p2));		
 		}
-	
+
 		@DisplayName("(Vector3D)")
 		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase#proposeArguments3Coords")
 		public final void test_2(CoordinateSystem3D cs, Double dx, Double dy, Double dz) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().translate(createVector(dx, dy, dz));
@@ -7903,7 +7886,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().closePath();
 			assertFalse(getS().intersects(createAlignedBox(-4, -0.5, 0, 2, 1, 0)));
 		}
-	
+
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7911,7 +7894,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(getS().intersects(createSphere(-2, -2, 0, 2)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7919,7 +7902,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(getS().intersects(createSphere(2, -2, 0, 2)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7927,7 +7910,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(getS().intersects(createSphere(2.5, -1.5, 0, 2)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7935,7 +7918,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(getS().intersects(createSphere(10, 0, 0, 2)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7943,7 +7926,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(getS().intersects(createSphere(4, 0, 0, 0.5)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7951,7 +7934,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(getS().intersects(createSphere(2.5, 1, 0, 0.5)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #7")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7960,7 +7943,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().closePath();
 			assertFalse(getS().intersects(createSphere(-2, -2, 0, 2)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #8")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7969,7 +7952,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().closePath();
 			assertTrue(getS().intersects(createSphere(2, -2, 0, 2)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #9")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7978,7 +7961,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().closePath();
 			assertTrue(getS().intersects(createSphere(2.5, -1.5, 0, 2)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #10")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7987,7 +7970,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().closePath();
 			assertFalse(getS().intersects(createSphere(10, 0, 0, 2)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #11")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7996,7 +7979,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().closePath();
 			assertTrue(getS().intersects(createSphere(4, 0, 0, 0.5)));
 		}
-		
+
 		@DisplayName("(Sphere3afp) #12")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -8059,7 +8042,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@EnumSource(CoordinateSystem3D.class)
 		public final void segment_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects(createSegment(5, 0, 2, 6, 2.5, 4)));
+			assertTrue(getS().intersects(createSegment(5, 0, 2, 5.803571429, 1.707589286, 3.517857143)));
 		}
 
 		@DisplayName("(Segment3afp) #8")
@@ -8162,7 +8145,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		public final void segment_21(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createSegment(5, 0, 2, 6, 2.5, 4)));
+			assertTrue(getS().intersects(createSegment(5, 0, 2, 5.803571429, 1.707589286, 3.517857143)));
 		}
 
 		@DisplayName("(Segment3afp) #22")
@@ -8238,8 +8221,10 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_4(CoordinateSystem3D cs) {
+			// FIX: crosses exactly through (0.8, 0.4, -4), the point at parameter s=0.8
+			// along the path's initial straight edge (0,0,0)-(1,.5,-5).
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects(createPolyline(5, 2, 0, 4, 1, 0)));
+			assertTrue(getS().intersects(createPolyline(.8, .4, -5, .8, .4, -3)));
 		}
 
 		@DisplayName("(Path3afp) #5")
@@ -8255,27 +8240,99 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_6(CoordinateSystem3D cs) {
+			// FIX: crosses exactly through (4.9, -3.5, 1.4), the point at parameter s=0.3
+			// along the closing edge (7,-5,2)-(0,0,0) added by closePath().
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createPolyline(1, -1, 0, 5, -3, 0)));
+			assertTrue(getS().intersects(createPolyline(4.9, -3.5, .4, 4.9, -3.5, 2.4)));
 		}
 
 		@DisplayName("(Path3afp) #7")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_7(CoordinateSystem3D cs) {
+			// FIX: crosses exactly through (2.8, -2, 0.8), the point at parameter s=0.6
+			// along the closing edge (7,-5,2)-(0,0,0).
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createPolyline(1, -1, 0, 4, 1, 0)));
+			assertTrue(getS().intersects(createPolyline(2.8, -2, -.2, 2.8, -2, 1.8)));
 		}
 
 		@DisplayName("(Path3afp) #8")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_8(CoordinateSystem3D cs) {
+			// FIX: crosses exactly through (0.7, -0.5, 0.2), the point at parameter s=0.9
+			// along the closing edge (7,-5,2)-(0,0,0).
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createPolyline(5, 2, 0, 4, 1, 0)));
+			assertTrue(getS().intersects(createPolyline(.7, -.5, -.8, .7, -.5, 1.2)));
+		}
+
+
+		@DisplayName("(Path3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_9(CoordinateSystem3D cs) {
+			// crosses the initial straight edge (open path)
+			// (0.5, 0.25, -3.5)-(0.5, 0.25, -1.5) passes exactly through (0.5, 0.25, -2.5),
+			// the midpoint of the path's straight edge (0,0,0)-(1,.5,-5).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createPolyline(.5, .25, -3.5, .5, .25, -1.5)));
+		}
+
+		@DisplayName("(Path3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_10(CoordinateSystem3D cs) {
+			// crosses the closing edge (closed path)
+			// After closePath(), the segment (7,-5,2)-(0,0,0) is added; this polyline
+			// passes exactly through its midpoint (3.5, -2.5, 1).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createPolyline(3.5, -2.5, 0, 3.5, -2.5, 2)));
+		}
+
+		@DisplayName("(Path3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_11(CoordinateSystem3D cs) {
+			// shares a path vertex (open path)
+			// The polyline starts exactly at the path's first point (0,0,0): touching at
+			// a shared endpoint must count as intersecting.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createPolyline(0, 0, 0, -5, -5, -5)));
+		}
+
+		@DisplayName("(Path3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_12(CoordinateSystem3D cs) {
+			// overlaps the initial straight edge exactly (open path)
+			// The query polyline IS the path's own first segment: trivially overlapping.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createPolyline(0, 0, 0, 1, .5, -5)));
+		}
+
+		@DisplayName("(Path3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_13(CoordinateSystem3D cs) {
+			// far away from the path (open path)
+			// The path's bounding box is roughly x:[0,7], y:[-5,5], z:[-5,5];
+			// this polyline is far outside it and must not intersect.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createPolyline(100, 100, 100, 200, 200, 200)));
+		}
+
+		@DisplayName("(Path3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_14(CoordinateSystem3D cs) {
+			// far away from the path (closed path)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertFalse(getS().intersects(createPolyline(100, 100, 100, 200, 200, 200)));
 		}
 
 		@DisplayName("(PathIterator3afp) #1")
@@ -8283,7 +8340,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@EnumSource(CoordinateSystem3D.class)
 		public final void pathiterator_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(getS().intersects(createPolyline(1, -1, 0, 4, -3, 0).getPathIterator()));
+			assertFalse(getS().intersects(createPolyline(1, -1, 0, 4, -3, 0).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
 		}
 
 		@DisplayName("(PathIterator3afp) #2")
@@ -8291,7 +8348,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@EnumSource(CoordinateSystem3D.class)
 		public final void pathiterator_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(getS().intersects(createPolyline(1, -1, 0, 5, -3, 0).getPathIterator()));
+			assertFalse(getS().intersects(createPolyline(1, -1, 0, 5, -3, 0).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
 		}
 
 		@DisplayName("(PathIterator3afp) #3")
@@ -8299,15 +8356,17 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@EnumSource(CoordinateSystem3D.class)
 		public final void pathiterator_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(getS().intersects(createPolyline(1, -1, 0, 4, 1, 0).getPathIterator()));
+			assertFalse(getS().intersects(createPolyline(1, -1, 0, 4, 1, 0).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
 		}
 
 		@DisplayName("(PathIterator3afp) #4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void pathiterator_4(CoordinateSystem3D cs) {
+			// FIX: crosses exactly through (0.8, 0.4, -4), the point at parameter s=0.8
+			// along the path's initial straight edge (0,0,0)-(1,.5,-5).
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects(createPolyline(5, 2, 0, 4, 1, 0).getPathIterator()));
+			assertTrue(getS().intersects(createPolyline(.8, .4, -5, .8, .4, -3).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
 		}
 
 		@DisplayName("(PathIterator3afp) #5")
@@ -8316,34 +8375,105 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		public final void pathiterator_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertFalse(getS().intersects(createPolyline(1, -1, 0, 4, -3, 0).getPathIterator()));
+			assertFalse(getS().intersects(createPolyline(1, -1, 0, 4, -3, 0).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
 		}
 
 		@DisplayName("(PathIterator3afp) #6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void pathiterator_6(CoordinateSystem3D cs) {
+			// FIX: crosses exactly through (4.9, -3.5, 1.4), the point at parameter s=0.3
+			// along the closing edge (7,-5,2)-(0,0,0) added by closePath().
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createPolyline(1, -1, 0, 5, -3, 0).getPathIterator()));
+			assertTrue(getS().intersects(createPolyline(4.9, -3.5, .4, 4.9, -3.5, 2.4).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
 		}
 
 		@DisplayName("(PathIterator3afp) #7")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void pathiterator_7(CoordinateSystem3D cs) {
+			// FIX: crosses exactly through (2.8, -2, 0.8), the point at parameter s=0.6
+			// along the closing edge (7,-5,2)-(0,0,0).
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createPolyline(1, -1, 0, 4, 1, 0).getPathIterator()));
+			assertTrue(getS().intersects(createPolyline(2.8, -2, -.2, 2.8, -2, 1.8).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
 		}
 
-		@DisplayName("(PathIterator3afp) #")
+		@DisplayName("(PathIterator3afp) #8")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void pathiterator_(CoordinateSystem3D cs) {
+		public final void pathiterator_8(CoordinateSystem3D cs) {
+			// FIX: crosses exactly through (0.7, -0.5, 0.2), the point at parameter s=0.9
+			// along the closing edge (7,-5,2)-(0,0,0).
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createPolyline(5, 2, 0, 4, 1, 0).getPathIterator()));
+			assertTrue(getS().intersects(createPolyline(.7, -.5, -.8, .7, -.5, 1.2).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
+		}
+
+		@DisplayName("(PathIterator3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_9(CoordinateSystem3D cs) {
+			// crosses the initial straight edge (open path)
+			// (0.5, 0.25, -3.5)-(0.5, 0.25, -1.5) passes exactly through (0.5, 0.25, -2.5),
+			// the midpoint of the path's straight edge (0,0,0)-(1,.5,-5).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createPolyline(.5, .25, -3.5, .5, .25, -1.5).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
+		}
+
+		@DisplayName("(PathIterator3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_10(CoordinateSystem3D cs) {
+			// crosses the closing edge (closed path)
+			// After closePath(), the segment (7,-5,2)-(0,0,0) is added; this polyline
+			// passes exactly through its midpoint (3.5, -2.5, 1).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createPolyline(3.5, -2.5, 0, 3.5, -2.5, 2).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
+		}
+
+		@DisplayName("(PathIterator3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_11(CoordinateSystem3D cs) {
+			// shares a path vertex (open path)
+			// The polyline starts exactly at the path's first point (0,0,0): touching at
+			// a shared endpoint must count as intersecting.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createPolyline(0, 0, 0, -5, -5, -5).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
+		}
+
+		@DisplayName("(PathIterator3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_12(CoordinateSystem3D cs) {
+			// overlaps the initial straight edge exactly (open path)
+			// The query polyline IS the path's own first segment: trivially overlapping.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createPolyline(0, 0, 0, 1, .5, -5).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
+		}
+
+		@DisplayName("(PathIterator3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_13(CoordinateSystem3D cs) {
+			// far away from the path (open path)
+			// The path's bounding box is roughly x:[0,7], y:[-5,5], z:[-5,5];
+			// this polyline is far outside it and must not intersect.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createPolyline(100, 100, 100, 200, 200, 200).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
+		}
+
+		@DisplayName("(PathIterator3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_14(CoordinateSystem3D cs) {
+			// far away from the path (closed path)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertFalse(getS().intersects(createPolyline(100, 100, 100, 200, 200, 200).getPathIterator(SPLINE_APPROXIMATION_RATIO)));
 		}
 
 		@DisplayName("(Shape3D) #1")
@@ -8363,6 +8493,245 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		}
 	}
 
+	@DisplayName("calculatesDistanceSquaredPathIteratorSegment")
+	@Nested
+	public class CalculatesDistanceSquaredPathIteratorSegment {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1.99047619048, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					1, -1, 0, 4, -3, 0));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1.99047619048, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					1, -1, 0, 5, -3, 0));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0.7828509991, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					1, -1, 0, 4, 1, 0));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0.064317376619, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					5, 2, 0, 4, 1, 0));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.153846153846, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					1, -1, 0, 4, -3, 0));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.153846153846, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					1, -1, 0, 5, -3, 0));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.111982082867, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					1, -1, 0, 4, 1, 0));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.064317376619, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					5, 2, 0, 4, 1, 0));
+		}
+	}
+
+	@DisplayName("calculatesDistanceSquaredPathIteratorPathIterator")
+	@Nested
+	public class CalculatesDistanceSquaredPathIteratorPathIterator {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1.99047619048, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(1, -1, 0, 4, -3, 0).getPathIterator()));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1.99047619048, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(1, -1, 0, 5, -3, 0).getPathIterator()));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0.7828509991, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(1, -1, 0, 4, 1, 0).getPathIterator()));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0.064317376619, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(5, 2, 0, 4, 1, 0).getPathIterator()));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.153846153846, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(1, -1, 0, 4, -3, 0).getPathIterator()));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.153846153846, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(1, -1, 0, 5, -3, 0).getPathIterator()));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.111982082867, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(1, -1, 0, 4, 1, 0).getPathIterator()));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.064317376619, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(5, 2, 0, 4, 1, 0).getPathIterator()));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			// Reversed polyline point order gives same distance.
+			// The squared distance between two curves must not depend on the direction
+			// in which the query polyline's points are listed.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1.99047619048, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					createPolyline(4, -3, 0, 1, -1, 0).getPathIterator()));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			// Symmetry of the distance function (open path).
+			// distance(A, B) must equal distance(B, A).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1.99047619048, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					createPolyline(1, -1, 0, 4, -3, 0).getPathIterator(),
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO)));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			// Symmetry of the distance function (closed path)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.153846153846, Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					createPolyline(1, -1, 0, 4, -3, 0).getPathIterator(),
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO)));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			// Null first path iterator
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(AssertionError.class, () ->
+			Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					null,
+					createPolyline(1, -1, 0, 4, -3, 0).getPathIterator()));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			// Null second path iterator
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(AssertionError.class, () ->
+			Path3afp.calculatesDistanceSquaredPathIteratorPathIterator(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					null));
+		}
+	}
+
 	@DisplayName("intersectsPathIteratorAlignedBox")
 	@Nested
 	public class IntersectsPathIteratorAlignedBox {
@@ -8374,7 +8743,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 0, -1, 2, 1));
+					-2, 1, 0, -1, 2, 1,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8384,7 +8754,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-.1, -.1, -.1, .1, .1, .1));
+					-.1, -.1, -.1, .1, .1, .1,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8395,7 +8766,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			// First segment: (0,0,0) -> (1,.5,-5). Midpoint is (0.5,0.25,-2.5)
 			assertTrue(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					.45, .20, -2.6, .55, .30, -2.4));
+					.45, .20, -2.6, .55, .30, -2.4,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8405,7 +8777,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					.9, .4, -5.1, 1.1, .6, -4.9));
+					.9, .4, -5.1, 1.1, .6, -4.9,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8415,7 +8788,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					3.9, 2.9, -2.1, 4.1, 3.1, -1.9));
+					3.9, 2.9, -2.1, 4.1, 3.1, -1.9,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8425,7 +8799,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					6.9, -5.1, 1.9, 7.1, -4.9, 2.1));
+					6.9, -5.1, 1.9, 7.1, -4.9, 2.1,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8435,7 +8810,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					20, 20, 20, 30, 30, 30));
+					20, 20, 20, 30, 30, 30,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8445,7 +8821,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-30, -30, -30, -20, -20, -20));
+					-30, -30, -30, -20, -20, -20,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8455,7 +8832,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-1, -6, -6, 8, 4, 4));
+					-1, -6, -6, 8, 4, 4,
+					DISTANCE_EPSILON));
 		}
 
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8466,308 +8844,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			// Cubic part spans x in [4,7], with z reaching positive values around ~2..3 along approximation.
 			assertTrue(Path3afp.intersectsPathIteratorAlignedBox(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					5.5, -2.0, 1.0, 6.5, 1.5, 3.5));
+					5.5, -2.0, 1.0, 6.5, 1.5, 3.5,
+					DISTANCE_EPSILON));
 		}
-
-	}
-
-	@DisplayName("intersectsPathIteratorSegment")
-	@Nested
-	public class IntersectsPathIteratorSegment {
-
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-		@DisplayName("#1")
-		public final void test_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(Path3afp.intersectsPathIteratorSegment(
-					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, -1, 0, 2, -3, 0));
-		}
-
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-		@DisplayName("#2")
-		public final void test_2(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(Path3afp.intersectsPathIteratorSegment(
-					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, -6, 0, 2, -3, 0));
-		}
-
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-		@DisplayName("#3")
-		public final void test_3(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(Path3afp.intersectsPathIteratorSegment(
-					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					4, 0, 0, 2, -3, 0));
-		}
-
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-		@DisplayName("#4")
-		public final void test_4(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(Path3afp.intersectsPathIteratorSegment(
-					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					4, 0, 0, 5, 3, 0));
-		}
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Closed square - segment crosses (true)")
-	    public final void test_closedSquare_crossing(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        path.closePath();
-	        assertTrue(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	        		1, -1, 0, 1, 3, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Closed square - segment outside (false)")
-	    public final void test_closedSquare_outside(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        path.closePath();
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                10, 10, 0, 12, 10, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Closed square - segment touches a vertex (true)")
-	    public final void test_closedSquare_touchesVertex(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        path.closePath();
-	        assertTrue(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                2, -1, 0, 2, 1, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Closed square - segment overlaps an edge (true)")
-	    public final void test_closedSquare_overlapsEdge(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        path.closePath();
-	        assertTrue(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                0.5, 0, 0, 1.5, 0, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Closed square - segment entirely inside (false)")
-	    public final void test_closedSquare_inside(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        path.closePath();
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                0.5, 0.5, 0, 1.5, 1.5, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Closed square - segment collinear but disjoint (false)")
-	    public final void test_closedSquare_collinearDisjoint(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        path.closePath();
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                2.5, 0, 0, 3.5, 0, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Open polyline - segment intersects (true)")
-	    public final void test_openPolyline_intersects(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(1, 2, 0);
-	        path.lineTo(2, 1, 0);
-	        path.lineTo(3, 3, 0);
-	        assertTrue(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                0, 1.5, 0, 4, 1.5, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Open polyline - segment outside (false)")
-	    public final void test_openPolyline_outside(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(1, 2, 0);
-	        path.lineTo(2, 1, 0);
-	        path.lineTo(3, 3, 0);
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                0, 5, 0, 4, 5, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Multiple sub‑paths - one intersects (true)")
-	    public final void test_multipleSubPaths_intersects(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(1, 0, 0);
-	        path.lineTo(1, 1, 0);
-	        path.lineTo(0, 1, 0);
-	        path.closePath();
-	        path.moveTo(3, 3, 0);
-	        path.lineTo(4, 3, 0);
-	        path.lineTo(4, 4, 0);
-	        path.lineTo(3, 4, 0);
-	        path.closePath();
-	        assertTrue(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                3.5, 2, 0, 3.5, 5, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Multiple sub‑paths - segment between them (false)")
-	    public final void test_multipleSubPaths_between(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(1, 0, 0);
-	        path.lineTo(1, 1, 0);
-	        path.lineTo(0, 1, 0);
-	        path.closePath();
-	        path.moveTo(3, 3, 0);
-	        path.lineTo(4, 3, 0);
-	        path.lineTo(4, 4, 0);
-	        path.lineTo(3, 4, 0);
-	        path.closePath();
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                1.5, 1.5, 0, 2.5, 2.5, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("3D - segment at different Z (no intersection)")
-	    public final void test_3D_differentZ(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        path.closePath();
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                1, -1, 1, 1, 3, 1));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("3D - segment at same Z (intersects)")
-	    public final void test_3D_sameZ(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 5);
-	        path.lineTo(2, 0, 5);
-	        path.lineTo(2, 2, 5);
-	        path.lineTo(0, 2, 5);
-	        path.closePath();
-	        assertTrue(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                1, -1, 5, 1, 3, 5));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Empty path - no intersection")
-	    public final void test_emptyPath(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                0, 0, 0, 1, 1, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Path with only MOVE_TO - no segments")
-	    public final void test_onlyMoveTo(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                0, 0, 0, 1, 1, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Zero‑length segment - can still intersect at a point #1")
-	    public final void test_zeroLengthSegment_1(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        assertTrue(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                2, 0, 0, 2, 0, 0));
-	    }
-
-	    @ParameterizedTest(name = "{index} => {0}")
-	    @EnumSource(CoordinateSystem3D.class)
-	    @DisplayName("Zero‑length segment - can still intersect at a point #2")
-	    public final void test_zeroLengthSegment_2(CoordinateSystem3D cs) {
-	        CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	        var path = createPath();
-	        path.moveTo(0, 0, 0);
-	        path.lineTo(2, 0, 0);
-	        path.lineTo(2, 2, 0);
-	        path.lineTo(0, 2, 0);
-	        assertFalse(Path3afp.intersectsPathIteratorSegment(
-	        		path.getPathIterator(SPLINE_APPROXIMATION_RATIO),
-	                1, 1, 0, 1, 1, 0));
-	    }
 
 	}
 
@@ -8775,22 +8854,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@Nested
 	public class OperatorAddVector3D {
 
-		private Stream<Arguments> proposeArguments() {
-			final List<Arguments> args = new ArrayList<>();
-			for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
-				for (int i = 0; i < 100; ++i) {
-					double dx = getRandom().nextDouble() * 20.;
-					double dy = getRandom().nextDouble() * 20.;
-					double dz = getRandom().nextDouble() * 20.;
-					args.add(Arguments.of(cs, dx, dy, dz));
-				}
-			}
-			return args.stream();
-		}
-
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase#proposeArguments3Coords")
 		public final void test_1(CoordinateSystem3D cs, Double dx, Double dy, Double dz) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().operator_add(createVector(dx, dy, dz));
@@ -8807,22 +8873,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@Nested
 	public class OperatorPlusVector3D {
 
-		private Stream<Arguments> proposeArguments() {
-			final List<Arguments> args = new ArrayList<>();
-			for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
-				for (int i = 0; i < 100; ++i) {
-					double dx = getRandom().nextDouble() * 20.;
-					double dy = getRandom().nextDouble() * 20.;
-					double dz = getRandom().nextDouble() * 20.;
-					args.add(Arguments.of(cs, dx, dy, dz));
-				}
-			}
-			return args.stream();
-		}
-
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase#proposeArguments3Coords")
 		public final void test_1(CoordinateSystem3D cs, Double dx, Double dy, Double dz) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			T shape = getS().operator_plus(createVector(dx, dy, dz));
@@ -8839,22 +8892,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@Nested
 	public class OperatorRemoveVector3D {
 
-		private Stream<Arguments> proposeArguments() {
-			final List<Arguments> args = new ArrayList<>();
-			for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
-				for (int i = 0; i < 100; ++i) {
-					double dx = getRandom().nextDouble() * 20.;
-					double dy = getRandom().nextDouble() * 20.;
-					double dz = getRandom().nextDouble() * 20.;
-					args.add(Arguments.of(cs, dx, dy, dz));
-				}
-			}
-			return args.stream();
-		}
-
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase#proposeArguments3Coords")
 		public final void test_1(CoordinateSystem3D cs, Double dx, Double dy, Double dz) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().operator_remove(createVector(dx, dy, dz));
@@ -8871,22 +8911,9 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 	@Nested
 	public class OperatorMinusVector3D {
 
-		private Stream<Arguments> proposeArguments() {
-			final List<Arguments> args = new ArrayList<>();
-			for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
-				for (int i = 0; i < 100; ++i) {
-					double dx = getRandom().nextDouble() * 20.;
-					double dy = getRandom().nextDouble() * 20.;
-					double dz = getRandom().nextDouble() * 20.;
-					args.add(Arguments.of(cs, dx, dy, dz));
-				}
-			}
-			return args.stream();
-		}
-
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPath3dTestCase#proposeArguments3Coords")
 		public final void test_1(CoordinateSystem3D cs, Double dx, Double dy, Double dz) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			T shape = getS().operator_minus(createVector(dx, dy, dz));
@@ -9429,7 +9456,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().operator_and(createSegment(4, 0, 0, 5, 3, 0)));
+			assertTrue(getS().operator_and(createSegment(5, 0, 2, 5.803571429, 1.707589286, 3.517857143)));
 		}
 
 		@DisplayName("#2")
@@ -9438,6 +9465,14 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		public final void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(getS().operator_and(createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createSphere(1.5, 1.5, 0, 2)));
 		}
 	}
 
@@ -9676,7 +9711,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertTrue(getS().isCurved());
 		}
 	}
-	
+
 	@DisplayName("isMultiParts")
 	@Nested
 	public class IsMultiParts {
@@ -9769,10 +9804,24 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			getS().lineTo(3, 4, 0);
 			getS().lineTo(5, 6, 0);
 			getS().quadTo(7, 8, 0, 9, 10, 0);
+			assertFalse(getS().isMultiParts());
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().clear();
+			getS().moveTo(1, 2, 0);
+			getS().lineTo(3, 4, 0);
+			getS().moveTo(3, 4, 0);
+			getS().lineTo(5, 6, 0);
+			getS().quadTo(7, 8, 0, 9, 10, 0);
 			assertTrue(getS().isMultiParts());
 		}
 	}
-	
+
 	@DisplayName("isPolygon")
 	@Nested
 	public class IsPolygon {
@@ -9941,7 +9990,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertFalse(getS().isPolygon());
 		}
 	}
-	
+
 	@DisplayName("isPolyline")
 	@Nested
 	public class IsPolyline {
@@ -10076,7 +10125,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertFalse(getS().isPolyline());
 		}
 	}
-	
+
 	@DisplayName("getCurrentX")
 	@Nested
 	public class GetCurrentX {
@@ -10098,7 +10147,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 			assertEpsilonEquals(154, getS().getCurrentX());
 		}
 	}
-	
+
 	@DisplayName("getCurrentY")
 	@Nested
 	public class GetCurrentY {
@@ -10108,7 +10157,7 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		    assertEpsilonEquals(-5, getS().getCurrentY());
+			assertEpsilonEquals(-5, getS().getCurrentY());
 		}
 
 		@DisplayName("#2")
@@ -10116,8 +10165,8 @@ public abstract class AbstractPath3dTestCase<T extends Path3afp<T, ?, ?, ?, ?, B
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		    getS().lineTo(154, 485, 0);
-		    assertEpsilonEquals(485, getS().getCurrentY());
+			getS().lineTo(154, 485, 0);
+			assertEpsilonEquals(485, getS().getCurrentY());
 		}
 	}
 

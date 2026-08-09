@@ -39,12 +39,7 @@ public class ImmutablePoint3DTest extends AbstractImmutablePoint3DTest {
 	}
 
 	@Override
-	public ImmutablePoint3D createPoint(final double tx, final double ty, final double tz) {
-		return new ImmutablePoint3D(tx, ty, tz);
-	}
-	
-	@Override
-	public Point3D createTuple(double x, double y, double z) {
+	public ImmutablePoint3D createTuple(double x, double y, double z) {
 		return new ImmutablePoint3D(x, y, z);
 	}
 

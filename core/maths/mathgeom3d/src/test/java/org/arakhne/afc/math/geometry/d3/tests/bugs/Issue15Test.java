@@ -18,16 +18,17 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.test.geometry.d3.d;
+package org.arakhne.afc.math.geometry.d3.tests.bugs;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.arakhne.afc.math.geometry.d3.d.Path3d;
 import org.arakhne.afc.math.geometry.d3.d.Segment3d;
-import org.arakhne.afc.math.test.AbstractMathTestCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;

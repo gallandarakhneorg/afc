@@ -28,18 +28,13 @@ import org.junit.jupiter.api.DisplayName;
 
 @SuppressWarnings("all")
 @DisplayName("Vector3d")
-public class Vector3dTest extends AbstractVector3DTestCase<Vector3d, Point3d, Quaternion4d, Vector3d> {
+public class Vector3dTest extends AbstractVector3DTestCase<Vector3d, Point3d, Quaternion4d> {
 
 	@Override
 	public boolean isIntCoordinates() {
 		return false;
 	}
 	
-	@Override
-	public Vector3d createVector(double x, double y, double z) {
-		return new Vector3d(x, y, z);
-	}
-
 	@Override
 	public Point3d createPoint(double x, double y, double z) {
 		return new Point3d(x, y, z);

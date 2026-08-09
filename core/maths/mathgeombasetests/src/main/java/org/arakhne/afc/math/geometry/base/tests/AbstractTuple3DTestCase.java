@@ -38,6 +38,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+/**
+ * @param <TT> the type of the tuples to be tested.
+ */
 @SuppressWarnings("all")
 public abstract class AbstractTuple3DTestCase<TT extends Tuple3D> extends AbstractMathTestCase {
 	

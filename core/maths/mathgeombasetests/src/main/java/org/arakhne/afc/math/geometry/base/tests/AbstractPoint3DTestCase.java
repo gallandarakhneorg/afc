@@ -43,15 +43,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+/**
+ * @param <P> the type for the points to be tested.
+ * @param <V> the type for the vectors to be used during tests.
+ * @param <Q> the type for the quaternions to be used during the tests.
+ */
 @SuppressWarnings("all")
 public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
-		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		TT extends Tuple3D>
-		extends AbstractTuple3DTestCase<TT> {
+		Q extends Quaternion<? super P, ? super V, ? super Q>>
+		extends AbstractTuple3DTestCase<P> {
 	
-	public abstract P createPoint(double x, double y, double z);
-
 	public abstract V createVector(double x, double y, double z);
 	
 	public abstract Shape3D createSphere(double x, double y, double z, double radius);
@@ -200,10 +202,10 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(0, 0, 0);
-			this.point2 = createPoint(0, 0, 0);
-			this.point3 = createPoint(1, 2, 0);
-			this.point4 = createPoint(1, 1, 0);
+			this.point = createTuple(0, 0, 0);
+			this.point2 = createTuple(0, 0, 0);
+			this.point3 = createTuple(1, 2, 0);
+			this.point4 = createTuple(1, 1, 0);
 		}
 
 		@DisplayName("#1")
@@ -241,10 +243,10 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(0, 0, 0);
-			this.point2 = createPoint(0, 0, 0);
-			this.point3 = createPoint(1, 2, 0);
-			this.point4 = createPoint(1, 1, 0);
+			this.point = createTuple(0, 0, 0);
+			this.point2 = createTuple(0, 0, 0);
+			this.point3 = createTuple(1, 2, 0);
+			this.point4 = createTuple(1, 1, 0);
 		}
 
 		@DisplayName("#1")
@@ -284,10 +286,10 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
-			this.point3 = createPoint(1, 2, 0);
-			this.point4 = createPoint(-1, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
+			this.point3 = createTuple(1, 2, 0);
+			this.point4 = createTuple(-1, 0, 0);
 		}
 
 		@DisplayName("#1")
@@ -335,10 +337,10 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
-			this.point3 = createPoint(1, 2, 0);
-			this.point4 = createPoint(-1, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
+			this.point3 = createTuple(1, 2, 0);
+			this.point4 = createTuple(-1, 0, 0);
 		}
 
 		@DisplayName("#1")
@@ -386,10 +388,10 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
-			this.point3 = createPoint(1, 2, 0);
-			this.point4 = createPoint(-1, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
+			this.point3 = createTuple(1, 2, 0);
+			this.point4 = createTuple(-1, 0, 0);
 		}
 
 		@DisplayName("#1")
@@ -437,10 +439,10 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
-			this.point3 = createPoint(1, 2, 0);
-			this.point4 = createPoint(-1, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
+			this.point3 = createTuple(1, 2, 0);
+			this.point4 = createTuple(-1, 0, 0);
 		}
 
 		@DisplayName("#1")
@@ -485,7 +487,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.origin = createPoint(2, 3, 0);
+			this.origin = createTuple(2, 3, 0);
 		}
 
 		@DisplayName("#1")
@@ -520,7 +522,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			Point3D origin = createPoint(23, 45, 0);
+			Point3D origin = createTuple(23, 45, 0);
 			Tuple3D clone = origin.clone();
 			assertNotNull(clone);
 			assertNotSame(origin, clone);
@@ -542,8 +544,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -617,8 +619,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -691,10 +693,10 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(0, 0, 0);
-			this.point2 = createPoint(1, 0, 0);
-			this.vector = createPoint(-1.2, -1.2, 0);
-			this.vector2 = createPoint(2.0, 1.5, 0);
+			this.point = createTuple(0, 0, 0);
+			this.point2 = createTuple(1, 0, 0);
+			this.vector = createTuple(-1.2, -1.2, 0);
+			this.vector2 = createTuple(2.0, 1.5, 0);
 		}
 
 		@DisplayName("With double coords #1")
@@ -747,7 +749,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(49, -2, 0);
+			this.point = createTuple(49, -2, 0);
 		}
 
 		@DisplayName("#1")
@@ -771,7 +773,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(point.operator_equals(createPoint(49, -3, 0)));
+			assertFalse(point.operator_equals(createTuple(49, -3, 0)));
 		}
 
 		@DisplayName("#4")
@@ -779,7 +781,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(point.operator_equals(createPoint(0, 0, 0)));
+			assertFalse(point.operator_equals(createTuple(0, 0, 0)));
 		}
 
 		@DisplayName("#5")
@@ -787,7 +789,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(point.operator_equals(createPoint(49, -2, 0)));
+			assertTrue(point.operator_equals(createTuple(49, -2, 0)));
 		}
 
 	}
@@ -800,7 +802,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(49, -2, 0);
+			this.point = createTuple(49, -2, 0);
 		}
 
 		@DisplayName("#1")
@@ -824,7 +826,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(point.operator_notEquals(createPoint(49, -3, 0)));
+			assertTrue(point.operator_notEquals(createTuple(49, -3, 0)));
 		}
 
 		@DisplayName("#4")
@@ -832,7 +834,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(point.operator_notEquals(createPoint(0, 0, 0)));
+			assertTrue(point.operator_notEquals(createTuple(0, 0, 0)));
 		}
 
 		@DisplayName("#5")
@@ -840,7 +842,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(point.operator_notEquals(createPoint(49, -2, 0)));
+			assertFalse(point.operator_notEquals(createTuple(49, -2, 0)));
 		}
 
 	}
@@ -853,7 +855,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(49, -2, 0);
+			this.point = createTuple(49, -2, 0);
 		}
 
 		@DisplayName("#1")
@@ -877,7 +879,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(point.equals((Object) createPoint(49, -3, 0)));
+			assertFalse(point.equals((Object) createTuple(49, -3, 0)));
 		}
 
 		@DisplayName("#4")
@@ -885,7 +887,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(point.equals((Object) createPoint(0, 0, 0)));
+			assertFalse(point.equals((Object) createTuple(0, 0, 0)));
 		}
 
 		@DisplayName("#5")
@@ -893,7 +895,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(point.equals((Object) createPoint(49, -2, 0)));
+			assertTrue(point.equals((Object) createTuple(49, -2, 0)));
 		}
 
 	}
@@ -909,10 +911,10 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(0, 0, 0);
-			this.point2 = createPoint(0, 0, 0);
-			this.point3 = createPoint(1, 2, 0);
-			this.point4 = createPoint(1, 1, 0);
+			this.point = createTuple(0, 0, 0);
+			this.point2 = createTuple(0, 0, 0);
+			this.point3 = createTuple(1, 2, 0);
+			this.point4 = createTuple(1, 1, 0);
 		}
 
 		@DisplayName("#1")
@@ -951,9 +953,9 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.orig1 = createPoint(45, -78, 0);
-			this.orig2 = createPoint(0, 0, 0);
-			this.param = createPoint(-5, -1.4, 0);
+			this.orig1 = createTuple(45, -78, 0);
+			this.orig2 = createTuple(0, 0, 0);
+			this.param = createTuple(-5, -1.4, 0);
 		}
 
 		@DisplayName("#1")
@@ -1024,8 +1026,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1100,8 +1102,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1176,8 +1178,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1252,8 +1254,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1394,8 +1396,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1470,8 +1472,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1546,8 +1548,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(3, 0, 0);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(3, 0, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1612,8 +1614,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 			assumeFalse(isIntCoordinates());
 			point.scaleAdd(2.5, point, vector3);
 			assertFpPointEquals(3.5, 0, 0, point);
-//			this.point = createPoint(1, 2, 0);
-//			this.point2 = createPoint(3, 0, 0);
+//			this.point = createTuple(1, 2, 0);
+//			this.point2 = createTuple(3, 0, 0);
 //			this.vector1 = createVector(0, 0, 0);
 //			this.vector2 = createVector(1, 2, 0);
 //			this.vector3 = createVector(1, -5, 0);
@@ -1692,7 +1694,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
+			this.point = createTuple(1, 2, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1766,7 +1768,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
+			this.point = createTuple(1, 2, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1907,8 +1909,8 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
-			this.point2 = createPoint(-1, 2, -3);
+			this.point = createTuple(1, 2, 0);
+			this.point2 = createTuple(-1, 2, -3);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -1981,7 +1983,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
+			this.point = createTuple(1, 2, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -2055,7 +2057,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
+			this.point = createTuple(1, 2, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -2129,7 +2131,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 
 		@BeforeEach
 		public void setUp() {
-			this.point = createPoint(1, 2, 0);
+			this.point = createTuple(1, 2, 0);
 			this.vector1 = createVector(0, 0, 0);
 			this.vector2 = createVector(1, 2, 0);
 			this.vector3 = createVector(1, -5, 0);
@@ -2208,7 +2210,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(createPoint(0,0, 0).operator_and(shape));
+			assertFalse(createTuple(0,0, 0).operator_and(shape));
 		}
 		
 		@DisplayName("#2")
@@ -2216,7 +2218,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(createPoint(11,10, 0).operator_and(shape));
+			assertFalse(createTuple(11,10, 0).operator_and(shape));
 		}
 		
 		@DisplayName("#3")
@@ -2224,7 +2226,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(createPoint(11,50, 0).operator_and(shape));
+			assertFalse(createTuple(11,50, 0).operator_and(shape));
 		}
 		
 		@DisplayName("#4")
@@ -2232,7 +2234,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(createPoint(9,12, 0).operator_and(shape));
+			assertFalse(createTuple(9,12, 0).operator_and(shape));
 		}
 		
 		@DisplayName("#5")
@@ -2240,7 +2242,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(createPoint(9,11, 0).operator_and(shape));
+			assertTrue(createTuple(9,11, 0).operator_and(shape));
 		}
 		
 		@DisplayName("#6")
@@ -2248,7 +2250,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(createPoint(8,12, 0).operator_and(shape));
+			assertTrue(createTuple(8,12, 0).operator_and(shape));
 		}
 		
 		@DisplayName("#7")
@@ -2256,7 +2258,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(createPoint(3,7, 0).operator_and(shape));
+			assertTrue(createTuple(3,7, 0).operator_and(shape));
 		}
 		
 		@DisplayName("#8")
@@ -2264,7 +2266,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_8(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(createPoint(10,11, 0).operator_and(shape));
+			assertFalse(createTuple(10,11, 0).operator_and(shape));
 		}
 		
 		@DisplayName("#9")
@@ -2272,7 +2274,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_9(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(createPoint(9,10, 0).operator_and(shape));
+			assertTrue(createTuple(9,10, 0).operator_and(shape));
 		}
 
 	}
@@ -2293,7 +2295,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(3.74643, createPoint(.5,.5, 0).operator_upTo(shape));
+			assertEpsilonEquals(3.74643, createTuple(.5,.5, 0).operator_upTo(shape));
 		}
 		
 		@DisplayName("#2")
@@ -2301,7 +2303,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4, 0).operator_upTo(shape));
+			assertEpsilonEquals(7.9769, createTuple(-1.2,-3.4, 0).operator_upTo(shape));
 		}
 		
 		@DisplayName("#3")
@@ -2309,7 +2311,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(1.6483, createPoint(-1.2,5.6, 0).operator_upTo(shape));
+			assertEpsilonEquals(1.6483, createTuple(-1.2,5.6, 0).operator_upTo(shape));
 		}
 		
 		@DisplayName("#4")
@@ -2317,7 +2319,7 @@ public abstract class AbstractPoint3DTestCase<P extends Point3D<? super P, ? sup
 		@EnumSource(CoordinateSystem3D.class)
 		public void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(0, createPoint(7.6,5.6, 0).operator_upTo(shape));
+			assertEpsilonEquals(0, createTuple(7.6,5.6, 0).operator_upTo(shape));
 		}
 
 	}

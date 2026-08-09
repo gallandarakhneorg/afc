@@ -29,12 +29,7 @@ import org.junit.jupiter.api.DisplayName;
 
 @DisplayName("InnerComputationVector3D")
 @SuppressWarnings("all")
-public class InnerComputationVector3DTest extends AbstractVector3DTestCase<InnerComputationVector3D, InnerComputationPoint3D, InnerComputationQuaternion, Vector3D> {
-
-	@Override
-	public InnerComputationVector3D createVector(double x, double y, double z) {
-		return new InnerComputationVector3D(x, y, z);
-	}
+public class InnerComputationVector3DTest extends AbstractVector3DTestCase<InnerComputationVector3D, InnerComputationPoint3D, InnerComputationQuaternion> {
 
 	@Override
 	public InnerComputationPoint3D createPoint(double x, double y, double z) {
@@ -42,7 +37,7 @@ public class InnerComputationVector3DTest extends AbstractVector3DTestCase<Inner
 	}
 
 	@Override
-	public Vector3D createTuple(double x, double y, double z) {
+	public InnerComputationVector3D createTuple(double x, double y, double z) {
 		return new InnerComputationVector3D(x, y, z);
 	}
 

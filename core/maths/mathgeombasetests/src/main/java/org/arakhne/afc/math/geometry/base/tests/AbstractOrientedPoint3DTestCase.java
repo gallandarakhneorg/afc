@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.OrientedPoint3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
-import org.arakhne.afc.math.geometry.base.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,26 +38,25 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+/**
+ * @param <P> the type for the points to be tested.
+ * @param <V> the type for the vectors to be used during tests.
+ * @param <Q> the type for the quaternions to be used during the tests.
+ */
 @SuppressWarnings("all")
 public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<? super P, ? super V, ? super Q>,
 		V extends Vector3D<? super V, ? super P, ? super Q>,
-		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		TT extends Tuple3D>
-		extends AbstractPoint3DTestCase<P, V, Q, TT> {
-
-	private P orientedPoint;
+		Q extends Quaternion<? super P, ? super V, ? super Q>>
+		extends AbstractPoint3DTestCase<P, V, Q> {
 
 	@BeforeEach
 	public final void setUp() {
-		this.orientedPoint = createPoint(0, 0, 0);
-		this.orientedPoint.set(12.354, -457.4, 124.5, -4.5, -6., 7.);
-	}
-
-	protected P getOP() {
-		return this.orientedPoint;
+		super.setUp();
+		var o = getT();
+		o.set(o.getX(), o.getY(), o.getZ(), -4.5, -6., 7.);
 	}
 	
-	private Stream<Arguments> proposeArguments() {
+	private static Stream<Arguments> proposeArguments() {
 		final List<Arguments> args = new ArrayList<>();
 		for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
 			for (int i = 0; i < 100; ++i) {
@@ -71,7 +69,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		return args.stream();
 	}
 
-	private Stream<Arguments> proposeArguments2() {
+	private static Stream<Arguments> proposeArguments2() {
 		final List<Arguments> args = new ArrayList<>();
 		for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
 			for (int i = 0; i < 100; ++i) {
@@ -96,9 +94,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void int_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangentX(1254);
-			assertEpsilonEquals(1254, getOP().getTangentX());
-			assertEquals(1254, getOP().itx());
+			getT().setTangentX(1254);
+			assertEpsilonEquals(1254, getT().getTangentX());
+			assertEquals(1254, getT().itx());
 	    }
 	
 		@DisplayName("(double) #1")
@@ -106,9 +104,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangentX(1254.26);
-			assertEpsilonEquals(1254.26, getOP().getTangentX());
-			assertEquals(1254, getOP().itx());
+			getT().setTangentX(1254.26);
+			assertEpsilonEquals(1254.26, getT().getTangentX());
+			assertEquals(1254, getT().itx());
 	    }
 	}
 
@@ -121,7 +119,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getTangentX());
+			assertEpsilonEquals(-4.5, getT().getTangentX());
 	    }
 	}
 
@@ -134,7 +132,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().itx());
+			assertEquals(-4, getT().itx());
 	    }
 	}
 
@@ -147,9 +145,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void int_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangentY(1254);
-			assertEpsilonEquals(1254, getOP().getTangentY());
-			assertEquals(1254, getOP().ity());
+			getT().setTangentY(1254);
+			assertEpsilonEquals(1254, getT().getTangentY());
+			assertEquals(1254, getT().ity());
 	    }
 	
 		@DisplayName("(double) #1")
@@ -157,9 +155,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangentY(1254.26);
-			assertEpsilonEquals(1254.26, getOP().getTangentY());
-			assertEquals(1254, getOP().ity());
+			getT().setTangentY(1254.26);
+			assertEpsilonEquals(1254.26, getT().getTangentY());
+			assertEquals(1254, getT().ity());
 	    }
 	}
 
@@ -172,7 +170,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getTangentY());
+			assertEpsilonEquals(-6., getT().getTangentY());
 	    }
 	}
 
@@ -185,7 +183,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().ity());
+			assertEquals(-6, getT().ity());
 	    }
 	}
 
@@ -198,9 +196,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void int_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangentZ(1254);
-			assertEpsilonEquals(1254, getOP().getTangentZ());
-			assertEquals(1254, getOP().itz());
+			getT().setTangentZ(1254);
+			assertEpsilonEquals(1254, getT().getTangentZ());
+			assertEquals(1254, getT().itz());
 	    }
 	
 		@DisplayName("(double) #1")
@@ -208,9 +206,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangentZ(1254.26);
-			assertEpsilonEquals(1254.26, getOP().getTangentZ());
-			assertEquals(1254, getOP().itz());
+			getT().setTangentZ(1254.26);
+			assertEpsilonEquals(1254.26, getT().getTangentZ());
+			assertEquals(1254, getT().itz());
 	    }
 	}
 
@@ -223,7 +221,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getTangentZ());
+			assertEpsilonEquals(7., getT().getTangentZ());
 	    }
 	}
 
@@ -236,7 +234,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().itz());
+			assertEquals(7, getT().itz());
 	    }
 	}
 
@@ -246,24 +244,24 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 
 		@DisplayName("(double,double,double)")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.base.tests.AbstractOrientedPoint3DTestCase#proposeArguments")
 		public void doubledoubledouble_1(CoordinateSystem3D cs, Double x, Double y, Double z) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangent(x, y , z);
-			assertEpsilonEquals(x, getOP().getTangentX());
-			assertEpsilonEquals(y, getOP().getTangentY());
-			assertEpsilonEquals(z, getOP().getTangentZ());
+			getT().setTangent(x, y , z);
+			assertEpsilonEquals(x, getT().getTangentX());
+			assertEpsilonEquals(y, getT().getTangentY());
+			assertEpsilonEquals(z, getT().getTangentZ());
 	    }
 
 		@DisplayName("(Vector3D)")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.base.tests.AbstractOrientedPoint3DTestCase#proposeArguments")
 		public void vector_1(CoordinateSystem3D cs, Double x, Double y, Double z) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangent(createVector(x, y, z));
-			assertEpsilonEquals(x, getOP().getTangentX());
-			assertEpsilonEquals(y, getOP().getTangentY());
-			assertEpsilonEquals(z, getOP().getTangentZ());
+			getT().setTangent(createVector(x, y, z));
+			assertEpsilonEquals(x, getT().getTangentX());
+			assertEpsilonEquals(y, getT().getTangentY());
+			assertEpsilonEquals(z, getT().getTangentZ());
 	    }
 	}
 
@@ -273,13 +271,13 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.base.tests.AbstractOrientedPoint3DTestCase#proposeArguments")
 		public void test_1(CoordinateSystem3D cs, Double x, Double y, Double z) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setTangentX(x);
-			getOP().setTangentY(y);
-			getOP().setTangentZ(z);
-			assertEpsilonEquals(createVector(x, y, z), getOP().getTangent());
+			getT().setTangentX(x);
+			getT().setTangentY(y);
+			getT().setTangentZ(z);
+			assertEpsilonEquals(createVector(x, y, z), getT().getTangent());
 	    }
 	}
 
@@ -292,9 +290,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void int_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormalX(1254);
-			assertEpsilonEquals(1254, getOP().getNormalX());
-			assertEquals(1254, getOP().inx());
+			getT().setNormalX(1254);
+			assertEpsilonEquals(1254, getT().getNormalX());
+			assertEquals(1254, getT().inx());
 	    }
 	
 		@DisplayName("(double) #1")
@@ -302,9 +300,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormalX(1254.26);
-			assertEpsilonEquals(1254.26, getOP().getNormalX());
-			assertEquals(1254, getOP().inx());
+			getT().setNormalX(1254.26);
+			assertEpsilonEquals(1254.26, getT().getNormalX());
+			assertEquals(1254, getT().inx());
 	    }
 	}
 
@@ -317,7 +315,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getNormalX());
+			assertEpsilonEquals(.0, getT().getNormalX());
 	    }
 	}
 
@@ -330,7 +328,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().inx());
+			assertEquals(0, getT().inx());
 	    }
 	}
 
@@ -343,9 +341,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void int_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormalY(1254);
-			assertEpsilonEquals(1254, getOP().getNormalY());
-			assertEquals(1254, getOP().iny());
+			getT().setNormalY(1254);
+			assertEpsilonEquals(1254, getT().getNormalY());
+			assertEquals(1254, getT().iny());
 	    }
 	
 		@DisplayName("(double) #1")
@@ -353,9 +351,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormalY(1254.26);
-			assertEpsilonEquals(1254.26, getOP().getNormalY());
-			assertEquals(1254, getOP().iny());
+			getT().setNormalY(1254.26);
+			assertEpsilonEquals(1254.26, getT().getNormalY());
+			assertEquals(1254, getT().iny());
 	    }
 	}
 
@@ -368,7 +366,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getNormalY());
+			assertEpsilonEquals(.0, getT().getNormalY());
 	    }
 	}
 
@@ -381,7 +379,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().iny());
+			assertEquals(0, getT().iny());
 	    }
 	}
 
@@ -394,9 +392,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void int_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormalZ(1254);
-			assertEpsilonEquals(1254, getOP().getNormalZ());
-			assertEquals(1254, getOP().inz());
+			getT().setNormalZ(1254);
+			assertEpsilonEquals(1254, getT().getNormalZ());
+			assertEquals(1254, getT().inz());
 	    }
 	
 		@DisplayName("(double) #1")
@@ -404,9 +402,9 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void double_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormalZ(1254.26);
-			assertEpsilonEquals(1254.26, getOP().getNormalZ());
-			assertEquals(1254, getOP().inz());
+			getT().setNormalZ(1254.26);
+			assertEpsilonEquals(1254.26, getT().getNormalZ());
+			assertEquals(1254, getT().inz());
 	    }
 	}
 
@@ -419,7 +417,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getNormalZ());
+			assertEpsilonEquals(.0, getT().getNormalZ());
 	    }
 	}
 
@@ -432,7 +430,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().inz());
+			assertEquals(0, getT().inz());
 	    }
 	}
 
@@ -442,24 +440,24 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 
 		@DisplayName("(double,double,double)")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.base.tests.AbstractOrientedPoint3DTestCase#proposeArguments")
 		public void doubledoubledouble_1(CoordinateSystem3D cs, Double x, Double y, Double z) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormal(x, y , z);
-			assertEpsilonEquals(x, getOP().getNormalX());
-			assertEpsilonEquals(y, getOP().getNormalY());
-			assertEpsilonEquals(z, getOP().getNormalZ());
+			getT().setNormal(x, y , z);
+			assertEpsilonEquals(x, getT().getNormalX());
+			assertEpsilonEquals(y, getT().getNormalY());
+			assertEpsilonEquals(z, getT().getNormalZ());
 	    }
 
 		@DisplayName("(Vector3D)")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.base.tests.AbstractOrientedPoint3DTestCase#proposeArguments")
 		public void vector_1(CoordinateSystem3D cs, Double x, Double y, Double z) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormal(createVector(x, y, z));
-			assertEpsilonEquals(x, getOP().getNormalX());
-			assertEpsilonEquals(y, getOP().getNormalY());
-			assertEpsilonEquals(z, getOP().getNormalZ());
+			getT().setNormal(createVector(x, y, z));
+			assertEpsilonEquals(x, getT().getNormalX());
+			assertEpsilonEquals(y, getT().getNormalY());
+			assertEpsilonEquals(z, getT().getNormalZ());
 	    }
 	}
 
@@ -469,13 +467,13 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.base.tests.AbstractOrientedPoint3DTestCase#proposeArguments")
 		public void test_1(CoordinateSystem3D cs, Double x, Double y, Double z) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getOP().setNormalX(x);
-			getOP().setNormalY(y);
-			getOP().setNormalZ(z);
-			assertEpsilonEquals(createVector(x, y, z), getOP().getNormal());
+			getT().setNormalX(x);
+			getT().setNormalY(y);
+			getT().setNormalZ(z);
+			assertEpsilonEquals(createVector(x, y, z), getT().getNormal());
 	    }
 	}
 
@@ -492,7 +490,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getSwayX());
+			assertEpsilonEquals(.0, getT().getSwayX());
 	    }
 	}
 
@@ -505,7 +503,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().isx());
+			assertEquals(0, getT().isx());
 	    }
 	}
 
@@ -518,7 +516,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getSwayY());
+			assertEpsilonEquals(.0, getT().getSwayY());
 	    }
 	}
 
@@ -531,7 +529,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().isy());
+			assertEquals(0, getT().isy());
 	    }
 	}
 
@@ -544,7 +542,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEpsilonEquals(.0, getOP().getSwayZ());
+			assertEpsilonEquals(.0, getT().getSwayZ());
 	    }
 	}
 
@@ -557,7 +555,7 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertEquals(0, getOP().isz());
+			assertEquals(0, getT().isz());
 	    }
 	}
 
@@ -567,15 +565,15 @@ public abstract class AbstractOrientedPoint3DTestCase<P extends OrientedPoint3D<
 
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
-		@MethodSource("proposeArguments2")
+		@MethodSource("org.arakhne.afc.math.geometry.base.tests.AbstractOrientedPoint3DTestCase#proposeArguments2")
 		public void test_1(CoordinateSystem3D cs, Double x, Double y, Double z, Double a, Double b, Double c) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var n = createVector(x, y, z);
-			getOP().setNormal(n);
+			getT().setNormal(n);
 			var t = createVector(a, b ,c);
-			getOP().setTangent(t);
+			getT().setTangent(t);
 			var s = t.cross(n);
-			assertEpsilonEquals(s, getOP().getSway());
+			assertEpsilonEquals(s, getT().getSway());
 	    }
 	}
 

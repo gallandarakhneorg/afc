@@ -30,6 +30,7 @@ import java.util.Objects;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
@@ -81,6 +82,11 @@ public interface Path3afp<
 	 * The default flattening depth limit.
 	 */
 	int DEFAULT_FLATENING_LIMIT = 10;
+
+	/**
+	 * The default flattening depth limit.
+	 */
+	double DEFAULT_INTERSECTION_EPSILON = GeomConstants.DISTANCE_EPSILON;
 
 	@Override
 	default Shape3DType getType() {
@@ -696,14 +702,17 @@ public interface Path3afp<
 	 * @param rmaxx the maximum x coordinate of the aligned box.
 	 * @param rmaxy the maximum y coordinate of the aligned box.
 	 * @param rmaxz the maximum z coordinate of the aligned box.
+	 * @param epsilon the approximation distance to be used for the test.
 	 * @return {@code true} if the specified {@link PathIterator3afp} and the interior of the specified set of rectangular
 	 *         coordinates intersect each other; {@code false} otherwise.
 	 */
 	static boolean intersectsPathIteratorAlignedBox(PathIterator3afp<? extends PathElement3afp> pi,
 			double rminx, double rminy, double rminz,
-			double rmaxx, double rmaxy, double rmaxz) {
+			double rmaxx, double rmaxy, double rmaxz,
+			double epsilon) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(7);
 		if (!pi.hasNext()) {
 			return false;
 		}
@@ -766,37 +775,36 @@ public interface Path3afp<
 	}
 
 	/**
-	 * Tests if the of the specified {@link PathIterator3afp} intersects the specified segment.
+	 * Calculates the squared distance from the {@link PathIterator3afp} to
+	 * the segment.
 	 * Only the visible components of the path are considered in the intersection test.
 	 *
 	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying not-curved primitives, ie. if the
 	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
 	 * {@code false}.
-	 * {@link #intersects(Segment3afp)} avoids this restriction.
 	 *
-	 * @param pi the specified {@link PathIterator3afp}.
-	 * @param x1 the x coordinate of the first point of the segment.
-	 * @param y1 the y coordinate of the first point of the segment.
-	 * @param z1 the z coordinate of the first point of the segment.
-	 * @param x2 the x coordinate of the second point of the segment.
-	 * @param y2 the y coordinate of the second point of the segment.
-	 * @param z2 the z coordinate of the second point of the segment.
-	 * @return {@code true} if the specified {@link PathIterator3afp} and the specified segment
-	 *     intersect each other; {@code false} otherwise.
+	 * @param path the path iterator.
+	 * @param x1 x coordinate of the first point of the segment.
+	 * @param y1 y coordinate of the first point of the segment.
+	 * @param z1 z coordinate of the first point of the segment.
+	 * @param x2 x coordinate of the second point of the segment.
+	 * @param y2 y coordinate of the second point of the segment.
+	 * @param z2 z coordinate of the second point of the segment.
+	 * @return the distance, or {@link Double#NaN} if the distance cannot be computed.
 	 */
-	static boolean intersectsPathIteratorSegment(PathIterator3afp<? extends PathElement3afp> pi,
-			double x1, double y1, double z1,
-			double x2, double y2, double z2) {
-		assert pi != null : AssertMessages.notNullParameter(0);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
-		if (!pi.hasNext()) {
-			return false;
+	@Unefficient
+	static double calculatesDistanceSquaredPathIteratorSegment(PathIterator3afp<? extends PathElement3afp> path,
+			double x1, double y1, double z1, double x2, double y2, double z2) {
+		assert path != null : AssertMessages.notNullParameter(0);
+		assert !path.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+		if (!path.hasNext()) {
+			return Double.NaN;
 		}
-		var pathElement = pi.next();
+		var pathElement = path.next();
 		assert pathElement.getType() == PathElementType.MOVE_TO : AssertMessages.invalidValue(0);
-		if (!pi.hasNext()) {
-			return false;
+		if (!path.hasNext()) {
+			return Double.NaN;
 		}
 		var curx = pathElement.getToX();
 		var movx = curx;
@@ -804,8 +812,9 @@ public interface Path3afp<
 		var movy = cury;
 		var curz = pathElement.getToZ();
 		var movz = curz;
-		while (pi.hasNext()) {
-			pathElement = pi.next();
+		var bestDistance = Double.POSITIVE_INFINITY;
+		while (path.hasNext()) {
+			pathElement = path.next();
 			switch (pathElement.getType()) {
 			case MOVE_TO:
 				movx = pathElement.getToX();
@@ -819,10 +828,10 @@ public interface Path3afp<
 				final var endx = pathElement.getToX();
 				final var endy = pathElement.getToY();
 				final var endz = pathElement.getToZ();
-				if (Segment3afp.intersectsSegmentSegmentWithEnds(
-						curx, cury, curz, endx, endy, endz,
-						x1, y1, z1, x2, y2, z2)) {
-					return true;
+				final var dist0 = Segment3afp.calculatesDistanceSquaredSegmentSegment(
+						x1, y1, z1, x2, y2, z2, curx, cury, curz, endx, endy, endz);
+				if (dist0 < bestDistance) {
+					bestDistance = dist0;
 				}
 				curx = endx;
 				cury = endy;
@@ -830,10 +839,10 @@ public interface Path3afp<
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy || curz != movz) {
-					if (Segment3afp.intersectsSegmentSegmentWithEnds(
-							curx, cury, curz, movx, movy, movz,
-							x2, y2, z2, x2, y2, z2)) {
-						return true;
+					final var dist1 = Segment3afp.calculatesDistanceSquaredSegmentSegment(
+							x1, y1, z1, x2, y2, z2, curx, cury, curz, movx, movy, movz);
+					if (dist1 < bestDistance) {
+						bestDistance = dist1;
 					}
 				}
 				curx = movx;
@@ -848,7 +857,97 @@ public interface Path3afp<
 				break;
 			}
 		}
-		return false;
+		if (Double.isInfinite(bestDistance)) {
+			return Double.NaN;
+		}
+		return bestDistance;
+	}
+
+	/**
+	 * Calculates the squared distance from the first {@link PathIterator3afp} to
+	 * the second {@link PathIterator3afp}.
+	 * Only the visible components of the path are considered in the intersection test.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying not-curved primitives, ie. if the
+	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
+	 * {@code false}.
+	 *
+	 * @param firstPath the first path iterator.
+	 * @param secondPath the second path iterator.
+	 * @return the distance, or {@link Double#NaN} if the distance cannot be computed.
+	 */
+	@Unefficient
+	static double calculatesDistanceSquaredPathIteratorPathIterator(
+			PathIterator3afp<? extends PathElement3afp> firstPath,
+			PathIterator3afp<? extends PathElement3afp> secondPath) {
+		assert firstPath != null : AssertMessages.notNullParameter(0);
+		assert !firstPath.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+		assert secondPath != null : AssertMessages.notNullParameter(0);
+		assert !secondPath.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+		if (!firstPath.hasNext()) {
+			return Double.NaN;
+		}
+		var pathElement = firstPath.next();
+		assert pathElement.getType() == PathElementType.MOVE_TO : AssertMessages.invalidValue(0);
+		if (!firstPath.hasNext()) {
+			return Double.NaN;
+		}
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var curz = pathElement.getToZ();
+		var movz = curz;
+		var bestDistance = Double.POSITIVE_INFINITY;
+		while (firstPath.hasNext()) {
+			pathElement = firstPath.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
+				movz = pathElement.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				final var endx = pathElement.getToX();
+				final var endy = pathElement.getToY();
+				final var endz = pathElement.getToZ();
+				final var dist0 = calculatesDistanceSquaredPathIteratorSegment(
+						secondPath.restartIterations(), curx, cury, curz, endx, endy, endz);
+				if (dist0 < bestDistance) {
+					bestDistance = dist0;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					final var dist1 = calculatesDistanceSquaredPathIteratorSegment(
+							secondPath.restartIterations(), curx, cury, curz, movx, movy, movz);
+					if (dist1 < bestDistance) {
+						bestDistance = dist1;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			case ARC_TO:
+			case QUAD_TO:
+			case CURVE_TO:
+			default:
+				assert false : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+				break;
+			}
+		}
+		if (Double.isInfinite(bestDistance)) {
+			return Double.NaN;
+		}
+		return bestDistance;
 	}
 
 	/**
@@ -1568,26 +1667,31 @@ public interface Path3afp<
 	@Override
 	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		return intersectsPathIteratorSegment(
+		final var distance = calculatesDistanceSquaredPathIteratorSegment(
 				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 				segment.getX1(), segment.getY1(), segment.getZ1(),
 				segment.getX2(), segment.getY2(), segment.getZ2());
+		return !Double.isNaN(distance) && distance <= DEFAULT_INTERSECTION_EPSILON;
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
-		//TODO
-		return false;
+		final var distance = calculatesDistanceSquaredPathIteratorPathIterator(
+				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
+				path.getPathIterator(path.getGeomFactory().getSplineApproximationRatio()));
+		return !Double.isNaN(distance) && distance <= DEFAULT_INTERSECTION_EPSILON;
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		//TODO
-		return false;
+		final var distance = calculatesDistanceSquaredPathIteratorPathIterator(
+				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
+				iterator);
+		return !Double.isNaN(distance) && distance <= DEFAULT_INTERSECTION_EPSILON;
 	}
 
 	@Pure

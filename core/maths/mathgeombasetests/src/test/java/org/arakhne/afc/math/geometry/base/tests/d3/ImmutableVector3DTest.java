@@ -32,17 +32,12 @@ import org.junit.jupiter.api.DisplayName;
 public class ImmutableVector3DTest extends AbstractUnmodifiableVector3DTestCase<ImmutableVector3D, ImmutablePoint3D, ImmutableQuaternion> {
 	
 	@Override
-	public ImmutableVector3D createVector(final double tx, final double ty, final double tz) {
-		return new ImmutableVector3D(tx, ty, tz);
-	}
-
-	@Override
 	public ImmutablePoint3D createPoint(final double tx, final double ty, final double tz) {
 		return new ImmutablePoint3D(tx, ty, tz);
 	}
 
 	@Override
-	public Vector3D createTuple(double x, double y, double z) {
+	public ImmutableVector3D createTuple(double x, double y, double z) {
 		return new ImmutableVector3D(x, y, z);
 	}
 

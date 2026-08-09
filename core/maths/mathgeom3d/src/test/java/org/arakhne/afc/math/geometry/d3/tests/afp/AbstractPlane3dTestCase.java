@@ -8490,7 +8490,7 @@ public abstract class AbstractPlane3dTestCase<T extends Plane3afp<T, ?, ?, ?, ?>
 			assertEpsilonEquals(NORMAL_X, p.getEquationComponentA());
 			assertEpsilonEquals(NORMAL_Y, p.getEquationComponentB());
 			assertEpsilonEquals(NORMAL_Z, p.getEquationComponentC());
-			assertEpsilonEquals(-21, p.getEquationComponentD());
+			assertEpsilonEquals(22, p.getEquationComponentD());
 		}
 	}
 
@@ -8610,7 +8610,7 @@ public abstract class AbstractPlane3dTestCase<T extends Plane3afp<T, ?, ?, ?, ?>
 			assertEpsilonEquals(NORMAL_X, p.getEquationComponentA());
 			assertEpsilonEquals(NORMAL_Y, p.getEquationComponentB());
 			assertEpsilonEquals(NORMAL_Z, p.getEquationComponentC());
-			assertEpsilonEquals(-21, p.getEquationComponentD());
+			assertEpsilonEquals(-14, p.getEquationComponentD());
 		}
 	}
 
@@ -8661,7 +8661,7 @@ public abstract class AbstractPlane3dTestCase<T extends Plane3afp<T, ?, ?, ?, ?>
 			assertEpsilonEquals(NORMAL_X, getP().getEquationComponentA());
 			assertEpsilonEquals(NORMAL_Y, getP().getEquationComponentB());
 			assertEpsilonEquals(NORMAL_Z, getP().getEquationComponentC());
-			assertEpsilonEquals(-14, getP().getEquationComponentD());
+			assertEpsilonEquals(22, getP().getEquationComponentD());
 		}
 	}
 
