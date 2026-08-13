@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -35,7 +36,6 @@ import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
 import org.arakhne.afc.math.geometry.base.d2.Path2D;
-import org.arakhne.afc.math.geometry.base.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Transform2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
@@ -110,7 +110,6 @@ public interface Path2afp<
 		if (pathElement1.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
-		final var factory = iterator.getGeomFactory();
 		Path2afp<?, ?, ?, ?, ?, ?> subPath;
 		var curx = pathElement1.getToX();
 		double movx = curx;
@@ -119,6 +118,7 @@ public interface Path2afp<
 		var numCrossings = crossings;
 		double endx;
 		double endy;
+		final var factory = iterator.getGeomFactory();
 		while (numCrossings != GeomConstants.SHAPE_INTERSECTS
 				&& iterator.hasNext()) {
 			pathElement1 = iterator.next();
@@ -222,9 +222,6 @@ public interface Path2afp<
 
 	/** Replies the point on the path that is closest to the given point.
 	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
-	 * {@code false}. {@link #getClosestPointTo(Point2D)} avoids this restriction.
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
@@ -234,74 +231,102 @@ public interface Path2afp<
 	static void findsClosestPointPathIteratorPoint(PathIterator2afp<? extends PathElement2afp> pi, double x,
 			double y, Point2D<?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		assert result != null : AssertMessages.notNullParameter(3);
 		var bestDist = Double.POSITIVE_INFINITY;
 		PathElement2afp pe;
 		final var mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
 		var crossings = 0;
-		while (pi.hasNext()) {
-			pe = pi.next();
-			var foundCandidate = false;
-			var candidateX = Double.NaN;
-			var candidateY = Double.NaN;
-			switch (pe.getType()) {
-			case MOVE_TO:
-				crossings = 0;
-				foundCandidate = true;
-				candidateX = pe.getToX();
-				candidateY = pe.getToY();
-				break;
-			case LINE_TO:
-				var factor =  Segment2afp.findsProjectedPointPointLine(x, y,
-						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
-				factor = MathUtil.clamp(factor, 0, 1);
-				var vx = (pe.getToX() - pe.getFromX()) * factor;
-				var vy = (pe.getToY() - pe.getFromY()) * factor;
-				foundCandidate = true;
-				candidateX = pe.getFromX() + vx;
-				candidateY = pe.getFromY() + vy;
-				crossings += Segment2afp.calculatesCrossingsPointShadowSegment(x, y,
-						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
-				break;
-			case CLOSE:
-				crossings += Segment2afp.calculatesCrossingsPointShadowSegment(x, y,
-						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
-				if ((crossings & mask) != 0) {
-					result.set(x, y);
-					return;
-				}
-				if (!pe.isEmpty()) {
-					factor =  Segment2afp.findsProjectedPointPointLine(x, y,
+		final var iterators = new ArrayDeque<PathIterator2afp<? extends PathElement2afp>>(2);
+		iterators.push(pi);
+		final var factory = pi.getGeomFactory();
+		while (!iterators.isEmpty()) {
+			if (iterators.getFirst().hasNext()) {
+				pe = iterators.getFirst().next();
+				var foundCandidate = false;
+				var candidateX = Double.NaN;
+				var candidateY = Double.NaN;
+				switch (pe.getType()) {
+				case MOVE_TO:
+					crossings = 0;
+					foundCandidate = true;
+					candidateX = pe.getToX();
+					candidateY = pe.getToY();
+					break;
+				case LINE_TO:
+					var factor =  Segment2afp.findsProjectedPointPointLine(x, y,
 							pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
 					factor = MathUtil.clamp(factor, 0, 1);
-					vx = (pe.getToX() - pe.getFromX()) * factor;
-					vy = (pe.getToY() - pe.getFromY()) * factor;
+					var vx = (pe.getToX() - pe.getFromX()) * factor;
+					var vy = (pe.getToY() - pe.getFromY()) * factor;
 					foundCandidate = true;
 					candidateX = pe.getFromX() + vx;
 					candidateY = pe.getFromY() + vy;
+					crossings += Segment2afp.calculatesCrossingsPointShadowSegment(x, y,
+							pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
+					break;
+				case CLOSE:
+					crossings += Segment2afp.calculatesCrossingsPointShadowSegment(x, y,
+							pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
+					if ((crossings & mask) != 0) {
+						result.set(x, y);
+						return;
+					}
+					if (!pe.isEmpty()) {
+						factor =  Segment2afp.findsProjectedPointPointLine(x, y,
+								pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
+						factor = MathUtil.clamp(factor, 0, 1);
+						vx = (pe.getToX() - pe.getFromX()) * factor;
+						vy = (pe.getToY() - pe.getFromY()) * factor;
+						foundCandidate = true;
+						candidateX = pe.getFromX() + vx;
+						candidateY = pe.getFromY() + vy;
+					}
+					crossings = 0;
+					break;
+				case QUAD_TO:
+					final var subpath0 = factory.newPath(pi.getWindingRule());
+					subpath0.moveTo(pe.getFromX(), pe.getFromY());
+					subpath0.quadTo(
+							pe.getCtrlX1(), pe.getCtrlY1(),
+							pe.getToX(), pe.getToY());
+					iterators.push(subpath0.getFlatteningPathIterator());
+					break;
+				case CURVE_TO:
+					final var subpath1 = factory.newPath(pi.getWindingRule());
+					subpath1.moveTo(pe.getFromX(), pe.getFromY());
+					subpath1.curveTo(
+							pe.getCtrlX1(), pe.getCtrlY1(),
+							pe.getCtrlX2(), pe.getCtrlY2(),
+							pe.getToX(), pe.getToY());
+					iterators.push(subpath1.getFlatteningPathIterator());
+					break;
+				case ARC_TO:
+					final var subpath2 = factory.newPath(pi.getWindingRule());
+					subpath2.moveTo(pe.getFromX(), pe.getFromY());
+					subpath2.arcTo(
+							pe.getToX(), pe.getToY(),
+							pe.getRadiusX(), pe.getRadiusY(),
+							pe.getRotationX(), pe.getLargeArcFlag(),
+							pe.getSweepFlag());
+					iterators.push(subpath2.getFlatteningPathIterator());
+					break;
+				default:
+					throw new IllegalStateException(pe.getType().toString());
 				}
-				crossings = 0;
-				break;
-				//$CASES-OMITTED$
-			default:
-				throw new IllegalStateException(pe.getType().toString());
-			}
-			if (foundCandidate) {
-				final var d = Point2D.getDistanceSquaredPointPoint(x, y, candidateX, candidateY);
-				if (d < bestDist) {
-					bestDist = d;
-					result.set(candidateX, candidateY);
+				if (foundCandidate) {
+					final var d = Point2D.getDistanceSquaredPointPoint(x, y, candidateX, candidateY);
+					if (d < bestDist) {
+						bestDist = d;
+						result.set(candidateX, candidateY);
+					}
 				}
+			} else {
+				iterators.pop();
 			}
 		}
 	}
 
 	/** Replies the point on the path of pi that is closest to the given shape.
-	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
-	 * {@code false}. {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d2.Shape2D)} avoids this restriction.
 	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param shape the shape to which the closest point must be computed.
@@ -310,18 +335,17 @@ public interface Path2afp<
 	 * @throws IllegalArgumentException invalid type of move.
 	 */
 	@Unefficient
-	@SuppressWarnings("checkstyle:npathcomplexity")
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static boolean findsClosestPointPathIteratorPathIterator(PathIterator2afp<? extends PathElement2afp> pi,
 			PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert shape != null : AssertMessages.notNullParameter(1);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		assert result != null : AssertMessages.notNullParameter(2);
 		if (!pi.hasNext() || !shape.hasNext()) {
 			return false;
 		}
-		var pathElement1 = pi.next();
-		if (pathElement1.getType() != PathElementType.MOVE_TO) {
+		var pathElement = pi.next();
+		if (pathElement.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		if (shape.next().getType() != PathElementType.MOVE_TO) {
@@ -334,46 +358,79 @@ public interface Path2afp<
 		calculatesDrawableElementBoundingBox(shape.restartIterations(), box);
 		final var shadow = new ClosestPointPathShadow2afp(shape.restartIterations(), box);
 		var crossings = 0;
-		var curx = pathElement1.getToX();
+		var curx = pathElement.getToX();
 		var movx = curx;
-		var cury = pathElement1.getToY();
+		var cury = pathElement.getToY();
 		var movy = cury;
 		double endx;
 		double endy;
-		while (pi.hasNext()) {
-			pathElement1 = pi.next();
-			switch (pathElement1.getType()) {
-			case MOVE_TO:
-				movx = pathElement1.getToX();
-				curx = movx;
-				movy = pathElement1.getToY();
-				cury = movy;
-				break;
-			case LINE_TO:
-				endx = pathElement1.getToX();
-				endy = pathElement1.getToY();
-				crossings = shadow.computeCrossings(crossings, curx, cury, endx, endy);
-				if (crossings == GeomConstants.SHAPE_INTERSECTS) {
-					result.set(shadow.getClosestPointInOtherShape());
-					return true;
-				}
-				curx = endx;
-				cury = endy;
-				break;
-			case CLOSE:
-				if (curx != movx || cury != movy) {
-					crossings = shadow.computeCrossings(crossings, curx, cury, movx, movy);
+		final var iterators = new ArrayDeque<PathIterator2afp<? extends PathElement2afp>>(2);
+		iterators.push(pi);
+		final var factory = pi.getGeomFactory();
+		while (!iterators.isEmpty()) {
+			if (iterators.getFirst().hasNext()) {
+				pathElement = iterators.getFirst().next();
+				switch (pathElement.getType()) {
+				case MOVE_TO:
+					movx = pathElement.getToX();
+					curx = movx;
+					movy = pathElement.getToY();
+					cury = movy;
+					break;
+				case LINE_TO:
+					endx = pathElement.getToX();
+					endy = pathElement.getToY();
+					crossings = shadow.computeCrossings(crossings, curx, cury, endx, endy);
 					if (crossings == GeomConstants.SHAPE_INTERSECTS) {
 						result.set(shadow.getClosestPointInOtherShape());
 						return true;
 					}
+					curx = endx;
+					cury = endy;
+					break;
+				case CLOSE:
+					if (curx != movx || cury != movy) {
+						crossings = shadow.computeCrossings(crossings, curx, cury, movx, movy);
+						if (crossings == GeomConstants.SHAPE_INTERSECTS) {
+							result.set(shadow.getClosestPointInOtherShape());
+							return true;
+						}
+					}
+					curx = movx;
+					cury = movy;
+					break;
+				case QUAD_TO:
+					final var subpath0 = factory.newPath(pi.getWindingRule());
+					subpath0.moveTo(pathElement.getFromX(), pathElement.getFromY());
+					subpath0.quadTo(
+							pathElement.getCtrlX1(), pathElement.getCtrlY1(),
+							pathElement.getToX(), pathElement.getToY());
+					iterators.push(subpath0.getFlatteningPathIterator());
+					break;
+				case CURVE_TO:
+					final var subpath1 = factory.newPath(pi.getWindingRule());
+					subpath1.moveTo(pathElement.getFromX(), pathElement.getFromY());
+					subpath1.curveTo(
+							pathElement.getCtrlX1(), pathElement.getCtrlY1(),
+							pathElement.getCtrlX2(), pathElement.getCtrlY2(),
+							pathElement.getToX(), pathElement.getToY());
+					iterators.push(subpath1.getFlatteningPathIterator());
+					break;
+				case ARC_TO:
+					final var subpath2 = factory.newPath(pi.getWindingRule());
+					subpath2.moveTo(pathElement.getFromX(), pathElement.getFromY());
+					subpath2.arcTo(
+							pathElement.getToX(), pathElement.getToY(),
+							pathElement.getRadiusX(), pathElement.getRadiusY(),
+							pathElement.getRotationX(), pathElement.getLargeArcFlag(),
+							pathElement.getSweepFlag());
+					iterators.push(subpath2.getFlatteningPathIterator());
+					break;
+				default:
+					throw new IllegalArgumentException();
 				}
-				curx = movx;
-				cury = movy;
-				break;
-				//$CASES-OMITTED$
-			default:
-				throw new IllegalArgumentException();
+			} else {
+				iterators.pop();
 			}
 		}
 		if (curx == movx && cury == movy) {
@@ -541,9 +598,6 @@ public interface Path2afp<
 
 	/** Replies the point on the path that is farthest to the given point.
 	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
-	 * {@code false}. {@link #getFarthestPointTo(Point2D)} avoids this restriction.
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
@@ -553,30 +607,62 @@ public interface Path2afp<
 	static void findsFarthestPointPathIteratorPoint(PathIterator2afp<? extends PathElement2afp> pi, double x,
 			double y, Point2D<?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		assert result != null : AssertMessages.notNullParameter(3);
 		var bestDist = Double.NEGATIVE_INFINITY;
 		PathElement2afp pe;
 		final var point = new InnerComputationPoint2D();
-		while (pi.hasNext()) {
-			pe = pi.next();
-			switch (pe.getType()) {
-			case MOVE_TO:
-				break;
-			case LINE_TO:
-			case CLOSE:
-				Segment2afp.findsFarthestPointSegmentPoint(
-						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
-						x, y, point);
-				final var d = Point2D.getDistanceSquaredPointPoint(x, y, point.getX(), point.getY());
-				if (d > bestDist) {
-					bestDist = d;
-					result.set(point.getX(), point.getY());
+		final var iterators = new ArrayDeque<PathIterator2afp<? extends PathElement2afp>>(2);
+		iterators.push(pi);
+		final var factory = pi.getGeomFactory();
+		while (!iterators.isEmpty()) {
+			if (iterators.getFirst().hasNext()) {
+				pe = iterators.getFirst().next();
+				switch (pe.getType()) {
+				case MOVE_TO:
+					break;
+				case LINE_TO:
+				case CLOSE:
+					Segment2afp.findsFarthestPointSegmentPoint(
+							pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
+							x, y, point);
+					final var d = Point2D.getDistanceSquaredPointPoint(x, y, point.getX(), point.getY());
+					if (d > bestDist) {
+						bestDist = d;
+						result.set(point.getX(), point.getY());
+					}
+					break;
+				case QUAD_TO:
+					final var subpath0 = factory.newPath(pi.getWindingRule());
+					subpath0.moveTo(pe.getFromX(), pe.getFromY());
+					subpath0.quadTo(
+							pe.getCtrlX1(), pe.getCtrlY1(),
+							pe.getFromX(), pe.getFromY());
+					iterators.push(subpath0.getFlatteningPathIterator());
+					break;
+				case CURVE_TO:
+					final var subpath1 = factory.newPath(pi.getWindingRule());
+					subpath1.moveTo(pe.getFromX(), pe.getFromY());
+					subpath1.curveTo(
+							pe.getCtrlX1(), pe.getCtrlY1(),
+							pe.getCtrlX2(), pe.getCtrlY2(),
+							pe.getFromX(), pe.getFromY());
+					iterators.push(subpath1.getFlatteningPathIterator());
+					break;
+				case ARC_TO:
+					final var subpath2 = factory.newPath(pi.getWindingRule());
+					subpath2.moveTo(pe.getFromX(), pe.getFromY());
+					subpath2.arcTo(
+							pe.getToX(), pe.getToY(),
+							pe.getRadiusX(), pe.getRadiusY(),
+							pe.getRotationX(), pe.getLargeArcFlag(),
+							pe.getSweepFlag());
+					iterators.push(subpath2.getFlatteningPathIterator());
+					break;
+				default:
+					throw new IllegalStateException(pe.getType().toString());
 				}
-				break;
-				//$CASES-OMITTED$
-			default:
-				throw new IllegalStateException(pe.getType().toString());
+			} else {
+				iterators.pop();
 			}
 		}
 	}

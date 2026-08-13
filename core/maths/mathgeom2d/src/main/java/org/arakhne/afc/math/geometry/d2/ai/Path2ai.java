@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -1548,11 +1549,6 @@ public interface Path2ai<
 
 	/** Replies the point on the path of pi that is closest to the given shape.
 	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator2D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param shape the shape to which the closest point must be computed.
 	 * @param result the closest point on pi.
@@ -1565,13 +1561,12 @@ public interface Path2ai<
 			PathIterator2ai<? extends PathElement2ai> shape, Point2D<?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert shape != null : AssertMessages.notNullParameter(1);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		assert result != null : AssertMessages.notNullParameter(2);
 		if (!pi.hasNext() || !shape.hasNext()) {
 			return false;
 		}
-		var pathElement1 = pi.next();
-		if (pathElement1.getType() != PathElementType.MOVE_TO) {
+		var pathElement = pi.next();
+		if (pathElement.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		if (shape.next().getType() != PathElementType.MOVE_TO) {
@@ -1584,46 +1579,79 @@ public interface Path2ai<
 		calculatesDrawableElementBoundingBox(shape.restartIterations(), box);
 		final var shadow = new ClosestPointPathShadow2ai(shape.restartIterations(), box);
 		var crossings = 0;
-		var curx = pathElement1.getToX();
+		var curx = pathElement.getToX();
 		var movx = curx;
-		var cury = pathElement1.getToY();
+		var cury = pathElement.getToY();
 		var movy = cury;
 		int endx;
 		int endy;
-		while (pi.hasNext()) {
-			pathElement1 = pi.next();
-			switch (pathElement1.getType()) {
-			case MOVE_TO:
-				movx = pathElement1.getToX();
-				curx = movx;
-				movy = pathElement1.getToY();
-				cury = movy;
-				break;
-			case LINE_TO:
-				endx = pathElement1.getToX();
-				endy = pathElement1.getToY();
-				crossings = shadow.computeCrossings(crossings, curx, cury, endx, endy);
-				if (crossings == GeomConstants.SHAPE_INTERSECTS) {
-					result.set(shadow.getClosestPointInOtherShape());
-					return true;
-				}
-				curx = endx;
-				cury = endy;
-				break;
-			case CLOSE:
-				if (curx != movx || cury != movy) {
-					crossings = shadow.computeCrossings(crossings, curx, cury, movx, movy);
+		final var iterators = new ArrayDeque<PathIterator2ai<? extends PathElement2ai>>(2);
+		iterators.push(pi);
+		final var factory = pi.getGeomFactory();
+		while (!iterators.isEmpty()) {
+			if (iterators.getFirst().hasNext()) {
+				pathElement = iterators.getFirst().next();
+				switch (pathElement.getType()) {
+				case MOVE_TO:
+					movx = pathElement.getToX();
+					curx = movx;
+					movy = pathElement.getToY();
+					cury = movy;
+					break;
+				case LINE_TO:
+					endx = pathElement.getToX();
+					endy = pathElement.getToY();
+					crossings = shadow.computeCrossings(crossings, curx, cury, endx, endy);
 					if (crossings == GeomConstants.SHAPE_INTERSECTS) {
 						result.set(shadow.getClosestPointInOtherShape());
 						return true;
 					}
+					curx = endx;
+					cury = endy;
+					break;
+				case CLOSE:
+					if (curx != movx || cury != movy) {
+						crossings = shadow.computeCrossings(crossings, curx, cury, movx, movy);
+						if (crossings == GeomConstants.SHAPE_INTERSECTS) {
+							result.set(shadow.getClosestPointInOtherShape());
+							return true;
+						}
+					}
+					curx = movx;
+					cury = movy;
+					break;
+				case QUAD_TO:
+					final var subpath0 = factory.newPath(pi.getWindingRule());
+					subpath0.moveTo(pathElement.getFromX(), pathElement.getFromY());
+					subpath0.quadTo(
+							pathElement.getCtrlX1(), pathElement.getCtrlY1(),
+							pathElement.getToX(), pathElement.getToY());
+					iterators.push(subpath0.getFlatteningPathIterator());
+					break;
+				case CURVE_TO:
+					final var subpath1 = factory.newPath(pi.getWindingRule());
+					subpath1.moveTo(pathElement.getFromX(), pathElement.getFromY());
+					subpath1.curveTo(
+							pathElement.getCtrlX1(), pathElement.getCtrlY1(),
+							pathElement.getCtrlX2(), pathElement.getCtrlY2(),
+							pathElement.getToX(), pathElement.getToY());
+					iterators.push(subpath1.getFlatteningPathIterator());
+					break;
+				case ARC_TO:
+					final var subpath2 = factory.newPath(pi.getWindingRule());
+					subpath2.moveTo(pathElement.getFromX(), pathElement.getFromY());
+					subpath2.arcTo(
+							pathElement.getToX(), pathElement.getToY(),
+							pathElement.getRadiusX(), pathElement.getRadiusY(),
+							pathElement.getRotationX(), pathElement.getLargeArcFlag(),
+							pathElement.getSweepFlag());
+					iterators.push(subpath2.getFlatteningPathIterator());
+					break;
+				default:
+					throw new IllegalArgumentException();
 				}
-				curx = movx;
-				cury = movy;
-				break;
-				//$CASES-OMITTED$
-			default:
-				throw new IllegalArgumentException();
+			} else {
+				iterators.pop();
 			}
 		}
 		if (curx == movx && cury == movy) {
