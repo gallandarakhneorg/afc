@@ -49,23 +49,23 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 			Q extends Quaternion<? super P, ? super V, ? super Q>>
 		extends AbstractMathTestCase {
 
-	protected GeomFactory3afp<?, ?, ?, ?, ?> factory;
+	protected static GeomFactory3afp<?, ?, ?, ?, ?> FACTORY;
 	
 	protected abstract GeomFactory3afp<?, ?, ?, ?, ?> createFactory();
 
 	@BeforeEach
 	public final void setUp() {
-		factory = createFactory();
+		FACTORY = createFactory();
 	}
 	
-	private Stream<Arguments> proposeArguments() {
+	private static Stream<Arguments> proposeArguments() {
 		final List<Arguments> args = new ArrayList<>();
 		for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
-			args.add(Arguments.of(cs, factory.newMovePathElement(3, 2, 1), PathElementType.MOVE_TO));
-			args.add(Arguments.of(cs, factory.newLinePathElement(6, 5, 4, 3, 2, 1), PathElementType.LINE_TO));
-			args.add(Arguments.of(cs, factory.newCurvePathElement(9, 8, 7, 6, 5, 4, 3, 2, 1), PathElementType.QUAD_TO));
-			args.add(Arguments.of(cs, factory.newCurvePathElement(12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1), PathElementType.CURVE_TO));
-			args.add(Arguments.of(cs, factory.newClosePathElement(6, 5, 4, 3, 2, 1), PathElementType.CLOSE));
+			args.add(Arguments.of(cs, FACTORY.newMovePathElement(3, 2, 1), PathElementType.MOVE_TO));
+			args.add(Arguments.of(cs, FACTORY.newLinePathElement(6, 5, 4, 3, 2, 1), PathElementType.LINE_TO));
+			args.add(Arguments.of(cs, FACTORY.newCurvePathElement(9, 8, 7, 6, 5, 4, 3, 2, 1), PathElementType.QUAD_TO));
+			args.add(Arguments.of(cs, FACTORY.newCurvePathElement(12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1), PathElementType.CURVE_TO));
+			args.add(Arguments.of(cs, FACTORY.newClosePathElement(6, 5, 4, 3, 2, 1), PathElementType.CLOSE));
 		}
 		return args.stream();
 	}
@@ -76,7 +76,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -110,7 +110,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -144,7 +144,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -178,7 +178,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(3, element.getToX());
@@ -191,7 +191,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -225,7 +225,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -259,7 +259,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -293,7 +293,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(2, element.getToY());
@@ -306,7 +306,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -340,7 +340,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -374,7 +374,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			switch (type) {
@@ -408,7 +408,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertEpsilonEquals(1, element.getToZ());
@@ -421,7 +421,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertSame(type, element.getType());
@@ -434,7 +434,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			if (type == PathElementType.MOVE_TO) {
@@ -451,7 +451,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			if (type == PathElementType.MOVE_TO) {
@@ -468,7 +468,7 @@ public abstract class AbstractPathElement3dTestCase<T extends PathElement3afp, P
 	
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0} - {2}")
-		@MethodSource("proposeArguments")
+		@MethodSource("org.arakhne.afc.math.geometry.d3.tests.afp.AbstractPathElement3dTestCase#proposeArguments")
 		public final void test_1(CoordinateSystem3D cs, PathElement3afp element, PathElementType type) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			final var arr = new double[12];

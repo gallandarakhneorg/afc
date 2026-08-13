@@ -96,26 +96,22 @@ public interface Path3afp<
 	/**
 	 * Replies the point on the path that is closest to the given point.
 	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 * {@link #getClosestPointTo(Point3D)}
-	 * avoids this restriction.
-	 *
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
 	 * @param z z coordinate of the point.
 	 * @param result the closest point on the shape; or the point itself if it is inside the shape. It cannot be {@code null}.
-	 * @throws IllegalStateException invalid move.
+	 * @return {@code true} if a distance could be computed.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
-	static void findsClosestPointToPoint(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z,
+	static boolean findsClosestPointToPoint(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z,
 			Point3D<?, ?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue("isCurved"); //$NON-NLS-1$
 		assert result != null : AssertMessages.notNullParameter(4);
 
+		final var factory = pi.getGeomFactory();
 		var bestDist = Double.POSITIVE_INFINITY;
+		var foundDistance = false;
 
 		while (pi.hasNext()) {
 			final var pe = pi.next();
@@ -126,12 +122,6 @@ public interface Path3afp<
 			var candidateZ = Double.NaN;
 
 			switch (pe.getType()) {
-			case MOVE_TO:
-				foundCandidate = true;
-				candidateX = pe.getToX();
-				candidateY = pe.getToY();
-				candidateZ = pe.getToZ();
-				break;
 			case LINE_TO:
 			case CLOSE:
 				var factor = Segment3afp.findsProjectedPointOnLine(
@@ -151,7 +141,43 @@ public interface Path3afp<
 				candidateY = pe.getFromY() + vy;
 				candidateZ = pe.getFromZ() + vz;
 				break;
-				//$CASES-OMITTED$
+			case QUAD_TO:
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(pe.getFromX(), pe.getFromY(), pe.getFromZ());
+				subpath0.quadTo(
+						pe.getCtrlX1(), pe.getCtrlY1(), pe.getCtrlZ1(),
+						pe.getToX(), pe.getToY(), pe.getToZ());
+				final var result0 = factory.newPoint();
+				if (findsClosestPointToPoint(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						x, y, z, result0)) {
+					foundCandidate = true;
+					candidateX = result0.getX();
+					candidateY = result0.getY();
+					candidateZ = result0.getZ();
+				}
+				break;
+			case CURVE_TO:
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(pe.getFromX(), pe.getFromY(), pe.getFromZ());
+				subpath1.curveTo(
+						pe.getCtrlX1(), pe.getCtrlY1(), pe.getCtrlZ1(),
+						pe.getCtrlX2(), pe.getCtrlY2(), pe.getCtrlZ2(),
+						pe.getToX(), pe.getToY(), pe.getToZ());
+				final var result1 = factory.newPoint();
+				if (findsClosestPointToPoint(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						x, y, z, result1)) {
+					foundCandidate = true;
+					candidateX = result1.getX();
+					candidateY = result1.getY();
+					candidateZ = result1.getZ();
+				}
+				break;
+			case MOVE_TO:
+				// Ignore because not visible
+				break;
+			case ARC_TO:
 			default:
 				throw new IllegalStateException(pe.getType().toString());
 			}
@@ -161,24 +187,21 @@ public interface Path3afp<
 				if (d < bestDist) {
 					bestDist = d;
 					result.set(candidateX, candidateY, candidateZ);
+					foundDistance = true;
 				}
 			}
 		}
+		return foundDistance;
 	}
 
 	/** Replies the point on the path of pi that is closest to the given shape.
-	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
 	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param shape the shape to which the closest point must be computed.
 	 * @param result the closest point on pi. It cannot be {@code null}.
 	 * @return {@code true} if a point was found. Otherwise {@code false}.
 	 * @throws IllegalArgumentException if the path is malformed.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 * @deprecated since 18.0, use the function with more arguments.
 	 */
 	@Unefficient
@@ -191,26 +214,19 @@ public interface Path3afp<
 	/** Replies the point on the first path, represented by a path iterator, that is closest to the given
 	 * shape, represented by a path iterator.
 	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
-	 *
 	 * @param firstPath is the iterator of path elements, on one of which the closest point is located.
 	 * @param secondPath the path iterator for the second shape to which the closest point must be computed.
-	 * @param result1 the closest point on {@code firstPath}. It cannot be {@code null}.
+	 * @param result1 the closest point on {@code firstPath}. It can be {@code null}.
 	 * @param result2 the closest point on {@code secondPath}.  It can be {@code null}.
 	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	@Unefficient
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	static boolean findsClosestPointToPath(PathIterator3afp<? extends PathElement3afp> firstPath,
 			PathIterator3afp<? extends PathElement3afp> secondPath, Point3D<?, ?, ?> result1, Point3D<?, ?, ?> result2) {
 		assert firstPath != null : AssertMessages.notNullParameter(0);
 		assert secondPath != null : AssertMessages.notNullParameter(1);
-		assert !firstPath.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
-		assert !secondPath.isCurved() : AssertMessages.invalidTrueValue(1, "isCurved"); //$NON-NLS-1$
-		assert result1 != null : AssertMessages.notNullParameter(2);
 		if (!firstPath.hasNext()) {
 			return false;
 		}
@@ -226,6 +242,10 @@ public interface Path3afp<
 		var movy = cury;
 		var curz = pathElement.getToZ();
 		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = firstPath.getGeomFactory();
 		final var point1 = new InnerComputationPoint3D();
 		final var point2 = new InnerComputationPoint3D();
 		var foundPoint = false;
@@ -241,9 +261,9 @@ public interface Path3afp<
 				curz = movz;
 				break;
 			case LINE_TO:
-				final var endx = pathElement.getToX();
-				final var endy = pathElement.getToY();
-				final var endz = pathElement.getToZ();
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				if (findsClosestPointToSegment(
 						secondPath.restartIterations(),
 						curx, cury, curz, endx, endy, endz,
@@ -253,7 +273,9 @@ public interface Path3afp<
 							point2.getX(), point2.getY(), point2.getZ());
 					if (dist < bestDistance) {
 						bestDistance = dist;
-						result1.set(point2);
+						if (result1 != null) {
+							result1.set(point2);
+						}
 						if (result2 != null) {
 							result2.set(point1);
 						}
@@ -274,7 +296,9 @@ public interface Path3afp<
 								point2.getX(), point2.getY(), point2.getZ());
 						if (dist < bestDistance) {
 							bestDistance = dist;
-							result1.set(point2);
+							if (result1 != null) {
+								result1.set(point2);
+							}
 							if (result2 != null) {
 								result2.set(point1);
 							}
@@ -286,24 +310,72 @@ public interface Path3afp<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
 			case QUAD_TO:
-			case CURVE_TO:
-			default:
-				assert false : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				if (findsClosestPointToPath(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						secondPath.restartIterations(), point1, point2)) {
+					final var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
 				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				if (findsClosestPointToPath(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						secondPath.restartIterations(), point1, point2)) {
+					final var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
 			}
 		}
 		return foundPoint;
 	}
 
 	/** Replies the point on the path of pi that is closest to the given segment.
-	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
 	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param x1 the x coordinate of the first point of the segment.
@@ -315,6 +387,7 @@ public interface Path3afp<
 	 * @param result the closest point on pi. It cannot be {@code null}.
 	 * @return {@code true} if a point was found. Otherwise {@code false}.
 	 * @throws IllegalArgumentException if the path is malformed.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 * @deprecated since 18.0, use the function with more arguments.
 	 */
 	@Unefficient
@@ -326,12 +399,6 @@ public interface Path3afp<
 
 	/** Replies the point on the path of pi that is closest to the given segment.
 	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
-	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param x1 the x coordinate of the first point of the segment.
 	 * @param y1 the y coordinate of the first point of the segment.
@@ -342,14 +409,14 @@ public interface Path3afp<
 	 * @param result1 the closest point on pi. It can be {@code null}.
 	 * @param result2 the closest point on the segment. It can be {@code null}.
 	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	@Unefficient
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
 	static boolean findsClosestPointToSegment(PathIterator3afp<? extends PathElement3afp> pi,
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			Point3D<?, ?, ?> result1, Point3D<?, ?, ?> result2) {
 		assert pi != null : AssertMessages.notNullParameter(0);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		assert result1 != null || result2 != null : AssertMessages.notNullParameter(2);
 		if (!pi.hasNext()) {
 			return false;
@@ -366,6 +433,10 @@ public interface Path3afp<
 		var movy = cury;
 		var curz = pathElement.getToZ();
 		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = pi.getGeomFactory();
 		final var point1 = new InnerComputationPoint3D();
 		final var point2 = new InnerComputationPoint3D();
 		var foundPoint = false;
@@ -381,9 +452,9 @@ public interface Path3afp<
 				curz = movz;
 				break;
 			case LINE_TO:
-				final var endx = pathElement.getToX();
-				final var endy = pathElement.getToY();
-				final var endz = pathElement.getToZ();
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				Segment3afp.findsClosestPointToSegment(
 						curx, cury, curz, endx, endy, endz,
 						x1, y1, z1, x2, y2, z2,
@@ -427,24 +498,74 @@ public interface Path3afp<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
 			case QUAD_TO:
-			case CURVE_TO:
-			default:
-				assert false : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				if (findsClosestPointToSegment(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						x1, y1, z1, x2, y2, z2,
+						point1, point2)) {
+					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
 				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				if (findsClosestPointToSegment(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						x1, y1, z1, x2, y2, z2,
+						point1, point2)) {
+					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
 			}
 		}
 		return foundPoint;
 	}
 
 	/** Replies the point on the path of pi that is closest to the given aligned box.
-	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.base.d3.Shape3D)} avoids this restriction.
 	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param rminx the minimum x coordinate of the aligned box.
@@ -453,17 +574,17 @@ public interface Path3afp<
 	 * @param rmaxx the maximum x coordinate of the aligned box.
 	 * @param rmaxy the maximum y coordinate of the aligned box.
 	 * @param rmaxz the maximum z coordinate of the aligned box.
-	 * @param result the closest point on pi. It cannot be {@code null}.
+	 * @param resultOnPath the closest point on the path. It can be {@code null}.
+	 * @param resultOnBox the closest point on the box. It can be {@code null}.
 	 * @return {@code true} if a point was found. Otherwise {@code false}.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	@Unefficient
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
 	static boolean findsClosestPointToPathIteratorAlignedBox(PathIterator3afp<? extends PathElement3afp> pi,
 			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
-			Point3D<?, ?, ?> result) {
+			Point3D<?, ?, ?> resultOnPath, Point3D<?, ?, ?> resultOnBox) {
 		assert pi != null : AssertMessages.notNullParameter(0);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
-		assert result != null : AssertMessages.notNullParameter(2);
 		if (!pi.hasNext()) {
 			return false;
 		}
@@ -479,6 +600,10 @@ public interface Path3afp<
 		var movy = cury;
 		var curz = pathElement.getToZ();
 		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = pi.getGeomFactory();
 		final var pointOnPath = new InnerComputationPoint3D();
 		final var pointOnBox = new InnerComputationPoint3D();
 		var foundPoint = false;
@@ -494,9 +619,9 @@ public interface Path3afp<
 				curz = movz;
 				break;
 			case LINE_TO:
-				final var endx = pathElement.getToX();
-				final var endy = pathElement.getToY();
-				final var endz = pathElement.getToZ();
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
 						rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
 						curx, cury, curz, endx, endy, endz,
@@ -505,7 +630,12 @@ public interface Path3afp<
 						pointOnBox.getX(), pointOnBox.getY(), pointOnBox.getZ());
 				if (dist < bestDistance) {
 					bestDistance = dist;
-					result.set(pointOnPath);
+					if (resultOnPath != null) {
+						resultOnPath.set(pointOnPath);
+					}
+					if (resultOnBox != null) {
+						resultOnBox.set(pointOnBox);
+					}
 					foundPoint = true;
 				}
 				curx = endx;
@@ -522,7 +652,12 @@ public interface Path3afp<
 							pointOnBox.getX(), pointOnBox.getY(), pointOnBox.getZ());
 					if (dist < bestDistance) {
 						bestDistance = dist;
-						result.set(pointOnPath);
+						if (resultOnPath != null) {
+							resultOnPath.set(pointOnPath);
+						}
+						if (resultOnBox != null) {
+							resultOnBox.set(pointOnBox);
+						}
 						foundPoint = true;
 					}
 				}
@@ -530,12 +665,68 @@ public interface Path3afp<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
 			case QUAD_TO:
-			case CURVE_TO:
-			default:
-				assert false : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				if (findsClosestPointToPathIteratorAlignedBox(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
+						pointOnPath, pointOnBox)) {
+					dist = Point3D.getDistanceSquaredPointPoint(pointOnPath.getX(), pointOnPath.getY(), pointOnPath.getZ(),
+							pointOnBox.getX(), pointOnBox.getY(), pointOnBox.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (resultOnPath != null) {
+							resultOnPath.set(pointOnPath);
+						}
+						if (resultOnBox != null) {
+							resultOnBox.set(pointOnBox);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
 				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				if (findsClosestPointToPathIteratorAlignedBox(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
+						pointOnPath, pointOnBox)) {
+					dist = Point3D.getDistanceSquaredPointPoint(pointOnPath.getX(), pointOnPath.getY(), pointOnPath.getZ(),
+							pointOnBox.getX(), pointOnBox.getY(), pointOnBox.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (resultOnPath != null) {
+							resultOnPath.set(pointOnPath);
+						}
+						if (resultOnBox != null) {
+							resultOnBox.set(pointOnBox);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
 			}
 		}
 		return foundPoint;
@@ -546,10 +737,12 @@ public interface Path3afp<
 	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final var point = getGeomFactory().newPoint();
-		Path3afp.findsClosestPointToPoint(getPathIterator(
+		if (Path3afp.findsClosestPointToPoint(getPathIterator(
 				getGeomFactory().getSplineApproximationRatio()), pt.getX(), pt.getY(), pt.getZ(),
-				point);
-		return point;
+				point)) {
+			return point;
+		}
+		return null;
 	}
 
 	@Pure
@@ -557,33 +750,27 @@ public interface Path3afp<
 	@Override
 	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		final var result = getGeomFactory().newPoint();
-		if (isCurved()) {
-			Path3afp.findsClosestPointToPoint(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
-					sphere.getCenterX(), sphere.getCenterY(), sphere.getCenterZ(), result);
-		} else {
-			Path3afp.findsClosestPointToPoint(getPathIterator(),
-					sphere.getCenterX(), sphere.getCenterY(), sphere.getCenterZ(), result);
+		if (Path3afp.findsClosestPointToPoint(getPathIterator(),
+				sphere.getX(), sphere.getY(), sphere.getZ(), result)) {
+			return result;
 		}
-		return result;
+		return null;
 	}
 
 	@Pure
 	@Unefficient
 	@Override
 	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> alignedBox) {
-		final PathIterator3afp<?> iterator;
-		if (isCurved()) {
-			iterator = getPathIterator(getGeomFactory().getSplineApproximationRatio());
-		} else {
-			iterator = getPathIterator();
-		}
 		final var result = getGeomFactory().newPoint();
-		Path3afp.findsClosestPointToPathIteratorAlignedBox(
-				iterator,
+		if (Path3afp.findsClosestPointToPathIteratorAlignedBox(
+				getPathIterator(),
 				alignedBox.getMinX(), alignedBox.getMinY(), alignedBox.getMinZ(),
 				alignedBox.getMaxX(), alignedBox.getMaxY(), alignedBox.getMaxZ(),
-				result);
-		return result;
+				result,
+				null)) {
+			return result;
+		}
+		return null;
 	}
 
 	@Pure
@@ -591,18 +778,14 @@ public interface Path3afp<
 	@Override
 	default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		final PathIterator3afp<?> iterator;
-		if (isCurved()) {
-			iterator = getPathIterator(getGeomFactory().getSplineApproximationRatio());
-		} else {
-			iterator = getPathIterator();
-		}
 		final var result = getGeomFactory().newPoint();
-		Path3afp.findsClosestPointToSegment(iterator,
+		if (Path3afp.findsClosestPointToSegment(getPathIterator(),
 				segment.getX1(), segment.getY1(), segment.getZ1(),
 				segment.getX2(), segment.getY2(), segment.getZ2(),
-				result, null);
-		return result;
+				result, null)) {
+			return result;
+		}
+		return null;
 	}
 
 	@Pure
@@ -610,45 +793,31 @@ public interface Path3afp<
 	@Override
 	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
-		final PathIterator3afp<?> i1;
-		if (isCurved()) {
-			i1 = getPathIterator(getGeomFactory().getSplineApproximationRatio());
-		} else {
-			i1 = getPathIterator();
-		}
-		final PathIterator3afp<?> i2;
-		if (path.isCurved()) {
-			i2 = path.getPathIterator(path.getGeomFactory().getSplineApproximationRatio());
-		} else {
-			i2 = path.getPathIterator();
-		}
 		final var result = getGeomFactory().newPoint();
-		Path3afp.findsClosestPointToPath(i1, i2, result, null);
-		return result;
+		if (Path3afp.findsClosestPointToPath(getPathIterator(), path.getPathIterator(), result, null)) {
+			return result;
+		}
+		return null;
 	}
 
 	/**
 	 * Replies the point on the path that is farthest to the given point.
-	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi}  is replying {@code false}. {@link #getFarthestPointTo(Point3D)}
-	 * avoids this restriction.
 	 *
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
 	 * @param z z coordinate of the point.
 	 * @param result the farthest point on the shape. It cannot be {@code null}.
-	 * @throws IllegalStateException invalid move.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	static void findsFarthestPointToPoint(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z,
 			Point3D<?, ?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue("isCurved"); //$NON-NLS-1$
 		assert result != null : AssertMessages.notNullParameter(4);
 		var bestDist = Double.NEGATIVE_INFINITY;
 
 		// Only for internal use.
+		final var factory = pi.getGeomFactory();
 		final var point = new InnerComputationPoint3D();
 
 		while (pi.hasNext()) {
@@ -667,7 +836,38 @@ public interface Path3afp<
 					result.set(point.getX(), point.getY(), point.getZ());
 				}
 				break;
-				//$CASES-OMITTED$
+			case QUAD_TO:
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(pe.getFromX(), pe.getFromY(), pe.getFromZ());
+				subpath0.quadTo(
+						pe.getCtrlX1(), pe.getCtrlY1(), pe.getCtrlZ1(),
+						pe.getToX(), pe.getToY(), pe.getToZ());
+				findsFarthestPointToPoint(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						x, y, z, point);
+				final var d0 = Point3D.getDistanceSquaredPointPoint(x, y, z, point.getX(), point.getY(), point.getZ());
+				if (d0 > bestDist) {
+					bestDist = d0;
+					result.set(point.getX(), point.getY(), point.getZ());
+				}
+				break;
+			case CURVE_TO:
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(pe.getFromX(), pe.getFromY(), pe.getFromZ());
+				subpath1.curveTo(
+						pe.getCtrlX1(), pe.getCtrlY1(), pe.getCtrlZ1(),
+						pe.getCtrlX2(), pe.getCtrlY2(), pe.getCtrlZ2(),
+						pe.getToX(), pe.getToY(), pe.getToZ());
+				findsFarthestPointToPoint(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						x, y, z, point);
+				final var d1 = Point3D.getDistanceSquaredPointPoint(x, y, z, point.getX(), point.getY(), point.getZ());
+				if (d1 > bestDist) {
+					bestDist = d1;
+					result.set(point.getX(), point.getY(), point.getZ());
+				}
+				break;
+			case ARC_TO:
 			default:
 				throw new IllegalStateException(pe.getType().toString());
 			}
@@ -689,12 +889,6 @@ public interface Path3afp<
 	 * Tests if the of the specified {@link PathIterator3afp} intersects the specified set of rectangular
 	 * coordinates.
 	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 * {@link #intersects(Segment3afp)} avoids this restriction.
-	 *
 	 * @param pi the specified {@link PathIterator3afp}.
 	 * @param rminx the minimum x coordinate of the aligned box.
 	 * @param rminy the minimum y coordinate of the aligned box.
@@ -705,13 +899,13 @@ public interface Path3afp<
 	 * @param epsilon the approximation distance to be used for the test.
 	 * @return {@code true} if the specified {@link PathIterator3afp} and the interior of the specified set of rectangular
 	 *         coordinates intersect each other; {@code false} otherwise.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	static boolean intersectsPathIteratorAlignedBox(PathIterator3afp<? extends PathElement3afp> pi,
 			double rminx, double rminy, double rminz,
 			double rmaxx, double rmaxy, double rmaxz,
 			double epsilon) {
 		assert pi != null : AssertMessages.notNullParameter(0);
-		assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(7);
 		if (!pi.hasNext()) {
 			return false;
@@ -727,6 +921,10 @@ public interface Path3afp<
 		var movy = cury;
 		var curz = pathElement.getToZ();
 		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = pi.getGeomFactory();
 		while (pi.hasNext()) {
 			pathElement = pi.next();
 			switch (pathElement.getType()) {
@@ -739,9 +937,9 @@ public interface Path3afp<
 				curz = movz;
 				break;
 			case LINE_TO:
-				final var endx = pathElement.getToX();
-				final var endy = pathElement.getToY();
-				final var endz = pathElement.getToZ();
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				if (AlignedBox3afp.intersectsAlignedBoxSegment(
 						rminx, rminy, rminz, rmaxx, rmaxy, rmaxz,
 						curx, cury, curz, endx, endy, endz)) {
@@ -763,12 +961,166 @@ public interface Path3afp<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
 			case QUAD_TO:
-			case CURVE_TO:
-			default:
-				assert false : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+				if (intersectsPathIteratorAlignedBox(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						rminx, rminy, rminz, rmaxx, rmaxy, rmaxz, epsilon)) {
+					return true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
 				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				if (intersectsPathIteratorAlignedBox(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						rminx, rminy, rminz, rmaxx, rmaxy, rmaxz, epsilon)) {
+					return true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Tests if the of the specified {@link PathIterator3afp} intersects the specified sphere.
+	 *
+	 * @param pi the specified {@link PathIterator3afp}.
+	 * @param x rmaxz the x coordinate of the sphere center.
+	 * @param y the y coordinate of the sphere center.
+	 * @param z the z coordinate of the sphere center.
+	 * @param radius the radius of the sphere.
+	 * @param epsilon the approximation distance to be used for the test.
+	 * @return {@code true} if the specified {@link PathIterator3afp} and the interior of the specified sphere
+	 *         coordinates intersect each other; {@code false} otherwise.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
+	 */
+	static boolean intersectsPathIteratorSphere(PathIterator3afp<? extends PathElement3afp> pi,
+			double x, double y, double z, double radius, double epsilon) {
+		assert pi != null : AssertMessages.notNullParameter(0);
+		assert radius >= 0. : AssertMessages.positiveOrZeroParameter(7);
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(8);
+		if (!pi.hasNext()) {
+			return false;
+		}
+		var pathElement = pi.next();
+		assert pathElement.getType() == PathElementType.MOVE_TO : AssertMessages.invalidValue(0);
+		if (!pi.hasNext()) {
+			return false;
+		}
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var curz = pathElement.getToZ();
+		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = pi.getGeomFactory();
+		final var squaredEpsilon = epsilon * epsilon;
+		while (pi.hasNext()) {
+			pathElement = pi.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
+				movz = pathElement.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var dist0 = Segment3afp.calculatesDistanceSquaredSegmentPoint(
+						curx, cury, curz, endx, endy, endz,
+						x, y, z) - radius;
+				if (dist0 <= squaredEpsilon) {
+					return true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					final var dist1 = Segment3afp.calculatesDistanceSquaredSegmentPoint(
+							curx, cury, curz, movx, movy, movz,
+							x, y, z) - radius;
+					if (dist1 <= squaredEpsilon) {
+						return true;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+				if (intersectsPathIteratorSphere(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						x, y, z, radius, epsilon)) {
+					return true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				if (intersectsPathIteratorSphere(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						x, y, z, radius, epsilon)) {
+					return true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
 			}
 		}
 		return false;
@@ -776,13 +1128,8 @@ public interface Path3afp<
 
 	/**
 	 * Calculates the squared distance from the {@link PathIterator3afp} to
-	 * the segment.
+	 * the aligned box.
 	 * Only the visible components of the path are considered in the intersection test.
-	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
 	 *
 	 * @param path the path iterator.
 	 * @param x1 x coordinate of the first point of the segment.
@@ -792,12 +1139,12 @@ public interface Path3afp<
 	 * @param y2 y coordinate of the second point of the segment.
 	 * @param z2 z coordinate of the second point of the segment.
 	 * @return the distance, or {@link Double#NaN} if the distance cannot be computed.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	@Unefficient
 	static double calculatesDistanceSquaredPathIteratorSegment(PathIterator3afp<? extends PathElement3afp> path,
 			double x1, double y1, double z1, double x2, double y2, double z2) {
 		assert path != null : AssertMessages.notNullParameter(0);
-		assert !path.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		if (!path.hasNext()) {
 			return Double.NaN;
 		}
@@ -812,6 +1159,10 @@ public interface Path3afp<
 		var movy = cury;
 		var curz = pathElement.getToZ();
 		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = path.getGeomFactory();
 		var bestDistance = Double.POSITIVE_INFINITY;
 		while (path.hasNext()) {
 			pathElement = path.next();
@@ -825,9 +1176,9 @@ public interface Path3afp<
 				curz = movz;
 				break;
 			case LINE_TO:
-				final var endx = pathElement.getToX();
-				final var endy = pathElement.getToY();
-				final var endz = pathElement.getToZ();
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				final var dist0 = Segment3afp.calculatesDistanceSquaredSegmentSegment(
 						x1, y1, z1, x2, y2, z2, curx, cury, curz, endx, endy, endz);
 				if (dist0 < bestDistance) {
@@ -849,12 +1200,203 @@ public interface Path3afp<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
 			case QUAD_TO:
-			case CURVE_TO:
-			default:
-				assert false : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				final var dist2 = calculatesDistanceSquaredPathIteratorSegment(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						x1, y1, z1, x2, y2, z2);
+				if (dist2 < bestDistance) {
+					bestDistance = dist2;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
 				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				final var dist3 = calculatesDistanceSquaredPathIteratorSegment(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						x1, y1, z1, x2, y2, z2);
+				if (dist3 < bestDistance) {
+					bestDistance = dist3;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
+			}
+		}
+		if (Double.isInfinite(bestDistance)) {
+			return Double.NaN;
+		}
+		return bestDistance;
+	}
+
+	/**
+	 * Replies if the {@link PathIterator3afp} is intersecting the
+	 * the segment.
+	 * Only the visible components of the path are considered in the intersection test.
+	 *
+	 * @param path the path iterator.
+	 * @param x1 x coordinate of the first point of the segment.
+	 * @param y1 y coordinate of the first point of the segment.
+	 * @param z1 z coordinate of the first point of the segment.
+	 * @param x2 x coordinate of the second point of the segment.
+	 * @param y2 y coordinate of the second point of the segment.
+	 * @param z2 z coordinate of the second point of the segment.
+	 * @return {@code true} if the intersection exists.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
+	 */
+	@Unefficient
+	static boolean intersectsPathIteratorSegment(PathIterator3afp<? extends PathElement3afp> path,
+			double x1, double y1, double z1, double x2, double y2, double z2) {
+		assert path != null : AssertMessages.notNullParameter(0);
+		final var distance = calculatesDistanceSquaredPathIteratorSegment(
+				path, x1, y1, z1, x2, y2, z2);
+		return !Double.isNaN(distance) && distance <= DEFAULT_INTERSECTION_EPSILON;
+	}
+
+	/**
+	 * Calculates the squared distance from the {@link PathIterator3afp} to
+	 * the sphere.
+	 * Only the visible components of the path are considered in the intersection test.
+	 *
+	 * @param path the path iterator.
+	 * @param x the x coordinate of the sphere center.
+	 * @param y the y coordinate of the sphere center.
+	 * @param z the z coordinate of the sphere center.
+	 * @param radius the radius of the sphere.
+	 * @return the distance, or {@link Double#NaN} if the distance cannot be computed.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
+	 */
+	@Unefficient
+	static double calculatesDistanceSquaredPathIteratorSphere(PathIterator3afp<? extends PathElement3afp> path,
+			double x, double y, double z, double radius) {
+		assert path != null : AssertMessages.notNullParameter(0);
+		assert radius >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		if (!path.hasNext()) {
+			return Double.NaN;
+		}
+		var pathElement = path.next();
+		assert pathElement.getType() == PathElementType.MOVE_TO : AssertMessages.invalidValue(0);
+		if (!path.hasNext()) {
+			return Double.NaN;
+		}
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var curz = pathElement.getToZ();
+		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = path.getGeomFactory();
+		var bestDistance = Double.POSITIVE_INFINITY;
+		while (path.hasNext()) {
+			pathElement = path.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
+				movz = pathElement.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				var dist0 = Segment3afp.calculatesDistanceSegmentPoint(
+						curx, cury, curz, endx, endy, endz, x, y, z);
+				if (dist0 <= radius) {
+					dist0 = 0.;
+				} else {
+					dist0 -= radius;
+					dist0 = dist0 * dist0;
+				}
+				if (dist0 < bestDistance) {
+					bestDistance = dist0;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					var dist1 = Segment3afp.calculatesDistanceSegmentPoint(
+							curx, cury, curz, movx, movy, movz, x, y, z);
+					if (dist1 <= radius) {
+						dist1 = 0.;
+					} else {
+						dist1 -= radius;
+						dist1 = dist1 * dist1;
+					}
+					if (dist1 < bestDistance) {
+						bestDistance = dist1;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				final var dist2 = calculatesDistanceSquaredPathIteratorSphere(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						x, y, z, radius);
+				if (dist2 < bestDistance) {
+					bestDistance = dist2;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				final var dist3 = calculatesDistanceSquaredPathIteratorSphere(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						x, y, z, radius);
+				if (dist3 < bestDistance) {
+					bestDistance = dist3;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
 			}
 		}
 		if (Double.isInfinite(bestDistance)) {
@@ -868,23 +1410,17 @@ public interface Path3afp<
 	 * the second {@link PathIterator3afp}.
 	 * Only the visible components of the path are considered in the intersection test.
 	 *
-	 * <p><strong>CAUTION:</strong> This function works only on path iterators
-	 * that are replying not-curved primitives, ie. if the
-	 * {@link PathIterator3D#isCurved()} of {@code pi} is replying
-	 * {@code false}.
-	 *
 	 * @param firstPath the first path iterator.
 	 * @param secondPath the second path iterator.
 	 * @return the distance, or {@link Double#NaN} if the distance cannot be computed.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	@Unefficient
 	static double calculatesDistanceSquaredPathIteratorPathIterator(
 			PathIterator3afp<? extends PathElement3afp> firstPath,
 			PathIterator3afp<? extends PathElement3afp> secondPath) {
 		assert firstPath != null : AssertMessages.notNullParameter(0);
-		assert !firstPath.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		assert secondPath != null : AssertMessages.notNullParameter(0);
-		assert !secondPath.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
 		if (!firstPath.hasNext()) {
 			return Double.NaN;
 		}
@@ -899,6 +1435,10 @@ public interface Path3afp<
 		var movy = cury;
 		var curz = pathElement.getToZ();
 		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = firstPath.getGeomFactory();
 		var bestDistance = Double.POSITIVE_INFINITY;
 		while (firstPath.hasNext()) {
 			pathElement = firstPath.next();
@@ -912,9 +1452,9 @@ public interface Path3afp<
 				curz = movz;
 				break;
 			case LINE_TO:
-				final var endx = pathElement.getToX();
-				final var endy = pathElement.getToY();
-				final var endz = pathElement.getToZ();
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				final var dist0 = calculatesDistanceSquaredPathIteratorSegment(
 						secondPath.restartIterations(), curx, cury, curz, endx, endy, endz);
 				if (dist0 < bestDistance) {
@@ -936,12 +1476,46 @@ public interface Path3afp<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
 			case QUAD_TO:
-			case CURVE_TO:
-			default:
-				assert false : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				final var dist2 = calculatesDistanceSquaredPathIteratorPathIterator(
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						secondPath.restartIterations());
+				if (dist2 < bestDistance) {
+					bestDistance = dist2;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
 				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				final var dist3 = calculatesDistanceSquaredPathIteratorPathIterator(
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						secondPath.restartIterations());
+				if (dist3 < bestDistance) {
+					bestDistance = dist3;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
 			}
 		}
 		if (Double.isInfinite(bestDistance)) {
@@ -960,6 +1534,7 @@ public interface Path3afp<
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
 	 * @return {@code true} if a drawable element was found.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 * @see #calculatesControlPointBoundingBox(PathIterator3afp, BoundsReceiver3D)
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
@@ -1079,8 +1654,12 @@ public interface Path3afp<
 						foundOneLine = true;
 					}
 					break;
-				default:
+				case MOVE_TO:
+				case CLOSE:
 					break;
+				case ARC_TO:
+				default:
+					throw new IllegalStateException(element.getType().toString());
 				}
 			}
 		}
@@ -1104,6 +1683,7 @@ public interface Path3afp<
 	 * @param box
 	 *            the box to set.
 	 * @return {@code true} if a control point was found.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 * @see #calculatesDrawableElementBoundingBox(PathIterator3afp, BoundsReceiver3D)
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
@@ -1291,8 +1871,13 @@ public interface Path3afp<
 				}
 				foundOneControlPoint = true;
 				break;
-				//$CASES-OMITTED$
+			case MOVE_TO:
+			case CLOSE:
+				// Ignore
+				break;
+			case ARC_TO:
 			default:
+				throw new IllegalStateException(element.getType().toString());
 			}
 		}
 		if (foundOneControlPoint) {
@@ -1306,9 +1891,9 @@ public interface Path3afp<
 	/**
 	 * Compute the total squared length of the path.
 	 *
-	 * @param iterator
-	 *            the iterator on the path elements.
+	 * @param iterator the iterator on the path elements.
 	 * @return the squared length of the path.
+	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	static double calculatesLength(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
@@ -1391,8 +1976,9 @@ public interface Path3afp<
 				cury = movy;
 				curz = movz;
 				break;
-				//$CASES-OMITTED$
+			case ARC_TO:
 			default:
+				throw new IllegalStateException(pathElement.getType().toString());
 			}
 
 		}
@@ -1647,7 +2233,6 @@ public interface Path3afp<
 	@Override
 	default boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
-		// Copied from AWT API
 		if (prism.isEmpty()) {
 			return false;
 		}
@@ -1657,25 +2242,28 @@ public interface Path3afp<
 
 	@Pure
 	@Override
+	@Unefficient
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
-		//TODO
-		return false;
+		final var distance = calculatesDistanceSquaredPathIteratorSphere(
+				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
+				sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
+		return !Double.isNaN(distance) && distance <= DEFAULT_INTERSECTION_EPSILON;
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		final var distance = calculatesDistanceSquaredPathIteratorSegment(
+		return intersectsPathIteratorSegment(
 				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 				segment.getX1(), segment.getY1(), segment.getZ1(),
 				segment.getX2(), segment.getY2(), segment.getZ2());
-		return !Double.isNaN(distance) && distance <= DEFAULT_INTERSECTION_EPSILON;
 	}
 
 	@Pure
 	@Override
+	@Unefficient
 	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
 		final var distance = calculatesDistanceSquaredPathIteratorPathIterator(
@@ -1686,6 +2274,7 @@ public interface Path3afp<
 
 	@Pure
 	@Override
+	@Unefficient
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
 		final var distance = calculatesDistanceSquaredPathIteratorPathIterator(
@@ -1696,6 +2285,7 @@ public interface Path3afp<
 
 	@Pure
 	@Override
+	@Unefficient
 	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);

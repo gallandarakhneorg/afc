@@ -167,7 +167,7 @@ public interface GeomFactory3afp<
 
 	/** Replies the {@link PathIterator3afp} that is corresponding to the given element.
 	 *
-	 * <p>If the given element is already a {@link PathIterator3afp}, returns {@code this}.
+	 * <p>If the given element is already a {@link PathIterator3afp}, returns {@code iterator}.
 	 *
 	 * @param iterator the iterator.
 	 * @return the iterator.

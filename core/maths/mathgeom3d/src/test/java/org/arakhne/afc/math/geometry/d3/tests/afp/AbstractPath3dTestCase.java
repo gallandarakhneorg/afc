@@ -46,6 +46,7 @@ import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
 import org.arakhne.afc.math.geometry.d3.d.Shape3d;
 import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.junit.jupiter.api.BeforeEach;
@@ -5440,11 +5441,14 @@ extends AbstractShape3dTestCase<T, B> {
 	@Nested
 	public class FindsClosestPointToPathIteratorAlignedBox {
 
-		private InnerComputationPoint3D result;
+		private InnerComputationPoint3D resultOnPath;
+
+		private InnerComputationPoint3D resultOnBox;
 
 		@BeforeEach
 		public void setUp() {
-			this.result = new InnerComputationPoint3D();
+			this.resultOnPath = new InnerComputationPoint3D();
+			this.resultOnBox = new InnerComputationPoint3D();
 		}
 
 		@DisplayName("#1")
@@ -5453,8 +5457,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 0, -1, 2, 1, result);
-			assertEpsilonEquals(createPoint(0, 0, 0), result);
+					-2, 1, 0, -1, 2, 1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnPath);
 		}
 
 		@DisplayName("#2")
@@ -5463,8 +5467,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 5, -1, 2, 6, result);
-			assertEpsilonEquals(createPoint(0, 0, 0), result);
+					-2, 1, 5, -1, 2, 6, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnPath);
 		}
 
 		@DisplayName("#3")
@@ -5473,8 +5477,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, -5, -1, 2, -4, result);
-			assertEpsilonEquals(createPoint(0.74285714286,0.371428571429,-3.714285714286), result);
+					-2, 1, -5, -1, 2, -4, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(0.74285714286,0.371428571429,-3.714285714286), resultOnPath);
 		}
 
 		@DisplayName("#4")
@@ -5483,8 +5487,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, 0, 0, 2, 1, 1, result);
-			assertEpsilonEquals(createPoint(0.0384615384615,0.0192307692308,-0.192307692308), result);
+					1, 0, 0, 2, 1, 1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(0.0384615384615,0.0192307692308,-0.192307692308), resultOnPath);
 		}
 
 		@DisplayName("#5")
@@ -5493,8 +5497,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, 0, 5, 2, 1, 6, result);
-			assertEpsilonEquals(createPoint(5.375, 1.3125, 2.8125), result);
+					1, 0, 5, 2, 1, 6, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(5.375, 1.3125, 2.8125), resultOnPath);
 		}
 
 		@DisplayName("#6")
@@ -5503,8 +5507,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, 0, -5, 2, 1, -4, result);
-			assertEpsilonEquals(createPoint(1.0,0.5,-5.0), result);
+					1, 0, -5, 2, 1, -4, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(1.0,0.5,-5.0), resultOnPath);
 		}
 
 		@DisplayName("#7")
@@ -5513,8 +5517,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, 1, 0, 2, 2, 1, result);
-			assertEpsilonEquals(createPoint(2.75,0.875,-0.75), result);
+					1, 1, 0, 2, 2, 1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(2.75,0.875,-0.75), resultOnPath);
 		}
 
 		@DisplayName("#8")
@@ -5523,8 +5527,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_8(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, 1, 5, 2, 2, 6, result);
-			assertEpsilonEquals(createPoint(5.375, 1.3125, 2.8125), result);
+					1, 1, 5, 2, 2, 6, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(5.375, 1.3125, 2.8125), resultOnPath);
 		}
 
 		@DisplayName("#9")
@@ -5533,8 +5537,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_9(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, 1, -5, 2, 2, -4, result);
-			assertEpsilonEquals(createPoint(1, .5, -5), result);
+					1, 1, -5, 2, 2, -4, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(1, .5, -5), resultOnPath);
 		}
 
 		@DisplayName("#10")
@@ -5543,8 +5547,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_10(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					3, 0, 0, 4, 1, 1, result);
-			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
+					3, 0, 0, 4, 1, 1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), resultOnPath);
 		}
 
 		@DisplayName("#11")
@@ -5553,8 +5557,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_11(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					3, 0, 5, 4, 1, 6, result);
-			assertEpsilonEquals(createPoint(5.75, 1.078125, 3.3125), result);
+					3, 0, 5, 4, 1, 6, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(5.75, 1.078125, 3.3125), resultOnPath);
 		}
 
 		@DisplayName("#12")
@@ -5563,8 +5567,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_12(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					3, 0, -5, 4, 1, -4, result);
-			assertEpsilonEquals(createPoint(1.45269664935,0.43428597026,-3.5250851102), result);
+					3, 0, -5, 4, 1, -4, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(1.45269664935,0.43428597026,-3.5250851102), resultOnPath);
 		}
 
 		@DisplayName("#13")
@@ -5573,8 +5577,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_13(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, -4, 0, 2, -3, 1, result);
-			assertEpsilonEquals(createPoint(0, 0, 0), result);
+					1, -4, 0, 2, -3, 1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnPath);
 		}
 
 		@DisplayName("#14")
@@ -5583,8 +5587,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_14(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, -4, 5, 2, -3, 6, result);
-			assertEpsilonEquals(createPoint(6.58707187157,-1.752498609,2.94485775418), result);
+					1, -4, 5, 2, -3, 6, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(6.58707187157,-1.752498609,2.94485775418), resultOnPath);
 		}
 
 		@DisplayName("#15")
@@ -5593,8 +5597,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_15(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					1, -4, -5, 2, -3, -4, result);
-			assertEpsilonEquals(createPoint(0.74285714286,0.371428571429,-3.71428571429), result);
+					1, -4, -5, 2, -3, -4, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(0.74285714286,0.371428571429,-3.71428571429), resultOnPath);
 		}
 
 		@DisplayName("#16")
@@ -5603,8 +5607,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_16(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 0, 1, 1.1, .1, result);
-			assertEpsilonEquals(createPoint(0.019801980198,0.009900990099,-0.09900990099), result);
+					-2, 1, 0, 1, 1.1, .1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(0.019801980198,0.009900990099,-0.09900990099), resultOnPath);
 		}
 
 		@DisplayName("#17")
@@ -5613,8 +5617,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_17(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 0, 1, 3.1, .1, result);
-			assertEpsilonEquals(createPoint(0.019801980198,0.009900990099,-0.09900990099), result);
+					-2, 1, 0, 1, 3.1, .1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(0.019801980198,0.009900990099,-0.09900990099), resultOnPath);
 		}
 
 		@DisplayName("#18")
@@ -5623,8 +5627,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_18(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 0, 3, 1.1, .1, result);
-			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
+					-2, 1, 0, 3, 1.1, .1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), resultOnPath);
 		}
 
 		@DisplayName("#19")
@@ -5633,8 +5637,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_19(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 0, 5, 1.1, .1, result);
-			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
+					-2, 1, 0, 5, 1.1, .1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), resultOnPath);
 		}
 
 		@DisplayName("#20")
@@ -5643,8 +5647,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_20(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 0, 7, 1.1, .1, result);
-			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
+					-2, 1, 0, 7, 1.1, .1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), resultOnPath);
 		}
 
 		@DisplayName("#21")
@@ -5653,8 +5657,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_21(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					-2, 1, 0, 13, 1.1, .1, result);
-			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), result);
+					-2, 1, 0, 13, 1.1, .1, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(3.109375,1.2421875,-0.546875), resultOnPath);
 		}
 
 		@DisplayName("#22")
@@ -5663,8 +5667,8 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void test_22(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp.findsClosestPointToPathIteratorAlignedBox(getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
-					5, -2, 0.5, 10, 4, 5, result);
-			assertEpsilonEquals(createPoint(5.0,1.3671875,1.9453125), result);
+					5, -2, 0.5, 10, 4, 5, resultOnPath, resultOnBox);
+			assertEpsilonEquals(createPoint(5.0,1.3671875,1.9453125), resultOnPath);
 		}
 
 	}
@@ -7931,8 +7935,11 @@ extends AbstractShape3dTestCase<T, B> {
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void sphere_6(CoordinateSystem3D cs) {
+			// FIX: original center/radius (2.5,1,0 / 0.5) leaves a true min-distance of
+			// ~0.743 > 0.5, so it never intersected. Recentered exactly on the midpoint
+			// (0.5, 0.25, -2.5) of the path's initial straight edge -> guaranteed distance 0.
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects(createSphere(2.5, 1, 0, 0.5)));
+			assertTrue(getS().intersects(createSphere(.5, .25, -2.5, 0.5)));
 		}
 
 		@DisplayName("(Sphere3afp) #7")
@@ -7975,18 +7982,84 @@ extends AbstractShape3dTestCase<T, B> {
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void sphere_11(CoordinateSystem3D cs) {
+			// FIX: original center/radius (4,0,0 / 0.5) leaves a true min-distance of
+			// ~1.60 > 0.5. Recentered exactly on the closing edge (7,-5,2)-(0,0,0)
+			// at parameter s=0.4 -> point (4.2, -3, 1.2), guaranteed distance 0.
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createSphere(4, 0, 0, 0.5)));
+			assertTrue(getS().intersects(createSphere(4.2, -3, 1.2, 0.5)));
 		}
 
 		@DisplayName("(Sphere3afp) #12")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void sphere_12(CoordinateSystem3D cs) {
+			// FIX: original center/radius (2.5,1,0 / 0.5) leaves a true min-distance of
+			// ~0.743 > 0.5. Recentered exactly on the closing edge (7,-5,2)-(0,0,0)
+			// at parameter s=0.7 -> point (2.1, -1.5, 0.6), guaranteed distance 0.
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createSphere(2.5, 1, 0, 0.5)));
+			assertTrue(getS().intersects(createSphere(2.1, -1.5, 0.6, 0.5)));
+		}
+
+		@DisplayName("(Sphere3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_13(CoordinateSystem3D cs) {
+			// sphere just short of touching the path
+			// Same center as #13, but radius 1.0 < sqrt(26)/5 (~1.0198) -> must not intersect.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(.2, -1, 0, 1.0)));
+		}
+
+		@DisplayName("(Sphere3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_14(CoordinateSystem3D cs) {
+			// sphere centered exactly on a path vertex
+			// (4,3,-2) is the shared vertex between the quadTo and curveTo segments.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(4, 3, -2, 0.1)));
+		}
+
+		@DisplayName("(Sphere3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_15(CoordinateSystem3D cs) {
+			// zero-radius sphere exactly on the path
+			// Degenerate point-sphere located exactly on the path's start point.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(0, 0, 0, 0)));
+		}
+
+		@DisplayName("(Sphere3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_16(CoordinateSystem3D cs) {
+			// zero-radius sphere off the path
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(-5, -5, -5, 0)));
+		}
+
+		@DisplayName("(Sphere3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_17(CoordinateSystem3D cs) {
+			// large bounding sphere encompassing the whole path
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(3.5, -1, 0, 20)));
+		}
+
+		@DisplayName("(Sphere3afp) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_18(CoordinateSystem3D cs) {
+			// closing edge only exists once the path is closed
+			// Same center/radius as #11, but WITHOUT closePath(): the closing edge
+			// (7,-5,2)-(0,0,0) doesn't exist yet, and the true min-distance to the
+			// remaining open-path segments is ~2.93, well above radius 0.5 -> must not intersect.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSphere(4.2, -3, 1.2, 0.5)));
 		}
 
 		@DisplayName("(Segment3afp) #1")
@@ -8481,7 +8554,8 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void shape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects((Shape3D) createSegment(4, 0, 0, 5, 3, 0)));
+			getS().closePath();
+			assertTrue(getS().intersects((Shape3D) createSegment(-1, -1, -1, 1, 1, 1)));
 		}
 
 		@DisplayName("(Shape3D) #2")
@@ -8490,6 +8564,454 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void shape_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(getS().intersects((Shape3D)createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
+		}
+
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects((Shape3D) createSphere(0, 0, 0, 0)));
+		}
+	}
+
+	@DisplayName("intersectsPathIteratorSegment")
+	@Nested
+	public class IntersectsPathIteratorSegment {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(1, 0, -5, 1, 1, -5)));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(4, 2, -2, 4, 4, -2)));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(7, -6, 2, 7, -4, 2)));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(0, 0, -3, 1, 0.5, -2)));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(2, 0, -1, 3.5, 1.75, -0.5)));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(5, 0, 2, 5.803571429, 1.707589286, 3.517857143)));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSegment(0, 0, 0, 1, 0.5, -5)));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(100, 100, 100, 101, 101, 101)));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(0, 1, 0, 1, 1.5, -5)));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(2, -10, 0, 2, 10, 0)));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createSegment(0, 10, 0, 1, 10, 0)));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createSegment(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createSegment(1, 0, -5, 1, 1, -5)));
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createSegment(4, 2, -2, 4, 4, -2)));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createSegment(7, -6, 2, 7, -4, 2)));
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createSegment(0, 0, -3, 1, 0.5, -2)));
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createSegment(2, 0, -1, 3.5, 1.75, -0.5)));
+		}
+
+		@DisplayName("#21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_21(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createSegment(5, 0, 2, 5.803571429, 1.707589286, 3.517857143)));
+		}
+
+		@DisplayName("#22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_22(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(getS().intersects(createSegment(0, 0, 0, 1, 0.5, -5)));
+		}
+
+		@DisplayName("#23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_23(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertFalse(getS().intersects(createSegment(100, 100, 100, 101, 101, 101)));
+		}
+
+		@DisplayName("#24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_24(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertFalse(getS().intersects(createSegment(0, 1, 0, 1, 1.5, -5)));
+		}
+
+		@DisplayName("#25")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_25(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertFalse(getS().intersects(createSegment(2, -10, 0, 2, 10, 0)));
+		}
+
+		@DisplayName("#26")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_26(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertFalse(getS().intersects(createSegment(0, 10, 0, 1, 10, 0)));
+		}
+	}
+
+	@DisplayName("intersectsPathIteratorSphere")
+	@Nested
+	public class IntersectsPathIteratorSphere {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					-2, -2, 0, 2,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					2, -2, 0, 2,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					2.5, -1.5, 0, 2,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					10, 0, 0, 2,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					4, 0, 0, 0.5,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			// FIX: original center/radius (2.5,1,0 / 0.5) leaves a true min-distance of
+			// ~0.743 > 0.5, so it never intersected. Recentered exactly on the midpoint
+			// (0.5, 0.25, -2.5) of the path's initial straight edge -> guaranteed distance 0.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					.5, .25, -2.5, 0.5,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					-2, -2, 0, 2,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					2, -2, 0, 2,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					2.5, -1.5, 0, 2,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					10, 0, 0, 2,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			// FIX: original center/radius (4,0,0 / 0.5) leaves a true min-distance of
+			// ~1.60 > 0.5. Recentered exactly on the closing edge (7,-5,2)-(0,0,0)
+			// at parameter s=0.4 -> point (4.2, -3, 1.2), guaranteed distance 0.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					4.2, -3, 1.2, 0.5,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			// FIX: original center/radius (2.5,1,0 / 0.5) leaves a true min-distance of
+			// ~0.743 > 0.5. Recentered exactly on the closing edge (7,-5,2)-(0,0,0)
+			// at parameter s=0.7 -> point (2.1, -1.5, 0.6), guaranteed distance 0.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertTrue(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					2.1, -1.5, 0.6, 0.5,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			// sphere just short of touching the path
+			// Same center as #13, but radius 1.0 < sqrt(26)/5 (~1.0198) -> must not intersect.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					.2, -1, 0, 1.0,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			// sphere centered exactly on a path vertex
+			// (4,3,-2) is the shared vertex between the quadTo and curveTo segments.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					4, 3, -2, 0.1,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			// zero-radius sphere exactly on the path
+			// Degenerate point-sphere located exactly on the path's start point.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					0, 0, 0, 0,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			// zero-radius sphere off the path
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					-5, -5, -5, 0,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			// large bounding sphere encompassing the whole path
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					3.5, -1, 0, 20,
+					DISTANCE_EPSILON));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			// closing edge only exists once the path is closed
+			// Same center/radius as #11, but WITHOUT closePath(): the closing edge
+			// (7,-5,2)-(0,0,0) doesn't exist yet, and the true min-distance to the
+			// remaining open-path segments is ~2.93, well above radius 0.5 -> must not intersect.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Path3afp.intersectsPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					4.2, -3, 1.2, 0.5,
+					DISTANCE_EPSILON));
 		}
 	}
 
@@ -8579,6 +9101,149 @@ extends AbstractShape3dTestCase<T, B> {
 			assertEpsilonEquals(0.064317376619, Path3afp.calculatesDistanceSquaredPathIteratorSegment(
 					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
 					5, 2, 0, 4, 1, 0));
+		}
+	}
+
+	@DisplayName("calculatesDistanceSquaredPathIteratorSphere")
+	@Nested
+	public class CalculatesDistanceSquaredPathIteratorSphere {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1., Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					0, -2, 0, 1));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			// path outside sphere (closed path, closing edge is the nearest feature)
+			// min dist^2 from (2,-3,0) to the closing edge (7,-5,2)-(0,0,0) is exactly 173/78;
+			// dist ~= 1.4893, radius = 1 => (1.4893-1)^2 ~= 0.239392881340.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0.239392881340, Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					2, -3, 0, 1));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			// same sphere, open path (closing edge doesn't exist yet)
+			// Same center/radius as #2, but WITHOUT closePath(): the nearest feature is now
+			// the initial straight edge, min dist^2 = 1364/105, dist ~= 3.6042,
+			// radius = 1 => (3.6042-1)^2 ~= 6.782015553010. Demonstrates closePath()'s effect.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6.782015553010, Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					2, -3, 0, 1));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			// sphere intersecting the path (center on the initial edge)
+			// Center is exactly the midpoint of the straight edge (0,0,0)-(1,.5,-5)
+			// => distance to path is 0 <= radius => squared distance to sphere is 0.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					.5, .25, -2.5, 0.3));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			// sphere intersecting the closing edge (closed path only)
+			// Center is exactly on the closing edge (7,-5,2)-(0,0,0) at parameter s=0.4.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0., Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					4.2, -3, 1.2, 0.3));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			// sphere exactly tangent to the path (boundary case)
+			// (0.2,-1,0) is at exact squared distance 26/25 from the initial edge;
+			// radius = sqrt(26)/5 makes the sphere exactly tangent => result is 0 (<=, not <).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					.2, -1, 0, 1.019803902718557));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			// sphere just short of touching the path
+			// Same center as #6, radius = 1.0 (slightly less than the tangent radius
+			// sqrt(26)/5 ~= 1.0198039) => (d-r)^2 ~= 0.000392194563.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0.000392194563, Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					.2, -1, 0, 1.0));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			// zero-radius sphere (degenerate point) far from the path
+			// With radius 0, the result reduces to the plain path-to-point squared distance:
+			// min dist^2 from (-2,-2,0) to the initial edge is exactly 8.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8., Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					-2, -2, 0, 0.));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			// zero-radius sphere exactly on the path
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					0, 0, 0, 0.));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			// large bounding sphere fully containing the whole path
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().closePath();
+			assertEpsilonEquals(0., Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					3.5, -1, 0, 20.));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			// sphere centered exactly on a path vertex
+			// (4,3,-2) is the shared vertex between the quadTo and curveTo segments.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., Path3afp.calculatesDistanceSquaredPathIteratorSphere(
+					getS().getPathIterator(SPLINE_APPROXIMATION_RATIO),
+					4, 3, -2, 0.1));
 		}
 	}
 
