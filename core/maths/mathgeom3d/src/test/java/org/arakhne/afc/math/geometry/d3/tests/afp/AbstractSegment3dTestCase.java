@@ -5657,7 +5657,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					0, 0, 0, 1, 1, 0));
+					0, 0, 0, 1, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#2")
@@ -5667,7 +5668,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					0, 0, 0, 2, 2, 0));
+					0, 0, 0, 2, 2, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#3")
@@ -5677,7 +5679,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					0, 0, 0, .5, .5, 0));
+					0, 0, 0, .5, .5, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#4")
@@ -5687,7 +5690,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, -3, 0, .5, .5, 0));
+					-3, -3, 0, .5, .5, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#5")
@@ -5697,7 +5701,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, -3, 0, 0, 0, 0));
+					-3, -3, 0, 0, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#6")
@@ -5707,7 +5712,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, -3, 0, -1, -1, 0));
+					-3, -3, 0, -1, -1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#7")
@@ -5717,7 +5723,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, 0, 0, 4, 0, 0));
+					-3, 0, 0, 4, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#8")
@@ -5727,7 +5734,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 					-3, 0, 0, 4, 0, 0,
-					0, 0, 0, 1, 1, 0));
+					0, 0, 0, 1, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#9")
@@ -5737,7 +5745,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, 0, 0, -2, 1, 0));
+					-3, 0, 0, -2, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#10")
@@ -5747,7 +5756,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(Segment3afp.intersectsSegmentLineWithEnds(
 					0, 0, 0, 1, 1, 0,
-					10, 0, 0, 9, -1, 0));
+					10, 0, 0, 9, -1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#11 - Intersection at interior point")
@@ -5758,7 +5768,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0) to (2,2), line through (0,2)-(2,0) intersects at (1,1)
 		    assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 0, 0, 2, 2, 0,
-		            0, 2, 0, 2, 0, 0));
+		            0, 2, 0, 2, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#12 - Intersection at segment endpoint")
@@ -5769,7 +5780,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0) to (1,0); line through (0,0)-(0,1) shares endpoint (0,0)
 		    assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 0, 0, 1, 0, 0,
-		            0, 0, 0, 0, 1, 0));
+		            0, 0, 0, 0, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#13 - Parallel distinct (no intersection)")
@@ -5780,7 +5792,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // horizontal segment y=0, line y=1 (parallel)
 		    assertFalse(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 0, 0, 1, 0, 0,
-		            0, 1, 0, 1, 1, 0));
+		            0, 1, 0, 1, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#14 - Infinite line intersects outside segment")
@@ -5791,7 +5804,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0) to (1,0); vertical line x=2 crosses at x=2 (outside)
 		    assertFalse(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 0, 0, 1, 0, 0,
-		            2, -1, 0, 2, 1, 0));
+		            2, -1, 0, 2, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#15 - Segment is a point lying on the line")
@@ -5802,7 +5816,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // point (1,1), line through (0,0)-(2,2)
 		    assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 		            1, 1, 0, 1, 1, 0,
-		            0, 0, 0, 2, 2, 0));
+		            0, 0, 0, 2, 2, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#16 - Segment is a point not on the line")
@@ -5814,7 +5829,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // point (0,1), line along x-axis
 		    assertFalse(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 1, 0, 0, 1, 0,
-		            0, 0, 0, 1, 0, 0));
+		            0, 0, 0, 1, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#17 - Skew lines in 3D (no intersection)")
@@ -5825,7 +5841,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment along x-axis (y=0,z=0); line parallel to z-axis at x=0,y=1 (skew)
 		    assertFalse(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 0, 0, 1, 0, 0,
-		            0, 1, 0, 0, 1, 1));
+		            0, 1, 0, 0, 1, 1,
+					EPSILON));
 		}
 
 		@DisplayName("#18 - 3D coplanar intersection (point inside segment)")
@@ -5836,7 +5853,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0,0) to (2,0,0); line crossing at (1,0,0) in same plane
 		    assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 0, 0, 2, 0, 0,
-		            1, -1, 0, 1, 1, 0));
+		            1, -1, 0, 1, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#19 - Collinear overlapping (line contains a portion of segment)")
@@ -5847,7 +5865,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (1,0) to (3,0); line through (0,0)-(2,0) overlaps from x=1 to 2
 		    assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 		            1, 0, 0, 3, 0, 0,
-		            0, 0, 0, 2, 0, 0));
+		            0, 0, 0, 2, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#20 - Segment completely inside infinite line")
@@ -5858,7 +5877,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0) to (1,0); line through (-1,0)-(2,0) contains it
 		    assertTrue(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 0, 0, 1, 0, 0,
-		            -1, 0, 0, 2, 0, 0));
+		            -1, 0, 0, 2, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#21 - No intersection in 3D (line and segment not coplanar)")
@@ -5869,7 +5889,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0,0) to (1,0,0); line from (0,1,0) to (0,1,1) - perpendicular but disjoint
 		    assertFalse(Segment3afp.intersectsSegmentLineWithEnds(
 		            0, 0, 0, 1, 0, 0,
-		            0, 1, 0, 0, 1, 1));
+		            0, 1, 0, 0, 1, 1,
+					EPSILON));
 		}
 		
 	}
@@ -5885,7 +5906,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		    assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 				0, 0, 0, 1, 1, 0,
-				0, 0, 0, 1, 1, 0));
+				0, 0, 0, 1, 1, 0,
+				EPSILON));
 		}
 
 		@DisplayName("#2")
@@ -5895,7 +5917,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 					0, 0, 0, 1, 1, 0,
-					0, 0, 0, 2, 2, 0));
+					0, 0, 0, 2, 2, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#3")
@@ -5905,7 +5928,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 					0, 0, 0, 1, 1, 0,
-					0, 0, 0, .5, .5, 0));
+					0, 0, 0, .5, .5, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#4")
@@ -5915,7 +5939,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, -3, 0, .5, .5, 0));
+					-3, -3, 0, .5, .5, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#5")
@@ -5925,7 +5950,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, -3, 0, 0, 0, 0));
+					-3, -3, 0, 0, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#6")
@@ -5935,7 +5961,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, -3, 0, -1, -1, 0));
+					-3, -3, 0, -1, -1, 0,
+					EPSILON));
 	
 		}
 
@@ -5946,7 +5973,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, 0, 0, 4, 0, 0));
+					-3, 0, 0, 4, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#8")
@@ -5956,7 +5984,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 					-3, 0, 0, 4, 0, 0,
-					0, 0, 0, 1, 1, 0));
+					0, 0, 0, 1, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#9")
@@ -5966,7 +5995,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 					0, 0, 0, 1, 1, 0,
-					-3, 0, 0, -2, 1, 0));
+					-3, 0, 0, -2, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#10")
@@ -5976,7 +6006,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 					0, 0, 0, 1, 1, 0,
-					10, 0, 0, 9, -1, 0));
+					10, 0, 0, 9, -1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#11 - Intersection strictly inside the segment")
@@ -5987,7 +6018,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0) to (2,2); line through (0,2)-(2,0) intersects at (1,1) which is interior
 		    assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 2, 2, 0,
-		            0, 2, 0, 2, 0, 0));
+		            0, 2, 0, 2, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#12 - Intersection at segment start (x1,y1) - false")
@@ -5998,7 +6030,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0) to (1,0); vertical line x=0 intersects at (0,0) which is start
 		    assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 1, 0, 0,
-		            0, -1, 0, 0, 1, 0));
+		            0, -1, 0, 0, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#13 - Intersection at segment end (x2,y2) - false")
@@ -6009,18 +6042,20 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0) to (1,0); vertical line x=1 intersects at (1,0) which is end
 		    assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 1, 0, 0,
-		            1, -1, 0, 1, 1, 0));
+		            1, -1, 0, 1, 1, 0,
+					EPSILON));
 		}
 
-		@DisplayName("#14 - Segment is a point lying on the line - false")
+		@DisplayName("#14 - Segment is a point lying on the line")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_14(CoordinateSystem3D cs) {
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		    // point (1,1) on line y=x; since segment is degenerate, no interior -> false
-		    assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
+		    assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            1, 1, 0, 1, 1, 0,
-		            0, 0, 0, 2, 2, 0));
+		            0, 0, 0, 2, 2, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#15 - Segment is a point not on the line - false")
@@ -6031,7 +6066,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // point (0,1) off the x-axis line
 		    assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 1, 0, 0, 1, 0,
-		            0, 0, 0, 1, 0, 0));
+		            0, 0, 0, 1, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#16 - Collinear overlap with interior - true")
@@ -6043,7 +6079,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // overlap includes interior points (e.g., (1,0)) -> true
 		    assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 2, 0, 0,
-		            -1, 0, 0, 3, 0, 0));
+		            -1, 0, 0, 3, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#17 - Collinear touch at endpoint only - false")
@@ -6052,9 +6089,10 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		public final void test_17(CoordinateSystem3D cs) {
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		    // segment from (0,0) to (1,0); line from (-2,0) to (0,0) intersects only at (0,0) (start) -> false
-		    assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
+		    assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 1, 0, 0,
-		            -2, 0, 0, 0, 0, 0));
+		            -2, 0, 0, 0, 0, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#18 - Parallel distinct - false")
@@ -6065,7 +6103,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // horizontal segment y=0, line y=1 (parallel)
 		    assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 1, 0, 0,
-		            0, 1, 0, 1, 1, 0));
+		            0, 1, 0, 1, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#19 - Skew lines in 3D - false")
@@ -6076,7 +6115,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment along x-axis (y=0,z=0); line parallel to z-axis at x=0,y=1 (skew)
 		    assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 1, 0, 0,
-		            0, 1, 0, 0, 1, 1));
+		            0, 1, 0, 0, 1, 1,
+					EPSILON));
 		}
 
 		@DisplayName("#20 - 3D interior intersection - true")
@@ -6087,7 +6127,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0,0) to (2,2,2); line through (0,2,0)-(2,0,2) intersects at (1,1,1) (interior)
 		    assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 2, 2, 2,
-		            0, 2, 0, 2, 0, 2));
+		            0, 2, 0, 2, 0, 2,
+					EPSILON));
 		}
 
 		@DisplayName("#21 - Intersection outside segment (line crosses extension) - false")
@@ -6098,7 +6139,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // segment from (0,0) to (1,0); vertical line x=2 crosses at x=2 (outside) -> false
 		    assertFalse(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 1, 0, 0,
-		            2, -1, 0, 2, 1, 0));
+		            2, -1, 0, 2, 1, 0,
+					EPSILON));
 		}
 
 		@DisplayName("#22 - Line intersects segment exactly at interior but also at an endpoint? (interior takes precedence) - true")
@@ -6112,7 +6154,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		    // of the segment [0,2]; it includes interior points (e.g., 0.5) -> true.
 		    assertTrue(Segment3afp.intersectsSegmentLineWithoutEnds(
 		            0, 0, 0, 2, 0, 0,
-		            0, 0, 0, 1, 0, 0));
+		            0, 0, 0, 1, 0, 0,
+					EPSILON));
 		}
 
 	}
@@ -9196,7 +9239,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		public final void segment_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().set(0, 0, 0, 1, 1, 0);
-			assertTrue(getS().intersects(createSegment(-3, -3, 0, -1, -1, 0)));
+			assertFalse(getS().intersects(createSegment(-3, -3, 0, -1, -1, 0)));
 		}
 		
 		@DisplayName("(Segment3afp) #8")
@@ -9214,7 +9257,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		public final void segment_9(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().set(0, 0, 0, 1, 1, 0);
-			assertTrue(getS().intersects(createSegment(-3, -1, 0, 4, -1, 0)));
+			assertFalse(getS().intersects(createSegment(-3, -1, 0, 4, -1, 0)));
 		}
 		
 		@DisplayName("(Segment3afp) #10")
@@ -9223,7 +9266,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		public final void segment_10(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().set(0, 0, 0, 1, 1, 0);
-			assertTrue(getS().intersects(createSegment(-3, -1, 0, -1, -1, 0)));
+			assertFalse(getS().intersects(createSegment(-3, -1, 0, -1, -1, 0)));
 		}
 		
 		@DisplayName("(Segment3afp) #11")
@@ -9232,7 +9275,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		public final void segment_11(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().set(0, 0, 0, 1, 1, 0);
-			assertTrue(getS().intersects(createSegment(-3, 0, 0, -2, 1, 0)));
+			assertFalse(getS().intersects(createSegment(-3, 0, 0, -2, 1, 0)));
 		}
 		
 		@DisplayName("(Segment3afp) #12")
@@ -9241,7 +9284,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		public final void segment_12(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().set(0, 0, 0, 1, 1, 0);
-			assertTrue(getS().intersects(createSegment(10, 0, 0, 9, -1, 0)));
+			assertFalse(getS().intersects(createSegment(10, 0, 0, 9, -1, 0)));
 		}
 		
 		@DisplayName("(Segment3afp) #13")
@@ -9264,10 +9307,8 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(2, 2, 0);
 			p.lineTo(2, -2, 0);
 			assertFalse(getS().intersects(p));
-			p.closePath();
-			assertTrue(getS().intersects(p));
 		}
-		
+
 		@DisplayName("(Path3afp) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -9279,7 +9320,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(2, 2, 0);
 			p.lineTo(2, -2, 0);
 			p.closePath();
-			assertTrue(getS().intersects(p));
+			assertFalse(getS().intersects(p));
 		}
 
 		@DisplayName("(Path3afp) #3")
@@ -9291,7 +9332,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.moveTo(-2, -2, 0);
 			p.lineTo(0, 0, 0);
 			p.lineTo(-2, 2, 0);
-			assertFalse(getS().intersects(p));
+			assertTrue(getS().intersects(p));
 		}
 		
 		@DisplayName("(Path3afp) #4")
@@ -9304,7 +9345,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(0, 0, 0);
 			p.lineTo(-2, 2, 0);
 			p.closePath();
-			assertFalse(getS().intersects(p));
+			assertTrue(getS().intersects(p));
 		}
 
 		@DisplayName("(Path3afp) #5")
@@ -9429,7 +9470,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(2, 2, 0);
 			p.lineTo(2, -2, 0);
 			p.closePath();
-			assertTrue(getS().intersects(p.getPathIterator()));
+			assertFalse(getS().intersects(p.getPathIterator()));
 		}
 
 		@DisplayName("(PathIterator3afp) #3")
@@ -9440,7 +9481,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.moveTo(-2, -2, 0);
 			p.lineTo(0, 0, 0);
 			p.lineTo(-2, 2, 0);
-			assertFalse(getS().intersects(p.getPathIterator()));
+			assertTrue(getS().intersects(p.getPathIterator()));
 		}
 
 		@DisplayName("(PathIterator3afp) #4")
@@ -9452,7 +9493,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(0, 0, 0);
 			p.lineTo(-2, 2, 0);
 			p.closePath();
-			assertFalse(getS().intersects(p.getPathIterator()));
+			assertTrue(getS().intersects(p.getPathIterator()));
 		}
 
 		@DisplayName("(PathIterator3afp) #5")

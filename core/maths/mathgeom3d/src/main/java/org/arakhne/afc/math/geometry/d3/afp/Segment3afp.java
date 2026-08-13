@@ -1158,6 +1158,7 @@ public interface Segment3afp<
 	 * @param x4 is the second point of the second line.
 	 * @param y4 is the second point of the second line.
 	 * @param z4 is the second point of the second line.
+	 * @param epsilon the distance below which the intersection is assumed to be true.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
 	 *     {@code false}
 	 * @since 18.0
@@ -1165,12 +1166,12 @@ public interface Segment3afp<
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSegmentLineWithEnds(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
-			double z3, double x4, double y4, double z4) {
+			double z3, double x4, double y4, double z4, double epsilon) {
 		final var factors = calculatesIntersectionFactorsLineLine(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
-		return factors.colinear || factors.position1 >= 0. && factors.position1 <= 1.;
+		return factors.colinear || factors.position1 >= -epsilon && factors.position1 <= (1. + epsilon);
 	}
 
 	/** Replies if a segment and a line are intersecting.
@@ -1192,6 +1193,7 @@ public interface Segment3afp<
 	 * @param x4 is the second point of the second line.
 	 * @param y4 is the second point of the second line.
 	 * @param z4 is the second point of the second line.
+	 * @param epsilon the distance below which the intersection is assumed to be true.
 	 * @return {@code true} if the two shapes are intersecting; otherwise
 	 *     {@code false}
 	 * @since 18.0
@@ -1199,12 +1201,13 @@ public interface Segment3afp<
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSegmentLineWithoutEnds(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
-			double z3, double x4, double y4, double z4) {
+			double z3, double x4, double y4, double z4, double epsilon) {
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(12);
 		final var factors = calculatesIntersectionFactorsLineLine(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
-		return factors.colinear || factors.position1 > 0. && factors.position1 < 1.;
+		return factors.colinear || factors.position1 > epsilon && factors.position1 < (1. - epsilon);
 	}
 
 	/** Replies if two segments are intersecting.
@@ -1976,11 +1979,8 @@ public interface Segment3afp<
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		//final var mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		//TODO
-		//return false;
-		throw new Error();
-
+		return Path3afp.intersectsPathIteratorSegment(
+				iterator, getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
 	}
 
 	@Pure
