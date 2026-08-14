@@ -3453,11 +3453,10 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_12(CoordinateSystem3D cs) {
 		    CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		    double result = Segment3afp.findsProjectedPointOnLine(
+		    assertEpsilonEquals(0., Segment3afp.findsProjectedPointOnLine(
 		            1, 2, 3,   // point
 		            0, 0, 0,   // s1
-		            0, 0, 0);  // s2 (same as s1)
-		    assertTrue(Double.isNaN(result));
+		            0, 0, 0));  // s2 (same as s1)
 		}
 
 		@DisplayName("#13")
@@ -8915,9 +8914,23 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		@DisplayName("(MultiShape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(5, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-1, -1, 0, 2));
+			assertTrue(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void multishape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(18, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-25, 18, 0, 2));
+			assertFalse(getS().intersects(shape));
 		}
 
 		@DisplayName("(AlignedBox3afp) #1")

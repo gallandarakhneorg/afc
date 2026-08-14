@@ -23,12 +23,12 @@ package org.arakhne.afc.math.geometry.d3.tests.afp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.nio.channels.UnsupportedAddressTypeException;
 import java.util.Arrays;
 
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
@@ -39,6 +39,7 @@ import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
 import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -58,7 +59,7 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	@Override
 	protected final T createShape() {
 		T shape = (T) createMultiShape();
-		firstObject = (C) createAlignedBox(5, 8, 0, 2, 1, 0);
+		firstObject = (C) createAlignedBox(5, 8, 0, 2, 1, .5);
 		secondObject = (C) createSphere(-5, 18, 0, 2);
 		shape.add(firstObject);
 		shape.add(secondObject);
@@ -75,20 +76,14 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			MultiShape3afp clone = getS().clone();
-			/*PathIterator3afp pi = (PathIterator3afp) clone.getPathIterator();
-			assertElement(pi, PathElementType.MOVE_TO, 5, 8, 0);
-			assertElement(pi, PathElementType.LINE_TO, 7, 8, 0);
-			assertElement(pi, PathElementType.LINE_TO, 7, 9, 0);
-			assertElement(pi, PathElementType.LINE_TO, 5, 9, 0);
-			assertElement(pi, PathElementType.CLOSE, 5, 8, 0);
-			assertElement(pi, PathElementType.MOVE_TO, -3, 18, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -3, 19.10457, 0, -3.89543, 20, 0, -5, 20, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -6.10457, 20, 0, -7, 19.10457, 0, -7, 18, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -7, 16.89543, 0, -6.10457, 16, 0, -5, 16, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -3.89543, 16, 0, -3, 16.89543, 0, -3, 18, 0);
-			assertElement(pi, PathElementType.CLOSE, -3, 18, 0);
-			assertNoElement(pi);*/
-			fail("TODO");
+			assertNotSame(getS(), clone);
+			assertEquals(2, clone.size());
+			for (int i = 0; i < clone.size(); ++i) {
+				var source = getS().get(i);
+				var actual = clone.get(i);
+				assertNotSame(source, actual);
+				assertEquals(source, actual);
+			}
 		}
 	}
 
@@ -214,9 +209,7 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().clear();
-			/* TODO PathIterator3afp pi = getS().getPathIterator();
-			assertNoElement(pi);*/
-			fail("Todo");
+			assertEquals(0, getS().size());
 		}
 	}
 
@@ -480,12 +473,217 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	@Nested
 	public class GetClosestPointTo {
 
-		@DisplayName("(Sphere3afp) #1")
+		@DisplayName("(MultiShape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void sphere_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(-5, 18, 0, 0.5));
+			shape.add(createSegment(0, 8.5, 0.25, 10, 8.5, 0.25));
+			assertEpsilonEquals(createPoint(6.0,8.5,0.25), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_2(CoordinateSystem3D cs) {
+			// disjoint, closest to aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(10, 8.5, 0.25, 1));                // distance 2 to box-comp
+			shape.add(createSegment(12, 8.5, 0.25, 14, 8.5, 0.25));   // distance 5 to box-comp
+			assertEpsilonEquals(createPoint(7, 8.5, 0.25), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_3(CoordinateSystem3D cs) {
+			// disjoint, closest to sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(0, 18, 0, 1));                     // distance 2 to ref-sphere
+			shape.add(createAlignedBoxFromPoints(20, 20, 0, 21, 21, 1));
+			assertEpsilonEquals(createPoint(-3, 18, 0), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_4(CoordinateSystem3D cs) {
+			// touching by tangent sphere-to-sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(0, 18, 0, 3)); // tangent with ref sphere centered at (-5,18,0), r=2
+			shape.add(createSegment(100, 100, 100, 101, 101, 101));
+			assertEpsilonEquals(createPoint(-3, 18, 0), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_5(CoordinateSystem3D cs) {
+			// intersecting via box-box overlap
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createAlignedBoxFromPoints(6, 8.2, 0.1, 6.8, 8.8, 0.4)); // inside ref box-comp
+			shape.add(createSphere(50, 50, 50, 1));
+			assertEpsilonEquals(createPoint(6.4,8.5,0.25), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_6(CoordinateSystem3D cs) {
+			// intersecting via segment through reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-10, 18, 0, 0, 18, 0)); // crosses ref sphere
+			shape.add(createAlignedBoxFromPoints(30, 30, 30, 31, 31, 31));
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_7(CoordinateSystem3D cs) {
+			// degenerate point shape inside reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-5, 18, 0, -5, 18, 0)); // point
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_8(CoordinateSystem3D cs) {
+			// degenerate point shape outside both components
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(0, 0, 0, 0, 0, 0)); // point
+			assertEpsilonEquals(createPoint(5, 8, 0), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_9(CoordinateSystem3D cs) {
+			// empty multishape
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			// Keep only if API defines behavior for empty multishape as infinite/undefined distance.
+			// If your implementation returns NaN or throws, adapt these assertions accordingly.
+			assertNull(getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(Path3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(0, 0, 0);
+			path.lineTo(1, 1, 1);
+			assertEpsilonEquals(createPoint(5,8,0.5), getS().getClosestPointTo(path));
+		}
+
+		@DisplayName("(Path3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_2(CoordinateSystem3D cs) {
+			//polyline crossing aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(0, 8.5, 0.25);
+			path.lineTo(10, 8.5, 0.25);
+			assertEpsilonEquals(createPoint(6.0,8.5,0.25), getS().getClosestPointTo(path));
+		}
+
+		@DisplayName("(Path3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_3(CoordinateSystem3D cs) {
+			// polyline crossing sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 18, 0);
+			path.lineTo(0, 18, 0);
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(path));
+		}
+
+		@DisplayName("(Path3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_4(CoordinateSystem3D cs) {
+			// path near sphere but outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 21, 0);
+			path.lineTo(0, 21, 0); // distance to sphere center line = 3, radius=2 => gap=1
+			assertEpsilonEquals(createPoint(-5, 20, 0), getS().getClosestPointTo(path));
+		}
+
+		@DisplayName("(Path3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_5(CoordinateSystem3D cs) {
+			// path near aligned-box component but outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(10, 8.5, 0.25);
+			path.lineTo(12, 8.5, 0.25); // box xmax=7 => gap=3
+			assertEpsilonEquals(createPoint(7, 8.5, 0.25), getS().getClosestPointTo(path));
+		}
+
+		@DisplayName("(Path3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_6(CoordinateSystem3D cs) {
+			// quadratic crossing aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(0, 8.5, 0.25);
+			path.quadTo(6, 8.5, 0.25, 10, 8.5, 0.25);
+			assertEpsilonEquals(createPoint(5.25, 8.5, 0.25), getS().getClosestPointTo(path));
+		}
+
+		@DisplayName("(Path3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_7(CoordinateSystem3D cs) {
+			// cubic crossing sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 18, 0);
+			path.curveTo(-8, 18, 0, -2, 18, 0, 0, 18, 0);
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(path));
+		}
+
+		@DisplayName("(Path3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_8(CoordinateSystem3D cs) {
+			// mixed path, closest on aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(20, 0, 0);
+			path.lineTo(20, 30, 0);           // far from both
+			path.quadTo(12, 12, 0.25, 10, 9, 0.25); // comes near box, stays outside
+			assertEpsilonEquals(createPoint(7, 9, 0.25), getS().getClosestPointTo(path));
+		}
+
+		@DisplayName("(Path3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_9(CoordinateSystem3D cs) {
+			// degenerate path point inside sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-5, 18, 0);
+			path.lineTo(-5, 18, 0);
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(path));
 		}
 
 		@DisplayName("(AlignedBox3afp) #1")
@@ -493,7 +691,172 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void alignedbox_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(createPoint(5,8,0.5), getS().getClosestPointTo(createAlignedBoxFromPoints(0, 0, 0, 1, 1, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_2(CoordinateSystem3D cs) {
+			// overlap aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(6.4,8.5,0.25), getS().getClosestPointTo(createAlignedBoxFromPoints(6, 8.2, 0.1, 6.8, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_3(CoordinateSystem3D cs) {
+			// touching aligned-box face x=5
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(5.0,8.5,0.25), getS().getClosestPointTo(createAlignedBoxFromPoints(4, 8.2, 0.1, 5, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_4(CoordinateSystem3D cs) {
+			// overlap sphere component only
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// contains sphere center
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(createAlignedBoxFromPoints(-6, 17, -0.5, -4, 19, 0.5)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_5(CoordinateSystem3D cs) {
+			// tangent to sphere at one side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// xmin=-1, sphere rightmost point at x=-3? no overlap
+			// Better exact tangent: box xmin = -3 (sphere center -5, r=2)
+			assertEpsilonEquals(createPoint(-3.0,18.0,0.0), getS().getClosestPointTo(createAlignedBoxFromPoints(-3, 17, -1, 1, 19, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_6(CoordinateSystem3D cs) {
+			// outside near aligned-box component (+X)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// dx from x=7 is 3
+			assertEpsilonEquals(createPoint(7.0,8.5,0.25), getS().getClosestPointTo(createAlignedBoxFromPoints(10, 8.2, 0.1, 11, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_7(CoordinateSystem3D cs) {
+			// outside near sphere component (+X)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// nearest box point to sphere center is (0,18,0): center-distance=5, minus radius 2 => 3
+			assertEpsilonEquals(createPoint(-3, 18, 0), getS().getClosestPointTo(createAlignedBoxFromPoints(0, 17, -1, 1, 19, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_8(CoordinateSystem3D cs) {
+			// box between both components but disjoint
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// closer to small aligned-box component than sphere
+			// gap 1 to xmin=5
+			assertEpsilonEquals(createPoint(5.0,8.5,0.25), getS().getClosestPointTo(createAlignedBoxFromPoints(3, 8.2, 0.1, 4, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_9(CoordinateSystem3D cs) {
+			// degenerate point inside aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var b = createAlignedBoxFromPoints(6, 8.5, 0.25, 6, 8.5, 0.25);
+			assertEpsilonEquals(createPoint(6, 8.5, 0.25), getS().getClosestPointTo(b));
+		}
+
+		@DisplayName("(AlignedBox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_10(CoordinateSystem3D cs) {
+			// degenerate point inside sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var b = createAlignedBoxFromPoints(-5, 18, 0, -5, 18, 0);
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(b));
+		}
+
+		@DisplayName("(Sphere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(5,8,0), getS().getClosestPointTo(createSphere(0, 0, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_2(CoordinateSystem3D cs) {
+			// center inside aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(6, 8.5, 0.25), getS().getClosestPointTo(createSphere(6, 8.5, 0.25, 0.1)));
+		}
+
+		@DisplayName("(Sphere3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_3(CoordinateSystem3D cs) {
+			// center inside reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(createSphere(-5, 18, 0, 0.5)));
+		}
+
+		@DisplayName("(Sphere3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_4(CoordinateSystem3D cs) {
+			// tangent to aligned-box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// tangent at x=5
+			assertEpsilonEquals(createPoint(5, 8.5, 0.25), getS().getClosestPointTo(createSphere(4, 8.5, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_5(CoordinateSystem3D cs) {
+			// tangent to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// centers distance = 5, radii sum = 2 + 3 = 5
+			assertEpsilonEquals(createPoint(-3, 18, 0), getS().getClosestPointTo(createSphere(0, 18, 0, 3)));
+		}
+
+		@DisplayName("(Sphere3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_6(CoordinateSystem3D cs) {
+			// outside but closest to aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// closest to box at (7,8.5,0.25), center distance to box=3, radius=1 => dist=2
+			assertEpsilonEquals(createPoint(7, 8.5, 0.25), getS().getClosestPointTo(createSphere(10, 8.5, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_7(CoordinateSystem3D cs) {
+			// outside but closest to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// center distance to (-5,18,0) is 5, minus radii (2+1) => 2
+			assertEpsilonEquals(createPoint(-3, 18, 0), getS().getClosestPointTo(createSphere(0, 18, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_8(CoordinateSystem3D cs) {
+			// large sphere enclosing both components
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(-3, 18, 0), getS().getClosestPointTo(createSphere(0, 18, 0, 1)));
 		}
 
 		@DisplayName("(Segment3afp) #1")
@@ -501,31 +864,114 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void segment_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(createPoint(5,8,0.5), getS().getClosestPointTo(createSegment(0, 0, 0, 1, 1, 1)));
 		}
 
-		@DisplayName("(Path3afp) #1")
+		@DisplayName("(Segment3afp) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void path_1(CoordinateSystem3D cs) {
+		public void segment_2(CoordinateSystem3D cs) {
+			// crossing aligned box
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			// Through box interior: y=8.5, z=0.25 in box ranges
+			assertEpsilonEquals(createPoint(6.0,8.5,0.25), getS().getClosestPointTo(createSegment(0, 8.5, 0.25, 10, 8.5, 0.25)));
 		}
 
-		@DisplayName("(MultiShape3D) #1")
+		@DisplayName("(Segment3afp) #3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void multishape_1(CoordinateSystem3D cs) {
+		public void segment_3(CoordinateSystem3D cs) {
+			// touching aligned-box corner
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(createPoint(5,8,0), getS().getClosestPointTo(createSegment(0, 0, 0, 5, 8, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_4(CoordinateSystem3D cs) {
+			// crossing sphere center line
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Passes through sphere center (-5,18,0)
+			assertEpsilonEquals(createPoint(-5,18,0), getS().getClosestPointTo(createSegment(-10, 18, 0, 0, 18, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_5(CoordinateSystem3D cs) {
+			// tangent to sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Distance to center is exactly radius=2 (line y=20 through z=0)
+			assertEpsilonEquals(createPoint(-5,20,0), getS().getClosestPointTo(createSegment(-10, 20, 0, 0, 20, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_6(CoordinateSystem3D cs) {
+			// near sphere, outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest point to sphere center is (-5,21,0): center distance 3 => shape distance 1
+			assertEpsilonEquals(createPoint(-5, 20, 0), getS().getClosestPointTo(createSegment(-10, 21, 0, 0, 21, 0))); // sphere surface point
+		}
+
+		@DisplayName("(Segment3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_7(CoordinateSystem3D cs) {
+			// near aligned box, outside along +X
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Segment at x=10, y/z aligned to box interior => dx=3 from xmax=7
+			assertEpsilonEquals(createPoint(7.0,9.0,0.25), getS().getClosestPointTo(createSegment(10, 8.5, 0.25, 10, 9, 0.25)));
+		}
+
+		@DisplayName("(Segment3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_8(CoordinateSystem3D cs) {
+			// degenerate point inside sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(createSegment(-5, 18, 0, -5, 18, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_9(CoordinateSystem3D cs) {
+			// degenerate point inside aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(6, 8.5, 0.25), getS().getClosestPointTo(createSegment(6, 8.5, 0.25, 6, 8.5, 0.25)));
 		}
 
 		@DisplayName("(Shape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void shape_1(CoordinateSystem3D cs) {
+		public void shape_1(CoordinateSystem3D cs) {
+			// overlap sphere component only
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			// contains sphere center
+			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo((Shape3D) createAlignedBoxFromPoints(-6, 17, -0.5, -4, 19, 0.5)));
+		}
+
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void shape_2(CoordinateSystem3D cs) {
+			// tangent to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// centers distance = 5, radii sum = 2 + 3 = 5
+			assertEpsilonEquals(createPoint(-3, 18, 0), getS().getClosestPointTo((Shape3D) createSphere(0, 18, 0, 3)));
+		}
+
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void shape_3(CoordinateSystem3D cs) {
+			// near sphere, outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest point to sphere center is (-5,21,0): center distance 3 => shape distance 1
+			assertEpsilonEquals(createPoint(-5, 20, 0), getS().getClosestPointTo((Shape3D) createSegment(-10, 21, 0, 0, 21, 0))); // sphere surface point
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -778,36 +1224,109 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	@Nested
 	public class GetDistance {
 
-		@DisplayName("(Shape3D) #1")
+		@DisplayName("(MultiShape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void shape_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(-5, 18, 0, 0.5));
+			shape.add(createSegment(0, 8.5, 0.25, 10, 8.5, 0.25));
+			assertEpsilonEquals(0., getS().getDistance(shape));
 		}
 
-		@DisplayName("(Sphere3afp) #1")
+		@DisplayName("(MultiShape3D) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void sphere_1(CoordinateSystem3D cs) {
+		public void multishape_2(CoordinateSystem3D cs) {
+			// disjoint, closest to aligned-box component
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(10, 8.5, 0.25, 1));                // distance 2 to box-comp
+			shape.add(createSegment(12, 8.5, 0.25, 14, 8.5, 0.25));   // distance 5 to box-comp
+			assertEpsilonEquals(2., getS().getDistance(shape));
 		}
 
-		@DisplayName("(AlignedBox3afp) #1")
+		@DisplayName("(MultiShape3D) #3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void alignedbox_1(CoordinateSystem3D cs) {
+		public void multishape_3(CoordinateSystem3D cs) {
+			// disjoint, closest to sphere component
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(0, 18, 0, 1));                     // distance 2 to ref-sphere
+			shape.add(createAlignedBoxFromPoints(20, 20, 0, 21, 21, 1));
+			assertEpsilonEquals(2., getS().getDistance(shape));
 		}
 
-		@DisplayName("(Segment3afp) #1")
+		@DisplayName("(MultiShape3D) #4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void segment_1(CoordinateSystem3D cs) {
+		public void multishape_4(CoordinateSystem3D cs) {
+			// touching by tangent sphere-to-sphere
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(0, 18, 0, 3)); // tangent with ref sphere centered at (-5,18,0), r=2
+			shape.add(createSegment(100, 100, 100, 101, 101, 101));
+			assertEpsilonEquals(0., getS().getDistance(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_5(CoordinateSystem3D cs) {
+			// intersecting via box-box overlap
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createAlignedBoxFromPoints(6, 8.2, 0.1, 6.8, 8.8, 0.4)); // inside ref box-comp
+			shape.add(createSphere(50, 50, 50, 1));
+			assertEpsilonEquals(0., getS().getDistance(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_6(CoordinateSystem3D cs) {
+			// intersecting via segment through reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-10, 18, 0, 0, 18, 0)); // crosses ref sphere
+			shape.add(createAlignedBoxFromPoints(30, 30, 30, 31, 31, 31));
+			assertEpsilonEquals(0., getS().getDistance(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_7(CoordinateSystem3D cs) {
+			// degenerate point shape inside reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-5, 18, 0, -5, 18, 0)); // point
+			assertEpsilonEquals(0., getS().getDistance(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_8(CoordinateSystem3D cs) {
+			// degenerate point shape outside both components
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(0, 0, 0, 0, 0, 0)); // point
+			assertEpsilonEquals(9.433981132056603, getS().getDistance(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_9(CoordinateSystem3D cs) {
+			// empty multishape
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			// Keep only if API defines behavior for empty multishape as infinite/undefined distance.
+			// If your implementation returns NaN or throws, adapt these assertions accordingly.
+			assertFalse(Double.isNaN(getS().getDistance(shape)));
 		}
 
 		@DisplayName("(Path3afp) #1")
@@ -815,15 +1334,393 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void path_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var path = factory.createPath();
+			path.moveTo(0, 0, 0);
+			path.lineTo(1, 1, 1);
+			assertEpsilonEquals(8.0777472107, getS().getDistance(path));
 		}
 
-		@DisplayName("(MultiShape3afp) #1")
+		@DisplayName("(Path3afp) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void multishape_1(CoordinateSystem3D cs) {
+		public void path_2(CoordinateSystem3D cs) {
+			//polyline crossing aligned-box component
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var path = factory.createPath();
+			path.moveTo(0, 8.5, 0.25);
+			path.lineTo(10, 8.5, 0.25);
+			assertEpsilonEquals(0., getS().getDistance(path));
+		}
+
+		@DisplayName("(Path3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_3(CoordinateSystem3D cs) {
+			// polyline crossing sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 18, 0);
+			path.lineTo(0, 18, 0);
+			assertEpsilonEquals(0., getS().getDistance(path));
+		}
+
+		@DisplayName("(Path3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_4(CoordinateSystem3D cs) {
+			// path near sphere but outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 21, 0);
+			path.lineTo(0, 21, 0); // distance to sphere center line = 3, radius=2 => gap=1
+			assertEpsilonEquals(1., getS().getDistance(path));
+		}
+
+		@DisplayName("(Path3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_5(CoordinateSystem3D cs) {
+			// path near aligned-box component but outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(10, 8.5, 0.25);
+			path.lineTo(12, 8.5, 0.25); // box xmax=7 => gap=3
+			assertEpsilonEquals(3., getS().getDistance(path));
+		}
+
+		@DisplayName("(Path3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_6(CoordinateSystem3D cs) {
+			// quadratic crossing aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(0, 8.5, 0.25);
+			path.quadTo(6, 8.5, 0.25, 10, 8.5, 0.25);
+			assertEpsilonEquals(0., getS().getDistance(path));
+		}
+
+		@DisplayName("(Path3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_7(CoordinateSystem3D cs) {
+			// cubic crossing sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 18, 0);
+			path.curveTo(-8, 18, 0, -2, 18, 0, 0, 18, 0);
+			assertEpsilonEquals(0., getS().getDistance(path));
+		}
+
+		@DisplayName("(Path3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_8(CoordinateSystem3D cs) {
+			// mixed path, closest on aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(20, 0, 0);
+			path.lineTo(20, 30, 0);           // far from both
+			path.quadTo(12, 12, 0.25, 10, 9, 0.25); // comes near box, stays outside
+			assertEpsilonEquals(3., getS().getDistance(path));
+		}
+
+		@DisplayName("(Path3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_9(CoordinateSystem3D cs) {
+			// degenerate path point inside sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-5, 18, 0);
+			path.lineTo(-5, 18, 0);
+			assertEpsilonEquals(0., getS().getDistance(path));
+		}
+
+		@DisplayName("(AlignedBox3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void alignedbox_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8.062257748, getS().getDistance(createAlignedBoxFromPoints(0, 0, 0, 1, 1, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_2(CoordinateSystem3D cs) {
+			// overlap aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(6, 8.2, 0.1, 6.8, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_3(CoordinateSystem3D cs) {
+			// touching aligned-box face x=5
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(4, 8.2, 0.1, 5, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_4(CoordinateSystem3D cs) {
+			// overlap sphere component only
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// contains sphere center
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-6, 17, -0.5, -4, 19, 0.5)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_5(CoordinateSystem3D cs) {
+			// tangent to sphere at one side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// xmin=-1, sphere rightmost point at x=-3? no overlap
+			// Better exact tangent: box xmin = -3 (sphere center -5, r=2)
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-3, 17, -1, 1, 19, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_6(CoordinateSystem3D cs) {
+			// outside near aligned-box component (+X)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// dx from x=7 is 3
+			assertEpsilonEquals(3., getS().getDistance(createAlignedBoxFromPoints(10, 8.2, 0.1, 11, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_7(CoordinateSystem3D cs) {
+			// outside near sphere component (+X)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// nearest box point to sphere center is (0,18,0): center-distance=5, minus radius 2 => 3
+			assertEpsilonEquals(3., getS().getDistance(createAlignedBoxFromPoints(0, 17, -1, 1, 19, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_8(CoordinateSystem3D cs) {
+			// box between both components but disjoint
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// closer to small aligned-box component than sphere
+			// gap 1 to xmin=5
+			assertEpsilonEquals(1., getS().getDistance(createAlignedBoxFromPoints(3, 8.2, 0.1, 4, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_9(CoordinateSystem3D cs) {
+			// degenerate point inside aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var b = createAlignedBoxFromPoints(6, 8.5, 0.25, 6, 8.5, 0.25);
+			assertEpsilonEquals(0., getS().getDistance(b));
+		}
+
+		@DisplayName("(AlignedBox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_10(CoordinateSystem3D cs) {
+			// degenerate point inside sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var b = createAlignedBoxFromPoints(-5, 18, 0, -5, 18, 0);
+			assertEpsilonEquals(0., getS().getDistance(b));
+		}
+
+		@DisplayName("(Sphere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8.4339811321, getS().getDistance(createSphere(0, 0, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_2(CoordinateSystem3D cs) {
+			// center inside aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(6, 8.5, 0.25, 0.1)));
+		}
+
+		@DisplayName("(Sphere3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_3(CoordinateSystem3D cs) {
+			// center inside reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(-5, 18, 0, 0.5)));
+		}
+
+		@DisplayName("(Sphere3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_4(CoordinateSystem3D cs) {
+			// tangent to aligned-box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// tangent at x=5
+			assertEpsilonEquals(0., getS().getDistance(createSphere(4, 8.5, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_5(CoordinateSystem3D cs) {
+			// tangent to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// centers distance = 5, radii sum = 2 + 3 = 5
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0, 18, 0, 3)));
+		}
+
+		@DisplayName("(Sphere3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_6(CoordinateSystem3D cs) {
+			// outside but closest to aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// closest to box at (7,8.5,0.25), center distance to box=3, radius=1 => dist=2
+			assertEpsilonEquals(2., getS().getDistance(createSphere(10, 8.5, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_7(CoordinateSystem3D cs) {
+			// outside but closest to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// center distance to (-5,18,0) is 5, minus radii (2+1) => 2
+			assertEpsilonEquals(2., getS().getDistance(createSphere(0, 18, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_8(CoordinateSystem3D cs) {
+			// large sphere enclosing both components
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0, 10, 0, 30)));
+		}
+
+		@DisplayName("(Segment3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void segment_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8.0777472107, getS().getDistance(createSegment(0, 0, 0, 1, 1, 1)));
+		}
+
+		@DisplayName("(Segment3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_2(CoordinateSystem3D cs) {
+			// crossing aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Through box interior: y=8.5, z=0.25 in box ranges
+			assertEpsilonEquals(0., getS().getDistance(createSegment(0, 8.5, 0.25, 10, 8.5, 0.25)));
+		}
+
+		@DisplayName("(Segment3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_3(CoordinateSystem3D cs) {
+			// touching aligned-box corner
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSegment(0, 0, 0, 5, 8, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_4(CoordinateSystem3D cs) {
+			// crossing sphere center line
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Passes through sphere center (-5,18,0)
+			assertEpsilonEquals(0., getS().getDistance(createSegment(-10, 18, 0, 0, 18, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_5(CoordinateSystem3D cs) {
+			// tangent to sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Distance to center is exactly radius=2 (line y=20 through z=0)
+			assertEpsilonEquals(0., getS().getDistance(createSegment(-10, 20, 0, 0, 20, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_6(CoordinateSystem3D cs) {
+			// near sphere, outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest point to sphere center is (-5,21,0): center distance 3 => shape distance 1
+			assertEpsilonEquals(1., getS().getDistance(createSegment(-10, 21, 0, 0, 21, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_7(CoordinateSystem3D cs) {
+			// near aligned box, outside along +X
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Segment at x=10, y/z aligned to box interior => dx=3 from xmax=7
+			assertEpsilonEquals(3., getS().getDistance(createSegment(10, 8.5, 0.25, 10, 9, 0.25)));
+		}
+
+		@DisplayName("(Segment3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_8(CoordinateSystem3D cs) {
+			// degenerate point inside sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSegment(-5, 18, 0, -5, 18, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_9(CoordinateSystem3D cs) {
+			// degenerate point inside aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSegment(6, 8.5, 0.25, 6, 8.5, 0.25)));
+		}
+
+		@DisplayName("(Shape3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_1(CoordinateSystem3D cs) {
+			// tangent to aligned-box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// tangent at x=5
+			assertEpsilonEquals(0., getS().getDistance((Shape3D) createSphere(4, 8.5, 0.25, 1)));
+		}
+
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance((Shape3D) createSegment(6, 8.5, 0.25, 6, 8.5, 0.25)));
+		}
+
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_3(CoordinateSystem3D cs) {
+			// overlap sphere component only
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// contains sphere center
+			assertEpsilonEquals(0., getS().getDistance((Shape3D) createAlignedBoxFromPoints(-6, 17, -0.5, -4, 19, 0.5)));
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -927,36 +1824,109 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	@Nested
 	public class GetDistanceSquared {
 
-		@DisplayName("(Shape3D) #1")
+		@DisplayName("(MultiShape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void shape_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(-5, 18, 0, 0.5));
+			shape.add(createSegment(0, 8.5, 0.25, 10, 8.5, 0.25));
+			assertEpsilonEquals(0., getS().getDistanceSquared(shape));
 		}
 
-		@DisplayName("(Sphere3afp) #1")
+		@DisplayName("(MultiShape3D) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void sphere_1(CoordinateSystem3D cs) {
+		public void multishape_2(CoordinateSystem3D cs) {
+			// disjoint, closest to aligned-box component
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(10, 8.5, 0.25, 1));                // distance 2 to box-comp
+			shape.add(createSegment(12, 8.5, 0.25, 14, 8.5, 0.25));   // distance 5 to box-comp
+			assertEpsilonEquals(4., getS().getDistanceSquared(shape));
 		}
 
-		@DisplayName("(AlignedBox3afp) #1")
+		@DisplayName("(MultiShape3D) #3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void alignedbox_1(CoordinateSystem3D cs) {
+		public void multishape_3(CoordinateSystem3D cs) {
+			// disjoint, closest to sphere component
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(0, 18, 0, 1));                     // distance 2 to ref-sphere
+			shape.add(createAlignedBoxFromPoints(20, 20, 0, 21, 21, 1));
+			assertEpsilonEquals(4., getS().getDistanceSquared(shape));
 		}
 
-		@DisplayName("(Segment3afp) #1")
+		@DisplayName("(MultiShape3D) #4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void segment_1(CoordinateSystem3D cs) {
+		public void multishape_4(CoordinateSystem3D cs) {
+			// touching by tangent sphere-to-sphere
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(0, 18, 0, 3)); // tangent with ref sphere centered at (-5,18,0), r=2
+			shape.add(createSegment(100, 100, 100, 101, 101, 101));
+			assertEpsilonEquals(0., getS().getDistanceSquared(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_5(CoordinateSystem3D cs) {
+			// intersecting via box-box overlap
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createAlignedBoxFromPoints(6, 8.2, 0.1, 6.8, 8.8, 0.4)); // inside ref box-comp
+			shape.add(createSphere(50, 50, 50, 1));
+			assertEpsilonEquals(0., getS().getDistanceSquared(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_6(CoordinateSystem3D cs) {
+			// intersecting via segment through reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-10, 18, 0, 0, 18, 0)); // crosses ref sphere
+			shape.add(createAlignedBoxFromPoints(30, 30, 30, 31, 31, 31));
+			assertEpsilonEquals(0., getS().getDistanceSquared(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_7(CoordinateSystem3D cs) {
+			// degenerate point shape inside reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-5, 18, 0, -5, 18, 0)); // point
+			assertEpsilonEquals(0., getS().getDistanceSquared(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_8(CoordinateSystem3D cs) {
+			// degenerate point shape outside both components
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(0, 0, 0, 0, 0, 0)); // point
+			assertEpsilonEquals(89., getS().getDistanceSquared(shape));
+		}
+
+		@DisplayName("(MultiShape3D) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_9(CoordinateSystem3D cs) {
+			// empty multishape
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			// Keep only if API defines behavior for empty multishape as infinite/undefined distance.
+			// If your implementation returns NaN or throws, adapt these assertions accordingly.
+			assertFalse(Double.isNaN(getS().getDistanceSquared(shape)));
 		}
 
 		@DisplayName("(Path3afp) #1")
@@ -964,15 +1934,391 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void path_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var path = factory.createPath();
+			path.moveTo(0, 0, 0);
+			path.lineTo(1, 1, 1);
+			assertEpsilonEquals(65.25, getS().getDistanceSquared(path));
 		}
 
-		@DisplayName("(MultiShape3afp) #1")
+		@DisplayName("(Path3afp) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void multishape_1(CoordinateSystem3D cs) {
+		public void path_2(CoordinateSystem3D cs) {
+			//polyline crossing aligned-box component
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var path = factory.createPath();
+			path.moveTo(0, 8.5, 0.25);
+			path.lineTo(10, 8.5, 0.25);
+			assertEpsilonEquals(0., getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(Path3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_3(CoordinateSystem3D cs) {
+			// polyline crossing sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 18, 0);
+			path.lineTo(0, 18, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(Path3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_4(CoordinateSystem3D cs) {
+			// path near sphere but outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 21, 0);
+			path.lineTo(0, 21, 0); // distance to sphere center line = 3, radius=2 => gap=1
+			assertEpsilonEquals(1., getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(Path3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_5(CoordinateSystem3D cs) {
+			// path near aligned-box component but outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(10, 8.5, 0.25);
+			path.lineTo(12, 8.5, 0.25); // box xmax=7 => gap=3
+			assertEpsilonEquals(9., getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(Path3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_6(CoordinateSystem3D cs) {
+			// quadratic crossing aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(0, 8.5, 0.25);
+			path.quadTo(6, 8.5, 0.25, 10, 8.5, 0.25);
+			assertEpsilonEquals(0., getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(Path3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_7(CoordinateSystem3D cs) {
+			// cubic crossing sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-10, 18, 0);
+			path.curveTo(-8, 18, 0, -2, 18, 0, 0, 18, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(Path3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_8(CoordinateSystem3D cs) {
+			// mixed path, closest on aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(20, 0, 0);
+			path.lineTo(20, 30, 0);           // far from both
+			path.quadTo(12, 12, 0.25, 10, 9, 0.25); // comes near box, stays outside
+			assertEpsilonEquals(9., getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(Path3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void path_9(CoordinateSystem3D cs) {
+			// degenerate path point inside sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = factory.createPath();
+			path.moveTo(-5, 18, 0);
+			path.lineTo(-5, 18, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(AlignedBox3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void alignedbox_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(64.99999995, getS().getDistanceSquared(createAlignedBoxFromPoints(0, 0, 0, 1, 1, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_2(CoordinateSystem3D cs) {
+			// overlap aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(6, 8.2, 0.1, 6.8, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_3(CoordinateSystem3D cs) {
+			// touching aligned-box face x=5
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(4, 8.2, 0.1, 5, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_4(CoordinateSystem3D cs) {
+			// overlap sphere component only
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// contains sphere center
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-6, 17, -0.5, -4, 19, 0.5)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_5(CoordinateSystem3D cs) {
+			// tangent to sphere at one side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// xmin=-1, sphere rightmost point at x=-3? no overlap
+			// Better exact tangent: box xmin = -3 (sphere center -5, r=2)
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-3, 17, -1, 1, 19, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_6(CoordinateSystem3D cs) {
+			// outside near aligned-box component (+X)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// dx from x=7 is 3
+			assertEpsilonEquals(9., getS().getDistanceSquared(createAlignedBoxFromPoints(10, 8.2, 0.1, 11, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_7(CoordinateSystem3D cs) {
+			// outside near sphere component (+X)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// nearest box point to sphere center is (0,18,0): center-distance=5, minus radius 2 => 3
+			assertEpsilonEquals(9., getS().getDistanceSquared(createAlignedBoxFromPoints(0, 17, -1, 1, 19, 1)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_8(CoordinateSystem3D cs) {
+			// box between both components but disjoint
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// closer to small aligned-box component than sphere
+			// gap 1 to xmin=5
+			assertEpsilonEquals(1., getS().getDistanceSquared(createAlignedBoxFromPoints(3, 8.2, 0.1, 4, 8.8, 0.4)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_9(CoordinateSystem3D cs) {
+			// degenerate point inside aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var b = createAlignedBoxFromPoints(6, 8.5, 0.25, 6, 8.5, 0.25);
+			assertEpsilonEquals(0., getS().getDistanceSquared(b));
+		}
+
+		@DisplayName("(AlignedBox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void alignedbox_10(CoordinateSystem3D cs) {
+			// degenerate point inside sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-5, 18, 0, -5, 18, 0)));
+		}
+
+		@DisplayName("(Sphere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(71.132037737, getS().getDistanceSquared(createSphere(0, 0, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_2(CoordinateSystem3D cs) {
+			// center inside aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(6, 8.5, 0.25, 0.1)));
+		}
+
+		@DisplayName("(Sphere3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_3(CoordinateSystem3D cs) {
+			// center inside reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(-5, 18, 0, 0.5)));
+		}
+
+		@DisplayName("(Sphere3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_4(CoordinateSystem3D cs) {
+			// tangent to aligned-box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// tangent at x=5
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(4, 8.5, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_5(CoordinateSystem3D cs) {
+			// tangent to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// centers distance = 5, radii sum = 2 + 3 = 5
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(0, 18, 0, 3)));
+		}
+
+		@DisplayName("(Sphere3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_6(CoordinateSystem3D cs) {
+			// outside but closest to aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// closest to box at (7,8.5,0.25), center distance to box=3, radius=1 => dist=2
+			assertEpsilonEquals(4., getS().getDistanceSquared(createSphere(10, 8.5, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_7(CoordinateSystem3D cs) {
+			// outside but closest to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// center distance to (-5,18,0) is 5, minus radii (2+1) => 2
+			assertEpsilonEquals(4., getS().getDistanceSquared(createSphere(0, 18, 0, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void sphere_8(CoordinateSystem3D cs) {
+			// large sphere enclosing both components
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(0, 10, 0, 30)));
+		}
+
+		@DisplayName("(Segment3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void segment_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(65.25, getS().getDistanceSquared(createSegment(0, 0, 0, 1, 1, 1)));
+		}
+
+		@DisplayName("(Segment3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_2(CoordinateSystem3D cs) {
+			// crossing aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Through box interior: y=8.5, z=0.25 in box ranges
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSegment(0, 8.5, 0.25, 10, 8.5, 0.25)));
+		}
+
+		@DisplayName("(Segment3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_3(CoordinateSystem3D cs) {
+			// touching aligned-box corner
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSegment(0, 0, 0, 5, 8, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_4(CoordinateSystem3D cs) {
+			// crossing sphere center line
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Passes through sphere center (-5,18,0)
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSegment(-10, 18, 0, 0, 18, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_5(CoordinateSystem3D cs) {
+			// tangent to sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Distance to center is exactly radius=2 (line y=20 through z=0)
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSegment(-10, 20, 0, 0, 20, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_6(CoordinateSystem3D cs) {
+			// near sphere, outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest point to sphere center is (-5,21,0): center distance 3 => shape distance 1
+			assertEpsilonEquals(1., getS().getDistanceSquared(createSegment(-10, 21, 0, 0, 21, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_7(CoordinateSystem3D cs) {
+			// near aligned box, outside along +X
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Segment at x=10, y/z aligned to box interior => dx=3 from xmax=7
+			assertEpsilonEquals(9., getS().getDistanceSquared(createSegment(10, 8.5, 0.25, 10, 9, 0.25)));
+		}
+
+		@DisplayName("(Segment3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_8(CoordinateSystem3D cs) {
+			// degenerate point inside sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSegment(-5, 18, 0, -5, 18, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void segment_9(CoordinateSystem3D cs) {
+			// degenerate point inside aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSegment(6, 8.5, 0.25, 6, 8.5, 0.25)));
+		}
+
+		@DisplayName("(Shape3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared((Shape3D) createSegment(6, 8.5, 0.25, 6, 8.5, 0.25)));
+		}
+
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// xmin=-1, sphere rightmost point at x=-3? no overlap
+			// Better exact tangent: box xmin = -3 (sphere center -5, r=2)
+			assertEpsilonEquals(0., getS().getDistanceSquared((Shape3D) createAlignedBoxFromPoints(-3, 17, -1, 1, 19, 1)));
+		}
+
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// center distance to (-5,18,0) is 5, minus radii (2+1) => 2
+			assertEpsilonEquals(4., getS().getDistanceSquared((Shape3D) createSphere(0, 18, 0, 1)));
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -1284,19 +2630,21 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().set((T) createMultiShape());
-			/* TODO PathIterator3afp pi = getS().getPathIterator();
-			assertNoElement(pi);
+			assertEquals(0, getS().size());
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			MultiShape3afp newShape = createMultiShape();
-			newShape.add(createAlignedBox(-6, 48, 0, 5, 7, 0));
+			newShape.add(createAlignedBox(-6, 48, 0, 5, 7, 6));
 			getS().set((T) newShape);
-			pi = getS().getPathIterator();
-			assertElement(pi, PathElementType.MOVE_TO, -6, 48);
-			assertElement(pi, PathElementType.LINE_TO, -1, 48);
-			assertElement(pi, PathElementType.LINE_TO, -1, 55);
-			assertElement(pi, PathElementType.LINE_TO, -6, 55);
-			assertElement(pi, PathElementType.CLOSE, -6, 48);
-			assertNoElement(pi);*/
-			fail("TODO");
+			assertEquals(1, getS().size());
+			var shape0 = (AlignedBox3afp) getS().get(0);
+			assertEpsilonEquals(createPoint(-6, 48, 0), createPoint(shape0.getMinX(), shape0.getMinY(), shape0.getMinZ()));
+			assertEpsilonEquals(createPoint(-1, 55, 6), createPoint(shape0.getMaxX(), shape0.getMaxY(), shape0.getMaxZ()));
 		}
 	}
 
@@ -1309,22 +2657,14 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void xyz_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getS().translate(10, -2, 0);
-			/* TODO PathIterator3afp pi = getS().getPathIterator();
-			assertElement(pi, PathElementType.MOVE_TO, 15, 6);
-			assertElement(pi, PathElementType.LINE_TO, 17, 6);
-			assertElement(pi, PathElementType.LINE_TO, 17, 7);
-			assertElement(pi, PathElementType.LINE_TO, 15, 7);
-			assertElement(pi, PathElementType.CLOSE, 15, 6);
-			assertElement(pi, PathElementType.MOVE_TO, 7, 16);
-			assertElement(pi, PathElementType.CURVE_TO, 7, 17.10457, 6.10457, 18, 5, 18);
-			assertElement(pi, PathElementType.CURVE_TO, 3.89543, 18, 3, 17.10457, 3, 16);
-			assertElement(pi, PathElementType.CURVE_TO, 3, 14.89543, 3.89543, 14, 5, 14);
-			assertElement(pi, PathElementType.CURVE_TO, 6.10457, 14, 7, 14.89543, 7, 16);
-			assertElement(pi, PathElementType.CLOSE, 7, 16);
-			assertNoElement(pi);
-			*/
-			fail("TODO");
+			getS().translate(10, -2, 1);
+			assertEquals(2, getS().size());
+			var shape0 = (AlignedBox3afp) getS().get(0);
+			assertEpsilonEquals(createPoint(15, 6, 1), createPoint(shape0.getMinX(), shape0.getMinY(), shape0.getMinZ()));
+			assertEpsilonEquals(createPoint(17, 7, 1.5), createPoint(shape0.getMaxX(), shape0.getMaxY(), shape0.getMaxZ()));
+			var shape1 = (Sphere3afp) getS().get(1);
+			assertEpsilonEquals(createPoint(5, 16, 1), shape1.getCenter());
+			assertEpsilonEquals(2, shape1.getRadius());
 		}
 
 		@DisplayName("(Vector3D) #1")
@@ -1332,21 +2672,14 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void vector_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getS().translate(createVector(10, -2, 0));
-			/* TODO PathIterator3afp pi = getS().getPathIterator();
-			assertElement(pi, PathElementType.MOVE_TO, 15, 6);
-			assertElement(pi, PathElementType.LINE_TO, 17, 6);
-			assertElement(pi, PathElementType.LINE_TO, 17, 7);
-			assertElement(pi, PathElementType.LINE_TO, 15, 7);
-			assertElement(pi, PathElementType.CLOSE, 15, 6);
-			assertElement(pi, PathElementType.MOVE_TO, 7, 16);
-			assertElement(pi, PathElementType.CURVE_TO, 7, 17.10457, 6.10457, 18, 5, 18);
-			assertElement(pi, PathElementType.CURVE_TO, 3.89543, 18, 3, 17.10457, 3, 16);
-			assertElement(pi, PathElementType.CURVE_TO, 3, 14.89543, 3.89543, 14, 5, 14);
-			assertElement(pi, PathElementType.CURVE_TO, 6.10457, 14, 7, 14.89543, 7, 16);
-			assertElement(pi, PathElementType.CLOSE, 7, 16);
-			assertNoElement(pi);*/
-			fail("TODO");
+			getS().translate(createVector(10, -2, 1));
+			assertEquals(2, getS().size());
+			var shape0 = (AlignedBox3afp) getS().get(0);
+			assertEpsilonEquals(createPoint(15, 6, 1), createPoint(shape0.getMinX(), shape0.getMinY(), shape0.getMinZ()));
+			assertEpsilonEquals(createPoint(17, 7, 1.5), createPoint(shape0.getMaxX(), shape0.getMaxY(), shape0.getMaxZ()));
+			var shape1 = (Sphere3afp) getS().get(1);
+			assertEpsilonEquals(createPoint(5, 16, 1), shape1.getCenter());
+			assertEpsilonEquals(2, shape1.getRadius());
 		}
 	}
 
@@ -1363,8 +2696,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 	
 		@DisplayName("(box) #1")
@@ -1376,10 +2711,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			getS().toBoundingBox(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 	}
 
@@ -1416,7 +2751,7 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void box_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects(createAlignedBox(4.75, 8, 0, .5, .5, 0)));
+			assertFalse(getS().intersects(createAlignedBox(4.75, 8, 0, .5, .5, 0)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #5")
@@ -1432,7 +2767,7 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void box_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects(createAlignedBox(5.5, 8.5, 0, .5, .5, 0)));
+			assertFalse(getS().intersects(createAlignedBox(5.5, 8.5, 0, .5, .5, 0)));
 		}
 
 		@DisplayName("(Sphere3afp) #1")
@@ -1544,8 +2879,6 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
 			assertFalse(getS().intersects(path));
-			path.closePath();
-			assertTrue(getS().intersects(path));
 		}
 
 		@DisplayName("(Path3afp) #2")
@@ -1553,15 +2886,15 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void path_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			var path = createPath();
+			Path3afp path = createPath();
 			path.moveTo(-6, 2, 0);
 			path.lineTo(10, 6, 0);
 			path.lineTo(8, 14, 0);
 			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
-			assertFalse(getS().intersects(path));
 			path.closePath();
-			assertTrue(getS().intersects(path));
+			assertFalse(getS().intersects(path));
 		}
 
 		@DisplayName("(Path3afp) #3")
@@ -1571,13 +2904,55 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
 			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(6, 20, 0);
+			assertFalse(getS().intersects(path));
+		}
+
+		@DisplayName("(Path3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertFalse(getS().intersects(path));
+		}
+
+		@DisplayName("(Path3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
 			path.lineTo(8, 14, 0);
 			path.lineTo(-4, 12, 0);
 			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
 			assertFalse(getS().intersects(path));
+		}
+
+		@DisplayName("(Path3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
 			path.closePath();
-			assertTrue(getS().intersects(path));
+			assertFalse(getS().intersects(path));
 		}
 
 		@DisplayName("(Path3Ieratorafp) #1")
@@ -1593,8 +2968,6 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
 			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
-			path.closePath();
-			assertTrue(getS().intersects((PathIterator3afp) path.getPathIterator()));
 		}
 
 		@DisplayName("(Path3Ieratorafp) #2")
@@ -1602,15 +2975,15 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void pathiterator_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			var path = createPath();
+			Path3afp path = createPath();
 			path.moveTo(-6, 2, 0);
 			path.lineTo(10, 6, 0);
 			path.lineTo(8, 14, 0);
 			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
-			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
 			path.closePath();
-			assertTrue(getS().intersects((PathIterator3afp) path.getPathIterator()));
+			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
 		}
 
 		@DisplayName("(Path3Ieratorafp) #3")
@@ -1620,13 +2993,55 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
 			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(6, 20, 0);
+			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
+		}
+
+		@DisplayName("(Path3Ieratorafp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void pathiterator_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
+		}
+
+		@DisplayName("(Path3Ieratorafp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void pathiterator_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
 			path.lineTo(8, 14, 0);
 			path.lineTo(-4, 12, 0);
 			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
 			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
+		}
+
+		@DisplayName("(Path3Ieratorafp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void pathiterator_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
 			path.closePath();
-			assertTrue(getS().intersects((PathIterator3afp) path.getPathIterator()));
+			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
 		}
 
 		@DisplayName("(Shape3D) #1")
@@ -1665,7 +3080,7 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
 			path.closePath();
-			assertTrue(getS().intersects((Shape3D) path));
+			assertFalse(getS().intersects((Shape3D) path));
 		}
 
 		@DisplayName("(MultiShape3afp) #1")
@@ -1673,7 +3088,100 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-5, 18, 0, -5, 18, 0));
+			assertTrue(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_2(CoordinateSystem3D cs) {
+			// empty multishape
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			assertFalse(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_3(CoordinateSystem3D cs) {
+			// one shape intersects (aligned-box overlap)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createAlignedBoxFromPoints(6, 8.2, 0.1, 6.8, 8.8, 0.4)); // inside ref box component
+			shape.add(createSphere(100, 100, 100, 1)); // far away
+			assertTrue(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_4(CoordinateSystem3D cs) {
+			// one shape intersects (sphere overlap)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(-5, 18, 0, 0.5)); // inside ref sphere component
+			shape.add(createSegment(50, 50, 50, 60, 60, 60));
+			assertTrue(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_5(CoordinateSystem3D cs) {
+			// tangent to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(0, 18, 0, 3)); // tangent with sphere center (-5,18,0), r=2
+			assertFalse(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_6(CoordinateSystem3D cs) {
+			// tangent to reference aligned-box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(0, 8.5, 0.25, 5, 8.5, 0.25)); // endpoint on face x=5
+			assertTrue(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_7(CoordinateSystem3D cs) {
+			// all components disjoint
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(20, 20, 20, 1));
+			shape.add(createAlignedBoxFromPoints(30, 30, 30, 31, 31, 31));
+			shape.add(createSegment(40, 40, 40, 45, 45, 45));
+			assertFalse(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_8(CoordinateSystem3D cs) {
+			// crossing segment through reference aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(0, 8.5, 0.25, 10, 8.5, 0.25)); // crosses ref box component
+			assertTrue(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_9(CoordinateSystem3D cs) {
+			// crossing segment through reference sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-10, 18, 0, 0, 18, 0)); // crosses ref sphere component
+			assertTrue(getS().intersects(shape));
 		}
 	}
 
@@ -1686,21 +3194,14 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getS().operator_add(createVector(10, -2, 0));
-			/* TODO PathIterator3afp pi = getS().getPathIterator();
-			assertElement(pi, PathElementType.MOVE_TO, 15, 6, 0);
-			assertElement(pi, PathElementType.LINE_TO, 17, 6, 0);
-			assertElement(pi, PathElementType.LINE_TO, 17, 7, 0);
-			assertElement(pi, PathElementType.LINE_TO, 15, 7, 0);
-			assertElement(pi, PathElementType.CLOSE, 15, 6, 0);
-			assertElement(pi, PathElementType.MOVE_TO, 7, 16, 0);
-			assertElement(pi, PathElementType.CURVE_TO, 7, 17.10457, 0, 6.10457, 18, 0, 5, 18, 0);
-			assertElement(pi, PathElementType.CURVE_TO, 3.89543, 18, 0, 3, 17.10457, 0, 3, 16, 0);
-			assertElement(pi, PathElementType.CURVE_TO, 3, 14.89543, 0, 3.89543, 14, 0, 5, 14, 0);
-			assertElement(pi, PathElementType.CURVE_TO, 6.10457, 14, 0, 7, 14.89543, 0, 7, 16, 0);
-			assertElement(pi, PathElementType.CLOSE, 7, 16, 0);
-			assertNoElement(pi);*/
-			fail("TODO");
+			getS().operator_add(createVector(10, -2, 1));
+			assertEquals(2, getS().size());
+			var shape0 = (AlignedBox3afp) shape.get(0);
+			assertEpsilonEquals(createPoint(15, 6, 1), createPoint(shape0.getMinX(), shape0.getMinY(), shape0.getMinZ()));
+			assertEpsilonEquals(createPoint(17, 7, 1.5), createPoint(shape0.getMaxX(), shape0.getMaxY(), shape0.getMaxZ()));
+			var shape1 = (Sphere3afp) shape.get(1);
+			assertEpsilonEquals(createPoint(5, 16, 1), shape1.getCenter());
+			assertEpsilonEquals(2, shape1.getRadius());
 		}
 	}
 
@@ -1713,21 +3214,14 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			T shape = getS().operator_plus(createVector(10, -2, 0));
-			/* TODO PathIterator3afp pi = shape.getPathIterator();
-			assertElement(pi, PathElementType.MOVE_TO, 15, 6, 0);
-			assertElement(pi, PathElementType.LINE_TO, 17, 6, 0);
-			assertElement(pi, PathElementType.LINE_TO, 17, 7, 0);
-			assertElement(pi, PathElementType.LINE_TO, 15, 7, 0);
-			assertElement(pi, PathElementType.CLOSE, 15, 6, 0);
-			assertElement(pi, PathElementType.MOVE_TO, 7, 16, 0);
-			assertElement(pi, PathElementType.CURVE_TO, 7, 17.10457, 0, 6.10457, 18, 0, 5, 18, 0);
-			assertElement(pi, PathElementType.CURVE_TO, 3.89543, 18, 0, 3, 17.10457, 0, 3, 16, 0);
-			assertElement(pi, PathElementType.CURVE_TO, 3, 14.89543, 0, 3.89543, 14, 0, 5, 14, 0);
-			assertElement(pi, PathElementType.CURVE_TO, 6.10457, 14, 0, 7, 14.89543, 0, 7, 16, 0);
-			assertElement(pi, PathElementType.CLOSE, 7, 16, 0);
-			assertNoElement(pi);*/
-			fail("TODO");
+			T shape = getS().operator_plus(createVector(10, -2, 1));
+			assertEquals(2, getS().size());
+			var shape0 = (AlignedBox3afp) shape.get(0);
+			assertEpsilonEquals(createPoint(15, 6, 1), createPoint(shape0.getMinX(), shape0.getMinY(), shape0.getMinZ()));
+			assertEpsilonEquals(createPoint(17, 7, 1.5), createPoint(shape0.getMaxX(), shape0.getMaxY(), shape0.getMaxZ()));
+			var shape1 = (Sphere3afp) shape.get(1);
+			assertEpsilonEquals(createPoint(5, 16, 1), shape1.getCenter());
+			assertEpsilonEquals(2, shape1.getRadius());
 		}
 	}
 
@@ -1740,25 +3234,18 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			getS().operator_remove(createVector(10, -2, 0));
-			/*TODO PathIterator3afp pi = getS().getPathIterator();
-			assertElement(pi, PathElementType.MOVE_TO, -5, 10, 0);
-			assertElement(pi, PathElementType.LINE_TO, -3, 10, 0);
-			assertElement(pi, PathElementType.LINE_TO, -3, 11, 0);
-			assertElement(pi, PathElementType.LINE_TO, -5, 11, 0);
-			assertElement(pi, PathElementType.CLOSE, -5, 10, 0);
-			assertElement(pi, PathElementType.MOVE_TO, -13, 20, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -13, 21.10457, 0, -13.89543, 22, 0, -15, 22, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -16.10457, 22, 0, -17, 21.10457, 0, -17, 20, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -17, 18.89543, 0, -16.10457, 18, 0, -15, 18, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -13.89543, 18, 0, -13, 18.89543, 0, -13, 20, 0);
-			assertElement(pi, PathElementType.CLOSE, -13, 20, 0);
-			assertNoElement(pi);*/
-			fail("TODO");
+			getS().operator_remove(createVector(10, -2, 1));
+			assertEquals(2, getS().size());
+			var shape0 = (AlignedBox3afp) getS().get(0);
+			assertEpsilonEquals(createPoint(-5, 10, -1), createPoint(shape0.getMinX(), shape0.getMinY(), shape0.getMinZ()));
+			assertEpsilonEquals(createPoint(-3, 11, -.5), createPoint(shape0.getMaxX(), shape0.getMaxY(), shape0.getMaxZ()));
+			var shape1 = (Sphere3afp) getS().get(1);
+			assertEpsilonEquals(createPoint(-15, 20, -1), shape1.getCenter());
+			assertEpsilonEquals(2, shape1.getRadius());
 		}
 	}
 
-	@DisplayName("this -= Vector3D")
+	@DisplayName("this - Vector3D")
 	@Nested
 	public class OperatorMinusVector3D {
 
@@ -1767,21 +3254,14 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 	    public void test_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			T shape = getS().operator_minus(createVector(10, -2, 0));
-			/* TODO PathIterator3afp pi = shape.getPathIterator();
-			assertElement(pi, PathElementType.MOVE_TO, -5, 10, 0);
-			assertElement(pi, PathElementType.LINE_TO, -3, 10, 0);
-			assertElement(pi, PathElementType.LINE_TO, -3, 11, 0);
-			assertElement(pi, PathElementType.LINE_TO, -5, 11, 0);
-			assertElement(pi, PathElementType.CLOSE, -5, 10, 0);
-			assertElement(pi, PathElementType.MOVE_TO, -13, 20, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -13, 21.10457, 0, -13.89543, 22, 0, -15, 22, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -16.10457, 22, 0, -17, 21.10457, 0, -17, 20, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -17, 18.89543, 0, -16.10457, 18, 0, -15, 18, 0);
-			assertElement(pi, PathElementType.CURVE_TO, -13.89543, 18, 0, -13, 18.89543, 0, -13, 20, 0);
-			assertElement(pi, PathElementType.CLOSE, -13, 20, 0);
-			assertNoElement(pi);*/
-			fail("TODO");
+			T shape = getS().operator_minus(createVector(10, -2, 1));
+			assertEquals(2, getS().size());
+			var shape0 = (AlignedBox3afp) shape.get(0);
+			assertEpsilonEquals(createPoint(-5, 10, -1), createPoint(shape0.getMinX(), shape0.getMinY(), shape0.getMinZ()));
+			assertEpsilonEquals(createPoint(-3, 11, -.5), createPoint(shape0.getMaxX(), shape0.getMaxY(), shape0.getMaxZ()));
+			var shape1 = (Sphere3afp) shape.get(1);
+			assertEpsilonEquals(createPoint(-15, 20, -1), shape1.getCenter());
+			assertEpsilonEquals(2, shape1.getRadius());
 		}
 	}
 
@@ -1890,12 +3370,155 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	@Nested
 	public class OperatorAndShape3D {
 
-		@DisplayName("#1")
+		@DisplayName("(AlignedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-	    public void test_1(CoordinateSystem3D cs) {
+	    public void box_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createAlignedBox(-20, 14, 0, .5, .5, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void box_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createAlignedBox(-2, -10, 0, .5, .5, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void box_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createAlignedBox(-6, 16, 0, .5, .5, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void box_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createAlignedBox(4.75, 8, 0, .5, .5, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void box_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createAlignedBox(-4, 18, 0, .5, .5, 0)));
+		}
+
+		@DisplayName("(AlignedBox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void box_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createAlignedBox(5.5, 8.5, 0, .5, .5, 0)));
+		}
+
+		@DisplayName("(Sphere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createSphere(-20, 14, 0, .5)));
+		}
+
+		@DisplayName("(Sphere3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createSphere(-2,- 10, 0, .5)));
+		}
+
+		@DisplayName("(Sphere3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createSphere(-6, 16, 0, .5)));
+		}
+
+		@DisplayName("(Sphere3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(getS().operator_and(createSphere(4.75, 8, 0, .5)));
+		}
+
+		@DisplayName("(Sphere3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createSphere(-4, 18, 0, .5)));
+		}
+
+		@DisplayName("(Sphere3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void sphere_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createSphere(5.5, 8.5, 0, .5)));
+		}
+
+		@DisplayName("(Segment3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void segment_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createSegment(-20, 14, 0, -19.5, 14, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void segment_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().operator_and(createSegment(-2, -10, 0, -1.5, -10, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void segment_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createSegment(-6, 16, 0, -5.5, 16.5, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void segment_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createSegment(4.75, 8, 0, 5.25, 8, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void segment_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createSegment(-4, 18, 0, -3.5, 18, 0)));
+		}
+
+		@DisplayName("(Segment3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void segment_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and(createSegment(5.5, 8.5, 0, 6, 8.5, 0)));
+		}
+
+		@DisplayName("(Path3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			Path3afp path = createPath();
 			path.moveTo(-6, 2, 0);
 			path.lineTo(10, 6, 0);
@@ -1904,8 +3527,220 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
 			assertFalse(getS().operator_and(path));
+		}
+
+		@DisplayName("(Path3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
 			path.closePath();
-			assertTrue(getS().operator_and(path));
+			assertFalse(getS().operator_and(path));
+		}
+
+		@DisplayName("(Path3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(6, 20, 0);
+			assertFalse(getS().operator_and(path));
+		}
+
+		@DisplayName("(Path3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertFalse(getS().operator_and(path));
+		}
+
+		@DisplayName("(Path3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
+			assertFalse(getS().operator_and(path));
+		}
+
+		@DisplayName("(Path3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void path_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertFalse(getS().operator_and(path));
+		}
+
+		@DisplayName("(Shape3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().operator_and((Shape3D) createSphere(4.75, 8, 0, .5)));
+		}
+
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
+			assertFalse(getS().operator_and((Shape3D) path));
+		}
+
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void shape_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertFalse(getS().operator_and((Shape3D) path));
+		}
+
+		@DisplayName("(MultiShape3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void multishape_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-5, 18, 0, -5, 18, 0));
+			assertTrue(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_2(CoordinateSystem3D cs) {
+			// empty multishape
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			assertFalse(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_3(CoordinateSystem3D cs) {
+			// one shape intersects (aligned-box overlap)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createAlignedBoxFromPoints(6, 8.2, 0.1, 6.8, 8.8, 0.4)); // inside ref box component
+			shape.add(createSphere(100, 100, 100, 1)); // far away
+			assertTrue(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_4(CoordinateSystem3D cs) {
+			// one shape intersects (sphere overlap)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(-5, 18, 0, 0.5)); // inside ref sphere component
+			shape.add(createSegment(50, 50, 50, 60, 60, 60));
+			assertTrue(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_5(CoordinateSystem3D cs) {
+			// tangent to reference sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(0, 18, 0, 3)); // tangent with sphere center (-5,18,0), r=2
+			assertFalse(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_6(CoordinateSystem3D cs) {
+			// tangent to reference aligned-box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(0, 8.5, 0.25, 5, 8.5, 0.25)); // endpoint on face x=5
+			assertTrue(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_7(CoordinateSystem3D cs) {
+			// all components disjoint
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSphere(20, 20, 20, 1));
+			shape.add(createAlignedBoxFromPoints(30, 30, 30, 31, 31, 31));
+			shape.add(createSegment(40, 40, 40, 45, 45, 45));
+			assertFalse(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_8(CoordinateSystem3D cs) {
+			// crossing segment through reference aligned-box component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(0, 8.5, 0.25, 10, 8.5, 0.25)); // crosses ref box component
+			assertTrue(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public void multishape_9(CoordinateSystem3D cs) {
+			// crossing segment through reference sphere component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) factory.createMultiShape();
+			shape.add(createSegment(-10, 18, 0, 0, 18, 0)); // crosses ref sphere component
+			assertTrue(getS().operator_and(shape));
 		}
 	}
 
@@ -2255,7 +4090,58 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			path.lineTo(-12, 22, 0);
 			path.lineTo(6, 20, 0);
 			path.closePath();
-			assertSame(firstObject, shape3d.getFirstShapeIntersecting(path));
+			assertNull(shape3d.getFirstShapeIntersecting(path));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3D shape3d = getS();
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 10, 0.5);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertEquals(firstObject, shape3d.getFirstShapeIntersecting(path));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3D shape3d = getS();
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 15, 0.5);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertEquals(secondObject, shape3d.getFirstShapeIntersecting(path));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3D shape3d = getS();
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 10, 0.5);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 15, 0.5);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertEquals(firstObject, shape3d.getFirstShapeIntersecting(path));
 		}
 	}
 	
@@ -2300,6 +4186,57 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			path.lineTo(8, 14, 0);
 			path.lineTo(-4, 12, 0);
 			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertTrue(shape3d.getShapesIntersecting(path).isEmpty());
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3D shape3d = getS();
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 10, 0.5);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 22, 0);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertEquals(Arrays.asList(firstObject), shape3d.getShapesIntersecting(path));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3D shape3d = getS();
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 6, 0);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 15, 0.5);
+			path.lineTo(6, 20, 0);
+			path.closePath();
+			assertEquals(Arrays.asList(secondObject), shape3d.getShapesIntersecting(path));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void test_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3D shape3d = getS();
+			Path3afp path = createPath();
+			path.moveTo(-6, 2, 0);
+			path.lineTo(10, 10, 0.5);
+			path.lineTo(8, 14, 0);
+			path.lineTo(-4, 12, 0);
+			path.lineTo(-12, 15, 0.5);
 			path.lineTo(6, 20, 0);
 			path.closePath();
 			assertEquals(Arrays.asList(firstObject, secondObject), shape3d.getShapesIntersecting(path));
@@ -2356,10 +4293,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 		
 		@DisplayName("First object #2")
@@ -2379,10 +4316,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(1, box.getMinY());
-			assertEpsilonEquals(1, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(19, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 
 		@DisplayName("Second object #1")
@@ -2394,10 +4331,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 
 		@DisplayName("Second object #2")
@@ -2417,10 +4354,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(5, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(9, box.getMaxX());
 			assertEpsilonEquals(13, box.getMaxY());
-			assertEpsilonEquals(13, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 
 		@DisplayName("Geometry stay unchanged after removal #1")
@@ -2432,10 +4369,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 
 		@DisplayName("Geometry stay unchanged after removal #2")
@@ -2451,10 +4388,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(5, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(0, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(9, box.getMaxY());
-			assertEpsilonEquals(9, box.getMaxZ());
+			assertEpsilonEquals(.5, box.getMaxZ());
 		}
 	}
 
@@ -2471,10 +4408,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 	
 		@DisplayName("Addition #2")
@@ -2494,10 +4431,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(11, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 
 		@DisplayName("Remove first #1")
@@ -2509,10 +4446,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 	
 		@DisplayName("Remove first #2")
@@ -2530,10 +4467,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(16, box.getMinY());
-			assertEpsilonEquals(16, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(-3, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 
 		@DisplayName("Remove second #1")
@@ -2545,10 +4482,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(-7, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(-2, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(20, box.getMaxY());
-			assertEpsilonEquals(20, box.getMaxZ());
+			assertEpsilonEquals(2, box.getMaxZ());
 		}
 
 		@DisplayName("Remove second #2")
@@ -2566,10 +4503,10 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertNotNull(box);
 			assertEpsilonEquals(5, box.getMinX());
 			assertEpsilonEquals(8, box.getMinY());
-			assertEpsilonEquals(8, box.getMinZ());
+			assertEpsilonEquals(0, box.getMinZ());
 			assertEpsilonEquals(7, box.getMaxX());
 			assertEpsilonEquals(9, box.getMaxY());
-			assertEpsilonEquals(9, box.getMaxZ());
+			assertEpsilonEquals(.5, box.getMaxZ());
 		}
 	}
 

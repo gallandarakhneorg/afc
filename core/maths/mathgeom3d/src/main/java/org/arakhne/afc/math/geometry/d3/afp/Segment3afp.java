@@ -792,6 +792,10 @@ public interface Segment3afp<
 		final var vy = s2y - s1y;
 		final var vz = s2z - s1z;
 		final var denomenator = vx * vx + vy * vy + vz * vz;
+		if (denomenator == 0.) {
+			// segment is degenerated to a single point
+			return 0.;
+		}
 		final var numerator = (px - s1x) * vx + (py - s1y) * vy + (pz - s1z) * vz;
 		return numerator / denomenator;
 	}

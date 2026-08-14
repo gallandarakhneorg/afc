@@ -51,6 +51,7 @@ import org.arakhne.afc.math.geometry.base.d3.Shape3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Box3afp;
+import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.Resources;
 import org.junit.jupiter.api.BeforeEach;
@@ -3027,9 +3028,23 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("(MultiShape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(5, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-5, 18, 0, 2));
+			assertEpsilonEquals(createPoint(6.0,8.5,0.25), getS().getClosestPointTo(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void multishape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(18, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-25, 18, 0, 2));
+			assertEpsilonEquals(createPoint(10.0,8.5,0.25), getS().getClosestPointTo(shape));
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -4544,9 +4559,23 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("(MultiShape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(5, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-5, 18, 0, 2));
+			assertEpsilonEquals(0., getS().getDistance(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void multishape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(18, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-25, 18, 0, 2));
+			assertEpsilonEquals(8., getS().getDistance(shape));
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -5135,9 +5164,23 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("(MultiShape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(5, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-5, 18, 0, 2));
+			assertEpsilonEquals(0., getS().getDistanceSquared(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void multishape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(18, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-25, 18, 0, 2));
+			assertEpsilonEquals(64., getS().getDistanceSquared(shape));
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -6152,9 +6195,23 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("(MultiShape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(5, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-5, 18, 0, 2));
+			assertTrue(getS().intersects(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void multishape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(18, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-25, 18, 0, 2));
+			assertFalse(getS().intersects(shape));
 		}
 
 		@DisplayName("(Segment3afp) #1")
@@ -7627,9 +7684,23 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@DisplayName("(MultiShape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_1(CoordinateSystem3D cs) {
+	    public void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(5, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-5, 18, 0, 2));
+			assertTrue(getS().operator_and(shape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void multishape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = (MultiShape3afp) createMultiShape();
+			shape.add(createAlignedBox(18, 8, 0, 2, 1, .5));
+			shape.add(createSphere(-25, 18, 0, 2));
+			assertFalse(getS().operator_and(shape));
 		}
 
 		@DisplayName("(Segment3afp) #1")

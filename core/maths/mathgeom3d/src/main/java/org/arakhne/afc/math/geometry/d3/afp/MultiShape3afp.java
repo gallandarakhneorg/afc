@@ -312,6 +312,9 @@ public interface MultiShape3afp<
                 closest.set(point);
             }
         }
+        if (Double.isInfinite(min)) {
+        	return null;
+        }
         return closest;
     }
 

@@ -225,8 +225,13 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 
 		@Override
 		public boolean addAll(Collection<? extends T> collection) {
-			// TODO Auto-generated method stub
-			return false;
+			var changed = false;
+			for (final var element : collection) {
+				if (add(element)) {
+					changed = true;
+				}
+			}
+			return changed;
 		}
 
 	}
