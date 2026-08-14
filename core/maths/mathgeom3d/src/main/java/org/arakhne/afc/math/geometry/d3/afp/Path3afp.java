@@ -2237,8 +2237,10 @@ public interface Path3afp<
 		if (prism.isEmpty()) {
 			return false;
 		}
-		//TODO
-		return false;
+		return intersectsPathIteratorAlignedBox(getPathIterator(),
+				prism.getMinX(), prism.getMinY(), prism.getMinZ(),
+				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ(),
+				DEFAULT_INTERSECTION_EPSILON);
 	}
 
 	@Pure
