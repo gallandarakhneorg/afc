@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,7 +38,6 @@ import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
 import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -749,7 +749,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 2. Box far away, closest feature is a face (x=15 face)
-			// Box: x=[15,20], y=[0,10], z=[0,10] → Q=(15,8,9), distance=10 → sphere point (10,8,9)
+			// Box: x=[15,20], y=[0,10], z=[0,10] -> Q=(15,8,9), distance=10 -> sphere point (10,8,9)
 			assertEpsilonEquals(createPoint(10.0, 8.0, 9.0), getS().getClosestPointTo(createAlignedBoxFromPoints(15, 0, 0, 20, 10, 10)));
 		}
 
@@ -759,7 +759,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 3. Box far away, closest feature is an edge (x=12, y=12, z clamped to 5)
-			// Box: x=[12,15], y=[12,15], z=[0,5] → Q=(12,12,5), distance=9 → sphere point computed as (5+35/9, 8+20/9, 9-20/9)
+			// Box: x=[12,15], y=[12,15], z=[0,5] -> Q=(12,12,5), distance=9 -> sphere point computed as (5+35/9, 8+20/9, 9-20/9)
 			assertEpsilonEquals(createPoint(8.88888888888889, 10.222222222222221, 6.777777777777778), getS().getClosestPointTo(createAlignedBoxFromPoints(12, 12, 0, 15, 15, 5)));
 		}
 
@@ -769,7 +769,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 4. Box far away, closest feature is a face interior (y=15 face)
-			// Box: x=[0,10], y=[15,20], z=[0,10] → Q=(5,15,9), distance=7 → sphere point (5,13,9)
+			// Box: x=[0,10], y=[15,20], z=[0,10] -> Q=(5,15,9), distance=7 -> sphere point (5,13,9)
 			assertEpsilonEquals(createPoint(5.0, 13.0, 9.0), getS().getClosestPointTo(createAlignedBoxFromPoints(0, 15, 0, 10, 20, 10)));
 		}
 
@@ -788,7 +788,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 6. Box exactly tangent at a face (x=10 face)
-			// Box: x=[10,20], y=[0,20], z=[0,20] → Q=(10,8,9), distance=5 (tangent) → sphere point = Q
+			// Box: x=[10,20], y=[0,20], z=[0,20] -> Q=(10,8,9), distance=5 (tangent) -> sphere point = Q
 			assertEpsilonEquals(createPoint(10.0, 8.0, 9.0), getS().getClosestPointTo(createAlignedBoxFromPoints(10, 0, 0, 20, 20, 20)));
 		}
 
@@ -798,7 +798,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 7. Degenerate box: a single point on the sphere surface (tangent at vertex)
-			// Box: point (10,8,9) → Q=(10,8,9), distance=5 → sphere point = Q
+			// Box: point (10,8,9) -> Q=(10,8,9), distance=5 -> sphere point = Q
 			assertEpsilonEquals(createPoint(10.0, 8.0, 9.0), getS().getClosestPointTo(createAlignedBoxFromPoints(10, 8, 9, 10, 8, 9)));
 		}
 
@@ -933,9 +933,9 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			// Fixed sphere: center (5, 8, 9), radius 5
 			// --- 2. Single line segment, outside, closest point is an endpoint ---
 			var path2 = createPath();
-			path2.moveTo(15, 8, 9);
+			path2.moveTo(15, 8, 9); //(15, 8, 9),(20, 8, 9)
 			path2.lineTo(20, 8, 9);
-			// Endpoint (15,8,9) is at distance 10 → sphere point (10,8,9)
+			// Endpoint (15,8,9) is at distance 10 -> sphere point (10,8,9)
 			assertEpsilonEquals(createPoint(10.0, 8.0, 9.0), getS().getClosestPointTo(path2));
 		}
 
@@ -960,8 +960,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			var path4 = createPath();
 			path4.moveTo(4, 8, 9);
 			path4.lineTo(6, 8, 9);
-			// Center lies on segment. Return default direction (e.g., +X). Sphere point (10,8,9)
-			assertEpsilonEquals(createPoint(5., 8.0, 9.0), getS().getClosestPointTo(path4));
+			// Center lies on segment.
+			assertEpsilonEquals(createPoint(5., 8., 9.), getS().getClosestPointTo(path4));
 		}
 
 		@DisplayName("(Path3afp) #5")
@@ -983,17 +983,10 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void path_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// --- 6. Single quadratic curve that is a true parabola, outside, closest point interior ---
-			// Parabola in plane x=5, endpoints (5,0,0) and (5,0,4), control (5,4,0).
-			// This is a 2D curve in yz: y = 4t(1-t), z = 4t^2? Wait parametric: B(t) = (1-t)^2 P0 + 2(1-t)t P1 + t^2 P2
-			// With P0=(5,0,0), P1=(5,4,0), P2=(5,0,4). Then y=8t(1-t), z=4t^2.
-			// We want point on sphere (center y=8,z=9). The curve is far from sphere (max y=2, z=4). Closest point is endpoint (5,0,0)?
-			// Let's choose a curve that passes near the sphere. Instead, simpler: use a quadratic that is offset but still far.
-			// We'll just test a known case: parabola from (5,15,15) to (5,15,19) with control (5,15,17) → line again. Avoid complexity.
-			// For simplicity, use a collinear quadratic (line) to keep expected value exact.
 			var path6 = createPath();
 			path6.moveTo(5, 20, 9);
-			path6.quadTo(5, 20, 9, 10, 20, 9);  // horizontal line at y=20, z=9, x from 5 to 10
-			// Closest point on line: (5,20,9) → distance = 12 → sphere point (5,13,9)
+			path6.quadTo(5, 20, 9, 10, 20, 9);
+			// Closest point on line: (5,20,9)
 			assertEpsilonEquals(createPoint(5.0, 13.0, 9.0), getS().getClosestPointTo(path6));
 		}
 
@@ -1018,9 +1011,9 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			// --- 8. Open path with two components: line far away, line closer ---
 			var path8 = createPath();
 			path8.moveTo(100, 100, 100);
-			path8.lineTo(101, 101, 101);   // far
+			path8.lineTo(101, 101, 101); // far
 			path8.moveTo(5, 14, 9);
-			path8.lineTo(6, 14, 9);        // distance 6-5=1 → sphere point (5,13,9)
+			path8.lineTo(6, 14, 9); // distance 6-5=1 -> sphere point (5,13,9)
 			assertEpsilonEquals(createPoint(5.0, 13.0, 9.0), getS().getClosestPointTo(path8));
 		}
 
@@ -1035,9 +1028,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			path9.lineTo(10, 3, 15);
 			path9.lineTo(10, 13, 15);
 			path9.lineTo(0, 13, 15);
-			path9.closePath();  // square in plane z=15, y in [3,13], x in [0,10]
-			// Closest point on square to sphere center (5,8,9) is (5,8,15) → distance = 6 → sphere point (5,8,14)
-			assertEpsilonEquals(createPoint(5.0, 8.0, 14.0), getS().getClosestPointTo(path9));
+			path9.closePath();
+			assertEpsilonEquals(createPoint(5.0,4.799078,12.841106398), getS().getClosestPointTo(path9));
 		}
 
 		@DisplayName("(Path3afp) #10")
@@ -1047,15 +1039,12 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// --- 11. Closed path (triangle) with vertices far, closest on vertex ---
 			var path11 = createPath();
-			path11.moveTo(20, 20, 20);
+			path11.moveTo(20, 20, 20); //
 			path11.lineTo(21, 20, 20);
 			path11.lineTo(20, 21, 20);
 			path11.closePath();
-			// Closest vertex (20,20,20) → distance √490 ≈ 22.1359 → sphere point along direction (15,12,11)
-			double d = Math.sqrt(490);
-			double dx = 15/d, dy = 12/d, dz = 11/d;
-			Point3D expected11 = createPoint(5 + 5*dx, 8 + 5*dy, 9 + 5*dz);
-			assertEpsilonEquals(expected11, getS().getClosestPointTo(path11));
+			// Closest vertex (20,20,20)
+			assertEpsilonEquals(createPoint(8.3881546359, 10.7105237087, 11.484646733), getS().getClosestPointTo(path11));
 		}
 
 		@DisplayName("(Path3afp) #11")
@@ -1066,8 +1055,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			// --- 12. Degenerate path: single point (moveTo only) ---
 			var path12 = createPath();
 			path12.moveTo(15, 8, 9);
-			// Point (15,8,9) distance 10 → sphere point (10,8,9)
-			assertEpsilonEquals(createPoint(10.0, 8.0, 9.0), getS().getClosestPointTo(path12));
+			assertNull(getS().getClosestPointTo(path12));
 		}
 
 		@DisplayName("(Path3afp) #12")
@@ -1079,7 +1067,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			var path13 = createPath();
 			path13.moveTo(5, 5, 5);
 			path13.quadTo(5, 5, 5, 5, 5, 5);
-			// The point (5,5,5) distance to center = 5 (tangent) → sphere point (5,5,5)
+			// The point (5,5,5) distance to center = 5 (tangent) -> sphere point (5,5,5)
 			assertEpsilonEquals(createPoint(5.0, 5.0, 5.0), getS().getClosestPointTo(path13));
 		}
 
@@ -1105,15 +1093,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			path15.moveTo(20, 8, 9);
 			path15.lineTo(30, 8, 9);
 			path15.lineTo(30, 18, 9);
-			path15.closePath();  // triangle, the closing edge from (30,18,9) back to (20,8,9)
-			// The closing edge passes near (15,8,9)? Actually compute: points (30,18,9) to (20,8,9) direction (-10,-10,0).
-			// Parameter t=0.7 gives (23,13,9) far. The closest point on this edge to sphere center (5,8,9) might be the start (30,18,9) distance √(25²+10²)=√725≈26.93, far.
-			// Instead, a simpler closed shape: a long rectangle where the closing edge is the closest.
-			// Use rectangle: (5,20,9) -> (10,20,9) -> (10,30,9) -> close (back to (5,20,9)). The closing edge is from (10,30,9) to (5,20,9) which is a line.
-			// The closest point on that line to center (5,8,9) is? The line direction (-5,-10,0). Projection of center onto infinite line: let P0=(10,30,9), v=(-5,-10,0), C-P0=(-5,-22,0). Dot = (-5)*(-5)+(-22)*(-10)=25+220=245, |v|²=125, t=245/125=1.96 >1, so endpoint (5,20,9) is closest. That endpoint is at distance 12 → sphere point (5,13,9).
-			// So it's not more interesting. We'll skip to avoid long explanation.
-			// Instead, we trust the generic coverage.
-			assertEpsilonEquals(createPoint(5.0, 5.0, 5.0), getS().getClosestPointTo(path15));
+			path15.closePath();
+			assertEpsilonEquals(createPoint(10, 8, 9), getS().getClosestPointTo(path15));
 		}
 
 		@DisplayName("(Path3afp) #15")
@@ -1122,19 +1103,11 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void path_15(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// --- 16. Path with quadratic curve that intersects the sphere ---
-			// Choose a quadratic that passes through sphere center. E.g., start (0,0,0), control (5,8,9), end (10,16,18).
-			// As computed earlier, at t=0.5 we get center. Therefore sphere point is the center? No, we need the point on sphere surface closest to the curve.
-			// Since the curve passes through the center (distance 0), the closest sphere point is any point on the sphere? Actually the distance from sphere to curve is 0 (curve intersects interior). The closest point on sphere to the curve is not uniquely defined; implementation likely returns the point on sphere in direction from sphere center to the closest point on curve. That closest point on curve is the center itself (distance 0), but center is not on sphere. So we need to consider the curve passes through interior. The closest point on sphere to the curve is the point along the direction from center to the first intersection of curve with sphere. This is complicated.
-			// To avoid ambiguity, we test a quadratic that is tangent externally or just outside.
-			// Simpler: use a curve that just touches the sphere at one point.
-			// For a quadratic Bezier, we can set it to be a straight line from (10,8,9) to (20,8,9) with collinear control -> line. That's already tested.
-			// We'll add a quadratic that is a half-circle outside, but compute expected approximate.
-			// Given the complexity, we rely on the previous cases for curve coverage.
 			var path16 = createPath();
 			path16.moveTo(20, 8, 9);
 			path16.quadTo(5, 5, 5, 5, 5, 5);
 			path16.lineTo(30, 18, 9);
-			assertEpsilonEquals(createPoint(5.0, 5.0, 5.0), getS().getClosestPointTo(path16));
+			assertEpsilonEquals(createPoint(6.69753086,5.882716049,5.271604938), getS().getClosestPointTo(path16));
 		}
 
 		@DisplayName("(Path3afp) #16")
@@ -1151,8 +1124,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			path17.lineTo(10, 3, 15);
 			path17.lineTo(10, 13, 15);
 			path17.lineTo(0, 13, 15);
-			path17.closePath();  // square in plane z=15, y in [3,13], x in [0,10]
-			assertEpsilonEquals(createPoint(5.0, 5.0, 5.0), getS().getClosestPointTo(path17));
+			path17.closePath();
+			assertEpsilonEquals(createPoint(5.0,4.799078,12.841106398), getS().getClosestPointTo(path17));
 		}
 
 		@DisplayName("(Path3afp) #17")
@@ -1164,7 +1137,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			var path18 = createPath();
 			path18.moveTo(-3, -5, 2);
 			path18.curveTo(2, -9, 7, 0.5, 3, 0, -1, 1, 0);
-			assertEpsilonEquals(createPoint(2.9484416883, 4.8446233722, 5.7083884144), getS().getClosestPointTo(path18));
+			assertEpsilonEquals(createPoint(2.99769788081,4.7080719,5.8134665589), getS().getClosestPointTo(path18));
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -1220,7 +1193,26 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void shape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(createPoint(8, 12, 9), getS().getClosestPointTo((Shape3D) createSphere(9.2, 13.6, 9, 2)));
+		}
+		
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path5 = createPath();
+			path5.moveTo(5, 20, 20);
+			path5.quadTo(5, 20, 22.5, 5, 20, 25);
+			assertEpsilonEquals(createPoint(5, 11.685770701003708, 12.378623142586733), getS().getClosestPointTo((Shape3D) path5));
+		}
+		
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(10.0, 8.0, 9.0), getS().getClosestPointTo((Shape3D) createSegment(15, 8, 9, 20, 8, 9)));
 		}
 	}
 
@@ -1555,8 +1547,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			//		     because the perpendicular projection falls outside the segment.
 			//		     Center (5,8,9). Segment from (0,0,0) to (0,0,0) – actually a point segment? Better: from (0,0,0) to (0,1,0).
 			//		     The projection of center onto line is at (0,8,9) which is far outside the segment. Nearest endpoint is (0,0,0) or (0,1,0).
-			//		     Distance from (0,1,0) to center = sqrt(5^2 + (8-1)^2 + 9^2) = sqrt(25+49+81)=sqrt(155)≈12.45, minus radius=7.45.
-			//		     Let's use a clearer example: segment from (0,0,0) to (1,0,0). Closest endpoint to center is (1,0,0) distance = sqrt(4^2+8^2+9^2)=sqrt(16+64+81)=sqrt(161)≈12.6886.
+			//		     Distance from (0,1,0) to center = sqrt(5^2 + (8-1)^2 + 9^2) = sqrt(25+49+81)=sqrt(155)~ 12.45, minus radius=7.45.
+			//		     Let's use a clearer example: segment from (0,0,0) to (1,0,0). Closest endpoint to center is (1,0,0) distance = sqrt(4^2+8^2+9^2)=sqrt(16+64+81)=sqrt(161)~ 12.6886.
 			//		     Instead, use segment that is not too far so distance is positive but not huge.
 			assertEpsilonEquals(Math.sqrt(161) - 5, getS().getDistance(createSegment(0, 0, 0, 1, 0, 0)));
 		}
@@ -1571,9 +1563,9 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			//		     Center (5,8,9). Consider line through P1=(0,10,0) and P2=(10,10,10).
 			//		     The point on the line closest to center is found by parameter t. Compute t = ( (C-P1)·(P2-P1) ) / |P2-P1|^2.
 			//		     P2-P1 = (10,0,10). C-P1 = (5,-2,9). Dot = 5*10 + (-2)*0 + 9*10 = 50+0+90=140. |dir|^2=200. t=0.7.
-			//		     Point = (7,10,7). Distance from center = sqrt((7-5)^2 + (10-8)^2 + (7-9)^2) = sqrt(4+4+4)=√12≈3.464. Since radius=5, distance to sphere = 0? Wait 3.464 < 5 means the point is inside sphere! So intersection exists -> distance 0. We need distance >0. So choose segment farther.
-			//		     Better: P1=(0,15,0), P2=(10,15,10). Then C-P1=(5,-7,9). Dot=5*10 + (-7)*0 + 9*10 = 50+0+90=140 same. t=0.7 => point (7,15,7). Distance to center = sqrt(4+49+4)=√57≈7.55. Minus radius = 2.55 >0.
-			assertEpsilonEquals(Math.sqrt(57) - 5,  // ≈ 2.5498
+			//		     Point = (7,10,7). Distance from center = sqrt((7-5)^2 + (10-8)^2 + (7-9)^2) = sqrt(4+4+4)=sqrt 12~ 3.464. Since radius=5, distance to sphere = 0? Wait 3.464 < 5 means the point is inside sphere! So intersection exists -> distance 0. We need distance >0. So choose segment farther.
+			//		     Better: P1=(0,15,0), P2=(10,15,10). Then C-P1=(5,-7,9). Dot=5*10 + (-7)*0 + 9*10 = 50+0+90=140 same. t=0.7 => point (7,15,7). Distance to center = sqrt(4+49+4)=sqrt 57~ 7.55. Minus radius = 2.55 >0.
+			assertEpsilonEquals(Math.sqrt(57) - 5,  // ~  2.5498
 					getS().getDistance(createSegment(0, 15, 0, 10, 15, 10)));
 		}
 
@@ -1642,7 +1634,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 4. Box touching the sphere at a single vertex
-			//    Vertex (10, 13, 14) is exactly on sphere surface (distance = sqrt(5^2+5^2+5^2) = sqrt(75)=8.66? Wait compute: center (5,8,9) to (10,13,14) = (5,5,5) distance √75 ≈ 8.66 > radius 5. That is not touching. Need correct vertex: distance = 5.
+			//    Vertex (10, 13, 14) is exactly on sphere surface (distance = sqrt(5^2+5^2+5^2) = sqrt(75)=8.66? Wait compute: center (5,8,9) to (10,13,14) = (5,5,5) distance sqrt 75 ~  8.66 > radius 5. That is not touching. Need correct vertex: distance = 5.
 			//    Choose vertex (5+5,8,9) = (10,8,9) -> on sphere. Box from (10,8,9) to (12,10,11) touches at that vertex.
 			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(10, 8, 9, 12, 10, 11)));
 		}
@@ -1662,7 +1654,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 6. Box completely outside, closest feature is a face
-			//    Box to the right of sphere, face at x=15, sphere's rightmost x = 10 → distance = 5
+			//    Box to the right of sphere, face at x=15, sphere's rightmost x = 10 -> distance = 5
 			assertEpsilonEquals(5., getS().getDistance(createAlignedBoxFromPoints(15, 0, 0, 20, 20, 20)));
 		}
 
@@ -1674,8 +1666,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			// 7. Box completely outside, closest feature is an edge
 			//    Box placed diagonally such that nearest point on box is an edge.
 			//    Example: box from (15,20,0) to (20,25,5). The closest point on box is the edge at (15,20,z) with z between 0 and 5.
-			//    Distance from sphere center (5,8,9) to that infinite edge line is: x diff=10, y diff=12, z diff=0? Actually edge along Z: points (15,20,z). Distance^2 = (15-5)^2 + (20-8)^2 = 100 + 144 = 244, sqrt≈15.62. minus radius 5 = 10.62. But that's not accurate because the closest point on the edge might be at z=9 projected? Need a simpler predictable case.
-			//    Better: Box from (12,12,0) to (15,15,5). The edge that is closest: the edge at x=12,y=12,z∈[0,5]. Distance from center (5,8,9) to that line: sqrt((12-5)^2 + (12-8)^2) = sqrt(49+16)=√65≈8.062. Then adjust z: closest z on line is clamp(9,0,5)=5. Distance to point (12,12,5) = sqrt(7^2+4^2+4^2)=sqrt(49+16+16)=√81=9. So distance to sphere = 9 - 5 = 4. That's correct.
+			//    Distance from sphere center (5,8,9) to that infinite edge line is: x diff=10, y diff=12, z diff=0? Actually edge along Z: points (15,20,z). Distance^2 = (15-5)^2 + (20-8)^2 = 100 + 144 = 244, sqrt~ 15.62. minus radius 5 = 10.62. But that's not accurate because the closest point on the edge might be at z=9 projected? Need a simpler predictable case.
+			//    Better: Box from (12,12,0) to (15,15,5). The edge that is closest: the edge at x=12,y=12,z∈[0,5]. Distance from center (5,8,9) to that line: sqrt((12-5)^2 + (12-8)^2) = sqrt(49+16)=sqrt 65~ 8.062. Then adjust z: closest z on line is clamp(9,0,5)=5. Distance to point (12,12,5) = sqrt(7^2+4^2+4^2)=sqrt(49+16+16)=sqrt 81=9. So distance to sphere = 9 - 5 = 4. That's correct.
 			assertEpsilonEquals(4., getS().getDistance(createAlignedBoxFromPoints(12, 12, 0, 15, 15, 5)));
 		}
 
@@ -1686,7 +1678,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 8. Box completely outside, closest feature is a vertex
 			//    Box far away at (20,20,20) to (21,21,21). The nearest vertex is (20,20,20).
-			//    Distance from center to vertex = sqrt(15^2+12^2+11^2)=sqrt(225+144+121)=sqrt(490)≈22.135. Minus radius = 17.135
+			//    Distance from center to vertex = sqrt(15^2+12^2+11^2)=sqrt(225+144+121)=sqrt(490)~ 22.135. Minus radius = 17.135
 			assertEpsilonEquals(Math.sqrt(490) - 5, getS().getDistance(createAlignedBoxFromPoints(20, 20, 20, 21, 21, 21)));
 		}
 
@@ -1699,7 +1691,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			//    but the nearest point lies on an edge (already covered by case 7, but add another)
 			//    Box: left of sphere (x negative) but high y and z. Center (5,8,9), box from (-10,15,15) to (-5,20,20).
 			//    Closest point on box is the vertex (-5,15,15) because projection onto the box's nearest face (x=-5) yields y,z outside the face range.
-			//    Distance to vertex = sqrt((10)^2 + (7)^2 + (6)^2)=sqrt(100+49+36)=sqrt(185)≈13.60; minus radius = 8.60.
+			//    Distance to vertex = sqrt((10)^2 + (7)^2 + (6)^2)=sqrt(100+49+36)=sqrt(185)~ 13.60; minus radius = 8.60.
 			assertEpsilonEquals(8.601470508, getS().getDistance(createAlignedBoxFromPoints(-10, 15, 15, -5, 20, 20)));
 		}
 
@@ -1708,13 +1700,12 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-//			// Fixed sphere under test: center (5, 8, 9), radius 5
-//			var p = createPath();
-//			p.moveTo(0, 0, 0);
-//			p.lineTo(5, 8, 9);
-//			assertEpsilonEquals(0., getS().getDistance(p));
+			// Sphere center (5, 8, 9), radius 5
+			// --- 1. Single line segment, outside, closest point interior (provided) ---
+			var path = createPath();
+			path.moveTo(0, 0, 0);
+			path.lineTo(1, 1, 1);
+			assertEpsilonEquals(6.3578166916, getS().getDistance(path));
 		}
 
 		@DisplayName("(Path3afp) #2")
@@ -1722,13 +1713,13 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 1. Single line segment intersecting the sphere -----
-//			// Segment from (0,0,0) to (10,10,10) passes through sphere
-//			var p1 = createPath();
-//			p1.moveTo(0, 0, 0);
-//			p1.lineTo(10, 10, 10);
-//			assertEpsilonEquals(0., getS().getDistance(p1));
+			// Fixed sphere: center (5, 8, 9), radius 5
+			// --- 2. Single line segment, outside, closest point is an endpoint ---
+			var path2 = createPath();
+			path2.moveTo(15, 8, 9);
+			path2.lineTo(20, 8, 9);
+			// Endpoint (15,8,9) is at distance 10 -> sphere point (10,8,9)
+			assertEpsilonEquals(5, getS().getDistance(path2));
 		}
 
 		@DisplayName("(Path3afp) #3")
@@ -1736,15 +1727,11 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_3(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 2. Single line segment completely outside, closest point is interior -----
-//			// Segment from (0,13,9) to (10,13,9), closest point on infinite line is (5,13,9) which is interior.
-//			// Distance from center (5,8,9) to (5,13,9) = 5, minus radius 5 = 0 → actually tangent? Wait distance 5 equals radius, so tangent -> distance 0. Need positive.
-//			// Adjust: use y=14 -> distance = 6 -> positive 1.
-//			var p2 = createPath();
-//			p2.moveTo(0, 14, 9);
-//			p2.lineTo(10, 14, 9);
-//			assertEpsilonEquals(1., getS().getDistance(p2));  // center to line distance 6 minus radius 5 = 1
+			// --- 3. Single line segment, intersecting the sphere (both endpoints outside) ---
+			var path3 = createPath();
+			path3.moveTo(0, 10, 9);
+			path3.lineTo(10, 10, 9);
+			assertEpsilonEquals(0, getS().getDistance(path3));
 		}
 
 		@DisplayName("(Path3afp) #4")
@@ -1752,13 +1739,12 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_4(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 3. Single line segment completely outside, closest point is an endpoint -----
-//			// Segment from (15,8,9) to (20,8,9). Nearest endpoint (15,8,9) distance 10, minus radius 5 = 5.
-//			var p3 = createPath();
-//			p3.moveTo(15, 8, 9);
-//			p3.lineTo(20, 8, 9);
-//			assertEpsilonEquals(5., getS().getDistance(p3));
+			// --- 4. Single line segment, completely inside sphere, containing the center ---
+			var path4 = createPath();
+			path4.moveTo(4, 8, 9);
+			path4.lineTo(6, 8, 9);
+			// Center lies on segment.
+			assertEpsilonEquals(0., getS().getDistance(path4));
 		}
 
 		@DisplayName("(Path3afp) #5")
@@ -1766,17 +1752,11 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 4. Quadratic curve (parabola) that intersects the sphere -----
-//			// Start (0,0,0), control (5,5,5), end (10,10,10) – this is actually a straight line because control is collinear.
-//			// To get a true curve, use control point that creates a bow. We want the curve to pass through the sphere.
-//			// For simplicity, make the curve such that the midpoint is at (5,8,9) (the center) – distance 0 inside sphere.
-//			// However we need the curve to actually contain the sphere center. Let's construct a quadratic Bezier that passes through (5,8,9) at t=0.5.
-//			// Solve: B(0.5) = 0.25*P0 + 0.5*P1 + 0.25*P2 = (5,8,9). Choose P0=(0,0,0), P2=(10,16,18) then 0.5*P1 = (5,8,9) - 0.25*(0,0,0) - 0.25*(10,16,18) = (5,8,9) - (2.5,4,4.5) = (2.5,4,4.5) => P1 = (5,8,9). So control point is (5,8,9). Then the curve passes through center at t=0.5 → distance 0.
-//			var p4 = createPath();
-//			p4.moveTo(0, 0, 0);
-//			p4.quadTo(5, 8, 9, 10, 16, 18);
-//			assertEpsilonEquals(0., getS().getDistance(p4));
+			// --- 5. Single quadratic curve (collinear control points, effectively line) outside ---
+			var path5 = createPath();
+			path5.moveTo(5, 20, 20);
+			path5.quadTo(5, 20, 22.5, 5, 20, 25);
+			assertEpsilonEquals(11.2788205961, getS().getDistance(path5));
 		}
 
 		@DisplayName("(Path3afp) #6")
@@ -1784,19 +1764,12 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 5. Quadratic curve completely outside, closest point interior -----
-//			// Use a quadratic curve that is a simple parabola in yz-plane, offset so that its closest point to center is a known interior point.
-//			// Let the curve lie in plane x=5 (so x coordinate matches sphere center x). Then distance reduces to 2D problem.
-//			// Define P0=(5, 0, 0), P1=(5, 4, 0), P2=(5, 0, 4). This is a parabola in yz with endpoints at (0,0) and (0,4), control at (4,0).
-//			// The point on the curve closest to (8,9) in yz? Actually sphere center y=8, z=9. The curve is far. Let's make it simpler: curve from (5,20,20) to (5,20,20) same point? No.
-//			// Better: Use a quadratic that is a straight line segment (collinear control) to easily compute distance.
-//			// For a straight line from (5,20,20) to (5,20,25), control point also collinear (5,20,22.5). That line is vertical at x=5,y=20.
-//			// Distance from center (5,8,9) to line is sqrt((20-8)^2 + (closest z -9)^2). The line's z range [20,25], closest z=20 → distance = 12. So distance to sphere = 12 - 5 = 7.
-//			var p5 = createPath();
-//			p5.moveTo(5, 20, 20);
-//			p5.quadTo(5, 20, 22.5, 5, 20, 25);
-//			assertEpsilonEquals(11.27882059, getS().getDistance(p5));
+			// --- 6. Single quadratic curve that is a true parabola, outside, closest point interior ---
+			var path6 = createPath();
+			path6.moveTo(5, 20, 9);
+			path6.quadTo(5, 20, 9, 10, 20, 9);
+			// Closest point on line: (5,20,9)
+			assertEpsilonEquals(7., getS().getDistance(path6));
 		}
 
 		@DisplayName("(Path3afp) #7")
@@ -1804,16 +1777,12 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 6. Cubic Bezier curve intersecting the sphere -----
-//			// Similar to quadratic, we can make the curve pass through the sphere center at some parameter.
-//			// Use symmetric control points such that B(0.5) = center. Let P0=(0,0,0), P3=(10,16,18), and choose P1, P2 appropriately.
-//			// For cubic: B(0.5) = 1/8 P0 + 3/8 P1 + 3/8 P2 + 1/8 P3 = (5,8,9). Multiply by 8: P0+3P1+3P2+P3 = (40,64,72).
-//			// With P0=(0,0,0), P3=(10,16,18) => 3(P1+P2) = (30,48,54) => P1+P2 = (10,16,18). Choose P1=(5,8,9), P2=(5,8,9) same point. Then curve degenerates? That's fine, it's still a cubic that passes through center at t=0.5.
-//			var p6 = createPath();
-//			p6.moveTo(0, 0, 0);
-//			p6.curveTo(5, 8, 9, 5, 8, 9, 10, 16, 18);
-//			assertEpsilonEquals(0., getS().getDistance(p6));
+			// --- 7. Single cubic Bezier curve, collinear, outside ---
+			var path7 = createPath();
+			path7.moveTo(5, 20, 20);
+			path7.curveTo(5, 20, 21.6667, 5, 20, 23.3333, 5, 20, 25);
+			// Same vertical line as before
+			assertEpsilonEquals(11.2788205961, getS().getDistance(path7));
 		}
 
 		@DisplayName("(Path3afp) #8")
@@ -1821,14 +1790,13 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_8(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 7. Cubic Bezier curve completely outside, closest point interior -----
-//			// Use a curve that is a straight line segment (collinear control points) for simplicity.
-//			// From (5,20,20) to (5,20,25) with control points also on that line: (5,20,21.66) and (5,20,23.33)
-//			var p7 = createPath();
-//			p7.moveTo(5, 20, 20);
-//			p7.curveTo(5, 20, 21.6667, 5, 20, 23.3333, 5, 20, 25);
-//			assertEpsilonEquals(11.27882059, getS().getDistance(p7)); // same as line case, distance = (20-8) -5 =7
+			// --- 8. Open path with two components: line far away, line closer ---
+			var path8 = createPath();
+			path8.moveTo(100, 100, 100);
+			path8.lineTo(101, 101, 101);   // far
+			path8.moveTo(5, 14, 9);
+			path8.lineTo(6, 14, 9);        // distance 6-5=1 -> sphere point (5,13,9)
+			assertEpsilonEquals(1., getS().getDistance(path8));
 		}
 
 		@DisplayName("(Path3afp) #9")
@@ -1836,15 +1804,14 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_9(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 8. Path with multiple components, minimum occurs on a specific component -----
-//			// First component: line far away (distance 100), second component: line almost touching (distance 1).
-//			var p8 = createPath();
-//			p8.moveTo(100, 100, 100);
-//			p8.lineTo(101, 101, 101);      // very far
-//			p8.moveTo(5, 14, 9);           // move to start of second segment
-//			p8.lineTo(6, 14, 9);           // distance from center to y=14 is 6, minus radius =1
-//			assertEpsilonEquals(1., getS().getDistance(p8));
+			// --- 9. Closed path (square) that does not intersect sphere, closest on an edge ---
+			var path9 = createPath();
+			path9.moveTo(0, 3, 15);
+			path9.lineTo(10, 3, 15);
+			path9.lineTo(10, 13, 15);
+			path9.lineTo(0, 13, 15);
+			path9.closePath();
+			assertEpsilonEquals(2.8102496748, getS().getDistance(path9));
 		}
 
 		@DisplayName("(Path3afp) #10")
@@ -1852,18 +1819,13 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_10(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 9. Closed path (polygon) that does not intersect sphere -----
-//			// Triangle with vertices far away, nearest point is an edge or vertex.
-//			// Square in plane z=0, far below sphere (sphere z ranges 4 to 14). Square at z=-10, from (-10,-10) to (10,10).
-//			// The closest point on square to sphere center (5,8,9) is the point (5,8,-10) but that's inside the square's projection? Actually square at z=-10, x∈[-10,10], y∈[-10,10]. Closest point is (5,8,-10). Distance to center = sqrt(0^2+0^2+(9-(-10))^2) = 19. Minus radius =14.
-//			var p9 = createPath();
-//			p9.moveTo(-10, -10, -10);
-//			p9.lineTo(10, -10, -10);
-//			p9.lineTo(10, 10, -10);
-//			p9.lineTo(-10, 10, -10);
-//			p9.closePath(); // adds segment back to first point
-//			assertEpsilonEquals(14., getS().getDistance(p9));
+			// --- 11. Closed path (triangle) with vertices far, closest on vertex ---
+			var path11 = createPath();
+			path11.moveTo(20, 20, 20);
+			path11.lineTo(21, 20, 20);
+			path11.lineTo(20, 21, 20);
+			path11.closePath();
+			assertEpsilonEquals(17.1359436212, getS().getDistance(path11));
 		}
 
 		@DisplayName("(Path3afp) #11")
@@ -1871,17 +1833,10 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_11(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 10. Closed path that encloses the sphere's projection but lies entirely outside sphere (distance positive) -----
-//			// A square in the plane y=8 (horizontal plane through sphere center), but at a z above sphere top? Actually sphere top at z=14. Square at z=15 with x from 0 to 10, y from 3 to 13.
-//			// The square is a loop. The closest point on square to sphere center is (5,8,15) because projection (5,8) lies inside square. Distance = 15-9 =6, minus radius =1.
-//			var p10 = createPath();
-//			p10.moveTo(0, 3, 15);
-//			p10.lineTo(10, 3, 15);
-//			p10.lineTo(10, 13, 15);
-//			p10.lineTo(0, 13, 15);
-//			p10.closePath();
-//			assertEpsilonEquals(1., getS().getDistance(p10));
+			// --- 12. Degenerate path: single point (moveTo only) ---
+			var path12 = createPath();
+			path12.moveTo(15, 8, 9);
+			assertNaN(getS().getDistance(path12));
 		}
 
 		@DisplayName("(Path3afp) #12")
@@ -1889,15 +1844,11 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_12(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 11. Degenerate path: single point via moveTo only (no segments) -----
-//			// Distance should be distance from point to sphere center minus radius.
-//			var p11 = createPath();
-//			p11.moveTo(15, 8, 9);
-//			// No segments added -> path consists of only the current point? Typically path with no components might be empty or just point.
-//			// Assuming the path's distance is defined as the minimum distance from sphere to any point on the path (including the current point after moveTo).
-//			// So this point (15,8,9) distance = 10 -5 =5.
-//			assertEpsilonEquals(5., getS().getDistance(p11));
+			// --- 13. Path consisting of a single quadratic that is a point (all control points identical) ---
+			var path13 = createPath();
+			path13.moveTo(5, 5, 5);
+			path13.quadTo(5, 5, 5, 5, 5, 5);
+			assertEpsilonEquals(0., getS().getDistance(path13));
 		}
 
 		@DisplayName("(Path3afp) #13")
@@ -1905,14 +1856,11 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_13(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 12. Quadratic curve that is a single point (control and end same as start) -----
-//			// quadTo from (5,5,5) to (5,5,5) with control (5,5,5) -> degenerates to point.
-//			var p12 = createPath();
-//			p12.moveTo(5, 5, 5);
-//			p12.quadTo(5, 5, 5, 5, 5, 5);
-//			// The point (5,5,5) distance to center = sqrt(0+9+16)=5, minus radius =0? Actually (5,5,5) to (5,8,9) = sqrt(0+9+16)=5, equals radius -> distance 0 (tangent).
-//			assertEpsilonEquals(0., getS().getDistance(p12));
+			// --- 14. Path consisting of a single cubic that is a point ---
+			var path14 = createPath();
+			path14.moveTo(5, 5, 5);
+			path14.curveTo(5, 5, 5, 5, 5, 5, 5, 5, 5);
+			assertEpsilonEquals(0., getS().getDistance(path14));
 		}
 
 		@DisplayName("(Path3afp) #14")
@@ -1920,12 +1868,56 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_14(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
-//			// ----- 13. Cubic curve that is a single point -----
-//			var p13 = createPath();
-//			p13.moveTo(5, 5, 5);
-//			p13.curveTo(5, 5, 5, 5, 5, 5, 5, 5, 5);
-//			assertEpsilonEquals(0., getS().getDistance(p13));
+			// --- 15. Path with close that creates a segment which becomes the closest point ---
+			var path15 = createPath();
+			path15.moveTo(20, 8, 9);
+			path15.lineTo(30, 8, 9);
+			path15.lineTo(30, 18, 9);
+			path15.closePath();
+			assertEpsilonEquals(10., getS().getDistance(path15));
+		}
+
+		@DisplayName("(Path3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 16. Path with quadratic curve that intersects the sphere ---
+			var path16 = createPath();
+			path16.moveTo(20, 8, 9);
+			path16.quadTo(5, 5, 5, 5, 5, 5);
+			path16.lineTo(30, 18, 9);
+			assertEpsilonEquals(0., getS().getDistance(path16));
+		}
+
+		@DisplayName("(Path3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 17. Multiple parts in the path ---
+			var path17 = createPath();
+			path17.moveTo(20, 8, 9);
+			path17.lineTo(21, 20, 20);
+			path17.lineTo(20, 21, 20);
+			path17.moveTo(0, 3, 15);
+			path17.lineTo(10, 3, 15);
+			path17.lineTo(10, 13, 15);
+			path17.lineTo(0, 13, 15);
+			path17.closePath();
+			assertEpsilonEquals(2.8102496748, getS().getDistance(path17));
+		}
+
+		@DisplayName("(Path3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 18. 3D Bezier ---
+			var path18 = createPath();
+			path18.moveTo(-3, -5, 2);
+			path18.curveTo(2, -9, 7, 0.5, 3, 0, -1, 1, 0);
+			assertEpsilonEquals(7.1403868474, getS().getDistance(path18));
 		}
 
 		@DisplayName("(MultiShape3afp) #1")
@@ -1936,12 +1928,31 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			throw new UnsupportedOperationException();
 		}
 
-		@DisplayName("(Shape3afp) #1")
+		@DisplayName("(Shape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void shpe_1(CoordinateSystem3D cs) {
+		public final void shape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(0., getS().getDistance((Shape3D) createSphere(9.2, 13.6, 9, 2)));
+		}
+		
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path5 = createPath();
+			path5.moveTo(5, 20, 20);
+			path5.quadTo(5, 20, 22.5, 5, 20, 25);
+			assertEpsilonEquals(11.2788205961, getS().getDistance((Shape3D) path5));
+		}
+		
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(5., getS().getDistance((Shape3D) createSegment(15, 8, 9, 20, 8, 9)));
 		}
 
 	}
@@ -2241,8 +2252,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			//		     because the perpendicular projection falls outside the segment.
 			//		     Center (5,8,9). Segment from (0,0,0) to (0,0,0) – actually a point segment? Better: from (0,0,0) to (0,1,0).
 			//		     The projection of center onto line is at (0,8,9) which is far outside the segment. Nearest endpoint is (0,0,0) or (0,1,0).
-			//		     Distance from (0,1,0) to center = sqrt(5^2 + (8-1)^2 + 9^2) = sqrt(25+49+81)=sqrt(155)≈12.45, minus radius=7.45.
-			//		     Let's use a clearer example: segment from (0,0,0) to (1,0,0). Closest endpoint to center is (1,0,0) distance = sqrt(4^2+8^2+9^2)=sqrt(16+64+81)=sqrt(161)≈12.6886.
+			//		     Distance from (0,1,0) to center = sqrt(5^2 + (8-1)^2 + 9^2) = sqrt(25+49+81)=sqrt(155)~ 12.45, minus radius=7.45.
+			//		     Let's use a clearer example: segment from (0,0,0) to (1,0,0). Closest endpoint to center is (1,0,0) distance = sqrt(4^2+8^2+9^2)=sqrt(16+64+81)=sqrt(161)~ 12.6886.
 			//		     Instead, use segment that is not too far so distance is positive but not huge.
 			var v = Math.sqrt(161) - 5;
 			assertEpsilonEquals(v * v, getS().getDistanceSquared(createSegment(0, 0, 0, 1, 0, 0)));
@@ -2258,8 +2269,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			//		     Center (5,8,9). Consider line through P1=(0,10,0) and P2=(10,10,10).
 			//		     The point on the line closest to center is found by parameter t. Compute t = ( (C-P1)·(P2-P1) ) / |P2-P1|^2.
 			//		     P2-P1 = (10,0,10). C-P1 = (5,-2,9). Dot = 5*10 + (-2)*0 + 9*10 = 50+0+90=140. |dir|^2=200. t=0.7.
-			//		     Point = (7,10,7). Distance from center = sqrt((7-5)^2 + (10-8)^2 + (7-9)^2) = sqrt(4+4+4)=√12≈3.464. Since radius=5, distance to sphere = 0? Wait 3.464 < 5 means the point is inside sphere! So intersection exists -> distance 0. We need distance >0. So choose segment farther.
-			//		     Better: P1=(0,15,0), P2=(10,15,10). Then C-P1=(5,-7,9). Dot=5*10 + (-7)*0 + 9*10 = 50+0+90=140 same. t=0.7 => point (7,15,7). Distance to center = sqrt(4+49+4)=√57≈7.55. Minus radius = 2.55 >0.
+			//		     Point = (7,10,7). Distance from center = sqrt((7-5)^2 + (10-8)^2 + (7-9)^2) = sqrt(4+4+4)=sqrt 12~ 3.464. Since radius=5, distance to sphere = 0? Wait 3.464 < 5 means the point is inside sphere! So intersection exists -> distance 0. We need distance >0. So choose segment farther.
+			//		     Better: P1=(0,15,0), P2=(10,15,10). Then C-P1=(5,-7,9). Dot=5*10 + (-7)*0 + 9*10 = 50+0+90=140 same. t=0.7 => point (7,15,7). Distance to center = sqrt(4+49+4)=sqrt 57~ 7.55. Minus radius = 2.55 >0.
 			var v = Math.sqrt(57) - 5;
 			assertEpsilonEquals(v * v, getS().getDistanceSquared(createSegment(0, 15, 0, 10, 15, 10)));
 		}
@@ -2329,7 +2340,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 4. Box touching the sphere at a single vertex
-			//    Vertex (10, 13, 14) is exactly on sphere surface (distance = sqrt(5^2+5^2+5^2) = sqrt(75)=8.66? Wait compute: center (5,8,9) to (10,13,14) = (5,5,5) distance √75 ≈ 8.66 > radius 5. That is not touching. Need correct vertex: distance = 5.
+			//    Vertex (10, 13, 14) is exactly on sphere surface (distance = sqrt(5^2+5^2+5^2) = sqrt(75)=8.66? Wait compute: center (5,8,9) to (10,13,14) = (5,5,5) distance sqrt 75 ~  8.66 > radius 5. That is not touching. Need correct vertex: distance = 5.
 			//    Choose vertex (5+5,8,9) = (10,8,9) -> on sphere. Box from (10,8,9) to (12,10,11) touches at that vertex.
 			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(10, 8, 9, 12, 10, 11)));
 		}
@@ -2349,7 +2360,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void alignedbox_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 6. Box completely outside, closest feature is a face
-			//    Box to the right of sphere, face at x=15, sphere's rightmost x = 10 → distance = 5
+			//    Box to the right of sphere, face at x=15, sphere's rightmost x = 10 -> distance = 5
 			assertEpsilonEquals(25., getS().getDistanceSquared(createAlignedBoxFromPoints(15, 0, 0, 20, 20, 20)));
 		}
 
@@ -2361,8 +2372,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			// 7. Box completely outside, closest feature is an edge
 			//    Box placed diagonally such that nearest point on box is an edge.
 			//    Example: box from (15,20,0) to (20,25,5). The closest point on box is the edge at (15,20,z) with z between 0 and 5.
-			//    Distance from sphere center (5,8,9) to that infinite edge line is: x diff=10, y diff=12, z diff=0? Actually edge along Z: points (15,20,z). Distance^2 = (15-5)^2 + (20-8)^2 = 100 + 144 = 244, sqrt≈15.62. minus radius 5 = 10.62. But that's not accurate because the closest point on the edge might be at z=9 projected? Need a simpler predictable case.
-			//    Better: Box from (12,12,0) to (15,15,5). The edge that is closest: the edge at x=12,y=12,z∈[0,5]. Distance from center (5,8,9) to that line: sqrt((12-5)^2 + (12-8)^2) = sqrt(49+16)=√65≈8.062. Then adjust z: closest z on line is clamp(9,0,5)=5. Distance to point (12,12,5) = sqrt(7^2+4^2+4^2)=sqrt(49+16+16)=√81=9. So distance to sphere = 9 - 5 = 4. That's correct.
+			//    Distance from sphere center (5,8,9) to that infinite edge line is: x diff=10, y diff=12, z diff=0? Actually edge along Z: points (15,20,z). Distance^2 = (15-5)^2 + (20-8)^2 = 100 + 144 = 244, sqrt~ 15.62. minus radius 5 = 10.62. But that's not accurate because the closest point on the edge might be at z=9 projected? Need a simpler predictable case.
+			//    Better: Box from (12,12,0) to (15,15,5). The edge that is closest: the edge at x=12,y=12,z∈[0,5]. Distance from center (5,8,9) to that line: sqrt((12-5)^2 + (12-8)^2) = sqrt(49+16)=sqrt 65~ 8.062. Then adjust z: closest z on line is clamp(9,0,5)=5. Distance to point (12,12,5) = sqrt(7^2+4^2+4^2)=sqrt(49+16+16)=sqrt 81=9. So distance to sphere = 9 - 5 = 4. That's correct.
 			assertEpsilonEquals(16., getS().getDistanceSquared(createAlignedBoxFromPoints(12, 12, 0, 15, 15, 5)));
 		}
 
@@ -2373,7 +2384,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 8. Box completely outside, closest feature is a vertex
 			//    Box far away at (20,20,20) to (21,21,21). The nearest vertex is (20,20,20).
-			//    Distance from center to vertex = sqrt(15^2+12^2+11^2)=sqrt(225+144+121)=sqrt(490)≈22.135. Minus radius = 17.135
+			//    Distance from center to vertex = sqrt(15^2+12^2+11^2)=sqrt(225+144+121)=sqrt(490)~ 22.135. Minus radius = 17.135
 			var v = Math.sqrt(490) - 5;
 			assertEpsilonEquals(v * v, getS().getDistanceSquared(createAlignedBoxFromPoints(20, 20, 20, 21, 21, 21)));
 		}
@@ -2387,7 +2398,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			//    but the nearest point lies on an edge (already covered by case 7, but add another)
 			//    Box: left of sphere (x negative) but high y and z. Center (5,8,9), box from (-10,15,15) to (-5,20,20).
 			//    Closest point on box is the vertex (-5,15,15) because projection onto the box's nearest face (x=-5) yields y,z outside the face range.
-			//    Distance to vertex = sqrt((10)^2 + (7)^2 + (6)^2)=sqrt(100+49+36)=sqrt(185)≈13.60; minus radius = 8.60.
+			//    Distance to vertex = sqrt((10)^2 + (7)^2 + (6)^2)=sqrt(100+49+36)=sqrt(185)~ 13.60; minus radius = 8.60.
 			var v = 8.601470508;
 			assertEpsilonEquals(v * v, getS().getDistanceSquared(createAlignedBoxFromPoints(-10, 15, 15, -5, 20, 20)));
 		}
@@ -2397,7 +2408,224 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			// Sphere center (5, 8, 9), radius 5
+			// --- 1. Single line segment, outside, closest point interior (provided) ---
+			var path = createPath();
+			path.moveTo(0, 0, 0);
+			path.lineTo(1, 1, 1);
+			assertEpsilonEquals(40.421833084, getS().getDistanceSquared(path));
+		}
+
+		@DisplayName("(Path3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Fixed sphere: center (5, 8, 9), radius 5
+			// --- 2. Single line segment, outside, closest point is an endpoint ---
+			var path2 = createPath();
+			path2.moveTo(15, 8, 9);
+			path2.lineTo(20, 8, 9);
+			// Endpoint (15,8,9) is at distance 10 -> sphere point (10,8,9)
+			assertEpsilonEquals(25, getS().getDistanceSquared(path2));
+		}
+
+		@DisplayName("(Path3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 3. Single line segment, intersecting the sphere (both endpoints outside) ---
+			var path3 = createPath();
+			path3.moveTo(0, 10, 9);
+			path3.lineTo(10, 10, 9);
+			assertEpsilonEquals(0, getS().getDistanceSquared(path3));
+		}
+
+		@DisplayName("(Path3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 4. Single line segment, completely inside sphere, containing the center ---
+			var path4 = createPath();
+			path4.moveTo(4, 8, 9);
+			path4.lineTo(6, 8, 9);
+			// Center lies on segment.
+			assertEpsilonEquals(0., getS().getDistanceSquared(path4));
+		}
+
+		@DisplayName("(Path3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 5. Single quadratic curve (collinear control points, effectively line) outside ---
+			var path5 = createPath();
+			path5.moveTo(5, 20, 20);
+			path5.quadTo(5, 20, 22.5, 5, 20, 25);
+			assertEpsilonEquals(127.211794039, getS().getDistanceSquared(path5));
+		}
+
+		@DisplayName("(Path3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 6. Single quadratic curve that is a true parabola, outside, closest point interior ---
+			var path6 = createPath();
+			path6.moveTo(5, 20, 9);
+			path6.quadTo(5, 20, 9, 10, 20, 9);
+			// Closest point on line: (5,20,9)
+			assertEpsilonEquals(49., getS().getDistanceSquared(path6));
+		}
+
+		@DisplayName("(Path3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 7. Single cubic Bezier curve, collinear, outside ---
+			var path7 = createPath();
+			path7.moveTo(5, 20, 20);
+			path7.curveTo(5, 20, 21.6667, 5, 20, 23.3333, 5, 20, 25);
+			// Same vertical line as before
+			assertEpsilonEquals(127.211794039, getS().getDistanceSquared(path7));
+		}
+
+		@DisplayName("(Path3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 8. Open path with two components: line far away, line closer ---
+			var path8 = createPath();
+			path8.moveTo(100, 100, 100);
+			path8.lineTo(101, 101, 101);   // far
+			path8.moveTo(5, 14, 9);
+			path8.lineTo(6, 14, 9);        // distance 6-5=1 -> sphere point (5,13,9)
+			assertEpsilonEquals(1., getS().getDistanceSquared(path8));
+		}
+
+		@DisplayName("(Path3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 9. Closed path (square) that does not intersect sphere, closest on an edge ---
+			var path9 = createPath();
+			path9.moveTo(0, 3, 15);
+			path9.lineTo(10, 3, 15);
+			path9.lineTo(10, 13, 15);
+			path9.lineTo(0, 13, 15);
+			path9.closePath();
+			assertEpsilonEquals(7.8975032348, getS().getDistanceSquared(path9));
+		}
+
+		@DisplayName("(Path3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 11. Closed path (triangle) with vertices far, closest on vertex ---
+			var path11 = createPath();
+			path11.moveTo(20, 20, 20);
+			path11.lineTo(21, 20, 20);
+			path11.lineTo(20, 21, 20);
+			path11.closePath();
+			assertEpsilonEquals(293.6405637882, getS().getDistanceSquared(path11));
+		}
+
+		@DisplayName("(Path3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 12. Degenerate path: single point (moveTo only) ---
+			var path12 = createPath();
+			path12.moveTo(15, 8, 9);
+			assertNaN(getS().getDistanceSquared(path12));
+		}
+
+		@DisplayName("(Path3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_12(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 13. Path consisting of a single quadratic that is a point (all control points identical) ---
+			var path13 = createPath();
+			path13.moveTo(5, 5, 5);
+			path13.quadTo(5, 5, 5, 5, 5, 5);
+			assertEpsilonEquals(0., getS().getDistanceSquared(path13));
+		}
+
+		@DisplayName("(Path3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_13(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 14. Path consisting of a single cubic that is a point ---
+			var path14 = createPath();
+			path14.moveTo(5, 5, 5);
+			path14.curveTo(5, 5, 5, 5, 5, 5, 5, 5, 5);
+			assertEpsilonEquals(0., getS().getDistanceSquared(path14));
+		}
+
+		@DisplayName("(Path3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_14(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 15. Path with close that creates a segment which becomes the closest point ---
+			var path15 = createPath();
+			path15.moveTo(20, 8, 9);
+			path15.lineTo(30, 8, 9);
+			path15.lineTo(30, 18, 9);
+			path15.closePath();
+			assertEpsilonEquals(100., getS().getDistanceSquared(path15));
+		}
+
+		@DisplayName("(Path3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_15(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 16. Path with quadratic curve that intersects the sphere ---
+			var path16 = createPath();
+			path16.moveTo(20, 8, 9);
+			path16.quadTo(5, 5, 5, 5, 5, 5);
+			path16.lineTo(30, 18, 9);
+			assertEpsilonEquals(0., getS().getDistanceSquared(path16));
+		}
+
+		@DisplayName("(Path3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_16(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 17. Multiple parts in the path ---
+			var path17 = createPath();
+			path17.moveTo(20, 8, 9);
+			path17.lineTo(21, 20, 20);
+			path17.lineTo(20, 21, 20);
+			path17.moveTo(0, 3, 15);
+			path17.lineTo(10, 3, 15);
+			path17.lineTo(10, 13, 15);
+			path17.lineTo(0, 13, 15);
+			path17.closePath();
+			assertEpsilonEquals(7.8975032348, getS().getDistanceSquared(path17));
+		}
+
+		@DisplayName("(Path3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_17(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// --- 18. 3D Bezier ---
+			var path18 = createPath();
+			path18.moveTo(-3, -5, 2);
+			path18.curveTo(2, -9, 7, 0.5, 3, 0, -1, 1, 0);
+			assertEpsilonEquals(50.985124331, getS().getDistanceSquared(path18));
 		}
 
 		@DisplayName("(MultiShape3afp) #1")
@@ -2408,12 +2636,31 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			throw new UnsupportedOperationException();
 		}
 
-		@DisplayName("(Shape3afp) #1")
+		@DisplayName("(Shape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void shape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(0., getS().getDistanceSquared((Shape3D) createSphere(9.2, 13.6, 9, 2)));
+		}
+		
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var path5 = createPath();
+			path5.moveTo(5, 20, 20);
+			path5.quadTo(5, 20, 22.5, 5, 20, 25);
+			assertEpsilonEquals(127.211794039, getS().getDistanceSquared((Shape3D) path5));
+		}
+		
+		@DisplayName("(Shape3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(25., getS().getDistanceSquared((Shape3D) createSegment(15, 8, 9, 20, 8, 9)));
 		}
 
 	}
@@ -2860,7 +3107,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void segment_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(getS().intersects(createSegment(0, 4, 9, 0, 12, 9)));
+			assertTrue(getS().intersects(createSegment(0, 4, 9, 0, 12, 9)));
 		}
 
 		@DisplayName("(Segment3afp) #6")
@@ -2974,7 +3221,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			path.lineTo(12, 14, 9);
 			path.lineTo(12, 2, 9);
 			path.closePath();
-			assertTrue(getS().intersects(path));
+			assertFalse(getS().intersects(path));
 		}
 
 		@DisplayName("(Path3afp) #9")
@@ -3030,7 +3277,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			path.lineTo(20, -7, 9);
 			path.lineTo(5, 21, 9);
 			path.closePath();
-			assertTrue(getS().intersects(path));
+			assertFalse(getS().intersects(path));
 		}
 
 		@DisplayName("(PathIterator3afp) #1")
@@ -3136,7 +3383,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			path.lineTo(12, 14, 9);
 			path.lineTo(12, 2, 9);
 			path.closePath();
-			assertTrue(getS().intersects((PathIterator3afp) path.getPathIterator()));
+			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
 		}
 
 		@DisplayName("(PathIterator3afp) #9")
@@ -3192,7 +3439,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			path.lineTo(20, -7, 9);
 			path.lineTo(5, 21, 9);
 			path.closePath();
-			assertTrue(getS().intersects((PathIterator3afp) path.getPathIterator()));
+			assertFalse(getS().intersects((PathIterator3afp) path.getPathIterator()));
 		}
 
 		@DisplayName("(Shape3afp) #1")
@@ -3333,7 +3580,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_16(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(Sphere3afp.containsSpherePoint(0, 0, 0, 2, 1, 1, 1));           // inside (sqrt(3) ≈ 1.732 < 2)
+			assertTrue(Sphere3afp.containsSpherePoint(0, 0, 0, 2, 1, 1, 1));           // inside (sqrt(3) ~  1.732 < 2)
 		}
 
 		@DisplayName("#17")
@@ -3392,7 +3639,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_23(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(Sphere3afp.containsSpherePoint(0, 0, 0, 1.5, 1, 1, 1));        // sqrt(3) > 1.5 → false
+			assertFalse(Sphere3afp.containsSpherePoint(0, 0, 0, 1.5, 1, 1, 1));        // sqrt(3) > 1.5 -> false
 		}
 
 		@DisplayName("#24")
@@ -3417,7 +3664,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_26(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(Sphere3afp.containsSpherePoint(5, 5, 5, 0, 5.0001, 5, 5));    // any deviation → outside
+			assertFalse(Sphere3afp.containsSpherePoint(5, 5, 5, 0, 5.0001, 5, 5));    // any deviation -> outside
 		}
 
 		@DisplayName("#27")
@@ -3775,7 +4022,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 1. Touching externally (distance = sum of radii) → false
+			// 1. Touching externally (distance = sum of radii) -> false
 			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 1, 2, 0, 0, 1));   // distance 2, sum 2
 		}
 
@@ -3794,7 +4041,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_9(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			//		    Another internal tangent: large radius 10, small radius 3, centers distance 7 → false
+			//		    Another internal tangent: large radius 10, small radius 3, centers distance 7 -> false
 			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 10, 7, 0, 0, 3));   // 7 = 10-3
 		}
 
@@ -3803,7 +4050,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_10(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 3. One sphere completely inside another without touching → true? 
+			// 3. One sphere completely inside another without touching -> true? 
 			//		    Actually if one sphere is entirely inside the other but not touching, they intersect (the inner sphere is fully inside). The method should return true because they share all points of the smaller sphere.
 			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 10, 2, 0, 0, 3));   // distance 2, sum = 13 > 2, and also distance < 10-3? 2 < 7, so inside. Should be true.
 		}
@@ -3813,7 +4060,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_11(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 5. Spheres identical, same center → true (already have)
+			// 5. Spheres identical, same center -> true (already have)
 			assertTrue(Sphere3afp.intersectsSphereSphere(1, 2, 3, 5, 1, 2, 3, 5));
 		}
 
@@ -3823,7 +4070,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void test_12(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 6. Spheres with zero radius (degenerate points)
-			//		    Two points at same location → true (they intersect at the point)
+			//		    Two points at same location -> true (they intersect at the point)
 			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 0, 0, 0, 0, 0));
 		}
 
@@ -3832,7 +4079,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_13(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			//		    Two points distinct → false
+			//		    Two points distinct -> false
 			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 0, 1, 0, 0, 0));
 		}
 
@@ -3841,7 +4088,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_14(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			//		    Point inside a sphere → true (point is inside the sphere)
+			//		    Point inside a sphere -> true (point is inside the sphere)
 			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 5, 1, 0, 0, 0));   // distance 1 < 5
 		}
 
@@ -3850,8 +4097,8 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_15(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 7. One sphere radius zero touching another sphere from outside? distance = large radius → false (touching)
-			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 5, 5, 0, 0, 0));   // distance 5 = radius 5 → touching point
+			// 7. One sphere radius zero touching another sphere from outside? distance = large radius -> false (touching)
+			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 5, 5, 0, 0, 0));   // distance 5 = radius 5 -> touching point
 		}
 
 		@DisplayName("#16")
@@ -3860,7 +4107,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void test_16(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 8. Different radii, intersection with positive volume (distance < sum, distance > |R-r|)
-			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 5, 6, 0, 0, 3));   // distance 6, sum = 8, diff = 2. 2 < 6 < 8 → overlap.
+			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 5, 6, 0, 0, 3));   // distance 6, sum = 8, diff = 2. 2 < 6 < 8 -> overlap.
 		}
 
 		@DisplayName("#17")
@@ -3869,7 +4116,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void test_17(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 9. Non‑coplanar centers (z coordinate non‑zero)
-			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 2, 1, 1, 1, 2));   // distance sqrt(3) ≈ 1.732, sum = 4 → true
+			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 2, 1, 1, 1, 2));   // distance sqrt(3) ~  1.732, sum = 4 -> true
 		}
 
 		@DisplayName("#18")
@@ -3877,7 +4124,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_18(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 2, 4, 0, 4, 1));   // distance sqrt(32) ≈ 5.657, sum = 3 → false
+			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 2, 4, 0, 4, 1));   // distance sqrt(32) ~  5.657, sum = 3 -> false
 		}
 
 		@DisplayName("#19")
@@ -3887,7 +4134,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 10. Borderline just inside / just outside (floating point tolerance)
 			//		      Just inside: distance = sum - epsilon
-			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 1, 1.9999999, 0, 0, 1));   // distance ≈ 1.9999999, sum = 2 → true (since < 2)
+			assertTrue(Sphere3afp.intersectsSphereSphere(0, 0, 0, 1, 1.9999999, 0, 0, 1));   // distance ~  1.9999999, sum = 2 -> true (since < 2)
 		}
 
 		@DisplayName("#20")
@@ -3905,7 +4152,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void test_21(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// 11. Large coordinates and large radii (no overflow)
-			assertTrue(Sphere3afp.intersectsSphereSphere(1e6, 2e6, 3e6, 1e7, 1.5e6, 2.5e6, 3.2e6, 5e6));   // distance ≈ sqrt((0.5e6)^2+(0.5e6)^2+(0.2e6)^2) ≈ 0.734e6, sum = 15e6 → true
+			assertTrue(Sphere3afp.intersectsSphereSphere(1e6, 2e6, 3e6, 1e7, 1.5e6, 2.5e6, 3.2e6, 5e6));   // distance ~  sqrt((0.5e6)^2+(0.5e6)^2+(0.2e6)^2) ~  0.734e6, sum = 15e6 -> true
 		}
 
 		@DisplayName("#22")
@@ -3913,7 +4160,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_22(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 1e6, 3e6, 0, 0, 1e6));   // distance 3e6, sum = 2e6 → false
+			assertFalse(Sphere3afp.intersectsSphereSphere(0, 0, 0, 1e6, 3e6, 0, 0, 1e6));   // distance 3e6, sum = 2e6 -> false
 		}
 
 	}
@@ -3967,7 +4214,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Line tangent to sphere (distance = radius) → true
+			// Line tangent to sphere (distance = radius) -> true
 			// Sphere at origin radius 1, line along y-axis at x=1, z=0
 			assertTrue(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, 1, -2, 0, 1, 2, 0));
 		}
@@ -3977,7 +4224,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Line just outside sphere (distance slightly > radius) → false
+			// Line just outside sphere (distance slightly > radius) -> false
 			assertFalse(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, 1.0001, -2, 0, 1.0001, 2, 0));
 		}
 
@@ -3986,7 +4233,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_8(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// One point inside sphere, line infinite → true
+			// One point inside sphere, line infinite -> true
 			assertTrue(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, 0.5, 0, 0, 2, 0, 0));
 		}
 
@@ -3995,7 +4242,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_9(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Both points outside but line passes through sphere → true (existing but add another)
+			// Both points outside but line passes through sphere -> true (existing but add another)
 			assertTrue(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, -3, 0, 0, 3, 0, 0));
 		}
 
@@ -4022,7 +4269,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_12(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 3D line missing sphere (distance > radius) → false
+			// 3D line missing sphere (distance > radius) -> false
 			assertFalse(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, 2, 0, 0, 2, 0, 2));
 		}
 
@@ -4031,7 +4278,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_13(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 3D line tangent to sphere (distance = radius) → true
+			// 3D line tangent to sphere (distance = radius) -> true
 			// Line parallel to Z-axis, at x=1, y=0
 			assertTrue(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, 1, 0, -2, 1, 0, 2));
 		}
@@ -4051,7 +4298,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_15(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Point on sphere surface → true (touches)
+			// Point on sphere surface -> true (touches)
 			assertTrue(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, 1, 0, 0, 1, 0, 0));
 		}
 
@@ -4079,7 +4326,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void test_18(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// Floating-point tolerance: line just tangent with epsilon error
-			// Distance = radius + 1e-12 → false (assuming exact comparison)
+			// Distance = radius + 1e-12 -> false (assuming exact comparison)
 			assertFalse(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, 1 + 1e-12, -2, 0, 1 + 1e-12, 2, 0));
 		}
 
@@ -4088,7 +4335,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_19(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Distance = radius - 1e-12 → true
+			// Distance = radius - 1e-12 -> true
 			assertTrue(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, 1 - 1e-12, -2, 0, 1 - 1e-12, 2, 0));
 		}
 
@@ -4097,7 +4344,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_20(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Line passing through sphere center → true
+			// Line passing through sphere center -> true
 			assertTrue(Sphere3afp.intersectsSphereLine(0, 0, 0, 1, -2, 0, 0, 2, 0, 0));
 		}
 
@@ -4160,7 +4407,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_7(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Line passing through sphere center → true
+			// Line passing through sphere center -> true
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, -2, 0, 0, 2, 0, 0));
 		}
 
@@ -4169,7 +4416,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_8(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Line tangent to sphere (distance = radius) → true
+			// Line tangent to sphere (distance = radius) -> true
 			// Sphere at origin radius 1, line along y-axis at x=1, z=0
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 1, -2, 0, 1, 2, 0));
 		}
@@ -4179,7 +4426,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_9(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Line just outside sphere (distance slightly > radius) → false
+			// Line just outside sphere (distance slightly > radius) -> false
 			assertFalse(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 1.0001, -2, 0, 1.0001, 2, 0));
 		}
 
@@ -4188,7 +4435,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_10(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// One point inside sphere, line infinite → true
+			// One point inside sphere, line infinite -> true
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 0.5, 0, 0, 2, 0, 0));
 		}
 
@@ -4197,7 +4444,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_11(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Both points outside but line passes through sphere → true (existing but add another)
+			// Both points outside but line passes through sphere -> true (existing but add another)
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, -3, 0, 0, 3, 0, 0));
 		}
 
@@ -4206,7 +4453,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_12(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Both points outside, line completely misses sphere → false
+			// Both points outside, line completely misses sphere -> false
 			assertFalse(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 2, 2, 0, 3, 3, 0));
 		}
 
@@ -4215,7 +4462,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_14(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 3D line along Z-axis through center → true
+			// 3D line along Z-axis through center -> true
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 0, 0, -2, 0, 0, 2));
 		}
 
@@ -4224,7 +4471,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_15(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 3D line missing sphere (distance > radius) → false
+			// 3D line missing sphere (distance > radius) -> false
 			assertFalse(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 2, 0, 0, 2, 0, 2));
 		}
 
@@ -4233,7 +4480,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_16(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// 3D line tangent to sphere (distance = radius) → true
+			// 3D line tangent to sphere (distance = radius) -> true
 			// Line parallel to Z-axis, at x=1, y=0
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 1, 0, -2, 1, 0, 2));
 		}
@@ -4244,7 +4491,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void test_17(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// Degenerate line (both points identical)
-			// Point inside sphere → true
+			// Point inside sphere -> true
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 0.5, 0, 0, 0.5, 0, 0));
 		}
 
@@ -4253,7 +4500,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_18(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Point on sphere surface → true (touches)
+			// Point on sphere surface -> true (touches)
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 1, 0, 0, 1, 0, 0));
 		}
 
@@ -4281,7 +4528,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		public final void test_21(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			// Floating-point tolerance: line just tangent with epsilon error
-			// Distance = radius + 1e-12 → false (assuming exact comparison)
+			// Distance = radius + 1e-12 -> false (assuming exact comparison)
 			assertFalse(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 1 + 1e-12, -2, 0, 1 + 1e-12, 2, 0));
 		}
 
@@ -4290,7 +4537,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_22(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			// Distance = radius - 1e-12 → true
+			// Distance = radius - 1e-12 -> true
 			assertTrue(Sphere3afp.intersectsSphereSegment(0, 0, 0, 1, 1 - 1e-12, -2, 0, 1 - 1e-12, 2, 0));
 		}
 
@@ -4545,7 +4792,7 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_31(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(Sphere3afp.intersectsSphereAlignedBox(0, 0, 0, 2, 1, 1, 1, 3, 3, 3)); // sphere center at 0, radius 2, box from (1,1,1) to (3,3,3) – overlap near (1,1,1) which is distance sqrt(3)≈1.732 <2
+			assertTrue(Sphere3afp.intersectsSphereAlignedBox(0, 0, 0, 2, 1, 1, 1, 3, 3, 3)); // sphere center at 0, radius 2, box from (1,1,1) to (3,3,3) – overlap near (1,1,1) which is distance sqrt(3)~ 1.732 <2
 		}
 
 		@DisplayName("#32")

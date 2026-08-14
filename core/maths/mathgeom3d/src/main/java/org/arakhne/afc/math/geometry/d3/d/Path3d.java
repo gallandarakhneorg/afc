@@ -491,7 +491,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	@Pure
 	public Point3d[] toPointArray(Transform3D transform) {
-		final var clone = new Point3d[this.numCoords / 2];
+		final var clone = new Point3d[this.numCoords / 3];
 		if (transform == null || transform.isIdentity()) {
 			for (int i = 0, j = 0; j < this.numCoords; ++i, j += 3) {
 				clone[i] = getGeomFactory().newPoint(
@@ -500,7 +500,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 						this.coords[j + 2]);
 			}
 		} else {
-			for (int i = 0, j = 0; j < clone.length; ++i, j += 3) {
+			for (int i = 0, j = 0; j < this.numCoords; ++i, j += 3) {
 				clone[i] = getGeomFactory().newPoint(
 						this.coords[j],
 						this.coords[j + 1],

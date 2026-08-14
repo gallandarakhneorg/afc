@@ -128,7 +128,7 @@ public interface Path3afp<
 						x, y, z,
 						pe.getFromX(), pe.getFromY(), pe.getFromZ(),
 						pe.getToX(), pe.getToY(), pe.getToZ());
-				if (factor < 0.) {
+				if (Double.isNaN(factor) || factor < 0.) {
 					factor = 0.;
 				} else if (factor > 1.) {
 					factor = 1.;
@@ -737,8 +737,9 @@ public interface Path3afp<
 	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final var point = getGeomFactory().newPoint();
-		if (Path3afp.findsClosestPointToPoint(getPathIterator(
-				getGeomFactory().getSplineApproximationRatio()), pt.getX(), pt.getY(), pt.getZ(),
+		if (Path3afp.findsClosestPointToPoint(
+				getPathIterator(),
+				pt.getX(), pt.getY(), pt.getZ(),
 				point)) {
 			return point;
 		}

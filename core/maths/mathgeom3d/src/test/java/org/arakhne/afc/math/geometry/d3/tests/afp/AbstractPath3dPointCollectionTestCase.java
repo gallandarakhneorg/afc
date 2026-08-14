@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
@@ -93,6 +94,10 @@ public abstract class AbstractPath3dPointCollectionTestCase<P extends Point3D<? 
 			assertEpsilonEquals(coords[j++], p.getY());
 			assertEpsilonEquals(coords[j++], p.getZ());
 		}
+	}
+	
+	private Point3D createPoint(double x, double y, double z) {
+		return new InnerComputationPoint3D(x, y, z);
 	}
 	
 	@DisplayName("size")
@@ -355,34 +360,13 @@ public abstract class AbstractPath3dPointCollectionTestCase<P extends Point3D<? 
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 	    	Object[] tab = collection.toArray();
 	    	assertEquals(7, tab.length);
-	    	assertTrue(tab[0] instanceof Point3D);
-	    	assertEpsilonEquals(1, ((Point3D) tab[0]).getX());
-	    	assertEpsilonEquals(1, ((Point3D) tab[0]).getY());
-	    	assertEpsilonEquals(0, ((Point3D) tab[0]).getZ());
-	    	assertTrue(tab[1] instanceof Point3D);
-	    	assertEpsilonEquals(2, ((Point3D) tab[1]).getX());
-	    	assertEpsilonEquals(2, ((Point3D) tab[1]).getY());
-	    	assertEpsilonEquals(0, ((Point3D) tab[1]).getZ());
-	    	assertTrue(tab[2] instanceof Point3D);
-	    	assertEpsilonEquals(3, ((Point3D) tab[2]).getX());
-	    	assertEpsilonEquals(0, ((Point3D) tab[2]).getY());
-	    	assertEpsilonEquals(0, ((Point3D) tab[2]).getZ());
-	    	assertTrue(tab[3] instanceof Point3D);
-	    	assertEpsilonEquals(4, ((Point3D) tab[3]).getX());
-	    	assertEpsilonEquals(3, ((Point3D) tab[3]).getY());
-	    	assertEpsilonEquals(0, ((Point3D) tab[3]).getZ());
-	    	assertTrue(tab[4] instanceof Point3D);
-	    	assertEpsilonEquals(5, ((Point3D) tab[4]).getX());
-	    	assertEpsilonEquals(-1, ((Point3D) tab[4]).getY());
-	    	assertEpsilonEquals(0, ((Point3D) tab[4]).getZ());
-	    	assertTrue(tab[5] instanceof Point3D);
-	    	assertEpsilonEquals(6, ((Point3D) tab[5]).getX());
-	    	assertEpsilonEquals(5, ((Point3D) tab[5]).getY());
-	    	assertEpsilonEquals(0, ((Point3D) tab[5]).getZ());
-	    	assertTrue(tab[6] instanceof Point3D);
-	    	assertEpsilonEquals(7, ((Point3D) tab[6]).getX());
-	    	assertEpsilonEquals(-5, ((Point3D) tab[6]).getY());
-	    	assertEpsilonEquals(0, ((Point3D) tab[6]).getZ());
+	    	assertEpsilonEquals(createPoint(1, 1, 0), (Point3D) tab[0]);
+	    	assertEpsilonEquals(createPoint(2, 2, 0), (Point3D) tab[1]);
+	    	assertEpsilonEquals(createPoint(3, 0, 0), (Point3D) tab[2]);
+	    	assertEpsilonEquals(createPoint(4, 3, 0), (Point3D) tab[3]);
+	    	assertEpsilonEquals(createPoint(5, -1, 0), (Point3D) tab[4]);
+	    	assertEpsilonEquals(createPoint(6, 5, 0), (Point3D) tab[5]);
+	    	assertEpsilonEquals(createPoint(7, -5, 0), (Point3D) tab[6]);
 	    }
 
 		@DisplayName("(Point3D[]) #1")
@@ -468,7 +452,7 @@ public abstract class AbstractPath3dPointCollectionTestCase<P extends Point3D<? 
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 	    	collection.remove(factory.createPoint(2, 2, 0));
 	    	assertTrue(collection.remove(factory.createPoint(6, 5, 0)));
-	    	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0);
+	    	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 7, -5, 0);
 	    }
 	}
 
@@ -527,7 +511,7 @@ public abstract class AbstractPath3dPointCollectionTestCase<P extends Point3D<? 
 
 	@DisplayName("retainAll(Collection)")
 	@Nested
-	public class retainAll {
+	public class RetainAll {
 
 		@DisplayName("#1")
 		@ParameterizedTest(name = "{index} => {0}")
@@ -551,90 +535,6 @@ public abstract class AbstractPath3dPointCollectionTestCase<P extends Point3D<? 
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 	    	collection.clear();
 	    	assertCoords();
-	    }
-	}
-
-	@DisplayName("toIntArray")
-	@Nested
-	public class ToIntArray {
-
-		@DisplayName("() #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-	    public void empty_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	    	throw new UnsupportedOperationException();
-	    }
-
-		@DisplayName("(Transform3D) #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-	    public void transform_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	    	throw new UnsupportedOperationException();
-	    }
-	}
-
-	@DisplayName("toFloatArray")
-	@Nested
-	public class ToFloatArray {
-
-		@DisplayName("() #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-	    public void empty_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	    	throw new UnsupportedOperationException();
-	    }
-
-		@DisplayName("(Transform3D) #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-	    public void transform_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	    	throw new UnsupportedOperationException();
-	    }
-	}
-
-	@DisplayName("toDoubleArray")
-	@Nested
-	public class ToDoubleArray {
-
-		@DisplayName("() #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-	    public void empty_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	    	throw new UnsupportedOperationException();
-	    }
-
-		@DisplayName("(Transform3D) #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-	    public void transform_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	    	throw new UnsupportedOperationException();
-	    }
-	}
-
-	@DisplayName("toPointArray")
-	@Nested
-	public class ToPointArray {
-
-		@DisplayName("() #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-	    public void empty_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	    	throw new UnsupportedOperationException();
-	    }
-
-		@DisplayName("(Transform3D) #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-	    public void transform_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-	    	throw new UnsupportedOperationException();
 	    }
 	}
 

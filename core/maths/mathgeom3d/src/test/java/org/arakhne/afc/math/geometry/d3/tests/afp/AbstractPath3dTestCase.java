@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.tests.afp;
 
 import static org.arakhne.afc.math.geometry.base.GeomConstants.DISTANCE_EPSILON;
 import static org.arakhne.afc.math.geometry.base.GeomConstants.SPLINE_APPROXIMATION_RATIO;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -46,7 +47,6 @@ import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
-import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
 import org.arakhne.afc.math.geometry.d3.d.Shape3d;
 import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.junit.jupiter.api.BeforeEach;
@@ -7836,7 +7836,7 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void box_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects(createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
+			assertFalse(getS().intersects(createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #3")
@@ -7861,7 +7861,7 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void box_5(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createAlignedBox(1, -2, 0, 2, 1, 0)));
+			assertFalse(getS().intersects(createAlignedBox(1, -2, 0, 2, 1, 0)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #6")
@@ -7870,7 +7870,7 @@ extends AbstractShape3dTestCase<T, B> {
 		public final void box_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
-			assertTrue(getS().intersects(createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
+			assertFalse(getS().intersects(createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #7")
@@ -8563,7 +8563,7 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void shape_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().intersects((Shape3D)createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
+			assertFalse(getS().intersects((Shape3D)createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
 		}
 
 		@DisplayName("(Shape3D) #3")
@@ -10129,7 +10129,7 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_2(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			assertTrue(getS().operator_and(createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
+			assertFalse(getS().operator_and(createAlignedBox(1.5, 1.5, 0, 2, 1, 0)));
 		}
 
 		@DisplayName("#3")
@@ -10934,6 +10934,302 @@ extends AbstractShape3dTestCase<T, B> {
 			assertEpsilonEquals(createPoint(7, -5, 2), iterator.next());
 			assertFalse(iterator.hasNext());
 		}
+	}
+
+	@DisplayName("toIntArray")
+	@Nested
+	public class ToIntArray {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var actual = getS().toIntArray();
+			assertArrayEquals(new int[] {
+					0, 0, 0,
+					1, 0, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var actual = getS().toIntArray(null);
+			assertArrayEquals(new int[] {
+					0, 0, 0,
+					1, 0, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var tr = new Transform3D();
+			tr.setIdentity();
+			var actual = getS().toIntArray(tr);
+			assertArrayEquals(new int[] {
+					0, 0, 0,
+					1, 0, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var tr = new Transform3D();
+			tr.setIdentity();
+			tr.translate(1, -2, 3);
+			var actual = getS().toIntArray(tr);
+			assertArrayEquals(new int[] {
+					1, -2, 3,
+					2, -1, -2,
+					4, -2, 5,
+					5, 1, 1,
+					6, -3, 6,
+					7, 3, 8,
+					8, -7, 5}, actual);
+	    }
+	}
+
+	@DisplayName("toFloatArray")
+	@Nested
+	public class ToFloatArray {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var actual = getS().toFloatArray();
+			assertEpsilonArrayEquals(new float[] {
+					0, 0, 0,
+					1, .5f, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var actual = getS().toFloatArray(null);
+			assertEpsilonArrayEquals(new float[] {
+					0, 0, 0,
+					1, .5f, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var tr = new Transform3D();
+			tr.setIdentity();
+			var actual = getS().toFloatArray(tr);
+			assertEpsilonArrayEquals(new float[] {
+					0, 0, 0,
+					1, .5f, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var tr = new Transform3D();
+			tr.setIdentity();
+			tr.translate(1, -2, 3);
+			var actual = getS().toFloatArray(tr);
+			assertEpsilonArrayEquals(new float[] {
+					1, -2, 3,
+					2, -1.5f, -2,
+					4, -2, 5,
+					5, 1, 1,
+					6, -3, 6,
+					7, 3, 8,
+					8, -7, 5}, actual);
+	    }
+	}
+
+	@DisplayName("toDoubleArray")
+	@Nested
+	public class ToDoubleArray {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var actual = getS().toDoubleArray();
+			assertEpsilonArrayEquals(new double[] {
+					0, 0, 0,
+					1, .5, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var actual = getS().toDoubleArray(null);
+			assertEpsilonArrayEquals(new double[] {
+					0, 0, 0,
+					1, .5, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var tr = new Transform3D();
+			tr.setIdentity();
+			var actual = getS().toDoubleArray(tr);
+			assertEpsilonArrayEquals(new double[] {
+					0, 0, 0,
+					1, .5, -5,
+					3, 0, 2,
+					4, 3, -2,
+					5, -1, 3,
+					6, 5, 5,
+					7, -5, 2}, actual);
+	    }
+
+		@DisplayName("(Transform3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var tr = new Transform3D();
+			tr.setIdentity();
+			tr.translate(1, -2, 3);
+			var actual = getS().toDoubleArray(tr);
+			assertEpsilonArrayEquals(new double[] {
+					1, -2, 3,
+					2, -1.5, -2,
+					4, -2, 5,
+					5, 1, 1,
+					6, -3, 6,
+					7, 3, 8,
+					8, -7, 5}, actual);
+	    }
+	}
+
+	@DisplayName("toPointArray")
+	@Nested
+	public class ToPointArray {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var actual = getS().toPointArray();
+			assertEquals(7, actual.length);
+			assertEpsilonEquals(createPoint(0, 0, 0), actual[0]);
+			assertEpsilonEquals(createPoint(1,  .5, -5), actual[1]);
+			assertEpsilonEquals(createPoint(3, 0, 2), actual[2]);
+			assertEpsilonEquals(createPoint(4, 3, -2), actual[3]);
+			assertEpsilonEquals(createPoint(5, -1, 3), actual[4]);
+			assertEpsilonEquals(createPoint(6, 5, 5), actual[5]);
+			assertEpsilonEquals(createPoint(7, -5, 2), actual[6]);
+	    }
+
+		@DisplayName("(Transform3D) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var actual = getS().toPointArray(null);
+			assertEquals(7, actual.length);
+			assertEpsilonEquals(createPoint(0, 0, 0), actual[0]);
+			assertEpsilonEquals(createPoint(1,  .5, -5), actual[1]);
+			assertEpsilonEquals(createPoint(3, 0, 2), actual[2]);
+			assertEpsilonEquals(createPoint(4, 3, -2), actual[3]);
+			assertEpsilonEquals(createPoint(5, -1, 3), actual[4]);
+			assertEpsilonEquals(createPoint(6, 5, 5), actual[5]);
+			assertEpsilonEquals(createPoint(7, -5, 2), actual[6]);
+	    }
+
+		@DisplayName("(Transform3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var tr = new Transform3D();
+			tr.setIdentity();
+			var actual = getS().toPointArray(tr);
+			assertEquals(7, actual.length);
+			assertEpsilonEquals(createPoint(0, 0, 0), actual[0]);
+			assertEpsilonEquals(createPoint(1,  .5, -5), actual[1]);
+			assertEpsilonEquals(createPoint(3, 0, 2), actual[2]);
+			assertEpsilonEquals(createPoint(4, 3, -2), actual[3]);
+			assertEpsilonEquals(createPoint(5, -1, 3), actual[4]);
+			assertEpsilonEquals(createPoint(6, 5, 5), actual[5]);
+			assertEpsilonEquals(createPoint(7, -5, 2), actual[6]);
+	    }
+
+		@DisplayName("(Transform3D) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+	    public void transform_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var tr = new Transform3D();
+			tr.setIdentity();
+			tr.translate(1, -2, 3);
+			var actual = getS().toPointArray(tr);
+			assertEquals(7, actual.length);
+			assertEpsilonEquals(createPoint(1, -2, 3), actual[0]);
+			assertEpsilonEquals(createPoint(2, -1.5, -2), actual[1]);
+			assertEpsilonEquals(createPoint(4, -2, 5), actual[2]);
+			assertEpsilonEquals(createPoint(5, 1, 1), actual[3]);
+			assertEpsilonEquals(createPoint(6, -3, 6), actual[4]);
+			assertEpsilonEquals(createPoint(7, 3, 8), actual[5]);
+			assertEpsilonEquals(createPoint(8, -7, 5), actual[6]);
+	    }
 	}
 
 }

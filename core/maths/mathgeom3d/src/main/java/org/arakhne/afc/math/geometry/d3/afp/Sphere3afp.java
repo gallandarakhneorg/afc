@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
@@ -507,9 +508,10 @@ public interface Sphere3afp<
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		//TODO
-		return false;
-
+		return Path3afp.intersectsPathIteratorSphere(
+				iterator,
+				getX(), getY(), getZ(), getRadius(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
@@ -543,6 +545,9 @@ public interface Sphere3afp<
     default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
         assert sphere != null : AssertMessages.notNullParameter();
         final Point3D<?, ?, ?> point = sphere.getClosestPointTo(getCenter());
+        if (point == null) {
+        	return null;
+        }
         return getClosestPointTo(point);
     }
 
@@ -551,6 +556,9 @@ public interface Sphere3afp<
     default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
         assert AlignedBox != null : AssertMessages.notNullParameter();
         final var point = AlignedBox.getClosestPointTo(getCenter());
+        if (point == null) {
+        	return null;
+        }
         return getClosestPointTo(point);
     }
 
@@ -559,6 +567,9 @@ public interface Sphere3afp<
     default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
         final var point = segment.getClosestPointTo(getCenter());
+        if (point == null) {
+        	return null;
+        }
         return getClosestPointTo(point);
     }
 
@@ -567,6 +578,9 @@ public interface Sphere3afp<
     default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         final var point = path.getClosestPointTo(getCenter());
+        if (point == null) {
+        	return null;
+        }
         return getClosestPointTo(point);
     }
 
@@ -575,6 +589,9 @@ public interface Sphere3afp<
     default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
         final var point = multishape.getClosestPointTo(getCenter());
+        if (point == null) {
+        	return null;
+        }
         return getClosestPointTo(point);
     }
 

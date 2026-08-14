@@ -9407,7 +9407,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.moveTo(-2, 2, 0);
 			p.lineTo(1, 0, 0);
 			p.lineTo(2, 1, 0);
-			assertTrue(getS().intersects(p));
+			assertFalse(getS().intersects(p));
 		}
 		
 		@DisplayName("(Path3afp) #10")
@@ -9420,7 +9420,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(1, 0, 0);
 			p.lineTo(2, 1, 0);
 			p.closePath();
-			assertTrue(getS().intersects(p));
+			assertFalse(getS().intersects(p));
 		}
 
 		@DisplayName("(Path3afp) #11")
@@ -9445,7 +9445,179 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(2, 1, 0);
 			p.lineTo(1, 0, 0);
 			p.closePath();
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_13(CoordinateSystem3D cs) {
+			// polyline crosses S at its interior midpoint:
+			// The edge (0,1,0.5)-(1,0,0.5) passes exactly through (0.5,0.5,0.5),
+			// the midpoint of S=(0,0,0)-(1,1,1).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(0, 1, .5);
+			p.lineTo(1, 0, .5);
 			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_14(CoordinateSystem3D cs) {
+			// crossing exists only via the closing edge:
+			// Neither open edge ((1.75,-0.25,0.75)-(5,5,5) nor (5,5,5)-(-0.25,1.75,0.75))
+			// crosses S. Only the closing edge added by closePath(), which passes
+			// exactly through (0.75,0.75,0.75) on S, does.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(1.75, -.25, .75);
+			p.lineTo(5, 5, 5);
+			p.lineTo(-.25, 1.75, .75);
+			p.closePath();
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_15(CoordinateSystem3D cs) {
+			// same polyline without closePath():
+			// Same vertices as #14 but the closing edge is missing, so the
+			// crossing point is never reached -> no intersection.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(1.75, -.25, .75);
+			p.lineTo(5, 5, 5);
+			p.lineTo(-.25, 1.75, .75);
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_16(CoordinateSystem3D cs) {
+			// polyline touches S exactly at its far endpoint:
+			// The polyline starts exactly at B=(1,1,1), the far endpoint of S.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(1, 1, 1);
+			p.lineTo(2, 0, 1);
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_17(CoordinateSystem3D cs) {
+			// polyline touches S exactly at its near endpoint:
+			// The polyline starts exactly at A=(0,0,0), the near endpoint of S.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(0, 0, 0);
+			p.lineTo(5, -3, 2);
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_18(CoordinateSystem3D cs) {
+			// polyline fully overlapping S (colinear, superset):
+			// The edge (-1,-1,-1)-(2,2,2) lies on the same line as S and entirely
+			// contains it.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-1, -1, -1);
+			p.lineTo(2, 2, 2);
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_19(CoordinateSystem3D cs) {
+			// polyline partially overlapping S (colinear, subset):
+			// The edge (0.3,0.3,0.3)-(0.7,0.7,0.7) lies on the same line as S and is
+			// entirely contained within it.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(.3, .3, .3);
+			p.lineTo(.7, .7, .7);
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_20(CoordinateSystem3D cs) {
+			// polyline colinear with S but disjoint:
+			// The edge (5,5,5)-(6,6,6) lies on the same infinite line as S, but its
+			// parameter range [5,6] does not overlap S's range [0,1].
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(5, 5, 5);
+			p.lineTo(6, 6, 6);
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_21(CoordinateSystem3D cs) {
+			// polyline passes near S but misses it:
+			// Both endpoints sit just off the line of S near its midpoint, with a
+			// small but strictly positive gap -> no intersection.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(.55, .45, .55);
+			p.lineTo(.45, .55, .55);
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_22(CoordinateSystem3D cs) {
+			// multi-segment polyline where only the last edge crosses S:
+			// The first two edges stay far from S; only the last edge
+			// (1.25,-0.75,0.25)-(-0.75,1.25,0.25) crosses S, exactly at
+			// (0.25,0.25,0.25).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(10, 10, 10);
+			p.lineTo(10, 11, 10);
+			p.lineTo(1.25, -.75, .25);
+			p.lineTo(-.75, 1.25, .25);
+			assertTrue(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_23(CoordinateSystem3D cs) {
+			// open polyline far away from S
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(10, 10, 10);
+			p.lineTo(10, 11, 10);
+			p.lineTo(11, 10, 11);
+			assertFalse(getS().intersects(p));
+		}
+
+		@DisplayName("(Path3afp) #24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void path_24(CoordinateSystem3D cs) {
+			// closed polyline far away from S
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(20, 20, 20);
+			p.lineTo(20, 21, 20);
+			p.lineTo(21, 20, 21);
+			p.closePath();
+			assertFalse(getS().intersects(p));
 		}
 
 		@DisplayName("(PathIterator3afp) #1")
@@ -9550,7 +9722,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.moveTo(-2, 2, 0);
 			p.lineTo(1, 0, 0);
 			p.lineTo(2, 1, 0);
-			assertTrue(getS().intersects(p.getPathIterator()));
+			assertFalse(getS().intersects(p.getPathIterator()));
 		}
 
 		@DisplayName("(PathIterator3afp) #10")
@@ -9562,7 +9734,7 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(1, 0, 0);
 			p.lineTo(2, 1, 0);
 			p.closePath();
-			assertTrue(getS().intersects(p.getPathIterator()));
+			assertFalse(getS().intersects(p.getPathIterator()));
 		}
 
 		@DisplayName("(PathIterator3afp) #11")
@@ -9585,9 +9757,181 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			p.lineTo(2, 1, 0);
 			p.lineTo(1, 0, 0);
 			p.closePath();
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_13(CoordinateSystem3D cs) {
+			// polyline crosses S at its interior midpoint:
+			// The edge (0,1,0.5)-(1,0,0.5) passes exactly through (0.5,0.5,0.5),
+			// the midpoint of S=(0,0,0)-(1,1,1).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(0, 1, .5);
+			p.lineTo(1, 0, .5);
 			assertTrue(getS().intersects(p.getPathIterator()));
 		}
 
+		@DisplayName("(PathIterator3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_14(CoordinateSystem3D cs) {
+			// crossing exists only via the closing edge:
+			// Neither open edge ((1.75,-0.25,0.75)-(5,5,5) nor (5,5,5)-(-0.25,1.75,0.75))
+			// crosses S. Only the closing edge added by closePath(), which passes
+			// exactly through (0.75,0.75,0.75) on S, does.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(1.75, -.25, .75);
+			p.lineTo(5, 5, 5);
+			p.lineTo(-.25, 1.75, .75);
+			p.closePath();
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_15(CoordinateSystem3D cs) {
+			// same polyline without closePath():
+			// Same vertices as #14 but the closing edge is missing, so the
+			// crossing point is never reached -> no intersection.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(1.75, -.25, .75);
+			p.lineTo(5, 5, 5);
+			p.lineTo(-.25, 1.75, .75);
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_16(CoordinateSystem3D cs) {
+			// polyline touches S exactly at its far endpoint:
+			// The polyline starts exactly at B=(1,1,1), the far endpoint of S.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(1, 1, 1);
+			p.lineTo(2, 0, 1);
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_17(CoordinateSystem3D cs) {
+			// polyline touches S exactly at its near endpoint:
+			// The polyline starts exactly at A=(0,0,0), the near endpoint of S.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(0, 0, 0);
+			p.lineTo(5, -3, 2);
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_18(CoordinateSystem3D cs) {
+			// polyline fully overlapping S (colinear, superset):
+			// The edge (-1,-1,-1)-(2,2,2) lies on the same line as S and entirely
+			// contains it.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(-1, -1, -1);
+			p.lineTo(2, 2, 2);
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_19(CoordinateSystem3D cs) {
+			// polyline partially overlapping S (colinear, subset):
+			// The edge (0.3,0.3,0.3)-(0.7,0.7,0.7) lies on the same line as S and is
+			// entirely contained within it.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(.3, .3, .3);
+			p.lineTo(.7, .7, .7);
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_20(CoordinateSystem3D cs) {
+			// polyline colinear with S but disjoint:
+			// The edge (5,5,5)-(6,6,6) lies on the same infinite line as S, but its
+			// parameter range [5,6] does not overlap S's range [0,1].
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(5, 5, 5);
+			p.lineTo(6, 6, 6);
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #21")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_21(CoordinateSystem3D cs) {
+			// polyline passes near S but misses it:
+			// Both endpoints sit just off the line of S near its midpoint, with a
+			// small but strictly positive gap -> no intersection.
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(.55, .45, .55);
+			p.lineTo(.45, .55, .55);
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #22")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_22(CoordinateSystem3D cs) {
+			// multi-segment polyline where only the last edge crosses S:
+			// The first two edges stay far from S; only the last edge
+			// (1.25,-0.75,0.25)-(-0.75,1.25,0.25) crosses S, exactly at
+			// (0.25,0.25,0.25).
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(10, 10, 10);
+			p.lineTo(10, 11, 10);
+			p.lineTo(1.25, -.75, .25);
+			p.lineTo(-.75, 1.25, .25);
+			assertTrue(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #23")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_23(CoordinateSystem3D cs) {
+			// open polyline far away from S
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(10, 10, 10);
+			p.lineTo(10, 11, 10);
+			p.lineTo(11, 10, 11);
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+
+		@DisplayName("(PathIterator3afp) #24")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void pathiterator_24(CoordinateSystem3D cs) {
+			// closed polyline far away from S
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var p = createPath();
+			p.moveTo(20, 20, 20);
+			p.lineTo(20, 21, 20);
+			p.lineTo(21, 20, 21);
+			p.closePath();
+			assertFalse(getS().intersects(p.getPathIterator()));
+		}
+		
 		@DisplayName("(Shape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)

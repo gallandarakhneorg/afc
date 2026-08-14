@@ -1989,4 +1989,40 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		}
 	}
 
+	/** Assert if the two arrays have equal values.
+	 *
+	 * @param expected the expected values.
+	 * @param actual the actual values.
+	 * @since 18.0
+	 */
+	public void assertEpsilonArrayEquals(float[] expected, float[] actual) {
+		if (expected == null) {
+			assertNull(actual);
+			return;
+		}
+		assertNotNull(actual);
+		assertEquals(expected.length, actual.length);
+		for (var i = 0; i < expected.length; ++i) {
+			assertEpsilonEquals(expected[i], actual[i]);
+		}
+	}
+
+	/** Assert if the two arrays have equal values.
+	 *
+	 * @param expected the expected values.
+	 * @param actual the actual values.
+	 * @since 18.0
+	 */
+	public void assertEpsilonArrayEquals(double[] expected, double[] actual) {
+		if (expected == null) {
+			assertNull(actual);
+			return;
+		}
+		assertNotNull(actual);
+		assertEquals(expected.length, actual.length);
+		for (var i = 0; i < expected.length; ++i) {
+			assertEpsilonEquals(expected[i], actual[i]);
+		}
+	}
+
 }

@@ -31,6 +31,7 @@ import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_TOP;
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
@@ -1557,9 +1558,11 @@ public interface AlignedBox3afp<
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null :  AssertMessages.notNullParameter();
-		//TODO
-		return false;
-
+		return Path3afp.intersectsPathIteratorAlignedBox(
+				iterator,
+				getMinX(), getMinY(), getMinZ(),
+				getMaxX(), getMaxY(), getMaxZ(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
@@ -1637,8 +1640,13 @@ public interface AlignedBox3afp<
 	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
-		//TODO Path3afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
-		return point;
+		if (Path3afp.findsClosestPointToPathIteratorAlignedBox(
+				path.getPathIterator(),
+				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
+				null, point)) {
+			return point;
+		}
+		return null;
 	}
 
 	@Override
