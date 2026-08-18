@@ -164,6 +164,7 @@ public class Transform3D extends Matrix4d {
 	 * @see #makeTranslationMatrix(double, double, double)
 	 */
 	public void setTranslation(Tuple3D<?> translation) {
+		assert translation != null : AssertMessages.notNullParameter(0);
 		this.m03 = translation.getX();
 		this.m13 = translation.getY();
 		this.m23 = translation.getZ();
@@ -206,6 +207,7 @@ public class Transform3D extends Matrix4d {
 	 * @param translation the translation
 	 */
 	public void translate(Vector3D<?, ?, ?> translation) {
+		assert translation != null : AssertMessages.notNullParameter(0);
 		this.m03 += translation.getX();
 		this.m13 += translation.getY();
 		this.m23 += translation.getZ();
@@ -401,6 +403,7 @@ public class Transform3D extends Matrix4d {
 	 * @param rotation the rotationi
 	 */
 	public void rotate(Quaternion<?, ?, ?> rotation) {
+		assert rotation != null : AssertMessages.notNullParameter(0);
 		final var m = new Transform3D();
 		m.makeRotationMatrix(rotation);
 		mul(m);
@@ -521,6 +524,7 @@ public class Transform3D extends Matrix4d {
 	 * @since 18.0
 	 */
 	public void transform(Point3D<?, ?, ?> t) {
+		assert t != null : AssertMessages.notNullParameter();
 		final var x = t.getX();
 		final var y = t.getY();
 		final var z = t.getZ();
@@ -541,6 +545,7 @@ public class Transform3D extends Matrix4d {
 	 * @since 18.0
 	 */
 	public void transform(Vector3D<?, ?, ?> t) {
+		assert t != null : AssertMessages.notNullParameter();
 		final var x = t.getX();
 		final var y = t.getY();
 		final var z = t.getZ();
@@ -564,6 +569,8 @@ public class Transform3D extends Matrix4d {
 	 * @since 18.0
 	 */
 	public void transform(Point3D<?, ?, ?> t, Point3D<?, ?, ?> result) {
+		assert t != null : AssertMessages.notNullParameter(0);
+		assert result != null : AssertMessages.notNullParameter(1);
 		final var x = t.getX();
 		final var y = t.getY();
 		final var z = t.getZ();
@@ -585,6 +592,8 @@ public class Transform3D extends Matrix4d {
 	 * @since 18.0
 	 */
 	public void transform(Vector3D<?, ?, ?> t, Vector3D<?, ?, ?> result) {
+		assert t != null : AssertMessages.notNullParameter(0);
+		assert result != null : AssertMessages.notNullParameter(1);
 		final var x = t.getX();
 		final var y = t.getY();
 		final var z = t.getZ();
