@@ -3824,12 +3824,23 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			fail("Todo");
 		}
 
-		@DisplayName("(Shape3D) #1")
+		@DisplayName("(Shape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void shape_1(CoordinateSystem3D cs) {
+			// Point on an edge => closest point is the point itself
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(createPoint(0.5, 0., 0.5), getS().getClosestPointTo((Shape3D) createSphere(0.5, 0., 0.5, 1)));
+		}
+
+		@DisplayName("(Shape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_2(CoordinateSystem3D cs) {
+			// Segment endpoint lies exactly on triangle boundary
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultForTriangle = getS().getClosestPointTo((Shape3D) createSegment(1.5, 0.0, 0.5, 0.5, 0.0, 0.5));
+			assertEpsilonEquals(createPoint(0.5, 0.0, 0.5), resultForTriangle);
 		}
 
 		@DisplayName("(Triangle3afp) #1")
@@ -4661,8 +4672,20 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void shape_1(CoordinateSystem3D cs) {
+			// Parallel segment above the triangle plane
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(0.176776695, getS().getDistance((Shape3D) createSegment(
+					0.25, 0.25, 1.0,
+					0.75, 0.25, 1.0)));
+		}
+
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_2(CoordinateSystem3D cs) {
+			// Parallel segment above the triangle plane
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8.0354855985, getS().getDistance(createSphere(0.2, 0.3, 10., 1)));
 		}
 	}
 
@@ -5065,7 +5088,17 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@EnumSource(CoordinateSystem3D.class)
 		public final void shape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(0.03125, getS().getDistanceSquared((Shape3D) createSegment(
+					0.25, 0.25, 1.0,
+					0.75, 0.25, 1.0)));
+		}
+
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6.0717967697, getS().getDistanceSquared((Shape3D) createSphere(-2., -2., -2., 1)));
 		}
 	}
 
@@ -5532,7 +5565,17 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@EnumSource(CoordinateSystem3D.class)
 		public final void shape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertTrue(getS().intersects((Shape3D) createSegment(
+					0.5, 0.2, 0.5,
+					0.5, 0.15, 0.5)));
+		}
+
+		@DisplayName("(Shape3D) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void shape_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createSphere(0.25, 0.25, 0.25, 0.3)));
 		}
 	}
 
