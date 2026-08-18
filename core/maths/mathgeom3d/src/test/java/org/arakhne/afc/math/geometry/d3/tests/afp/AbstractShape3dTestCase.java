@@ -40,6 +40,7 @@ import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
 import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,6 +87,10 @@ public abstract class AbstractShape3dTestCase<T extends Shape3afp<?, ?, ?, ?, ?,
 		return this.factory.createSegment(x1, y1, z1, x2, y2, z2);
 	}
 	
+	public final Triangle3afp<?, ?, ?, ?, ?, ?, B> createTriangle(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+		return this.factory.createTriangle(x1, y1, z1, x2, y2, z2, x3, y3, z3);
+	}
+
 	public final B createAlignedBox(double x, double y, double z, double width, double height, double depth) {
 		return this.factory.createAlignedBox(x, y, z, width, height, depth);
 	}

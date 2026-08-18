@@ -46,6 +46,23 @@ public interface GeomFactory3afp<
 		B extends AlignedBox3afp<?, E, P, V, Q, B>>
 		extends GeomFactory3D<V, P, Q> {
 
+	/** Create a plane from three points on the plane.
+	 *
+     * @param x1 x coordinate of the first point.
+     * @param y1 y coordinate of the first point.
+     * @param z1 z coordinate of the first point.
+     * @param x2 x coordinate of the second point.
+     * @param y2 y coordinate of the second point.
+     * @param z2 z coordinate of the second point.
+     * @param x3 x coordinate of the third point.
+     * @param y3 y coordinate of the third point.
+     * @param z3 z coordinate of the third point.
+	 * @return the new plane.
+	 * @since 18.0
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	Plane3afp<?, ?, P, V, Q> newPlane(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3);
+
 	/** Create an empty path with the given winding rule.
 	 *
 	 * @return the new path.
@@ -164,6 +181,29 @@ public interface GeomFactory3afp<
 	 * @return the new segment.
 	 */
 	Segment3afp<?, ?, E, P, V, Q, B> newSegment();
+
+	/** Create a triangle.
+	 *
+	 * @param x1 the x coordinate of the first point of the triangle.
+	 * @param y1 the y coordinate of the first point of the triangle.
+	 * @param z1 the z coordinate of the first point of the triangle.
+	 * @param x2 the x coordinate of the second point of the triangle.
+	 * @param y2 the y coordinate of the second point of the triangle.
+	 * @param z2 the z coordinate of the second point of the triangle.
+	 * @param x3 the x coordinate of the third point of the triangle.
+	 * @param y3 the y coordinate of the third point of the triangle.
+	 * @param z3 the z coordinate of the third point of the triangle.
+	 * @return the new triangle.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	Triangle3afp<?, ?, E, P, V, Q, B> newTriangle(double x1, double y1, double z1,
+			double x2, double y2, double z2, double x3, double y3, double z3);
+
+	/** Create an empty triangle.
+	 *
+	 * @return the new triangle.
+	 */
+	Triangle3afp<?, ?, E, P, V, Q, B> newTriangle();
 
 	/** Replies the {@link PathIterator3afp} that is corresponding to the given element.
 	 *

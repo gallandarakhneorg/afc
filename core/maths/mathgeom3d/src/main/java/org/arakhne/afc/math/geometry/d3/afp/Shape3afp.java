@@ -136,6 +136,8 @@ public interface Shape3afp<
 			return intersects((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case SPHERE:
 			return intersects((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
+		case TRIANGLE:
+			return intersects((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
     	}
@@ -170,6 +172,15 @@ public interface Shape3afp<
 	@Pure
 	boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment);
 
+	/** Replies if this shape is intersecting the given triangle.
+	 *
+	 * @param triangle the triangle
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 *     {@code false} if there is no intersection.
+	 * @since 18.0
+	 */
+	@Pure
+	boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle);
 
 	/** Replies if this shape is intersecting the given path.
 	 *
@@ -221,6 +232,8 @@ public interface Shape3afp<
             return getDistanceSquared((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case SPHERE:
             return getDistanceSquared((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
+		case TRIANGLE:
+            return getDistanceSquared((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
     	}
@@ -257,8 +270,20 @@ public interface Shape3afp<
      */
     @Pure
     default double getDistanceSquared(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : AssertMessages.notNullParameter();
-        return segment.getDistanceSquared(getClosestPointTo(segment));
+    	assert segment != null : AssertMessages.notNullParameter();
+    	return segment.getDistanceSquared(getClosestPointTo(segment));
+    }
+
+    /** Replies the minimum distance between this shape and the given triangle.
+     *
+     * @param triangle the triangle.
+     * @return the minimum distance between the two shapes.
+     * @since 18.0
+     */
+    @Pure
+    default double getDistanceSquared(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+    	assert triangle != null : AssertMessages.notNullParameter();
+    	return triangle.getDistanceSquared(getClosestPointTo(triangle));
     }
 
     /** Replies the minimum distance between this shape and the given path.

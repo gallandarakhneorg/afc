@@ -4058,6 +4058,14 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 	@Nested
 	public class GetDistance {
 
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
 		@DisplayName("(Path3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -4663,6 +4671,14 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 	@Nested
 	public class GetDistanceSquared {
 
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+		
 		@DisplayName("(Path3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -5876,6 +5892,14 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 	@DisplayName("intersects")
 	@Nested
 	public class Intersects {
+
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
 
 		@DisplayName("(AlignedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")

@@ -18,24 +18,24 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.test.geometry.d3.d;
+package org.arakhne.afc.math.geometry.d3.tests.d;
 
+import org.arakhne.afc.math.geometry.base.d3.Point3D;
+import org.arakhne.afc.math.geometry.base.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.d.AlignedBox3d;
-import org.arakhne.afc.math.geometry.d3.d.Segment3d;
-import org.arakhne.afc.math.test.geometry.d3.afp.AbstractSegment3afpTest;
-import org.junit.jupiter.api.Test;
+import org.arakhne.afc.math.geometry.d3.d.Triangle3d;
+import org.arakhne.afc.math.geometry.d3.tests.afp.AbstractTriangle3dTestCase;
+import org.arakhne.afc.math.geometry.d3.tests.afp.TestShapeFactory3d;
+import org.junit.jupiter.api.DisplayName;
 
 @SuppressWarnings("all")
-public class Segment3dTest extends AbstractSegment3afpTest<Segment3d, AlignedBox3d> {
+@DisplayName("Triangle3d")
+public class Triangle3dTest extends AbstractTriangle3dTestCase<Triangle3d, AlignedBox3d> {
 
 	@Override
-	protected TestShapeFactory3d createFactory() {
-		return TestShapeFactory3d.SINGLETON;
+	protected TestShapeFactory3d<? extends Point3D, ? extends Vector3D, ? extends Quaternion, AlignedBox3d> createFactory() {
+		return new BaseTestShapeFactory3d();
 	}
 
-	@Test
-	public void mytest() {
-		//
-	}
-	
 }

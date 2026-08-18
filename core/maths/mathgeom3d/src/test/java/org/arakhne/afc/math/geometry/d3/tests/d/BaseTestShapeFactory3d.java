@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.d3.afp.PlaneXZ3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PlaneYZ3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
 import org.arakhne.afc.math.geometry.d3.d.AlignedBox3d;
 import org.arakhne.afc.math.geometry.d3.d.MultiShape3d;
 import org.arakhne.afc.math.geometry.d3.d.Path3d;
@@ -41,6 +42,7 @@ import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
 import org.arakhne.afc.math.geometry.d3.d.Segment3d;
 import org.arakhne.afc.math.geometry.d3.d.Sphere3d;
+import org.arakhne.afc.math.geometry.d3.d.Triangle3d;
 import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.geometry.d3.tests.afp.TestShapeFactory3d;
 
@@ -117,5 +119,11 @@ class BaseTestShapeFactory3d implements TestShapeFactory3d<Point3d, Vector3d, Qu
 	@Override
 	public PlaneYZ3afp createPlaneYZ(boolean positive, double x) {
 		return new PlaneYZ3d(positive, x);
+	}
+
+	@Override
+	public Triangle3afp<?, ?, ?, Point3d, Vector3d, Quaternion4d, AlignedBox3d> createTriangle(double x1, double y1,
+			double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+		return new Triangle3d(x1, y1, z1, x2, y2, z2, x3, y3, z3);
 	}
 }

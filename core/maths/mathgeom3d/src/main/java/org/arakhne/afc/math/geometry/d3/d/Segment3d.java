@@ -27,8 +27,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** A 3D segment/line with two points with native coordinates.
  * This segment is based on the representation built up with 2 points, i.e.
  * 6 double-precision-floating-point numbers.
- * Class {@link PointObjectSegment3d} implements a segment based on two {@link Point3D} objects
- * and not on native numbers.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -37,7 +35,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
- * @see PointObjectSegment3d
  */
 public class Segment3d extends AbstractShape3d<Segment3d>
 	implements Segment3afp<Segment3d, Segment3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {

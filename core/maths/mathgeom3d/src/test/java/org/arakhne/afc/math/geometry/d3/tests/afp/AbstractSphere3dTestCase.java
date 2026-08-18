@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
@@ -1281,6 +1282,14 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 	@Nested
 	public class GetDistance {
 
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
 		@DisplayName("(Point3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1989,6 +1998,14 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 	@DisplayName("getDistanceSquared")
 	@Nested
 	public class GetDistanceSquared {
+
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
 
 		@DisplayName("(Point3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
@@ -2896,6 +2913,14 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 	@DisplayName("intersects")
 	@Nested
 	public class Intersects {
+
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
 
 		@DisplayName("(AlignedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")

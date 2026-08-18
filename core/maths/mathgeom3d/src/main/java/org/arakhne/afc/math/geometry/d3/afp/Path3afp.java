@@ -2266,6 +2266,13 @@ public interface Path3afp<
 
 	@Pure
 	@Override
+	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null :  AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
 	@Unefficient
 	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();

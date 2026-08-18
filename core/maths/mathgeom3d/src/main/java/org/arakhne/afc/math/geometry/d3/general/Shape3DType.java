@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
 import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 import org.arakhne.afc.math.geometry.d3.ai.MultiShape3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
@@ -120,6 +121,24 @@ public enum Shape3DType {
 		@Override
 		public Class<? extends Shape3D> getPreferredDiscreteShapeType() {
 			return MultiShape3ai.class;
+		}
+	},
+
+	/** A 3D triangle.
+	 *
+	 * @since 18.0
+	 */
+	TRIANGLE {
+		@SuppressWarnings("rawtypes")
+		@Override
+		public Class<? extends Shape3D> getPreferredContinuousShapeType() {
+			return Triangle3afp.class;
+		}
+
+		@SuppressWarnings("rawtypes")
+		@Override
+		public Class<? extends Shape3D> getPreferredDiscreteShapeType() {
+			return null;
 		}
 	};
 

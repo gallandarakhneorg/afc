@@ -25,6 +25,8 @@ import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Plane3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Factory of geometric elements.
@@ -195,6 +197,25 @@ public class GeomFactory3d extends AbstractGeomFactory3D<Vector3d, Point3d, Quat
 	public Quaternion4d newQuaternionFromAxisAngle(int x, int y, int z, int angle) {
 		final var comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
 		return new Quaternion4d(comps.x(), comps.y(), comps.z(), comps.w());
+	}
+
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Override
+	public Plane3afp<?, ?, Point3d, Vector3d, Quaternion4d> newPlane(double x1, double y1, double z1, double x2,
+			double y2, double z2, double x3, double y3, double z3) {
+		return new Plane3d(x1, y1, z1, x2, y2, z2, x3, y3, z3);
+	}
+
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Override
+	public Triangle3afp<?, ?, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> newTriangle(double x1,
+			double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+		return new Triangle3d(x1, y1, z1, x2, y2, z2, x3, y3, z3);
+	}
+
+	@Override
+	public Triangle3afp<?, ?, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> newTriangle() {
+		return new Triangle3d();
 	}
 
 }

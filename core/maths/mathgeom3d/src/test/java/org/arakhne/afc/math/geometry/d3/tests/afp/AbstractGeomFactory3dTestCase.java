@@ -24,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
@@ -413,4 +415,107 @@ public abstract class AbstractGeomFactory3dTestCase extends AbstractMathTestCase
 		}
 	}
 
+	@DisplayName("newPlane")
+	@Nested
+	public class NewPlane {
+
+		@DisplayName("Left-handed system #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void lh_1(CoordinateSystem3D cs) {
+			assumeTrue(cs.isLeftHanded());
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var plane = factory.newPlane(1, 2, 0, 4, 0, 6, 0, 8, 9);
+			assertNotNull(plane);
+			assertEpsilonEquals(0.827252318, plane.getEquationComponentA());
+			assertEpsilonEquals(0.5055430832, plane.getEquationComponentB());
+			assertEpsilonEquals(-0.24511179791, plane.getEquationComponentC());
+			assertEpsilonEquals(-1.8383384843, plane.getEquationComponentD());
+		}
+
+		@DisplayName("Right-handed system #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void rh_1(CoordinateSystem3D cs) {
+			assumeTrue(cs.isRightHanded());
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var plane = factory.newPlane(1, 2, 0, 4, 0, 6, 0, 8, 9);
+			assertNotNull(plane);
+			assertEpsilonEquals(-0.827252318, plane.getEquationComponentA());
+			assertEpsilonEquals(-0.5055430832, plane.getEquationComponentB());
+			assertEpsilonEquals(0.24511179791, plane.getEquationComponentC());
+			assertEpsilonEquals(1.8383384843, plane.getEquationComponentD());
+		}
+	}
+
+	@DisplayName("newMultishape")
+	@Nested
+	public class NewMultiShape {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = factory.newMultiShape();
+			assertNotNull(shape);
+			assertEquals(0, shape.size());
+		}
+	}
+
+	@DisplayName("newSegment")
+	@Nested
+	public class NewSegment {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = factory.newSegment();
+			assertNotNull(shape);
+			assertEpsilonEquals(createPoint(0, 0, 0), shape.getP1());
+			assertEpsilonEquals(createPoint(0, 0, 0), shape.getP2());
+		}
+
+		@DisplayName("(double,double,double, double,double,double) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void doubledoubledoubledoubledoubledouble_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = factory.newSegment(1, 2, 3, 4, 5, 6);
+			assertNotNull(shape);
+			assertEpsilonEquals(createPoint(1, 2, 3), shape.getP1());
+			assertEpsilonEquals(createPoint(4, 5, 6), shape.getP2());
+		}
+	}
+
+	@DisplayName("newTriangle")
+	@Nested
+	public class NewTriangle {
+
+		@DisplayName("() #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void empty_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = factory.newTriangle();
+			assertNotNull(shape);
+			assertEpsilonEquals(createPoint(0, 0, 0), shape.getP1());
+			assertEpsilonEquals(createPoint(0, 0, 0), shape.getP2());
+			assertEpsilonEquals(createPoint(0, 0, 0), shape.getP3());
+		}
+
+		@DisplayName("(double,double,double, double,double,double, double,double,double) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void doubledoubledoubledoubledoubledoubledoubledoubledouble_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var shape = factory.newTriangle(1, 2, 3, 9, 10, 4, 0, 37, 48);
+			assertNotNull(shape);
+			assertEpsilonEquals(createPoint(1, 2, 3), shape.getP1());
+			assertEpsilonEquals(createPoint(9, 10, 4), shape.getP2());
+			assertEpsilonEquals(createPoint(0, 37, 48), shape.getP3());
+		}
+	}
 }

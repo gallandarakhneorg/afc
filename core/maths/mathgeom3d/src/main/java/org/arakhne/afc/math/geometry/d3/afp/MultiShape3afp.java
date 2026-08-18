@@ -112,6 +112,13 @@ public interface MultiShape3afp<
 
 	@Pure
 	@Override
+	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null :  AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		if (toBoundingBox().intersects(iterator)) {
 			for (final var shape : getBackendDataList()) {

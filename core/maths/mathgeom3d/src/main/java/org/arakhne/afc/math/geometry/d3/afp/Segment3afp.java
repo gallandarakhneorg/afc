@@ -1981,6 +1981,13 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
+	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null :  AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
 		return Path3afp.intersectsPathIteratorSegment(

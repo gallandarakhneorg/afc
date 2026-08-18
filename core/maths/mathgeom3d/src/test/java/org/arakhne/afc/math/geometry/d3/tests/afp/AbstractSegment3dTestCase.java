@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
@@ -1487,6 +1488,14 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 	@Nested
 	public class GetDistance {
 
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
 		@DisplayName("(Shape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -2219,6 +2228,14 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 	@DisplayName("getDistanceSquared")
 	@Nested
 	public class GetDistanceSquared {
+
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
 
 		@DisplayName("(Shape3D) #1")
 		@ParameterizedTest(name = "{index} => {0}")
@@ -8910,6 +8927,14 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 	@DisplayName("intersects")
 	@Nested
 	public class Intersects {
+
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
 
 		@DisplayName("(MultiShape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")

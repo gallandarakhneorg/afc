@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6070,6 +6071,14 @@ extends AbstractShape3dTestCase<T, B> {
 			this.result = new InnerComputationPoint3D();
 		}
 
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
+		}
+
 		@DisplayName("(AlignedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6768,6 +6777,14 @@ extends AbstractShape3dTestCase<T, B> {
 		@BeforeEach
 		public void setUp() {
 			this.result = new InnerComputationPoint3D();
+		}
+
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			throw new UnsupportedOperationException();
 		}
 
 		@DisplayName("(AlignedBox3afp) #1")
@@ -7822,6 +7839,14 @@ extends AbstractShape3dTestCase<T, B> {
 	@DisplayName("intersects")
 	@Nested
 	public class Intersects {
+
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
 
 		@DisplayName("(AlignedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")

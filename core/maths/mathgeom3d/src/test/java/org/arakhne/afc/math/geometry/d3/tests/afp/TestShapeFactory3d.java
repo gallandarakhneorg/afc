@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.d3.afp.PlaneXZ3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PlaneYZ3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
 
 @SuppressWarnings("all")
 public interface TestShapeFactory3d<P extends Point3D<? super P, ? super V, ? super Q>,
@@ -41,6 +42,8 @@ public interface TestShapeFactory3d<P extends Point3D<? super P, ? super V, ? su
 		B extends AlignedBox3afp<?, ?, P, V, Q, B>> {
 
     Segment3afp<?, ?, ?, P, V, Q, B> createSegment(double x1, double y1, double z1, double x2, double y2, double z2);
+
+    Triangle3afp<?, ?, ?, P, V, Q, B> createTriangle(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3);
 
     B createAlignedBox(double x, double y, double z, double width, double height, double depth);
 
