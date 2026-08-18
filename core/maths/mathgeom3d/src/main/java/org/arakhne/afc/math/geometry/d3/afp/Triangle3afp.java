@@ -1215,6 +1215,7 @@ public interface Triangle3afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
 		final var c = getGeomFactory().newPoint();
 		findsClosestPointTrianglePoint(
 				getX1(), getY1(), getZ1(),
@@ -1228,7 +1229,15 @@ public interface Triangle3afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		throw new UnsupportedOperationException();
+		assert sphere != null : AssertMessages.notNullParameter();
+		final var c = getGeomFactory().newPoint();
+		findsClosestPointTrianglePoint(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				sphere.getX(), sphere.getY(), sphere.getZ(),
+				c);
+		return c;
 	}
 
 	@Pure

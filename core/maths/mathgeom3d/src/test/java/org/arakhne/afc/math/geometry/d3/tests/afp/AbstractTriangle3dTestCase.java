@@ -3410,6 +3410,141 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 	@Nested
 	public class GetClosestPointTo {
 
+		@DisplayName("(Sphere3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_1(CoordinateSystem3D cs) {
+			// Point clearly outside the triangle, closest point is a vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(createSphere(10, 10, 10, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_2(CoordinateSystem3D cs) {
+			// Point inside the triangle => closest point is the point itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.25, 0.25, 0.25), getS().getClosestPointTo(createSphere(0.25, 0.25, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_3(CoordinateSystem3D cs) {
+			// Point on an edge => closest point is the point itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.5, 0., 0.5), getS().getClosestPointTo(createSphere(0.5, 0., 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_4(CoordinateSystem3D cs) {
+			// Point on a vertex => closest point is the vertex itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0., 0., 0.), getS().getClosestPointTo(createSphere(0., 0., 0., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_5(CoordinateSystem3D cs) {
+			// Point above the triangle plane => closest point is the orthogonal projection on the triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(1, 0.25, 1), getS().getClosestPointTo(createSphere(0.25, 0.25, 5., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_6(CoordinateSystem3D cs) {
+			// Point outside near an edge => closest point is on the edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.75, 0., 0.75), getS().getClosestPointTo(createSphere(0.75, -0.5, 0.75, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_7(CoordinateSystem3D cs) {
+			// Point outside near another vertex => closest point is that vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0., 0., 0.), getS().getClosestPointTo(createSphere(-2., -2., -2., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_8(CoordinateSystem3D cs) {
+			// Point outside, closest point is on edge (midpoint projection)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.5, 0., 0.5), getS().getClosestPointTo(createSphere(0.5, -1., 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_9(CoordinateSystem3D cs) {
+			// Point outside near the hypotenuse edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.966666667, 0.966666667, 0.966666667), getS().getClosestPointTo(createSphere(1.2, 1.2, 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_10(CoordinateSystem3D cs) {
+			// Point outside beyond vertex (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(1., 1., 1.), getS().getClosestPointTo(createSphere(2., 2., 2., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_11(CoordinateSystem3D cs) {
+			// Point outside with projection landing inside the triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(1, 0.3, 1), getS().getClosestPointTo(createSphere(0.2, 0.3, 10., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_12(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between first and second vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.7, 0., 0.7), getS().getClosestPointTo(createSphere(0.7, -0.2, 0.7, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_13(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between second and third vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.8, 0.4, 0.8), getS().getClosestPointTo(createSphere(1.2, 0.4, 0.4, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_14(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between third and first vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.333333333333, 0.333333333333, 0.333333333333), getS().getClosestPointTo(createSphere(-0.4, 0.7, 0.7, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_15(CoordinateSystem3D cs) {
+			// Point exactly at triangle centroid-like interior location
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0.375, 0.25, 0.375), getS().getClosestPointTo(createSphere(0.25, 0.25, 0.5, 1)));
+		}
+
 		@DisplayName("(Segment3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3677,14 +3812,6 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void path_1(CoordinateSystem3D cs) {
-			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
-		}
-
-		@DisplayName("(Sphere3afp) #1")
-		@ParameterizedTest(name = "{index} => {0}")
-		@EnumSource(CoordinateSystem3D.class)
-		public final void sphere_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			fail("Todo");
 		}
@@ -4391,8 +4518,135 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void sphere_1(CoordinateSystem3D cs) {
+			// Point clearly outside the triangle, closest point is a vertex
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(14.5884572681, getS().getDistance(createSphere(10, 10, 10, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_2(CoordinateSystem3D cs) {
+			// Point inside the triangle => closest point is the point itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0.25, 0.25, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_3(CoordinateSystem3D cs) {
+			// Point on an edge => closest point is the point itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0.5, 0., 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_4(CoordinateSystem3D cs) {
+			// Point on a vertex => closest point is the vertex itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0., 0., 0., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_5(CoordinateSystem3D cs) {
+			// Point above the triangle plane => closest point is the orthogonal projection on the triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(3.069705149, getS().getDistance(createSphere(0.25, 0.25, 5., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_6(CoordinateSystem3D cs) {
+			// Point outside near an edge => closest point is on the edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0.75, -0.5, 0.75, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_7(CoordinateSystem3D cs) {
+			// Point outside near another vertex => closest point is that vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(2.4641016151, getS().getDistance(createSphere(-2., -2., -2., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_8(CoordinateSystem3D cs) {
+			// Point outside, closest point is on edge (midpoint projection)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0.5, -1., 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_9(CoordinateSystem3D cs) {
+			// Point outside near the hypotenuse edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(1.2, 1.2, 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_10(CoordinateSystem3D cs) {
+			// Point outside beyond vertex (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0.7320508076, getS().getDistance(createSphere(2., 2., 2., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_11(CoordinateSystem3D cs) {
+			// Point outside with projection landing inside the triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(8.0354855985, getS().getDistance(createSphere(0.2, 0.3, 10., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_12(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between first and second vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0.7, -0.2, 0.7, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_13(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between second and third vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(1.2, 0.4, 0.4, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_14(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between third and first vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(-0.4, 0.7, 0.7, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_15(CoordinateSystem3D cs) {
+			// Point exactly at triangle centroid-like interior location
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistance(createSphere(0.25, 0.25, 0.5, 1)));
 		}
 
 		@DisplayName("(MultiShape3afp) #1")
@@ -4667,8 +4921,135 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void sphere_1(CoordinateSystem3D cs) {
+			// Point clearly outside the triangle, closest point is a vertex
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(212.8230854637602, getS().getDistanceSquared(createSphere(10, 10, 10, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_2(CoordinateSystem3D cs) {
+			// Point inside the triangle => closest point is the point itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(0.25, 0.25, 0.25, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_3(CoordinateSystem3D cs) {
+			// Point on an edge => closest point is the point itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(0.5, 0., 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_4(CoordinateSystem3D cs) {
+			// Point on a vertex => closest point is the vertex itself
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(0., 0., 0., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_5(CoordinateSystem3D cs) {
+			// Point above the triangle plane => closest point is the orthogonal projection on the triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(9.423089702, getS().getDistanceSquared(createSphere(0.25, 0.25, 5., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_6(CoordinateSystem3D cs) {
+			// Point outside near an edge => closest point is on the edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createSphere(0.75, -0.5, 0.75, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_7(CoordinateSystem3D cs) {
+			// Point outside near another vertex => closest point is that vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(6.0717967697, getS().getDistanceSquared(createSphere(-2., -2., -2., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_8(CoordinateSystem3D cs) {
+			// Point outside, closest point is on edge (midpoint projection)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceSquared(createSphere(0.5, -1., 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_9(CoordinateSystem3D cs) {
+			// Point outside near the hypotenuse edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceSquared(createSphere(1.2, 1.2, 0.5, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_10(CoordinateSystem3D cs) {
+			// Point outside beyond vertex (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0.53589838486, getS().getDistanceSquared(createSphere(2., 2., 2., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_11(CoordinateSystem3D cs) {
+			// Point outside with projection landing inside the triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(64.569028803, getS().getDistanceSquared(createSphere(0.2, 0.3, 10., 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_12(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between first and second vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceSquared(createSphere(0.7, -0.2, 0.7, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_13(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between second and third vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceSquared(createSphere(1.2, 0.4, 0.4, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_14(CoordinateSystem3D cs) {
+			// Point outside with projection landing on edge between third and first vertices
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceSquared(createSphere(-0.4, 0.7, 0.7, 1)));
+		}
+
+		@DisplayName("(Sphere3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void sphere_15(CoordinateSystem3D cs) {
+			// Point exactly at triangle centroid-like interior location
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(0, getS().getDistanceSquared(createSphere(0.25, 0.25, 0.5, 1)));
 		}
 
 		@DisplayName("(MultiShape3afp) #1")
