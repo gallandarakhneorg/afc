@@ -161,19 +161,23 @@ public interface MultiShape3D<
 	@Pure
 	@Override
 	default boolean isEmpty() {
-		if (getBackendDataList().isEmpty()) {
-			return true;
+		for (final var shape : getBackendDataList()) {
+			if (!shape.isEmpty()) {
+				return false;
+			}
 		}
-		return toBoundingBox().isEmpty();
+		return true;
 	}
 
 	@Pure
 	@Override
 	default boolean isDegeneratedPoint() {
-		if (getBackendDataList().isEmpty()) {
-			return true;
+		for (final var shape : getBackendDataList()) {
+			if (!shape.isDegeneratedPoint()) {
+				return false;
+			}
 		}
-		return toBoundingBox().isDegeneratedPoint();
+		return true;
 	}
 
 	@Pure
