@@ -1644,6 +1644,12 @@ public interface AlignedBox3afp<
 	}
 
 	@Override
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();

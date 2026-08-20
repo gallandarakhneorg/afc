@@ -628,6 +628,14 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 	@DisplayName("getClosestPointTo")
 	@Nested
 	public class GetClosestPointTo {
+		
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
 
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")

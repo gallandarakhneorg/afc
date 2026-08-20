@@ -758,6 +758,12 @@ public interface Path3afp<
 		return null;
 	}
 
+	@Override
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
 	@Pure
 	@Unefficient
 	@Override

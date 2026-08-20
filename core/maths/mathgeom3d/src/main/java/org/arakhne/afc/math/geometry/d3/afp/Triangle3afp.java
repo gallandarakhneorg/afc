@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.afp;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
+import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
@@ -180,13 +181,14 @@ public interface Triangle3afp<
 	 */
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
 	@Pure
-	static void findsClosestPointTrianglePoint(
+	static void findsClosestPointToTrianglePoint(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
 			double tx3, double ty3, double tz3,
 			double px, double py, double pz,
 			Point3D<?, ?, ?> closestPoint) {
-		EricsonAlgorithmTools.findsClosestPointTrianglePoint(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, px, py, pz, closestPoint);
+		assert closestPoint != null : AssertMessages.notNullParameter(13);
+		EricsonAlgorithmTools.findsClosestPointToTrianglePoint(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, px, py, pz, closestPoint);
 	}
 
 	/** Replies the closest point from the triangle to the segment.
@@ -215,7 +217,7 @@ public interface Triangle3afp<
 	 */
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
 	@Pure
-	static void findsClosestPointTriangleSegment(
+	static void findsClosestPointToTriangleSegment(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
 			double tx3, double ty3, double tz3,
@@ -224,7 +226,8 @@ public interface Triangle3afp<
 			double epsilon,
 			Point3D<?, ?, ?> closestPointOnTriangle,
 			Point3D<?, ?, ?> closestPointOnSegment) {
-		EricsonAlgorithmTools.findsClosestPointTriangleSegment(
+		assert closestPointOnTriangle != null || closestPointOnSegment != null : AssertMessages.notNullParameter(17);
+		EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 				tx1, ty1, tz1,
 				tx2, ty2, tz2,
 				tx3, ty3, tz3,
@@ -233,6 +236,54 @@ public interface Triangle3afp<
 				epsilon,
 				closestPointOnTriangle,
 				closestPointOnSegment);
+	}
+
+	/** Replies the closest point from the triangle A to the triangle B.
+	 * The closest point is always located in the triangle.
+	 *
+	 * @param ax1 x coordinate of the first point of the first triangle.
+	 * @param ay1 y coordinate of the first point of the first triangle.
+	 * @param az1 z coordinate of the first point of the first triangle.
+	 * @param ax2 x coordinate of the second point of the first triangle.
+	 * @param ay2 y coordinate of the second point of the first triangle.
+	 * @param az2 z coordinate of the second point of the first triangle.
+	 * @param ax3 x coordinate of the third point of the first triangle.
+	 * @param ay3 y coordinate of the third point of the first triangle.
+	 * @param az3 z coordinate of the third point of the first triangle.
+	 * @param bx1 x coordinate of the first point of the second triangle.
+	 * @param by1 y coordinate of the first point of the second triangle.
+	 * @param bz1 z coordinate of the first point of the second triangle.
+	 * @param bx2 x coordinate of the second point of the second triangle.
+	 * @param by2 y coordinate of the second point of the second triangle.
+	 * @param bz2 z coordinate of the second point of the second triangle.
+	 * @param bx3 x coordinate of the third point of the second triangle.
+	 * @param by3 y coordinate of the third point of the second triangle.
+	 * @param bz3 z coordinate of the third point of the second triangle.
+	 * @param epsilon the epsilon value that is used for testing equalities.
+	 * @param closestPointOnTriangleA the point on the first triangle set with the
+	 *     closest coordinates. It could be {@code null}.
+	 * @param closestPointOnTriangleB the point on the second triangle set with the
+	 *     closest coordinates. It could be {@code null}.
+	 */
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
+		"checkstyle:magicnumber"})
+	@Pure
+	static void findsClosestPointToTriangleTriangle(
+			double ax1, double ay1, double az1,
+			double ax2, double ay2, double az2,
+			double ax3, double ay3, double az3,
+			double bx1, double by1, double bz1,
+			double bx2, double by2, double bz2,
+			double bx3, double by3, double bz3,
+			double epsilon,
+			Point3D<?, ?, ?> closestPointOnTriangleA,
+			Point3D<?, ?, ?> closestPointOnTriangleB) {
+		assert closestPointOnTriangleA != null || closestPointOnTriangleB != null : AssertMessages.notNullParameter(20);
+		EberlyAlgorithmTools.findsClosestPointToTriangleTriangle(
+				ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3,
+				bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
+				epsilon,
+				closestPointOnTriangleA, closestPointOnTriangleB);
 	}
 
 	/** Replies the squared distance from the triangle to the segment.
@@ -268,7 +319,7 @@ public interface Triangle3afp<
 			double epsilon) {
 		final var tr = new InnerComputationPoint3D();
 		final var sg = new InnerComputationPoint3D();
-		findsClosestPointTriangleSegment(
+		findsClosestPointToTriangleSegment(
 				tx1, ty1, tz1,
 				tx2, ty2, tz2,
 				tx3, ty3, tz3,
@@ -306,7 +357,11 @@ public interface Triangle3afp<
 	 * @param u3x x coordinate of the third point of the second triangle.
 	 * @param u3y y coordinate of the third point of the second triangle.
 	 * @param u3z z coordinate of the third point of the second triangle.
+	 * @param epsilon the epsilon value that is used for testing equalities.
 	 * @return {@code true} if the two triangles are intersecting.
+	 * @see #intersectsTriangleTriangle(double, double, double, double, double,
+	 *     double, double, double, double, double, double, double, double, double,
+	 *     double, double, double, double)
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
 	@Pure
@@ -316,10 +371,378 @@ public interface Triangle3afp<
 			double v3x, double v3y, double v3z,
 			double u1x, double u1y, double u1z,
 			double u2x, double u2y, double u2z,
-			double u3x, double u3y, double u3z) {
+			double u3x, double u3y, double u3z,
+			double epsilon) {
 		return MollerAlgorithmTools.intersectsCoplanarTriangleTriangle(
 				v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z,
-				u1x, u1y, u1z, u2x, u2y, u2z, u3x, u3y, u3z);
+				u1x, u1y, u1z, u2x, u2y, u2z, u3x, u3y, u3z,
+				epsilon);
+	}
+
+	/** Replies if two triangles intersect. Triangles are not necessary coplanar.
+	 * Triangles intersect even if they are connected by two of their
+	 * edges.
+	 *
+	 * @param v1x x coordinate of the first point of the first triangle.
+	 * @param v1y y coordinate of the first point of the first triangle.
+	 * @param v1z z coordinate of the first point of the first triangle.
+	 * @param v2x x coordinate of the second point of the first triangle.
+	 * @param v2y y coordinate of the second point of the first triangle.
+	 * @param v2z z coordinate of the second point of the first triangle.
+	 * @param v3x x coordinate of the third point of the first triangle.
+	 * @param v3y y coordinate of the third point of the first triangle.
+	 * @param v3z z coordinate of the third point of the first triangle.
+	 * @param u1x x coordinate of the first point of the second triangle.
+	 * @param u1y y coordinate of the first point of the second triangle.
+	 * @param u1z z coordinate of the first point of the second triangle.
+	 * @param u2x x coordinate of the second point of the second triangle.
+	 * @param u2y y coordinate of the second point of the second triangle.
+	 * @param u2z z coordinate of the second point of the second triangle.
+	 * @param u3x x coordinate of the third point of the second triangle.
+	 * @param u3y y coordinate of the third point of the second triangle.
+	 * @param u3z z coordinate of the third point of the second triangle.
+	 * @param epsilon the epsilon value that is used for testing equalities.
+	 * @return {@code true} if the two triangles are intersecting.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Pure
+	static boolean intersectsTriangleTriangle(
+			double v1x, double v1y, double v1z,
+			double v2x, double v2y, double v2z,
+			double v3x, double v3y, double v3z,
+			double u1x, double u1y, double u1z,
+			double u2x, double u2y, double u2z,
+			double u3x, double u3y, double u3z,
+			double epsilon) {
+		return EberlyAlgorithmTools.intersectsTriangleTriangle(
+				v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z,
+				u1x, u1y, u1z, u2x, u2y, u2z, u3x, u3y, u3z,
+				epsilon);
+	}
+
+	/** Calculates the closest points on a triangle to a path, and the closest point on this part to the triangle.
+	 *
+	 * @param v1x x coordinate of the first point of the first triangle.
+	 * @param v1y y coordinate of the first point of the first triangle.
+	 * @param v1z z coordinate of the first point of the first triangle.
+	 * @param v2x x coordinate of the second point of the first triangle.
+	 * @param v2y y coordinate of the second point of the first triangle.
+	 * @param v2z z coordinate of the second point of the first triangle.
+	 * @param v3x x coordinate of the third point of the first triangle.
+	 * @param v3y y coordinate of the third point of the first triangle.
+	 * @param v3z z coordinate of the third point of the first triangle.
+	 * @param pathIterator the provider of path elements.
+	 * @param epsilon the epsilon value that is used for testing equalities.
+	 * @param closestPointOnTriangle the point on the triangle set with the
+	 *     closest coordinates. It could be {@code null}.
+	 * @param closestPointOnPath the point on the path set with the
+	 *     closest coordinates. It could be {@code null}.
+	 * @return {@code true} if a close point was found.
+	 * @throws IllegalStateException if an invalid path element was found.
+	 */
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
+	@Pure
+	static boolean findsClosestPointToTrianglePathIterator(
+			double v1x, double v1y, double v1z,
+			double v2x, double v2y, double v2z,
+			double v3x, double v3y, double v3z,
+			PathIterator3afp<?> pathIterator,
+			double epsilon,
+			Point3D<?, ?, ?> closestPointOnTriangle,
+			Point3D<?, ?, ?> closestPointOnPath) {
+		assert pathIterator != null : AssertMessages.notNullParameter(0);
+		assert closestPointOnTriangle != null || closestPointOnPath != null : AssertMessages.notNullParameter(11);
+		if (!pathIterator.hasNext()) {
+			return false;
+		}
+		var pathElement = pathIterator.next();
+		assert pathElement.getType() == PathElementType.MOVE_TO : AssertMessages.invalidValue(0);
+		if (!pathIterator.hasNext()) {
+			return false;
+		}
+		var bestDistance = Double.POSITIVE_INFINITY;
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var curz = pathElement.getToZ();
+		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = pathIterator.getGeomFactory();
+		final var point1 = new InnerComputationPoint3D();
+		final var point2 = new InnerComputationPoint3D();
+		var foundPoint = false;
+		while (pathIterator.hasNext()) {
+			pathElement = pathIterator.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
+				movz = pathElement.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				findsClosestPointToTriangleSegment(
+						v1x, v1y, v1z,
+						v2x, v2y, v2z,
+						v3x, v3y, v3z,
+						curx, cury, curz, endx, endy, endz,
+						epsilon,
+						point1, point2);
+				var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+						point2.getX(), point2.getY(), point2.getZ());
+				if (dist < bestDistance) {
+					bestDistance = dist;
+					if (closestPointOnTriangle != null) {
+						closestPointOnTriangle.set(point1);
+					}
+					if (closestPointOnPath != null) {
+						closestPointOnPath.set(point2);
+					}
+					foundPoint = true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					findsClosestPointToTriangleSegment(
+							v1x, v1y, v1z,
+							v2x, v2y, v2z,
+							v3x, v3y, v3z,
+							curx, cury, curz, movx, movy, movz,
+							epsilon,
+							point1, point2);
+					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (closestPointOnTriangle != null) {
+							closestPointOnTriangle.set(point1);
+						}
+						if (closestPointOnPath != null) {
+							closestPointOnPath.set(point2);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				if (findsClosestPointToTrianglePathIterator(
+						v1x, v1y, v1z,
+						v2x, v2y, v2z,
+						v3x, v3y, v3z,
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						epsilon,
+						point1, point2)) {
+					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (closestPointOnTriangle != null) {
+							closestPointOnTriangle.set(point1);
+						}
+						if (closestPointOnPath != null) {
+							closestPointOnPath.set(point2);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				if (findsClosestPointToTrianglePathIterator(
+						v1x, v1y, v1z,
+						v2x, v2y, v2z,
+						v3x, v3y, v3z,
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						epsilon,
+						point1, point2)) {
+					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
+							point2.getX(), point2.getY(), point2.getZ());
+					if (dist < bestDistance) {
+						bestDistance = dist;
+						if (closestPointOnTriangle != null) {
+							closestPointOnTriangle.set(point1);
+						}
+						if (closestPointOnPath != null) {
+							closestPointOnPath.set(point2);
+						}
+						foundPoint = true;
+					}
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
+			}
+		}
+		return foundPoint;
+	}
+
+	/** Replies if the triangle and the path intersect.
+	 *
+	 * @param v1x x coordinate of the first point of the first triangle.
+	 * @param v1y y coordinate of the first point of the first triangle.
+	 * @param v1z z coordinate of the first point of the first triangle.
+	 * @param v2x x coordinate of the second point of the first triangle.
+	 * @param v2y y coordinate of the second point of the first triangle.
+	 * @param v2z z coordinate of the second point of the first triangle.
+	 * @param v3x x coordinate of the third point of the first triangle.
+	 * @param v3y y coordinate of the third point of the first triangle.
+	 * @param v3z z coordinate of the third point of the first triangle.
+	 * @param pathIterator the provider of path elements.
+	 * @param epsilon the epsilon value that is used for testing equalities.
+	 * @return {@code true} if triangle and path are intersecting.
+	 * @throws IllegalStateException if an invalid path element was found.
+	 */
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
+	@Pure
+	static boolean intersectsTrianglePathIterator(
+			double v1x, double v1y, double v1z,
+			double v2x, double v2y, double v2z,
+			double v3x, double v3y, double v3z,
+			PathIterator3afp<?> pathIterator,
+			double epsilon) {
+		assert pathIterator != null : AssertMessages.notNullParameter(0);
+		if (!pathIterator.hasNext()) {
+			return false;
+		}
+		var pathElement = pathIterator.next();
+		assert pathElement.getType() == PathElementType.MOVE_TO : AssertMessages.invalidValue(0);
+		if (!pathIterator.hasNext()) {
+			return false;
+		}
+		var curx = pathElement.getToX();
+		var movx = curx;
+		var cury = pathElement.getToY();
+		var movy = cury;
+		var curz = pathElement.getToZ();
+		var movz = curz;
+		double endx;
+		double endy;
+		double endz;
+		final var factory = pathIterator.getGeomFactory();
+		while (pathIterator.hasNext()) {
+			pathElement = pathIterator.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
+				movz = pathElement.getToZ();
+				curz = movz;
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				if (intersectsTriangleSegment(
+						v1x, v1y, v1z,
+						v2x, v2y, v2z,
+						v3x, v3y, v3z,
+						curx, cury, curz, endx, endy, endz,
+						epsilon)) {
+					return true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					if (intersectsTriangleSegment(
+							v1x, v1y, v1z,
+							v2x, v2y, v2z,
+							v3x, v3y, v3z,
+							curx, cury, curz, movx, movy, movz,
+							epsilon)) {
+						return true;
+					}
+				}
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath0 = factory.newPath();
+				subpath0.moveTo(curx, cury, curz);
+				subpath0.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
+				if (intersectsTrianglePathIterator(
+						v1x, v1y, v1z,
+						v2x, v2y, v2z,
+						v3x, v3y, v3z,
+						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
+						epsilon)) {
+					return true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				final var subpath1 = factory.newPath();
+				subpath1.moveTo(curx, cury, curz);
+				subpath1.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+				if (intersectsTrianglePathIterator(
+						v1x, v1y, v1z,
+						v2x, v2y, v2z,
+						v3x, v3y, v3z,
+						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
+						epsilon)) {
+					return true;
+				}
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case ARC_TO:
+			default:
+				throw new IllegalStateException(pathElement.getType().toString());
+			}
+		}
+		return false;
 	}
 
 	/** Replies if the triangle intersects the sphere.
@@ -349,7 +772,7 @@ public interface Triangle3afp<
 			double centerx, double centery, double centerz,
 			double radius) {
 		final var point = new InnerComputationPoint3D();
-		findsClosestPointTrianglePoint(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, centerx, centery, centerz, point);
+		findsClosestPointToTrianglePoint(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, centerx, centery, centerz, point);
 		final var distance = Point3D.getDistanceSquaredPointPoint(
 				centerx, centery, centerz,
 				point.getX(), point.getY(), point.getZ());
@@ -378,6 +801,7 @@ public interface Triangle3afp<
 	 * @param sx2 x coordinate of the second point of the segment.
 	 * @param sy2 y coordinate of the second point of the segment.
 	 * @param sz2 z coordinate of the second axis of the oriented box.
+	 * @param epsilon the epsilon value that is used for testing equalities.
 	 * @return {@code true} if the triangle and segment are intersecting.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
@@ -387,14 +811,15 @@ public interface Triangle3afp<
 			double tx2, double ty2, double tz2,
 			double tx3, double ty3, double tz3,
 			double sx1, double sy1, double sz1,
-			double sx2, double sy2, double sz2) {
+			double sx2, double sy2, double sz2,
+			double epsilon) {
 		final var factor = JimenezAlgorithmTools.calculatesIntersectionFactorTriangleSegment(
 				tx1, ty1, tz1,
 				tx2, ty2, tz2,
 				tx3, ty3, tz3,
 				sx1, sy1, sz1,
 				sx2, sy2, sz2,
-				GeomConstants.UNIT_VECTOR_EPSILON);
+				epsilon);
 		return !Double.isNaN(factor);
 	}
 
@@ -897,6 +1322,7 @@ public interface Triangle3afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
 		final var c = getClosestPointTo(point);
 		return c.getDistanceL1(point);
 	}
@@ -904,6 +1330,7 @@ public interface Triangle3afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
 		final var c = getClosestPointTo(point);
 		return c.getDistanceLinf(point);
 	}
@@ -1217,7 +1644,7 @@ public interface Triangle3afp<
 	default P getClosestPointTo(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		final var c = getGeomFactory().newPoint();
-		findsClosestPointTrianglePoint(
+		findsClosestPointToTrianglePoint(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				getX3(), getY3(), getZ3(),
@@ -1231,7 +1658,7 @@ public interface Triangle3afp<
 	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		final var c = getGeomFactory().newPoint();
-		findsClosestPointTrianglePoint(
+		findsClosestPointToTrianglePoint(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				getX3(), getY3(), getZ3(),
@@ -1251,7 +1678,7 @@ public interface Triangle3afp<
 	default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		final var point = getGeomFactory().newPoint();
-		findsClosestPointTriangleSegment(
+		findsClosestPointToTriangleSegment(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				getX3(), getY3(), getZ3(),
@@ -1262,10 +1689,37 @@ public interface Triangle3afp<
 		return point;
 	}
 
+	@Override
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : AssertMessages.notNullParameter();
+		final var point = getGeomFactory().newPoint();
+		findsClosestPointToTriangleTriangle(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				triangle.getX1(), triangle.getY1(), triangle.getZ1(),
+				triangle.getX2(), triangle.getY2(), triangle.getZ2(),
+				triangle.getX3(), triangle.getY3(), triangle.getZ3(),
+				GeomConstants.DISTANCE_EPSILON,
+				point, null);
+		return point;
+	}
+
 	@Pure
 	@Override
 	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
-		throw new UnsupportedOperationException();
+		assert path != null : AssertMessages.notNullParameter();
+		final var point = getGeomFactory().newPoint();
+		if (findsClosestPointToTrianglePathIterator(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				path.getPathIterator(),
+				GeomConstants.DISTANCE_EPSILON,
+				point, null)) {
+			return point;
+		}
+		return null;
 	}
 
 	@Pure
@@ -1328,36 +1782,46 @@ public interface Triangle3afp<
 				getX2(), getY2(), getZ2(),
 				getX3(), getY3(), getZ3(),
 				segment.getX1(), segment.getY1(), segment.getZ1(),
-				segment.getX2(), segment.getY2(), segment.getZ2());
+				segment.getX2(), segment.getY2(), segment.getZ2(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null :  AssertMessages.notNullParameter();
-		return intersectsCoplanarTriangleTriangle(
-				getX1(), getY1(), getY1(),
-				getX2(), getY2(), getY3(),
-				getX3(), getY3(), getY3(),
+		return intersectsTriangleTriangle(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
 				triangle.getX1(), triangle.getY1(), triangle.getZ1(),
 				triangle.getX2(), triangle.getY2(), triangle.getZ2(),
-				triangle.getX3(), triangle.getY3(), triangle.getZ3());
+				triangle.getX3(), triangle.getY3(), triangle.getZ3(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
-		//TODO: return Path3afp.intersectsPathIteratorTriangle();
-		throw new UnsupportedOperationException();
+		return intersectsTrianglePathIterator(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				path.getPathIterator(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		//TODO: return Path3afp.intersectsPathIteratorTriangle();
-		throw new UnsupportedOperationException();
+		return intersectsTrianglePathIterator(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				iterator,
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
@@ -2071,6 +2535,7 @@ public interface Triangle3afp<
 		 * @param u3x x coordinate of the third point of the second triangle.
 		 * @param u3y y coordinate of the third point of the second triangle.
 		 * @param u3z z coordinate of the third point of the second triangle.
+		 * @param epsilon the epsilon value that is used for testing equalities.
 		 * @return {@code true} if the two triangles are intersecting.
 		 */
 		@SuppressWarnings("checkstyle:parameternumber")
@@ -2081,7 +2546,8 @@ public interface Triangle3afp<
 				double v3x, double v3y, double v3z,
 				double u1x, double u1y, double u1z,
 				double u2x, double u2y, double u2z,
-				double u3x, double u3y, double u3z) {
+				double u3x, double u3y, double u3z,
+				double epsilon) {
 			// first project onto an axis-aligned plane, that maximizes the area
 			// of the triangles, compute indices: i0,i1.
 			var nx = v1y * (v2z - v3z) + v2y * (v3z - v1z) + v3y * (v1z - v2z);
@@ -2092,91 +2558,174 @@ public interface Triangle3afp<
 			ny = ny < 0 ? -ny : ny;
 			nz = nz < 0 ? -nz : nz;
 
-			final int i0;
-			final int i1;
+			Point3D2D selector = null;
 
 			if (nx > ny) {
 				if (nx > nz) {
 					// nx is greatest
-					i0 = 1;
-					i1 = 2;
-				} else {
-					// nz is greatest
-					i0 = 0;
-					i1 = 1;
+					selector = new Point3D2D() {
+						@Override
+						public double x(Point3D<?, ?, ?> point) {
+							return point.getY();
+						}
+
+						@Override
+						public double y(Point3D<?, ?, ?> point) {
+							return point.getZ();
+						}
+					};
 				}
 			} else {
 				/* nx<=ny */
-				if (nz > ny) {
-					// nz is greatest
-					i0 = 0;
-					i1 = 1;
-				} else {
+				if (nz <= ny) {
 					// ny is greatest
-					i0 = 0;
-					i1 = 2;
+					selector = new Point3D2D() {
+
+						@Override
+						public double x(Point3D<?, ?, ?> point) {
+							return point.getX();
+						}
+
+						@Override
+						public double y(Point3D<?, ?, ?> point) {
+							return point.getZ();
+						}
+					};
 				}
 			}
+			if (selector == null) {
+				// nz is greatest
+				selector = new Point3D2D() {
+					@Override
+					public double x(Point3D<?, ?, ?> point) {
+						return point.getX();
+					}
 
-			final var tv1 = new double[] {v1x, v1y, v1z};
-			final var tv2 = new double[] {v2x, v2y, v2z};
-			final var tv3 = new double[] {v3x, v3y, v3z};
-			final var tu1 = new double[] {u1x, u1y, u1z};
-			final var tu2 = new double[] {u2x, u2y, u2z};
-			final var tu3 = new double[] {u3x, u3y, u3z};
+					@Override
+					public double y(Point3D<?, ?, ?> point) {
+						return point.getY();
+					}
+				};
+			}
+
+			final var tv1 = new InnerComputationPoint3D(v1x, v1y, v1z);
+			final var tv2 = new InnerComputationPoint3D(v2x, v2y, v2z);
+			final var tv3 = new InnerComputationPoint3D(v3x, v3y, v3z);
+			final var tu1 = new InnerComputationPoint3D(u1x, u1y, u1z);
+			final var tu2 = new InnerComputationPoint3D(u2x, u2y, u2z);
+			final var tu3 = new InnerComputationPoint3D(u3x, u3y, u3z);
 
 			// test all edges of triangle 1 against the edges of triangle 2
-			return intersectsCoplanarTriangle(i0, i1, 0, tv1, tv2, tu1, tu2, tu3)
-					|| intersectsCoplanarTriangle(i0, i1, 0, tv2, tv3, tu1, tu2, tu3)
-					|| intersectsCoplanarTriangle(i0, i1, 0, tv3, tv1, tu1, tu2, tu3)
-					// finally, test if tri1 is totally contained in tri2 or vice versa
-					|| containsTrianglePoint(i0, i1, tv1, tu1, tu2, tu3)
-					|| containsTrianglePoint(i0, i1, tu1, tv1, tv2, tv3);
+			return intersectsEdges(selector, tv1, tv2, tu1, tu2, tu3, epsilon)
+					|| intersectsEdges(selector, tv2, tv3, tu1, tu2, tu3, epsilon)
+					|| intersectsEdges(selector, tv3, tv1, tu1, tu2, tu3, epsilon)
+					// finally, test if first triangle is totally contained in second triangle
+					|| containsTrianglePoint(selector, tv1, tu1, tu2, tu3, epsilon)
+					// or vice versa
+					|| containsTrianglePoint(selector, tu1, tv1, tv2, tv3, epsilon);
 		}
 
-		/** Replies if a point is inside a triangle.
+		/** Replies if a point is inside a triangle assuming that the point
+		 * is on the plane of the triangle (u1,u2,u3).
 		 *
+		 * @param get the tools for extracted the relevant two coordinates (x+y, x+z or y+z).
+		 * @param point the coordinates of the points.
+		 * @param u1 the coordinates of the first point of the triangle.
+		 * @param u2 the coordinates of the second point of the triangle.
+		 * @param u3 the coordinates of the third point of the triangle.
+		 * @param epsilon the epsilon value that is used for testing equalities.
+		 * @return {@code true} if the point is inside the triangle.
 		 */
 		private static boolean containsTrianglePoint(
-				int i0, int i1, double[] v, double[] u1, double[] u2, double[] u3) {
-			// is T1 completly inside T2?
-			// check if V0 is inside tri(U0,U1,U2)
-			var a = u2[i1] - u1[i1];
-			var b = -(u2[i0] - u1[i0]);
-			var c = -a * u1[i0] - b * u1[i1];
-			final var d0 = a * v[i0] + b * v[i1] + c;
+				Point3D2D get,
+				Point3D<?, ?, ?> point, Point3D<?, ?, ?> u1, Point3D<?, ?, ?> u2, Point3D<?, ?, ?> u3,
+				double epsilon) {
+			// Extract 2D coordinates via the projection interface
+			final var px = get.x(point);
+			final var py = get.y(point);
+			final var ax = get.x(u1);
+			final var ay = get.y(u1);
+			final var bx = get.x(u2);
+			final var by = get.y(u2);
+			final var cx = get.x(u3);
+			final var cy = get.y(u3);
 
-			a = u3[i1] - u2[i1];
-			b = -(u3[i0] - u2[i0]);
-			c = -a * u2[i0] - b * u2[i1];
-			final var d1 = a * v[i0] + b * v[i1] + c;
+			// Vectors from vertex A
+			final var v0x = bx - ax;
+			final var v0y = by - ay;
+			final var v1x = cx - ax;
+			final var v1y = cy - ay;
+			final var v2x = px - ax;
+			final var v2y = py - ay;
 
-			a = u1[i1] - u2[i1];
-			b = -(u1[i0] - u3[i0]);
-			c = -a * u3[i0] - b * u3[i1];
-			final var d2 = a * v[i0] + b * v[i1] + c;
+			// Dot products (using fused multiply‑add for accuracy)
+			final var dot00 = Math.fma(v0x, v0x, v0y * v0y);
+			final var dot01 = Math.fma(v0x, v1x, v0y * v1y);
+			final var dot11 = Math.fma(v1x, v1x, v1y * v1y);
+			final var dot02 = Math.fma(v0x, v2x, v0y * v2y);
+			final var dot12 = Math.fma(v1x, v2x, v1y * v2y);
 
-			return (d0 * d1) > 0. && (d0 * d2) > 0.;
+			// Denominator = |v0 × v1|²  (twice the area of the triangle)
+			final var denom = dot00 * dot11 - dot01 * dot01;
+
+			// If the triangle is degenerate in the 2D projection, we treat it as not containing the point
+			if (Math.abs(denom) < epsilon) {
+				return false;
+			}
+
+			final var invDenom = 1. / denom;
+			final var u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+			final var v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+			// Check barycentric coordinates with tolerance
+			return u >= -epsilon && v >= -epsilon && u + v <= 1. + epsilon;
 		}
 
-		/** Replies if coplanar segment-triangle intersect.
+		/** Replies if coplanar segment intersects one of the three edges of
+		 * the triangle.
+		 *
+		 * @param get the tools for extracted the relevant two coordinates (x+y, x+z or y+z).
+		 * @param s1 the coordinates of the first point of the segment.
+		 * @param s2 the coordinates of the second point of the segment.
+		 * @param u1 the coordinates of the first point of the triangle.
+		 * @param u2 the coordinates of the second point of the triangle.
+		 * @param u3 the coordinates of the third point of the triangle.
+		 * @param epsilon the epsilon value that is used for testing equalities.
+		 * @return {@code true} if the point is inside the triangle.
 		 */
-		private static boolean intersectsCoplanarTriangle(
-				int i0, int i1, int con, double[] s1, double[] s2, double[] u1, double[] u2, double[] u3) {
-			final var ax = s2[i0] - s1[i0];
-			final var ay = s2[i1] - s1[i1];
-			return intersectEdgeEdge(i0, i1, con, ax, ay, s1, u1, u2)
-					|| intersectEdgeEdge(i0, i1, con, ax, ay, s1, u2, u3)
-					|| intersectEdgeEdge(i0, i1, con, ax, ay, s1, u3, u1);
+		@SuppressWarnings("checkstyle:parameternumber")
+		private static boolean intersectsEdges(
+				Point3D2D get,
+				Point3D<?, ?, ?> s1, Point3D<?, ?, ?> s2,
+				Point3D<?, ?, ?> u1, Point3D<?, ?, ?> u2, Point3D<?, ?, ?> u3,
+				double epsilon) {
+			final var ax = get.x(s2) - get.x(s1);
+			final var ay = get.y(s2) - get.y(s1);
+			return intersectEdgeEdge(get, ax, ay, s1, u1, u2, epsilon)
+					|| intersectEdgeEdge(get, ax, ay, s1, u2, u3, epsilon)
+					|| intersectEdgeEdge(get, ax, ay, s1, u3, u1, epsilon);
 		}
 
 		/** This edge to edge test is based on Franlin Antonio's gem:
 		 * "Faster Line Segment Intersection", in Graphics Gems III,
 		 * pp. 199-202.
+		 *
+		 * @param get the tools for extracted the relevant two coordinates (x+y, x+z or y+z).
+		 * @param s1 the coordinates of the first point of the segment.
+		 * @param s2 the coordinates of the second point of the segment.
+		 * @param u1 the coordinates of the first point of the triangle.
+		 * @param u2 the coordinates of the second point of the triangle.
+		 * @param u3 the coordinates of the third point of the triangle.
+		 * @param epsilon the epsilon value that is used for testing equalities.
+		 * @return {@code true} if the point is inside the triangle.
 		 */
 		@Pure
+		@SuppressWarnings("checkstyle:parameternumber")
 		private static boolean intersectEdgeEdge(
-				int i0, int i1, int con, double ax, double ay, double[] v, double[] u1, double[] u2) {
+				Point3D2D get,
+				double ax, double ay,
+				Point3D<?, ?, ?> v, Point3D<?, ?, ?> u1, Point3D<?, ?, ?> u2,
+				double epsilon) {
 			// [v,b] is the segment that contains the point v
 			// [c,d] is the segment [u1,u2]
 
@@ -2184,10 +2733,10 @@ public interface Triangle3afp<
 			// B is the vector (d,c)
 			// C is the vector (c,v)
 
-			final var bx = u1[i0] - u2[i0];
-			final var by = u1[i1] - u2[i1];
-			final var cx = v[i0]  - u1[i0];
-			final var cy = v[i1]  - u1[i1];
+			final var bx = get.x(u1) - get.x(u2);
+			final var by = get.y(u1) - get.y(u2);
+			final var cx = get.x(v)  - get.x(u1);
+			final var cy = get.y(v)  - get.y(u1);
 
 			final var f = ay * bx - ax * by;
 			// Line equation: V+d*A
@@ -2197,58 +2746,47 @@ public interface Triangle3afp<
 			var down = false;
 
 			if (f > 0) {
-				switch (con) {
-				case 1:
-					// First point must be ignored
-					down = d > 0;
-					up = d <= f;
-					break;
-				case 2:
-					// Second point must be ignored
-					down = d >= 0;
-					up = d < f;
-					break;
-				case 3:
-					// First and Second points must be ignored
-					down = d > 0;
-					up = d < f;
-					break;
-				default:
-					down = d >= 0;
-					up = d <= f;
-				}
+				down = d >= 0;
+				up = d <= f;
 			} else if (f < 0) {
-				switch (con) {
-				case 1:
-					// First point must be ignored
-					down = d >= f;
-					up = d < 0;
-					break;
-				case 2:
-					// Second point must be ignored
-					down = d > f;
-					up = d <= 0;
-					break;
-				case 3:
-					// First and Second points must be ignored
-					down = d > f;
-					up = d < 0;
-					break;
-				default:
-					down = d >= f;
-					up = d <= 0;
-				}
+				down = d >= f;
+				up = d <= 0;
 			}
 
 			if (up && down) {
 				final var e = ax * cy - ay * cx;
 				if (f >= 0) {
-					return e >= 0 && e <= f;
+					return e >= -epsilon && e <= f + epsilon;
 				}
-				return e >= f && e <= 0;
+				return e >= f + epsilon && e <= epsilon;
 			}
 
 			return false;
+		}
+
+		/** Functional interface that permits to move from 3D to 2D point.
+		 *
+		 * @author $Author: sgalland$
+		 * @version $FullVersion$
+		 * @mavengroupid $GroupId$
+		 * @mavenartifactid $ArtifactId$
+		 * @since 18.0
+		 */
+		private interface Point3D2D {
+
+			/** Replies the 2D x coordinate for the given 3D point.
+			 *
+			 * @param point the point to convert.
+			 * @return the coordinate value.
+			 */
+			double x(Point3D<?, ?, ?> point);
+
+			/** Replies the 2D x coordinate for the given 3D point.
+			 *
+			 * @param point the point to convert.
+			 * @return the coordinate value.
+			 */
+			double y(Point3D<?, ?, ?> point);
 		}
 	}
 
@@ -2373,7 +2911,7 @@ public interface Triangle3afp<
 				}
 				// Rejection 5
 				final var sum = s + t + u;
-				if (wpositive && w < sum || wnegative && w > sum) {
+				if (wpositive && w < sum - epsilon || wnegative && w > sum + epsilon) {
 					return Double.NaN;
 				}
 
@@ -2402,7 +2940,7 @@ public interface Triangle3afp<
 					final var sum = t + u;
 					// Fix: remove the negation below to obtain correct rejection test.
 					// This is a difference with the algorithm from Jimenez's paper.
-					if (spositive && s < sum || wnegative && s > sum) {
+					if (spositive && s < sum - epsilon || wnegative && s > sum + epsilon) {
 						return Double.NaN;
 					}
 
@@ -2421,6 +2959,398 @@ public interface Triangle3afp<
 			return t_param;
 		}
 
+	}
+
+	/** Utility class related to the algorithms from Eberly.
+	 *
+	 * @author $Author: sgalland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 18.0
+	 */
+	final class EberlyAlgorithmTools {
+
+		private EberlyAlgorithmTools() {
+			//
+		}
+
+		/** Replies the closest point from the triangle A to the triangle B.
+		 * The closest point is always located in the triangle.
+		 *
+		 * <p>Algorithm: since both triangles are convex, the closest pair of points between
+		 * them is always found on their boundaries, and is fully witnessed by testing each
+		 * edge of one triangle against the <em>whole</em> of the other triangle (not just its
+		 * vertices or edges individually). Testing only vertex-vs-triangle and edge-vs-edge
+		 * pairs is <strong>not sufficient</strong>: it misses the case where an edge of one
+		 * triangle pierces straight through the interior of the other triangle's face without
+		 * crossing any of its edges. Sweeping each full edge against the full opposite triangle
+		 * (via {@link #findsClosestPointTriangleSegment}, which already resolves vertex, edge and
+		 * face-interior cases through its own Voronoi-region logic) correctly captures every case,
+		 * including true interpenetration (distance 0).
+		 *
+		 * <p>For each of the 3 edges of A, the closest point on triangle B is found; the paired
+		 * point on that edge of A is then simply the closest point of the edge to that result
+		 * (a cheap clamped projection), since for a globally optimal pair each point is,
+		 * by definition, the closest point of its own shape to the other point. The same is
+		 * done for each of the 3 edges of B against triangle A. The minimum over these 6
+		 * candidates is the true closest pair.
+		 *
+		 * <p>Adapted from the general approach described by David Eberly,
+		 * <a href="https://www.geometrictools.com/Documentation/DistanceTriangle3Triangle3.pdf">
+		 * "Distance Between Two Triangles in 3D"</a>, Geometric Tools, LLC, 2015.
+		 *
+		 * @param ax1 x coordinate of the first point of the first triangle.
+		 * @param ay1 y coordinate of the first point of the first triangle.
+		 * @param az1 z coordinate of the first point of the first triangle.
+		 * @param ax2 x coordinate of the second point of the first triangle.
+		 * @param ay2 y coordinate of the second point of the first triangle.
+		 * @param az2 z coordinate of the second point of the first triangle.
+		 * @param ax3 x coordinate of the third point of the first triangle.
+		 * @param ay3 y coordinate of the third point of the first triangle.
+		 * @param az3 z coordinate of the third point of the first triangle.
+		 * @param bx1 x coordinate of the first point of the second triangle.
+		 * @param by1 y coordinate of the first point of the second triangle.
+		 * @param bz1 z coordinate of the first point of the second triangle.
+		 * @param bx2 x coordinate of the second point of the second triangle.
+		 * @param by2 y coordinate of the second point of the second triangle.
+		 * @param bz2 z coordinate of the second point of the second triangle.
+		 * @param bx3 x coordinate of the third point of the second triangle.
+		 * @param by3 y coordinate of the third point of the second triangle.
+		 * @param bz3 z coordinate of the third point of the second triangle.
+		 * @param epsilon the epsilon value that is used for testing equalities.
+		 * @param closestPointOnTriangleA the point on the first triangle set with the
+		 *     closest coordinates. It could be {@code null}.
+		 * @param closestPointOnTriangleB the point on the second triangle set with the
+		 *     closest coordinates. It could be {@code null}.
+		 */
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
+			"checkstyle:magicnumber"})
+		@Pure
+		@Unefficient
+		public static void findsClosestPointToTriangleTriangle(
+				double ax1, double ay1, double az1,
+				double ax2, double ay2, double az2,
+				double ax3, double ay3, double az3,
+				double bx1, double by1, double bz1,
+				double bx2, double by2, double bz2,
+				double bx3, double by3, double bz3,
+				double epsilon,
+				Point3D<?, ?, ?> closestPointOnTriangleA,
+				Point3D<?, ?, ?> closestPointOnTriangleB) {
+			assert closestPointOnTriangleA != null || closestPointOnTriangleB != null : AssertMessages.notNullParameter(20);
+			var bestDistSq = Double.POSITIVE_INFINITY;
+			var bestAx = ax1;
+			var bestAy = ay1;
+			var bestAz = az1;
+			var bestBx = bx1;
+			var bestBy = by1;
+			var bestBz = bz1;
+
+			final var scratch0 = new InnerComputationPoint3D();
+			final var scratch1 = new InnerComputationPoint3D();
+
+			// --- Edge A1-A2 of triangle A against the whole of triangle B ---
+			findsClosestPointToTriangleSegment(
+					bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
+					ax1, ay1, az1, ax2, ay2, az2,
+					epsilon, scratch0, scratch1);
+			var distSq = Point3D.getDistanceSquaredPointPoint(
+					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
+					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				bestAx = scratch1.getX();
+				bestAy = scratch1.getY();
+				bestAz = scratch1.getZ();
+				bestBx = scratch0.getX();
+				bestBy = scratch0.getY();
+				bestBz = scratch0.getZ();
+			}
+
+			// --- Edge A2-A3 of triangle A against the whole of triangle B ---
+			findsClosestPointToTriangleSegment(
+					bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
+					ax2, ay2, az2, ax3, ay3, az3,
+					epsilon, scratch0, scratch1);
+			distSq = Point3D.getDistanceSquaredPointPoint(
+					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
+					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				bestAx = scratch1.getX();
+				bestAy = scratch1.getY();
+				bestAz = scratch1.getZ();
+				bestBx = scratch0.getX();
+				bestBy = scratch0.getY();
+				bestBz = scratch0.getZ();
+			}
+
+			// --- Edge A3-A1 of triangle A against the whole of triangle B ---
+			findsClosestPointToTriangleSegment(
+					bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
+					ax3, ay3, az3, ax1, ay1, az1,
+					epsilon, scratch0, scratch1);
+			distSq = Point3D.getDistanceSquaredPointPoint(
+					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
+					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				bestAx = scratch1.getX();
+				bestAy = scratch1.getY();
+				bestAz = scratch1.getZ();
+				bestBx = scratch0.getX();
+				bestBy = scratch0.getY();
+				bestBz = scratch0.getZ();
+			}
+
+			// --- Edge B1-B2 of triangle B against the whole of triangle A ---
+			findsClosestPointToTriangleSegment(
+					ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3,
+					bx1, by1, bz1, bx2, by2, bz2,
+					epsilon, scratch0, scratch1);
+			distSq = Point3D.getDistanceSquaredPointPoint(
+					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
+					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				bestAx = scratch0.getX();
+				bestAy = scratch0.getY();
+				bestAz = scratch0.getZ();
+				bestBx = scratch1.getX();
+				bestBy = scratch1.getY();
+				bestBz = scratch1.getZ();
+			}
+
+			// --- Edge B2-B3 of triangle B against the whole of triangle A ---
+			findsClosestPointToTriangleSegment(
+					ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3,
+					bx2, by2, bz2, bx3, by3, bz3,
+					epsilon, scratch0, scratch1);
+			distSq = Point3D.getDistanceSquaredPointPoint(
+					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
+					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				bestAx = scratch0.getX();
+				bestAy = scratch0.getY();
+				bestAz = scratch0.getZ();
+				bestBx = scratch1.getX();
+				bestBy = scratch1.getY();
+				bestBz = scratch1.getZ();
+			}
+
+			// --- Edge B3-B1 of triangle B against the whole of triangle A ---
+			findsClosestPointToTriangleSegment(
+					ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3,
+					bx3, by3, bz3, bx1, by1, bz1,
+					epsilon, scratch0, scratch1);
+			distSq = Point3D.getDistanceSquaredPointPoint(
+					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
+					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq < bestDistSq) {
+				bestAx = scratch0.getX();
+				bestAy = scratch0.getY();
+				bestAz = scratch0.getZ();
+				bestBx = scratch1.getX();
+				bestBy = scratch1.getY();
+				bestBz = scratch1.getZ();
+			}
+
+			if (closestPointOnTriangleA != null) {
+				closestPointOnTriangleA.set(bestAx, bestAy, bestAz);
+			}
+			if (closestPointOnTriangleB != null) {
+				closestPointOnTriangleB.set(bestBx, bestBy, bestBz);
+			}
+		}
+
+		/** Tests if two triangles intersect in 3D space using the Separating Axis Theorem.
+		 *
+		 * <p>The algorithm is based on the method described in
+		 * <em>Real‑Time Collision Detection</em> by Christer Ericson (Section 5.3)
+		 * and the classic paper by Tomas Möller (1997).
+		 *
+		 * <p>If the triangles are coplanar, a 2D segment‑based intersection test is used.
+		 *
+		 * @param ax1 x coordinate of the first point of the first triangle.
+		 * @param ay1 y coordinate of the first point of the first triangle.
+		 * @param az1 z coordinate of the first point of the first triangle.
+		 * @param ax2 x coordinate of the second point of the first triangle.
+		 * @param ay2 y coordinate of the second point of the first triangle.
+		 * @param az2 z coordinate of the second point of the first triangle.
+		 * @param ax3 x coordinate of the third point of the first triangle.
+		 * @param ay3 y coordinate of the third point of the first triangle.
+		 * @param az3 z coordinate of the third point of the first triangle.
+		 * @param bx1 x coordinate of the first point of the second triangle.
+		 * @param by1 y coordinate of the first point of the second triangle.
+		 * @param bz1 z coordinate of the first point of the second triangle.
+		 * @param bx2 x coordinate of the second point of the second triangle.
+		 * @param by2 y coordinate of the second point of the second triangle.
+		 * @param bz2 z coordinate of the second point of the second triangle.
+		 * @param bx3 x coordinate of the third point of the second triangle.
+		 * @param by3 y coordinate of the third point of the second triangle.
+		 * @param bz3 z coordinate of the third point of the second triangle.
+		 * @param epsilon the epsilon value that is used for testing equalities.
+		 * @return {@code true} if the triangles are intersecting.
+		 */
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+		@Unefficient
+		@Pure
+		public static boolean intersectsTriangleTriangle(
+				double ax1, double ay1, double az1,
+				double ax2, double ay2, double az2,
+				double ax3, double ay3, double az3,
+				double bx1, double by1, double bz1,
+				double bx2, double by2, double bz2,
+				double bx3, double by3, double bz3,
+				double epsilon) {
+
+			// compute triangle edge vectors
+			final var a1x = ax2 - ax1;
+			final var a1y = ay2 - ay1;
+			final var a1z = az2 - az1;
+			final var a2x = ax3 - ax1;
+			final var a2y = ay3 - ay1;
+			final var a2z = az3 - az1;
+			final var b1x = bx2 - bx1;
+			final var b1y = by2 - by1;
+			final var b1z = bz2 - bz1;
+			final var b2x = bx3 - bx1;
+			final var b2y = by3 - by1;
+			final var b2z = bz3 - bz1;
+
+			// triangle normals
+			final var na = new InnerComputationVector3D();
+			Vector3D.crossProduct(a1x, a1y, a1z, a2x, a2y, a2z, na);
+			final var nb = new InnerComputationVector3D();
+			Vector3D.crossProduct(b1x, b1y, b1z, b2x, b2y, b2z, nb);
+
+			// test if triangles are coplanar
+			final var normA2 = Vector3D.dotProduct(na.getX(), na.getY(), na.getZ(), na.getX(), na.getY(), na.getZ());
+			final var normB2 = Vector3D.dotProduct(nb.getX(), nb.getY(), nb.getZ(), nb.getX(), nb.getY(), nb.getZ());
+			final var epsSq = epsilon * epsilon;
+			if (normA2 <= epsSq) {
+				if (normB2 <= epsSq) {
+					// Both points generate to points
+					return Point3D.getDistanceSquaredPointPoint(ax1, ay1, az1, bx2, by2, bz2) <= epsSq;
+				}
+				// Only first triangle degenerates to point
+				return containsTrianglePoint(bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3, ax1, ay1, az1, false, epsilon);
+			}
+			if (normB2 <= epsSq) {
+				// Only second triangle degenerates to point
+				return containsTrianglePoint(ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3, bx1, by1, bz1, false, epsilon);
+			}
+
+			final var crossAB2 = Vector3D.dotProduct(
+					na.getY() * nb.getZ() - na.getZ() * nb.getY(),
+					na.getZ() * nb.getX() - na.getX() * nb.getZ(),
+					na.getX() * nb.getY() - na.getY() * nb.getX(),
+					na.getY() * nb.getZ() - na.getZ() * nb.getY(),
+					na.getZ() * nb.getX() - na.getX() * nb.getZ(),
+					na.getX() * nb.getY() - na.getY() * nb.getX());
+
+			// If normals are parallel (cross product ≈ 0), triangles are coplanar.
+			if (crossAB2 < epsSq * Math.max(normA2, normB2)) {
+				// Plane signed distances (relative to origin)
+				final var dA = Vector3D.dotProduct(na.getX(), na.getY(), na.getZ(), ax1, ay1, az1);
+				final var dB = Vector3D.dotProduct(nb.getX(), nb.getY(), nb.getZ(), bx1, by1, bz1);
+				if (MathUtil.isEpsilonEqual(dA, dB, epsilon)) {
+					// 2D coplanar intersection test
+					return MollerAlgorithmTools.intersectsCoplanarTriangleTriangle(
+							ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3,
+							bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
+							epsilon);
+				}
+				return false;
+			}
+
+			// Separating Axis Test
+			// Test against triangle A's normal
+			if (!overlapOnAxis(na.getX(), na.getY(), na.getZ(),
+					ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3,
+					bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
+					epsilon)) {
+				return false;
+			}
+
+			// Test against triangle B's normal
+			if (!overlapOnAxis(nb.getX(), nb.getY(), nb.getZ(),
+					bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
+					ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3,
+					epsilon)) {
+				return false;
+			}
+
+			// Test against cross products of edges (9 axes)
+			// Edge directions: a1, a2, a3 = a2-a1? Actually we have a1 and a2, and the third edge is (a2 - a1)?
+			// But the third edge of triangle A is (a2 - a1) = (ax3-ax2, ...), which is equivalent to (a2x - a1x, ...).
+			// However, using the three edges of a triangle: we already have a1 = (v2-v1), a2 = (v3-v1),
+			// and the third edge is (v3-v2) = a2 - a1.
+			// For B similarly.
+			final var edgeAx = new double[] {a1x, a2x, a2x - a1x};
+			final var edgeAy = new double[] {a1y, a2y, a2y - a1y};
+			final var edgeAz = new double[] {a1z, a2z, a2z - a1z};
+			final var edgeBx = new double[] {b1x, b2x, b2x - b1x};
+			final var edgeBy = new double[] {b1y, b2y, b2y - b1y};
+			final var edgeBz = new double[] {b1z, b2z, b2z - b1z};
+
+			for (var i = 0; i < 3; ++i) {
+				for (var j = 0; j < 3; ++j) {
+					final var ax = edgeAy[i] * edgeBz[j] - edgeAz[i] * edgeBy[j];
+					final var ay = edgeAz[i] * edgeBx[j] - edgeAx[i] * edgeBz[j];
+					final var az = edgeAx[i] * edgeBy[j] - edgeAy[i] * edgeBx[j];
+					// Skip if axis is too small (degenerate edges)
+					if (Vector3D.dotProduct(ax, ay, az, ax, ay, az) < epsSq) {
+						continue;
+					}
+					if (!overlapOnAxis(ax, ay, az,
+							ax1, ay1, az1, ax2, ay2, az2, ax3, ay3, az3,
+							bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
+							epsilon)) {
+						return false;
+					}
+				}
+			}
+
+			// All axes passed → intersection
+			return true;
+		}
+
+		/**
+		 * Tests if the projection intervals of triangle A (given by its three vertices)
+		 * and triangle B overlap on the given axis.
+		 */
+		@SuppressWarnings({"checkstyle:parameternumber"})
+		private static boolean overlapOnAxis(
+				double ax, double ay, double az,
+				double a1x, double a1y, double a1z,
+				double a2x, double a2y, double a2z,
+				double a3x, double a3y, double a3z,
+				double b1x, double b1y, double b1z,
+				double b2x, double b2y, double b2z,
+				double b3x, double b3y, double b3z,
+				double epsilon) {
+			final var minA = Math.min(
+					Vector3D.dotProduct(ax, ay, az, a1x, a1y, a1z),
+					Math.min(Vector3D.dotProduct(ax, ay, az, a2x, a2y, a2z),
+							Vector3D.dotProduct(ax, ay, az, a3x, a3y, a3z)));
+			final var maxA = Math.max(
+					Vector3D.dotProduct(ax, ay, az, a1x, a1y, a1z),
+					Math.max(Vector3D.dotProduct(ax, ay, az, a2x, a2y, a2z),
+							Vector3D.dotProduct(ax, ay, az, a3x, a3y, a3z)));
+			final var minB = Math.min(
+					Vector3D.dotProduct(ax, ay, az, b1x, b1y, b1z),
+					Math.min(Vector3D.dotProduct(ax, ay, az, b2x, b2y, b2z),
+							Vector3D.dotProduct(ax, ay, az, b3x, b3y, b3z)));
+			final var maxB = Math.max(
+					Vector3D.dotProduct(ax, ay, az, b1x, b1y, b1z),
+					Math.max(Vector3D.dotProduct(ax, ay, az, b2x, b2y, b2z),
+							Vector3D.dotProduct(ax, ay, az, b3x, b3y, b3z)));
+			return maxA + epsilon >= minB && maxB + epsilon >= minA;
+		}
 	}
 
 	/** Utility class related to intersection.
@@ -2898,7 +3828,7 @@ public interface Triangle3afp<
 		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
 		@Pure
 		@Unefficient
-		public static boolean findsClosestPointTriangleSegment(
+		public static boolean findsClosestPointToTriangleSegment(
 				double tx1, double ty1, double tz1,
 				double tx2, double ty2, double tz2,
 				double tx3, double ty3, double tz3,
@@ -2907,6 +3837,7 @@ public interface Triangle3afp<
 				double epsilon,
 				Point3D<?, ?, ?> closestPointOnTriangle,
 				Point3D<?, ?, ?> closestPointOnSegment) {
+			assert closestPointOnTriangle != null || closestPointOnSegment != null : AssertMessages.notNullParameter(17);
 			// best[0] = squared distance, best[1..3] = triangle point, best[4..6] = segment point
 			final var best = new double[7];
 			best[0] = Double.POSITIVE_INFINITY;
@@ -3240,12 +4171,13 @@ public interface Triangle3afp<
 		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
 		@Unefficient
 		@Pure
-		public static void findsClosestPointTrianglePoint(
+		public static void findsClosestPointToTrianglePoint(
 				double tx1, double ty1, double tz1,
 				double tx2, double ty2, double tz2,
 				double tx3, double ty3, double tz3,
 				double px, double py, double pz,
 				Point3D<?, ?, ?> closestPoint) {
+			assert closestPoint != null : AssertMessages.notNullParameter(12);
 			// AB = V2 - V1, AC = V3 - V1, AP = P - V1
 			final var abx = tx2 - tx1;
 			final var aby = ty2 - ty1;

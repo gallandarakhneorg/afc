@@ -2022,6 +2022,12 @@ public interface Segment3afp<
 	}
 
 	@Override
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	@Unefficient
 	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();

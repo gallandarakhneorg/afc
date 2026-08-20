@@ -44,12 +44,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Shape3afp<
-		IT extends Shape3afp<?, IE, P, V, Q, B>,
-		IE extends PathElement3afp,
-		P extends Point3D<? super P, ? super V, ? super Q>,
-		V extends Vector3D<? super V, ? super P, ? super Q>,
-		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		B extends AlignedBox3afp<?, IE, P, V, Q, B>>
+			IT extends Shape3afp<?, IE, P, V, Q, B>,
+			IE extends PathElement3afp,
+			P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>,
+			B extends AlignedBox3afp<?, IE, P, V, Q, B>>
 		extends Shape3D<IT, PathIterator3afp<IE>, P, V, Q, B> {
 
 	/** Replies the type of the shape as an enumeration.
@@ -92,9 +92,9 @@ public interface Shape3afp<
 
 	/** Replies if the given point is inside this shape.
 	 *
-     * @param x x coordinate of the point to test.
-     * @param y y coordinate of the point to test.
-     * @param z z coordinate of the point to test.
+	 * @param x x coordinate of the point to test.
+	 * @param y y coordinate of the point to test.
+	 * @param z z coordinate of the point to test.
 	 * @return {@code true} if the given point is inside this
 	 *     shape, otherwise {@code false}.
 	 */
@@ -112,20 +112,20 @@ public interface Shape3afp<
 	@Pure
 	@Override
 	default void translate(Vector3D<?, ?, ?> vector) {
-	    assert vector != null : AssertMessages.notNullParameter();
-	    translate(vector.getX(), vector.getY(), vector.getZ());
+		assert vector != null : AssertMessages.notNullParameter();
+		translate(vector.getX(), vector.getY(), vector.getZ());
 	}
 
 	@Pure
 	@Unefficient
 	@Override
 	default boolean intersects(Shape3D<?, ?, ?, ?, ?, ?> shape) {
-    	assert shape != null : AssertMessages.notNullParameter();
-    	final var type = shape.getType(Shape3DType.class);
-    	assert type != null;
-    	assert type.getPreferredContinuousShapeType() != null;
-    	assert type.getPreferredContinuousShapeType().isInstance(shape);
-    	switch (type) {
+		assert shape != null : AssertMessages.notNullParameter();
+		final var type = shape.getType(Shape3DType.class);
+		assert type != null;
+		assert type.getPreferredContinuousShapeType() != null;
+		assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
 		case ALIGNED_BOX:
 			return intersects((AlignedBox3afp<?, ?, ?, ?, ?, ?>) shape);
 		case MULTISHAPE:
@@ -140,8 +140,8 @@ public interface Shape3afp<
 			return intersects((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
-    	}
-    	throw new IllegalArgumentException();
+		}
+		throw new IllegalArgumentException();
 	}
 
 
@@ -212,233 +212,251 @@ public interface Shape3afp<
 	@Pure
 	boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape);
 
-    @Pure
-    @Unefficient
-    @Override
-    default double getDistanceSquared(Shape3D<?, ?, ?, ?, ?, ?> shape) {
-    	assert shape != null : AssertMessages.notNullParameter();
-    	final var type = shape.getType(Shape3DType.class);
-    	assert type != null;
-    	assert type.getPreferredContinuousShapeType() != null;
-    	assert type.getPreferredContinuousShapeType().isInstance(shape);
-    	switch (type) {
+	@Pure
+	@Unefficient
+	@Override
+	default double getDistanceSquared(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+		assert shape != null : AssertMessages.notNullParameter();
+		final var type = shape.getType(Shape3DType.class);
+		assert type != null;
+		assert type.getPreferredContinuousShapeType() != null;
+		assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
 		case ALIGNED_BOX:
-            return getDistanceSquared((AlignedBox3afp<?, ?, ?, ?, ?, ?>) shape);
+			return getDistanceSquared((AlignedBox3afp<?, ?, ?, ?, ?, ?>) shape);
 		case MULTISHAPE:
-            return getDistanceSquared((MultiShape3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+			return getDistanceSquared((MultiShape3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case PATH:
-            return getDistanceSquared((Path3afp<?, ?, ?, ?, ?, ?>) shape);
+			return getDistanceSquared((Path3afp<?, ?, ?, ?, ?, ?>) shape);
 		case SEGMENT:
-            return getDistanceSquared((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+			return getDistanceSquared((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case SPHERE:
-            return getDistanceSquared((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
+			return getDistanceSquared((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
 		case TRIANGLE:
-            return getDistanceSquared((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+			return getDistanceSquared((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
-    	}
-        throw new IllegalArgumentException();
-    }
+		}
+		throw new IllegalArgumentException();
+	}
 
-    /** Replies the minimum distance between this shape and the given sphere.
-     *
-     * @param sphere the sphere.
-     * @return the minimum distance between the two shapes.
-     */
-    @Pure
-    default double getDistanceSquared(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-        assert sphere != null : AssertMessages.notNullParameter();
-        return sphere.getDistanceSquared(getClosestPointTo(sphere));
-    }
+	/** Replies the minimum distance between this shape and the given sphere.
+	 *
+	 * @param sphere the sphere.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		return sphere.getDistanceSquared(getClosestPointTo(sphere));
+	}
 
-    /** Replies the minimum distance between this shape and the given rectangular prism.
-     *
-     * @param AlignedBox the rectangular prism.
-     * @return the minimum distance between the two shapes.
-     */
-    @Pure
-    @Unefficient
-    default double getDistanceSquared(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
-        assert AlignedBox != null : AssertMessages.notNullParameter();
-        return AlignedBox.getDistanceSquared(getClosestPointTo(AlignedBox));
-    }
+	/** Replies the minimum distance between this shape and the given rectangular prism.
+	 *
+	 * @param AlignedBox the rectangular prism.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	@Unefficient
+	default double getDistanceSquared(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
+		return AlignedBox.getDistanceSquared(getClosestPointTo(AlignedBox));
+	}
 
-    /** Replies the minimum distance between this shape and the given segment.
-     *
-     * @param segment the segment.
-     * @return the minimum distance between the two shapes.
-     */
-    @Pure
-    default double getDistanceSquared(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-    	assert segment != null : AssertMessages.notNullParameter();
-    	return segment.getDistanceSquared(getClosestPointTo(segment));
-    }
+	/** Replies the minimum distance between this shape and the given segment.
+	 *
+	 * @param segment the segment.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : AssertMessages.notNullParameter();
+		return segment.getDistanceSquared(getClosestPointTo(segment));
+	}
 
-    /** Replies the minimum distance between this shape and the given triangle.
-     *
-     * @param triangle the triangle.
-     * @return the minimum distance between the two shapes.
-     * @since 18.0
-     */
-    @Pure
-    default double getDistanceSquared(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
-    	assert triangle != null : AssertMessages.notNullParameter();
-    	return triangle.getDistanceSquared(getClosestPointTo(triangle));
-    }
+	/** Replies the minimum distance between this shape and the given triangle.
+	 *
+	 * @param triangle the triangle.
+	 * @return the minimum distance between the two shapes.
+	 * @since 18.0
+	 */
+	@Pure
+	default double getDistanceSquared(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : AssertMessages.notNullParameter();
+		return triangle.getDistanceSquared(getClosestPointTo(triangle));
+	}
 
-    /** Replies the minimum distance between this shape and the given path.
-     *
-     * @param path the path.
-     * @return the minimum distance between the two shapes; or {@link Double#NaN}
-     *      if the path does not contain a visible component and avoid to compute
-     *      a distance.
-     */
-    @Pure
-    default double getDistanceSquared(Path3afp<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : AssertMessages.notNullParameter();
-        final var point = getClosestPointTo(path);
-        if (point != null) {
-        	return path.getDistanceSquared(point);
-        }
-        return Double.NaN;
-    }
+	/** Replies the minimum distance between this shape and the given path.
+	 *
+	 * @param path the path.
+	 * @return the minimum distance between the two shapes; or {@link Double#NaN}
+	 *      if the path does not contain a visible component and avoid to compute
+	 *      a distance.
+	 */
+	@Pure
+	default double getDistanceSquared(Path3afp<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : AssertMessages.notNullParameter();
+		final var point = getClosestPointTo(path);
+		if (point != null) {
+			return path.getDistanceSquared(point);
+		}
+		return Double.NaN;
+	}
 
-    /** Replies the minimum distance between this shape and the given multishape.
-     *
-     * @param multishape the multishape.
-     * @return the minimum distance between the two shapes; {@link Double#NaN} if there
-     *      is no shape in the multishape that avoid to compute the distance.
-     */
-    @Pure
-    default double getDistanceSquared(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-        assert multishape != null : AssertMessages.notNullParameter();
-        var minDist = Double.POSITIVE_INFINITY;
-        for (final var shape : multishape) {
-            final var dist = getDistanceSquared(shape);
-            if (dist < minDist) {
-                minDist = dist;
-            }
-        }
-        return minDist;
-    }
+	/** Replies the minimum distance between this shape and the given multishape.
+	 *
+	 * @param multishape the multishape.
+	 * @return the minimum distance between the two shapes; {@link Double#NaN} if there
+	 *      is no shape in the multishape that avoid to compute the distance.
+	 */
+	@Pure
+	default double getDistanceSquared(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : AssertMessages.notNullParameter();
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : multishape) {
+			final var dist = getDistanceSquared(shape);
+			if (dist < minDist) {
+				minDist = dist;
+			}
+		}
+		return minDist;
+	}
 
-    @Pure
-    @Unefficient
-    @Override
-    default P getClosestPointTo(Shape3D<?, ?, ?, ?, ?, ?> shape) {
-    	assert shape != null : AssertMessages.notNullParameter();
-    	final var type = shape.getType(Shape3DType.class);
-    	assert type != null;
-    	assert type.getPreferredContinuousShapeType() != null;
-    	assert type.getPreferredContinuousShapeType().isInstance(shape);
-    	switch (type) {
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+		assert shape != null : AssertMessages.notNullParameter();
+		final var type = shape.getType(Shape3DType.class);
+		assert type != null;
+		assert type.getPreferredContinuousShapeType() != null;
+		assert type.getPreferredContinuousShapeType().isInstance(shape);
+		switch (type) {
 		case ALIGNED_BOX:
-            return getClosestPointTo((AlignedBox3afp<?, ?, ?, ?, ?, ?>) shape);
+			return getClosestPointTo((AlignedBox3afp<?, ?, ?, ?, ?, ?>) shape);
 		case MULTISHAPE:
-            return getClosestPointTo((MultiShape3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+			return getClosestPointTo((MultiShape3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case PATH:
-            return getClosestPointTo((Path3afp<?, ?, ?, ?, ?, ?>) shape);
+			return getClosestPointTo((Path3afp<?, ?, ?, ?, ?, ?>) shape);
 		case SEGMENT:
-            return getClosestPointTo((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+			return getClosestPointTo((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case SPHERE:
-            return getClosestPointTo((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
+			return getClosestPointTo((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
+		case TRIANGLE:
+			return getClosestPointTo((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
-    	}
-        throw new IllegalArgumentException();
-    }
+		}
+		throw new IllegalArgumentException();
+	}
 
-    /** Replies the closest point on this shape to the given sphere.
-     *
-     * <p>If the two shapes are intersecting, the replied point is always at the intersection
-     * of the two shapes. This function does not enforce the meaning of the replied point
-     * in the case of shape intersection. In other words, this function is warranting that
-     * the reply point is the either the penetration point, nor a perimeter point, nor any point
-     * with a specific meaning.
-     *
-     * @param sphere the sphere.
-     * @return the closest point on the shape; or the point itself
-     *     if it is inside the shape.
-     */
-    @Pure
-    @Unefficient
-    P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere);
+	/** Replies the closest point on this shape to the given sphere.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param sphere the sphere.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	@Unefficient
+	P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere);
 
-    /** Replies the closest point on this shape to the given rectangular prism.
-     *
-     * <p>If the two shapes are intersecting, the replied point is always at the intersection
-     * of the two shapes. This function does not enforce the meaning of the replied point
-     * in the case of shape intersection. In other words, this function is warranting that
-     * the reply point is the either the penetration point, nor a perimeter point, nor any point
-     * with a specific meaning.
-     *
-     * @param AlignedBox the rectangular prism.
-     * @return the closest point on the shape; or the point itself
-     *     if it is inside the shape.
-     */
-    @Pure
-    P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox);
+	/** Replies the closest point on this shape to the given rectangular prism.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param AlignedBox the rectangular prism.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox);
 
-    /** Replies the closest point on this shape to the given segment.
-     *
-     * <p>If the two shapes are intersecting, the replied point is always at the intersection
-     * of the two shapes. This function does not enforce the meaning of the replied point
-     * in the case of shape intersection. In other words, this function is warranting that
-     * the reply point is the either the penetration point, nor a perimeter point, nor any point
-     * with a specific meaning.
-     *
-     * @param segment the segment.
-     * @return the closest point on the shape; or the point itself
-     *     if it is inside the shape.
-     */
-    @Pure
-    P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment);
+	/** Replies the closest point on this shape to the given segment.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param segment the segment.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment);
 
-    /** Replies the closest point on this shape to the given path.
-     *
-     * <p>If the two shapes are intersecting, the replied point is always at the intersection
-     * of the two shapes. This function does not enforce the meaning of the replied point
-     * in the case of shape intersection. In other words, this function is warranting that
-     * the reply point is the either the penetration point, nor a perimeter point, nor any point
-     * with a specific meaning.
-     *
-     * @param path the path.
-     * @return the closest point on the shape; or the point itself
-     *     if it is inside the shape; or {@code null} if the path does not
-     *     contain a visible component that avoid to compute the closest point.
-     */
-    @Pure
-    P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path);
+	/** Replies the closest point on this shape to the given path.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param path the path.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape; or {@code null} if the path does not
+	 *     contain a visible component that avoid to compute the closest point.
+	 */
+	@Pure
+	P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path);
 
-    /** Replies the closest point on this shape to the given multishape.
-     *
-     * <p>If the two shapes are intersecting, the replied point is always at the intersection
-     * of the two shapes. This function does not enforce the meaning of the replied point
-     * in the case of shape intersection. In other words, this function is warranting that
-     * the reply point is the either the penetration point, nor a perimeter point, nor any point
-     * with a specific meaning.
-     *
-     * @param multishape the multishape.
-     * @return the closest point on the shape; or the point itself
-     *     if it is inside the shape; or {@code null} if there is no shape in the multishape.
-     */
-    @Pure
-    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-        assert multishape != null : AssertMessages.notNullParameter();
-        Shape3afp<?, ?, ?, ?, ?, ?> closest = null;
-        var minDist = Double.POSITIVE_INFINITY;
-        for (final var shape : multishape) {
-            final var dist = getDistanceSquared(shape);
-            if (dist < minDist) {
-                minDist = dist;
-                closest = shape;
-            }
-        }
-        if (closest == null) {
-            return getGeomFactory().newPoint();
-        }
-        return getClosestPointTo(closest);
-    }
+	/** Replies the closest point on this shape to the given segment.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param segment the segment.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 * @since 18.0
+	 */
+	@Pure
+	P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> segment);
+
+	/** Replies the closest point on this shape to the given multishape.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param multishape the multishape.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape; or {@code null} if there is no shape in the multishape.
+	 */
+	@Pure
+	default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : AssertMessages.notNullParameter();
+		Shape3afp<?, ?, ?, ?, ?, ?> closest = null;
+		var minDist = Double.POSITIVE_INFINITY;
+		for (final var shape : multishape) {
+			final var dist = getDistanceSquared(shape);
+			if (dist < minDist) {
+				minDist = dist;
+				closest = shape;
+			}
+		}
+		if (closest == null) {
+			return getGeomFactory().newPoint();
+		}
+		return getClosestPointTo(closest);
+	}
 
 	@Override
 	GeomFactory3afp<IE, P, V, Q, B> getGeomFactory();

@@ -242,6 +242,12 @@ public interface MultiShape3afp<
 		}
 	}
 
+	@Override
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
     @Override
     default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> circle) {
         assert circle != null : AssertMessages.notNullParameter();

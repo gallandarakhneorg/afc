@@ -2526,6 +2526,14 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 	@DisplayName("getClosestPointTo")
 	@Nested
 	public class GetClosestPointTo {
+		
+		@DisplayName("(Triangle3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
 
 		@DisplayName("(Path3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
@@ -4063,7 +4071,7 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
 		}
 
 		@DisplayName("(Path3afp) #1")

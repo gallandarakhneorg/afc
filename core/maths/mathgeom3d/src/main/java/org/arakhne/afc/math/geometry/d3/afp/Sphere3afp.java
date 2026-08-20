@@ -547,6 +547,12 @@ public interface Sphere3afp<
 		return getGeomFactory().newPoint(x + vx * s, y + vy * s, z + vz * s);
 	}
 
+	@Override
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
     @Pure
     @Override
     default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
