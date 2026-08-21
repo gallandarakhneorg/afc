@@ -634,9 +634,55 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(createPoint(3.2390981873, 4.9184218279, 5.4781963747), getS().getClosestPointTo(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
 		}
 
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle intersects sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle contains point (5,8,9), i.e. sphere center => intersection.
+			// Typical behavior for distance queries: distance = 0, squared distance = 0.
+			assertEpsilonEquals(createPoint(5.0,8.0,9.0), getS().getClosestPointTo(createTriangle(5, 8, 9, 10, 8, 9, 5, 13, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle far on +X side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest triangle point to center is (12,8,9): center->triangle distance = 7
+			// Sphere radius = 5 => sphere->triangle distance = 2
+			// Closest point on sphere is center + radius*(+X) = (10,8,9)
+			assertEpsilonEquals(createPoint(10, 8, 9), getS().getClosestPointTo(createTriangle(12, 8, 9, 13, 8, 9, 12, 9, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// tangent-like case (distance zero)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has one vertex exactly on sphere: (10,8,9).
+			// So sphere and triangle touch => distance = 0.
+			assertEpsilonEquals(createPoint(10, 8, 9), getS().getClosestPointTo(createTriangle(10, 8, 9, 11, 8, 9, 10, 9, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// triangle far on -Z side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest triangle point to center is (5,8,1): center->triangle distance = 8
+			// sphere->triangle distance = 8 - 5 = 3 ; squared = 9
+			// Closest point on sphere is center + radius*(0,0,-1) = (5,8,4)
+			assertEpsilonEquals(createPoint(5, 8, 4), getS().getClosestPointTo(createTriangle(5, 8, 1, 6, 8, 1, 5, 9, 1)));
+		}
+		
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1295,7 +1341,53 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(6.3578166916, getS().getDistance(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle intersects sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle contains point (5,8,9), i.e. sphere center => intersection.
+			// Typical behavior for distance queries: distance = 0, squared distance = 0.
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(5, 8, 9, 10, 8, 9, 5, 13, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle far on +X side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest triangle point to center is (12,8,9): center->triangle distance = 7
+			// Sphere radius = 5 => sphere->triangle distance = 2
+			// Closest point on sphere is center + radius*(+X) = (10,8,9)
+			assertEpsilonEquals(2., getS().getDistance(createTriangle(12, 8, 9, 13, 8, 9, 12, 9, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// tangent-like case (distance zero)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has one vertex exactly on sphere: (10,8,9).
+			// So sphere and triangle touch => distance = 0.
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(10, 8, 9, 11, 8, 9, 10, 9, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// triangle far on -Z side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest triangle point to center is (5,8,1): center->triangle distance = 8
+			// sphere->triangle distance = 8 - 5 = 3 ; squared = 9
+			// Closest point on sphere is center + radius*(0,0,-1) = (5,8,4)
+			assertEpsilonEquals(3., getS().getDistance(createTriangle(5, 8, 1, 6, 8, 1, 5, 9, 1)));
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -2012,7 +2104,53 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(40.421833084, getS().getDistanceSquared(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle intersects sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle contains point (5,8,9), i.e. sphere center => intersection.
+			// Typical behavior for distance queries: distance = 0, squared distance = 0.
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(5, 8, 9, 10, 8, 9, 5, 13, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle far on +X side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest triangle point to center is (12,8,9): center->triangle distance = 7
+			// Sphere radius = 5 => sphere->triangle distance = 2
+			// Closest point on sphere is center + radius*(+X) = (10,8,9)
+			assertEpsilonEquals(4., getS().getDistanceSquared(createTriangle(12, 8, 9, 13, 8, 9, 12, 9, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// tangent-like case (distance zero)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has one vertex exactly on sphere: (10,8,9).
+			// So sphere and triangle touch => distance = 0.
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(10, 8, 9, 11, 8, 9, 10, 9, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// triangle far on -Z side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest triangle point to center is (5,8,1): center->triangle distance = 8
+			// sphere->triangle distance = 8 - 5 = 3 ; squared = 9
+			// Closest point on sphere is center + radius*(0,0,-1) = (5,8,4)
+			assertEpsilonEquals(9., getS().getDistanceSquared(createTriangle(5, 8, 1, 6, 8, 1, 5, 9, 1)));
 		}
 
 		@DisplayName("(Point3D) #1")
@@ -2927,7 +3065,53 @@ public abstract class AbstractSphere3dTestCase<T extends Sphere3afp<T, ?, ?, ?, 
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertFalse(getS().intersects(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle intersects sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle contains point (5,8,9), i.e. sphere center => intersection.
+			// Typical behavior for distance queries: distance = 0, squared distance = 0.
+			assertTrue(getS().intersects(createTriangle(5, 8, 9, 10, 8, 9, 5, 13, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle far on +X side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest triangle point to center is (12,8,9): center->triangle distance = 7
+			// Sphere radius = 5 => sphere->triangle distance = 2
+			// Closest point on sphere is center + radius*(+X) = (10,8,9)
+			assertFalse(getS().intersects(createTriangle(12, 8, 9, 13, 8, 9, 12, 9, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// tangent-like case (distance zero)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has one vertex exactly on sphere: (10,8,9).
+			// So sphere and triangle touch => distance = 0.
+			assertTrue(getS().intersects(createTriangle(10, 8, 9, 11, 8, 9, 10, 9, 9)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// triangle far on -Z side
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest triangle point to center is (5,8,1): center->triangle distance = 8
+			// sphere->triangle distance = 8 - 5 = 3 ; squared = 9
+			// Closest point on sphere is center + radius*(0,0,-1) = (5,8,4)
+			assertFalse(getS().intersects(createTriangle(5, 8, 1, 6, 8, 1, 5, 9, 1)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #1")

@@ -114,7 +114,14 @@ public interface MultiShape3afp<
 	@Override
 	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		if (triangle.intersects(toBoundingBox())) {
+			for (final var shape : getBackendDataList()) {
+				if (shape.intersects(triangle)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Pure
@@ -243,9 +250,19 @@ public interface MultiShape3afp<
 	}
 
 	@Override
-	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+        assert triangle != null : AssertMessages.notNullParameter();
+        var min = Double.POSITIVE_INFINITY;
+        final var closest = getGeomFactory().newPoint();
+        for (final var innerShape : getBackendDataList()) {
+            final var point = innerShape.getClosestPointTo(triangle);
+            final var dist = triangle.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
 	}
 
     @Override

@@ -478,7 +478,70 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(createPoint(5., 8., 0.5), getS().getClosestPointTo(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+			assertEpsilonEquals(8.0777472107, getS().getDistance(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+			assertEpsilonEquals(65.25, getS().getDistanceSquared(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle intersects aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has a vertex inside/on the box volume: (6, 8.5, 0.25)
+			assertEpsilonEquals(createPoint(6., 8.5, 0.25), getS().getClosestPointTo(createTriangle(6, 8.5, 0.25, 10, 8.5, 0.25, 6, 12, 0.25)));
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(6, 8.5, 0.25, 10, 8.5, 0.25, 6, 12, 0.25)));
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(6, 8.5, 0.25, 10, 8.5, 0.25, 6, 12, 0.25)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle intersects sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle includes the sphere center (-5,18,0), thus intersects sphere
+			// One valid closest point returned by the multishape is a point on the sphere.
+			assertEpsilonEquals(createPoint(-5., 18., 0.), getS().getClosestPointTo(createTriangle(-5, 18, 0, -3, 18, 0, -5, 20, 0)));
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(-5, 18, 0, -3, 18, 0, -5, 20, 0)));
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(-5, 18, 0, -3, 18, 0, -5, 20, 0)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// far on +X side, box is the nearest component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle near x=10, y=8.5, z=0.25 => closest multishape point is box face x=7
+			assertEpsilonEquals(createPoint(7., 8.5, 0.25), getS().getClosestPointTo(createTriangle(10, 8.5, 0.25, 10, 9.5, 0.25, 10, 8.5, 1.25)));
+			assertEpsilonEquals(3., getS().getDistance(createTriangle(10, 8.5, 0.25, 10, 9.5, 0.25, 10, 8.5, 1.25)));
+			assertEpsilonEquals(9., getS().getDistanceSquared(createTriangle(10, 8.5, 0.25, 10, 9.5, 0.25, 10, 8.5, 1.25)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// far on sphere side, sphere is the nearest component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle at x=-10 near y=18,z=0. Nearest sphere point is (-7,18,0), distance 3
+			assertEpsilonEquals(createPoint(-7., 18., 0.), getS().getClosestPointTo(createTriangle(-10, 18, 0, -10, 19, 0, -10, 18, 1)));
+			assertEpsilonEquals(3., getS().getDistance(createTriangle(-10, 18, 0, -10, 19, 0, -10, 18, 1)));
+			assertEpsilonEquals(9., getS().getDistanceSquared(createTriangle(-10, 18, 0, -10, 19, 0, -10, 18, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_6(CoordinateSystem3D cs) {
+			// triangle tangent to sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has vertex exactly on sphere surface: (-3,18,0)
+			assertEpsilonEquals(createPoint(-3., 18., 0.), getS().getClosestPointTo(createTriangle(-3, 18, 0, -3, 19, 0, -3, 18, 1)));
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(-3, 18, 0, -3, 19, 0, -3, 18, 1)));
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(-3, 18, 0, -3, 19, 0, -3, 18, 1)));
 		}
 
 		@DisplayName("(MultiShape3D) #1")
@@ -1237,7 +1300,58 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(8.0777472107, getS().getDistance(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle intersects aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has a vertex inside/on the box volume: (6, 8.5, 0.25)
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(6, 8.5, 0.25, 10, 8.5, 0.25, 6, 12, 0.25)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle intersects sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle includes the sphere center (-5,18,0), thus intersects sphere
+			// One valid closest point returned by the multishape is a point on the sphere.
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(-5, 18, 0, -3, 18, 0, -5, 20, 0)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// far on +X side, box is the nearest component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle near x=10, y=8.5, z=0.25 => closest multishape point is box face x=7
+			assertEpsilonEquals(3., getS().getDistance(createTriangle(10, 8.5, 0.25, 10, 9.5, 0.25, 10, 8.5, 1.25)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// far on sphere side, sphere is the nearest component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle at x=-10 near y=18,z=0. Nearest sphere point is (-7,18,0), distance 3
+			assertEpsilonEquals(3., getS().getDistance(createTriangle(-10, 18, 0, -10, 19, 0, -10, 18, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_6(CoordinateSystem3D cs) {
+			// triangle tangent to sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has vertex exactly on sphere surface: (-3,18,0)
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(-3, 18, 0, -3, 19, 0, -3, 18, 1)));
 		}
 
 		@DisplayName("(MultiShape3D) #1")
@@ -1845,7 +1959,58 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(65.25, getS().getDistanceSquared(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle intersects aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has a vertex inside/on the box volume: (6, 8.5, 0.25)
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(6, 8.5, 0.25, 10, 8.5, 0.25, 6, 12, 0.25)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle intersects sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle includes the sphere center (-5,18,0), thus intersects sphere
+			// One valid closest point returned by the multishape is a point on the sphere.
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(-5, 18, 0, -3, 18, 0, -5, 20, 0)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// far on +X side, box is the nearest component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle near x=10, y=8.5, z=0.25 => closest multishape point is box face x=7
+			assertEpsilonEquals(9., getS().getDistanceSquared(createTriangle(10, 8.5, 0.25, 10, 9.5, 0.25, 10, 8.5, 1.25)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// far on sphere side, sphere is the nearest component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle at x=-10 near y=18,z=0. Nearest sphere point is (-7,18,0), distance 3
+			assertEpsilonEquals(9., getS().getDistanceSquared(createTriangle(-10, 18, 0, -10, 19, 0, -10, 18, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_6(CoordinateSystem3D cs) {
+			// triangle tangent to sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has vertex exactly on sphere surface: (-3,18,0)
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(-3, 18, 0, -3, 19, 0, -3, 18, 1)));
 		}
 
 		@DisplayName("(MultiShape3D) #1")
@@ -2751,7 +2916,58 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertFalse(getS().intersects(createTriangle(0, 0, 0, 1, 1, 1, 1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle intersects aligned box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has a vertex inside/on the box volume: (6, 8.5, 0.25)
+			assertTrue(getS().intersects(createTriangle(6, 8.5, 0.25, 10, 8.5, 0.25, 6, 12, 0.25)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle intersects sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle includes the sphere center (-5,18,0), thus intersects sphere
+			// One valid closest point returned by the multishape is a point on the sphere.
+			assertTrue(getS().intersects(createTriangle(-5, 18, 0, -3, 18, 0, -5, 20, 0)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// far on +X side, box is the nearest component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle near x=10, y=8.5, z=0.25 => closest multishape point is box face x=7
+			assertFalse(getS().intersects(createTriangle(10, 8.5, 0.25, 10, 9.5, 0.25, 10, 8.5, 1.25)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// far on sphere side, sphere is the nearest component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle at x=-10 near y=18,z=0. Nearest sphere point is (-7,18,0), distance 3
+			assertFalse(getS().intersects(createTriangle(-10, 18, 0, -10, 19, 0, -10, 18, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_6(CoordinateSystem3D cs) {
+			// triangle tangent to sphere
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle has vertex exactly on sphere surface: (-3,18,0)
+			assertTrue(getS().intersects(createTriangle(-3, 18, 0, -3, 19, 0, -3, 18, 1)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #1")

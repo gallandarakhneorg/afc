@@ -429,13 +429,55 @@ extends AbstractShape3dTestCase<T, B> {
 		public void setUp() {
 			this.result = null;
 		}
-		
+
 		@DisplayName("(Triangle3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(createPoint(0, 0, 0), getS().getClosestPointTo(createTriangle(-2, 2, 2, -1, -5, 3, -4, 5, 6)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle containing path start point
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Path starts at (0,0,0), triangle contains that point => distance = 0
+			assertEpsilonEquals(createPoint(0, 0, 0), getS().getClosestPointTo(createTriangle(0, 0, 0, 2, 0, 0, 0, 2, 0)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle containing path end point
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Path ends at (7,-5,2), triangle contains that point => distance = 0
+			assertEpsilonEquals(createPoint(7, -5, 2), getS().getClosestPointTo(createTriangle(7, -5, 2, 9, -5, 2, 7, -3, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// far triangle near start side, closest to path start
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle in plane x=-3, nearest to path should be close to/start at (0,0,0)
+			// nearest triangle point to (0,0,0): (-3,0,0), distance = 3
+			assertEpsilonEquals(createPoint(0, 0, 0), getS().getClosestPointTo(createTriangle(-3, 0, 0, -3, 1, 0, -3, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// far triangle near end side, closest to path end
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle in plane x=10, nearest to path should be end (7,-5,2)
+			// nearest triangle point: (10,-5,2), distance = 3
+			assertEpsilonEquals(createPoint(7, -5, 2), getS().getClosestPointTo(createTriangle(10, -5, 2, 10, -4, 2, 10, -5, 3)));
 		}
 
 		@DisplayName("(Box3afp) #1")
@@ -6084,7 +6126,49 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(8.1568627451, getS().getDistanceSquared(createTriangle(-2, 2, 2, -1, -5, 3, -4, 5, 6)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle containing path start point
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Path starts at (0,0,0), triangle contains that point => distance = 0
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(0, 0, 0, 2, 0, 0, 0, 2, 0)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle containing path end point
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Path ends at (7,-5,2), triangle contains that point => distance = 0
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(7, -5, 2, 9, -5, 2, 7, -3, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// far triangle near start side, closest to path start
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle in plane x=-3, nearest to path should be close to/start at (0,0,0)
+			// nearest triangle point to (0,0,0): (-3,0,0), distance = 3
+			assertEpsilonEquals(9., getS().getDistanceSquared(createTriangle(-3, 0, 0, -3, 1, 0, -3, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// far triangle near end side, closest to path end
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle in plane x=10, nearest to path should be end (7,-5,2)
+			// nearest triangle point: (10,-5,2), distance = 3
+			assertEpsilonEquals(9., getS().getDistanceSquared(createTriangle(10, -5, 2, 10, -4, 2, 10, -5, 3)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #1")
@@ -6792,7 +6876,49 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(2.8560221892, getS().getDistance(createTriangle(-2, 2, 2, -1, -5, 3, -4, 5, 6)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle containing path start point
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Path starts at (0,0,0), triangle contains that point => distance = 0
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(0, 0, 0, 2, 0, 0, 0, 2, 0)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle containing path end point
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Path ends at (7,-5,2), triangle contains that point => distance = 0
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(7, -5, 2, 9, -5, 2, 7, -3, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// far triangle near start side, closest to path start
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle in plane x=-3, nearest to path should be close to/start at (0,0,0)
+			// nearest triangle point to (0,0,0): (-3,0,0), distance = 3
+			assertEpsilonEquals(3., getS().getDistance(createTriangle(-3, 0, 0, -3, 1, 0, -3, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// far triangle near end side, closest to path end
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle in plane x=10, nearest to path should be end (7,-5,2)
+			// nearest triangle point: (10,-5,2), distance = 3
+			assertEpsilonEquals(3., getS().getDistance(createTriangle(10, -5, 2, 10, -4, 2, 10, -5, 3)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #1")
@@ -7853,7 +7979,49 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertFalse(getS().intersects(createTriangle(-2, 2, 2, -1, -5, 3, -4, 5, 6)));
+		}
+
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle containing path start point
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Path starts at (0,0,0), triangle contains that point => distance = 0
+			assertTrue(getS().intersects(createTriangle(0, 0, 0, 2, 0, 0, 0, 2, 0)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle containing path end point
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Path ends at (7,-5,2), triangle contains that point => distance = 0
+			assertTrue(getS().intersects(createTriangle(7, -5, 2, 9, -5, 2, 7, -3, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// far triangle near start side, closest to path start
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle in plane x=-3, nearest to path should be close to/start at (0,0,0)
+			// nearest triangle point to (0,0,0): (-3,0,0), distance = 3
+			assertFalse(getS().intersects(createTriangle(-3, 0, 0, -3, 1, 0, -3, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// far triangle near end side, closest to path end
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle in plane x=10, nearest to path should be end (7,-5,2)
+			// nearest triangle point: (10,-5,2), distance = 3
+			assertFalse(getS().intersects(createTriangle(10, -5, 2, 10, -4, 2, 10, -5, 3)));
 		}
 
 		@DisplayName("(AlignedBox3afp) #1")

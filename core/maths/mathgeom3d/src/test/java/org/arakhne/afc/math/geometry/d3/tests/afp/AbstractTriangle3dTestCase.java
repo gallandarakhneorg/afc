@@ -41,6 +41,7 @@ import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Shape3D;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
+import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
 import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.junit.jupiter.api.BeforeEach;
@@ -4004,7 +4005,81 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@EnumSource(CoordinateSystem3D.class)
 		public final void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			MultiShape3afp mshape = createMultiShape();
+			mshape.add(createAlignedBoxFromPoints(5, 8, 0, 7, 9, 0.5));
+			mshape.add(createSphere(-5, 18, 0, 2));
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_2(CoordinateSystem3D cs) {
+			// multishape contains a point on triangle (distance zero)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box contains triangle vertex (0,0,0)
+			mshape.add(createAlignedBoxFromPoints(-1, -1, -1, 0.2, 0.2, 0.2));
+			// Extra far component
+			mshape.add(createSphere(20, 20, 20, 1));
+
+			assertEpsilonEquals(createPoint(0, 0, 0), getS().getClosestPointTo(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_3(CoordinateSystem3D cs) {
+			// nearest component is a sphere near vertex (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Sphere centered at (3,1,1), r=1 => nearest to triangle at vertex (1,1,1), distance 1
+			mshape.add(createSphere(3, 1, 1, 1));
+			// Far box, non-competitive
+			mshape.add(createAlignedBoxFromPoints(10, 10, 10, 12, 12, 12));
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_4(CoordinateSystem3D cs) {
+			// nearest component is a box near edge/vertex (1,0,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box starts at x=2, around y=0,z=1 => nearest triangle point is (1,0,1), distance 1
+			mshape.add(createAlignedBoxFromPoints(2, 0, 1, 3, 1, 2));
+			// Far sphere
+			mshape.add(createSphere(-10, -10, -10, 1));
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_5(CoordinateSystem3D cs) {
+			// tangent-like sphere contact at triangle vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Sphere surface passes through (1,1,1): center (3,1,1), radius 2
+			mshape.add(createSphere(3, 1, 1, 2));
+			// Additional far component
+			mshape.add(createAlignedBoxFromPoints(50, 50, 50, 51, 51, 51));
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_6(CoordinateSystem3D cs) {
+			// both components far, choose minimum distance component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box at x=4..5 around y=1,z=1 => nearest from triangle vertex (1,1,1): distance 3
+			mshape.add(createAlignedBoxFromPoints(4, 1, 1, 5, 2, 2));
+			// Sphere farther: center (10,10,10), r=1
+			mshape.add(createSphere(10, 10, 10, 1));
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(mshape));
 		}
 
 		@DisplayName("(Path3afp) #1")
@@ -4023,7 +4098,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #2")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_2(CoordinateSystem3D cs) {
+		public final void path_2(CoordinateSystem3D cs) {
 			// Path intersects the triangle
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4036,7 +4111,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #3")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_3(CoordinateSystem3D cs) {
+		public final void path_3(CoordinateSystem3D cs) {
 			// Path with multiple line segments, closest is in the second segment
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4050,7 +4125,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #4")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_4(CoordinateSystem3D cs) {
+		public final void path_4(CoordinateSystem3D cs) {
 			// Path far from triangle, no intersection
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4063,7 +4138,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #5")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_5(CoordinateSystem3D cs) {
+		public final void path_5(CoordinateSystem3D cs) {
 			// Path with quadratic curve approaching triangle
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4076,7 +4151,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #6")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_6(CoordinateSystem3D cs) {
+		public final void path_6(CoordinateSystem3D cs) {
 			// Path with cubic curve intersecting triangle
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4089,7 +4164,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #7")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_7(CoordinateSystem3D cs) {
+		public final void path_7(CoordinateSystem3D cs) {
 			// Path with CLOSE that creates segment back to start
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4103,7 +4178,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #8")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_8(CoordinateSystem3D cs) {
+		public final void path_8(CoordinateSystem3D cs) {
 			// Empty path (only MOVE_TO)
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4114,7 +4189,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #9")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_9(CoordinateSystem3D cs) {
+		public final void path_9(CoordinateSystem3D cs) {
 			// Path endpoint on triangle vertex
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4127,7 +4202,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #10")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_10(CoordinateSystem3D cs) {
+		public final void path_10(CoordinateSystem3D cs) {
 			// Path endpoint on triangle edge
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4140,7 +4215,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #11")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_11(CoordinateSystem3D cs) {
+		public final void path_11(CoordinateSystem3D cs) {
 			// Path with complex curve (quadratic and cubic mixed)
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4154,7 +4229,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #12")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_12(CoordinateSystem3D cs) {
+		public final void path_12(CoordinateSystem3D cs) {
 			// Path parallel to triangle plane, above it
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4168,7 +4243,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #13")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_13(CoordinateSystem3D cs) {
+		public final void path_13(CoordinateSystem3D cs) {
 			// Path tangent to triangle surface at one point
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4181,7 +4256,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #14")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_14(CoordinateSystem3D cs) {
+		public final void path_14(CoordinateSystem3D cs) {
 			// Path with large coordinates
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4194,7 +4269,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #15")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_15(CoordinateSystem3D cs) {
+		public final void path_15(CoordinateSystem3D cs) {
 			// Path with multiple closed loops
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4213,7 +4288,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@DisplayName("(Path3afp) #16")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
-		public final void multishape_16(CoordinateSystem3D cs) {
+		public final void path_16(CoordinateSystem3D cs) {
 			// Path with quadratic curve and segment on triangle
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			var path = createPath();
@@ -4223,6 +4298,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			var resultForTriangle = getS().getClosestPointTo(path);
 			assertEpsilonEquals(createPoint(1, 1, 1), resultForTriangle);
 		}
+
 		@DisplayName("(Shape3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6137,7 +6213,80 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@EnumSource(CoordinateSystem3D.class)
 		public final void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			MultiShape3afp mshape = createMultiShape();
+			mshape.add(createAlignedBoxFromPoints(5, 8, 0, 7, 9, 0.5));
+			mshape.add(createSphere(-5, 18, 0, 2));
+			assertEpsilonEquals(8.0777472107, getS().getDistance(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_2(CoordinateSystem3D cs) {
+			// multishape contains a point on triangle (distance zero)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box contains triangle vertex (0,0,0)
+			mshape.add(createAlignedBoxFromPoints(-1, -1, -1, 0.2, 0.2, 0.2));
+			// Extra far component
+			mshape.add(createSphere(20, 20, 20, 1));
+			assertEpsilonEquals(0., getS().getDistance(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_3(CoordinateSystem3D cs) {
+			// nearest component is a sphere near vertex (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Sphere centered at (3,1,1), r=1 => nearest to triangle at vertex (1,1,1), distance 1
+			mshape.add(createSphere(3, 1, 1, 1));
+			// Far box, non-competitive
+			mshape.add(createAlignedBoxFromPoints(10, 10, 10, 12, 12, 12));
+			assertEpsilonEquals(1., getS().getDistance(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_4(CoordinateSystem3D cs) {
+			// nearest component is a box near edge/vertex (1,0,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box starts at x=2, around y=0,z=1 => nearest triangle point is (1,0,1), distance 1
+			mshape.add(createAlignedBoxFromPoints(2, 0, 1, 3, 1, 2));
+			// Far sphere
+			mshape.add(createSphere(-10, -10, -10, 1));
+			assertEpsilonEquals(1., getS().getDistance(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_5(CoordinateSystem3D cs) {
+			// tangent-like sphere contact at triangle vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Sphere surface passes through (1,1,1): center (3,1,1), radius 2
+			mshape.add(createSphere(3, 1, 1, 2));
+			// Additional far component
+			mshape.add(createAlignedBoxFromPoints(50, 50, 50, 51, 51, 51));
+			assertEpsilonEquals(0., getS().getDistance(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_6(CoordinateSystem3D cs) {
+			// both components far, choose minimum distance component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box at x=4..5 around y=1,z=1 => nearest from triangle vertex (1,1,1): distance 3
+			mshape.add(createAlignedBoxFromPoints(4, 1, 1, 5, 2, 2));
+			// Sphere farther: center (10,10,10), r=1
+			mshape.add(createSphere(10, 10, 10, 1));
+			assertEpsilonEquals(3., getS().getDistance(mshape));
 		}
 
 		@DisplayName("(Shape3D) #1")
@@ -7114,7 +7263,80 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@EnumSource(CoordinateSystem3D.class)
 		public final void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			MultiShape3afp mshape = createMultiShape();
+			mshape.add(createAlignedBoxFromPoints(5, 8, 0, 7, 9, 0.5));
+			mshape.add(createSphere(-5, 18, 0, 2));
+			assertEpsilonEquals(65.25, getS().getDistanceSquared(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_2(CoordinateSystem3D cs) {
+			// multishape contains a point on triangle (distance zero)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box contains triangle vertex (0,0,0)
+			mshape.add(createAlignedBoxFromPoints(-1, -1, -1, 0.2, 0.2, 0.2));
+			// Extra far component
+			mshape.add(createSphere(20, 20, 20, 1));
+			assertEpsilonEquals(0., getS().getDistanceSquared(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_3(CoordinateSystem3D cs) {
+			// nearest component is a sphere near vertex (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Sphere centered at (3,1,1), r=1 => nearest to triangle at vertex (1,1,1), distance 1
+			mshape.add(createSphere(3, 1, 1, 1));
+			// Far box, non-competitive
+			mshape.add(createAlignedBoxFromPoints(10, 10, 10, 12, 12, 12));
+			assertEpsilonEquals(1., getS().getDistanceSquared(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_4(CoordinateSystem3D cs) {
+			// nearest component is a box near edge/vertex (1,0,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box starts at x=2, around y=0,z=1 => nearest triangle point is (1,0,1), distance 1
+			mshape.add(createAlignedBoxFromPoints(2, 0, 1, 3, 1, 2));
+			// Far sphere
+			mshape.add(createSphere(-10, -10, -10, 1));
+			assertEpsilonEquals(1., getS().getDistanceSquared(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_5(CoordinateSystem3D cs) {
+			// tangent-like sphere contact at triangle vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Sphere surface passes through (1,1,1): center (3,1,1), radius 2
+			mshape.add(createSphere(3, 1, 1, 2));
+			// Additional far component
+			mshape.add(createAlignedBoxFromPoints(50, 50, 50, 51, 51, 51));
+			assertEpsilonEquals(0., getS().getDistanceSquared(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_6(CoordinateSystem3D cs) {
+			// both components far, choose minimum distance component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box at x=4..5 around y=1,z=1 => nearest from triangle vertex (1,1,1): distance 3
+			mshape.add(createAlignedBoxFromPoints(4, 1, 1, 5, 2, 2));
+			// Sphere farther: center (10,10,10), r=1
+			mshape.add(createSphere(10, 10, 10, 1));
+			assertEpsilonEquals(9., getS().getDistanceSquared(mshape));
 		}
 
 		@DisplayName("(Shape3D) #1")
@@ -8295,7 +8517,80 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@EnumSource(CoordinateSystem3D.class)
 		public final void multishape_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			MultiShape3afp mshape = createMultiShape();
+			mshape.add(createAlignedBoxFromPoints(5, 8, 0, 7, 9, 0.5));
+			mshape.add(createSphere(-5, 18, 0, 2));
+			assertFalse(getS().intersects(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_2(CoordinateSystem3D cs) {
+			// multishape contains a point on triangle (distance zero)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box contains triangle vertex (0,0,0)
+			mshape.add(createAlignedBoxFromPoints(-1, -1, -1, 0.2, 0.2, 0.2));
+			// Extra far component
+			mshape.add(createSphere(20, 20, 20, 1));
+			assertTrue(getS().intersects(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_3(CoordinateSystem3D cs) {
+			// nearest component is a sphere near vertex (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Sphere centered at (3,1,1), r=1 => nearest to triangle at vertex (1,1,1), distance 1
+			mshape.add(createSphere(3, 1, 1, 1));
+			// Far box, non-competitive
+			mshape.add(createAlignedBoxFromPoints(10, 10, 10, 12, 12, 12));
+			assertFalse(getS().intersects(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_4(CoordinateSystem3D cs) {
+			// nearest component is a box near edge/vertex (1,0,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box starts at x=2, around y=0,z=1 => nearest triangle point is (1,0,1), distance 1
+			mshape.add(createAlignedBoxFromPoints(2, 0, 1, 3, 1, 2));
+			// Far sphere
+			mshape.add(createSphere(-10, -10, -10, 1));
+			assertFalse(getS().intersects(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_5(CoordinateSystem3D cs) {
+			// tangent-like sphere contact at triangle vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Sphere surface passes through (1,1,1): center (3,1,1), radius 2
+			mshape.add(createSphere(3, 1, 1, 2));
+			// Additional far component
+			mshape.add(createAlignedBoxFromPoints(50, 50, 50, 51, 51, 51));
+			assertTrue(getS().intersects(mshape));
+		}
+
+		@DisplayName("(MultiShape3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void multishape_6(CoordinateSystem3D cs) {
+			// both components far, choose minimum distance component
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			MultiShape3afp mshape = createMultiShape();
+			// Box at x=4..5 around y=1,z=1 => nearest from triangle vertex (1,1,1): distance 3
+			mshape.add(createAlignedBoxFromPoints(4, 1, 1, 5, 2, 2));
+			// Sphere farther: center (10,10,10), r=1
+			mshape.add(createSphere(10, 10, 10, 1));
+			assertFalse(getS().intersects(mshape));
 		}
 
 		@DisplayName("(Shape3D) #1")

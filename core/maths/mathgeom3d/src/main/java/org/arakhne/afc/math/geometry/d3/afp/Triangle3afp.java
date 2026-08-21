@@ -469,7 +469,7 @@ public interface Triangle3afp<
 				epsilon);
 	}
 
-	/** Calculates the closest points on a triangle to a path, and the closest point on this part to the triangle.
+	/** Calculates the closest points on a triangle to a path, and the closest point on this path to the triangle.
 	 *
 	 * @param v1x x coordinate of the first point of the first triangle.
 	 * @param v1y y coordinate of the first point of the first triangle.
@@ -1819,8 +1819,17 @@ public interface Triangle3afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> path) {
-		throw new UnsupportedOperationException();
+	default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : AssertMessages.notNullParameter();
+		final var pointOnShape = multishape.getClosestPointTo(this);
+		final var point = getGeomFactory().newPoint();
+		findsClosestPointToTrianglePoint(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				pointOnShape.getX(), pointOnShape.getY(), pointOnShape.getZ(),
+				point);
+		return point;
 	}
 
 	@Pure
@@ -1924,8 +1933,7 @@ public interface Triangle3afp<
 	@Override
 	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
-		//TODO: return MultiShape3afp.intersectsMultiShapeTriangle();
-		throw new UnsupportedOperationException();
+		return multishape.intersects(this);
 	}
 
 	/** Tools for transforms.

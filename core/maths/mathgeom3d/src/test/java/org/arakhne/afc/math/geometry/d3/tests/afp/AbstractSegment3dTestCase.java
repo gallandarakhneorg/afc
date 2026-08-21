@@ -149,15 +149,63 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 	@DisplayName("getClosestPointTo")
 	@Nested
 	public class GetClosestPointTo {
-		
+
 		@DisplayName("(Triangle3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(createPoint(0, 0, 0), getS().getClosestPointTo(createTriangle(0, 0, 0, -1, -1, -1, 1, 0, 1)));
 		}
 		
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle near segment end (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(createTriangle(2, 1, 1, 2, 2, 1, 2, 1, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle near segment start (0,0,0)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(createPoint(0, 0, 0), getS().getClosestPointTo(createTriangle(-1, 0, 0, -1, 1, 0, -1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// triangle intersects segment interior
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle contains (0.5,0.5,0.5), which lies on the segment.
+			assertEpsilonEquals(createPoint(0.5, 0.5, 0.5), getS().getClosestPointTo(createTriangle(0.5, 0.5, 0.5, 0.5, 1.5, 0.5, 0.5, 0.5, 1.5)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// parallel offset triangle (constant distance)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle lies in plane z=2, nearest point from segment is endpoint (1,1,1) -> (1,1,2)
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(createTriangle(0, 0, 2, 1, 0, 2, 0, 1, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_6(CoordinateSystem3D cs) {
+			// farther triangle, non-zero non-unit distance
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest point is endpoint (1,1,1), nearest triangle point is (3,1,1)
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(createTriangle(3, 1, 1, 3, 2, 1, 3, 1, 2)));
+		}
+
 		@DisplayName("(AlignedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -1501,7 +1549,55 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(0, 0, 0, -1, -1, -1, 1, 0, 1)));
+		}
+		
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle near segment end (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1., getS().getDistance(createTriangle(2, 1, 1, 2, 2, 1, 2, 1, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle near segment start (0,0,0)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1., getS().getDistance(createTriangle(-1, 0, 0, -1, 1, 0, -1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// triangle intersects segment interior
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle contains (0.5,0.5,0.5), which lies on the segment.
+			assertEpsilonEquals(0., getS().getDistance(createTriangle(0.5, 0.5, 0.5, 0.5, 1.5, 0.5, 0.5, 0.5, 1.5)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// parallel offset triangle (constant distance)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle lies in plane z=2, nearest point from segment is endpoint (1,1,1) -> (1,1,2)
+			assertEpsilonEquals(1.2247448714, getS().getDistance(createTriangle(0, 0, 2, 1, 0, 2, 0, 1, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_6(CoordinateSystem3D cs) {
+			// farther triangle, non-zero non-unit distance
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest point is endpoint (1,1,1), nearest triangle point is (3,1,1)
+			assertEpsilonEquals(2., getS().getDistance(createTriangle(3, 1, 1, 3, 2, 1, 3, 1, 2)));
 		}
 
 		@DisplayName("(Shape3D) #1")
@@ -2242,7 +2338,55 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			throw new UnsupportedOperationException();
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(0, 0, 0, -1, -1, -1, 1, 0, 1)));
+		}
+		
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle near segment end (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1., getS().getDistanceSquared(createTriangle(2, 1, 1, 2, 2, 1, 2, 1, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle near segment start (0,0,0)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertEpsilonEquals(1., getS().getDistanceSquared(createTriangle(-1, 0, 0, -1, 1, 0, -1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// triangle intersects segment interior
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle contains (0.5,0.5,0.5), which lies on the segment.
+			assertEpsilonEquals(0., getS().getDistanceSquared(createTriangle(0.5, 0.5, 0.5, 0.5, 1.5, 0.5, 0.5, 0.5, 1.5)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// parallel offset triangle (constant distance)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle lies in plane z=2, nearest point from segment is endpoint (1,1,1) -> (1,1,2)
+			assertEpsilonEquals(1.5, getS().getDistanceSquared(createTriangle(0, 0, 2, 1, 0, 2, 0, 1, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_6(CoordinateSystem3D cs) {
+			// farther triangle, non-zero non-unit distance
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest point is endpoint (1,1,1), nearest triangle point is (3,1,1)
+			assertEpsilonEquals(4., getS().getDistanceSquared(createTriangle(3, 1, 1, 3, 2, 1, 3, 1, 2)));
 		}
 
 		@DisplayName("(Shape3D) #1")
@@ -8941,7 +9085,55 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		@EnumSource(CoordinateSystem3D.class)
 		public final void triangle_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertTrue(getS().intersects(createTriangle(0, 0, 0, -1, -1, -1, 1, 0, 1)));
+		}
+		
+		@DisplayName("(Triangle3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_2(CoordinateSystem3D cs) {
+			// triangle near segment end (1,1,1)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createTriangle(2, 1, 1, 2, 2, 1, 2, 1, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_3(CoordinateSystem3D cs) {
+			// triangle near segment start (0,0,0)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createTriangle(-1, 0, 0, -1, 1, 0, -1, 0, 1)));
+		}
+
+		@DisplayName("(Triangle3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_4(CoordinateSystem3D cs) {
+			// triangle intersects segment interior
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle contains (0.5,0.5,0.5), which lies on the segment.
+			assertTrue(getS().intersects(createTriangle(0.5, 0.5, 0.5, 0.5, 1.5, 0.5, 0.5, 0.5, 1.5)));
+		}
+
+		@DisplayName("(Triangle3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_5(CoordinateSystem3D cs) {
+			// parallel offset triangle (constant distance)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Triangle lies in plane z=2, nearest point from segment is endpoint (1,1,1) -> (1,1,2)
+			assertFalse(getS().intersects(createTriangle(0, 0, 2, 1, 0, 2, 0, 1, 2)));
+		}
+
+		@DisplayName("(Triangle3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void triangle_6(CoordinateSystem3D cs) {
+			// farther triangle, non-zero non-unit distance
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Closest point is endpoint (1,1,1), nearest triangle point is (3,1,1)
+			assertFalse(getS().intersects(createTriangle(3, 1, 1, 3, 2, 1, 3, 1, 2)));
 		}
 
 		@DisplayName("(MultiShape3afp) #1")

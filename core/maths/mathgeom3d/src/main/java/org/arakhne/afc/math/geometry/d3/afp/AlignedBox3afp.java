@@ -1558,7 +1558,13 @@ public interface AlignedBox3afp<
 	@Override
 	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return Triangle3afp.intersectsTriangleAlignedBox(
+				triangle.getX1(), triangle.getY1(), triangle.getZ1(),
+				triangle.getX2(), triangle.getY2(), triangle.getZ2(),
+				triangle.getX3(), triangle.getY3(), triangle.getZ3(),
+				getMinX(), getMinY(), getMinZ(),
+				getMaxX(), getMaxY(), getMaxZ(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
@@ -1644,9 +1650,18 @@ public interface AlignedBox3afp<
 	}
 
 	@Override
-	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : AssertMessages.notNullParameter();
+		final var point = getGeomFactory().newPoint();
+		Triangle3afp.findsClosestPointToTriangleAlignedBox(
+			triangle.getX1(), triangle.getY1(), triangle.getZ1(),
+			triangle.getX2(), triangle.getY2(), triangle.getZ2(),
+			triangle.getX3(), triangle.getY3(), triangle.getZ3(),
+			getMinX(), getMinY(), getMinZ(),
+			getMaxX(), getMaxY(), getMaxZ(),
+			GeomConstants.DISTANCE_EPSILON,
+			null, point);
+		return point;
 	}
 
 	@Override

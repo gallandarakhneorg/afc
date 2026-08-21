@@ -508,7 +508,11 @@ public interface Sphere3afp<
 	@Override
 	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return Triangle3afp.intersectsTriangleSphere(
+			triangle.getX1(), triangle.getY1(), triangle.getZ1(),
+			triangle.getX2(), triangle.getY2(), triangle.getZ2(),
+			triangle.getX3(), triangle.getY3(), triangle.getZ3(),
+			getX(), getY(), getZ(), getRadius());
 	}
 
 	@Pure
@@ -548,9 +552,30 @@ public interface Sphere3afp<
 	}
 
 	@Override
-	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : AssertMessages.notNullParameter();
+		final var point = getGeomFactory().newPoint();
+		final var sx = getX();
+		final var sy = getY();
+		final var sz = getZ();
+		Triangle3afp.findsClosestPointToTrianglePoint(
+				triangle.getX1(), triangle.getY1(), triangle.getZ1(),
+				triangle.getX2(), triangle.getY2(), triangle.getZ2(),
+				triangle.getX3(), triangle.getY3(), triangle.getZ3(),
+				sx, sy, sz,
+				point);
+		var vx = point.getX() - sx;
+		var vy = point.getY() - sy;
+		var vz = point.getZ() - sz;
+		final var radius = getRadius();
+		final var dist = Math.sqrt(vx  * vx + vy * vy + vz * vz);
+		if (dist > radius) {
+			vx = (radius * vx) / dist;
+			vy = (radius * vy) / dist;
+			vz = (radius * vz) / dist;
+			point.set(sx + vx, sy + vy, sz + vz);
+		}
+		return point;
 	}
 
     @Pure
