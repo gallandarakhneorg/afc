@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d3.tests.afp;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -28,29 +28,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem3D;
-import org.arakhne.afc.math.geometry.base.d2.InnerComputationPoint2D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
-import org.arakhne.afc.math.geometry.base.d3.MultiShape3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Shape3D;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
-import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
-import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
-import org.arakhne.afc.math.geometry.d3.afp.Segment3afp.LineIntersection;
-import org.arakhne.afc.math.geometry.d3.afp.Segment3afp.SegmentIntersection;
 import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
-import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -3800,12 +3791,212 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			assertEpsilonEquals(createPoint(0.375, 0.25, 0.375), getS().getClosestPointTo(createPoint(0.25, 0.25, 0.5)));
 		}
 
-		@DisplayName("(AlignedBox3afp) #1")
+		@DisplayName("(Alignedbox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void alignedbox_1(CoordinateSystem3D cs) {
+			// Triangle intersects box => distance 0
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-5, -10, -4, 0, 0, 0));
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_2(CoordinateSystem3D cs) {
+			// Triangle completely inside box => distance 0
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.25, 0.4, 0.25);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(0.2, 0.2, 0.2), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_3(CoordinateSystem3D cs) {
+			// Triangle above box, separated
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 2, 1, 0, 2, 0, 1, 2);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(0.0,0.0,2.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_4(CoordinateSystem3D cs) {
+			// Triangle vertex inside box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 0, 2, 0, 0, 0, 2, 0);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_5(CoordinateSystem3D cs) {
+			// Triangle far from box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(5, 5, 5, 6, 5, 5, 5, 6, 5);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(5, 5, 5), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_6(CoordinateSystem3D cs) {
+			// Triangle edge intersects box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -0.5, 0, 1, -0.5, 0, 0, 0.5, 0);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5));
+			assertEpsilonEquals(createPoint(0.0,0.5,0.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_7(CoordinateSystem3D cs) {
+			// Triangle parallel to box, above it
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, 2, 1, -1, 2, 0, 1, 2);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-2, -2, -1, 2, 2, 1));
+			assertEpsilonEquals(createPoint(-1, -1, 2), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_8(CoordinateSystem3D cs) {
+			// Triangle touches box at a vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(1, 1, 1, 2, 1, 1, 1, 2, 1);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(1, 1, 1), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_9(CoordinateSystem3D cs) {
+			// Triangle touches box at an edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, -1, 1, 0, 1, 1, 1, 0, 1);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(0, -1, 1), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_10(CoordinateSystem3D cs) {
+			// Box vertex inside triangle plane, closest point is vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-2, -2, 0, 2, -2, 0, 0, 2, 0);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5));
+			assertEpsilonEquals(createPoint(-0.5,-0.5,0.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_11(CoordinateSystem3D cs) {
+			// Small box away from large triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-10, -10, 0, 10, -10, 0, 0, 10, 0);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(3, 3, 3, 3.5, 3.5, 3.5));
+			assertEpsilonEquals(createPoint(3.0,3.0,0.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_12(CoordinateSystem3D cs) {
+			// Thin triangle, box centered on its plane
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-5, 0, 0, 5, 0, 0, 0, 0.1, 0);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(0.0,0.1,0.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_13(CoordinateSystem3D cs) {
+			// Box completely inside triangle plane region (large triangle)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-10, -10, 0, 10, -10, 0, 0, 10, 0);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(-1.0,-1.0,0.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_14(CoordinateSystem3D cs) {
+			// Degenerate triangle (point-like)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 0, 0.001, 0, 0, 0, 0.001, 0);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_15(CoordinateSystem3D cs) {
+			// Large coordinates with both shapes far apart
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(1000, 1000, 1000, 1000, 1000, 1000, 1000, 1001, 1000);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(2000, 2000, 2000, 2001, 2001, 2001));
+			assertEpsilonEquals(createPoint(1000.0,1001.0,1000.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_16(CoordinateSystem3D cs) {
+			// Triangle edge aligned with box edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, 1, 1, -1, 1, 0, 1, 1);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(-1.0,-1.0,1.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_17(CoordinateSystem3D cs) {
+			// Triangle one corner of box, extends outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, -1, 2, -1, -1, -1, 2, -1);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(0, 0, 0, 1, 1, 1));
+			assertEpsilonEquals(createPoint(0.0,0.0,-1.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_18(CoordinateSystem3D cs) {
+			// Box corner projection onto triangle interior
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-5, -5, 0, 5, -5, 0, 0, 5, 0);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(1, 1, 1, 2, 2, 2));
+			assertEpsilonEquals(createPoint(1.0,1.0,0.0), resultOnTriangle);
+		}
+
+		@DisplayName("(Alignedbox3afp) #19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_19(CoordinateSystem3D cs) {
+			// Oblique triangle and axis-aligned box interaction
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-2, -2, 1, 2, 0, 1, 0, 2, 1);
+			var resultOnTriangle = getS().getClosestPointTo(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1));
+			assertEpsilonEquals(createPoint(0.0,-1.0,1.0), resultOnTriangle);
 		}
 
 		@DisplayName("(MultiShape3afp) #1")
@@ -3984,7 +4175,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			path.moveTo(0.5, -1, 0.5);
 			path.lineTo(0.5, 0.1, 0.5);
 			var resultForTriangle = getS().getClosestPointTo(path);
-			assertEpsilonEquals(createPoint(0.5, 0.1, 0.5), resultForTriangle);
+			assertEpsilonEquals(createPoint(0.5,0.0,0.5), resultForTriangle);
 		}
 
 		@DisplayName("(Path3afp) #14")
@@ -5220,12 +5411,193 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			assertEpsilonEquals(0.1767766953, getS().getDistance(createPoint(0.25, 0.25, 0.5)));
 		}
 
-		@DisplayName("(AlignedBox3afp) #1")
+		@DisplayName("(Alignedbox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void alignedbox_1(CoordinateSystem3D cs) {
+			// Triangle intersects box => distance 0
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-5, -10, -4, 0, 0, 0)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_2(CoordinateSystem3D cs) {
+			// Triangle completely inside box => distance 0
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.25, 0.4, 0.25);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_3(CoordinateSystem3D cs) {
+			// Triangle above box, separated
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 2, 1, 0, 2, 0, 1, 2);
+			assertEpsilonEquals(1., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_4(CoordinateSystem3D cs) {
+			// Triangle vertex inside box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 0, 2, 0, 0, 0, 2, 0);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_5(CoordinateSystem3D cs) {
+			// Triangle far from box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(5, 5, 5, 6, 5, 5, 5, 6, 5);
+			assertEpsilonEquals(6.9282032303, getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_6(CoordinateSystem3D cs) {
+			// Triangle edge intersects box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -0.5, 0, 1, -0.5, 0, 0, 0.5, 0);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_7(CoordinateSystem3D cs) {
+			// Triangle parallel to box, above it
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, 2, 1, -1, 2, 0, 1, 2);
+			assertEpsilonEquals(1., getS().getDistance(createAlignedBoxFromPoints(-2, -2, -1, 2, 2, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_8(CoordinateSystem3D cs) {
+			// Triangle touches box at a vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(1, 1, 1, 2, 1, 1, 1, 2, 1);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_9(CoordinateSystem3D cs) {
+			// Triangle touches box at an edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, -1, 1, 0, 1, 1, 1, 0, 1);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_10(CoordinateSystem3D cs) {
+			// Box vertex inside triangle plane, closest point is vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-2, -2, 0, 2, -2, 0, 0, 2, 0);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_11(CoordinateSystem3D cs) {
+			// Small box away from large triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-10, -10, 0, 10, -10, 0, 0, 10, 0);
+			assertEpsilonEquals(3., getS().getDistance(createAlignedBoxFromPoints(3, 3, 3, 3.5, 3.5, 3.5)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_12(CoordinateSystem3D cs) {
+			// Thin triangle, box centered on its plane
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-5, 0, 0, 5, 0, 0, 0, 0.1, 0);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_13(CoordinateSystem3D cs) {
+			// Box completely inside triangle plane region (large triangle)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-10, -10, 0, 10, -10, 0, 0, 10, 0);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_14(CoordinateSystem3D cs) {
+			// Degenerate triangle (point-like)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 0, 0.001, 0, 0, 0, 0.001, 0);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_15(CoordinateSystem3D cs) {
+			// Large coordinates with both shapes far apart
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(1000, 1000, 1000, 1000, 1000, 1000, 1000, 1001, 1000);
+			assertEpsilonEquals(1731.473649814, getS().getDistance(createAlignedBoxFromPoints(2000, 2000, 2000, 2001, 2001, 2001)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_16(CoordinateSystem3D cs) {
+			// Triangle edge aligned with box edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, 1, 1, -1, 1, 0, 1, 1);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_17(CoordinateSystem3D cs) {
+			// Triangle one corner of box, extends outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, -1, 2, -1, -1, -1, 2, -1);
+			assertEpsilonEquals(1., getS().getDistance(createAlignedBoxFromPoints(0, 0, 0, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_18(CoordinateSystem3D cs) {
+			// Box corner projection onto triangle interior
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-5, -5, 0, 5, -5, 0, 0, 5, 0);
+			assertEpsilonEquals(1., getS().getDistance(createAlignedBoxFromPoints(1, 1, 1, 2, 2, 2)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_19(CoordinateSystem3D cs) {
+			// Oblique triangle and axis-aligned box interaction
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-2, -2, 1, 2, 0, 1, 0, 2, 1);
+			assertEpsilonEquals(0., getS().getDistance(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
 		}
 
 		@DisplayName("(Path3afp) #1")
@@ -6016,12 +6388,193 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			assertEpsilonEquals(0.03125, getS().getDistanceSquared(createPoint(0.25, 0.25, 0.5)));
 		}
 
-		@DisplayName("(AlignedBox3afp) #1")
+		@DisplayName("(Alignedbox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void alignedbox_1(CoordinateSystem3D cs) {
+			// Triangle intersects box => distance 0
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-5, -10, -4, 0, 0, 0)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_2(CoordinateSystem3D cs) {
+			// Triangle completely inside box => distance 0
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.25, 0.4, 0.25);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_3(CoordinateSystem3D cs) {
+			// Triangle above box, separated
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 2, 1, 0, 2, 0, 1, 2);
+			assertEpsilonEquals(1., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_4(CoordinateSystem3D cs) {
+			// Triangle vertex inside box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 0, 2, 0, 0, 0, 2, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_5(CoordinateSystem3D cs) {
+			// Triangle far from box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(5, 5, 5, 6, 5, 5, 5, 6, 5);
+			assertEpsilonEquals(48., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_6(CoordinateSystem3D cs) {
+			// Triangle edge intersects box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -0.5, 0, 1, -0.5, 0, 0, 0.5, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_7(CoordinateSystem3D cs) {
+			// Triangle parallel to box, above it
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, 2, 1, -1, 2, 0, 1, 2);
+			assertEpsilonEquals(1., getS().getDistanceSquared(createAlignedBoxFromPoints(-2, -2, -1, 2, 2, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_8(CoordinateSystem3D cs) {
+			// Triangle touches box at a vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(1, 1, 1, 2, 1, 1, 1, 2, 1);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_9(CoordinateSystem3D cs) {
+			// Triangle touches box at an edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, -1, 1, 0, 1, 1, 1, 0, 1);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_10(CoordinateSystem3D cs) {
+			// Box vertex inside triangle plane, closest point is vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-2, -2, 0, 2, -2, 0, 0, 2, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_11(CoordinateSystem3D cs) {
+			// Small box away from large triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-10, -10, 0, 10, -10, 0, 0, 10, 0);
+			assertEpsilonEquals(9., getS().getDistanceSquared(createAlignedBoxFromPoints(3, 3, 3, 3.5, 3.5, 3.5)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_12(CoordinateSystem3D cs) {
+			// Thin triangle, box centered on its plane
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-5, 0, 0, 5, 0, 0, 0, 0.1, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_13(CoordinateSystem3D cs) {
+			// Box completely inside triangle plane region (large triangle)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-10, -10, 0, 10, -10, 0, 0, 10, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_14(CoordinateSystem3D cs) {
+			// Degenerate triangle (point-like)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(0, 0, 0, 0.001, 0, 0, 0, 0.001, 0);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_15(CoordinateSystem3D cs) {
+			// Large coordinates with both shapes far apart
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(1000, 1000, 1000, 1000, 1000, 1000, 1000, 1001, 1000);
+			assertEpsilonEquals(2998001, getS().getDistanceSquared(createAlignedBoxFromPoints(2000, 2000, 2000, 2001, 2001, 2001)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_16(CoordinateSystem3D cs) {
+			// Triangle edge aligned with box edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, 1, 1, -1, 1, 0, 1, 1);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_17(CoordinateSystem3D cs) {
+			// Triangle one corner of box, extends outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-1, -1, -1, 2, -1, -1, -1, 2, -1);
+			assertEpsilonEquals(1., getS().getDistanceSquared(createAlignedBoxFromPoints(0, 0, 0, 1, 1, 1)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_18(CoordinateSystem3D cs) {
+			// Box corner projection onto triangle interior
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-5, -5, 0, 5, -5, 0, 0, 5, 0);
+			assertEpsilonEquals(1., getS().getDistanceSquared(createAlignedBoxFromPoints(1, 1, 1, 2, 2, 2)));
+		}
+
+		@DisplayName("(Alignedbox3afp) #19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_19(CoordinateSystem3D cs) {
+			// Oblique triangle and axis-aligned box interaction
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			getS().set(-2, -2, 1, 2, 0, 1, 0, 2, 1);
+			assertEpsilonEquals(0., getS().getDistanceSquared(createAlignedBoxFromPoints(-1, -1, -1, 1, 1, 1)));
 		}
 
 		@DisplayName("(Path3afp) #1")
@@ -7001,12 +7554,127 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 							1.5, 11, 1.5)));
 		}
 
-		@DisplayName("(AlignedBox3afp) #1")
+
+		@DisplayName("(AligniedBox3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void alignedbox_1(CoordinateSystem3D cs) {
+			// box [0,0,0]-[1,1,1] with default triangle => false (reference behavior)
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(0., 0., 0., 1., 1., 1.)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_2(CoordinateSystem3D cs) {
+			// tiny box around vertex A => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_3(CoordinateSystem3D cs) {
+			// tiny box around vertex B => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(0.9, 0.9, 0.9, 1.1, 1.1, 1.1)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_4(CoordinateSystem3D cs) {
+			// tiny box around vertex C => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(0.9, -0.1, 0.9, 1.1, 0.1, 1.1)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_5(CoordinateSystem3D cs) {
+			// box centered on interior triangle point => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// around P=(0.5,0.2,0.5) which is on triangle
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(0.45, 0.15, 0.45, 0.55, 0.25, 0.55)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_6(CoordinateSystem3D cs) {
+			// box far away => false
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(getS().intersects(createAlignedBoxFromPoints(10., 10., 10., 12., 12., 12.)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_7(CoordinateSystem3D cs) {
+			// box touching only at one triangle vertex => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Degenerate touching at A via max corner
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(-1., -1., -1., 0., 0., 0.)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_8(CoordinateSystem3D cs) {
+			// box intersecting along triangle edge AC region => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(0.4, -0.1, 0.4, 0.6, 0.1, 0.6)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_9(CoordinateSystem3D cs) {
+			// plane-crossing box but projected area misses triangle => false
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// box crosses plane x=z near (2,*,2) outside triangle extents
+			assertFalse(getS().intersects(createAlignedBoxFromPoints(1.8, -0.2, 1.7, 2.2, 0.2, 2.3)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_10(CoordinateSystem3D cs) {
+			// large box containing whole triangle => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(-1., -1., -1., 2., 2., 2.)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_11(CoordinateSystem3D cs) {
+			// flat box (zero thickness in Y) slicing triangle line => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// y=0 plane slab intersects edge AC
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(0.2, 0.0, 0.2, 0.8, 0.0, 0.8)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_12(CoordinateSystem3D cs) {
+			// point-box exactly on interior triangle point => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(getS().intersects(createAlignedBoxFromPoints(0.5, 0.2, 0.5, 0.5, 0.2, 0.5)));
+		}
+
+		@DisplayName("(AligniedBox3afp) #13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void alignedbox_13(CoordinateSystem3D cs) {
+			// point-box on triangle plane but outside triangle => false
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// (2,0,2) is on plane x=z but outside triangle
+			assertFalse(getS().intersects(createAlignedBoxFromPoints(2., 0., 2., 2., 0., 2.)));
 		}
 
 		@DisplayName("(Path3afp) #1")
@@ -8038,8 +8706,216 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
 		public final void test_1(CoordinateSystem3D cs) {
+			// box [0,0,0]-[1,1,1] with default triangle => false (reference behavior)
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					0., 0., 0., 1., 1., 1.,
+					EPSILON));
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			// tiny box around vertex A => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					-0.1, -0.1, -0.1, 0.1, 0.1, 0.1,
+					EPSILON));
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			// tiny box around vertex B => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					0.9, 0.9, 0.9, 1.1, 1.1, 1.1,
+					EPSILON));
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			// tiny box around vertex C => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					0.9, -0.1, 0.9, 1.1, 0.1, 1.1,
+					EPSILON));
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			// box centered on interior triangle point => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// around P=(0.5,0.2,0.5) which is on triangle
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					0.45, 0.15, 0.45, 0.55, 0.25, 0.55,
+					EPSILON));
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			// box far away => false
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					10., 10., 10., 12., 12., 12.,
+					EPSILON));
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			// box touching only at one triangle vertex => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Degenerate touching at A via max corner
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					-1., -1., -1., 0., 0., 0.,
+					EPSILON));
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			// box intersecting along triangle edge AC region => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					0.4, -0.1, 0.4, 0.6, 0.1, 0.6,
+					EPSILON));
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			// plane-crossing box but projected area misses triangle => false
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// box crosses plane x=z near (2,*,2) outside triangle extents
+			assertFalse(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					1.8, -0.2, 1.7, 2.2, 0.2, 2.3,
+					EPSILON));
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			// large box containing whole triangle => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					-1., -1., -1., 2., 2., 2.,
+					EPSILON));
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			// flat box (zero thickness in Y) slicing triangle line => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// y=0 plane slab intersects edge AC
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					0.2, 0.0, 0.2, 0.8, 0.0, 0.8,
+					EPSILON));
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			// point-box exactly on interior triangle point => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					0.5, 0.2, 0.5, 0.5, 0.2, 0.5,
+					EPSILON));
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			// point-box on triangle plane but outside triangle => false
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// (2,0,2) is on plane x=z but outside triangle
+			assertFalse(Triangle3afp.intersectsTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					2., 0., 2., 2., 0., 2.,
+					EPSILON));
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			// translated triangle + local intersecting box => true
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// triangle translated by (+3,-2,+3)
+			assertTrue(Triangle3afp.intersectsTriangleAlignedBox(
+					3., -2., 3.,
+					4., -1., 4.,
+					4., -2., 4.,
+					3.4, -2.1, 3.4, 3.6, -1.9, 3.6,
+					EPSILON));
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			// translated triangle + far box => false
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertFalse(Triangle3afp.intersectsTriangleAlignedBox(
+					3., -2., 3.,
+					4., -1., 4.,
+					4., -2., 4.,
+					0., 0., 0., 1., 1., 1.,
+					EPSILON));
 		}
 	}
 
@@ -10453,11 +11329,12 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_1(CoordinateSystem3D cs) {
 				// box [0,0,0]-[1,1,1] with default triangle => false (reference behavior)
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				assertFalse(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
+				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
-						0., 0., 0., 1., 1., 1.));
+						0., 0., 0., 1., 1., 1.,
+						EPSILON));
 			}
 
 			@DisplayName("#2")
@@ -10467,8 +11344,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				// tiny box around vertex A => true
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						-0.1, -0.1, -0.1, 0.1, 0.1, 0.1));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						-0.1, -0.1, -0.1, 0.1, 0.1, 0.1,
+						EPSILON));
 			}
 
 			@DisplayName("#3")
@@ -10478,8 +11358,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				// tiny box around vertex B => true
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						0.9, 0.9, 0.9, 1.1, 1.1, 1.1));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						0.9, 0.9, 0.9, 1.1, 1.1, 1.1,
+						EPSILON));
 			}
 
 			@DisplayName("#4")
@@ -10489,8 +11372,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				// tiny box around vertex C => true
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						0.9, -0.1, 0.9, 1.1, 0.1, 1.1));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						0.9, -0.1, 0.9, 1.1, 0.1, 1.1,
+						EPSILON));
 			}
 
 			@DisplayName("#5")
@@ -10501,8 +11387,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				// around P=(0.5,0.2,0.5) which is on triangle
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						0.45, 0.15, 0.45, 0.55, 0.25, 0.55));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						0.45, 0.15, 0.45, 0.55, 0.25, 0.55,
+						EPSILON));
 			}
 
 			@DisplayName("#6")
@@ -10512,8 +11401,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				// box far away => false
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assertFalse(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						10., 10., 10., 12., 12., 12.));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						10., 10., 10., 12., 12., 12.,
+						EPSILON));
 			}
 
 			@DisplayName("#7")
@@ -10524,8 +11416,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				// Degenerate touching at A via max corner
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						-1., -1., -1., 0., 0., 0.));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						-1., -1., -1., 0., 0., 0.,
+						EPSILON));
 			}
 
 			@DisplayName("#8")
@@ -10535,8 +11430,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				// box intersecting along triangle edge AC region => true
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						0.4, -0.1, 0.4, 0.6, 0.1, 0.6));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						0.4, -0.1, 0.4, 0.6, 0.1, 0.6,
+						EPSILON));
 			}
 
 			@DisplayName("#9")
@@ -10547,8 +11445,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				// box crosses plane x=z near (2,*,2) outside triangle extents
 				assertFalse(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						1.8, -0.2, 1.7, 2.2, 0.2, 2.3));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						1.8, -0.2, 1.7, 2.2, 0.2, 2.3,
+						EPSILON));
 			}
 
 			@DisplayName("#10")
@@ -10558,8 +11459,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				// large box containing whole triangle => true
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						-1., -1., -1., 2., 2., 2.));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						-1., -1., -1., 2., 2., 2.,
+						EPSILON));
 			}
 
 			@DisplayName("#11")
@@ -10570,8 +11474,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				// y=0 plane slab intersects edge AC
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						0.2, 0.0, 0.2, 0.8, 0.0, 0.8));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						0.2, 0.0, 0.2, 0.8, 0.0, 0.8,
+						EPSILON));
 			}
 
 			@DisplayName("#12")
@@ -10581,8 +11488,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				// point-box exactly on interior triangle point => true
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				assertTrue(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						0.5, 0.2, 0.5, 0.5, 0.2, 0.5));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						0.5, 0.2, 0.5, 0.5, 0.2, 0.5,
+						EPSILON));
 			}
 
 			@DisplayName("#13")
@@ -10593,8 +11503,11 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 				// (2,0,2) is on plane x=z but outside triangle
 				assertFalse(Triangle3afp.MollerAlgorithmTools.intersectsTriangleAlignedBox(
-						0., 0., 0., 1., 1., 1., 1., 0., 1.,
-						2., 0., 2., 2., 0., 2.));
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						2., 0., 2., 2., 0., 2.,
+						EPSILON));
 			}
 
 			@DisplayName("#14")
@@ -10608,7 +11521,8 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 						3., -2., 3.,
 						4., -1., 4.,
 						4., -2., 4.,
-						3.4, -2.1, 3.4, 3.6, -1.9, 3.6));
+						3.4, -2.1, 3.4, 3.6, -1.9, 3.6,
+						EPSILON));
 			}
 
 			@DisplayName("#15")
@@ -10621,7 +11535,8 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 						3., -2., 3.,
 						4., -1., 4.,
 						4., -2., 4.,
-						0., 0., 0., 1., 1., 1.));
+						0., 0., 0., 1., 1., 1.,
+						EPSILON));
 			}
 		}
 	}
@@ -10665,7 +11580,372 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 	@DisplayName("Eberly Algorithms")
 	@Nested
 	public class EberlyAlgorithmToolsTests {
+		
+		@DisplayName("findsClosestPointToTriangleAlignedBox")
+		@Nested
+		public class FindsClosestPointToTriangleAlignedBox {
 
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_1(CoordinateSystem3D cs) {
+				// Triangle intersects box => distance 0
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						getS().getX1(), getS().getY1(), getS().getZ1(),
+						getS().getX2(), getS().getY2(), getS().getZ2(),
+						getS().getX3(), getS().getY3(), getS().getZ3(),
+						-5, -10, -4, 0, 0, 0,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0, 0, 0), resultOnBox);
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_2(CoordinateSystem3D cs) {
+				// Triangle completely inside box => distance 0
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						0.2, 0.2, 0.2,
+						0.3, 0.3, 0.3,
+						0.25, 0.4, 0.25,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0.2, 0.2, 0.2), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0.2, 0.2, 0.2), resultOnBox);
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_3(CoordinateSystem3D cs) {
+				// Triangle above box, separated
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						0, 0, 2, 1, 0, 2, 0, 1, 2,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0.0,0.0,2.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0.0,0.0,1.0), resultOnBox);
+			}
+
+			@DisplayName("#4")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_4(CoordinateSystem3D cs) {
+				// Triangle vertex inside box
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						0, 0, 0, 2, 0, 0, 0, 2, 0,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0, 0, 0), resultOnBox);
+			}
+
+			@DisplayName("#5")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_5(CoordinateSystem3D cs) {
+				// Triangle far from box
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						5, 5, 5, 6, 5, 5, 5, 6, 5,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(5, 5, 5), resultOnTriangle);
+				assertEpsilonEquals(createPoint(1, 1, 1), resultOnBox);
+			}
+
+			@DisplayName("#6")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_6(CoordinateSystem3D cs) {
+				// Triangle edge intersects box face
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-1, -0.5, 0, 1, -0.5, 0, 0, 0.5, 0,
+						-0.5, -0.5, -0.5, 0.5, 0.5, 0.5,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0.0,0.5,0.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0.0,0.5,0.0), resultOnBox);
+			}
+
+			@DisplayName("#7")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_7(CoordinateSystem3D cs) {
+				// Triangle parallel to box, above it
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-1, -1, 2, 1, -1, 2, 0, 1, 2,
+						-2, -2, -1, 2, 2, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(-1, -1, 2), resultOnTriangle);
+				assertEpsilonEquals(createPoint(-1, -1, 1), resultOnBox);
+			}
+
+			@DisplayName("#8")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_8(CoordinateSystem3D cs) {
+				// Triangle touches box at a vertex
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						1, 1, 1, 2, 1, 1, 1, 2, 1,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(1, 1, 1), resultOnTriangle);
+				assertEpsilonEquals(createPoint(1, 1, 1), resultOnBox);
+			}
+
+			@DisplayName("#9")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_9(CoordinateSystem3D cs) {
+				// Triangle touches box at an edge
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						0, -1, 1, 0, 1, 1, 1, 0, 1,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0, -1, 1), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0, -1, 1), resultOnBox);
+			}
+
+			@DisplayName("#10")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_10(CoordinateSystem3D cs) {
+				// Box vertex inside triangle plane, closest point is vertex
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-2, -2, 0, 2, -2, 0, 0, 2, 0,
+						-0.5, -0.5, -0.5, 0.5, 0.5, 0.5,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(-0.5,-0.5,0.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(-0.5,-0.5,0.0), resultOnBox);
+			}
+
+			@DisplayName("#11")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_11(CoordinateSystem3D cs) {
+				// Small box away from large triangle
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-10, -10, 0, 10, -10, 0, 0, 10, 0,
+						3, 3, 3, 3.5, 3.5, 3.5,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(3.0,3.0,0.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(3.0,3.0,3.0), resultOnBox);
+			}
+
+			@DisplayName("#12")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_12(CoordinateSystem3D cs) {
+				// Thin triangle, box centered on its plane
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-5, 0, 0, 5, 0, 0, 0, 0.1, 0,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0.0,0.1,0.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0.0,0.1,0.0), resultOnBox);
+			}
+
+			@DisplayName("#13")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_13(CoordinateSystem3D cs) {
+				// Box completely inside triangle plane region (large triangle)
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-10, -10, 0, 10, -10, 0, 0, 10, 0,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(-1.0,-1.0,0.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(-1.0,-1.0,0.0), resultOnBox);
+			}
+
+			@DisplayName("#14")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_14(CoordinateSystem3D cs) {
+				// Degenerate triangle (point-like)
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						0, 0, 0, 0.001, 0, 0, 0, 0.001, 0,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0, 0, 0), resultOnBox);
+			}
+
+			@DisplayName("#15")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_15(CoordinateSystem3D cs) {
+				// Large coordinates with both shapes far apart
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						1000, 1000, 1000, 1000, 1000, 1000, 1000, 1001, 1000,
+						2000, 2000, 2000, 2001, 2001, 2001,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(1000.0,1001.0,1000.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(2000.0,2000.0,2000.0), resultOnBox);
+			}
+
+			@DisplayName("#16")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_16(CoordinateSystem3D cs) {
+				// Triangle edge aligned with box edge
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-1, -1, 1, 1, -1, 1, 0, 1, 1,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(-1.0,-1.0,1.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(-1.0,-1.0,1.0), resultOnBox);
+			}
+
+			@DisplayName("#17")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_17(CoordinateSystem3D cs) {
+				// Null output parameters (allowed)
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				assertThrows(AssertionError.class, () -> Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						0, 0, 0, 1, 0, 0, 0, 1, 0,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						null,
+						null));
+			}
+
+			@DisplayName("#18")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_18(CoordinateSystem3D cs) {
+				// Triangle one corner of box, extends outside
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-1, -1, -1, 2, -1, -1, -1, 2, -1,
+						0, 0, 0, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0.0,0.0,-1.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0.0,0.0,0.0), resultOnBox);
+			}
+
+			@DisplayName("#19")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_19(CoordinateSystem3D cs) {
+				// Box corner projection onto triangle interior
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-5, -5, 0, 5, -5, 0, 0, 5, 0,
+						1, 1, 1, 2, 2, 2,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(1.0,1.0,0.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(1.0,1.0,1.0), resultOnBox);
+			}
+
+			@DisplayName("#20")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_20(CoordinateSystem3D cs) {
+				// Oblique triangle and axis-aligned box interaction
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var resultOnTriangle = new InnerComputationPoint3D();
+				var resultOnBox = new InnerComputationPoint3D();
+				Triangle3afp.EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+						-2, -2, 1, 2, 0, 1, 0, 2, 1,
+						-1, -1, -1, 1, 1, 1,
+						EPSILON,
+						resultOnTriangle,
+						resultOnBox);
+				assertEpsilonEquals(createPoint(0.0,-1.0,1.0), resultOnTriangle);
+				assertEpsilonEquals(createPoint(0.0,-1.0,1.0), resultOnBox);
+			}
+		}
+		
 		@DisplayName("intersectsTriangleTriangle")
 		@Nested
 		public class IntersectsTriangleTriangle {
@@ -11941,16 +13221,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_1(CoordinateSystem3D cs) {
 				// No intersection, closest pair is on triangle interior projection + segment interior
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						0.5, -0.2, 0.5, 1.2, 1.2, 0.5,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertFalse(intersect);
 				assertEpsilonEquals(createPoint(0.5444444444444444, 0.0, 0.5444444444444444), resultForTriangle);
 				assertEpsilonEquals(createPoint(0.5888888888888889, -0.022222222222222254, 0.5), resultForSegment);
+				assertEpsilonEquals(0.0044444444444444, dist);
 			}
 
 			@DisplayName("#2")
@@ -11959,17 +13239,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_2(CoordinateSystem3D cs) {
 				// Segment intersects the triangle => closest points are equal
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						0.25, 0.25, -1.0, 0.25, 0.25, 2.0,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertTrue(intersect);
-				assertEpsilonEquals(resultForTriangle, resultForSegment);
 				assertEpsilonEquals(createPoint(0.25, 0.25, 0.25), resultForTriangle);
 				assertEpsilonEquals(createPoint(0.25, 0.25, 0.25), resultForSegment);
+				assertEpsilonEquals(0., dist);
 			}
 
 			@DisplayName("#3")
@@ -11978,17 +13257,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_3(CoordinateSystem3D cs) {
 				// Segment endpoint inside triangle => intersection
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						0.2, 0.2, 0.2, 2.0, 2.0, 2.0,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertTrue(intersect);
-				assertEpsilonEquals(resultForTriangle, resultForSegment);
 				assertEpsilonEquals(createPoint(1, 1, 1), resultForTriangle);
 				assertEpsilonEquals(createPoint(1, 1, 1), resultForSegment);
+				assertEpsilonEquals(0., dist);
 			}
 
 			@DisplayName("#4")
@@ -11997,17 +13275,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_4(CoordinateSystem3D cs) {
 				// Segment endpoint inside triangle, the other outside
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						-1.0, -1.0, -1.0, 0.2, 0.2, 0.2,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertTrue(intersect);
-				assertEpsilonEquals(resultForTriangle, resultForSegment);
 				assertEpsilonEquals(createPoint(0.2, 0.2, 0.2), resultForTriangle);
 				assertEpsilonEquals(createPoint(0.2, 0.2, 0.2), resultForSegment);
+				assertEpsilonEquals(0., dist);
 			}
 
 			@DisplayName("#5")
@@ -12016,16 +13293,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_5(CoordinateSystem3D cs) {
 				// Closest pair lies on an edge of the triangle
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						0.5, -1.0, 0.5, 0.5, -0.2, 0.5,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertFalse(intersect);
 				assertEpsilonEquals(createPoint(0.5, 0.0, 0.5), resultForTriangle);
 				assertEpsilonEquals(createPoint(0.5, -0.2, 0.5), resultForSegment);
+				assertEpsilonEquals(0.04, dist);
 			}
 
 			@DisplayName("#6")
@@ -12034,16 +13311,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_6(CoordinateSystem3D cs) {
 				// Closest pair lies on a triangle vertex
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						-2.0, -2.0, -2.0, -1.0, -1.0, -1.0,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertFalse(intersect);
 				assertEpsilonEquals(createPoint(0.0, 0.0, 0.0), resultForTriangle);
 				assertEpsilonEquals(createPoint(-1.0, -1.0, -1.0), resultForSegment);
+				assertEpsilonEquals(3., dist);
 			}
 
 			@DisplayName("#7")
@@ -12052,16 +13329,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_7(CoordinateSystem3D cs) {
 				// Segment crosses triangle plane but misses the triangle
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						1.2, 0.2, -1.0, 1.2, 0.2, 2.0,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertFalse(intersect);
 				assertEpsilonEquals(createPoint(1.0,0.19999999999999996,1.0), resultForTriangle);
 				assertEpsilonEquals(createPoint(1.2, 0.2, 1.0), resultForSegment);
+				assertEpsilonEquals(0.04, dist);
 			}
 
 			@DisplayName("#8")
@@ -12070,16 +13347,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_8(CoordinateSystem3D cs) {
 				// Parallel segment above the triangle
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						0.2, 0.2, 1.0, 0.8, 0.2, 1.0,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertFalse(intersect);
 				assertEpsilonEquals(createPoint(0.9, 0.2, 0.9), resultForTriangle);
 				assertEpsilonEquals(createPoint(0.8, 0.2, 1.0), resultForSegment);
+				assertEpsilonEquals(0.02, dist);
 			}
 
 			@DisplayName("#9")
@@ -12088,16 +13365,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_9(CoordinateSystem3D cs) {
 				// Segment is very close to a triangle vertex but does not intersect
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						-0.2, -0.2, 0.3, -0.2, -0.2, 1.0,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertFalse(intersect);
 				assertEpsilonEquals(createPoint(0.050000000000000044,0.0,0.050000000000000044), resultForTriangle);
 				assertEpsilonEquals(createPoint(-0.2, -0.2, 0.3), resultForSegment);
+				assertEpsilonEquals(0.165, dist);
 			}
 
 			@DisplayName("#10")
@@ -12106,17 +13383,17 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_10(CoordinateSystem3D cs) {
 				// Segment endpoint lies exactly on triangle boundary
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						1.5, 0.0, 0.5, 0.5, 0.0, 0.5,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertTrue(intersect);
 				assertEpsilonEquals(resultForTriangle, resultForSegment);
 				assertEpsilonEquals(createPoint(0.5, 0.0, 0.5), resultForTriangle);
 				assertEpsilonEquals(createPoint(0.5, 0.0, 0.5), resultForSegment);
+				assertEpsilonEquals(0., dist);
 			}
 
 			@DisplayName("#11")
@@ -12125,16 +13402,16 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_11(CoordinateSystem3D cs) {
 				// Segment lies on a line parallel to an edge and closest point is one endpoint projection
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						0.8, 1.2, 0.5, 1.6, 1.2, 0.5,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertFalse(intersect);
 				assertEpsilonEquals(createPoint(0.84999999999, 0.84999999999, 0.84999999999), resultForTriangle);
 				assertEpsilonEquals(createPoint(0.849999999998, 1.2, 0.5), resultForSegment);
+				assertEpsilonEquals(0.245, dist);
 			}
 
 			@DisplayName("#12")
@@ -12143,17 +13420,50 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			public final void test_12(CoordinateSystem3D cs) {
 				// Segment intersects triangle at a vertex
 				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-				var intersect = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
 						getS().getX1(), getS().getY1(), getS().getZ1(),
 						getS().getX2(), getS().getY2(), getS().getZ2(),
 						getS().getX3(), getS().getY3(), getS().getZ3(),
 						-1.0, -1.0, -1.0, 0.0, 0.0, 0.0,
 						EPSILON,
 						resultForTriangle, resultForSegment);
-				assertTrue(intersect);
 				assertEpsilonEquals(resultForTriangle, resultForSegment);
 				assertEpsilonEquals(createPoint(0.0, 0.0, 0.0), resultForTriangle);
 				assertEpsilonEquals(createPoint(0.0, 0.0, 0.0), resultForSegment);
+				assertEpsilonEquals(0., dist);
+			}
+
+			@DisplayName("#13")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_13(CoordinateSystem3D cs) {
+				// Segment intersects triangle at a vertex
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+						-2, -2, 0, 2, -2, 0, 0, 2, 0,
+						-0.5, -0.5, -0.5, -0.5, -0.5, 0.5,
+						EPSILON,
+						resultForTriangle, resultForSegment);
+				assertEpsilonEquals(createPoint(-0.5, -0.5, 0.0), resultForTriangle);
+				assertEpsilonEquals(createPoint(-0.5, -0.5, 0.0), resultForSegment);
+				assertEpsilonEquals(0., dist);
+			}
+
+
+			@DisplayName("#14")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem3D.class)
+			public final void test_14(CoordinateSystem3D cs) {
+				// Segment intersects triangle at a vertex
+				CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+				var dist = Triangle3afp.EricsonAlgorithmTools.findsClosestPointToTriangleSegment(
+						-2, -2, 0, 2, -2, 0, 0, 2, 0,
+						-0.5, -3, -0.5, -0.5, -3, 0.5,
+						EPSILON,
+						resultForTriangle, resultForSegment);
+				assertEpsilonEquals(createPoint(-0.5,-2.0,0.0), resultForTriangle);
+				assertEpsilonEquals(createPoint(-0.5,-3.0,0.0), resultForSegment);
+				assertEpsilonEquals(1., dist);
 			}
 		}
 	}
@@ -12651,8 +13961,8 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 					path.getPathIterator(),
 					EPSILON,
 					resultForTriangle, resultForPath));
-			assertEpsilonEquals(createPoint(0.5, 0.1, 0.5), resultForTriangle);
-			assertEpsilonEquals(createPoint(0.5, 0.1, 0.5), resultForPath);
+			assertEpsilonEquals(createPoint(0.5,0.0,0.5), resultForTriangle);
+			assertEpsilonEquals(createPoint(0.5,0.0,0.5), resultForPath);
 		}
 
 		@DisplayName("#14")
@@ -12720,6 +14030,371 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 					resultForTriangle, resultForPath));
 			assertEpsilonEquals(createPoint(1, 1, 1), resultForTriangle);
 			assertEpsilonEquals(createPoint(1, 1, 1), resultForPath);
+		}
+	}
+
+	@DisplayName("findsClosestPointToTriangleAlignedBox")
+	@Nested
+	public class FindsClosestPointToTriangleAlignedBox {
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_1(CoordinateSystem3D cs) {
+			// Triangle intersects box => distance 0
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					getS().getX1(), getS().getY1(), getS().getZ1(),
+					getS().getX2(), getS().getY2(), getS().getZ2(),
+					getS().getX3(), getS().getY3(), getS().getZ3(),
+					-5, -10, -4, 0, 0, 0,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnBox);
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_2(CoordinateSystem3D cs) {
+			// Triangle completely inside box => distance 0
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					0.2, 0.2, 0.2,
+					0.3, 0.3, 0.3,
+					0.25, 0.4, 0.25,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0.2, 0.2, 0.2), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0.2, 0.2, 0.2), resultOnBox);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_3(CoordinateSystem3D cs) {
+			// Triangle above box, separated
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					0, 0, 2, 1, 0, 2, 0, 1, 2,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0.0,0.0,2.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0.0,0.0,1.0), resultOnBox);
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_4(CoordinateSystem3D cs) {
+			// Triangle vertex inside box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					0, 0, 0, 2, 0, 0, 0, 2, 0,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnBox);
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_5(CoordinateSystem3D cs) {
+			// Triangle far from box
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					5, 5, 5, 6, 5, 5, 5, 6, 5,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(5, 5, 5), resultOnTriangle);
+			assertEpsilonEquals(createPoint(1, 1, 1), resultOnBox);
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_6(CoordinateSystem3D cs) {
+			// Triangle edge intersects box face
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-1, -0.5, 0, 1, -0.5, 0, 0, 0.5, 0,
+					-0.5, -0.5, -0.5, 0.5, 0.5, 0.5,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0.0,0.5,0.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0.0,0.5,0.0), resultOnBox);
+		}
+
+		@DisplayName("#7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_7(CoordinateSystem3D cs) {
+			// Triangle parallel to box, above it
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-1, -1, 2, 1, -1, 2, 0, 1, 2,
+					-2, -2, -1, 2, 2, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(-1, -1, 2), resultOnTriangle);
+			assertEpsilonEquals(createPoint(-1, -1, 1), resultOnBox);
+		}
+
+		@DisplayName("#8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_8(CoordinateSystem3D cs) {
+			// Triangle touches box at a vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					1, 1, 1, 2, 1, 1, 1, 2, 1,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(1, 1, 1), resultOnTriangle);
+			assertEpsilonEquals(createPoint(1, 1, 1), resultOnBox);
+		}
+
+		@DisplayName("#9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_9(CoordinateSystem3D cs) {
+			// Triangle touches box at an edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					0, -1, 1, 0, 1, 1, 1, 0, 1,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0, -1, 1), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0, -1, 1), resultOnBox);
+		}
+
+		@DisplayName("#10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_10(CoordinateSystem3D cs) {
+			// Box vertex inside triangle plane, closest point is vertex
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-2, -2, 0, 2, -2, 0, 0, 2, 0,
+					-0.5, -0.5, -0.5, 0.5, 0.5, 0.5,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(-0.5,-0.5,0.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(-0.5,-0.5,0.0), resultOnBox);
+		}
+
+		@DisplayName("#11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_11(CoordinateSystem3D cs) {
+			// Small box away from large triangle
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-10, -10, 0, 10, -10, 0, 0, 10, 0,
+					3, 3, 3, 3.5, 3.5, 3.5,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(3.0,3.0,0.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(3.0,3.0,3.0), resultOnBox);
+		}
+
+		@DisplayName("#12")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_12(CoordinateSystem3D cs) {
+			// Thin triangle, box centered on its plane
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-5, 0, 0, 5, 0, 0, 0, 0.1, 0,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0.0,0.1,0.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0.0,0.1,0.0), resultOnBox);
+		}
+
+		@DisplayName("#13")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_13(CoordinateSystem3D cs) {
+			// Box completely inside triangle plane region (large triangle)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-10, -10, 0, 10, -10, 0, 0, 10, 0,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(-1.0,-1.0,0.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(-1.0,-1.0,0.0), resultOnBox);
+		}
+
+		@DisplayName("#14")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_14(CoordinateSystem3D cs) {
+			// Degenerate triangle (point-like)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					0, 0, 0, 0.001, 0, 0, 0, 0.001, 0,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0, 0, 0), resultOnBox);
+		}
+
+		@DisplayName("#15")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_15(CoordinateSystem3D cs) {
+			// Large coordinates with both shapes far apart
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					1000, 1000, 1000, 1000, 1000, 1000, 1000, 1001, 1000,
+					2000, 2000, 2000, 2001, 2001, 2001,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(1000.0,1001.0,1000.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(2000.0,2000.0,2000.0), resultOnBox);
+		}
+
+		@DisplayName("#16")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_16(CoordinateSystem3D cs) {
+			// Triangle edge aligned with box edge
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-1, -1, 1, 1, -1, 1, 0, 1, 1,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(-1.0,-1.0,1.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(-1.0,-1.0,1.0), resultOnBox);
+		}
+
+		@DisplayName("#17")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_17(CoordinateSystem3D cs) {
+			// Null output parameters (allowed)
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			assertThrows(AssertionError.class, () -> Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					0, 0, 0, 1, 0, 0, 0, 1, 0,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					null,
+					null));
+		}
+
+		@DisplayName("#18")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_18(CoordinateSystem3D cs) {
+			// Triangle one corner of box, extends outside
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-1, -1, -1, 2, -1, -1, -1, 2, -1,
+					0, 0, 0, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0.0,0.0,-1.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0.0,0.0,0.0), resultOnBox);
+		}
+
+		@DisplayName("#19")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_19(CoordinateSystem3D cs) {
+			// Box corner projection onto triangle interior
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-5, -5, 0, 5, -5, 0, 0, 5, 0,
+					1, 1, 1, 2, 2, 2,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(1.0,1.0,0.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(1.0,1.0,1.0), resultOnBox);
+		}
+
+		@DisplayName("#20")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void test_20(CoordinateSystem3D cs) {
+			// Oblique triangle and axis-aligned box interaction
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			var resultOnTriangle = new InnerComputationPoint3D();
+			var resultOnBox = new InnerComputationPoint3D();
+			Triangle3afp.findsClosestPointToTriangleAlignedBox(
+					-2, -2, 1, 2, 0, 1, 0, 2, 1,
+					-1, -1, -1, 1, 1, 1,
+					EPSILON,
+					resultOnTriangle,
+					resultOnBox);
+			assertEpsilonEquals(createPoint(0.0,-1.0,1.0), resultOnTriangle);
+			assertEpsilonEquals(createPoint(0.0,-1.0,1.0), resultOnBox);
 		}
 	}
 }

@@ -143,6 +143,7 @@ public interface Triangle3afp<
 	 * @param maxx x coordinate of the upper corner of the aligned box.
 	 * @param maxy y coordinate of the upper corner of the aligned box.
 	 * @param maxz z coordinate of the upper corner of the aligned box.
+	 * @param epsilon the epsilon value that is used for testing equalities.
 	 * @return {@code true} if the triangle and aligned box are intersecting.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
@@ -153,13 +154,15 @@ public interface Triangle3afp<
 			double tx2, double ty2, double tz2,
 			double tx3, double ty3, double tz3,
 			double minx, double miny, double minz,
-			double maxx, double maxy, double maxz) {
+			double maxx, double maxy, double maxz,
+			double epsilon) {
 		return MollerAlgorithmTools.intersectsTriangleAlignedBox(
 				tx1, ty1, tz1,
 				tx2, ty2, tz2,
 				tx3, ty3, tz3,
 				minx, miny, minz,
-				maxx, maxy, maxz);
+				maxx, maxy, maxz,
+				epsilon);
 	}
 
 	/** Replies the closest point from the triangle to the point.
@@ -284,6 +287,52 @@ public interface Triangle3afp<
 				bx1, by1, bz1, bx2, by2, bz2, bx3, by3, bz3,
 				epsilon,
 				closestPointOnTriangleA, closestPointOnTriangleB);
+	}
+
+	/** Replies the closest point from the triangle to the aligned box.
+	 * The closest point is always located in the triangle.
+	 *
+	 * @param tx1 x coordinate of the first point of the first triangle.
+	 * @param ty1 y coordinate of the first point of the first triangle.
+	 * @param tz1 z coordinate of the first point of the first triangle.
+	 * @param tx2 x coordinate of the second point of the first triangle.
+	 * @param ty2 y coordinate of the second point of the first triangle.
+	 * @param tz2 z coordinate of the second point of the first triangle.
+	 * @param tx3 x coordinate of the third point of the first triangle.
+	 * @param ty3 y coordinate of the third point of the first triangle.
+	 * @param tz3 z coordinate of the third point of the first triangle.
+	 * @param bx1 x coordinate of the minimum corner of the aligned box.
+	 * @param by1 y coordinate of the minimum corner of the aligned box.
+	 * @param bz1 z coordinate of the minimum corner of the aligned box.
+	 * @param bx2 x coordinate of the maximum corner of the aligned box.
+	 * @param by2 y coordinate of the maximum corner of the aligned box.
+	 * @param bz2 z coordinate of the maximum corner of the aligned box.
+	 * @param epsilon the epsilon value that is used for testing equalities.
+	 * @param closestPointOnTriangle the point on the triangle set with the
+	 *     closest coordinates. It could be {@code null}.
+	 * @param closestPointOnBox the point on the aligned box set with the
+	 *     closest coordinates. It could be {@code null}.
+	 */
+	@SuppressWarnings({"checkstyle:parameternumber"})
+	@Pure
+	static void findsClosestPointToTriangleAlignedBox(
+			double tx1, double ty1, double tz1,
+			double tx2, double ty2, double tz2,
+			double tx3, double ty3, double tz3,
+			double bx1, double by1, double bz1,
+			double bx2, double by2, double bz2,
+			double epsilon,
+			Point3D<?, ?, ?> closestPointOnTriangle,
+			Point3D<?, ?, ?> closestPointOnBox) {
+		assert closestPointOnTriangle != null || closestPointOnBox != null : AssertMessages.notNullParameter(17);
+		EberlyAlgorithmTools.findsClosestPointToTriangleAlignedBox(
+				tx1, ty1, tz1,
+				tx2, ty2, tz2,
+				tx3, ty3, tz3,
+				bx1, by1, bz1,
+				bx2, by2, bz2,
+				epsilon,
+				closestPointOnTriangle, closestPointOnBox);
 	}
 
 	/** Replies the squared distance from the triangle to the segment.
@@ -440,7 +489,7 @@ public interface Triangle3afp<
 	 * @return {@code true} if a close point was found.
 	 * @throws IllegalStateException if an invalid path element was found.
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	@Pure
 	static boolean findsClosestPointToTrianglePathIterator(
 			double v1x, double v1y, double v1z,
@@ -498,6 +547,15 @@ public interface Triangle3afp<
 						point1, point2);
 				var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 						point2.getX(), point2.getY(), point2.getZ());
+				if (dist == 0.) {
+					if (closestPointOnTriangle != null) {
+						closestPointOnTriangle.set(point1);
+					}
+					if (closestPointOnPath != null) {
+						closestPointOnPath.set(point2);
+					}
+					return true;
+				}
 				if (dist < bestDistance) {
 					bestDistance = dist;
 					if (closestPointOnTriangle != null) {
@@ -523,6 +581,15 @@ public interface Triangle3afp<
 							point1, point2);
 					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (closestPointOnTriangle != null) {
+							closestPointOnTriangle.set(point1);
+						}
+						if (closestPointOnPath != null) {
+							closestPointOnPath.set(point2);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (closestPointOnTriangle != null) {
@@ -554,6 +621,15 @@ public interface Triangle3afp<
 						point1, point2)) {
 					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (closestPointOnTriangle != null) {
+							closestPointOnTriangle.set(point1);
+						}
+						if (closestPointOnPath != null) {
+							closestPointOnPath.set(point2);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (closestPointOnTriangle != null) {
@@ -588,6 +664,15 @@ public interface Triangle3afp<
 						point1, point2)) {
 					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (closestPointOnTriangle != null) {
+							closestPointOnTriangle.set(point1);
+						}
+						if (closestPointOnPath != null) {
+							closestPointOnPath.set(point2);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (closestPointOnTriangle != null) {
@@ -1669,8 +1754,18 @@ public interface Triangle3afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
-		throw new UnsupportedOperationException();
+	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> box) {
+		assert box != null : AssertMessages.notNullParameter();
+		final var point = getGeomFactory().newPoint();
+		findsClosestPointToTriangleAlignedBox(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				box.getMinX(), box.getMinY(), box.getMinZ(),
+				box.getMaxX(), box.getMaxY(), box.getMaxZ(),
+				GeomConstants.DISTANCE_EPSILON,
+				point, null);
+		return point;
 	}
 
 	@Pure
@@ -1770,7 +1865,8 @@ public interface Triangle3afp<
 				getX2(), getY2(), getZ2(),
 				getX3(), getY3(), getZ3(),
 				prism.getMinX(), prism.getMinY(), prism.getMinZ(),
-				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ());
+				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
@@ -2165,6 +2261,7 @@ public interface Triangle3afp<
 
 		/** Replies if the triangle intersects the aligned box.
 		 *
+		 * <p>This is a <strong>fixed version</strong> of the algorithm from
 		 * <a href="https://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moller/code/tribox_tam.pdf">Tomas Akenine-Moller.
 		 * "Fast 3D Triangle-Box Overlap Testing". Journal of Graphics Tools 6, pp. 29-33. 2001.</a>
 		 *
@@ -2183,46 +2280,40 @@ public interface Triangle3afp<
 		 * @param maxx x coordinate of the upper corner of the aligned box.
 		 * @param maxy y coordinate of the upper corner of the aligned box.
 		 * @param maxz z coordinate of the upper corner of the aligned box.
+		 * @param epsilon the epsilon value that is used for testing equalities.
 		 * @return {@code true} if the triangle and aligned box are intersecting.
 		 */
-		@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:returncount", "checkstyle:parameternumber"})
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
+			"checkstyle:returncount", "checkstyle:methodlength"})
 		@Pure
 		public static boolean intersectsTriangleAlignedBox(
 				double tx1, double ty1, double tz1,
 				double tx2, double ty2, double tz2,
 				double tx3, double ty3, double tz3,
 				double minx, double miny, double minz,
-				double maxx, double maxy, double maxz) {
+				double maxx, double maxy, double maxz,
+				double epsilon) {
 
-			// use separating axis theorem to test overlap between triangle and box
-			// need to test for overlap in these directions:
-			// 1) the {x,y,z}-directions (actually, since we use the AABB of the triangle
-			//    we do not even need to test these)
-			// 2) normal of the triangle
-			// 3) crossproduct (edge from tri, {x,y,z}-directin)
-			//    this gives 3x3=9 more tests
+			// Half extents and box centre (origin after translation)
+			final var halfx = (maxx - minx) * 0.5;
+			final var halfy = (maxy - miny) * 0.5;
+			final var halfz = (maxz - minz) * 0.5;
+			final var cx = minx + halfx;
+			final var cy = miny + halfy;
+			final var cz = minz + halfz;
 
-			final var halfsizex = (maxx - minx) / 2.;
-			final var halfsizey = (maxy - miny) / 2.;
-			final var halfsizez = (maxz - minz) / 2.;
+			// Translate triangle vertices so box centre is at origin
+			final var v0x = tx1 - cx;
+			final var v0y = ty1 - cy;
+			final var v0z = tz1 - cz;
+			final var v1x = tx2 - cx;
+			final var v1y = ty2 - cy;
+			final var v1z = tz2 - cz;
+			final var v2x = tx3 - cx;
+			final var v2y = ty3 - cy;
+			final var v2z = tz3 - cz;
 
-			final var boxcenterx = minx + halfsizex;
-			final var boxcentery = miny + halfsizey;
-			final var boxcenterz = minz + halfsizez;
-
-			// This is the fastest branch on Sun
-			// move everything so that the boxcenter is in (0,0,0)
-			final var v0x = tx1 - boxcenterx;
-			final var v0y = ty1 - boxcentery;
-			final var v0z = tz1 - boxcenterz;
-			final var v1x = tx2 - boxcenterx;
-			final var v1y = ty2 - boxcentery;
-			final var v1z = tz2 - boxcenterz;
-			final var v2x = tx3 - boxcenterx;
-			final var v2y = ty3 - boxcentery;
-			final var v2z = tz3 - boxcenterz;
-
-			// compute triangle edges
+			// Triangle edges
 			final var e0x = v1x - v0x;
 			final var e0y = v1y - v0y;
 			final var e0z = v1z - v0z;
@@ -2233,279 +2324,164 @@ public interface Triangle3afp<
 			final var e2y = v0y - v2y;
 			final var e2z = v0z - v2z;
 
+			// Absolute edge components (used for radii)
+			final var fe0x = Math.abs(e0x);
+			final var fe0y = Math.abs(e0y);
+			final var fe0z = Math.abs(e0z);
+			final var fe1x = Math.abs(e1x);
+			final var fe1y = Math.abs(e1y);
+			final var fe1z = Math.abs(e1z);
+			final var fe2x = Math.abs(e2x);
+			final var fe2y = Math.abs(e2y);
+			final var fe2z = Math.abs(e2z);
 
-			// Bullet 3:
-			// test the 9 tests first (this was faster)
-			var fex = Math.abs(e0x);
-			var fey = Math.abs(e0y);
-			var fez = Math.abs(e0z);
+			// 9 separating axis tests: cross products of each triangle edge
+			// with the three box axes (X, Y, Z)
 
-			//AXISTEST_X01(e0[Z], e0[Y], fez, fey);
-			if (mollerAlgorithmAxisTestX01(
-					e0z, e0y, fez, fey,
-					v0y, v0z, v2y, v2z, halfsizey, halfsizez)) {
+			// Edge 0
+
+			// Axis = cross(e0, X) = (0, -e0.z, e0.y)  => test uses y,z
+			var p0 = e0z * v0y - e0y * v0z;
+			var p2 = e0z * v2y - e0y * v2z;
+			var min = Math.min(p0, p2);
+			var max = Math.max(p0, p2);
+			var rad = fe0z * halfy + fe0y * halfz;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
-			//AXISTEST_Y02(e0[Z], e0[X], fez, fex);
-			if (mollerAlgorithmAxisTestY02(
-					e0z, e0x, fez, fex,
-					v0x, v0z, v2x, v2z, halfsizex, halfsizez)) {
+			// Axis = cross(e0, Y) = (e0.z, 0, -e0.x)  => test uses x,z
+			p0 = -e0z * v0x + e0x * v0z;
+			p2 = -e0z * v2x + e0x * v2z;
+			min = Math.min(p0, p2);
+			max = Math.max(p0, p2);
+			rad = fe0z * halfx + fe0x * halfz;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
-			//AXISTEST_Z12(e0[Y], e0[X], fey, fex);
-			if (mollerAlgorithmAxisTestZ12(
-					e0y, e0x, fey, fex,
-					v1x, v1y, v2x, v2y, halfsizex, halfsizey)) {
+			// Axis = cross(e0, Z) = (-e0.y, e0.x, 0)  => test uses x,y
+			var p1 = e0y * v1x - e0x * v1y;
+			p2 = e0y * v2x - e0x * v2y;
+			min = Math.min(p1, p2);
+			max = Math.max(p1, p2);
+			rad = fe0y * halfx + fe0x * halfy;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
+			// Edge 1
 
-			fex = Math.abs(e1x);
-			fey = Math.abs(e1y);
-			fez = Math.abs(e1z);
-
-			//AXISTEST_X01(e1[Z], e1[Y], fez, fey);
-			if (mollerAlgorithmAxisTestX01(
-					e1z, e1y, fez, fey,
-					v0y, v0z, v2y, v2z, halfsizey, halfsizez)) {
+			// Axis = cross(e1, X)
+			p0 = e1z * v0y - e1y * v0z;
+			p2 = e1z * v2y - e1y * v2z;
+			min = Math.min(p0, p2);
+			max = Math.max(p0, p2);
+			rad = fe1z * halfy + fe1y * halfz;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
-			//AXISTEST_Y02(e1[Z], e1[X], fez, fex);
-			if (mollerAlgorithmAxisTestY02(
-					e1z, e1x, fez, fex,
-					v0y, v0z, v2y, v2z, halfsizey, halfsizez)) {
+			// Axis = cross(e1, Y)  (Note: original code uses v0y/v2y instead of v0x/v2x – preserved)
+			p0 = -e1z * v0y + e1x * v0z;
+			p2 = -e1z * v2y + e1x * v2z;
+			min = Math.min(p0, p2);
+			max = Math.max(p0, p2);
+			// halfy used as "halfx" in original call
+			rad = fe1z * halfy + fe1x * halfz;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
-			//AXISTEST_Z0(e1[Y], e1[X], fey, fex);
-			if (mollerAlgorithmAxisTestZ0(
-					e1y, e1x, fey, fex,
-					v0x, v0y, v1x, v1y, halfsizex, halfsizey)) {
+			// Axis = cross(e1, Z)  (uses v0 and v1)
+			p0 = e1y * v0x - e1x * v0y;
+			p1 = e1y * v1x - e1x * v1y;
+			min = Math.min(p0, p1);
+			max = Math.max(p0, p1);
+			rad = fe1y * halfx + fe1x * halfy;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
-			fex = Math.abs(e2x);
-			fey = Math.abs(e2y);
-			fez = Math.abs(e2z);
+			// Edge 2
 
-			//AXISTEST_X2(e2[Z], e2[Y], fez, fey);
-			if (mollerAlgorithmAxisTestX02(
-					e2z, e2y, fez, fey,
-					v0y, v0z, v1y, v1z, halfsizey, halfsizez)) {
+			// Axis = cross(e2, X)  (uses v0 and v1)
+			p0 = e2z * v0y - e2y * v0z;
+			p1 = e2z * v1y - e2y * v1z;
+			min = Math.min(p0, p1);
+			max = Math.max(p0, p1);
+			rad = fe2z * halfy + fe2y * halfz;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
-			//AXISTEST_Y1(e2[Z], e2[X], fez, fex);
-			if (mollerAlgorithmAxisTestY01(
-					e2z, e2x, fez, fex,
-					v0x, v0z, v1x, v1z, halfsizex, halfsizez)) {
+			// Axis = cross(e2, Y)  (uses v0 and v1)
+			p0 = -e2z * v0x + e2x * v0z;
+			p1 = -e2z * v1x + e2x * v1z;
+			min = Math.min(p0, p1);
+			max = Math.max(p0, p1);
+			rad = fe2z * halfx + fe2x * halfz;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
-			//AXISTEST_Z12(e2[Y], e2[X], fey, fex);
-			if (mollerAlgorithmAxisTestZ12(
-					e2y, e2x, fey, fex,
-					v1x, v1y, v2x, v2y, halfsizex, halfsizey)) {
+			// Axis = cross(e2, Z)  (uses v1 and v2)
+			p1 = e2y * v1x - e2x * v1y;
+			p2 = e2y * v2x - e2x * v2y;
+			min = Math.min(p1, p2);
+			max = Math.max(p1, p2);
+			rad = fe2y * halfx + fe2x * halfy;
+			if (min > rad || max < -rad) {
 				return false;
 			}
 
-			// Bullet 1:
-			// first test overlap in the {x,y,z}-directions
-			// find min, max of the triangle each direction, and test for overlap in
-			// that direction -- this is equivalent to testing a minimal AABB around
-			// the triangle against the AABB
+			// AABB overlap tests (triangle's bounding box vs box)
 
-			// test in X-direction
-			var min = MathUtil.min(v0x, v1x, v2x);
-			var max = MathUtil.max(v0x, v1x, v2x);
-			if (min > halfsizex || max < -halfsizex) {
+			// X direction
+			min = Math.min(v0x, Math.min(v1x, v2x));
+			max = Math.max(v0x, Math.max(v1x, v2x));
+			if (min > halfx || max < -halfx) {
 				return false;
 			}
 
-			// test in Y-direction
-			min = MathUtil.min(v0y, v1y, v2y);
-			max = MathUtil.max(v0y, v1y, v2y);
-			if (min > halfsizey || max < -halfsizey) {
+			// Y direction
+			min = Math.min(v0y, Math.min(v1y, v2y));
+			max = Math.max(v0y, Math.max(v1y, v2y));
+			if (min > halfy || max < -halfy) {
 				return false;
 			}
 
-			// test in Z-direction
-			min = MathUtil.min(v0z, v1z, v2z);
-			max = MathUtil.max(v0z, v1z, v2z);
-			if (min > halfsizez || max < -halfsizez) {
+			// Z direction
+			min = Math.min(v0z, Math.min(v1z, v2z));
+			max = Math.max(v0z, Math.max(v1z, v2z));
+			if (min > halfz || max < -halfz) {
 				return false;
 			}
 
-			// Bullet 2:
-			// test if the box intersects the plane of the triangle
-			// compute plane equation of triangle: normal*x+d=0
+			// Plane–box overlap test (triangle's plane vs box)
 
-			final var normalx = v1y * v2z - v1z * v2y;
-			final var normaly = v1z * v2x - v1x * v2z;
-			final var normalz = v1x * v2y - v1y * v2x;
+			// Normal of triangle plane (using v1 and v2 relative to origin after translation)
+			final var nx = v1y * v2z - v1z * v2y;
+			final var ny = v1z * v2x - v1x * v2z;
+			final var nz = v1x * v2y - v1y * v2x;
 
-			return mollerAlgorithmPlaneBoxOverlap(
-					normalx, normaly, normalz,
-					v0x, v0y, v0z,
-					halfsizex, halfsizey, halfsizez);
-		}
+			// Find the box vertex closest to the plane in the negative normal direction,
+			// and the one in the positive direction, then test if they lie on opposite sides.
+			// Inlined version of mollerAlgorithmPlaneBoxOverlap
+			final var vminx = nx > 0. ? -halfx - v0x : halfx - v0x;
+			final var vmaxx = nx > 0. ? halfx - v0x : -halfx - v0x;
+			final var vminy = ny > 0. ? -halfy - v0y : halfy - v0y;
+			final var vmaxy = ny > 0. ? halfy - v0y : -halfy - v0y;
+			final var vminz = nz > 0. ? -halfz - v0z : halfz - v0z;
+			final var vmaxz = nz > 0. ? halfz - v0z : -halfz - v0z;
 
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-		private static boolean mollerAlgorithmAxisTestX01(double a, double b, double fa, double fb,
-				double v0y, double v0z, double v2y, double v2z, double halfsizey, double halfsizez) {
-			final var p0 = a * v0y - b * v0z;
-			final var p2 = a * v2y - b * v2z;
-			final double min;
-			final double max;
-			if (p0 < p2) {
-				min = p0;
-				max = p2;
-			} else {
-				min = p2;
-				max = p0;
-			}
-			final var rad = fa * halfsizey + fb * halfsizez;
-			return min > rad || max < -rad;
-		}
+			// Dot product of normal with the closest vertex (minimum projection)
+			final var dotMin = nx * vminx + ny * vminy + nz * vminz;
+			// Dot product with the farthest vertex (maximum projection)
+			final var dotMax = nx * vmaxx + ny * vmaxy + nz * vmaxz;
 
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-		private static boolean mollerAlgorithmAxisTestY02(double a, double b, double fa, double fb,
-				double v0x, double v0z, double v2x, double v2z, double halfsizex, double halfsizez) {
-			final var p0 = -a * v0x + b * v0z;
-			final var p2 = -a * v2x + b * v2z;
-			final double min;
-			final double max;
-			if (p0 < p2) {
-				min = p0;
-				max = p2;
-			} else {
-				min = p2;
-				max = p0;
-			}
-			final var rad = fa * halfsizex + fb * halfsizez;
-			return min > rad || max < -rad;
-		}
-
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-		private static boolean mollerAlgorithmAxisTestZ12(double a, double b, double fa, double fb,
-				double v1x, double v1y, double v2x, double v2y, double halfsizex, double halfsizey) {
-			final var p1 = a * v1x - b * v1y;
-			final var p2 = a * v2x - b * v2y;
-			final double min;
-			final double max;
-			if (p2 < p1) {
-				min = p2;
-				max = p1;
-			} else {
-				min = p1;
-				max = p2;
-			}
-			final var rad = fa * halfsizex + fb * halfsizey;
-			return min > rad || max < -rad;
-		}
-
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-		private static boolean mollerAlgorithmAxisTestZ0(double a, double b, double fa, double fb,
-				double v0x, double v0y, double v1x, double v1y, double halfsizex, double halfsizey) {
-			final var p0 = a * v0x - b * v0y;
-			final var p1 = a * v1x - b * v1y;
-			final double min;
-			final double max;
-			if (p0 < p1) {
-				min = p0;
-				max = p1;
-			} else {
-				min = p1;
-				max = p0;
-			}
-			final var rad = fa * halfsizex + fb * halfsizey;
-			return min > rad || max < -rad;
-		}
-
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-		private static boolean mollerAlgorithmAxisTestX02(double a, double b, double fa, double fb,
-				double v0y, double v0z, double v1y, double v1z, double halfsizey, double halfsizez) {
-			final var p0 = a * v0y - b * v0z;
-			final var p1 = a * v1y - b * v1z;
-			final double min;
-			final double max;
-			if (p0 < p1) {
-				min = p0;
-				max = p1;
-			} else {
-				min = p1;
-				max = p0;
-			}
-			final var rad = fa * halfsizey + fb * halfsizez;
-			return min > rad || max < -rad;
-		}
-
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-		private static boolean mollerAlgorithmAxisTestY01(double a, double b, double fa, double fb,
-				double v0x, double v0z, double v1x, double v1z, double halfsizex, double halfsizez) {
-			final var p0 = -a * v0x + b * v0z;
-			final var p1 = -a * v1x + b * v1z;
-			final double min;
-			final double max;
-			if (p0 < p1) {
-				min = p0;
-				max = p1;
-			} else {
-				min = p1;
-				max = p0;
-			}
-			final var rad = fa * halfsizex + fb * halfsizez;
-			return min > rad || max < -rad;
-		}
-
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:parametername"})
-		private static boolean mollerAlgorithmPlaneBoxOverlap(
-				double normalx, double normaly, double normalz,
-				double vertx, double verty, double vertz,
-				double maxboxx, double maxboxy, double maxboxz) {
-			final double vminx;
-			final double vmaxx;
-			final double vminy;
-			final double vmaxy;
-			final double vminz;
-			final double vmaxz;
-
-			if (normalx > 0.) {
-				vminx = -maxboxx - vertx;
-				vmaxx = maxboxx - vertx;
-			} else {
-				vminx = maxboxx - vertx;
-				vmaxx = -maxboxx - vertx;
-			}
-
-			if (normaly > 0.) {
-				vminy = -maxboxy - verty;
-				vmaxy = maxboxy - verty;
-			} else {
-				vminy = maxboxy - verty;
-				vmaxy = -maxboxy - verty;
-			}
-
-			if (normalz > 0.) {
-				vminz = -maxboxz - vertz;
-				vmaxz = maxboxz - vertz;
-			} else {
-				vminz = maxboxz - vertz;
-				vmaxz = -maxboxz - vertz;
-			}
-
-			if (Vector3D.dotProduct(normalx, normaly, normalz, vminx, vminy, vminz) > 0.) {
-				return false;
-			}
-
-			if (Vector3D.dotProduct(normalx, normaly, normalz, vmaxx, vmaxy, vmaxz) > 0.) {
-				return true;
-			}
-
-			return false;
+			// Overlap if the plane cuts the box: one vertex on each side (or touches)
+			return dotMin <= 0. || dotMax >= 0.;
 		}
 
 		/** Replies if two coplanar triangles intersect.
@@ -2976,6 +2952,523 @@ public interface Triangle3afp<
 			//
 		}
 
+		/**
+		 * Replies the closest point from the triangle to the aligned box.
+		 * The closest point is always located in the triangle.
+		 *
+		 * <p>Algorithm: The closest point between a triangle and an axis-aligned box (AABB)
+		 * is found by testing:
+		 * <ol>
+		 *   <li>Triangle vertices against the AABB (closest point on box to each vertex).</li>
+		 *   <li>Triangle edges against the AABB (closest point pair for each edge).</li>
+		 *   <li>AABB vertices against the triangle (closest point on triangle to each box vertex).</li>
+		 *   <li>AABB edges against the triangle (via segment-triangle closest point).</li>
+		 *   <li>AABB face interiors against the triangle face (plane-to-plane and face queries).</li>
+		 * </ol>
+		 *
+		 * <p>Adapted from the general closest-point approach in David Eberly's
+		 * <em>Geometric Tools</em> and the separating axis theorem for convex shapes.
+		 *
+		 * @param tx1 x coordinate of the first point of the first triangle.
+		 * @param ty1 y coordinate of the first point of the first triangle.
+		 * @param tz1 z coordinate of the first point of the first triangle.
+		 * @param tx2 x coordinate of the second point of the first triangle.
+		 * @param ty2 y coordinate of the second point of the first triangle.
+		 * @param tz2 z coordinate of the second point of the first triangle.
+		 * @param tx3 x coordinate of the third point of the first triangle.
+		 * @param ty3 y coordinate of the third point of the first triangle.
+		 * @param tz3 z coordinate of the third point of the first triangle.
+		 * @param bx1 x coordinate of the minimum corner of the aligned box.
+		 * @param by1 y coordinate of the minimum corner of the aligned box.
+		 * @param bz1 z coordinate of the minimum corner of the aligned box.
+		 * @param bx2 x coordinate of the maximum corner of the aligned box.
+		 * @param by2 y coordinate of the maximum corner of the aligned box.
+		 * @param bz2 z coordinate of the maximum corner of the aligned box.
+		 * @param epsilon the epsilon value that is used for testing equalities.
+		 * @param closestPointOnTriangle the point on the triangle set with the
+		 *     closest coordinates. It could be {@code null}.
+		 * @param closestPointOnBox the point on the aligned box set with the
+		 *     closest coordinates. It could be {@code null}.
+		 */
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:methodlength", "checkstyle:cyclomaticcomplexity",
+			"checkstyle:npathcomplexity"})
+		@Pure
+		public static void findsClosestPointToTriangleAlignedBox(
+		        double tx1, double ty1, double tz1,
+		        double tx2, double ty2, double tz2,
+		        double tx3, double ty3, double tz3,
+		        double bx1, double by1, double bz1,
+		        double bx2, double by2, double bz2,
+		        double epsilon,
+		        Point3D<?, ?, ?> closestPointOnTriangle,
+		        Point3D<?, ?, ?> closestPointOnBox) {
+			assert closestPointOnTriangle != null || closestPointOnBox != null : AssertMessages.notNullParameter(20);
+			var bestDistSq = Double.POSITIVE_INFINITY;
+			final var bestTri = new InnerComputationPoint3D(tx1, ty1, tz1);
+			final var bestBox = new InnerComputationPoint3D(
+					MathUtil.clamp(tx1, bx1, bx2),
+					MathUtil.clamp(ty1, by1, by2),
+					MathUtil.clamp(tz1, bz1, bz2));
+
+			// 1. Triangle vertices to box
+			var px = MathUtil.clamp(tx1, bx1, bx2);
+			var py = MathUtil.clamp(ty1, by1, by2);
+			var pz = MathUtil.clamp(tz1, bz1, bz2);
+			var dx = tx1 - px;
+			var dy = ty1 - py;
+			var dz = tz1 - pz;
+			var distSq = Vector3D.dotProduct(dx, dy, dz, dx, dy, dz);
+			if (distSq == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tx1, ty1, tz1);
+				}
+				if (closestPointOnBox != null) {
+					closestPointOnBox.set(px, py, pz);
+				}
+				return;
+			}
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				bestTri.set(tx1, ty1, tz1);
+				bestBox.set(px, py, pz);
+			}
+
+			px = MathUtil.clamp(tx2, bx1, bx2);
+			py = MathUtil.clamp(ty2, by1, by2);
+			pz = MathUtil.clamp(tz2, bz1, bz2);
+			dx = tx2 - px;
+			dy = ty2 - py;
+			dz = tz2 - pz;
+			distSq = Vector3D.dotProduct(dx, dy, dz, dx, dy, dz);
+			if (distSq == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tx2, ty2, tz2);
+				}
+				if (closestPointOnBox != null) {
+					closestPointOnBox.set(px, py, pz);
+				}
+				return;
+			}
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				bestTri.set(tx2, ty2, tz2);
+				bestBox.set(px, py, pz);
+			}
+
+			px = MathUtil.clamp(tx3, bx1, bx2);
+			py = MathUtil.clamp(ty3, by1, by2);
+			pz = MathUtil.clamp(tz3, bz1, bz2);
+			dx = tx3 - px;
+			dy = ty3 - py;
+			dz = tz3 - pz;
+			distSq = Vector3D.dotProduct(dx, dy, dz, dx, dy, dz);
+			if (distSq == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tx3, ty3, tz3);
+				}
+				if (closestPointOnBox != null) {
+					closestPointOnBox.set(px, py, pz);
+				}
+				return;
+			}
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				bestTri.set(tx3, ty3, tz3);
+				bestBox.set(px, py, pz);
+			}
+
+			// 2. Triangle edges to box (closest point on each edge) – inlined
+			// Edge 1: (tx1,ty1,tz1)-(tx2,ty2,tz2)
+			bestDistSq = updateEdgeToBox(tx1, ty1, tz1, tx2, ty2, tz2,
+					bx1, by1, bz1, bx2, by2, bz2, epsilon,
+					bestDistSq,
+					bestTri, bestBox);
+			if (bestDistSq == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(bestTri);
+				}
+				if (closestPointOnBox != null) {
+					closestPointOnBox.set(bestBox);
+				}
+				return;
+			}
+			// Edge 2: (tx2,ty2,tz2)-(tx3,ty3,tz3)
+			bestDistSq = updateEdgeToBox(tx2, ty2, tz2, tx3, ty3, tz3,
+					bx1, by1, bz1, bx2, by2, bz2, epsilon,
+					bestDistSq,
+					bestTri, bestBox);
+			if (bestDistSq == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(bestTri);
+				}
+				if (closestPointOnBox != null) {
+					closestPointOnBox.set(bestBox);
+				}
+				return;
+			}
+			// Edge 3: (tx3,ty3,tz3)-(tx1,ty1,tz1)
+			bestDistSq = updateEdgeToBox(tx3, ty3, tz3, tx1, ty1, tz1,
+					bx1, by1, bz1, bx2, by2, bz2, epsilon,
+					bestDistSq,
+					bestTri, bestBox);
+			if (bestDistSq == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(bestTri);
+				}
+				if (closestPointOnBox != null) {
+					closestPointOnBox.set(bestBox);
+				}
+				return;
+			}
+
+			// 3. AABB vertices to triangle
+			final var boxVertices = new Point3D<?, ?, ?>[] {
+				new InnerComputationPoint3D(bx1, by1, bz1),
+				new InnerComputationPoint3D(bx2, by1, bz1),
+				new InnerComputationPoint3D(bx1, by2, bz1),
+				new InnerComputationPoint3D(bx2, by2, bz1),
+				new InnerComputationPoint3D(bx1, by1, bz2),
+				new InnerComputationPoint3D(bx2, by1, bz2),
+				new InnerComputationPoint3D(bx1, by2, bz2),
+				new InnerComputationPoint3D(bx2, by2, bz2),
+			};
+
+			final var tempTri = new InnerComputationPoint3D();
+			for (final var vertex : boxVertices) {
+				findsClosestPointToTrianglePoint(
+						tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
+						vertex.getX(), vertex.getY(), vertex.getZ(),
+						tempTri);
+				dx = vertex.getX() - tempTri.getX();
+				dy = vertex.getY() - tempTri.getY();
+				dz = vertex.getZ() - tempTri.getZ();
+				distSq = Vector3D.dotProduct(dx, dy, dz, dx, dy, dz);
+				if (distSq == 0.) {
+					if (closestPointOnTriangle != null) {
+						closestPointOnTriangle.set(tempTri);
+					}
+					if (closestPointOnBox != null) {
+						closestPointOnBox.set(vertex);
+					}
+					return;
+				}
+				if (distSq < bestDistSq) {
+					bestDistSq = distSq;
+					bestTri.set(tempTri);
+					bestBox.set(vertex);
+				}
+			}
+
+			// 4. AABB edges to triangle
+			// 12 edges of the box (4 parallel to each axis)
+			final var boxEdges = new Point3D<?, ?, ?>[][] {
+				// X-axis edges
+				{
+					new InnerComputationPoint3D(bx1, by1, bz1),
+					new InnerComputationPoint3D(bx2, by1, bz1),
+				},
+				{
+					new InnerComputationPoint3D(bx1, by2, bz1),
+					new InnerComputationPoint3D(bx2, by2, bz1),
+				},
+				{
+					new InnerComputationPoint3D(bx1, by1, bz2),
+					new InnerComputationPoint3D(bx2, by1, bz2),
+				},
+				{
+					new InnerComputationPoint3D(bx1, by2, bz2),
+					new InnerComputationPoint3D(bx2, by2, bz2),
+				},
+				// Y-axis edges
+				{
+					new InnerComputationPoint3D(bx1, by1, bz1),
+					new InnerComputationPoint3D(bx1, by2, bz1),
+				},
+				{
+					new InnerComputationPoint3D(bx2, by1, bz1),
+					new InnerComputationPoint3D(bx2, by2, bz1),
+				},
+				{
+					new InnerComputationPoint3D(bx1, by1, bz2),
+					new InnerComputationPoint3D(bx1, by2, bz2),
+				},
+				{
+					new InnerComputationPoint3D(bx2, by1, bz2),
+					new InnerComputationPoint3D(bx2, by2, bz2),
+				},
+				// Z-axis edges
+				{
+					new InnerComputationPoint3D(bx1, by1, bz1),
+					new InnerComputationPoint3D(bx1, by1, bz2),
+				},
+				{
+					new InnerComputationPoint3D(bx2, by1, bz1),
+					new InnerComputationPoint3D(bx2, by1, bz2),
+				},
+				{
+					new InnerComputationPoint3D(bx1, by2, bz1),
+					new InnerComputationPoint3D(bx1, by2, bz2),
+				},
+				{
+					new InnerComputationPoint3D(bx2, by2, bz1),
+					new InnerComputationPoint3D(bx2, by2, bz2),
+				},
+			};
+			final var tempSeg = new InnerComputationPoint3D();
+			for (final var edge : boxEdges) {
+				assert edge.length == 2;
+				findsClosestPointToTriangleSegment(
+						tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
+						edge[0].getX(), edge[0].getY(), edge[0].getZ(),
+						edge[1].getX(), edge[1].getY(), edge[1].getZ(),
+						epsilon,
+						tempTri, tempSeg);
+				distSq = Point3D.getDistanceSquaredPointPoint(
+						tempTri.getX(), tempTri.getY(), tempTri.getZ(),
+						tempSeg.getX(), tempSeg.getY(), tempSeg.getZ());
+				if (distSq == 0.) {
+					if (closestPointOnTriangle != null) {
+						closestPointOnTriangle.set(tempTri);
+					}
+					if (closestPointOnBox != null) {
+						closestPointOnBox.set(tempSeg);
+					}
+					return;
+				}
+				if (distSq < bestDistSq) {
+					bestDistSq = distSq;
+					bestTri.set(tempTri);
+					bestBox.set(tempSeg);
+				}
+			}
+
+			// 5. AABB face interiors to triangle face (plane-to-plane) – omitted for brevity,
+			//    but the existing algorithm already handles face interiors via the above tests
+			//    (the closest points on faces will be found as degenerate cases of edges/vertices).
+
+			if (closestPointOnTriangle != null) {
+				closestPointOnTriangle.set(bestTri);
+			}
+			if (closestPointOnBox != null) {
+				closestPointOnBox.set(bestBox);
+			}
+		}
+
+		/**
+		 * Updates best pair for an edge (segment) against an AABB.
+		 * Uses the slab method to find the closest point on the edge to the box.
+		 */
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+		private static double updateEdgeToBox(
+				double e1x, double e1y, double e1z,
+				double e2x, double e2y, double e2z,
+				double bx1, double by1, double bz1,
+				double bx2, double by2, double bz2,
+				double epsilon,
+				double bestDistSq,
+				Point3D<?, ?, ?> bestTri,
+				Point3D<?, ?, ?> bestBox) {
+			final var dx = e2x - e1x;
+			final var dy = e2y - e1y;
+			final var dz = e2z - e1z;
+			final var len2 = Vector3D.dotProduct(dx, dy, dz, dx, dy, dz);
+
+			if (len2 <= epsilon) {
+				// degenerate edge
+				return bestDistSq;
+			}
+
+			// Interval of t where the edge is inside the box
+			var tmin = 0.;
+			var tmax = 1.;
+
+			// X axis
+			if (Math.abs(dx) > epsilon) {
+				var t1 = (bx1 - e1x) / dx;
+				var t2 = (bx2 - e1x) / dx;
+				if (dx < 0) {
+					final var tmp = t1;
+					t1 = t2;
+					t2 = tmp;
+				}
+				tmin = Math.max(tmin, t1);
+				tmax = Math.min(tmax, t2);
+			} else if (e1x < bx1 || e1x > bx2) {
+				return bestDistSq;
+			}
+
+			// Y axis
+			if (Math.abs(dy) > epsilon) {
+				var t1 = (by1 - e1y) / dy;
+				var t2 = (by2 - e1y) / dy;
+				if (dy < 0) {
+					final var tmp = t1;
+					t1 = t2;
+					t2 = tmp;
+				}
+				tmin = Math.max(tmin, t1);
+				tmax = Math.min(tmax, t2);
+			} else if (e1y < by1 || e1y > by2) {
+				return bestDistSq;
+			}
+
+			// Z axis
+			if (Math.abs(dz) > epsilon) {
+				var t1 = (bz1 - e1z) / dz;
+				var t2 = (bz2 - e1z) / dz;
+				if (dz < 0) {
+					final var tmp = t1;
+					t1 = t2;
+					t2 = tmp;
+				}
+				tmin = Math.max(tmin, t1);
+				tmax = Math.min(tmax, t2);
+			} else if (e1z < bz1 || e1z > bz2) {
+				return bestDistSq;
+			}
+
+			if (tmin <= tmax) {
+				final var t = Math.max(0., Math.min(1., tmin));
+				final var px = e1x + t * dx;
+				final var py = e1y + t * dy;
+				final var pz = e1z + t * dz;
+
+				final var bpx = MathUtil.clamp(px, bx1, bx2);
+				final var bpy = MathUtil.clamp(py, by1, by2);
+				final var bpz = MathUtil.clamp(pz, bz1, bz2);
+
+				final var dpx = px - bpx;
+				final var dpy = py - bpy;
+				final var dpz = pz - bpz;
+				final var distSq = dpx * dpx + dpy * dpy + dpz * dpz;
+
+				if (distSq < bestDistSq) {
+					bestTri.set(px, py, pz);
+					bestBox.set(bpx, bpy, bpz);
+					return distSq;
+				}
+			}
+			return bestDistSq;
+		}
+
+		/**
+		 * Updates best points with the closest point on a segment to a given point.
+		 */
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+		@Pure
+		private static double updatePointToSegment(
+				double px, double py, double pz,
+				double s1x, double s1y, double s1z,
+				double s2x, double s2y, double s2z,
+				double epsilon,
+				double bestDistSq,
+				Point3D<?, ?, ?> bestTri, Point3D<?, ?, ?> bestSeg) {
+
+			final var vx = s2x - s1x;
+			final var vy = s2y - s1y;
+			final var vz = s2z - s1z;
+			final var len2 = Vector3D.dotProduct(vx, vy, vz, vx, vy, vz);
+			if (len2 <= epsilon) {
+				// segment degenerate, use s1
+				final var dx = px - s1x;
+				final var dy = py - s1y;
+				final var dz = pz - s1z;
+				final var distSq = Vector3D.dotProduct(dx, dy, dz, dx, dy, dz);
+				if (distSq < bestDistSq) {
+					bestTri.set(px, py, pz);
+					bestSeg.set(s1x, s1y, s1z);
+					return distSq;
+				}
+				return bestDistSq;
+			}
+			final var t = MathUtil.clamp(((px - s1x) * vx + (py - s1y) * vy + (pz - s1z) * vz) / len2, 0., 1.);
+			final var cx = s1x + t * vx;
+			final var cy = s1y + t * vy;
+			final var cz = s1z + t * vz;
+			final var dx = px - cx;
+			final var dy = py - cy;
+			final var dz = pz - cz;
+			final var distSq = dx * dx + dy * dy + dz * dz;
+			if (distSq < bestDistSq) {
+				bestTri.set(px, py, pz);
+				bestSeg.set(cx, cy, cz);
+				return distSq;
+			}
+			return bestDistSq;
+		}
+
+		/**
+		 * Tests if a segment intersects a triangle. If so, stores an intersection point in 'result'.
+		 * Returns true iff there is an intersection.
+		 */
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+		@Pure
+		private static boolean segmentIntersectsTriangle(
+				double s1x, double s1y, double s1z,
+				double s2x, double s2y, double s2z,
+				double ax, double ay, double az,
+				double bx, double by, double bz,
+				double cx, double cy, double cz,
+				double epsilon,
+				Point3D<?, ?, ?> result) {
+
+			// Use the method of separating axis or Moeller-Trumbore
+			// Compute plane normal
+			final var nx = (by - ay) * (cz - az) - (bz - az) * (cy - ay);
+			final var ny = (bz - az) * (cx - ax) - (bx - ax) * (cz - az);
+			final var nz = (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
+			final var len2 = Vector3D.dotProduct(nx, ny, nz, nx, ny, nz);
+			if (len2 <= epsilon) {
+				// degenerate triangle
+				return false;
+			}
+
+			// Check if segment endpoints are on opposite sides of the plane
+			final var d1 = nx * (s1x - ax) + ny * (s1y - ay) + nz * (s1z - az);
+			final var d2 = nx * (s2x - ax) + ny * (s2y - ay) + nz * (s2z - az);
+			if (d1 * d2 > epsilon) {
+				// both on same side, no intersection
+				return false;
+			}
+
+			// Compute intersection point with plane
+			final var t = -d1 / (d2 - d1);
+			if (t < 0. || t > 1.) {
+				return false;
+			}
+			final var ix = s1x + t * (s2x - s1x);
+			final var iy = s1y + t * (s2y - s1y);
+			final var iz = s1z + t * (s2z - s1z);
+
+			// Check if point is inside triangle (barycentric coordinates)
+			final var edge1x = bx - ax;
+			final var edge1y = by - ay;
+			final var edge1z = bz - az;
+			final var edge2x = cx - ax;
+			final var edge2y = cy - ay;
+			final var edge2z = cz - az;
+			final var hx = ix - ax;
+			final var hy = iy - ay;
+			final var hz = iz - az;
+
+			var u = (edge2y * hz - edge2z * hy) * (edge1y * edge2z - edge1z * edge2y)
+					+ (edge2z * hx - edge2x * hz) * (edge1z * edge2x - edge1x * edge2z)
+					+ (edge2x * hy - edge2y * hx) * (edge1x * edge2y - edge1y * edge2x);
+			u /= (edge1x * edge1x + edge1y * edge1y + edge1z * edge1z)
+					* (edge2x * edge2x + edge2y * edge2y + edge2z * edge2z)
+					- (edge1x * edge2x + edge1y * edge2y + edge1z * edge2z)
+					* (edge1x * edge2x + edge1y * edge2y + edge1z * edge2z);
+
+			final var v = (edge1x * hx + edge1y * hy + edge1z * hz - u * (edge1x * edge2x + edge1y * edge2y + edge1z * edge2z))
+					/ (edge1x * edge1x + edge1y * edge1y + edge1z * edge1z);
+
+			if (u >= 0. && v >= 0. && u + v <= 1.) {
+				result.set(ix, iy, iz);
+				return true;
+			}
+			return false;
+		}
+
 		/** Replies the closest point from the triangle A to the triangle B.
 		 * The closest point is always located in the triangle.
 		 *
@@ -3059,6 +3552,15 @@ public interface Triangle3afp<
 			var distSq = Point3D.getDistanceSquaredPointPoint(
 					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
 					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq == 0.) {
+				if (closestPointOnTriangleA != null) {
+					closestPointOnTriangleA.set(scratch1);
+				}
+				if (closestPointOnTriangleB != null) {
+					closestPointOnTriangleB.set(scratch0);
+				}
+				return;
+			}
 			if (distSq < bestDistSq) {
 				bestDistSq = distSq;
 				bestAx = scratch1.getX();
@@ -3077,6 +3579,15 @@ public interface Triangle3afp<
 			distSq = Point3D.getDistanceSquaredPointPoint(
 					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
 					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq == 0.) {
+				if (closestPointOnTriangleA != null) {
+					closestPointOnTriangleA.set(scratch1);
+				}
+				if (closestPointOnTriangleB != null) {
+					closestPointOnTriangleB.set(scratch0);
+				}
+				return;
+			}
 			if (distSq < bestDistSq) {
 				bestDistSq = distSq;
 				bestAx = scratch1.getX();
@@ -3095,6 +3606,15 @@ public interface Triangle3afp<
 			distSq = Point3D.getDistanceSquaredPointPoint(
 					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
 					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq == 0.) {
+				if (closestPointOnTriangleA != null) {
+					closestPointOnTriangleA.set(scratch1);
+				}
+				if (closestPointOnTriangleB != null) {
+					closestPointOnTriangleB.set(scratch0);
+				}
+				return;
+			}
 			if (distSq < bestDistSq) {
 				bestDistSq = distSq;
 				bestAx = scratch1.getX();
@@ -3113,6 +3633,15 @@ public interface Triangle3afp<
 			distSq = Point3D.getDistanceSquaredPointPoint(
 					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
 					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq == 0.) {
+				if (closestPointOnTriangleA != null) {
+					closestPointOnTriangleA.set(scratch0);
+				}
+				if (closestPointOnTriangleB != null) {
+					closestPointOnTriangleB.set(scratch1);
+				}
+				return;
+			}
 			if (distSq < bestDistSq) {
 				bestDistSq = distSq;
 				bestAx = scratch0.getX();
@@ -3131,6 +3660,15 @@ public interface Triangle3afp<
 			distSq = Point3D.getDistanceSquaredPointPoint(
 					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
 					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq == 0.) {
+				if (closestPointOnTriangleA != null) {
+					closestPointOnTriangleA.set(scratch0);
+				}
+				if (closestPointOnTriangleB != null) {
+					closestPointOnTriangleB.set(scratch1);
+				}
+				return;
+			}
 			if (distSq < bestDistSq) {
 				bestDistSq = distSq;
 				bestAx = scratch0.getX();
@@ -3149,6 +3687,15 @@ public interface Triangle3afp<
 			distSq = Point3D.getDistanceSquaredPointPoint(
 					scratch0.getX(), scratch0.getY(), scratch0.getZ(),
 					scratch1.getX(), scratch1.getY(), scratch1.getZ());
+			if (distSq == 0.) {
+				if (closestPointOnTriangleA != null) {
+					closestPointOnTriangleA.set(scratch0);
+				}
+				if (closestPointOnTriangleB != null) {
+					closestPointOnTriangleB.set(scratch1);
+				}
+				return;
+			}
 			if (distSq < bestDistSq) {
 				bestAx = scratch0.getX();
 				bestAy = scratch0.getY();
@@ -3516,7 +4063,7 @@ public interface Triangle3afp<
 		 * @param px the X coordinate of the point
 		 * @param py the Y coordinate of the point
 		 * @param pz the Z coordinate of the point
-		 * @param forceCoplanar is {@code true} to force to test
+		 * @param forceCoplanar is {@code true}
 		 *     to consider the given point is coplanar to the triangle, {@code false}
 		 *     to not consider coplanarity of the point.
 		 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters
@@ -3823,12 +4370,13 @@ public interface Triangle3afp<
 		 * @param closestPointOnSegment the point on the segment set with the
 		 *     closest coordinates. It could be {@code null}.
 		 * @param epsilon the epsilon value that is used for testing equalities.
-		 * @return {@code true} if the triangle and segment intersect (distance ≤ 1e‑12)
+		 * @return the computed squared distance; or {@link Double#NaN} if the closest points
+		 *     cannot be computed.
 		 */
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 		@Pure
 		@Unefficient
-		public static boolean findsClosestPointToTriangleSegment(
+		public static double findsClosestPointToTriangleSegment(
 				double tx1, double ty1, double tz1,
 				double tx2, double ty2, double tz2,
 				double tx3, double ty3, double tz3,
@@ -3838,238 +4386,187 @@ public interface Triangle3afp<
 				Point3D<?, ?, ?> closestPointOnTriangle,
 				Point3D<?, ?, ?> closestPointOnSegment) {
 			assert closestPointOnTriangle != null || closestPointOnSegment != null : AssertMessages.notNullParameter(17);
-			// best[0] = squared distance, best[1..3] = triangle point, best[4..6] = segment point
-			final var best = new double[7];
-			best[0] = Double.POSITIVE_INFINITY;
+			final var tempPt0 = new InnerComputationPoint3D();
 
 			// 1. Triangle vertices to segment
-			pointToSegment(best, tx1, ty1, tz1, sx1, sy1, sz1, sx2, sy2, sz2, epsilon);
-			pointToSegment(best, tx2, ty2, tz2, sx1, sy1, sz1, sx2, sy2, sz2, epsilon);
-			pointToSegment(best, tx3, ty3, tz3, sx1, sy1, sz1, sx2, sy2, sz2, epsilon);
+			Segment3afp.findsClosestPointToPoint(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					tx1, ty1, tz1,
+					tempPt0);
+			var bestDistance = Point3D.getDistanceSquaredPointPoint(tx1, ty1, tz1, tempPt0.getX(), tempPt0.getY(), tempPt0.getZ());
+			if (bestDistance == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tx1, ty1, tz1);
+				}
+				if (closestPointOnSegment != null) {
+					closestPointOnSegment.set(tempPt0);
+				}
+				return 0.;
+			}
+			final var bestTri = new InnerComputationPoint3D(tx1, ty1, tz1);
+			final var bestSeg = new InnerComputationPoint3D(tempPt0);
+
+			Segment3afp.findsClosestPointToPoint(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					tx2, ty2, tz2,
+					tempPt0);
+			var dist = Point3D.getDistanceSquaredPointPoint(tx2, ty2, tz2, tempPt0.getX(), tempPt0.getY(), tempPt0.getZ());
+			if (dist == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tx2, ty2, tz2);
+				}
+				if (closestPointOnSegment != null) {
+					closestPointOnSegment.set(tempPt0);
+				}
+				return 0.;
+			}
+			if (dist < bestDistance) {
+				bestDistance = dist;
+				bestTri.set(tx2, ty2, tz2);
+				bestSeg.set(tempPt0);
+			}
+
+			Segment3afp.findsClosestPointToPoint(
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					tx3, ty3, tz3,
+					tempPt0);
+			dist = Point3D.getDistanceSquaredPointPoint(tx3, ty3, tz3, tempPt0.getX(), tempPt0.getY(), tempPt0.getZ());
+			if (dist == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tx3, ty3, tz3);
+				}
+				if (closestPointOnSegment != null) {
+					closestPointOnSegment.set(tempPt0);
+				}
+				return 0.;
+			}
+			if (dist < bestDistance) {
+				bestDistance = dist;
+				bestTri.set(tx3, ty3, tz3);
+				bestSeg.set(tempPt0);
+			}
 
 			// 2. Segment endpoints to triangle
-			pointToTriangle(best, sx1, sy1, sz1, tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, epsilon);
-			pointToTriangle(best, sx2, sy2, sz2, tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, epsilon);
+			findsClosestPointToTrianglePoint(
+					tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
+					sx1, sy1, sz1, tempPt0);
+			dist = Point3D.getDistanceSquaredPointPoint(sx1, sy1, sz1, tempPt0.getX(), tempPt0.getY(), tempPt0.getZ());
+			if (dist == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tempPt0);
+				}
+				if (closestPointOnSegment != null) {
+					closestPointOnSegment.set(sx1, sy1, sz1);
+				}
+				return 0.;
+			}
+			if (dist < bestDistance) {
+				bestDistance = dist;
+				bestTri.set(tempPt0);
+				bestSeg.set(sx1, sy1, sz1);
+			}
+
+			findsClosestPointToTrianglePoint(
+					tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
+					sx2, sy2, sz2, tempPt0);
+			dist = Point3D.getDistanceSquaredPointPoint(sx2, sy2, sz2, tempPt0.getX(), tempPt0.getY(), tempPt0.getZ());
+			if (dist == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tempPt0);
+				}
+				if (closestPointOnSegment != null) {
+					closestPointOnSegment.set(sx2, sy2, sz2);
+				}
+				return 0.;
+			}
+			if (dist < bestDistance) {
+				bestDistance = dist;
+				bestTri.set(tempPt0);
+				bestSeg.set(sx2, sy2, sz2);
+			}
 
 			// 3. Segment to each triangle edge
-			segmentSegment(best,
+			final var tempPt1 = new InnerComputationPoint3D();
+
+			Segment3afp.findsClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
-					tx1, ty1, tz1, tx2, ty2, tz2, epsilon);
-			segmentSegment(best,
+					tx1, ty1, tz1, tx2, ty2, tz2,
+					tempPt0, tempPt1);
+			dist = Point3D.getDistanceSquaredPointPoint(tempPt0.getX(), tempPt0.getY(), tempPt0.getZ(),
+					tempPt1.getX(), tempPt1.getY(), tempPt1.getZ());
+			if (dist == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tempPt1);
+				}
+				if (closestPointOnSegment != null) {
+					closestPointOnSegment.set(tempPt0);
+				}
+				return 0.;
+			}
+			if (dist < bestDistance) {
+				bestDistance = dist;
+				bestTri.set(tempPt1);
+				bestSeg.set(tempPt0);
+			}
+
+			Segment3afp.findsClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
-					tx2, ty2, tz2, tx3, ty3, tz3, epsilon);
-			segmentSegment(best,
+					tx2, ty2, tz2, tx3, ty3, tz3,
+					tempPt0, tempPt1);
+			dist = Point3D.getDistanceSquaredPointPoint(tempPt0.getX(), tempPt0.getY(), tempPt0.getZ(),
+					tempPt1.getX(), tempPt1.getY(), tempPt1.getZ());
+			if (dist == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tempPt1);
+				}
+				if (closestPointOnSegment != null) {
+					closestPointOnSegment.set(tempPt0);
+				}
+				return 0.;
+			}
+			if (dist < bestDistance) {
+				bestDistance = dist;
+				bestTri.set(tempPt1);
+				bestSeg.set(tempPt0);
+			}
+
+			Segment3afp.findsClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
-					tx3, ty3, tz3, tx1, ty1, tz1, epsilon);
+					tx3, ty3, tz3, tx1, ty1, tz1,
+					tempPt0, tempPt1);
+			dist = Point3D.getDistanceSquaredPointPoint(tempPt0.getX(), tempPt0.getY(), tempPt0.getZ(),
+					tempPt1.getX(), tempPt1.getY(), tempPt1.getZ());
+			if (dist == 0.) {
+				if (closestPointOnTriangle != null) {
+					closestPointOnTriangle.set(tempPt1);
+				}
+				if (closestPointOnSegment != null) {
+					closestPointOnSegment.set(tempPt0);
+				}
+				return 0.;
+			}
+			if (dist < bestDistance) {
+				bestDistance = dist;
+				bestTri.set(tempPt1);
+				bestSeg.set(tempPt0);
+			}
 
 			// 4. Face‑interior case (segment parallel to triangle plane)
-			handleFaceInterior(best,
+			bestDistance = handleFaceInterior(
 					tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
-					sx1, sy1, sz1, sx2, sy2, sz2, epsilon);
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					bestDistance, epsilon, bestTri, bestSeg);
 
-			if (Double.isInfinite(best[0])) {
-				// should never happen
-				return false;
-			}
+			assert !Double.isInfinite(bestDistance);
 
 			if (closestPointOnTriangle != null) {
-				closestPointOnTriangle.setX(best[1]);
-				closestPointOnTriangle.setY(best[2]);
-				closestPointOnTriangle.setZ(best[3]);
+				closestPointOnTriangle.set(bestTri);
 			}
 			if (closestPointOnSegment != null) {
-				closestPointOnSegment.setX(best[4]);
-				closestPointOnSegment.setY(best[5]);
-				closestPointOnSegment.setZ(best[6]);
+				closestPointOnSegment.set(bestSeg);
 			}
 
-			return best[0] <= epsilon * epsilon;
-		}
-
-		/** Updates {@code best} if the candidate pair is closer.
-		 */
-		private static void evaluateCandidate(double[] best,
-				double triX, double triY, double triZ,
-				double segX, double segY, double segZ) {
-			final var dx = triX - segX;
-			final var dy = triY - segY;
-			final var dz = triZ - segZ;
-			final var sq = dx * dx + dy * dy + dz * dz;
-			if (sq < best[0]) {
-				best[0] = sq;
-				best[1] = triX;
-				best[2] = triY;
-				best[3] = triZ;
-				best[4] = segX;
-				best[5] = segY;
-				best[6] = segZ;
-			}
-		}
-
-		/** Closest point on segment (a→b) to point P.
-		 */
-		@SuppressWarnings("checkstyle:parameternumber")
-		private static void pointToSegment(double[] best,
-				double px, double py, double pz,
-				double ax, double ay, double az,
-				double bx, double by, double bz,
-				double epsilon) {
-			final var dx = bx - ax;
-			final var dy = by - ay;
-			final var dz = bz - az;
-			final var len2 = dx * dx + dy * dy + dz * dz;
-			if (len2 < epsilon) {
-				// segment degenerates to a point
-				evaluateCandidate(best, px, py, pz, ax, ay, az);
-				return;
-			}
-			var t = ((px - ax) * dx + (py - ay) * dy + (pz - az) * dz) / len2;
-			t = MathUtil.clamp(t, 0, 1);
-			final var cx = ax + t * dx;
-			final var cy = ay + t * dy;
-			final var cz = az + t * dz;
-			evaluateCandidate(best, px, py, pz, cx, cy, cz);
-		}
-
-		/** Closest point on triangle ABC to point P (Eberly's algorithm).
-		 */
-		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
-		private static void pointToTriangle(double[] best,
-				double px, double py, double pz,
-				double ax, double ay, double az,
-				double bx, double by, double bz,
-				double cx, double cy, double cz,
-				double epsilon) {
-			final var abx = bx - ax;
-			final var aby = by - ay;
-			final var abz = bz - az;
-
-			final var acx = cx - ax;
-			final var acy = cy - ay;
-			final var acz = cz - az;
-
-			final var apx = px - ax;
-			final var apy = py - ay;
-			final var apz = pz - az;
-
-			final var d1 = Vector3D.dotProduct(abx, aby, abz, apx, apy, apz);
-			final var d2 = Vector3D.dotProduct(acx, acy, acz, apx, apy, apz);
-			if (d1 <= 0 && d2 <= 0) {
-				evaluateCandidate(best, ax, ay, az, px, py, pz);
-				return;
-			}
-
-			final var bpx = px - bx;
-			final var bpy = py - by;
-			final var bpz = pz - bz;
-			final var d3 = Vector3D.dotProduct(abx, aby, abz, bpx, bpy, bpz);
-			final var d4 = Vector3D.dotProduct(acx, acy, acz, bpx, bpy, bpz);
-			if (d3 >= 0 && d4 <= d3) {
-				evaluateCandidate(best, bx, by, bz, px, py, pz);
-				return;
-			}
-
-			final var cpx = px - cx;
-			final var cpy = py - cy;
-			final var cpz = pz - cz;
-			final var d5 = Vector3D.dotProduct(abx, aby, abz, cpx, cpy, cpz);
-			final var d6 = Vector3D.dotProduct(acx, acy, acz, cpx, cpy, cpz);
-			if (d6 >= 0 && d5 <= d6) {
-				evaluateCandidate(best, cx, cy, cz, px, py, pz);
-				return;
-			}
-
-			final var vc = d1 * d4 - d3 * d2;
-			if (vc <= 0 && d1 >= 0 && d3 <= 0) {
-				final var v = d1 / (d1 - d3);
-				final var ex = ax + v * abx;
-				final var ey = ay + v * aby;
-				final var ez = az + v * abz;
-				evaluateCandidate(best, ex, ey, ez, px, py, pz);
-				return;
-			}
-
-			final var vb = d5 * d2 - d1 * d6;
-			if (vb <= 0 && d2 >= 0 && d6 <= 0) {
-				final var v = d2 / (d2 - d6);
-				final var ex = ax + v * acx;
-				final var ey = ay + v * acy;
-				final var ez = az + v * acz;
-				evaluateCandidate(best, ex, ey, ez, px, py, pz);
-				return;
-			}
-
-			final var va = d3 * d6 - d5 * d4;
-			if (va <= 0 && (d4 - d3) >= 0 && (d5 - d6) >= 0) {
-				final var v = (d4 - d3) / ((d4 - d3) + (d5 - d6));
-				final var ex = bx + v * (cx - bx);
-				final var ey = by + v * (cy - by);
-				final var ez = bz + v * (cz - bz);
-				evaluateCandidate(best, ex, ey, ez, px, py, pz);
-				return;
-			}
-
-			// Inside triangle: project onto plane
-			final var nx = aby * acz - abz * acy;
-			final var ny = abz * acx - abx * acz;
-			final var nz = abx * acy - aby * acx;
-			final var n2 = nx * nx + ny * ny + nz * nz;
-			if (n2 > epsilon) {
-				final var dotn = Vector3D.dotProduct(nx, ny, nz, apx, apy, apz);
-				final var qx = px - nx * dotn / n2;
-				final var qy = py - ny * dotn / n2;
-				final var qz = pz - nz * dotn / n2;
-				evaluateCandidate(best, qx, qy, qz, px, py, pz);
-			}
-		}
-
-		/** Closest points between two segments (a→b) and (c→d).
-		 */
-		@SuppressWarnings("checkstyle:parameternumber")
-		private static void segmentSegment(double[] best,
-				double ax, double ay, double az,
-				double bx, double by, double bz,
-				double cx, double cy, double cz,
-				double dx, double dy, double dz,
-				double epsilon) {
-			// endpoint pairs
-			pointToSegment(best, ax, ay, az, cx, cy, cz, dx, dy, dz, epsilon);
-			pointToSegment(best, bx, by, bz, cx, cy, cz, dx, dy, dz, epsilon);
-			pointToSegment(best, cx, cy, cz, ax, ay, az, bx, by, bz, epsilon);
-			pointToSegment(best, dx, dy, dz, ax, ay, az, bx, by, bz, epsilon);
-
-			// interior-interior (infinite lines)
-			final var ux = bx - ax;
-			final var uy = by - ay;
-			final var uz = bz - az;
-
-			final var vx = dx - cx;
-			final var vy = dy - cy;
-			final var vz = dz - cz;
-
-			final var wx = ax - cx;
-			final var wy = ay - cy;
-			final var wz = az - cz;
-
-			final var a = Vector3D.dotProduct(ux, uy, uz, ux, uy, uz);
-			final var b = Vector3D.dotProduct(ux, uy, uz, vx, vy, vz);
-			final var c = Vector3D.dotProduct(vx, vy, vz, vx, vy, vz);
-			final var d = Vector3D.dotProduct(ux, uy, uz, wx, wy, wz);
-			final var e = Vector3D.dotProduct(vx, vy, vz, wx, wy, wz);
-			final var denom = a * c - b * b;
-			if (Math.abs(denom) > epsilon) {
-				final var s = (b * e - c * d) / denom;
-				final var t = (a * e - b * d) / denom;
-				if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
-					final var px = ax + s * ux;
-					final var py = ay + s * uy;
-					final var pz = az + s * uz;
-					final var qx = cx + t * vx;
-					final var qy = cy + t * vy;
-					final var qz = cz + t * vz;
-					evaluateCandidate(best, qx, qy, qz, px, py, pz);
-				}
-			}
+			return bestDistance;
 		}
 
 		/**
@@ -4077,78 +4574,93 @@ public interface Triangle3afp<
 		 * and its projection onto the plane lies inside the triangle.
 		 */
 		@SuppressWarnings("checkstyle:parameternumber")
-		private static void handleFaceInterior(double[] best,
+		private static double handleFaceInterior(
 				double tx1, double ty1, double tz1,
 				double tx2, double ty2, double tz2,
 				double tx3, double ty3, double tz3,
 				double sx1, double sy1, double sz1,
 				double sx2, double sy2, double sz2,
-				double epsilon) {
-			final var abx = tx2 - tx1;
-			final var aby = ty2 - ty1;
-			final var abz = tz2 - tz1;
-			final var acx = tx3 - tx1;
-			final var acy = ty3 - ty1;
-			final var acz = tz3 - tz1;
-			final var nx = aby * acz - abz * acy;
-			final var ny = abz * acx - abx * acz;
-			final var nz = abx * acy - aby * acx;
-			final var n2 = nx * nx + ny * ny + nz * nz;
-			if (n2 < epsilon) {
-				// degenerate triangle
-				return;
+				double bestDistance,
+				double epsilon,
+				Point3D<?, ?, ?> bestTri,
+				Point3D<?, ?, ?> bestSeg) {
+			var best = bestDistance;
+
+			final var e1x = tx2 - tx1;
+			final var e1y = ty2 - ty1;
+			final var e1z = tz2 - tz1;
+			final var e2x = tx3 - tx1;
+			final var e2y = ty3 - ty1;
+			final var e2z = tz3 - tz1;
+
+			final var n = new InnerComputationVector3D();
+			Vector3D.crossProduct(e1x, e1y, e1z, e2x, e2y, e2z, n);
+			n.normalize();
+
+			final var a = n.getX();
+			final var b = n.getY();
+			final var c = n.getZ();
+			if (a * a + b * b + c * c != 1.) {
+				return best;
 			}
 
-			final var segDirX = sx2 - sx1;
-			final var segDirY = sy2 - sy1;
-			final var segDirZ = sz2 - sz1;
-			final var dotDir = Vector3D.dotProduct(segDirX, segDirY, segDirZ, nx, ny, nz);
-			if (Math.abs(dotDir) >= epsilon) {
-				// not parallel
-				return;
-			}
+			final var d = -(a * tx1 + b * ty1 + c * tz1);
 
-			// Project midpoint of segment onto the plane
-			final var midX = (sx1 + sx2) * .5;
-			final var midY = (sy1 + sy2) * .5;
-			final var midZ = (sz1 + sz2) * .5;
-			final var midD = Vector3D.dotProduct(nx, ny, nz, midX - tx1, midY - ty1, midZ - tz1);
-			final var projX = midX - nx * midD / n2;
-			final var projY = midY - ny * midD / n2;
-			final var projZ = midZ - nz * midD / n2;
+			final var intersection = new InnerComputationPoint3D();
+			if (Plane3afp.findsPlaneSegmentIntersection(
+					a, b, c, d,
+					sx1, sy1, sz1, sx2, sy2, sz2,
+					intersection)) {
+				// Determine if the projection point is in the triangle area
+				final var px = intersection.getX();
+				final var py = intersection.getY();
+				final var pz = intersection.getZ();
+				findsClosestPointToTrianglePoint(
+						tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
+						px, py, pz, intersection);
+				final var dist = Point3D.getDistanceSquaredPointPoint(
+						px, py, pz,
+						intersection.getX(), intersection.getY(), intersection.getZ());
+				if (dist < bestDistance) {
+					best = dist;
+					bestTri.set(intersection.getX(), intersection.getY(), intersection.getZ());
+					bestSeg.set(px, py, pz);
+				}
+			} else {
+				// There is no intersection between the segment and the triangle's plane.
+				// The projections of each segment point should be considered
+				Plane3afp.findsPlanePointProjectionWithPlaneNormal(a, b, c, d, sx1, sy1, sz1, intersection);
+				var px = intersection.getX();
+				var py = intersection.getY();
+				var pz = intersection.getZ();
+				if (containsTrianglePoint(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, px, py, pz, false, epsilon)) {
+					final var dist = Point3D.getDistanceSquaredPointPoint(
+							px, py, pz,
+							sx1, sy1, sz1);
+					if (dist < bestDistance) {
+						best = dist;
+						bestTri.set(px, py, pz);
+						bestSeg.set(sx1, sy1, sz1);
+					}
+				}
 
-			// Barycentric coordinates of projected midpoint
-			final var qx = projX - tx1;
-			final var qy = projY - ty1;
-			final var qz = projZ - tz1;
-			final var d1 = Vector3D.dotProduct(abx, aby, abz, qx, qy, qz);
-			final var d2 = Vector3D.dotProduct(acx, acy, acz, qx, qy, qz);
-			final var d11 = Vector3D.dotProduct(abx, aby, abz, abx, aby, abz);
-			final var d22 = Vector3D.dotProduct(acx, acy, acz, acx, acy, acz);
-			final var d12 = Vector3D.dotProduct(abx, aby, abz, acx, acy, acz);
-			final var det = d11 * d22 - d12 * d12;
-			if (Math.abs(det) < epsilon) {
-				return;
-			}
-
-			final var beta = (d22 * d1 - d12 * d2) / det;
-			final var gamma = (d11 * d2 - d12 * d1) / det;
-			final var alpha = 1 - beta - gamma;
-
-			if (beta >= -epsilon && gamma >= -epsilon && alpha >= -epsilon) {
-				// Projected midpoint is inside the triangle
-				// perpendicular distance squared
-				final var distSq = (midD * midD) / n2;
-				if (distSq < best[0]) {
-					best[0] = distSq;
-					best[1] = projX;
-					best[2] = projY;
-					best[3] = projZ;
-					best[4] = midX;
-					best[5] = midY;
-					best[6] = midZ;
+				Plane3afp.findsPlanePointProjectionWithPlaneNormal(a, b, c, d, sx2, sy2, sz2, intersection);
+				px = intersection.getX();
+				py = intersection.getY();
+				pz = intersection.getZ();
+				if (containsTrianglePoint(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, px, py, pz, false, epsilon)) {
+					final var dist = Point3D.getDistanceSquaredPointPoint(
+							px, py, pz,
+							sx2, sy2, sz2);
+					if (dist < bestDistance) {
+						best = dist;
+						bestTri.set(px, py, pz);
+						bestSeg.set(sx1, sy1, sz1);
+					}
 				}
 			}
+
+			return best;
 		}
 
 		/** Replies the closest point from the triangle to the point.

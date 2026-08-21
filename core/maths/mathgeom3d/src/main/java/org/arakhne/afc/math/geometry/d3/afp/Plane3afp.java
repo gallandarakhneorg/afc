@@ -473,7 +473,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 		return 0.;
 	}
 
-	/** Calculates the distance between the given plane and this plane.
+	/** Calculates the distance between the given plane and point.
 	 *
 	 * @param a first component of the plane equation.
 	 * @param b second component of the plane equation.
@@ -482,7 +482,9 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 	 * @param px the x coordinate of the point.
 	 * @param py the y coordinate of the point.
 	 * @param pz the c coordinate of the point.
-	 * @return the distance between the two planes.
+	 * @return the distance that is positive if the point is on the half-space of the plane normal;
+	 *      negative if the point is on the opposite side of the plane normal; or zero
+	 *      if the point is on the plane.
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parametername")
