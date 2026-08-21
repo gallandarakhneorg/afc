@@ -184,6 +184,10 @@ public interface Path3afp<
 
 			if (foundCandidate) {
 				final var d = Point3D.getDistanceSquaredPointPoint(x, y, z, candidateX, candidateY, candidateZ);
+				if (d == 0.) {
+					result.set(candidateX, candidateY, candidateZ);
+					return true;
+				}
 				if (d < bestDist) {
 					bestDist = d;
 					result.set(candidateX, candidateY, candidateZ);
@@ -222,7 +226,7 @@ public interface Path3afp<
 	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	@Unefficient
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean findsClosestPointToPath(PathIterator3afp<? extends PathElement3afp> firstPath,
 			PathIterator3afp<? extends PathElement3afp> secondPath, Point3D<?, ?, ?> result1, Point3D<?, ?, ?> result2) {
 		assert firstPath != null : AssertMessages.notNullParameter(0);
@@ -271,6 +275,15 @@ public interface Path3afp<
 					final var dist = Point3D.getDistanceSquaredPointPoint(
 							point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (result1 != null) {
+							result1.set(point2);
+						}
+						if (result2 != null) {
+							result2.set(point1);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (result1 != null) {
@@ -294,6 +307,15 @@ public interface Path3afp<
 							point1, point2)) {
 						final var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 								point2.getX(), point2.getY(), point2.getZ());
+						if (dist == 0.) {
+							if (result1 != null) {
+								result1.set(point2);
+							}
+							if (result2 != null) {
+								result2.set(point1);
+							}
+							return true;
+						}
 						if (dist < bestDistance) {
 							bestDistance = dist;
 							if (result1 != null) {
@@ -322,6 +344,15 @@ public interface Path3afp<
 						secondPath.restartIterations(), point1, point2)) {
 					final var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (result1 != null) {
@@ -352,6 +383,15 @@ public interface Path3afp<
 						secondPath.restartIterations(), point1, point2)) {
 					final var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (result1 != null) {
@@ -412,7 +452,7 @@ public interface Path3afp<
 	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean findsClosestPointToSegment(PathIterator3afp<? extends PathElement3afp> pi,
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			Point3D<?, ?, ?> result1, Point3D<?, ?, ?> result2) {
@@ -461,6 +501,15 @@ public interface Path3afp<
 						point1, point2);
 				var dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 						point2.getX(), point2.getY(), point2.getZ());
+				if (dist == 0.) {
+					if (result1 != null) {
+						result1.set(point1);
+					}
+					if (result2 != null) {
+						result2.set(point2);
+					}
+					return true;
+				}
 				if (dist < bestDistance) {
 					bestDistance = dist;
 					if (result1 != null) {
@@ -483,6 +532,15 @@ public interface Path3afp<
 							point1, point2);
 					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (result1 != null) {
@@ -511,6 +569,15 @@ public interface Path3afp<
 						point1, point2)) {
 					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (result1 != null) {
@@ -542,6 +609,15 @@ public interface Path3afp<
 						point1, point2)) {
 					dist = Point3D.getDistanceSquaredPointPoint(point1.getX(), point1.getY(), point1.getZ(),
 							point2.getX(), point2.getY(), point2.getZ());
+					if (dist == 0.) {
+						if (result1 != null) {
+							result1.set(point1);
+						}
+						if (result2 != null) {
+							result2.set(point2);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (result1 != null) {
@@ -580,7 +656,7 @@ public interface Path3afp<
 	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean findsClosestPointToPathIteratorAlignedBox(PathIterator3afp<? extends PathElement3afp> pi,
 			double rminx, double rminy, double rminz, double rmaxx, double rmaxy, double rmaxz,
 			Point3D<?, ?, ?> resultOnPath, Point3D<?, ?, ?> resultOnBox) {
@@ -628,6 +704,15 @@ public interface Path3afp<
 						pointOnBox, pointOnPath);
 				var dist = Point3D.getDistanceSquaredPointPoint(pointOnPath.getX(), pointOnPath.getY(), pointOnPath.getZ(),
 						pointOnBox.getX(), pointOnBox.getY(), pointOnBox.getZ());
+				if (dist == 0.) {
+					if (resultOnPath != null) {
+						resultOnPath.set(pointOnPath);
+					}
+					if (resultOnBox != null) {
+						resultOnBox.set(pointOnBox);
+					}
+					return true;
+				}
 				if (dist < bestDistance) {
 					bestDistance = dist;
 					if (resultOnPath != null) {
@@ -650,6 +735,15 @@ public interface Path3afp<
 							pointOnBox, pointOnPath);
 					dist = Point3D.getDistanceSquaredPointPoint(pointOnPath.getX(), pointOnPath.getY(), pointOnPath.getZ(),
 							pointOnBox.getX(), pointOnBox.getY(), pointOnBox.getZ());
+					if (dist == 0.) {
+						if (resultOnPath != null) {
+							resultOnPath.set(pointOnPath);
+						}
+						if (resultOnBox != null) {
+							resultOnBox.set(pointOnBox);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (resultOnPath != null) {
@@ -678,6 +772,15 @@ public interface Path3afp<
 						pointOnPath, pointOnBox)) {
 					dist = Point3D.getDistanceSquaredPointPoint(pointOnPath.getX(), pointOnPath.getY(), pointOnPath.getZ(),
 							pointOnBox.getX(), pointOnBox.getY(), pointOnBox.getZ());
+					if (dist == 0.) {
+						if (resultOnPath != null) {
+							resultOnPath.set(pointOnPath);
+						}
+						if (resultOnBox != null) {
+							resultOnBox.set(pointOnBox);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (resultOnPath != null) {
@@ -709,6 +812,15 @@ public interface Path3afp<
 						pointOnPath, pointOnBox)) {
 					dist = Point3D.getDistanceSquaredPointPoint(pointOnPath.getX(), pointOnPath.getY(), pointOnPath.getZ(),
 							pointOnBox.getX(), pointOnBox.getY(), pointOnBox.getZ());
+					if (dist == 0.) {
+						if (resultOnPath != null) {
+							resultOnPath.set(pointOnPath);
+						}
+						if (resultOnBox != null) {
+							resultOnBox.set(pointOnBox);
+						}
+						return true;
+					}
 					if (dist < bestDistance) {
 						bestDistance = dist;
 						if (resultOnPath != null) {
@@ -1148,6 +1260,7 @@ public interface Path3afp<
 	 * @return the distance, or {@link Double#NaN} if the distance cannot be computed.
 	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	@Unefficient
 	static double calculatesDistanceSquaredPathIteratorSegment(PathIterator3afp<? extends PathElement3afp> path,
 			double x1, double y1, double z1, double x2, double y2, double z2) {
@@ -1188,6 +1301,9 @@ public interface Path3afp<
 				endz = pathElement.getToZ();
 				final var dist0 = Segment3afp.calculatesDistanceSquaredSegmentSegment(
 						x1, y1, z1, x2, y2, z2, curx, cury, curz, endx, endy, endz);
+				if (dist0 == 0.) {
+					return 0.;
+				}
 				if (dist0 < bestDistance) {
 					bestDistance = dist0;
 				}
@@ -1199,6 +1315,9 @@ public interface Path3afp<
 				if (curx != movx || cury != movy || curz != movz) {
 					final var dist1 = Segment3afp.calculatesDistanceSquaredSegmentSegment(
 							x1, y1, z1, x2, y2, z2, curx, cury, curz, movx, movy, movz);
+					if (dist1 == 0.) {
+						return 0.;
+					}
 					if (dist1 < bestDistance) {
 						bestDistance = dist1;
 					}
@@ -1217,6 +1336,9 @@ public interface Path3afp<
 				final var dist2 = calculatesDistanceSquaredPathIteratorSegment(
 						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
 						x1, y1, z1, x2, y2, z2);
+				if (dist2 == 0.) {
+					return 0.;
+				}
 				if (dist2 < bestDistance) {
 					bestDistance = dist2;
 				}
@@ -1237,6 +1359,9 @@ public interface Path3afp<
 				final var dist3 = calculatesDistanceSquaredPathIteratorSegment(
 						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
 						x1, y1, z1, x2, y2, z2);
+				if (dist3 == 0.) {
+					return 0.;
+				}
 				if (dist3 < bestDistance) {
 					bestDistance = dist3;
 				}
@@ -1292,6 +1417,7 @@ public interface Path3afp<
 	 * @return the distance, or {@link Double#NaN} if the distance cannot be computed.
 	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	@Unefficient
 	static double calculatesDistanceSquaredPathIteratorSphere(PathIterator3afp<? extends PathElement3afp> path,
 			double x, double y, double z, double radius) {
@@ -1334,10 +1460,12 @@ public interface Path3afp<
 				var dist0 = Segment3afp.calculatesDistanceSegmentPoint(
 						curx, cury, curz, endx, endy, endz, x, y, z);
 				if (dist0 <= radius) {
-					dist0 = 0.;
-				} else {
-					dist0 -= radius;
-					dist0 = dist0 * dist0;
+					return 0.;
+				}
+				dist0 -= radius;
+				dist0 = dist0 * dist0;
+				if (dist0 == 0.) {
+					return 0.;
 				}
 				if (dist0 < bestDistance) {
 					bestDistance = dist0;
@@ -1351,10 +1479,12 @@ public interface Path3afp<
 					var dist1 = Segment3afp.calculatesDistanceSegmentPoint(
 							curx, cury, curz, movx, movy, movz, x, y, z);
 					if (dist1 <= radius) {
-						dist1 = 0.;
-					} else {
-						dist1 -= radius;
-						dist1 = dist1 * dist1;
+						return 0.;
+					}
+					dist1 -= radius;
+					dist1 = dist1 * dist1;
+					if (dist1 == 0.) {
+						return 0.;
 					}
 					if (dist1 < bestDistance) {
 						bestDistance = dist1;
@@ -1374,6 +1504,9 @@ public interface Path3afp<
 				final var dist2 = calculatesDistanceSquaredPathIteratorSphere(
 						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
 						x, y, z, radius);
+				if (dist2 == 0.) {
+					return 0.;
+				}
 				if (dist2 < bestDistance) {
 					bestDistance = dist2;
 				}
@@ -1394,6 +1527,9 @@ public interface Path3afp<
 				final var dist3 = calculatesDistanceSquaredPathIteratorSphere(
 						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
 						x, y, z, radius);
+				if (dist3 == 0.) {
+					return 0.;
+				}
 				if (dist3 < bestDistance) {
 					bestDistance = dist3;
 				}
@@ -1422,6 +1558,7 @@ public interface Path3afp<
 	 * @return the distance, or {@link Double#NaN} if the distance cannot be computed.
 	 * @throws IllegalStateException if a path elemenet cannot be used because it is not supported.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	@Unefficient
 	static double calculatesDistanceSquaredPathIteratorPathIterator(
 			PathIterator3afp<? extends PathElement3afp> firstPath,
@@ -1464,6 +1601,9 @@ public interface Path3afp<
 				endz = pathElement.getToZ();
 				final var dist0 = calculatesDistanceSquaredPathIteratorSegment(
 						secondPath.restartIterations(), curx, cury, curz, endx, endy, endz);
+				if (dist0 == 0.) {
+					return 0.;
+				}
 				if (dist0 < bestDistance) {
 					bestDistance = dist0;
 				}
@@ -1475,6 +1615,9 @@ public interface Path3afp<
 				if (curx != movx || cury != movy || curz != movz) {
 					final var dist1 = calculatesDistanceSquaredPathIteratorSegment(
 							secondPath.restartIterations(), curx, cury, curz, movx, movy, movz);
+					if (dist1 == 0.) {
+						return 0.;
+					}
 					if (dist1 < bestDistance) {
 						bestDistance = dist1;
 					}
@@ -1493,6 +1636,9 @@ public interface Path3afp<
 				final var dist2 = calculatesDistanceSquaredPathIteratorPathIterator(
 						subpath0.getPathIterator(factory.getSplineApproximationRatio()),
 						secondPath.restartIterations());
+				if (dist2 == 0.) {
+					return 0.;
+				}
 				if (dist2 < bestDistance) {
 					bestDistance = dist2;
 				}
@@ -1513,6 +1659,9 @@ public interface Path3afp<
 				final var dist3 = calculatesDistanceSquaredPathIteratorPathIterator(
 						subpath1.getPathIterator(factory.getSplineApproximationRatio()),
 						secondPath.restartIterations());
+				if (dist3 == 0.) {
+					return 0.;
+				}
 				if (dist3 < bestDistance) {
 					bestDistance = dist3;
 				}

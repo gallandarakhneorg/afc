@@ -291,7 +291,7 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 	 * @return the squared distance between the plane and the segment.
 	 */
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:methodlength", "checkstyle:cyclomaticcomplexity"})
 	static double findsClosestPointToRectangleYZSegment(
 			double ry, double rz,
 			double rmaxy, double rmaxz,
@@ -358,6 +358,15 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 				x, ry, rmaxz, x, rmaxy, rmaxz,
 				segment, rectangle);
 		var distance = segment.getDistanceSquared(rectangle);
+		if (distance == 0.) {
+			if (resultSegment != null) {
+				resultSegment.set(segment);
+			}
+			if (resultRectangle != null) {
+				resultRectangle.set(rectangle);
+			}
+			return 0.;
+		}
 		if (distance < bestDistance) {
 			bestDistance = distance;
 			bestSegment.set(segment);
@@ -370,6 +379,15 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 				x, rmaxy, rmaxz, x, rmaxy, rz,
 				segment, rectangle);
 		distance = segment.getDistanceSquared(rectangle);
+		if (distance == 0.) {
+			if (resultSegment != null) {
+				resultSegment.set(segment);
+			}
+			if (resultRectangle != null) {
+				resultRectangle.set(rectangle);
+			}
+			return 0.;
+		}
 		if (distance < bestDistance) {
 			bestDistance = distance;
 			bestSegment.set(segment);
@@ -382,6 +400,15 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 				x, rmaxy, rz, x, ry, rz,
 				segment, rectangle);
 		distance = segment.getDistanceSquared(rectangle);
+		if (distance == 0.) {
+			if (resultSegment != null) {
+				resultSegment.set(segment);
+			}
+			if (resultRectangle != null) {
+				resultRectangle.set(rectangle);
+			}
+			return 0.;
+		}
 		if (distance < bestDistance) {
 			bestDistance = distance;
 			bestSegment.set(segment);
@@ -420,7 +447,16 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 		dx = segx - x;
 		var dy = segy - cry;
 		var dz = segz - crz;
-		distance = dx * dx + dy * dy + dz * dz;
+		distance = Vector3D.dotProduct(dx, dy, dz, dx, dy, dz);
+		if (distance == 0.) {
+			if (resultSegment != null) {
+				resultSegment.set(segx, segy, segz);
+			}
+			if (resultRectangle != null) {
+				resultRectangle.set(x, cry, crz);
+			}
+			return 0.;
+		}
 		if (distance < bestDistance) {
 			bestDistance = distance;
 			bestSegment.set(segx, segy, segz);
@@ -448,7 +484,16 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 		dx = segx - x;
 		dy = segy - cry;
 		dz = segz - crz;
-		distance = dx * dx + dy * dy + dz * dz;
+		distance = Vector3D.dotProduct(dx, dy, dz, dx, dy, dz);
+		if (distance == 0.) {
+			if (resultSegment != null) {
+				resultSegment.set(segx, segy, segz);
+			}
+			if (resultRectangle != null) {
+				resultRectangle.set(x, cry, crz);
+			}
+			return 0.;
+		}
 		if (distance < bestDistance) {
 			bestDistance = distance;
 			bestSegment.set(segx, segy, segz);
