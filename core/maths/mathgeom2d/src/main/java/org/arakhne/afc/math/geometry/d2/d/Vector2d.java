@@ -155,7 +155,7 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 	@Pure
 	@Override
 	public double getLengthSquared() {
-		return this.x * this.x + this.y * this.y;
+		return Math.fma(this.x, this.x, this.y * this.y);
 	}
 
 	@Override
@@ -192,15 +192,15 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 	@Override
 	public void scaleAdd(int scale, Vector2D<?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
+		this.x = Math.fma(scale, this.x, vector.getX());
+		this.y = Math.fma(scale, this.y, vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D<?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
+		this.x = Math.fma(scale, this.x, vector.getX());
+		this.y = Math.fma(scale, this.y, vector.getY());
 	}
 
 	@Override

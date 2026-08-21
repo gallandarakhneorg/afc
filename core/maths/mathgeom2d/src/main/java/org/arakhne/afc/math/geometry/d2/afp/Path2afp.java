@@ -2525,10 +2525,10 @@ public interface Path2afp<
 		final var ocurrenty = currenty;
 		var targetx = tox;
 		var targety = toy;
-		var cx0 = currentx + (ctrlx - currentx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-		var cy0 = currenty + (ctrly - currenty) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-		var cx1 = targetx + (ctrlx - targetx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-		var cy1 = targety + (ctrly - targety) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		var cx0 = Math.fma((ctrlx - currentx), AbstractCirclePathIterator.CTRL_POINT_DISTANCE, currentx);
+		var cy0 = Math.fma((ctrly - currenty), AbstractCirclePathIterator.CTRL_POINT_DISTANCE, currenty);
+		var cx1 = Math.fma((ctrlx - targetx), AbstractCirclePathIterator.CTRL_POINT_DISTANCE, targetx);
+		var cy1 = Math.fma((ctrly - targety), AbstractCirclePathIterator.CTRL_POINT_DISTANCE, targety);
 		if (tto < 1.) {
 			final var t = 1. - tto;
 			targetx += (cx1 - targetx) * t;
@@ -2686,7 +2686,7 @@ public interface Path2afp<
 		var my = (y1 + y2) / 2.;
 		final var relx1 = x1 - mx;
 		final var rely1 = y1 - my;
-		final var x1p = (cosphi * relx1 + sinphi * rely1) / radiusx;
+		final var x1p = (Math.fma(cosphi, relx1, sinphi * rely1)) / radiusx;
 		final var y1p = (cosphi * rely1 - sinphi * relx1) / radiusy;
 		final var lenpsq = x1p * x1p + y1p * y1p;
 		if (lenpsq >= 1.) {
@@ -2698,7 +2698,7 @@ public interface Path2afp<
 				yqpr = -yqpr;
 			}
 			final var relxq = cosphi * xqpr - sinphi * yqpr;
-			final var relyq = cosphi * yqpr + sinphi * xqpr;
+			final var relyq = Math.fma(cosphi, yqpr, sinphi * xqpr);
 			final var xq = mx + relxq;
 			final var yq = my + relyq;
 			var xc = x1 + relxq;

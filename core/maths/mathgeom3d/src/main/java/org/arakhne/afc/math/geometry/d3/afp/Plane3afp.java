@@ -955,10 +955,7 @@ public interface Plane3afp<PT extends Plane3afp<?, S, P, V, Q>,
 			if (Double.isInfinite(factor)) {
 				result.set(sx1, sy1, sz1);
 			} else {
-				result.set(
-						sx1 + factor * (sx2 - sx1),
-						sy1 + factor * (sy2 - sy1),
-						sz1 + factor * (sz2 - sz1));
+				result.set(Math.fma(factor, (sx2 - sx1), sx1), Math.fma(factor, (sy2 - sy1), sy1), Math.fma(factor, (sz2 - sz1), sz1));
 			}
 		}
 		return true;

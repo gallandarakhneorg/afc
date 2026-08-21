@@ -80,7 +80,7 @@ public interface Rectangle1afp<
         } else {
             dy = 0f;
         }
-        return dx * dx + dy * dy;
+        return Math.fma(dx, dx, dy * dy);
     }
 
     @Pure

@@ -799,11 +799,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	public final void mul(Matrix2d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
 
-		final var m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10;
-		final var m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11;
+		final var m00 = Math.fma(this.m00, matrix.m00, this.m01 * matrix.m10);
+		final var m01 = Math.fma(this.m00, matrix.m01, this.m01 * matrix.m11);
 
-		final var m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10;
-		final var m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11;
+		final var m10 = Math.fma(this.m10, matrix.m00, this.m11 * matrix.m10);
+		final var m11 = Math.fma(this.m10, matrix.m01, this.m11 * matrix.m11);
 
 		this.m00 = m00;
 		this.m01 = m01;
@@ -841,17 +841,17 @@ public class Matrix2d implements Serializable, Cloneable {
 		assert matrix1 != null : AssertMessages.notNullParameter(0);
 		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		if (this != matrix1 && this != matrix2) {
-			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
-			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
+			this.m00 = Math.fma(matrix1.m00, matrix2.m00, matrix1.m01 * matrix2.m10);
+			this.m01 = Math.fma(matrix1.m00, matrix2.m01, matrix1.m01 * matrix2.m11);
 
-			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
-			this.m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
+			this.m10 = Math.fma(matrix1.m10, matrix2.m00, matrix1.m11 * matrix2.m10);
+			this.m11 = Math.fma(matrix1.m10, matrix2.m01, matrix1.m11 * matrix2.m11);
 		} else {
-			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
-			final var m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
+			final var m00 = Math.fma(matrix1.m00, matrix2.m00, matrix1.m01 * matrix2.m10);
+			final var m01 = Math.fma(matrix1.m00, matrix2.m01, matrix1.m01 * matrix2.m11);
 
-			final var m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
-			final var m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
+			final var m10 = Math.fma(matrix1.m10, matrix2.m00, matrix1.m11 * matrix2.m10);
+			final var m11 = Math.fma(matrix1.m10, matrix2.m01, matrix1.m11 * matrix2.m11);
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -875,17 +875,17 @@ public class Matrix2d implements Serializable, Cloneable {
 		assert matrix1 != null : AssertMessages.notNullParameter(0);
 		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		if (this != matrix1 && this != matrix2) {
-			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
-			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
+			this.m00 = Math.fma(matrix1.m00, matrix2.m00, matrix1.m10 * matrix2.m01);
+			this.m01 = Math.fma(matrix1.m00, matrix2.m10, matrix1.m10 * matrix2.m11);
 
-			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
-			this.m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
+			this.m10 = Math.fma(matrix1.m01, matrix2.m00, matrix1.m11 * matrix2.m01);
+			this.m11 = Math.fma(matrix1.m01, matrix2.m10, matrix1.m11 * matrix2.m11);
 		} else {
-			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
-			final var m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
+			final var m00 = Math.fma(matrix1.m00, matrix2.m00, matrix1.m10 * matrix2.m01);
+			final var m01 = Math.fma(matrix1.m00, matrix2.m10, matrix1.m10 * matrix2.m11);
 
-			final var m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
-			final var m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
+			final var m10 = Math.fma(matrix1.m01, matrix2.m00, matrix1.m11 * matrix2.m01);
+			final var m11 = Math.fma(matrix1.m01, matrix2.m10, matrix1.m11 * matrix2.m11);
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -909,17 +909,17 @@ public class Matrix2d implements Serializable, Cloneable {
 		assert matrix1 != null : AssertMessages.notNullParameter(0);
 		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		if (this != matrix1 && this != matrix2) {
-			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
-			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
+			this.m00 = Math.fma(matrix1.m00, matrix2.m00, matrix1.m01 * matrix2.m01);
+			this.m01 = Math.fma(matrix1.m00, matrix2.m10, matrix1.m01 * matrix2.m11);
 
-			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
-			this.m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
+			this.m10 = Math.fma(matrix1.m10, matrix2.m00, matrix1.m11 * matrix2.m01);
+			this.m11 = Math.fma(matrix1.m10, matrix2.m10, matrix1.m11 * matrix2.m11);
 		} else {
-			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
-			final var m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
+			final var m00 = Math.fma(matrix1.m00, matrix2.m00, matrix1.m01 * matrix2.m01);
+			final var m01 = Math.fma(matrix1.m00, matrix2.m10, matrix1.m01 * matrix2.m11);
 
-			final var m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
-			final var m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
+			final var m10 = Math.fma(matrix1.m10, matrix2.m00, matrix1.m11 * matrix2.m01);
+			final var m11 = Math.fma(matrix1.m10, matrix2.m10, matrix1.m11 * matrix2.m11);
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -943,17 +943,17 @@ public class Matrix2d implements Serializable, Cloneable {
 		assert matrix1 != null : AssertMessages.notNullParameter(0);
 		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		if (this != matrix1 && this != matrix2) {
-			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
-			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
+			this.m00 = Math.fma(matrix1.m00, matrix2.m00, matrix1.m10 * matrix2.m10);
+			this.m01 = Math.fma(matrix1.m00, matrix2.m01, matrix1.m10 * matrix2.m11);
 
-			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
-			this.m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
+			this.m10 = Math.fma(matrix1.m01, matrix2.m00, matrix1.m11 * matrix2.m10);
+			this.m11 = Math.fma(matrix1.m01, matrix2.m01, matrix1.m11 * matrix2.m11);
 		} else {
-			final var m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
-			final var m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
+			final var m00 = Math.fma(matrix1.m00, matrix2.m00, matrix1.m10 * matrix2.m10);
+			final var m01 = Math.fma(matrix1.m00, matrix2.m01, matrix1.m10 * matrix2.m11);
 
-			final var m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
-			final var m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
+			final var m10 = Math.fma(matrix1.m01, matrix2.m00, matrix1.m11 * matrix2.m10);
+			final var m11 = Math.fma(matrix1.m01, matrix2.m01, matrix1.m11 * matrix2.m11);
 
 			this.m00 = m00;
 			this.m01 = m01;
@@ -968,11 +968,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 * Perform cross product normalization of this matrix.
 	 */
 	public final void normalizeCP() {
-		var mag = 1.0 / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10);
+		var mag = 1.0 / Math.sqrt(Math.fma(this.m00, this.m00, this.m10 * this.m10));
 		this.m00 = this.m00 * mag;
 		this.m10 = this.m10 * mag;
 
-		mag = 1.0 / Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11);
+		mag = 1.0 / Math.sqrt(Math.fma(this.m01, this.m01, this.m11 * this.m11));
 		this.m01 = this.m01 * mag;
 		this.m11 = this.m11 * mag;
 
@@ -988,11 +988,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	 */
 	public final void normalizeCP(Matrix2d matrix) {
 		assert matrix != null : AssertMessages.notNullParameter();
-		var mag = 1.0 / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10);
+		var mag = 1.0 / Math.sqrt(Math.fma(matrix.m00, matrix.m00, matrix.m10 * matrix.m10));
 		this.m00 = matrix.m00 * mag;
 		this.m10 = matrix.m10 * mag;
 
-		mag = 1.0 / Math.sqrt(matrix.m01 * matrix.m01 + matrix.m11 * matrix.m11);
+		mag = 1.0 / Math.sqrt(Math.fma(matrix.m01, matrix.m01, matrix.m11 * matrix.m11));
 		this.m01 = matrix.m01 * mag;
 		this.m11 = matrix.m11 * mag;
 
@@ -1357,7 +1357,7 @@ public class Matrix2d implements Serializable, Cloneable {
 					t = .5 / u;
 				}
 
-				final var c = 1. / Math.sqrt(t * t + 1);
+				final var c = 1. / Math.sqrt(Math.fma(t, t, 1));
 				final var s = c * t;
 
 				m11 -= t * m12;

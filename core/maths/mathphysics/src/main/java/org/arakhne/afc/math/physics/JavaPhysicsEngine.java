@@ -59,7 +59,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double speed,
 			double acceleration,
 			double dt) {
-		return speed * dt + .5 * acceleration * dt * dt;
+		return Math.fma(speed, dt, .5 * acceleration * dt * dt);
 	}
 
 	@Pure
@@ -121,8 +121,8 @@ class JavaPhysicsEngine implements PhysicsEngine {
 
 			a = .5f * dt;
 
-			vx = velocity.getX() + a * vx;
-			vy = velocity.getY() + a * vy;
+			vx = Math.fma(a, vx, velocity.getX());
+			vy = Math.fma(a, vy, velocity.getY());
 		} else {
 			vx = velocity.getX();
 			vy = velocity.getY();
@@ -176,8 +176,8 @@ class JavaPhysicsEngine implements PhysicsEngine {
 
 			a = .5f * dt;
 
-			vx = velocity.getX() + a * vx;
-			vy = velocity.getY() + a * vy;
+			vx = Math.fma(a, vx, velocity.getX());
+			vy = Math.fma(a, vy, velocity.getY());
 		} else {
 			vx = velocity.getX();
 			vy = velocity.getY();
@@ -230,8 +230,8 @@ class JavaPhysicsEngine implements PhysicsEngine {
 
 			a = .5f * dt;
 
-			vx = velocity.getX() + a * vx;
-			vy = velocity.getY() + a * vy;
+			vx = Math.fma(a, vx, velocity.getX());
+			vy = Math.fma(a, vy, velocity.getY());
 		} else {
 			vx = velocity.getX();
 			vy = velocity.getY();
@@ -306,9 +306,9 @@ class JavaPhysicsEngine implements PhysicsEngine {
 
 			a = .5f * dt;
 
-			vx = velocity.getX() + a * vx;
-			vy = velocity.getY() + a * vy;
-			vz = velocity.getZ() + a * vz;
+			vx = Math.fma(a, vx, velocity.getX());
+			vy = Math.fma(a, vy, velocity.getY());
+			vz = Math.fma(a, vz, velocity.getZ());
 		} else {
 			vx = velocity.getX();
 			vy = velocity.getY();

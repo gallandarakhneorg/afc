@@ -172,7 +172,7 @@ public interface Circle2afp<
         } else {
             dy = 0;
         }
-        return (dx * dx + dy * dy) < (radius * radius);
+        return (Math.fma(dx, dx, dy * dy)) < (radius * radius);
     }
 
     /** Replies if a circle and a line are intersecting.
@@ -528,7 +528,7 @@ public interface Circle2afp<
             return getGeomFactory().convertToPoint(pt);
         }
         final var s = radius / Math.sqrt(sqLength);
-        return getGeomFactory().newPoint(x + vx * s, y + vy * s);
+        return getGeomFactory().newPoint(Math.fma(vx, s, x), Math.fma(vy, s, y));
     }
 
     @Pure
@@ -625,7 +625,7 @@ public interface Circle2afp<
             return getGeomFactory().newPoint(radius, 0);
         }
         final var s = radius / Math.sqrt(sqLength);
-        return getGeomFactory().newPoint(x + vx * s, y + vy * s);
+        return getGeomFactory().newPoint(Math.fma(vx, s, x), Math.fma(vy, s, y));
     }
 
     @Pure

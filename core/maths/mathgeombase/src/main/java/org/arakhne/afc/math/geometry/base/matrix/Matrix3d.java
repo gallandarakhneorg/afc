@@ -2794,7 +2794,7 @@ public class Matrix3d implements Serializable, Cloneable {
 					if (l == 0.) {
 						r = Math.abs(m);
 					} else {
-						r = Math.sqrt(l * l + mm);
+						r = Math.sqrt(Math.fma(l, l, mm));
 					}
 
 					final var a = (s + r) * .5;
@@ -2811,7 +2811,7 @@ public class Matrix3d implements Serializable, Cloneable {
 					} else {
 						t = (m / (s + t) + m / (r + l)) * (a + 1.);
 					}
-					l = Math.sqrt(t * t + 4.);
+					l = Math.sqrt(Math.fma(t, t, 4.));
 					crt = 2. / l;
 					srt = t / l;
 					clt = (crt + srt * m) / a;
@@ -3386,7 +3386,7 @@ public class Matrix3d implements Serializable, Cloneable {
 					t = .5 / u;
 				}
 
-				final var c = 1. / Math.sqrt(t * t + 1);
+				final var c = 1. / Math.sqrt(Math.fma(t, t, 1));
 				final var s = c * t;
 
 				m11 -= t * m12;
@@ -3418,7 +3418,7 @@ public class Matrix3d implements Serializable, Cloneable {
 					t = .5 / u;
 				}
 
-				final var c = 1. / Math.sqrt(t * t + 1);
+				final var c = 1. / Math.sqrt(Math.fma(t, t, 1));
 				final var s = c * t;
 
 				m11 -= t * m13;
@@ -3426,7 +3426,7 @@ public class Matrix3d implements Serializable, Cloneable {
 				m13 = 0.;
 
 				final var tmp = c * m12 - s * m23;
-				m23 = s * m12 + c * m23;
+				m23 = Math.fma(s, m12, c * m23);
 				m12 = tmp;
 
 				for (int i = 0; i < 3; ++i) {
@@ -3450,7 +3450,7 @@ public class Matrix3d implements Serializable, Cloneable {
 					t = .5 / u;
 				}
 
-				final var c = 1. / Math.sqrt(t * t + 1);
+				final var c = 1. / Math.sqrt(Math.fma(t, t, 1));
 				final var s = c * t;
 
 				m22 -= t * m23;
@@ -3458,7 +3458,7 @@ public class Matrix3d implements Serializable, Cloneable {
 				m23 = 0.;
 
 				final var tmp = c * m12 - s * m13;
-				m13 = s * m12 + c * m13;
+				m13 = Math.fma(s, m12, c * m13);
 				m12 = tmp;
 
 				for (int i = 0; i < 3; ++i) {

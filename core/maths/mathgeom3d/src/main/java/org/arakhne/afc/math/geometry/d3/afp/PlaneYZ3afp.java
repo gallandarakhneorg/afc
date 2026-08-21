@@ -207,7 +207,7 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 		if (denom == 0.) {
 			// Segment and plane are parallel
 			// Compute the distance between a point of the segment and the plane.
-			final var dist = a * sx1 + d;
+			final var dist = Math.fma(a, sx1, d);
 			if (MathUtil.isEpsilonZero(dist)) {
 				return Double.POSITIVE_INFINITY;
 			}
@@ -252,10 +252,7 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 			if (Double.isInfinite(factor)) {
 				result.set(sx1, sy1, sz1);
 			} else {
-				result.set(
-						sx1 + factor * (sx2 - sx1),
-						sy1 + factor * (sy2 - sy1),
-						sz1 + factor * (sz2 - sz1));
+				result.set(Math.fma(factor, (sx2 - sx1), sx1), Math.fma(factor, (sy2 - sy1), sy1), Math.fma(factor, (sz2 - sz1), sz1));
 			}
 		}
 		return true;
@@ -312,8 +309,8 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 		if (!MathUtil.isEpsilonZero(dx)) {
 			final var t = (x - sx1) / dx;
 			if (t >= 0. && t <= 1.) {
-				final var iy = sy1 + t * (sy2 - sy1);
-				final var iz = sz1 + t * (sz2 - sz1);
+				final var iy = Math.fma(t, (sy2 - sy1), sy1);
+				final var iz = Math.fma(t, (sz2 - sz1), sz1);
 				// Is the intersection YZ-point inside the rectangle?
 				if (iy >= ry && iy <= rmaxy && iz >= rz && iz <= rmaxz) {
 					// Distance is 0; both closest points are the intersection.
@@ -440,9 +437,9 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 			segy = sy1;
 			segz = sz1;
 		} else {
-			segx = sx1 + ratio * (sx2 - sx1);
-			segy = sy1 + ratio * (sy2 - sy1);
-			segz = sz1 + ratio * (sz2 - sz1);
+			segx = Math.fma(ratio, (sx2 - sx1), sx1);
+			segy = Math.fma(ratio, (sy2 - sy1), sy1);
+			segz = Math.fma(ratio, (sz2 - sz1), sz1);
 		}
 		dx = segx - x;
 		var dy = segy - cry;
@@ -477,9 +474,9 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 			segy = sy1;
 			segz = sz1;
 		} else {
-			segx = sx1 + ratio * (sx2 - sx1);
-			segy = sy1 + ratio * (sy2 - sy1);
-			segz = sz1 + ratio * (sz2 - sz1);
+			segx = Math.fma(ratio, (sx2 - sx1), sx1);
+			segy = Math.fma(ratio, (sy2 - sy1), sy1);
+			segz = Math.fma(ratio, (sz2 - sz1), sz1);
 		}
 		dx = segx - x;
 		dy = segy - cry;

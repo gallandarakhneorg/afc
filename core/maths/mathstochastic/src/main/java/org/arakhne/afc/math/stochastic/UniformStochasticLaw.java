@@ -130,7 +130,7 @@ public class UniformStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
-		return this.delta * u + this.minX;
+		return Math.fma(this.delta, u, this.minX);
 	}
 
 	@Pure

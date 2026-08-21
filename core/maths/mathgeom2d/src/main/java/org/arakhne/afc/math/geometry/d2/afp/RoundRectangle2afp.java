@@ -1204,7 +1204,7 @@ public interface RoundRectangle2afp<
             case 1:
                 this.lastX += this.arcWidth;
                 this.lastY += this.arcHeight;
-                curveX = x + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
+                curveX = Math.fma(AbstractCirclePathIterator.CTRL_POINT_DISTANCE, this.arcWidth, x);
                 curveY = this.lastY - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
                 return getGeomFactory().newCurvePathElement(
                         x, y,
@@ -1219,8 +1219,8 @@ public interface RoundRectangle2afp<
             case 3:
                 this.lastX -= this.arcWidth;
                 this.lastY += this.arcHeight;
-                curveX = this.lastX + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
-                curveY = y + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
+                curveX = Math.fma(AbstractCirclePathIterator.CTRL_POINT_DISTANCE, this.arcWidth, this.lastX);
+                curveY = Math.fma(AbstractCirclePathIterator.CTRL_POINT_DISTANCE, this.arcHeight, y);
                 return getGeomFactory().newCurvePathElement(
                         x, y,
                         x, curveY,
@@ -1235,7 +1235,7 @@ public interface RoundRectangle2afp<
                 this.lastX -= this.arcWidth;
                 this.lastY -= this.arcHeight;
                 curveX = x - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
-                curveY = this.lastY + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
+                curveY = Math.fma(AbstractCirclePathIterator.CTRL_POINT_DISTANCE, this.arcHeight, this.lastY);
                 return getGeomFactory().newCurvePathElement(
                         x, y,
                         curveX, y,

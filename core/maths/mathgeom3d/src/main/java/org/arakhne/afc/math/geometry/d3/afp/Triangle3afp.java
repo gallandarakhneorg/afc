@@ -2229,8 +2229,8 @@ public interface Triangle3afp<
 				}
 			}
 
-			final var P_j = Q1_j + D_j * t_param;
-			final var P_k = Q1_k + D_k * t_param;
+			final var P_j = Math.fma(D_j, t_param, Q1_j);
+			final var P_k = Math.fma(D_k, t_param, Q1_k);
 			final var u1 = P_j - V1_j;
 			final var v1 = P_k - V1_k;
 			final var u2 = V2_j - V1_j;
@@ -2373,7 +2373,7 @@ public interface Triangle3afp<
 
 			// Axis = cross(e0, Y) = (e0.z, 0, -e0.x)  => test uses x,z
 			p0 = -e0z * v0x + e0x * v0z;
-			p2 = -e0z * v2x + e0x * v2z;
+			p2 = Math.fma(e0x, v2z, -e0z * v2x);
 			min = Math.min(p0, p2);
 			max = Math.max(p0, p2);
 			rad = fe0z * halfx + fe0x * halfz;
@@ -2404,8 +2404,8 @@ public interface Triangle3afp<
 			}
 
 			// Axis = cross(e1, Y)  (Note: original code uses v0y/v2y instead of v0x/v2x – preserved)
-			p0 = -e1z * v0y + e1x * v0z;
-			p2 = -e1z * v2y + e1x * v2z;
+			p0 = Math.fma(e1x, v0z, -e1z * v0y);
+			p2 = Math.fma(e1x, v2z, -e1z * v2y);
 			min = Math.min(p0, p2);
 			max = Math.max(p0, p2);
 			// halfy used as "halfx" in original call
@@ -2437,8 +2437,8 @@ public interface Triangle3afp<
 			}
 
 			// Axis = cross(e2, Y)  (uses v0 and v1)
-			p0 = -e2z * v0x + e2x * v0z;
-			p1 = -e2z * v1x + e2x * v1z;
+			p0 = Math.fma(e2x, v0z, -e2z * v0x);
+			p1 = Math.fma(e2x, v1z, -e2z * v1x);
 			min = Math.min(p0, p1);
 			max = Math.max(p0, p1);
 			rad = fe2z * halfx + fe2x * halfz;
@@ -3350,9 +3350,9 @@ public interface Triangle3afp<
 
 			if (tmin <= tmax) {
 				final var t = Math.max(0., Math.min(1., tmin));
-				final var px = e1x + t * dx;
-				final var py = e1y + t * dy;
-				final var pz = e1z + t * dz;
+				final var px = Math.fma(t, dx, e1x);
+				final var py = Math.fma(t, dy, e1y);
+				final var pz = Math.fma(t, dz, e1z);
 
 				final var bpx = MathUtil.clamp(px, bx1, bx2);
 				final var bpy = MathUtil.clamp(py, by1, by2);
@@ -3403,9 +3403,9 @@ public interface Triangle3afp<
 				return bestDistSq;
 			}
 			final var t = MathUtil.clamp(((px - s1x) * vx + (py - s1y) * vy + (pz - s1z) * vz) / len2, 0., 1.);
-			final var cx = s1x + t * vx;
-			final var cy = s1y + t * vy;
-			final var cz = s1z + t * vz;
+			final var cx = Math.fma(t, vx, s1x);
+			final var cy = Math.fma(t, vy, s1y);
+			final var cz = Math.fma(t, vz, s1z);
 			final var dx = px - cx;
 			final var dy = py - cy;
 			final var dz = pz - cz;
@@ -3457,9 +3457,9 @@ public interface Triangle3afp<
 			if (t < 0. || t > 1.) {
 				return false;
 			}
-			final var ix = s1x + t * (s2x - s1x);
-			final var iy = s1y + t * (s2y - s1y);
-			final var iz = s1z + t * (s2z - s1z);
+			final var ix = Math.fma(t, (s2x - s1x), s1x);
+			final var iy = Math.fma(t, (s2y - s1y), s1y);
+			final var iz = Math.fma(t, (s2z - s1z), s1z);
 
 			// Check if point is inside triangle (barycentric coordinates)
 			final var edge1x = bx - ax;
@@ -4319,8 +4319,8 @@ public interface Triangle3afp<
 					return Double.NaN;
 				}
 
-				final var t0 = ((b1x - a1x) * rX + (b1y - a1y) * rY) / rr;
-				final var t1 = ((b2x - a1x) * rX + (b2y - a1y) * rY) / rr;
+				final var t0 = (Math.fma((b1x - a1x), rX, (b1y - a1y) * rY)) / rr;
+				final var t1 = (Math.fma((b2x - a1x), rX, (b2y - a1y) * rY)) / rr;
 
 				final var min = MathUtil.max(0., t0, t1);
 				final var max = MathUtil.min(1., t0, t1);
@@ -4748,7 +4748,7 @@ public interface Triangle3afp<
 			if (vc <= 0. && d1 >= 0. && d3 <= 0.) {
 				final var v = d1 / (d1 - d3);
 				// barycentric (1-v,v,0)
-				closestPoint.set(tx1 + v * abx, ty1 + v * aby, tz1 + v * abz);
+				closestPoint.set(Math.fma(v, abx, tx1), Math.fma(v, aby, ty1), Math.fma(v, abz, tz1));
 				return;
 			}
 
@@ -4769,7 +4769,7 @@ public interface Triangle3afp<
 			if (vb <= 0. && d2 >= 0. && d6 <= 0.) {
 				final var w = d2 / (d2 - d6);
 				// barycentric (1-w,0,w)
-				closestPoint.set(tx1 + w * acx, ty1 + w * acy, tz1 + w * acz);
+				closestPoint.set(Math.fma(w, acx, tx1), Math.fma(w, acy, ty1), Math.fma(w, acz, tz1));
 				return;
 			}
 
@@ -4780,7 +4780,7 @@ public interface Triangle3afp<
 			if (va <= 0. && d4d3 >= 0. && d5d6 >= 0.) {
 				final var w = d4d3 / (d4d3 + d5d6);
 				// barycentric (0,1-w,w)
-				closestPoint.set(tx2 + w * (tx3 - tx2), ty2 + w * (ty3 - ty2), tz2 + w * (tz3 - tz2));
+				closestPoint.set(Math.fma(w, (tx3 - tx2), tx2), Math.fma(w, (ty3 - ty2), ty2), Math.fma(w, (tz3 - tz2), tz2));
 				return;
 			}
 

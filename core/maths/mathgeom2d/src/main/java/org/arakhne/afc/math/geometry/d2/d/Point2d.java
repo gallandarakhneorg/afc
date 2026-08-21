@@ -222,15 +222,15 @@ public class Point2d extends Tuple2d<Point2d> implements Point2D<Point2d, Vector
 	@Override
 	public void scaleAdd(int scale, Vector2D<?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter(1);
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
+		this.x = Math.fma(scale, this.x, vector.getX());
+		this.y = Math.fma(scale, this.y, vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D<?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter(1);
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
+		this.x = Math.fma(scale, this.x, vector.getX());
+		this.y = Math.fma(scale, this.y, vector.getY());
 	}
 
 	@Override
