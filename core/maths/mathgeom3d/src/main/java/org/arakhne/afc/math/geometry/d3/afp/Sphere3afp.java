@@ -548,7 +548,7 @@ public interface Sphere3afp<
 			return getGeomFactory().convertToPoint(pt);
 		}
 		final var s = radius / Math.sqrt(sqLength);
-		return getGeomFactory().newPoint(x + vx * s, y + vy * s, z + vz * s);
+		return getGeomFactory().newPoint(Math.fma(vx, s, x), Math.fma(vy, s, y), Math.fma(vz, s, z));
 	}
 
 	@Override
@@ -649,7 +649,7 @@ public interface Sphere3afp<
 			return getGeomFactory().newPoint(radius, 0, 0);
 		}
 		final var s = radius / Math.sqrt(sqLength);
-		return getGeomFactory().newPoint(x + vx * s, y + vy * s, z + vz * s);
+		return getGeomFactory().newPoint(Math.fma(vx, s, x), Math.fma(vy, s, y), Math.fma(vz, s, z));
 	}
 
 	@Override

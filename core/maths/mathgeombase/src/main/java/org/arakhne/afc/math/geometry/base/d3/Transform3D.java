@@ -374,14 +374,14 @@ public class Transform3D extends Matrix4d {
 	 */
 	public void setRotation(double x, double y, double z, double w) {
 		this.m00 = 1. - 2. * y * y - 2. * z * z;
-		this.m10 = 2. * (x * y + w * z);
+		this.m10 = 2. * (Math.fma(x, y, w * z));
 		this.m20 = 2. * (x * z - w * y);
 
 		this.m01 = 2. * (x * y - w * z);
 		this.m11 = 1. - 2. * x * x - 2. * z * z;
-		this.m21 = 2. * (y * z + w * x);
+		this.m21 = 2. * (Math.fma(y, z, w * x));
 
-		this.m02 = 2. * (x * z + w * y);
+		this.m02 = 2. * (Math.fma(x, z, w * y));
 		this.m12 = 2. * (y * z - w * x);
 		this.m22 = 1. - 2. * x * x - 2. * y * y;
 

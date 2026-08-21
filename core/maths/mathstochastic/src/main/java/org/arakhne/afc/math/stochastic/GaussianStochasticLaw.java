@@ -124,7 +124,7 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
-		return this.standardDeviation * u + this.mean;
+		return Math.fma(this.standardDeviation, u, this.mean);
 	}
 
 	/** Replies the x according to the value of the inverted

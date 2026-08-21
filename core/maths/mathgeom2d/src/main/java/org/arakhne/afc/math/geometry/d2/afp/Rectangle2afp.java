@@ -414,7 +414,7 @@ public interface Rectangle2afp<
         } else {
             dy = 0;
         }
-        return dx * dx + dy * dy;
+        return Math.fma(dx, dx, dy * dy);
     }
 
     /** Replies if two rectangles are intersecting.
@@ -661,7 +661,7 @@ public interface Rectangle2afp<
         } else {
             dy = 0f;
         }
-        return dx * dx + dy * dy;
+        return Math.fma(dx, dx, dy * dy);
     }
 
     @Override
@@ -683,7 +683,7 @@ public interface Rectangle2afp<
         } else {
             dy = 0;
         }
-        return dx * dx + dy * dy;
+        return Math.fma(dx, dx, dy * dy);
     }
 
     @Pure

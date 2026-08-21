@@ -158,7 +158,7 @@ public class LinearStochasticLaw extends StochasticLaw {
 		} else {
 			b = -a * this.maxX;
 		}
-		return a * x + b;
+		return Math.fma(a, x, b);
 	}
 
 	@Pure

@@ -236,17 +236,17 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	@Override
 	public void scaleAdd(int scale, Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter(1);
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
-		this.z = scale * this.z + vector.getZ();
+		this.x = Math.fma(scale, this.x, vector.getX());
+		this.y = Math.fma(scale, this.y, vector.getY());
+		this.z = Math.fma(scale, this.z, vector.getZ());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter(1);
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
-		this.z = scale * this.z + vector.getZ();
+		this.x = Math.fma(scale, this.x, vector.getX());
+		this.y = Math.fma(scale, this.y, vector.getY());
+		this.z = Math.fma(scale, this.z, vector.getZ());
 	}
 
 	@Override

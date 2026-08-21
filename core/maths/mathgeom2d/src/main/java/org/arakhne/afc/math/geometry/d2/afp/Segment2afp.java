@@ -350,9 +350,7 @@ public interface Segment2afp<
 		} else if (ratio >= 1.) {
 			result.set(bx, by);
 		} else {
-			result.set(
-					ax + (bx - ax) * ratio,
-					ay + (by - ay) * ratio);
+			result.set(Math.fma((bx - ax), ratio, ax), Math.fma((by - ay), ratio, ay));
 		}
 	}
 
@@ -525,11 +523,11 @@ public interface Segment2afp<
 		final var dPy = wy + (sc * uy) - (tc * vy);
 
 		if (resultOnFirstSegment != null) {
-			resultOnFirstSegment.set(s1x1 + sc * ux, s1y1 + sc * uy);
+			resultOnFirstSegment.set(Math.fma(sc, ux, s1x1), Math.fma(sc, uy, s1y1));
 		}
 
 		if (resultOnSecondSegment != null) {
-			resultOnSecondSegment.set(s2x1 + tc * vx, s2y1 + tc * vy);
+			resultOnSecondSegment.set(Math.fma(tc, vx, s2x1), Math.fma(tc, vy, s2y1));
 		}
 
 		return dPx * dPx + dPy * dPy;
@@ -1530,9 +1528,7 @@ public interface Segment2afp<
 			return false;
 		}
 		intersectionFactor1 = intersectionFactor1 / denom;
-		result.set(
-				x1 + intersectionFactor1 * x21,
-				y1 + intersectionFactor1 * y21);
+		result.set(Math.fma(intersectionFactor1, x21, x1), Math.fma(intersectionFactor1, y21, y1));
 		return true;
 	}
 
@@ -1617,7 +1613,7 @@ public interface Segment2afp<
 	static double findsProjectedPointPointLine(double px, double py, double s1x, double s1y, double s2x, double s2y) {
 		final var vx = s2x - s1x;
 		final var vy = s2y - s1y;
-		final var numerator = (px - s1x) * vx + (py - s1y) * vy;
+		final var numerator = Math.fma((px - s1x), vx, (py - s1y) * vy);
 		final var denomenator = vx * vx + vy * vy;
 		return numerator / denomenator;
 	}
@@ -1685,7 +1681,7 @@ public interface Segment2afp<
 		if (Double.isNaN(m)) {
 			return false;
 		}
-		result.set(x1 + m * (x2 - x1), y1 + m * (y2 - y1));
+		result.set(Math.fma(m, (x2 - x1), x1), Math.fma(m, (y2 - y1), y1));
 		return true;
 	}
 
@@ -1999,9 +1995,7 @@ public interface Segment2afp<
 				Double.valueOf(0), Double.valueOf(1));
 		final var vx = p2x - p1x;
 		final var vy = p2y - p1y;
-		result.set(
-				p1x + factor * vx,
-				p1y + factor * vy);
+		result.set(Math.fma(factor, vx, p1x), Math.fma(factor, vy, p1y));
 	}
 
 	/** Replies if two lines are intersecting.
@@ -2478,14 +2472,13 @@ public interface Segment2afp<
 				tmp1, tmp2);
 		if ((zone & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
 			findsClosestPointSegmentSegment(
-					sx1, sy1, sx2, sy2,
-					-rx * extent1 + sx * extent2, -ry * extent1 + sy * extent2,
+					sx1, sy1, sx2, sy2, Math.fma(sx, extent2, -rx * extent1), Math.fma(sy, extent2, -ry * extent1),
 					-rx * extent1 - sx * extent2, -ry * extent1 - sy * extent2,
 					point);
 		} else if ((zone & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
 			findsClosestPointSegmentSegment(
 					sx1, sy1, sx2, sy2,
-					rx * extent1 + sx * extent2, ry * extent1 + sy * extent2,
+					Math.fma(rx, extent1, sx * extent2), Math.fma(ry, extent1, sy * extent2),
 					rx * extent1 - sx * extent2, ry * extent1 - sy * extent2,
 					point);
 		} else if ((zone & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
@@ -2496,9 +2489,8 @@ public interface Segment2afp<
 					point);
 		} else if ((zone & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
 			findsClosestPointSegmentSegment(
-					sx1, sy1, sx2, sy2,
-					-rx * extent1 + sx * extent2, -ry * extent1 + sy * extent2,
-					rx * extent1 + sx * extent2, ry * extent1 + sy * extent2,
+					sx1, sy1, sx2, sy2, Math.fma(sx, extent2, -rx * extent1), Math.fma(sy, extent2, -ry * extent1),
+					Math.fma(rx, extent1, sx * extent2), Math.fma(ry, extent1, sy * extent2),
 					point);
 		} else {
 			findsClosestPointSegmentPoint(

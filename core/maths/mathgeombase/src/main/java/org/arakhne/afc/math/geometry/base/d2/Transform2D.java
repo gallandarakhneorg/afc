@@ -513,13 +513,13 @@ public class Transform2D extends Matrix3d {
 		var m0 = this.m00;
 		var m1 = this.m01;
 
-		this.m00 = m0 + m1 * shearY;
-		this.m01 = m0 * shearX + m1;
+		this.m00 = Math.fma(m1, shearY, m0);
+		this.m01 = Math.fma(m0, shearX, m1);
 
 		m0 = this.m10;
 		m1 = this.m11;
-		this.m10 = m0 + m1 * shearY;
-		this.m11 = m0 * shearX + m1;
+		this.m10 = Math.fma(m1, shearY, m0);
+		this.m11 = Math.fma(m0, shearX, m1);
 	}
 
 	/** Concatenates this transform with a shearing transformation.

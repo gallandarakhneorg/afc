@@ -91,7 +91,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	@Inline(value = "$4.isEpsilonEqual(($1) * ($1) + ($2) * ($2), 1., ($3))",
 		imported = {MathUtil.class})
 	static boolean isUnitVector(double x, double y, double epsilon) {
-		return MathUtil.isEpsilonEqual(x * x + y * y, 1., epsilon);
+		return MathUtil.isEpsilonEqual(Math.fma(x, x, y * y), 1., epsilon);
 	}
 
 	/** Replies if this vector is a unit vector.
@@ -236,7 +236,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	@Pure
 	@Inline(value = "($1) * ($3) + ($2) * ($4)")
 	static double dotProduct(double x1, double y1, double x2, double y2) {
-		return x1 * x2 + y1 * y2;
+		return Math.fma(x1, x2, y1 * y2);
 	}
 
 	/** Replies if the vectors are defined in a counter-clockwise order.
@@ -629,7 +629,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	default double getLengthSquared() {
 		final var x = getX();
 		final var y = getY();
-		return x * x + y * y;
+		return Math.fma(x, x, y * y);
 	}
 
 	/**
@@ -641,7 +641,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 		assert vector != null : AssertMessages.notNullParameter();
 		final var x = vector.getX();
 		final var y = vector.getY();
-		double sqlength = x * x + y * y;
+		double sqlength = Math.fma(x, x, y * y);
 		if (sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
 			set(x / sqlength, y / sqlength);
@@ -658,7 +658,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	default void normalize() {
 		final var x = getX();
 		final var y = getY();
-		double sqlength = x * x + y * y;
+		double sqlength = Math.fma(x, x, y * y);
 		if (sqlength != 1.) {
 			if (sqlength != 0.) {
 				sqlength = Math.sqrt(sqlength);

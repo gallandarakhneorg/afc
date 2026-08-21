@@ -632,7 +632,7 @@ public interface Ellipse2afp<
         } else {
             neary = 0;
         }
-        return (nearx * nearx + neary * neary) < 0.25;
+        return (Math.fma(nearx, nearx, neary * neary)) < 0.25;
     }
 
     @Pure
@@ -1523,7 +1523,7 @@ public interface Ellipse2afp<
                     return result;
                 }
                 final var ratio0 = zx / (result + 1.);
-                final var ratio1 = v1 / (result * v2  + v1);
+                final var ratio1 = v1 / (Math.fma(result, v2, v1));
                 localG = ratio0 * ratio0 + ratio1 * ratio1 - 1.;
                 if (localG > 0) {
                     s1 = result;
@@ -1590,7 +1590,7 @@ public interface Ellipse2afp<
                 } else {
                     // px == 0
                     final var psquare = py * py;
-                    final var d1 = psquare + horizontalRadius * horizontalRadius;
+                    final var d1 = Math.fma(horizontalRadius, horizontalRadius, psquare);
                     final var d2 = psquare + 2 * Math.abs(py) * verticalRadius * verticalRadius;
                     if (d1 > d2) {
                         farX = horizontalRadius;
@@ -1609,7 +1609,7 @@ public interface Ellipse2afp<
             } else {
                 // py == 0
                 final var psquare = px * px;
-                final var d1 = psquare + verticalRadius * verticalRadius;
+                final var d1 = Math.fma(verticalRadius, verticalRadius, psquare);
                 final var d2 = psquare + 2 * Math.abs(px) * horizontalRadius * horizontalRadius;
                 if (d1 > d2) {
                     farX = 0;

@@ -1009,9 +1009,9 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 				return creator.createEulerAngles(Math.asin(sinAttitude), 0., heading);
 			}
 
-			final var heading = Math.atan2(2. * (x * z + w * y), 1. - 2. * (y * y + z * z));
+			final var heading = Math.atan2(2. * (Math.fma(x, z, w * y)), 1. - 2. * (Math.fma(y, y, z * z)));
 			final var attitude = Math.asin(sinAttitude);
-			final var bank = Math.atan2(2. * (w * x + y * z), 1. - 2. * (x * x + z * z));
+			final var bank = Math.atan2(2. * (Math.fma(w, x, y * z)), 1. - 2. * (Math.fma(x, x, z * z)));
 			return creator.createEulerAngles(attitude, bank, heading);
 		}
 
@@ -1023,7 +1023,7 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 			// Attitude = rotation about y axis
 			// Bank = rotation about x axis
 			// Order: ZYX
-			final var sinAttitude = Math.clamp(-2. * (x * z + w * y), -1., 1.);
+			final var sinAttitude = Math.clamp(-2. * (Math.fma(x, z, w * y)), -1., 1.);
 
 			// Gimbal lock: attitude = +-90 deg, heading/bank axes align -> only their sum/difference is defined.
 			if (Math.abs(sinAttitude) > 0.9999999) {
@@ -1031,9 +1031,9 @@ public interface Quaternion<RP extends Point3D<? super RP, ? super RV, ? super R
 				return creator.createEulerAngles(Math.asin(sinAttitude), 0., heading);
 			}
 
-			final var heading = Math.atan2(2. * (x * y - w * z), 1. - 2. * (y * y + z * z));
+			final var heading = Math.atan2(2. * (x * y - w * z), 1. - 2. * (Math.fma(y, y, z * z)));
 			final var attitude = Math.asin(sinAttitude);
-			final var bank = Math.atan2(2. * (y * z - w * x), 1. - 2. * (x * x + y * y));
+			final var bank = Math.atan2(2. * (y * z - w * x), 1. - 2. * (Math.fma(x, x, y * y)));
 			return creator.createEulerAngles(attitude, bank, heading);
 		}
 

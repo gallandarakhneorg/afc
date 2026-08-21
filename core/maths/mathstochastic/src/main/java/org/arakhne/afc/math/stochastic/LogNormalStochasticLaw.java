@@ -127,7 +127,7 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
-		return Math.exp(this.standardDeviation * u + this.mean);
+		return Math.exp(Math.fma(this.standardDeviation, u, this.mean));
 	}
 
 	/** Replies the x according to the value of the inverted

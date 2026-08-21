@@ -164,7 +164,7 @@ public class Vector1d extends Tuple1d<Vector1d, Vector1d, Point1d, Segment1D<?, 
 	@Pure
 	@Override
 	public double getLengthSquared() {
-		return this.x * this.x + this.y * this.y;
+		return Math.fma(this.x, this.x, this.y * this.y);
 	}
 
 	@Override
@@ -201,15 +201,15 @@ public class Vector1d extends Tuple1d<Vector1d, Vector1d, Point1d, Segment1D<?, 
 	@Override
 	public void scaleAdd(int scale, Vector1D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
+		this.x = Math.fma(scale, this.x, vector.getX());
+		this.y = Math.fma(scale, this.y, vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector1D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
+		this.x = Math.fma(scale, this.x, vector.getX());
+		this.y = Math.fma(scale, this.y, vector.getY());
 	}
 
 	@Override

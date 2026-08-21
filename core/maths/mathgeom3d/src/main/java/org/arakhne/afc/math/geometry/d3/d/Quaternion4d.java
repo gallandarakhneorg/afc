@@ -378,10 +378,10 @@ public class Quaternion4d implements Quaternion<Point3d, Vector3d, Quaternion4d>
 			s1 = 1. - alpha;
 			s2 = alpha;
 		}
-		this.w = s1 * w1 + s2 * w2;
-		this.x = s1 * x1 + s2 * x2;
-		this.y = s1 * y1 + s2 * y2;
-		this.z = s1 * z1 + s2 * z2;
+		this.w = Math.fma(s1, w1, s2 * w2);
+		this.x = Math.fma(s1, x1, s2 * x2);
+		this.y = Math.fma(s1, y1, s2 * y2);
+		this.z = Math.fma(s1, z1, s2 * z2);
 	}
 
 	@Override

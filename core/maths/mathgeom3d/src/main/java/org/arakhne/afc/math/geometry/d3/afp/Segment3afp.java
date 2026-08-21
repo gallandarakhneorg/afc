@@ -175,10 +175,7 @@ public interface Segment3afp<
 		if (factors == null) {
 			return false;
 		}
-		result.set(
-				x1 + factors.position1 * (x2 - x1),
-				y1 + factors.position1 * (y2 - y1),
-				z1 + factors.position1 * (z2 - z1));
+		result.set(Math.fma(factors.position1, (x2 - x1), x1), Math.fma(factors.position1, (y2 - y1), y1), Math.fma(factors.position1, (z2 - z1), z1));
 		return true;
 	}
 
@@ -489,9 +486,9 @@ public interface Segment3afp<
 
 		return Point3D.getDistanceSquaredPointPoint(
 				px, py, pz,
-				(1. - ratio) * x1 + ratio * x2,
-				(1. - ratio) * y1 + ratio * y2,
-				(1. - ratio) * z1 + ratio * z2);
+				Math.fma((1. - ratio), x1, ratio * x2),
+				Math.fma((1. - ratio), y1, ratio * y2),
+				Math.fma((1. - ratio), z1, ratio * z2));
 	}
 
 	/** Compute the distance between a point and a segment.
@@ -522,9 +519,9 @@ public interface Segment3afp<
 
 		return Point3D.getDistancePointPoint(
 				px, py, pz,
-				(1. - ratio) * x1 + ratio * x2,
-				(1. - ratio) * y1 + ratio * y2,
-				(1. - ratio) * z1 + ratio * z2);
+				Math.fma((1. - ratio), x1, ratio * x2),
+				Math.fma((1. - ratio), y1, ratio * y2),
+				Math.fma((1. - ratio), z1, ratio * z2));
 	}
 
 	/** Compute the distance between a point and a line.
@@ -820,10 +817,7 @@ public interface Segment3afp<
 		final var vx = p2x - p1x;
 		final var vy = p2y - p1y;
 		final var vz = p2z - p1z;
-		result.set(
-				p1x + factor * vx,
-				p1y + factor * vy,
-				p1z + factor * vz);
+		result.set(Math.fma(factor, vx, p1x), Math.fma(factor, vy, p1y), Math.fma(factor, vz, p1z));
 	}
 
 	/** Replies the point on the segment that is farthest to the given point.
@@ -882,10 +876,7 @@ public interface Segment3afp<
 		} else if (ratio >= 1.) {
 			result.set(bx, by, bz);
 		} else {
-			result.set(
-					ax + (bx - ax) * ratio,
-					ay + (by - ay) * ratio,
-					az + (bz - az) * ratio);
+			result.set(Math.fma((bx - ax), ratio, ax), Math.fma((by - ay), ratio, ay), Math.fma((bz - az), ratio, az));
 		}
 	}
 
@@ -1010,7 +1001,7 @@ public interface Segment3afp<
 			// Case 3: segments are (nearly) parallel
 			tfinal = MathUtil.clamp(fDotW0 / cdSquaredLength, 0., 1.);
 			sfinal = MathUtil.clamp((beta * tfinal - eDotW0) / abSquaredLength, 0., 1.);
-			tfinal = MathUtil.clamp((beta * sfinal + fDotW0) / cdSquaredLength, 0., 1.);
+			tfinal = MathUtil.clamp((Math.fma(beta, sfinal, fDotW0)) / cdSquaredLength, 0., 1.);
 		} else {
 			// Case 4: general skew / crossing segments
 			final var sRaw = (beta * fDotW0 - cdSquaredLength * eDotW0) / denom;
@@ -1030,7 +1021,7 @@ public interface Segment3afp<
 				// and keep whichever boundary point is actually closest.
 
 				// re-derive t
-				final var tFromS = MathUtil.clamp((beta * sfinal + fDotW0) / cdSquaredLength, 0., 1.);
+				final var tFromS = MathUtil.clamp((Math.fma(beta, sfinal, fDotW0)) / cdSquaredLength, 0., 1.);
 				// re-derive s
 				final var sFromT = MathUtil.clamp((beta * tfinal - eDotW0) / abSquaredLength, 0., 1.);
 
@@ -1053,12 +1044,12 @@ public interface Segment3afp<
 			}
 		}
 
-		final var r1x = ax + abx * sfinal;
-		final var r1y = ay + aby * sfinal;
-		final var r1z = az + abz * sfinal;
-		final var r2x = cx + cdx * tfinal;
-		final var r2y = cy + cdy * tfinal;
-		final var r2z = cz + cdz * tfinal;
+		final var r1x = Math.fma(abx, sfinal, ax);
+		final var r1y = Math.fma(aby, sfinal, ay);
+		final var r1z = Math.fma(abz, sfinal, az);
+		final var r2x = Math.fma(cdx, tfinal, cx);
+		final var r2y = Math.fma(cdy, tfinal, cy);
+		final var r2z = Math.fma(cdz, tfinal, cz);
 
 		if (resultOnFirstSegment != null) {
 			resultOnFirstSegment.set(r1x, r1y, r1z);
