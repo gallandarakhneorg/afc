@@ -2525,10 +2525,10 @@ public interface Path2afp<
 		final var ocurrenty = currenty;
 		var targetx = tox;
 		var targety = toy;
-		var cx0 = Math.fma((ctrlx - currentx), AbstractCirclePathIterator.CTRL_POINT_DISTANCE, currentx);
-		var cy0 = Math.fma((ctrly - currenty), AbstractCirclePathIterator.CTRL_POINT_DISTANCE, currenty);
-		var cx1 = Math.fma((ctrlx - targetx), AbstractCirclePathIterator.CTRL_POINT_DISTANCE, targetx);
-		var cy1 = Math.fma((ctrly - targety), AbstractCirclePathIterator.CTRL_POINT_DISTANCE, targety);
+		var cx0 = Math.fma(ctrlx - currentx, AbstractCirclePathIterator.CTRL_POINT_DISTANCE, currentx);
+		var cy0 = Math.fma(ctrly - currenty, AbstractCirclePathIterator.CTRL_POINT_DISTANCE, currenty);
+		var cx1 = Math.fma(ctrlx - targetx, AbstractCirclePathIterator.CTRL_POINT_DISTANCE, targetx);
+		var cy1 = Math.fma(ctrly - targety, AbstractCirclePathIterator.CTRL_POINT_DISTANCE, targety);
 		if (tto < 1.) {
 			final var t = 1. - tto;
 			targetx += (cx1 - targetx) * t;

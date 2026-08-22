@@ -375,23 +375,23 @@ public class BasicPathShadow2afp {
             final var alpha = (sx1 - sx0) / (sy1 - sy0);
             if (sy0 < sy1) {
                 if (sy0 <= shadowYmin) {
-                    final var xintercept = Math.fma((shadowYmin - sy0), alpha, sx0);
+                    final var xintercept = Math.fma(shadowYmin - sy0, alpha, sx0);
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     ++this.crossings;
                 }
                 if (sy1 >= shadowYmax) {
-                    final var xintercept = Math.fma((shadowYmax - sy0), alpha, sx0);
+                    final var xintercept = Math.fma(shadowYmax - sy0, alpha, sx0);
                     setCrossingCoordinateForYMax(xintercept, shadowYmax);
                     ++this.crossings;
                 }
             } else {
                 if (sy1 <= shadowYmin) {
-                    final var xintercept = Math.fma((shadowYmin - sy0), alpha, sx0);
+                    final var xintercept = Math.fma(shadowYmin - sy0, alpha, sx0);
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     --this.crossings;
                 }
                 if (sy0 >= shadowYmax) {
-                    final var xintercept = Math.fma((shadowYmax - sy0), alpha, sx0);
+                    final var xintercept = Math.fma(shadowYmax - sy0, alpha, sx0);
                     setCrossingCoordinateForYMax(xintercept, shadowYmax);
                     --this.crossings;
                 }

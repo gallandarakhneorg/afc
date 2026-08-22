@@ -4127,7 +4127,7 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 			path.lineTo(5, 5, 5);
 			path.lineTo(0.5, 0.5, 0.5);
 			var resultForTriangle = getS().getClosestPointTo(path);
-			assertEpsilonEquals(createPoint(1, 1, 1), resultForTriangle);
+			assertEpsilonEquals(createPoint(0.5,0.5,0.5), resultForTriangle);
 		}
 
 		@DisplayName("(Path3afp) #4")
@@ -14072,8 +14072,8 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 					path.getPathIterator(),
 					EPSILON,
 					resultForTriangle, resultForPath));
-			assertEpsilonEquals(createPoint(1, 1, 1), resultForTriangle);
-			assertEpsilonEquals(createPoint(1, 1, 1), resultForPath);
+			assertEpsilonEquals(createPoint(0.5,0.5,0.5), resultForTriangle);
+			assertEpsilonEquals(createPoint(0.5,0.5,0.5), resultForPath);
 		}
 
 		@DisplayName("#4")

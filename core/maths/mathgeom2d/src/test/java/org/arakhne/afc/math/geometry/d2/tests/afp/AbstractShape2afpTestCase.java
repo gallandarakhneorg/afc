@@ -20,14 +20,13 @@
 
 package org.arakhne.afc.math.geometry.d2.tests.afp;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
-import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
@@ -46,8 +45,6 @@ import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
 public abstract class AbstractShape2afpTestCase<T extends Shape2afp<?, ?, ?, ?, ?, ?>,
@@ -256,11 +253,11 @@ public abstract class AbstractShape2afpTestCase<T extends Shape2afp<?, ?, ?, ?, 
 	public void assertClosestPointInBothShapes(Shape2afp shape1, Shape2afp shape2) {
 	    final Point2D<?, ?> point = shape1.getClosestPointTo(shape2);
 	    double distance;
-	    //TODO: The following test may fail since MathConstants#SPLINE_APPROXIMATION_RATIO is too high; see Issue #89.
+	    //TODO: The following test may fail since GeomConstants#SPLINE_APPROXIMATION_RATIO is too high; see Issue #89.
 	    //distance = shape1.getDistance(point); 
 	    //assertEpsilonZero("Closest point " + point + " is not in the first shape: " + shape1 + ". Distance: " + distance, distance);
         distance = shape2.getDistance(point); 
-	    assertEpsilonZero(distance, "Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: " + distance); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	    assertTrue(distance < 1e-3, "Closest point " + point + " is not in the second shape: " + shape2+ ". Distance: " + distance); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }

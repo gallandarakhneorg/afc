@@ -3457,9 +3457,9 @@ public interface Triangle3afp<
 			if (t < 0. || t > 1.) {
 				return false;
 			}
-			final var ix = Math.fma(t, (s2x - s1x), s1x);
-			final var iy = Math.fma(t, (s2y - s1y), s1y);
-			final var iz = Math.fma(t, (s2z - s1z), s1z);
+			final var ix = Math.fma(t, s2x - s1x, s1x);
+			final var iy = Math.fma(t, s2y - s1y, s1y);
+			final var iz = Math.fma(t, s2z - s1z, s1z);
 
 			// Check if point is inside triangle (barycentric coordinates)
 			final var edge1x = bx - ax;
@@ -4319,8 +4319,8 @@ public interface Triangle3afp<
 					return Double.NaN;
 				}
 
-				final var t0 = (Math.fma((b1x - a1x), rX, (b1y - a1y) * rY)) / rr;
-				final var t1 = (Math.fma((b2x - a1x), rX, (b2y - a1y) * rY)) / rr;
+				final var t0 = Math.fma(b1x - a1x, rX, (b1y - a1y) * rY) / rr;
+				final var t1 = Math.fma(b2x - a1x, rX, (b2y - a1y) * rY) / rr;
 
 				final var min = MathUtil.max(0., t0, t1);
 				final var max = MathUtil.min(1., t0, t1);
@@ -4780,7 +4780,10 @@ public interface Triangle3afp<
 			if (va <= 0. && d4d3 >= 0. && d5d6 >= 0.) {
 				final var w = d4d3 / (d4d3 + d5d6);
 				// barycentric (0,1-w,w)
-				closestPoint.set(Math.fma(w, (tx3 - tx2), tx2), Math.fma(w, (ty3 - ty2), ty2), Math.fma(w, (tz3 - tz2), tz2));
+				closestPoint.set(
+						Math.fma(w, tx3 - tx2, tx2),
+						Math.fma(w, ty3 - ty2, ty2),
+						Math.fma(w, tz3 - tz2, tz2));
 				return;
 			}
 

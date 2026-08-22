@@ -350,7 +350,7 @@ public interface Segment2afp<
 		} else if (ratio >= 1.) {
 			result.set(bx, by);
 		} else {
-			result.set(Math.fma((bx - ax), ratio, ax), Math.fma((by - ay), ratio, ay));
+			result.set(Math.fma(bx - ax, ratio, ax), Math.fma(by - ay, ratio, ay));
 		}
 	}
 
@@ -1613,7 +1613,7 @@ public interface Segment2afp<
 	static double findsProjectedPointPointLine(double px, double py, double s1x, double s1y, double s2x, double s2y) {
 		final var vx = s2x - s1x;
 		final var vy = s2y - s1y;
-		final var numerator = Math.fma((px - s1x), vx, (py - s1y) * vy);
+		final var numerator = Math.fma(px - s1x, vx, (py - s1y) * vy);
 		final var denomenator = vx * vx + vy * vy;
 		return numerator / denomenator;
 	}
@@ -1681,7 +1681,7 @@ public interface Segment2afp<
 		if (Double.isNaN(m)) {
 			return false;
 		}
-		result.set(Math.fma(m, (x2 - x1), x1), Math.fma(m, (y2 - y1), y1));
+		result.set(Math.fma(m, x2 - x1, x1), Math.fma(m, y2 - y1, y1));
 		return true;
 	}
 

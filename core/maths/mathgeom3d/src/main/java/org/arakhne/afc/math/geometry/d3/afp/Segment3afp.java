@@ -175,7 +175,10 @@ public interface Segment3afp<
 		if (factors == null) {
 			return false;
 		}
-		result.set(Math.fma(factors.position1, (x2 - x1), x1), Math.fma(factors.position1, (y2 - y1), y1), Math.fma(factors.position1, (z2 - z1), z1));
+		result.set(
+				Math.fma(factors.position1, x2 - x1, x1),
+				Math.fma(factors.position1, y2 - y1, y1),
+				Math.fma(factors.position1, z2 - z1, z1));
 		return true;
 	}
 
@@ -486,9 +489,9 @@ public interface Segment3afp<
 
 		return Point3D.getDistanceSquaredPointPoint(
 				px, py, pz,
-				Math.fma((1. - ratio), x1, ratio * x2),
-				Math.fma((1. - ratio), y1, ratio * y2),
-				Math.fma((1. - ratio), z1, ratio * z2));
+				Math.fma(1. - ratio, x1, ratio * x2),
+				Math.fma(1. - ratio, y1, ratio * y2),
+				Math.fma(1. - ratio, z1, ratio * z2));
 	}
 
 	/** Compute the distance between a point and a segment.
@@ -519,9 +522,9 @@ public interface Segment3afp<
 
 		return Point3D.getDistancePointPoint(
 				px, py, pz,
-				Math.fma((1. - ratio), x1, ratio * x2),
-				Math.fma((1. - ratio), y1, ratio * y2),
-				Math.fma((1. - ratio), z1, ratio * z2));
+				Math.fma(1. - ratio, x1, ratio * x2),
+				Math.fma(1. - ratio, y1, ratio * y2),
+				Math.fma(1. - ratio, z1, ratio * z2));
 	}
 
 	/** Compute the distance between a point and a line.
@@ -876,7 +879,10 @@ public interface Segment3afp<
 		} else if (ratio >= 1.) {
 			result.set(bx, by, bz);
 		} else {
-			result.set(Math.fma((bx - ax), ratio, ax), Math.fma((by - ay), ratio, ay), Math.fma((bz - az), ratio, az));
+			result.set(
+					Math.fma(bx - ax, ratio, ax),
+					Math.fma(by - ay, ratio, ay),
+					Math.fma(bz - az, ratio, az));
 		}
 	}
 

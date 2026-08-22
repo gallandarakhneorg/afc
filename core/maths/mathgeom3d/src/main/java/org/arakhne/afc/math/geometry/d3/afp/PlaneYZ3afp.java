@@ -252,7 +252,10 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 			if (Double.isInfinite(factor)) {
 				result.set(sx1, sy1, sz1);
 			} else {
-				result.set(Math.fma(factor, (sx2 - sx1), sx1), Math.fma(factor, (sy2 - sy1), sy1), Math.fma(factor, (sz2 - sz1), sz1));
+				result.set(
+						Math.fma(factor, sx2 - sx1, sx1),
+						Math.fma(factor, sy2 - sy1, sy1),
+						Math.fma(factor, sz2 - sz1, sz1));
 			}
 		}
 		return true;
@@ -309,8 +312,8 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 		if (!MathUtil.isEpsilonZero(dx)) {
 			final var t = (x - sx1) / dx;
 			if (t >= 0. && t <= 1.) {
-				final var iy = Math.fma(t, (sy2 - sy1), sy1);
-				final var iz = Math.fma(t, (sz2 - sz1), sz1);
+				final var iy = Math.fma(t, sy2 - sy1, sy1);
+				final var iz = Math.fma(t, sz2 - sz1, sz1);
 				// Is the intersection YZ-point inside the rectangle?
 				if (iy >= ry && iy <= rmaxy && iz >= rz && iz <= rmaxz) {
 					// Distance is 0; both closest points are the intersection.
@@ -437,9 +440,9 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 			segy = sy1;
 			segz = sz1;
 		} else {
-			segx = Math.fma(ratio, (sx2 - sx1), sx1);
-			segy = Math.fma(ratio, (sy2 - sy1), sy1);
-			segz = Math.fma(ratio, (sz2 - sz1), sz1);
+			segx = Math.fma(ratio, sx2 - sx1, sx1);
+			segy = Math.fma(ratio, sy2 - sy1, sy1);
+			segz = Math.fma(ratio, sz2 - sz1, sz1);
 		}
 		dx = segx - x;
 		var dy = segy - cry;
@@ -474,9 +477,9 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 			segy = sy1;
 			segz = sz1;
 		} else {
-			segx = Math.fma(ratio, (sx2 - sx1), sx1);
-			segy = Math.fma(ratio, (sy2 - sy1), sy1);
-			segz = Math.fma(ratio, (sz2 - sz1), sz1);
+			segx = Math.fma(ratio, sx2 - sx1, sx1);
+			segy = Math.fma(ratio, sy2 - sy1, sy1);
+			segz = Math.fma(ratio, sz2 - sz1, sz1);
 		}
 		dx = segx - x;
 		dy = segy - cry;
