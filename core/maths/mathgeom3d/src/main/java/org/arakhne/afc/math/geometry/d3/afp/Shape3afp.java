@@ -138,12 +138,23 @@ public interface Shape3afp<
 			return intersects((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
 		case TRIANGLE:
 			return intersects((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		case CAPSULE:
+			return intersects((Capsule3afp<?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
 		}
 		throw new IllegalArgumentException();
 	}
 
+	/** Replies if this shape is intersecting the given capsule.
+	 *
+	 * @param capsule the capsule
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 *      {@code false} if there is no intersection.
+	 * @since 18.0
+	 */
+	@Pure
+	boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule);
 
 	/** Replies if this shape is intersecting the given circle.
 	 *
@@ -234,10 +245,23 @@ public interface Shape3afp<
 			return getDistanceSquared((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
 		case TRIANGLE:
 			return getDistanceSquared((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		case CAPSULE:
+			return getDistanceSquared((Capsule3afp<?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
 		}
 		throw new IllegalArgumentException();
+	}
+
+	/** Replies the minimum distance between this shape and the given capsule.
+	 *
+	 * @param capsule the capsule.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		return capsule.getDistanceSquared(getClosestPointTo(capsule));
 	}
 
 	/** Replies the minimum distance between this shape and the given sphere.
@@ -344,11 +368,29 @@ public interface Shape3afp<
 			return getClosestPointTo((Sphere3afp<?, ?, ?, ?, ?, ?>) shape);
 		case TRIANGLE:
 			return getClosestPointTo((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		case CAPSULE:
+			return getClosestPointTo((Capsule3afp<?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
 		}
 		throw new IllegalArgumentException();
 	}
+
+	/** Replies the closest point on this shape to the given capsule.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param capsule the capsule.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	@Unefficient
+	P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule);
 
 	/** Replies the closest point on this shape to the given sphere.
 	 *

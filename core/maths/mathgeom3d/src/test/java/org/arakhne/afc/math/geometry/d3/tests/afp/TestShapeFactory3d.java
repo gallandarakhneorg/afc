@@ -25,6 +25,7 @@ import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Capsule3afp;
 import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Plane3afp;
@@ -48,6 +49,8 @@ public interface TestShapeFactory3d<P extends Point3D<? super P, ? super V, ? su
     B createAlignedBox(double x, double y, double z, double width, double height, double depth);
 
     Sphere3afp<?, ?, P, V, Q, B> createSphere(double x, double y, double z, double radius);
+
+    Capsule3afp<?, ?, P, V, Q, B> createCapsule(double x1, double y1, double z1, double x2, double y2, double z2, double radius);
 
     P createPoint(double x, double y, double z);
 

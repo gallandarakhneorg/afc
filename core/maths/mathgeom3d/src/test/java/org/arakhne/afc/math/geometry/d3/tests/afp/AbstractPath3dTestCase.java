@@ -829,6 +829,14 @@ extends AbstractShape3dTestCase<T, B> {
 			assertEpsilonEquals(createPoint(5.62491123781028, 1.1563054763685752, 3.1457149837470397), result);
 		}
 
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
+
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -8090,6 +8098,14 @@ extends AbstractShape3dTestCase<T, B> {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			getS().closePath();
 			assertFalse(getS().intersects(createAlignedBox(-4, -0.5, 0, 2, 1, 0)));
+		}
+
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
 		}
 
 		@DisplayName("(Sphere3afp) #1")

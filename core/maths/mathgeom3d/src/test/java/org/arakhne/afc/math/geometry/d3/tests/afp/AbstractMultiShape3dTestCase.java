@@ -855,6 +855,14 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 			assertEpsilonEquals(createPoint(-5, 18, 0), getS().getClosestPointTo(b));
 		}
 
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
+
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -3016,6 +3024,14 @@ public abstract class AbstractMultiShape3dTestCase<T extends MultiShape3afp<T, C
 	    public void box_6(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertFalse(getS().intersects(createAlignedBox(5.5, 8.5, 0, .5, .5, 0)));
+		}
+
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
 		}
 
 		@DisplayName("(Sphere3afp) #1")

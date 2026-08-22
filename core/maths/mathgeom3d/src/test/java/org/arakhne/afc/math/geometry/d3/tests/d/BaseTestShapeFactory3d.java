@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.tests.d;
 
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.afp.Capsule3afp;
 import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Plane3afp;
@@ -32,6 +33,7 @@ import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
 import org.arakhne.afc.math.geometry.d3.d.AlignedBox3d;
+import org.arakhne.afc.math.geometry.d3.d.Capsule3d;
 import org.arakhne.afc.math.geometry.d3.d.MultiShape3d;
 import org.arakhne.afc.math.geometry.d3.d.Path3d;
 import org.arakhne.afc.math.geometry.d3.d.Plane3d;
@@ -68,6 +70,12 @@ class BaseTestShapeFactory3d implements TestShapeFactory3d<Point3d, Vector3d, Qu
 	public Segment3afp<?, ?, ?, Point3d, Vector3d, Quaternion4d, AlignedBox3d> createSegment(double x1, double y1,
 			double z1, double x2, double y2, double z2) {
 		return new Segment3d(x1, y1, z1, x2, y2, z2);
+	}
+
+	@Override
+	public Capsule3afp<?, ?, Point3d, Vector3d, Quaternion4d, AlignedBox3d> createCapsule(
+			double x1, double y1, double z1, double x2, double y2, double z2, double radius) {
+		return new Capsule3d(x1, y1, z1, x2, y2, z2, radius);
 	}
 
 	@Override

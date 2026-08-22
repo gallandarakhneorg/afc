@@ -858,6 +858,12 @@ public interface Path3afp<
 		return null;
 	}
 
+	@Override
+	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
 	@Pure
 	@Unefficient
 	@Override
@@ -2404,6 +2410,13 @@ public interface Path3afp<
 				prism.getMinX(), prism.getMinY(), prism.getMinZ(),
 				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ(),
 				DEFAULT_INTERSECTION_EPSILON);
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null :  AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure

@@ -70,6 +70,13 @@ public interface MultiShape3afp<
 
 	@Pure
 	@Override
+	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null :  AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		if (sphere.intersects(toBoundingBox())) {
@@ -265,7 +272,13 @@ public interface MultiShape3afp<
         return closest;
 	}
 
-    @Override
+	@Override
+	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
     default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> circle) {
         assert circle != null : AssertMessages.notNullParameter();
         var min = Double.POSITIVE_INFINITY;

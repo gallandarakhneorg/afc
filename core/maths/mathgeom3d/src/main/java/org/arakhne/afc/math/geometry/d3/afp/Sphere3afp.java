@@ -487,6 +487,13 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
+	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null :  AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return intersectsSphereSphere(
@@ -578,16 +585,23 @@ public interface Sphere3afp<
 		return point;
 	}
 
-    @Pure
-    @Override
-    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-        assert sphere != null : AssertMessages.notNullParameter();
-        final Point3D<?, ?, ?> point = sphere.getClosestPointTo(getCenter());
-        if (point == null) {
-        	return null;
-        }
-        return getClosestPointTo(point);
-    }
+	@Pure
+	@Override
+	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		final Point3D<?, ?, ?> point = sphere.getClosestPointTo(getCenter());
+		if (point == null) {
+			return null;
+		}
+		return getClosestPointTo(point);
+	}
 
     @Pure
     @Override

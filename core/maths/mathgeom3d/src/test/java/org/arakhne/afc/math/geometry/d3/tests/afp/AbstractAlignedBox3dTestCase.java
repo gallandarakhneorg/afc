@@ -2893,6 +2893,14 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 			assertEpsilonEquals(createPoint(7.5,13.0,5.0), getS().getClosestPointTo(createAlignedBoxFromPoints(6, 9, 1, 9, 17, 9)));
 		}
 		
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
+
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -6211,6 +6219,14 @@ B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> 
 		public final void alignedbox_12(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 			assertTrue(createAlignedBox(0, 0, 0, 5.1, 8.1, 1).intersects(getS()));
+		}
+
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
 		}
 
 		@DisplayName("(Sphere3afp) #1")

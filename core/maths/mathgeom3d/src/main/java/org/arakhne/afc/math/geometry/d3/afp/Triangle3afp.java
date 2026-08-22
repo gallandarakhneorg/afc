@@ -1738,6 +1738,12 @@ public interface Triangle3afp<
 		return c;
 	}
 
+	@Override
+	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
 	@Pure
 	@Override
 	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
@@ -1851,6 +1857,13 @@ public interface Triangle3afp<
 			return getP3();
 		}
 		return getP2();
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null :  AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure

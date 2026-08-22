@@ -3402,6 +3402,14 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 	@Nested
 	public class GetClosestPointTo {
 
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
+
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7361,6 +7369,14 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 	@DisplayName("intersects")
 	@Nested
 	public class Intersects {
+
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
 
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")

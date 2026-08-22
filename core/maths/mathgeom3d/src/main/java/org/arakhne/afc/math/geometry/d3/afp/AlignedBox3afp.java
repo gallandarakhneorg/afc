@@ -1534,6 +1534,13 @@ public interface AlignedBox3afp<
 
 	@Pure
 	@Override
+	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null :  AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null :  AssertMessages.notNullParameter();
 		return Sphere3afp.intersectsSphereAlignedBox(
@@ -1635,6 +1642,12 @@ public interface AlignedBox3afp<
 				getMaxX(), getMaxY(), getMaxZ(),
 				pt.getX(), pt.getY(), pt.getZ(), cp);
 		return cp;
+	}
+
+	@Override
+	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

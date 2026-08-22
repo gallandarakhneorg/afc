@@ -376,6 +376,14 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			assertEpsilonEquals(createPoint(.633333333333, .633333333333, .633333333333), p);
 		}
 		
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
+
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -9302,6 +9310,14 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 			assertFalse(getS().intersects(createAlignedBox(10, 12, 0, 40, 37, 0)));
 		}
 	
+		@DisplayName("(Capsule3afp) #1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_1(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			fail("Todo");
+		}
+
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)

@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.base.d3.Quaternion;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Capsule3afp;
 import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
@@ -103,6 +104,11 @@ public abstract class AbstractShape3dTestCase<T extends Shape3afp<?, ?, ?, ?, ?,
 		return this.factory.createSphere(x, y, z, radius);
 	}
 	
+	public final Capsule3afp<?, ?, ?, ?, ?, B> createCapsule(double x1, double y1, double z1,
+			double x2, double y2, double z2, double radius) {
+		return this.factory.createCapsule(x1, y1, z1, x2, y2, z2, radius);
+	}
+
 	public final MultiShape3afp<?, ?, ?, ?, ?, ?, B> createMultiShape() {
 		return this.factory.createMultiShape();
 	}
