@@ -50,7 +50,7 @@ public interface TestShapeFactory3d<P extends Point3D<? super P, ? super V, ? su
 
     Sphere3afp<?, ?, P, V, Q, B> createSphere(double x, double y, double z, double radius);
 
-    Capsule3afp<?, ?, P, V, Q, B> createCapsule(double x1, double y1, double z1, double x2, double y2, double z2, double radius);
+    Capsule3afp<?, ?, ?, P, V, Q, B> createCapsule(double x1, double y1, double z1, double x2, double y2, double z2, double radius);
 
     P createPoint(double x, double y, double z);
 

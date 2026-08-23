@@ -20,9 +20,17 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
+import org.arakhne.afc.math.geometry.base.GeomConstants;
+import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
+import org.arakhne.afc.math.geometry.base.d3.InnerComputationVector3D;
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion;
+import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Functional interface that represented a bounding capsule.
  * A bounding capsule is a swept sphere (i.e. the volume that a sphere takes as it moves
@@ -35,6 +43,7 @@ import org.arakhne.afc.math.geometry.base.d3.Vector3D;
  * between the capsules' segments is smaller than the sum of their radii. This holds for
  * arbitrarily rotated capsules, which is why they're more appealing than cylinders in practice.
  *
+ * @param <ST> is the general type of all the shapes.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
@@ -50,577 +59,1161 @@ import org.arakhne.afc.math.geometry.base.d3.Vector3D;
  */
 @SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber"})
 public interface Capsule3afp<
-		IT extends Capsule3afp<?, IE, P, V, Q, B>,
-		IE extends PathElement3afp,
-		P extends Point3D<? super P, ? super V, ? super Q>,
-		V extends Vector3D<? super V, ? super P, ? super Q>,
-		Q extends Quaternion<? super P, ? super V, ? super Q>,
-		B extends AlignedBox3afp<?, IE, P, V, Q, B>>
-	extends Box3afp<IT, IE, P, V, Q, B> {
+			ST extends Shape3afp<?, IE, P, V, Q, B>,
+			IT extends Capsule3afp<?, ?, IE, P, V, Q, B>,
+			IE extends PathElement3afp,
+			P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>,
+			B extends AlignedBox3afp<?, IE, P, V, Q, B>>
+		extends TransformableShape3afp<ST, IT, IE, P, V, Q, B> {
 
-	//	@SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:cyclomaticcomplexity"})
-	//	@Pure
-	//	@Override
-	//	default boolean equalsToShape(IT shape) {
-	//		if (shape == null) {
-	//			return false;
-	//		}
-	//		if (shape == this) {
-	//			return true;
-	//		}
-	//
-	//		final var ax = getX1();
-	//		final var ay = getY1();
-	//		final var az = getZ1();
-	//		final var bx = getX2();
-	//		final var by = getY2();
-	//		final var bz = getZ2();
-	//		final var cx = getX3();
-	//		final var cy = getY3();
-	//		final var cz = getZ3();
-	//
-	//		final var ox1 = shape.getX1();
-	//		final var oy1 = shape.getY1();
-	//		final var oz1 = shape.getZ1();
-	//		final var ox2 = shape.getX2();
-	//		final var oy2 = shape.getY2();
-	//		final var oz2 = shape.getZ2();
-	//		final var ox3 = shape.getX3();
-	//		final var oy3 = shape.getY3();
-	//		final var oz3 = shape.getZ3();
-	//
-	//		// Order-independent equality: same 3 vertices in any permutation.
-	//		return
-	//			// A -> O1
-	//			ax == ox1 && ay == oy1 && az == oz1
-	//				&& bx == ox2 && by == oy2 && bz == oz2
-	//				&& cx == ox3 && cy == oy3 && cz == oz3
-	//			|| ax == ox1 && ay == oy1 && az == oz1
-	//				&& bx == ox3 && by == oy3 && bz == oz3
-	//				&& cx == ox2 && cy == oy2 && cz == oz2
-	//
-	//			// A -> O2
-	//			|| ax == ox2 && ay == oy2 && az == oz2
-	//				&& bx == ox1 && by == oy1 && bz == oz1
-	//				&& cx == ox3 && cy == oy3 && cz == oz3
-	//			|| ax == ox2 && ay == oy2 && az == oz2
-	//				&& bx == ox3 && by == oy3 && bz == oz3
-	//				&& cx == ox1 && cy == oy1 && cz == oz1
-	//
-	//			// A -> O3
-	//			|| ax == ox3 && ay == oy3 && az == oz3
-	//				&& bx == ox1 && by == oy1 && bz == oz1
-	//				&& cx == ox2 && cy == oy2 && cz == oz2
-	//			|| ax == ox3 && ay == oy3 && az == oz3
-	//				&& bx == ox2 && by == oy2 && bz == oz2
-	//				&& cx == ox1 && cy == oy1 && cz == oz1;
-	//	}
-	//
-	//	@Override
-	//	default Shape3DType getType() {
-	//		return Shape3DType.CAPSULE;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean contains(double x, double y, double z) {
-	//		return containsTrianglePoint(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				x, y, z,
-	//				true, GeomConstants.DISTANCE_EPSILON);
-	//	}
-	//
-	//	@Override
-	//	default boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?> box) {
-	//		assert box != null : AssertMessages.notNullParameter();
-	//		return box.isDegeneratedPoint() && contains(box.getMinX(), box.getMinY(), box.getMinZ());
-	//	}
-	//
-	//	/** Change the coordinates of the three points of the triangle.
-	//	 *
-	//     * @param x1 x coordinate of the first point.
-	//     * @param y1 y coordinate of the first point.
-	//     * @param z1 z coordinate of the first point.
-	//     * @param x2 x coordinate of the second point.
-	//     * @param y2 y coordinate of the second point.
-	//     * @param z2 z coordinate of the second point.
-	//     * @param x3 x coordinate of the third point.
-	//     * @param y3 y coordinate of the third point.
-	//     * @param z3 z coordinate of the third point.
-	//	 */
-	//	@SuppressWarnings("checkstyle:parameternumber")
-	//	void set(xdouble x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3);
-	//
-	//	/** Change the coordinates of the three points of the triangle.
-	//	 *
-	//    * @param p1 the first point.
-	//    * @param p2 the second point.
-	//    * @param p3 the third point.
-	//	 */
-	//	@SuppressWarnings("checkstyle:parameternumber")
-	//	default void set(xPoint3D<?, ?, ?> p1, Point3D<?, ?, ?> p2, Point3D<?, ?, ?> p3) {
-	//		assert p1 != null : AssertMessages.notNullParameter(0);
-	//		assert p2 != null : AssertMessages.notNullParameter(1);
-	//		assert p3 != null : AssertMessages.notNullParameter(2);
-	//		set(
-	//				p1.getX(), p1.getY(), p1.getZ(),
-	//				p2.getX(), p2.getY(), p2.getZ(),
-	//				p3.getX(), p3.getY(), p3.getZ());
-	//	}
-	//
-	//	@Override
-	//	default void set(IT capsule) {
-	//		assert capsule != null : AssertMessages.notNullParameter();
-	//		set(
-	//				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
-	//				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
-	//				capsule.getX3(), capsule.getY3(), capsule.getZ3());
-	//	}
-	//
-	//	@Override
-	//	default void clear() {
-	//		set(0, 0, 0, 0, 0, 0, 0, 0, 0);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default String toGeogebra() {
-	//		final var buffer = new StringBuilder();
-	//		buffer.append("(") //$NON-NLS-1$
-	//			.append(getX1()).append(",") //$NON-NLS-1$
-	//			.append(getY1()).append(",") //$NON-NLS-1$
-	//			.append(getZ1()).append("),(") //$NON-NLS-1$
-	//			.append(getX2()).append(",") //$NON-NLS-1$
-	//			.append(getY2()).append(",") //$NON-NLS-1$
-	//			.append(getZ2()).append("),(") //$NON-NLS-1$
-	//			.append(getX3()).append(",") //$NON-NLS-1$
-	//			.append(getY3()).append(",") //$NON-NLS-1$
-	//			.append(getZ3()).append(")"); //$NON-NLS-1$
-	//		return buffer.toString();
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default double getDistanceL1(Point3D<?, ?, ?> point) {
-	//		assert point != null : AssertMessages.notNullParameter();
-	//		final var c = getClosestPointTo(point);
-	//		return c.getDistanceL1(point);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default double getDistanceLinf(Point3D<?, ?, ?> point) {
-	//		assert point != null : AssertMessages.notNullParameter();
-	//		final var c = getClosestPointTo(point);
-	//		return c.getDistanceLinf(point);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default double getDistanceSquared(Point3D<?, ?, ?> point) {
-	//		assert point != null : AssertMessages.notNullParameter();
-	//		if (containsTrianglePoint(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				point.getX(), point.getY(), point.getZ(),
-	//				false, 0)) {
-	//			final var n = getNormal();
-	//			var dist = n.getX() * getX1() + n.getY() * getY1() + n.getZ() * getZ1();
-	//			dist = n.getX() * point.getX() + n.getY() * point.getY() + n.getZ() * point.getZ() - dist;
-	//			return dist * dist;
-	//		}
-	//		final var d1 = Segment3afp.calculatesDistanceSquaredSegmentPoint(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				point.getX(), point.getY(), point.getZ());
-	//		final var d2 = Segment3afp.calculatesDistanceSquaredSegmentPoint(
-	//				getX1(), getY1(), getZ1(),
-	//				getX3(), getY3(), getZ3(),
-	//				point.getX(), point.getY(), point.getZ());
-	//		final var d3 = Segment3afp.calculatesDistanceSquaredSegmentPoint(
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				point.getX(), point.getY(), point.getZ());
-	//		return MathUtil.min(d1, d2, d3);
-	//	}
-	//
-	//	@Override
-	//	default void translate(double dx, double dy, double dz) {
-	//		final var x1 = getX1() + dx;
-	//		final var y1 = getY1() + dy;
-	//		final var z1 = getZ1() + dz;
-	//		final var x2 = getX2() + dx;
-	//		final var y2 = getY2() + dy;
-	//		final var z2 = getZ2() + dz;
-	//		final var x3 = getX3() + dx;
-	//		final var y3 = getY3() + dy;
-	//		final var z3 = getZ3() + dz;
-	//		final var pivot = getPivot();
-	//		if (pivot != null) {
-	//			setPivot(pivot.getX() + dx, pivot.getY() + dy, pivot.getZ() + dz);
-	//		}
-	//		set(x1, y1, z1, x2, y2, z2, x3, y3, z3);
-	//	}
-	//
-	//	/** Rotate the triangle around its pivot point.
-	//	 * By default, the pivot point is the first point of the triangle.
-	//	 *
-	//	 * @param rotation the rotation.
-	//	 * @see #getPivot()
-	//	 * @see #getP1()
-	//	 */
-	//	default void rotate(Quaternion<?, ?, ?> rotation) {
-	//		assert rotation != null : AssertMessages.notNullParameter(0);
-	//		TransformTools.rotateAroundOrigin(this, rotation.getX(), rotation.getY(), rotation.getZ(), rotation.getW());
-	//	}
-	//
-	//	/** Rotate the segment around a given pivot point.
-	//	 * The default pivot point of the segment is its first point.
-	//	 *
-	//	 * @param rotation the rotation.
-	//	 * @param pivot the pivot point. If {@code null} the triangle's point is used.
-	//	 * @see #getPivot()
-	//	 * @see #getP1()
-	//	 */
-	//	default void rotate(Quaternion<?, ?, ?> rotation, Point3D<?, ?, ?> pivot) {
-	//		assert rotation != null : AssertMessages.notNullParameter(0);
-	//		if (pivot == null) {
-	//			final var piv = getPivot();
-	//			if (piv == null) {
-	//				TransformTools.rotateAroundOrigin(
-	//						this,
-	//						rotation.getX(), rotation.getY(), rotation.getZ(), rotation.getW());
-	//			} else {
-	//				TransformTools.rotateAroundPivot(
-	//						this,
-	//						rotation.getX(), rotation.getY(), rotation.getZ(), rotation.getW(),
-	//						piv.getX(), piv.getY(), piv.getZ());
-	//			}
-	//		} else {
-	//			TransformTools.rotateAroundPivot(
-	//					this,
-	//					rotation.getX(), rotation.getY(), rotation.getZ(), rotation.getW(),
-	//					pivot.getX(), pivot.getY(), pivot.getZ());
-	//		}
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default B toBoundingBox() {
-	//		final var box = getGeomFactory().newBox();
-	//		toBoundingBox(box);
-	//		return box;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default void toBoundingBox(BoundsReceiver3D box) {
-	//		assert box != null : AssertMessages.notNullParameter();
-	//		final var rangex = MathUtil.getMinMax(getX1(), getX2(), getX3());
-	//		final var rangey = MathUtil.getMinMax(getY1(), getY2(), getY3());
-	//		final var rangez = MathUtil.getMinMax(getZ1(), getZ2(), getZ3());
-	//		box.setFromCorners(
-	//				rangex.getMin(), rangey.getMin(), rangez.getMin(),
-	//				rangex.getMax(), rangey.getMax(), rangez.getMax());
-	//	}
-	//
-	//	/**
-	//	 * Checks if the projection of a point on the triangle's plane is inside the triangle.
-	//	 *
-	//	 * @param point is the the point to project on the triangle's plane.
-	//	 * @return {@code true} if the projection of the point is in the triangle, otherwise {@code false}.
-	//	 * @see #getPlane()
-	//	 */
-	//	@Pure
-	//	default boolean containsProjectionOf(Point3D<?, ?, ?> point) {
-	//		assert point != null : AssertMessages.notNullParameter();
-	//		return containsProjectionOf(point.getX(), point.getY(), point.getZ());
-	//	}
-	//
-	//	/**
-	//	 * Checks if the projection of a point on the triangle's plane is inside the triangle.
-	//	 *
-	//	 * @param x x coordinate of the point to project on the triangle's plane.
-	//	 * @param y y coordinate of the point to project on the triangle's plane.
-	//	 * @param z z coordinate of the point to project on the triangle's plane.
-	//	 * @return {@code true} if the projection of the point is in the triangle, otherwise {@code false}.
-	//	 * @see #getPlane()
-	//	 */
-	//	@Pure
-	//	default boolean containsProjectionOf(double x, double y, double z) {
-	//		final var proj = getPlane().getProjection(x, y, z);
-	//		if (proj == null) {
-	//			return false;
-	//		}
-	//		return contains(proj);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean isEmpty() {
-	//		// A triangle is empty iff its 3 points are collinear (area == 0),
-	//		// including special cases where 2 or 3 points are identical.
-	//		final var ay = getY1();
-	//		final var az = getZ1();
-	//		final var by = getY2();
-	//		final var bz = getZ2();
-	//		final var cy = getY3();
-	//		final var cz = getZ3();
-	//
-	//		// AB = B - A
-	//		final var aby = by - ay;
-	//		final var abz = bz - az;
-	//		// AC = C - A
-	//		final var acy = cy - ay;
-	//		final var acz = cz - az;
-	//		// |AB x AC|^2 (proportional to squared area)
-	//		final var nx = aby * acz - abz * acy;
-	//
-	//		if (nx != 0.) {
-	//			return false;
-	//		}
-	//
-	//		final var ax = getX1();
-	//		final var bx = getX2();
-	//		final var cx = getX3();
-	//
-	//		// AB = B - A
-	//		final var abx = bx - ax;
-	//		// AC = C - A
-	//		final var acx = cx - ax;
-	//		// |AB x AC|^2 (proportional to squared area)
-	//		final var ny = abz * acx - abx * acz;
-	//
-	//		if (ny != 0.) {
-	//			return false;
-	//		}
-	//
-	//		final var nz = abx * acy - aby * acx;
-	//
-	//		return nz == 0.;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean isDegeneratedPoint() {
-	//		return getX1() == getX2() && getX1() == getX3()
-	//				&& getY1() == getY2() && getY1() == getY3()
-	//				&& getZ1() == getZ2() && getZ1() == getZ3();
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default P getClosestPointTo(Point3D<?, ?, ?> point) {
-	//		assert point != null : AssertMessages.notNullParameter();
-	//		final var c = getGeomFactory().newPoint();
-	//		findsClosestPointToTrianglePoint(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				point.getX(), point.getY(), point.getZ(),
-	//				c);
-	//		return c;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-	//		assert sphere != null : AssertMessages.notNullParameter();
-	//		final var c = getGeomFactory().newPoint();
-	//		findsClosestPointToTrianglePoint(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				sphere.getX(), sphere.getY(), sphere.getZ(),
-	//				c);
-	//		return c;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> box) {
-	//		assert box != null : AssertMessages.notNullParameter();
-	//		final var point = getGeomFactory().newPoint();
-	//		findsClosestPointToTriangleAlignedBox(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				box.getMinX(), box.getMinY(), box.getMinZ(),
-	//				box.getMaxX(), box.getMaxY(), box.getMaxZ(),
-	//				GeomConstants.DISTANCE_EPSILON,
-	//				point, null);
-	//		return point;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-	//		assert segment != null : AssertMessages.notNullParameter();
-	//		final var point = getGeomFactory().newPoint();
-	//		findsClosestPointToTriangleSegment(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				segment.getX1(), segment.getY1(), segment.getZ1(),
-	//				segment.getX2(), segment.getY2(), segment.getZ2(),
-	//				GeomConstants.DISTANCE_EPSILON,
-	//				point, null);
-	//		return point;
-	//	}
-	//
-	//	@Override
-	//	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
-	//		assert triangle != null : AssertMessages.notNullParameter();
-	//		final var point = getGeomFactory().newPoint();
-	//		findsClosestPointToTriangleTriangle(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				triangle.getX1(), triangle.getY1(), triangle.getZ1(),
-	//				triangle.getX2(), triangle.getY2(), triangle.getZ2(),
-	//				triangle.getX3(), triangle.getY3(), triangle.getZ3(),
-	//				GeomConstants.DISTANCE_EPSILON,
-	//				point, null);
-	//		return point;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
-	//		assert path != null : AssertMessages.notNullParameter();
-	//		final var point = getGeomFactory().newPoint();
-	//		if (findsClosestPointToTrianglePathIterator(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				path.getPathIterator(),
-	//				GeomConstants.DISTANCE_EPSILON,
-	//				point, null)) {
-	//			return point;
-	//		}
-	//		return null;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-	//		assert multishape != null : AssertMessages.notNullParameter();
-	//		final var pointOnShape = multishape.getClosestPointTo(this);
-	//		final var point = getGeomFactory().newPoint();
-	//		findsClosestPointToTrianglePoint(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				pointOnShape.getX(), pointOnShape.getY(), pointOnShape.getZ(),
-	//				point);
-	//		return point;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default P getFarthestPointTo(Point3D<?, ?, ?> point) {
-	//		assert point != null : AssertMessages.notNullParameter();
-	//		final var px = point.getX();
-	//		final var py = point.getY();
-	//		final var pz = point.getZ();
-	//		final var d1 = Point3D.getDistanceSquaredPointPoint(getX1(), getY1(), getZ1(), px, py, pz);
-	//		final var d2 = Point3D.getDistanceSquaredPointPoint(getX2(), getY2(), getZ2(), px, py, pz);
-	//		final var d3 = Point3D.getDistanceSquaredPointPoint(getX3(), getY3(), getZ3(), px, py, pz);
-	//		if (d1 >= d2) {
-	//			if (d3 >= d1) {
-	//				return getP3();
-	//			}
-	//			return getP1();
-	//		} else if (d3 >= d2) {
-	//			return getP3();
-	//		}
-	//		return getP2();
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-	//		assert sphere != null : AssertMessages.notNullParameter();
-	//		return intersectsTriangleSphere(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				sphere.getX(), sphere.getY(), sphere.getZ(),
-	//				sphere.getRadius());
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?> prism) {
-	//		assert prism != null : AssertMessages.notNullParameter();
-	//		return intersectsTriangleAlignedBox(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				prism.getMinX(), prism.getMinY(), prism.getMinZ(),
-	//				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ(),
-	//				GeomConstants.DISTANCE_EPSILON);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-	//		assert segment != null : AssertMessages.notNullParameter();
-	//		return intersectsTriangleSegment(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				segment.getX1(), segment.getY1(), segment.getZ1(),
-	//				segment.getX2(), segment.getY2(), segment.getZ2(),
-	//				GeomConstants.DISTANCE_EPSILON);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
-	//		assert triangle != null :  AssertMessages.notNullParameter();
-	//		return intersectsTriangleTriangle(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				triangle.getX1(), triangle.getY1(), triangle.getZ1(),
-	//				triangle.getX2(), triangle.getY2(), triangle.getZ2(),
-	//				triangle.getX3(), triangle.getY3(), triangle.getZ3(),
-	//				GeomConstants.DISTANCE_EPSILON);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
-	//		assert path != null : AssertMessages.notNullParameter();
-	//		return intersectsTrianglePathIterator(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				path.getPathIterator(),
-	//				GeomConstants.DISTANCE_EPSILON);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean intersects(PathIterator3afp<?> iterator) {
-	//		assert iterator != null : AssertMessages.notNullParameter();
-	//		return intersectsTrianglePathIterator(
-	//				getX1(), getY1(), getZ1(),
-	//				getX2(), getY2(), getZ2(),
-	//				getX3(), getY3(), getZ3(),
-	//				iterator,
-	//				GeomConstants.DISTANCE_EPSILON);
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-	//		assert multishape != null : AssertMessages.notNullParameter();
-	//		return multishape.intersects(this);
-	//	}
+	@Override
+	default Shape3DType getType() {
+		return Shape3DType.CAPSULE;
+	}
+
+	@Pure
+	@Override
+	default String toGeogebra() {
+		final var buffer = new StringBuilder();
+		buffer.append("(") //$NON-NLS-1$
+			.append(getX1()).append(",") //$NON-NLS-1$
+			.append(getY1()).append(",") //$NON-NLS-1$
+			.append(getZ1()).append("),(") //$NON-NLS-1$
+			.append(getX2()).append(",") //$NON-NLS-1$
+			.append(getY2()).append(",") //$NON-NLS-1$
+			.append(getZ2()).append("),") //$NON-NLS-1$
+			.append(getRadius());
+		return buffer.toString();
+	}
+
+	@Pure
+	@Override
+	default boolean isEmpty() {
+		return getX1() == getX2() && getY1() == getY2() && getZ1() == getZ2() && getRadius() == 0.;
+	}
+
+	@Pure
+	@Override
+	default boolean isDegeneratedPoint() {
+		return isEmpty();
+	}
+
+	/** Change the coordinates of the two points of the capsule, and its radius.
+	 *
+     * @param x1 x coordinate of the first point.
+     * @param y1 y coordinate of the first point.
+     * @param z1 z coordinate of the first point.
+     * @param x2 x coordinate of the second point.
+     * @param y2 y coordinate of the second point.
+     * @param z2 z coordinate of the second point.
+     * @param radius the radius of the capsule.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	void set(double x1, double y1, double z1, double x2, double y2, double z2, double radius);
+
+	/** Change the coordinates of the two points of the capsule, and its radius.
+	 *
+	 * @param p1 the first point.
+	 * @param p2 the second point.
+	 * @param radius the radius.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	default void set(Point3D<?, ?, ?> p1, Point3D<?, ?, ?> p2, double radius) {
+		assert p1 != null : AssertMessages.notNullParameter(0);
+		assert p2 != null : AssertMessages.notNullParameter(1);
+		assert radius >= 0. : AssertMessages.positiveOrZeroParameter(2);
+		set(
+				p1.getX(), p1.getY(), p1.getZ(),
+				p2.getX(), p2.getY(), p2.getZ(),
+				radius);
+	}
+
+	@Override
+	default void set(IT capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		set(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius());
+	}
+
+	/** Replies the X of the first point.
+	 *
+	 * @return the x of the first point.
+	 */
+	@Pure
+	double getX1();
+
+	/** Replies the Y of the first point.
+	 *
+	 * @return the y of the first point.
+	 */
+	@Pure
+	double getY1();
+
+	/** Replies the Z of the first point.
+	 *
+	 * @return the z of the first point.
+	 */
+	@Pure
+	double getZ1();
+
+	/** Replies the X of the second point.
+	 *
+	 * @return the x of the second point.
+	 */
+	@Pure
+	double getX2();
+
+	/** Replies the Y of the second point.
+	 *
+	 * @return the y of the second point.
+	 */
+	@Pure
+	double getY2();
+
+	/** Replies the Z of the second point.
+	 *
+	 * @return the z of the second point.
+	 */
+	@Pure
+	double getZ2();
+
+	/** Replies the radius.
+	 *
+	 * @return the radius.
+	 */
+	@Pure
+	double getRadius();
+
+	/** Replies the first point.
+	 *
+	 * @return the first point.
+	 */
+	@Pure
+	default P getP1() {
+		return getGeomFactory().newPoint(getX1(), getY1(), getZ1());
+	}
+
+	/** Replies the second point.
+	 *
+	 * @return the second point.
+	 */
+	@Pure
+	default P getP2() {
+		return getGeomFactory().newPoint(getX2(), getY2(), getZ2());
+	}
+
+	/** Sets a new value in the X of the first point.
+	 *
+	 * @param x the new value double x
+	 */
+	void setX1(double x);
+
+	/**Sets a new value in the Y of the first point.
+	 *
+	 * @param y the new value double y
+	 */
+	void setY1(double y);
+
+	/**Sets a new value in the Z of the first point.
+	 *
+	 * @param z the new value double z
+	 */
+	void setZ1(double z);
+
+	/**Sets a new value in the X of the second point.
+	 *
+	 * @param x the new value double x
+	 */
+	void setX2(double x);
+
+	/**Sets a new value in the Y of the second point.
+	 *
+	 * @param y the new value double y
+	 */
+	void setY2(double y);
+
+	/**Sets a new value in the Z of the second point.
+	 *
+	 * @param z the new value double z
+	 */
+	void setZ2(double z);
+
+	/** Change the first point.
+	 *
+	 * @param x x coordinate of the first point.
+	 * @param y y coordinate of the first point.
+	 * @param z z coordinate of the first point.
+	 */
+	default void setP1(double x, double y, double z) {
+		set(x, y, z, getX2(), getY2(), getZ2(), getRadius());
+	}
+
+	/** Change the first point.
+	 *
+	 * @param point the first point.
+	 */
+	default void setP1(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		set(point.getX(), point.getY(), point.getZ(), getX2(), getY2(), getZ2(), getRadius());
+	}
+
+	/** Change the first point.
+	 *
+	 * @param x x coordinate of the first point.
+	 * @param y y coordinate of the first point.
+	 * @param z z coordinate of the first point.
+	 */
+	default void setP2(double x, double y, double z) {
+		set(getX1(), getY1(), getZ1(), x, y, z, getRadius());
+	}
+
+	/** Change the second point.
+	 *
+	 * @param point the second point.
+	 */
+	default void setP2(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		set(getX1(), getY1(), getZ1(), point.getX(), point.getY(), point.getZ(), getRadius());
+	}
+
+	/** Set the radius.
+	 *
+	 * @param radius is the radius.
+	 */
+	void setRadius(double radius);
+
+	/** Replies the length of the segment between the two medial points of the capsule.
+	 *
+	 * @return the length from the first medial point to the second medial point.
+	 */
+	@Pure
+	default double getInnerLength() {
+		return Point3D.getDistancePointPoint(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
+	}
+
+	/** Replies the squared length of the segment between the two medial points of the capsule.
+	 *
+	 * @return the squared length from the first medial point to the second medial point.
+	 */
+	@Pure
+	default double getInnerLengthSquared() {
+		return Point3D.getDistanceSquaredPointPoint(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
+	}
+
+	/** Replies the length of the capsule along the line colinear to the two medial points.
+	 * It is equivalent to {@link #getInternalLength()} plus the two radii.
+	 *
+	 * @return the length of the capsule.
+	 */
+	@Pure
+	default double getOuterLength() {
+		return Math.fma(2., getRadius(), getInnerLength());
+	}
+
+	@Override
+	default void clear() {
+		set(0, 0, 0, 0, 0, 0, 0);
+	}
+
+	@Pure
+	@Override
+	default void toBoundingBox(BoundsReceiver3D box) {
+		assert box != null : AssertMessages.notNullParameter();
+		final var x1 = getX1();
+		final var y1 = getY1();
+		final var z1 = getZ1();
+		final var x2 = getX2();
+		final var y2 = getY2();
+		final var z2 = getZ2();
+		final var radius = getRadius();
+		final double minx;
+		final double miny;
+		final double minz;
+		final double maxx;
+		final double maxy;
+		final double maxz;
+		if (x1 <= x2) {
+			minx = x1;
+			maxx = x2;
+		} else {
+			minx = x2;
+			maxx = x1;
+		}
+		if (y1 <= y2) {
+			miny = y1;
+			maxy = y2;
+		} else {
+			miny = y2;
+			maxy = y1;
+		}
+		if (z1 <= z2) {
+			minz = z1;
+			maxz = z2;
+		} else {
+			minz = z2;
+			maxz = z1;
+		}
+		box.setFromCorners(minx - radius, miny - radius, minz - radius,
+				maxx + radius, maxy + radius, maxz + radius);
+	}
+
+	@SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:cyclomaticcomplexity"})
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+
+		final var x1 = getX1();
+		final var y1 = getY1();
+		final var z1 = getZ1();
+		final var x2 = getX2();
+		final var y2 = getY2();
+		final var z2 = getZ2();
+		final var r = getRadius();
+
+		final var ox1 = shape.getX1();
+		final var oy1 = shape.getY1();
+		final var oz1 = shape.getZ1();
+		final var ox2 = shape.getX2();
+		final var oy2 = shape.getY2();
+		final var oz2 = shape.getZ2();
+		final var or = shape.getRadius();
+
+		// Order-independent equality: same 2 vertices in any permutation.
+		return r == or
+				&& (x1 == ox1 && y1 == oy1 && z1 == oz1
+				&& x2 == ox2 && y2 == oy2 && z2 == oz2
+				|| x1 == ox2 && y1 == oy2 && z1 == oz2
+				&& x2 == ox1 && y2 == oy1 && z2 == oz1);
+	}
+
+	@Pure
+	@Override
+	default boolean contains(double x, double y, double z) {
+		final var r = getRadius();
+		return Segment3afp.calculatesDistanceSquaredSegmentPoint(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				x, y, z) <= r * r;
+	}
+
+	/**
+	 * Replies if the given axis-aligned box is fully contained in this capsule.
+	 *
+	 * <p>Algorithm: test the 8 corners of the box with {@link #contains(double, double, double)}.
+	 * This is exact because a capsule is convex, and an axis-aligned box is the convex
+	 * hull of its 8 corners; if all corners are inside a convex set, then the whole box
+	 * is inside.
+	 *
+	 * <p>References:<ul>
+	 *   <li>R. T. Rockafellar, <em>Convex Analysis</em>, Princeton University Press, 1970
+	 *       (convex-set / convex-combination property).</li>
+	 *   <li>S. Boyd and L. Vandenberghe, <em>Convex Optimization</em>, Cambridge University Press, 2004
+	 *       (basic convex-set properties).</li>
+	 * </ul>
+	 *
+	 * @param box the box to test.
+	 * @return {@code true} if the box is fully inside this capsule.
+	 */
+	@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
+	@Pure
+	@Override
+	default boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?> box) {
+		assert box != null : AssertMessages.notNullParameter();
+		final var minX = box.getMinX();
+		final var minY = box.getMinY();
+		final var minZ = box.getMinZ();
+		if (box.isEmpty()) {
+			return contains(minX, minY, minZ);
+		}
+		final var maxX = box.getMaxX();
+		final var maxY = box.getMaxY();
+		final var maxZ = box.getMaxZ();
+		return contains(minX, minY, minZ)
+			&& contains(minX, minY, maxZ)
+			&& contains(minX, maxY, minZ)
+			&& contains(minX, maxY, maxZ)
+			&& contains(maxX, minY, minZ)
+			&& contains(maxX, minY, maxZ)
+			&& contains(maxX, maxY, minZ)
+			&& contains(maxX, maxY, maxZ);
+	}
+
+	@Override
+	default void translate(double dx, double dy, double dz) {
+		final var x1 = getX1() + dx;
+		final var y1 = getY1() + dy;
+		final var z1 = getZ1() + dz;
+		final var x2 = getX2() + dx;
+		final var y2 = getY2() + dy;
+		final var z2 = getZ2() + dz;
+		final var r = getRadius();
+		set(x1, y1, z1, x2, y2, z2, r);
+	}
+
+	@Override
+	default void transform(Transform3D transform) {
+		assert transform != null : AssertMessages.notNullParameter();
+		if (!transform.isIdentity()) {
+			final var p1 = new InnerComputationPoint3D(getX1(), getY1(), getZ1());
+			transform.transform(p1);
+			final var p2 = new InnerComputationPoint3D(getX2(), getY2(), getZ2());
+			transform.transform(p2);
+			final var v = new InnerComputationVector3D(getRadius(), 0., 0.);
+			transform.transform(v);
+			set(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ(), v.getLength());
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Pure
+	@Override
+    default ST createTransformedShape(Transform3D transform) {
+		assert transform != null : AssertMessages.notNullParameter();
+		final var shape = clone();
+		shape.transform(transform);
+		return (ST) shape;
+    }
+
+	@Pure
+	@Override
+	default P getFarthestPointTo(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var px = point.getX();
+		final var py = point.getY();
+		final var pz = point.getZ();
+		final var pts = getGeomFactory().newPoint();
+		Segment3afp.findsFarthestPointToPoint(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				px, py, pz,
+				pts);
+		final var r = getRadius();
+		var vx = pts.getX() - px;
+		var vy = pts.getY() - py;
+		var vz = pts.getZ() - pz;
+		final var dist = Math.sqrt(Vector3D.dotProduct(vx, vy, vz, vx, vy, vz));
+		final var ndist = dist + r;
+		vx = (vx * ndist) / dist;
+		vy = (vy * ndist) / dist;
+		vz = (vz * ndist) / dist;
+		pts.set(px + vx, py + vy, pz + vz);
+		return pts;
+	}
+
+	/** Finds the closest point on the capsule to the given point.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param px x coordinate of the point.
+	 * @param py y coordinate of the point.
+	 * @param pz z coordinate of the point.
+	 * @param pointOnCapsule the closest point on the capsule.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Pure
+	static void findsClosestPointToCapsulePoint(double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double px, double py, double pz,
+			Point3D<?, ?, ?> pointOnCapsule) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert pointOnCapsule != null : AssertMessages.notNullParameter(10);
+		final var factor = Segment3afp.findsProjectedPointOnLine(
+				px, py, pz,
+				cx1, cy1, cz1,
+				cx2, cy2, cz2);
+		final double clx;
+		final double cly;
+		final double clz;
+		if (factor <= 0.) {
+			clx = cx1;
+			cly = cy1;
+			clz = cz1;
+		} else if (factor >= 1.) {
+			clx = cx2;
+			cly = cy2;
+			clz = cz2;
+		} else {
+			clx = Math.fma(factor, cx2 - cx1, cx1);
+			cly = Math.fma(factor, cy2 - cy1, cy1);
+			clz = Math.fma(factor, cz2 - cz1, cz1);
+		}
+		final var vx = px - clx;
+		final var vy = py - cly;
+		final var vz = pz - clz;
+		var length = Vector3D.dotProduct(vx, vy, vz, vx, vy, vz);
+		if (length > 0.) {
+			length = Math.sqrt(length);
+			if (length >= cradius) {
+				pointOnCapsule.set(
+					(cradius * vx) / length + clx,
+					(cradius * vy) / length + cly,
+					(cradius * vz) / length + clz);
+			} else {
+				pointOnCapsule.set(px, py, pz);
+			}
+		} else {
+			pointOnCapsule.set(clx, cly, clz);
+		}
+	}
+
+	/** Finds the closest point on the capsule to the given sphere.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param sx x coordinate of the sphere center.
+	 * @param sy y coordinate of the sphere center.
+	 * @param sz z coordinate of the sphere center.
+	 * @param sradius the radius of the sphere.
+	 * @param pointOnCapsule the closest point on the capsule. It could be {@code null}.
+	 * @param pointOnSphere the closest point on the sphere. It could be {@code null}.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Pure
+	static void findsClosestPointToCapsuleSphere(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double sx, double sy, double sz, double sradius,
+			Point3D<?, ?, ?> pointOnCapsule, Point3D<?, ?, ?> pointOnSphere) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert sradius >= 0. : AssertMessages.positiveOrZeroParameter(10);
+		assert pointOnCapsule != null || pointOnSphere != null : AssertMessages.notNullParameter(11);
+		final var factor = Segment3afp.findsProjectedPointOnLine(
+				sx, sy, sz,
+				cx1, cy1, cz1,
+				cx2, cy2, cz2);
+		final double clx;
+		final double cly;
+		final double clz;
+		if (factor <= 0.) {
+			clx = cx1;
+			cly = cy1;
+			clz = cz1;
+		} else if (factor >= 1.) {
+			clx = cx2;
+			cly = cy2;
+			clz = cz2;
+		} else {
+			clx = Math.fma(factor, cx2 - cx1, cx1);
+			cly = Math.fma(factor, cy2 - cy1, cy1);
+			clz = Math.fma(factor, cz2 - cz1, cz1);
+		}
+		final var vx = sx - clx;
+		final var vy = sy - cly;
+		final var vz = sz - clz;
+		var length = Vector3D.dotProduct(vx, vy, vz, vx, vy, vz);
+		if (length > 0.) {
+			length = Math.sqrt(length);
+			if (length >= cradius + sradius) {
+				final double nx = vx / length;
+				final double ny = vy / length;
+				final double nz = vz / length;
+				if (pointOnCapsule != null) {
+					pointOnCapsule.set(
+						Math.fma(cradius, nx, clx),
+						Math.fma(cradius, ny, cly),
+						Math.fma(cradius, nz, clz));
+				}
+				if (pointOnSphere != null) {
+					pointOnSphere.set(
+							Math.fma(-nx, sradius, sx),
+							Math.fma(-ny, sradius, sy),
+							Math.fma(-nz, sradius, sz));
+				}
+			} else {
+				if (pointOnCapsule != null) {
+					pointOnCapsule.set(sx, sy, sz);
+				}
+				if (pointOnSphere != null) {
+					pointOnSphere.set(sx, sy, sz);
+				}
+			}
+		} else {
+			if (pointOnCapsule != null) {
+				pointOnCapsule.set(clx, cly, clz);
+			}
+			if (pointOnSphere != null) {
+				pointOnSphere.set(clx, cly, clz);
+			}
+		}
+	}
+
+	/** Finds the closest point on the capsule to the given segment.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param sx1 x coordinate of the first point of the segment.
+	 * @param sy1 y coordinate of the first point of the segment.
+	 * @param sz1 z coordinate of the first point of the segment.
+	 * @param sx2 x coordinate of the second point of the segment.
+	 * @param sy2 y coordinate of the second point of the segment.
+	 * @param sz2 z coordinate of the second point of the segment.
+	 * @param pointOnCapsule the closest point on the capsule. It could be {@code null}.
+	 * @param pointOnSegment the closest point on the segment. It could be {@code null}.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Pure
+	static void findsClosestPointToCapsuleSegment(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double sx1, double sy1, double sz1,
+			double sx2, double sy2, double sz2,
+			Point3D<?, ?, ?> pointOnCapsule, Point3D<?, ?, ?> pointOnSegment) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert pointOnCapsule != null || pointOnSegment != null : AssertMessages.notNullParameter(13);
+		final var onCapsuleSegment = new InnerComputationPoint3D();
+		final var onSegment = new InnerComputationPoint3D();
+		Segment3afp.findsClosestPointToSegment(
+				cx1, cy1, cz1, cx2, cy2, cz2,
+				sx1, sy1, sz1, sx2, sy2, sz2,
+				onCapsuleSegment, onSegment);
+		final var sqDist = onCapsuleSegment.getDistanceSquared(onSegment);
+		final var sqRadius = cradius * cradius;
+		if (sqDist > sqRadius) {
+			if (pointOnCapsule != null) {
+				final var dist = Math.sqrt(sqDist);
+				final var px = onCapsuleSegment.getX();
+				final var py = onCapsuleSegment.getY();
+				final var pz = onCapsuleSegment.getZ();
+				final var vx = (cradius * (onSegment.getX() - px)) / dist;
+				final var vy = (cradius * (onSegment.getY() - py)) / dist;
+				final var vz = (cradius * (onSegment.getZ() - pz)) / dist;
+				pointOnCapsule.set(px + vx, py + vy, pz + vz);
+			}
+			if (pointOnSegment != null) {
+				pointOnSegment.set(onSegment);
+			}
+		} else {
+			if (pointOnCapsule != null) {
+				pointOnCapsule.set(onSegment);
+			}
+			if (pointOnSegment != null) {
+				pointOnSegment.set(onSegment);
+			}
+		}
+	}
+
+	/** Finds the closest point on the capsule to the given triangle.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param tx1 x coordinate of the first point of the triangle.
+	 * @param ty1 y coordinate of the first point of the triangle.
+	 * @param tz1 z coordinate of the first point of the triangle.
+	 * @param tx2 x coordinate of the second point of the triangle.
+	 * @param ty2 y coordinate of the second point of the triangle.
+	 * @param tz2 z coordinate of the second point of the triangle.
+	 * @param tx3 x coordinate of the third point of the triangle.
+	 * @param ty3 y coordinate of the third point of the triangle.
+	 * @param tz3 z coordinate of the third point of the triangle.
+	 * @param epsilon the approximation factor to be used.
+	 * @param pointOnCapsule the closest point on the capsule. It could be {@code null}.
+	 * @param pointOnTriangle the closest point on the triangle. It could be {@code null}.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Pure
+	static void findsClosestPointToCapsuleTriangle(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double tx1, double ty1, double tz1,
+			double tx2, double ty2, double tz2,
+			double tx3, double ty3, double tz3,
+			double epsilon,
+			Point3D<?, ?, ?> pointOnCapsule, Point3D<?, ?, ?> pointOnTriangle) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(16);
+		assert pointOnCapsule != null || pointOnTriangle != null : AssertMessages.notNullParameter(17);
+		final var onCapsuleSegment = new InnerComputationPoint3D();
+		final var onTriangle = new InnerComputationPoint3D();
+		Triangle3afp.findsClosestPointToTriangleSegment(
+				tx1, ty1, tz1,
+				tx2, ty2, tz2,
+				tx3, ty3, tz3,
+				cx1, cy1, cz1,
+				cx2, cy2, cz2,
+				epsilon,
+				onTriangle, onCapsuleSegment);
+		final var sqDist = onCapsuleSegment.getDistanceSquared(onTriangle);
+		final var sqRadius = cradius * cradius;
+		if (sqDist > sqRadius) {
+			if (pointOnCapsule != null) {
+				final var dist = Math.sqrt(sqDist);
+				final var px = onCapsuleSegment.getX();
+				final var py = onCapsuleSegment.getY();
+				final var pz = onCapsuleSegment.getZ();
+				final var vx = (cradius * (onTriangle.getX() - px)) / dist;
+				final var vy = (cradius * (onTriangle.getY() - py)) / dist;
+				final var vz = (cradius * (onTriangle.getZ() - pz)) / dist;
+				pointOnCapsule.set(px + vx, py + vy, pz + vz);
+			}
+			if (pointOnTriangle != null) {
+				pointOnTriangle.set(onTriangle);
+			}
+		} else {
+			if (pointOnCapsule != null) {
+				pointOnCapsule.set(onTriangle);
+			}
+			if (pointOnTriangle != null) {
+				pointOnTriangle.set(onTriangle);
+			}
+		}
+	}
+
+	/** Finds the closest point on the capsule to the given aligned box.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param bx1 x coordinate of the minimum corner of the aligned box.
+	 * @param by1 y coordinate of the minimum corner of the aligned box.
+	 * @param bz1 z coordinate of the minimum corner of the aligned box.
+	 * @param bx2 x coordinate of the maximum corner of the aligned box.
+	 * @param by2 y coordinate of the maximum corner of the aligned box.
+	 * @param bz2 z coordinate of the maximum corner of the aligned box.
+	 * @param pointOnCapsule the closest point on the capsule. It could be {@code null}.
+	 * @param pointOnBox the closest point on the box. It could be {@code null}.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Pure
+	static void findsClosestPointToCapsuleAlignedBox(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double bx1, double by1, double bz1,
+			double bx2, double by2, double bz2,
+			Point3D<?, ?, ?> pointOnCapsule, Point3D<?, ?, ?> pointOnBox) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert bx1 <= bx2 : AssertMessages.lowerEqualParameter(7, Double.valueOf(bx1), Double.valueOf(bx2));
+		assert by1 <= by2 : AssertMessages.lowerEqualParameter(8, Double.valueOf(by1), Double.valueOf(by2));
+		assert bz1 <= bz2 : AssertMessages.lowerEqualParameter(9, Double.valueOf(bz1), Double.valueOf(bz2));
+		assert pointOnCapsule != null || pointOnBox != null : AssertMessages.notNullParameter(13);
+		final var onCapsuleSegment = new InnerComputationPoint3D();
+		final var onBox = new InnerComputationPoint3D();
+		AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
+				bx1, by1, bz1,
+				bx2, by2, bz2,
+				cx1, cy1, cz1,
+				cx2, cy2, cz2,
+				onBox, onCapsuleSegment);
+		final var sqDist = onCapsuleSegment.getDistanceSquared(onBox);
+		final var sqRadius = cradius * cradius;
+		if (sqDist > sqRadius) {
+			if (pointOnCapsule != null) {
+				final var dist = Math.sqrt(sqDist);
+				final var px = onCapsuleSegment.getX();
+				final var py = onCapsuleSegment.getY();
+				final var pz = onCapsuleSegment.getZ();
+				final var vx = (cradius * (onBox.getX() - px)) / dist;
+				final var vy = (cradius * (onBox.getY() - py)) / dist;
+				final var vz = (cradius * (onBox.getZ() - pz)) / dist;
+				pointOnCapsule.set(px + vx, py + vy, pz + vz);
+			}
+			if (pointOnBox != null) {
+				pointOnBox.set(onBox);
+			}
+		} else {
+			if (pointOnCapsule != null) {
+				pointOnCapsule.set(onBox);
+			}
+			if (pointOnBox != null) {
+				pointOnBox.set(onBox);
+			}
+		}
+	}
+
+	/** Finds the closest point on the capsule to the given path.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param iterator iterator on the path elements.
+	 * @param pointOnCapsule the closest point on the capsule. It could be {@code null}.
+	 * @param pointOnPath the closest point on the path. It could be {@code null}.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Pure
+	static void findsClosestPointToCapsulePathIterator(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			PathIterator3afp<?> iterator,
+			Point3D<?, ?, ?> pointOnCapsule, Point3D<?, ?, ?> pointOnPath) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert iterator != null : AssertMessages.notNullParameter(7);
+		assert pointOnCapsule != null || pointOnPath != null : AssertMessages.notNullParameter(8);
+		final var onCapsuleSegment = new InnerComputationPoint3D();
+		final var onPath = new InnerComputationPoint3D();
+		Path3afp.findsClosestPointToSegment(iterator,
+				cx1, cy1, cz1,
+				cx2, cy2, cz2,
+				onPath, onCapsuleSegment);
+		final var sqDist = onCapsuleSegment.getDistanceSquared(onPath);
+		final var sqRadius = cradius * cradius;
+		if (sqDist > sqRadius) {
+			if (pointOnCapsule != null) {
+				final var dist = Math.sqrt(sqDist);
+				final var px = onCapsuleSegment.getX();
+				final var py = onCapsuleSegment.getY();
+				final var pz = onCapsuleSegment.getZ();
+				final var vx = (cradius * (onPath.getX() - px)) / dist;
+				final var vy = (cradius * (onPath.getY() - py)) / dist;
+				final var vz = (cradius * (onPath.getZ() - pz)) / dist;
+				pointOnCapsule.set(px + vx, py + vy, pz + vz);
+			}
+			if (pointOnPath != null) {
+				pointOnPath.set(onPath);
+			}
+		} else {
+			if (pointOnCapsule != null) {
+				pointOnCapsule.set(onPath);
+			}
+			if (pointOnPath != null) {
+				pointOnPath.set(onPath);
+			}
+		}
+	}
+
+	/** Finds the closest point on the first capsule to the given second capsule.
+	 *
+	 * @param ax1 x coordinate of the first point of the first capsule segment.
+	 * @param ay1 y coordinate of the first point of the first capsule segment.
+	 * @param az1 y coordinate of the first point of the first capsule segment.
+	 * @param ax2 x coordinate of the second point of the first capsule segment.
+	 * @param ay2 y coordinate of the second point of the first capsule segment.
+	 * @param az2 y coordinate of the second point of the first capsule segment.
+	 * @param aradius the radius of the first capsule.
+	 * @param bx1 x coordinate of the first point of the second capsule segment.
+	 * @param by1 y coordinate of the first point of the second capsule segment.
+	 * @param bz1 y coordinate of the first point of the second capsule segment.
+	 * @param bx2 x coordinate of the second point of the second capsule segment.
+	 * @param by2 y coordinate of the second point of the second capsule segment.
+	 * @param bz2 y coordinate of the second point of the second capsule segment.
+	 * @param bradius the radius of the second capsule.
+	 * @param pointOnCapsule1 the closest point on the first capsule. It could be {@code null}.
+	 * @param pointOnCapsule2 the closest point on the second capsule. It could be {@code null}.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Pure
+	static void findsClosestPointToCapsuleCapsule(
+			double ax1, double ay1, double az1,
+			double ax2, double ay2, double az2, double aradius,
+			double bx1, double by1, double bz1,
+			double bx2, double by2, double bz2, double bradius,
+			Point3D<?, ?, ?> pointOnCapsule1, Point3D<?, ?, ?> pointOnCapsule2) {
+		assert aradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert bradius >= 0. : AssertMessages.positiveOrZeroParameter(13);
+		assert pointOnCapsule1 != null || pointOnCapsule2 != null : AssertMessages.notNullParameter(14);
+		final var onCapsuleSegment1 = new InnerComputationPoint3D();
+		final var onCapsuleSegment2 = new InnerComputationPoint3D();
+		Segment3afp.findsClosestPointToSegment(
+				ax1, ay1, az1, ax2, ay2, az2,
+				bx1, by1, bz1, bx2, by2, bz2,
+				onCapsuleSegment1, onCapsuleSegment2);
+		final var sqDist = onCapsuleSegment1.getDistanceSquared(onCapsuleSegment2);
+		final var radii = aradius + bradius;
+		final var sqRadii = radii * radii;
+		if (sqDist > sqRadii) {
+			final var dist = Math.sqrt(sqDist);
+			final var px1 = onCapsuleSegment1.getX();
+			final var py1 = onCapsuleSegment1.getY();
+			final var pz1 = onCapsuleSegment1.getZ();
+			final var px2 = onCapsuleSegment2.getX();
+			final var py2 = onCapsuleSegment2.getY();
+			final var pz2 = onCapsuleSegment2.getZ();
+			final var vx = (px2 - px1) / dist;
+			final var vy = (py2 - py1) / dist;
+			final var vz = (pz2 - pz1) / dist;
+			if (pointOnCapsule1 != null) {
+				pointOnCapsule1.set(
+						Math.fma(vx, aradius, px1),
+						Math.fma(vy, aradius, py1),
+						Math.fma(vz, aradius, pz1));
+			}
+			if (pointOnCapsule2 != null) {
+				pointOnCapsule2.set(
+						Math.fma(-vx, bradius, px2),
+						Math.fma(-vy, bradius, py2),
+						Math.fma(-vz, bradius, pz2));
+			}
+		} else {
+			if (pointOnCapsule1 != null) {
+				pointOnCapsule1.set(onCapsuleSegment2);
+			}
+			if (pointOnCapsule2 != null) {
+				pointOnCapsule2.set(onCapsuleSegment2);
+			}
+		}
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var pointOnCapsule = getGeomFactory().newPoint();
+		findsClosestPointToCapsulePoint(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				point.getX(), point.getY(), point.getZ(),
+				pointOnCapsule);
+		return pointOnCapsule;
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		final var pointOnCapsule = getGeomFactory().newPoint();
+		findsClosestPointToCapsuleSphere(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius(),
+				pointOnCapsule, null);
+		return pointOnCapsule;
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		final var pointOnCapsule = getGeomFactory().newPoint();
+		findsClosestPointToCapsuleCapsule(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				pointOnCapsule, null);
+		return pointOnCapsule;
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> prism) {
+		assert prism != null : AssertMessages.notNullParameter();
+		final var pointOnCapsule = getGeomFactory().newPoint();
+		findsClosestPointToCapsuleAlignedBox(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				prism.getMinX(), prism.getMinY(), prism.getMinZ(),
+				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ(),
+				pointOnCapsule, null);
+		return pointOnCapsule;
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : AssertMessages.notNullParameter();
+		final var pointOnCapsule = getGeomFactory().newPoint();
+		findsClosestPointToCapsuleSegment(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				segment.getX1(), segment.getY1(), segment.getZ1(),
+				segment.getX2(), segment.getY2(), segment.getZ2(),
+				pointOnCapsule, null);
+		return pointOnCapsule;
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : AssertMessages.notNullParameter();
+		final var pointOnCapsule = getGeomFactory().newPoint();
+		findsClosestPointToCapsulePathIterator(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				path.getPathIterator(),
+				pointOnCapsule, null);
+		return pointOnCapsule;
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : AssertMessages.notNullParameter();
+		final var pointOnCapsule = getGeomFactory().newPoint();
+		findsClosestPointToCapsuleTriangle(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				triangle.getX1(), triangle.getY1(), triangle.getZ1(),
+				triangle.getX2(), triangle.getY2(), triangle.getZ2(),
+				triangle.getX3(), triangle.getY3(), triangle.getZ3(),
+				GeomConstants.DISTANCE_EPSILON,
+				pointOnCapsule, null);
+		return pointOnCapsule;
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
+		assert capsule != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?> prism) {
+		assert prism != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(PathIterator3afp<?> iterator) {
+		assert iterator != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : AssertMessages.notNullParameter();
+		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	default double getDistance(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var x1 = getX1();
+		final var y1 = getY1();
+		final var z1 = getZ1();
+		final var x2 = getX2();
+		final var y2 = getY2();
+		final var z2 = getZ2();
+		final var px = point.getX();
+		final var py = point.getY();
+		final var pz = point.getZ();
+		final var factor = Segment3afp.findsProjectedPointOnLine(
+				px, py, pz,
+				x1, y1, z1,
+				x2, y2, z2);
+		final double cx;
+		final double cy;
+		final double cz;
+		if (factor <= 0.) {
+			cx = x1;
+			cy = y1;
+			cz = z1;
+		} else if (factor >= 1.) {
+			cx = x2;
+			cy = y2;
+			cz = z2;
+		} else {
+			cx = Math.fma(factor, x2 - x1, x1);
+			cy = Math.fma(factor, y2 - y1, y1);
+			cz = Math.fma(factor, z2 - z1, z1);
+		}
+		final var vx = px - cx;
+		final var vy = py - cy;
+		final var vz = pz - cz;
+		final var length = Math.sqrt(Vector3D.dotProduct(vx, vy, vz, vx, vy, vz));
+		return Math.max(length - getRadius(), 0.);
+	}
+
+	@Pure
+	@Override
+	default double getDistanceSquared(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var length = getDistance(point);
+		return length * length;
+	}
+
+	@Pure
+	@Override
+	default double getDistanceL1(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var cls = getGeomFactory().newPoint();
+		findsClosestPointToCapsulePoint(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				point.getX(), point.getY(), point.getZ(),
+				cls);
+		final var x = Math.abs(point.getX() - cls.getX());
+		final var y = Math.abs(point.getY() - cls.getY());
+		final var z = Math.abs(point.getZ() - cls.getZ());
+		return x + y + z;
+	}
+
+	@Pure
+	@Override
+	default double getDistanceLinf(Point3D<?, ?, ?> point) {
+		assert point != null : AssertMessages.notNullParameter();
+		final var cls = getGeomFactory().newPoint();
+		findsClosestPointToCapsulePoint(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				point.getX(), point.getY(), point.getZ(),
+				cls);
+		final var x = Math.abs(point.getX() - cls.getX());
+		final var y = Math.abs(point.getY() - cls.getY());
+		final var z = Math.abs(point.getZ() - cls.getZ());
+		return Math.max(x, Math.max(y, z));
+	}
 
 }

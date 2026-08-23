@@ -1945,7 +1945,7 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null :  AssertMessages.notNullParameter();
 		throw new UnsupportedOperationException();
 	}
@@ -2024,7 +2024,7 @@ public interface Segment3afp<
 	}
 
 	@Override
-	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
 		throw new UnsupportedOperationException();
 	}

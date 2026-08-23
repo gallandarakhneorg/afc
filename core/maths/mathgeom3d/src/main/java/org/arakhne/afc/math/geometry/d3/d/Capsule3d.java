@@ -21,16 +21,9 @@
 package org.arakhne.afc.math.geometry.d3.d;
 
 import org.arakhne.afc.math.geometry.base.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Capsule3afp;
-import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
-import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
-import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
-import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
-import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
-import org.arakhne.afc.math.geometry.d3.afp.Triangle3afp;
-import org.arakhne.afc.math.geometry.d3.general.Shape3DType;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A bounding capsule is a swept sphere (i.e. the volume that a sphere takes as it moves
  * along a straight line segment) containing the object. Capsules can be represented
@@ -51,17 +44,23 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  */
 public class Capsule3d
 	extends AbstractShape3d<Capsule3d>
-	implements Capsule3afp<Capsule3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
+	implements Capsule3afp<Capsule3d, Capsule3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = -242099273133205228L;
 
-	//	private double centerX;
-	//
-	//	private double centerY;
-	//
-	//	private double centerZ;
-	//
-	//	private double radius;
+	private double x1;
+
+	private double y1;
+
+	private double z1;
+
+	private double x2;
+
+	private double y2;
+
+	private double z2;
+
+	private double radius;
 
 	/** Construct an empty circle.
 	 */
@@ -78,10 +77,10 @@ public class Capsule3d
 	public Capsule3d(Point3D<?, ?, ?> medial1, Point3D<?, ?, ?> medial2, double radius) {
 		assert medial1 != null : AssertMessages.notNullParameter(0);
 		assert medial2 != null : AssertMessages.notNullParameter(1);
-		//		this(
-		//				medial1.getX(), medial1.getY(), medial1.getZ(),
-		//				medial2.getX(), medial2.getY(), medial2.getZ(),
-		//				radius);
+		this(
+				medial1.getX(), medial1.getY(), medial1.getZ(),
+				medial2.getX(), medial2.getY(), medial2.getZ(),
+				radius);
 	}
 
 	/** Construct a capsule at the given position, and with the given radius.
@@ -96,319 +95,147 @@ public class Capsule3d
 	 */
 	public Capsule3d(double medial1x, double medial1y, double medial1z,
 			double medial2x, double medial2y, double medial2z, double radius) {
-		//set(x, y, z, radius);
+		set(medial1x, medial1y, medial1z, medial2x, medial2y, medial2z, radius);
 	}
 
 	/** Construct a capsule from a capsule.
 	 *
 	 * @param capsule the capsule to copy.
 	 */
-	public Capsule3d(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+	public Capsule3d(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
-		// set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
+		set(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius());
 	}
 
+	@Pure
 	@Override
-	public double getMinX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setMinX(double x) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public double getMaxX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setMaxX(double x) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public double getMinY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setMinY(double y) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public double getMaxY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setMaxY(double y) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public double getMinZ() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setMinZ(double z) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public double getMaxZ() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setMaxZ(double z) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Shape3DType getType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean contains(double x, double y, double z) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?> prism) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean intersects(PathIterator3afp<?> iterator) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Point3d getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Point3d getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Point3d getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Point3d getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Point3d getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Point3d getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> segment) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Point3d getClosestPointTo(Point3D<?, ?, ?> point) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean equalsToShape(Capsule3d shape) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Point3d getFarthestPointTo(Point3D<?, ?, ?> point) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public double getDistanceSquared(Point3D<?, ?, ?> point) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getDistanceL1(Point3D<?, ?, ?> point) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getDistanceLinf(Point3D<?, ?, ?> point) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String toGeogebra() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setFromCorners(double x1, double y1, double z1, double x2, double y2, double z2) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@SuppressWarnings("checkstyle:equalshashcode")
-	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
+		var bits = 1L;
+		bits = 31 * bits + Double.hashCode(this.x1);
+		bits = 31 * bits + Double.hashCode(this.y1);
+		bits = 31 * bits + Double.hashCode(this.z1);
+		bits = 31 * bits + Double.hashCode(this.x2);
+		bits = 31 * bits + Double.hashCode(this.y2);
+		bits = 31 * bits + Double.hashCode(this.z2);
+		bits = 31 * bits + Double.hashCode(this.radius);
+		return (int) (bits ^ (bits >> 31));
 	}
 
-	//	@Pure
-	//	@Override
-	//	@SuppressWarnings("checkstyle:equalshashcode")
-	//	public int hashCode() {
-	//		var bits = 1L;
-	//		bits = 31 * bits + Double.hashCode(this.centerX);
-	//		bits = 31 * bits + Double.hashCode(this.centerY);
-	//		bits = 31 * bits + Double.hashCode(this.centerZ);
-	//		bits = 31 * bits + Double.hashCode(this.radius);
-	//		return (int) (bits ^ (bits >> 31));
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	public double getX() {
-	//		return this.centerX;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	public double getY() {
-	//		return this.centerY;
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	public double getZ() {
-	//		return this.centerZ;
-	//	}
-	//
-	//	@Override
-	//	public void setX(double x) {
-	//		if (this.centerX != x) {
-	//			this.centerX = x;
-	//			fireGeometryChange();
-	//		}
-	//	}
-	//
-	//	@Override
-	//	public void setY(double y) {
-	//		if (this.centerY != y) {
-	//			this.centerY = y;
-	//			fireGeometryChange();
-	//		}
-	//	}
-	//
-	//	@Override
-	//	public void setZ(double z) {
-	//		if (this.centerZ != z) {
-	//			this.centerZ = z;
-	//			fireGeometryChange();
-	//		}
-	//	}
-	//
-	//	@Pure
-	//	@Override
-	//	public double getRadius() {
-	//		return this.radius;
-	//	}
-	//
-	//	@Override
-	//	public void setRadius(double radius) {
-	//		if (this.radius != radius) {
-	//			this.radius = radius;
-	//			fireGeometryChange();
-	//		}
-	//	}
-	//
-	//	@Override
-	//	public void set(double x, double y, double z, double radius) {
-	//		assert radius >= 0. : AssertMessages.positiveOrZeroParameter(3);
-	//		if (this.centerX != x || this.centerY != y || this.centerZ != z || this.radius != radius) {
-	//			this.centerX = x;
-	//			this.centerY = y;
-	//			this.centerZ = z;
-	//			this.radius = radius;
-	//			fireGeometryChange();
-	//		}
-	//	}
+	@Override
+	@Pure
+	public double getX1() {
+		return this.x1;
+	}
 
+	@Override
+	@Pure
+	public double getY1() {
+		return this.y1;
+	}
+
+	@Override
+	@Pure
+	public double getZ1() {
+		return this.z1;
+	}
+
+	@Override
+	@Pure
+	public double getX2() {
+		return this.x2;
+	}
+
+	@Override
+	@Pure
+	public double getY2() {
+		return this.y2;
+	}
+
+	@Override
+	@Pure
+	public double getZ2() {
+		return this.z2;
+	}
+
+	@Override
+	@Pure
+	public double getRadius() {
+		return this.radius;
+	}
+
+	@Override
+	public void setX1(double x) {
+		if (this.x1 != x) {
+			this.x1 = x;
+			fireGeometryChange();
+		}
+	}
+
+	@Override
+	public void setY1(double y) {
+		if (this.y1 != y) {
+			this.y1 = y;
+			fireGeometryChange();
+		}
+	}
+
+	@Override
+	public void setZ1(double z) {
+		if (this.z1 != z) {
+			this.z1 = z;
+			fireGeometryChange();
+		}
+	}
+
+	@Override
+	public void setX2(double x) {
+		if (this.x2 != x) {
+			this.x2 = x;
+			fireGeometryChange();
+		}
+	}
+
+	@Override
+	public void setY2(double y) {
+		if (this.y2 != y) {
+			this.y2 = y;
+			fireGeometryChange();
+		}
+	}
+
+	@Override
+	public void setZ2(double z) {
+		if (this.z2 != z) {
+			this.z2 = z;
+			fireGeometryChange();
+		}
+	}
+
+	@Override
+	public void setRadius(double radius) {
+		if (this.radius != radius) {
+			this.radius = radius;
+			fireGeometryChange();
+		}
+	}
+
+	@Override
+	public void set(double x1, double y1, double z1, double x2, double y2, double z2, double radius) {
+		if (this.x1 != x1 || this.y1 != y1 || this.z1 != z1
+				|| this.x2 != x2 || this.y2 != y2 || this.z2 != z2
+				|| this.radius != radius) {
+			this.x1 = x1;
+			this.y1 = y1;
+			this.z1 = z1;
+			this.x2 = x2;
+			this.y2 = y2;
+			this.z2 = z2;
+			this.radius = radius;
+			fireGeometryChange();
+		}
+	}
 }

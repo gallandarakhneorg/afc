@@ -104,7 +104,7 @@ public abstract class AbstractShape3dTestCase<T extends Shape3afp<?, ?, ?, ?, ?,
 		return this.factory.createSphere(x, y, z, radius);
 	}
 	
-	public final Capsule3afp<?, ?, ?, ?, ?, B> createCapsule(double x1, double y1, double z1,
+	public final Capsule3afp<?, ?, ?, ?, ?, ?, B> createCapsule(double x1, double y1, double z1,
 			double x2, double y2, double z2, double radius) {
 		return this.factory.createCapsule(x1, y1, z1, x2, y2, z2, radius);
 	}

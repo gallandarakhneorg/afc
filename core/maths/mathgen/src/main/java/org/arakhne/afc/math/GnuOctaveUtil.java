@@ -38,6 +38,8 @@ public final class GnuOctaveUtil {
 
 	private static final String OCTAVE_NL = ";"; //$NON-NLS-1$
 
+	private static final String OCTAVE_NLNL = OCTAVE_NL + "\n  "; //$NON-NLS-1$
+
 	private static final String OCTAVE_END = "]"; //$NON-NLS-1$
 
 	private GnuOctaveUtil() {
@@ -52,12 +54,29 @@ public final class GnuOctaveUtil {
 	 */
 	@Pure
 	public static String toMatrixDefinition(int size, double... values) {
+		return toMatrixDefinition(size, false, values);
+	}
+
+	/** Replies the representation of this matrix.
+	 *
+	 * @param size the size of the matrix, i.e. the number of components in the tuple.
+	 * @param multilines indicates if the output must be on multiple lines or not.
+	 * @param values the matrix values.
+	 * @return the GNU octave matrix.
+	 * @since 18.0
+	 */
+	@Pure
+	public static String toMatrixDefinition(int size, boolean multilines, double... values) {
 		assert values.length == size * size;
 		final var value = new StringBuilder(OCTAVE_START);
 		var k = 0;
 		for (var i = 0; i < size; ++i) {
 			if (i > 0) {
-				value.append(OCTAVE_NL);
+				if (multilines) {
+					value.append(OCTAVE_NLNL);
+				} else {
+					value.append(OCTAVE_NL);
+				}
 			}
 			for (var j = 0; j < size; ++j, ++k) {
 				if (j > 0) {

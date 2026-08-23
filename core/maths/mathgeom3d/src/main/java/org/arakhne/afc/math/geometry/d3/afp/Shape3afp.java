@@ -139,7 +139,7 @@ public interface Shape3afp<
 		case TRIANGLE:
 			return intersects((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case CAPSULE:
-			return intersects((Capsule3afp<?, ?, ?, ?, ?, ?>) shape);
+			return intersects((Capsule3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
 		}
@@ -154,7 +154,7 @@ public interface Shape3afp<
 	 * @since 18.0
 	 */
 	@Pure
-	boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?> capsule);
+	boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule);
 
 	/** Replies if this shape is intersecting the given circle.
 	 *
@@ -246,7 +246,7 @@ public interface Shape3afp<
 		case TRIANGLE:
 			return getDistanceSquared((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case CAPSULE:
-			return getDistanceSquared((Capsule3afp<?, ?, ?, ?, ?, ?>) shape);
+			return getDistanceSquared((Capsule3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
 		}
@@ -259,7 +259,7 @@ public interface Shape3afp<
 	 * @return the minimum distance between the two shapes.
 	 */
 	@Pure
-	default double getDistanceSquared(Capsule3afp<?, ?, ?, ?, ?, ?> capsule) {
+	default double getDistanceSquared(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
 		return capsule.getDistanceSquared(getClosestPointTo(capsule));
 	}
@@ -369,7 +369,7 @@ public interface Shape3afp<
 		case TRIANGLE:
 			return getClosestPointTo((Triangle3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		case CAPSULE:
-			return getClosestPointTo((Capsule3afp<?, ?, ?, ?, ?, ?>) shape);
+			return getClosestPointTo((Capsule3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		default:
 			break;
 		}
@@ -390,7 +390,7 @@ public interface Shape3afp<
 	 */
 	@Pure
 	@Unefficient
-	P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?> capsule);
+	P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule);
 
 	/** Replies the closest point on this shape to the given sphere.
 	 *
@@ -454,7 +454,7 @@ public interface Shape3afp<
 	@Pure
 	P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path);
 
-	/** Replies the closest point on this shape to the given segment.
+	/** Replies the closest point on this shape to the given triangle.
 	 *
 	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
 	 * of the two shapes. This function does not enforce the meaning of the replied point
@@ -462,13 +462,13 @@ public interface Shape3afp<
 	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
 	 * with a specific meaning.
 	 *
-	 * @param segment the segment.
+	 * @param triangle the triangle.
 	 * @return the closest point on the shape; or the point itself
 	 *     if it is inside the shape.
 	 * @since 18.0
 	 */
 	@Pure
-	P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> segment);
+	P getClosestPointTo(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle);
 
 	/** Replies the closest point on this shape to the given multishape.
 	 *

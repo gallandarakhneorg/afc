@@ -73,7 +73,7 @@ class BaseTestShapeFactory3d implements TestShapeFactory3d<Point3d, Vector3d, Qu
 	}
 
 	@Override
-	public Capsule3afp<?, ?, Point3d, Vector3d, Quaternion4d, AlignedBox3d> createCapsule(
+	public Capsule3afp<?, ?, ?, Point3d, Vector3d, Quaternion4d, AlignedBox3d> createCapsule(
 			double x1, double y1, double z1, double x2, double y2, double z2, double radius) {
 		return new Capsule3d(x1, y1, z1, x2, y2, z2, radius);
 	}

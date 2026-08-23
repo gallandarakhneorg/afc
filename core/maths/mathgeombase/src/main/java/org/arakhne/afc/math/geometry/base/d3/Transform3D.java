@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.base.d3;
 
+import org.arakhne.afc.math.GnuOctaveUtil;
 import org.arakhne.afc.math.geometry.base.matrix.Matrix4d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -115,6 +116,164 @@ public class Transform3D extends Matrix4d {
 	@Override
 	public Transform3D  clone() {
 		return (Transform3D) super.clone();
+	}
+
+	/** Set the scales.
+	 *
+	 * <p>This function changes only the elements of
+	 * the matrix related to the scaling.
+	 * The rotating, translating and the shearing are not changed.
+	 *
+	 * <p>After a call to this function, the matrix will
+	 * contains (? means any value):
+	 * <pre>
+	 *          [   sx   ?    ?    ?   ]
+	 *          [   ?    sy   ?    ?   ]
+	 *          [   ?    ?    sz   ?   ]
+	 *          [   ?    ?    ?    ?   ]
+	 * </pre>
+	 *
+	 * @param sx x scaling.
+	 * @param sy y scaling.
+	 * @param sz z scaling.
+	 * @since 18.0
+	 * @see #makeScaleMatrix(double, double, double)
+	 */
+	public void setScale(double sx, double sy, double sz) {
+		this.m00 = sx;
+		this.m11 = sy;
+		this.m22 = sz;
+
+		this.isIdentity = null;
+	}
+
+	/** Set the scales.
+	 *
+	 * <p>This function changes only the elements of
+	 * the matrix related to the scaling.
+	 * The rotating, translating and the shearing are not changed.
+	 *
+	 * <p>After a call to this function, the matrix will
+	 * contains (? means any value):
+	 * <pre>
+	 *          [   s.x  ?    ?    ?     ]
+	 *          [   ?    s.y  ?    ?     ]
+	 *          [   ?    ?    s.z  ?     ]
+	 *          [   ?    ?    ?    ?     ]
+	 * </pre>
+	 *
+	 * @param scale the scale
+	 * @since 18.0
+	 * @see #makeScaleMatrix(double, double, double)
+	 */
+	public void setScale(Tuple3D<?> scale) {
+		assert scale != null : AssertMessages.notNullParameter(0);
+		this.m00 = scale.getX();
+		this.m11 = scale.getY();
+		this.m22 = scale.getZ();
+
+		this.isIdentity = null;
+	}
+
+	/** Change the scale.
+	 *
+	 * <p>This function is equivalent to:
+	 * <pre>
+	 * this = this *  [   sx   0    0    0    ]
+	 *                [   0    sy   0    0    ]
+	 *                [   0    0    sz   0    ]
+	 *                [   0    0    0    1    ]
+	 * </pre>
+	 *
+	 * @param sx x scaling.
+	 * @param sy y scaling.
+	 * @param sz z scaling.
+	 * @since 18.0
+	 */
+	public void scale(double sx, double sy, double sz) {
+		this.m00 *= sx;
+		this.m11 *= sy;
+		this.m22 *= sz;
+
+		this.isIdentity = null;
+	}
+
+	/** Change the scale.
+	 *
+	 * <p>This function is equivalent to:
+	 * <pre>
+	 * this = this *  [   s.x  0    0    0    ]
+	 *                [   0    s.y  0    0    ]
+	 *                [   0    0    s.z  0    ]
+	 *                [   0    0    0    1    ]
+	 * </pre>
+	 *
+	 * @param scale the scale
+	 * @since 18.0
+	 */
+	public void scale(Tuple3D<?> scale) {
+		assert scale != null : AssertMessages.notNullParameter(0);
+		this.m00 *= scale.getX();
+		this.m11 *= scale.getY();
+		this.m22 *= scale.getZ();
+
+		this.isIdentity = null;
+	}
+
+	/** Replies the X scale.
+	 *
+	 * @return the amount
+	 * @since 18.0
+	 */
+	@Pure
+	public double getScaleX() {
+		return this.m00;
+	}
+
+	/** Replies the Y scale.
+	 *
+	 * @return the amount
+	 * @since 18.0
+	 */
+	@Pure
+	public double getScaleY() {
+		return this.m11;
+	}
+
+	/** Replies the Z scale.
+	 *
+	 * @return the amount
+	 * @since 18.0
+	 */
+	@Pure
+	public double getScaleZ() {
+		return this.m22;
+	}
+
+	/** Replies the scale vector that is encoded in the matrix.
+	 *
+	 * <p>This function gets the factors in the following cells of the matrix:
+	 * <pre>
+	 *          [   s.x  ?    ?    ?     ]
+	 *          [   ?    s.y  ?    ?     ]
+	 *          [   ?    ?    s.z  ?     ]
+	 *          [   ?    ?    ?    ?     ]
+	 * </pre>
+	 *
+	 * @param <V> the type of the vector.
+	 * @param <P> the type of the point.
+	 * @param <Q> the type of the quaternion.
+	 * @param factory the geometry factory to be used.
+	 * @return the scale vector.
+	 * @since 18.0
+	 */
+	@Pure
+	public <V extends Vector3D<? super V, ? super P, ? super Q>,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>>
+		V getScale(GeomFactory3D<V, P, Q> factory) {
+		assert factory != null : AssertMessages.notNullParameter();
+		return factory.newVector(getScaleX(), getScaleY(), getScaleZ());
 	}
 
 	/** Set the position.
@@ -516,6 +675,52 @@ public class Transform3D extends Matrix4d {
 	}
 
 	/**
+	 * Sets the value of this matrix to the given scale, without rotation and translation.
+	 *
+	 * <p>This function changes all the elements of
+	 * the matrix including the scaling and the shearing.
+	 *
+	 * <p>After a call to this function, the matrix will
+	 * contains (? means any value):
+	 * <pre>
+	 *          [   sx   0    0    0    ]
+	 *          [   0    sy   0    0    ]
+	 *          [   0    0    sz   0    ]
+	 *          [   0    0    0    1    ]
+	 * </pre>
+	 *
+	 * @param sx is the scale to put in the matrix.
+	 * @param sy is the scale to put in the matrix.
+	 * @param sz is the scale to put in the matrix.
+	 * @since 18.0
+	 * @see #setScale(double, double, double)
+	 * @see #setScale(Tuple3D)
+	 */
+	public final void makeScaleMatrix(double sx, double sy, double sz) {
+		this.m00 = sx;
+		this.m01 = 0.;
+		this.m02 = 0.;
+		this.m03 = 0.;
+
+		this.m10 = 0.;
+		this.m11 = sy;
+		this.m12 = 0.;
+		this.m13 = 0.;
+
+		this.m20 = 0.;
+		this.m21 = 0.;
+		this.m22 = sz;
+		this.m23 = 0.;
+
+		this.m30 = 0.;
+		this.m31 = 0.;
+		this.m32 = 0.;
+		this.m33 = 1.;
+
+		this.isIdentity = null;
+	}
+
+	/**
 	 * Multiply this matrix by the point t and place the result back into the
 	 * tuple (t = this*t). This function applies the rotation and the translation.
 	 *
@@ -529,9 +734,9 @@ public class Transform3D extends Matrix4d {
 		final var y = t.getY();
 		final var z = t.getZ();
 
-		final var nx = this.m00 * x + this.m01 * y + this.m02 * z + this.m03;
-		final var ny = this.m10 * x + this.m11 * y + this.m12 * z + this.m13;
-		final var nz = this.m20 * x + this.m21 * y + this.m22 * z + this.m23;
+		final var nx = Math.fma(this.m00, x, this.m01 * y) + Math.fma(this.m02, z, this.m03);
+		final var ny = Math.fma(this.m10, x, this.m11 * y) + Math.fma(this.m12, z, this.m13);
+		final var nz = Math.fma(this.m20, x, this.m21 * y) + Math.fma(this.m22, z, this.m23);
 		t.set(nx, ny, nz);
 		this.isIdentity = null;
 	}
@@ -550,9 +755,9 @@ public class Transform3D extends Matrix4d {
 		final var y = t.getY();
 		final var z = t.getZ();
 
-		final var nx = this.m00 * x + this.m01 * y + this.m02 * z;
-		final var ny = this.m10 * x + this.m11 * y + this.m12 * z;
-		final var nz = this.m20 * x + this.m21 * y + this.m22 * z;
+		final var nx = Math.fma(this.m00, x, Math.fma(this.m01, y, this.m02 * z));
+		final var ny = Math.fma(this.m10, x, Math.fma(this.m11, y, this.m12 * z));
+		final var nz = Math.fma(this.m20, x, Math.fma(this.m21, y, this.m22 * z));
 		t.set(nx, ny, nz);
 		this.isIdentity = null;
 	}
@@ -575,9 +780,9 @@ public class Transform3D extends Matrix4d {
 		final var y = t.getY();
 		final var z = t.getZ();
 		result.set(
-				this.m00 * x + this.m01 * y + this.m02 * z + this.m03,
-				this.m10 * x + this.m11 * y + this.m12 * z + this.m13,
-				this.m20 * x + this.m21 * y + this.m22 * z + this.m23);
+				Math.fma(this.m00, x, this.m01 * y) + Math.fma(this.m02, z, this.m03),
+				Math.fma(this.m10, x, this.m11 * y) + Math.fma(this.m12, z, this.m13),
+				Math.fma(this.m20, x, this.m21 * y) + Math.fma(this.m22, z, this.m23));
 	}
 
 	/**
@@ -598,9 +803,9 @@ public class Transform3D extends Matrix4d {
 		final var y = t.getY();
 		final var z = t.getZ();
 		result.set(
-				this.m00 * x + this.m01 * y + this.m02 * z,
-				this.m10 * x + this.m11 * y + this.m12 * z,
-				this.m20 * x + this.m21 * y + this.m22 * z);
+				Math.fma(this.m00, x, Math.fma(this.m01, y, this.m02 * z)),
+				Math.fma(this.m10, x, Math.fma(this.m11, y, this.m12 * z)),
+				Math.fma(this.m20, x, Math.fma(this.m21, y, this.m22 * z)));
 	}
 
 	/**
@@ -637,4 +842,13 @@ public class Transform3D extends Matrix4d {
 		set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0., 0., 0., 1.);
 	}
 
+	@SuppressWarnings("checkstyle:magicnumber")
+	@Override
+	public String toString() {
+		return GnuOctaveUtil.toMatrixDefinition(4, true,
+				getM00(), getM01(), getM02(), getM03(),
+				getM10(), getM11(), getM12(), getM13(),
+				getM20(), getM21(), getM22(), getM23(),
+				getM30(), getM31(), getM32(), getM33());
+	}
 }

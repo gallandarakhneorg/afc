@@ -65,7 +65,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 @SuppressWarnings("all")
 public abstract class AbstractAlignedBox3dTestCase<T extends AlignedBox3afp<T, ?, ?, ?, ?, B>,
-B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> {
+		B extends AlignedBox3afp<?, ?, ?, ?, ?, B>> extends AbstractBox3dTestCase<T, B> {
 
 	@Override
 	protected final T createShape() {

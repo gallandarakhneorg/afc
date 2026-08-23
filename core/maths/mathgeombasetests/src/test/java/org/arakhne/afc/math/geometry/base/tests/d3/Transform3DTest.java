@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.base.d3.Transform3D;
 import org.arakhne.afc.math.geometry.base.d3.Vector3D;
 import org.arakhne.afc.math.geometry.base.d3.Quaternion.QuaternionComponents;
 import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.base.tests.d2.ImmutableGeomFactory2DTest.newVector;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -131,6 +132,56 @@ public class Transform3DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(1, this.transform.getM33());
 	}
 
+	@DisplayName("setScale(double,double,double)")
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
+	public void setScaleDoubleDoubleDouble(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		// Values computed with GNU Octave
+		this.transform.setScale(123.456, 789.123, 57);
+		assertEpsilonEquals(123.456, this.transform.getM00());
+		assertEpsilonEquals(ROT01, this.transform.getM01());
+		assertEpsilonEquals(ROT02, this.transform.getM02());
+		assertEpsilonEquals(TRANSX, this.transform.getM03());
+		assertEpsilonEquals(ROT10, this.transform.getM10());
+		assertEpsilonEquals(789.123, this.transform.getM11());
+		assertEpsilonEquals(ROT12, this.transform.getM12());
+		assertEpsilonEquals(TRANSY, this.transform.getM13());
+		assertEpsilonEquals(ROT20, this.transform.getM20());
+		assertEpsilonEquals(ROT21, this.transform.getM21());
+		assertEpsilonEquals(57, this.transform.getM22());
+		assertEpsilonEquals(TRANSZ, this.transform.getM23());
+		assertEpsilonEquals(0, this.transform.getM30());
+		assertEpsilonEquals(0, this.transform.getM31());
+		assertEpsilonEquals(0, this.transform.getM32());
+		assertEpsilonEquals(1, this.transform.getM33());
+	}
+
+	@DisplayName("setScale(double,double,double)")
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
+	public void setScaleTuple3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		// Values computed with GNU Octave
+		this.transform.setScale(new InnerComputationVector3D(123.456, 789.123, 57));
+		assertEpsilonEquals(123.456, this.transform.getM00());
+		assertEpsilonEquals(ROT01, this.transform.getM01());
+		assertEpsilonEquals(ROT02, this.transform.getM02());
+		assertEpsilonEquals(TRANSX, this.transform.getM03());
+		assertEpsilonEquals(ROT10, this.transform.getM10());
+		assertEpsilonEquals(789.123, this.transform.getM11());
+		assertEpsilonEquals(ROT12, this.transform.getM12());
+		assertEpsilonEquals(TRANSY, this.transform.getM13());
+		assertEpsilonEquals(ROT20, this.transform.getM20());
+		assertEpsilonEquals(ROT21, this.transform.getM21());
+		assertEpsilonEquals(57, this.transform.getM22());
+		assertEpsilonEquals(TRANSZ, this.transform.getM23());
+		assertEpsilonEquals(0, this.transform.getM30());
+		assertEpsilonEquals(0, this.transform.getM31());
+		assertEpsilonEquals(0, this.transform.getM32());
+		assertEpsilonEquals(1, this.transform.getM33());
+	}
+
 	@DisplayName("setTranslation(double,double,double)")
 	@ParameterizedTest
 	@EnumSource(CoordinateSystem3D.class)
@@ -206,7 +257,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(1, this.transform.getM33());
 	}
 
-	@DisplayName("translate(double,double,double)")
+	@DisplayName("translate(Vector3D)")
 	@ParameterizedTest
 	@EnumSource(CoordinateSystem3D.class)
 	public void translateVector3D(CoordinateSystem3D cs) {
@@ -225,6 +276,56 @@ public class Transform3DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(ROT21, this.transform.getM21());
 		assertEpsilonEquals(ROT22, this.transform.getM22());
 		assertEpsilonEquals(6, this.transform.getM23());
+		assertEpsilonEquals(0, this.transform.getM30());
+		assertEpsilonEquals(0, this.transform.getM31());
+		assertEpsilonEquals(0, this.transform.getM32());
+		assertEpsilonEquals(1, this.transform.getM33());
+	}
+
+	@DisplayName("scale(double,double,double)")
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleDoubleDoubleDouble(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		// Values computed with GNU Octave
+		this.transform.scale(120, 780, 0);
+		assertEpsilonEquals(120. * ROT00, this.transform.getM00());
+		assertEpsilonEquals(ROT01, this.transform.getM01());
+		assertEpsilonEquals(ROT02, this.transform.getM02());
+		assertEpsilonEquals(TRANSX, this.transform.getM03());
+		assertEpsilonEquals(ROT10, this.transform.getM10());
+		assertEpsilonEquals(780. * ROT11, this.transform.getM11());
+		assertEpsilonEquals(ROT12, this.transform.getM12());
+		assertEpsilonEquals(TRANSY, this.transform.getM13());
+		assertEpsilonEquals(ROT20, this.transform.getM20());
+		assertEpsilonEquals(ROT21, this.transform.getM21());
+		assertEpsilonEquals(0., this.transform.getM22());
+		assertEpsilonEquals(TRANSZ, this.transform.getM23());
+		assertEpsilonEquals(0, this.transform.getM30());
+		assertEpsilonEquals(0, this.transform.getM31());
+		assertEpsilonEquals(0, this.transform.getM32());
+		assertEpsilonEquals(1, this.transform.getM33());
+	}
+
+	@DisplayName("scale(Vector3D)")
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		// Values computed with GNU Octave
+		this.transform.scale(new InnerComputationVector3D(120, 780, 0));
+		assertEpsilonEquals(120. * ROT00, this.transform.getM00());
+		assertEpsilonEquals(ROT01, this.transform.getM01());
+		assertEpsilonEquals(ROT02, this.transform.getM02());
+		assertEpsilonEquals(TRANSX, this.transform.getM03());
+		assertEpsilonEquals(ROT10, this.transform.getM10());
+		assertEpsilonEquals(780. * ROT11, this.transform.getM11());
+		assertEpsilonEquals(ROT12, this.transform.getM12());
+		assertEpsilonEquals(TRANSY, this.transform.getM13());
+		assertEpsilonEquals(ROT20, this.transform.getM20());
+		assertEpsilonEquals(ROT21, this.transform.getM21());
+		assertEpsilonEquals(0., this.transform.getM22());
+		assertEpsilonEquals(TRANSZ, this.transform.getM23());
 		assertEpsilonEquals(0, this.transform.getM30());
 		assertEpsilonEquals(0, this.transform.getM31());
 		assertEpsilonEquals(0, this.transform.getM32());
@@ -254,6 +355,34 @@ public class Transform3DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest
 	@EnumSource(CoordinateSystem3D.class)
+	public void getScale(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		assertEpsilonEquals(new InnerComputationVector3D(ROT00, ROT11, ROT22), this.transform.getScale(this.FACTORY));
+	}
+
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
+	public void getScaleX(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		assertEpsilonEquals(ROT00, this.transform.getScaleX());
+	}
+
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
+	public void getScaleY(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		assertEpsilonEquals(ROT11, this.transform.getScaleY());
+	}
+
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
+	public void getScaleZ(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		assertEpsilonEquals(ROT22, this.transform.getScaleZ());
+	}
+
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
 	public void getTranslation(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(new InnerComputationVector3D(TRANSX, TRANSY, TRANSZ), this.transform.getTranslation(this.FACTORY));
@@ -279,6 +408,32 @@ public class Transform3DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0, this.transform.getM21());
 		assertEpsilonEquals(1, this.transform.getM22());
 		assertEpsilonEquals(z, this.transform.getM23());
+		assertEpsilonEquals(0, this.transform.getM30());
+		assertEpsilonEquals(0, this.transform.getM31());
+		assertEpsilonEquals(0, this.transform.getM32());
+		assertEpsilonEquals(1, this.transform.getM33());
+	}
+
+	@ParameterizedTest
+	@EnumSource(CoordinateSystem3D.class)
+	public void makeScaleMatrix(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		double x = -0.59471;
+		double y = -0.80394;
+		double z = 563214.25;
+		this.transform.makeScaleMatrix(x, y, z);
+		assertEpsilonEquals(x, this.transform.getM00());
+		assertEpsilonEquals(0, this.transform.getM01());
+		assertEpsilonEquals(0, this.transform.getM02());
+		assertEpsilonEquals(0, this.transform.getM03());
+		assertEpsilonEquals(0, this.transform.getM10());
+		assertEpsilonEquals(y, this.transform.getM11());
+		assertEpsilonEquals(0, this.transform.getM12());
+		assertEpsilonEquals(0, this.transform.getM13());
+		assertEpsilonEquals(0, this.transform.getM20());
+		assertEpsilonEquals(0, this.transform.getM21());
+		assertEpsilonEquals(z, this.transform.getM22());
+		assertEpsilonEquals(0, this.transform.getM23());
 		assertEpsilonEquals(0, this.transform.getM30());
 		assertEpsilonEquals(0, this.transform.getM31());
 		assertEpsilonEquals(0, this.transform.getM32());

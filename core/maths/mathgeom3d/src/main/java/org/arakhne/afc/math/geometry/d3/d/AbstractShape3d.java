@@ -100,6 +100,9 @@ public abstract class AbstractShape3d<T extends AbstractShape3d<?>> implements S
 		if (this == obj) {
 			return true;
 		}
+		if (obj == null) {
+			return false;
+		}
 		try {
 			return equalsToShape((T) obj);
 		} catch (Throwable exception) {
