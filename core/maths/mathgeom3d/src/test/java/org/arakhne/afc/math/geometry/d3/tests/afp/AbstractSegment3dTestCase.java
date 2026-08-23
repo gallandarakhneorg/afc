@@ -381,9 +381,100 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		@EnumSource(CoordinateSystem3D.class)
 		public final void capsule_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(createPoint(1.0,1.0,1.0),
+					getS().getClosestPointTo(createCapsule(20, 20, 20, 22, 23, 28, 2)));
 		}
 
+		@DisplayName("(Capsule3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Far in negative octant -> closest endpoint should be (0,0,0)
+			assertEpsilonEquals(createPoint(0.0, 0.0, 0.0),
+					getS().getClosestPointTo(createCapsule(-20, -20, -20, -22, -23, -28, 2)));
+		}
+
+		@DisplayName("(Capsule3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule around the segment start
+			assertEpsilonEquals(createPoint(0.0, 0.0, 0.0),
+					getS().getClosestPointTo(createCapsule(0, 0, 0, 0, 0, 0, 1)));
+		}
+
+		@DisplayName("(Capsule3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule around the segment end
+			assertEpsilonEquals(createPoint(1.0, 1.0, 1.0),
+					getS().getClosestPointTo(createCapsule(1, 1, 1, 1, 1, 1, 1)));
+		}
+
+		@DisplayName("(Capsule3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule intersects mid-part of segment
+			assertEpsilonEquals(createPoint(0.5, 0.5, 0.5),
+					getS().getClosestPointTo(createCapsule(0.5, 0.5, 0.5, 2, 2, 2, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule axis parallel and shifted near the segment
+			assertEpsilonEquals(createPoint(1.0, 1.0, 1.0),
+					getS().getClosestPointTo(createCapsule(2, 2, 2, 3, 3, 3, 0.2)));
+		}
+
+		@DisplayName("(Capsule3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Degenerate capsule (sphere) near middle
+			assertEpsilonEquals(createPoint(0.5, 0.5, 0.5),
+					getS().getClosestPointTo(createCapsule(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.01)));
+		}
+
+		@DisplayName("(Capsule3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule crossing line extension after endpoint 1
+			assertEpsilonEquals(createPoint(1.0, 1.0, 1.0),
+					getS().getClosestPointTo(createCapsule(4, 4, 4, 6, 6, 6, 0.5)));
+		}
+
+		@DisplayName("(Capsule3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule crossing line extension before endpoint 0
+			assertEpsilonEquals(createPoint(0.0, 0.0, 0.0),
+					getS().getClosestPointTo(createCapsule(-6, -6, -6, -4, -4, -4, 0.5)));
+		}
+
+		@DisplayName("(Capsule3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Very large radius, center far away (still closest near endpoint 1 direction)
+			assertEpsilonEquals(createPoint(1.0, 1.0, 1.0),
+					getS().getClosestPointTo(createCapsule(100, 100, 100, 120, 130, 140, 200)));
+		}
+		
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -9315,9 +9406,90 @@ public abstract class AbstractSegment3dTestCase<T extends Segment3afp<?, T, ?, ?
 		@EnumSource(CoordinateSystem3D.class)
 		public final void capsule_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertFalse(getS().intersects(createCapsule(20, 20, 20, 23, 25, 26, 2)));
 		}
 
+		@DisplayName("(Capsule3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Far opposite side
+			assertFalse(getS().intersects(createCapsule(-20, -20, -20, -23, -25, -26, 2)));
+		}
+
+		@DisplayName("(Capsule3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Around segment start
+			assertTrue(getS().intersects(createCapsule(0, 0, 0, 0, 0, 0, 0.2)));
+		}
+
+		@DisplayName("(Capsule3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Around segment end
+			assertTrue(getS().intersects(createCapsule(1, 1, 1, 1, 1, 1, 0.2)));
+		}
+
+		@DisplayName("(Capsule3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule crossing the segment
+			assertTrue(getS().intersects(createCapsule(0.5, 0.5, -2, 0.5, 0.5, 2, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Parallel and close to the segment
+			assertTrue(getS().intersects(createCapsule(0, 0.2, 0, 1, 1.2, 1, 0.25)));
+		}
+
+		@DisplayName("(Capsule3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Parallel but too far
+			assertFalse(getS().intersects(createCapsule(0, 2, 0, 1, 3, 1, 0.25)));
+		}
+
+		@DisplayName("(Capsule3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Tangent near endpoint (touching)
+			assertTrue(getS().intersects(createCapsule(1.4, 1, 1, 2.4, 1, 1, 0.4)));
+		}
+
+		@DisplayName("(Capsule3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Just outside tangency
+			assertFalse(getS().intersects(createCapsule(1.401, 1, 1, 2.401, 1, 1, 0.4)));
+		}
+
+		@DisplayName("(Capsule3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Degenerate capsule (sphere) centered on segment midpoint
+			assertTrue(getS().intersects(createCapsule(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.01)));
+		}
+		
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)

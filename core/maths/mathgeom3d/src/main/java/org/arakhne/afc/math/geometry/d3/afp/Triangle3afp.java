@@ -1741,7 +1741,17 @@ public interface Triangle3afp<
 	@Override
 	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		final var c = getGeomFactory().newPoint();
+		Capsule3afp.findsClosestPointToCapsuleTriangle(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				GeomConstants.DISTANCE_EPSILON,
+				null, c);
+		return c;
 	}
 
 	@Pure
@@ -1863,7 +1873,14 @@ public interface Triangle3afp<
 	@Override
 	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return Capsule3afp.intersectsCapsuleTriangle(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getX3(), getY3(), getZ3(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure

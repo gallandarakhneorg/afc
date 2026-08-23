@@ -861,7 +861,14 @@ public interface Path3afp<
 	@Override
 	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		final var result = getGeomFactory().newPoint();
+		Capsule3afp.findsClosestPointToCapsulePathIterator(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getPathIterator(),
+				null, result);
+		return result;
 	}
 
 	@Pure
@@ -2416,7 +2423,12 @@ public interface Path3afp<
 	@Override
 	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return Capsule3afp.intersectsCapsulePathIterator(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getPathIterator(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure

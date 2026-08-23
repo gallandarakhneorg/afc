@@ -834,7 +834,108 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void capsule_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			result = getS().getClosestPointTo(createCapsule(20, 20, 20, 23, 35, 48, 2));
+			assertEpsilonEquals(createPoint(5.75,1.078125,3.3125), result);
+		}
+
+		@DisplayName("(Capsule3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Far opposite side
+			result = getS().getClosestPointTo(createCapsule(-20, -20, -20, -23, -35, -48, 2));
+			assertEpsilonEquals(createPoint(1.0,0.5,-5.0), result);
+		}
+
+		@DisplayName("(Capsule3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Near first segment endpoint
+			result = getS().getClosestPointTo(createCapsule(0, 0, 0, 0, 0, 0, 0.2));
+			assertEpsilonEquals(createPoint(0., 0., 0.), result);
+		}
+
+		@DisplayName("(Capsule3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Near segment second endpoint / quadratic start
+			result = getS().getClosestPointTo(createCapsule(1, 0.5, -5, 1, 0.5, -5, 0.1));
+			assertEpsilonEquals(createPoint(1., 0.5, -5.), result);
+		}
+
+		@DisplayName("(Capsule3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Near quadratic end / cubic start
+			result = getS().getClosestPointTo(createCapsule(4, 3, -2, 4, 3, -2, 0.1));
+			assertEpsilonEquals(createPoint(4., 3., -2.), result);
+		}
+
+		@DisplayName("(Capsule3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Near cubic end
+			result = getS().getClosestPointTo(createCapsule(7, -5, 2, 7, -5, 2, 0.1));
+			assertEpsilonEquals(createPoint(7., -5., 2.), result);
+		}
+
+		@DisplayName("(Capsule3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule close to first segment interior
+			result = getS().getClosestPointTo(createCapsule(0.5, 0.25, -2.5, 0.5, 0.25, -2.5, 0.1));
+			assertEpsilonEquals(createPoint(0.5, 0.25, -2.5), result);
+		}
+
+		@DisplayName("(Capsule3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule centered on quadratic control point
+			result = getS().getClosestPointTo(createCapsule(3, 0, 2, 3, 0, 2, 0.05));
+			assertEpsilonEquals(createPoint(4.899778465, 1.41521031909, 1.62168045834), result);
+		}
+
+		@DisplayName("(Capsule3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule centered on first cubic control point
+			result = getS().getClosestPointTo(createCapsule(5, -1, 3, 5, -1, 3, 0.05));
+			assertEpsilonEquals(createPoint(6.387720943, -0.69698212373, 3.20841423407), result);
+		}
+
+		@DisplayName("(Capsule3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule centered on second cubic control point
+			result = getS().getClosestPointTo(createCapsule(6, 5, 5, 6, 5, 5, 0.05));
+			assertEpsilonEquals(createPoint(5.75,1.078125,3.3125), result);
+		}
+
+		@DisplayName("(Capsule3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Large capsule encompassing significant path region
+			result = getS().getClosestPointTo(createCapsule(3, 0, 0, 6, 2, 2, 10));
+			assertEpsilonEquals(createPoint(4.8225858432, 1.4521984501, 1.37241261866), result);
 		}
 
 		@DisplayName("(Sphere3afp) #1")
@@ -8105,9 +8206,99 @@ extends AbstractShape3dTestCase<T, B> {
 		@EnumSource(CoordinateSystem3D.class)
 		public final void capsule_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertFalse(getS().intersects(createCapsule(20, 20, 20, 23, 35, 48, 2)));
 		}
 
+		@DisplayName("(Capsule3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Far opposite side
+			assertFalse(getS().intersects(createCapsule(-20, -20, -20, -23, -35, -48, 2)));
+		}
+
+		@DisplayName("(Capsule3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Intersects at first path endpoint
+			assertTrue(getS().intersects(createCapsule(0, 0, 0, 0, 0, 0, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Intersects at quadratic start point
+			assertTrue(getS().intersects(createCapsule(1, 0.5, -5, 1, 0.5, -5, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Intersects at quadratic end / cubic start point
+			assertTrue(getS().intersects(createCapsule(4, 3, -2, 4, 3, -2, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Intersects at cubic end point
+			assertTrue(getS().intersects(createCapsule(7, -5, 2, 7, -5, 2, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Intersects near first segment interior
+			assertTrue(getS().intersects(createCapsule(0.5, 0.25, -2.5, 0.5, 0.25, -2.5, 0.2)));
+		}
+
+		@DisplayName("(Capsule3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Near path
+			assertTrue(getS().intersects(createCapsule(0.5, 0.25, -2.5, 0.5, 0.25, -2.5, 1e-6)));
+		}
+
+		@DisplayName("(Capsule3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Intersects near cubic bulge
+			assertTrue(getS().intersects(createCapsule(5.5, 1.5, 3.5, 5.5, 1.5, 3.5, 0.8)));
+		}
+
+		@DisplayName("(Capsule3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Parallel offset capsule outside
+			assertFalse(getS().intersects(createCapsule(20, 0, 0, 30, 10, 10, 0.5)));
+		}
+
+		@DisplayName("(Capsule3afp) #11")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_11(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Very large radius intersects from far away
+			assertTrue(getS().intersects(createCapsule(100, 100, 100, 120, 130, 140, 500)));
+		}
+		
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)

@@ -72,7 +72,14 @@ public interface MultiShape3afp<
 	@Override
 	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		if (capsule.intersects(toBoundingBox())) {
+			for (final var shape : getBackendDataList()) {
+				if (shape.intersects(capsule)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Pure
@@ -275,7 +282,17 @@ public interface MultiShape3afp<
 	@Override
 	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+        var min = Double.POSITIVE_INFINITY;
+        final var closest = getGeomFactory().newPoint();
+        for (final var innerShape : getBackendDataList()) {
+            final var point = innerShape.getClosestPointTo(capsule);
+            final var dist = capsule.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
 	}
 
 	@Override

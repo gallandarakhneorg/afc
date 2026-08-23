@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
+import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.base.GeomConstants;
 import org.arakhne.afc.math.geometry.base.d3.BoundsReceiver3D;
 import org.arakhne.afc.math.geometry.base.d3.InnerComputationPoint3D;
@@ -525,6 +526,7 @@ public interface Capsule3afp<
 	 * @param pointOnCapsule the closest point on the capsule.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
 	@Pure
 	static void findsClosestPointToCapsulePoint(double cx1, double cy1, double cz1,
 			double cx2, double cy2, double cz2, double cradius,
@@ -588,6 +590,7 @@ public interface Capsule3afp<
 	 * @param pointOnSphere the closest point on the sphere. It could be {@code null}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
 	@Pure
 	static void findsClosestPointToCapsuleSphere(
 			double cx1, double cy1, double cz1,
@@ -676,6 +679,7 @@ public interface Capsule3afp<
 	 * @param pointOnSegment the closest point on the segment. It could be {@code null}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
 	@Pure
 	static void findsClosestPointToCapsuleSegment(
 			double cx1, double cy1, double cz1,
@@ -740,6 +744,7 @@ public interface Capsule3afp<
 	 * @param pointOnTriangle the closest point on the triangle. It could be {@code null}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
 	@Pure
 	static void findsClosestPointToCapsuleTriangle(
 			double cx1, double cy1, double cz1,
@@ -807,6 +812,7 @@ public interface Capsule3afp<
 	 * @param pointOnBox the closest point on the box. It could be {@code null}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
 	@Pure
 	static void findsClosestPointToCapsuleAlignedBox(
 			double cx1, double cy1, double cz1,
@@ -867,6 +873,7 @@ public interface Capsule3afp<
 	 * @param pointOnPath the closest point on the path. It could be {@code null}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
 	@Pure
 	static void findsClosestPointToCapsulePathIterator(
 			double cx1, double cy1, double cz1,
@@ -928,6 +935,7 @@ public interface Capsule3afp<
 	 * @param pointOnCapsule2 the closest point on the second capsule. It could be {@code null}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
 	@Pure
 	static void findsClosestPointToCapsuleCapsule(
 			double ax1, double ay1, double az1,
@@ -1085,53 +1093,308 @@ public interface Capsule3afp<
 		return pointOnCapsule;
 	}
 
+	/** Replies if the given capsule is intersecting the given segment.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param sx1 x coordinate of the first point of the segment.
+	 * @param sy1 y coordinate of the first point of the segment.
+	 * @param sz1 z coordinate of the first point of the segment.
+	 * @param sx2 x coordinate of the second point of the segment.
+	 * @param sy2 y coordinate of the second point of the segment.
+	 * @param sz2 z coordinate of the second point of the segment.
+	 * @param epsilon the approximation distance to consider for intersection.
+	 * @return {@code true} if the two shapes are intersecting.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
+	@Pure
+	static boolean intersectsCapsuleSegment(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double sx1, double sy1, double sz1,
+			double sx2, double sy2, double sz2,
+			double epsilon) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(13);
+		final var sqDist = Segment3afp.calculatesDistanceSquaredSegmentSegment(
+				cx1, cy1, cz1, cx2, cy2, cz2,
+				sx1, sy1, sz1, sx2, sy2, sz2);
+		final var r = cradius + epsilon;
+		return sqDist <= r * r;
+	}
+
+	/** Replies if the given first capsule is intersecting the given second capsule.
+	 *
+	 * @param ax1 x coordinate of the first point of the first capsule segment.
+	 * @param ay1 y coordinate of the first point of the first capsule segment.
+	 * @param az1 y coordinate of the first point of the first capsule segment.
+	 * @param ax2 x coordinate of the second point of the first capsule segment.
+	 * @param ay2 y coordinate of the second point of the first capsule segment.
+	 * @param az2 y coordinate of the second point of the first capsule segment.
+	 * @param aradius the radius of the first capsule.
+	 * @param bx1 x coordinate of the first point of the second capsule segment.
+	 * @param by1 y coordinate of the first point of the second capsule segment.
+	 * @param bz1 y coordinate of the first point of the second capsule segment.
+	 * @param bx2 x coordinate of the second point of the second capsule segment.
+	 * @param by2 y coordinate of the second point of the second capsule segment.
+	 * @param bz2 y coordinate of the second point of the second capsule segment.
+	 * @param bradius the radius of the second capsule.
+	 * @param epsilon the approximation distance to consider for intersection.
+	 * @return {@code true} if the two shapes are intersecting.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
+	@Pure
+	static boolean intersectsCapsuleCapsule(
+			double ax1, double ay1, double az1,
+			double ax2, double ay2, double az2, double aradius,
+			double bx1, double by1, double bz1,
+			double bx2, double by2, double bz2, double bradius,
+			double epsilon) {
+		assert aradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert bradius >= 0. : AssertMessages.positiveOrZeroParameter(13);
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(14);
+		final var sqDist = Segment3afp.calculatesDistanceSquaredSegmentSegment(
+				ax1, ay1, az1, ax2, ay2, az2,
+				bx1, by1, bz1, bx2, by2, bz2);
+		final var r = aradius + bradius + epsilon;
+		return sqDist <= r * r;
+	}
+
+	/** Replies if the given capsule is intersecting the given aligned box.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param bx1 x coordinate of the minimum corner of the aligned box.
+	 * @param by1 y coordinate of the minimum corner of the aligned box.
+	 * @param bz1 z coordinate of the minimum corner of the aligned box.
+	 * @param bx2 x coordinate of the maximum corner of the aligned box.
+	 * @param by2 y coordinate of the maximum corner of the aligned box.
+	 * @param bz2 z coordinate of the maximum corner of the aligned box.
+	 * @param epsilon the approximation distance to consider for intersection.
+	 * @return {@code true} if the two shapes are intersecting.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
+	@Pure
+	static boolean intersectsCapsuleAlignedBox(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double bx1, double by1, double bz1,
+			double bx2, double by2, double bz2,
+			double epsilon) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(13);
+		final var pointOnCapsule = new InnerComputationPoint3D();
+		final var pointOnBox = new InnerComputationPoint3D();
+		AlignedBox3afp.findsClosestPointToAlignedBoxSegment(
+				bx1, by1, bz1, bx2, by2, bz2,
+				cx1, cy1, cz1, cx2, cy2, cz2,
+				pointOnBox, pointOnCapsule);
+		final var sqDist = pointOnBox.getDistanceSquared(pointOnCapsule);
+		final var r = cradius + epsilon;
+		return sqDist <= r * r;
+	}
+
+	/** Replies if the given capsule is intersecting the given path.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param iterator iterator on the path elements.
+	 * @param epsilon the approximation distance to consider for intersection.
+	 * @return {@code true} if the two shapes are intersecting.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
+	@Pure
+	static boolean intersectsCapsulePathIterator(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			PathIterator3afp<?> iterator,
+			double epsilon) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(13);
+		final var sqDist = Path3afp.calculatesDistanceSquaredPathIteratorSegment(iterator,
+				cx1, cy1, cz1, cx2, cy2, cz2);
+		final var r = cradius + epsilon;
+		return sqDist <= r * r;
+	}
+
+	/** Replies if the given capsule is intersecting the given sphere.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param sx x coordinate of the sphere center.
+	 * @param sy y coordinate of the sphere center.
+	 * @param sz z coordinate of the sphere center.
+	 * @param sradius the radius of the sphere.
+	 * @param epsilon the approximation distance to consider for intersection.
+	 * @return {@code true} if the two shapes are intersecting.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
+	@Pure
+	static boolean intersectsCapsuleSphere(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double sx, double sy, double sz, double sradius,
+			double epsilon) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert sradius >= 0. : AssertMessages.positiveOrZeroParameter(10);
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(11);
+		final var sqDist = Segment3afp.calculatesDistanceSquaredSegmentPoint(
+				cx1, cy1, cz1, cx2, cy2, cz2,
+				sx, sy, sz);
+		final var r = cradius + sradius + epsilon;
+		return sqDist <= r * r;
+	}
+
+	/** Replies if the given capsule is intersecting the given triangle.
+	 *
+	 * @param cx1 x coordinate of the first point of the capsule segment.
+	 * @param cy1 y coordinate of the first point of the capsule segment.
+	 * @param cz1 y coordinate of the first point of the capsule segment.
+	 * @param cx2 x coordinate of the second point of the capsule segment.
+	 * @param cy2 y coordinate of the second point of the capsule segment.
+	 * @param cz2 y coordinate of the second point of the capsule segment.
+	 * @param cradius the radius of the capsule.
+	 * @param tx1 x coordinate of the first point of the triangle.
+	 * @param ty1 y coordinate of the first point of the triangle.
+	 * @param tz1 z coordinate of the first point of the triangle.
+	 * @param tx2 x coordinate of the second point of the triangle.
+	 * @param ty2 y coordinate of the second point of the triangle.
+	 * @param tz2 z coordinate of the second point of the triangle.
+	 * @param tx3 x coordinate of the third point of the triangle.
+	 * @param ty3 y coordinate of the third point of the triangle.
+	 * @param tz3 z coordinate of the third point of the triangle.
+	 * @param epsilon the approximation distance to consider for intersection.
+	 * @return {@code true} if the two shapes are intersecting.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	@Unefficient
+	@Pure
+	static boolean intersectsCapsuleTriangle(
+			double cx1, double cy1, double cz1,
+			double cx2, double cy2, double cz2, double cradius,
+			double tx1, double ty1, double tz1,
+			double tx2, double ty2, double tz2,
+			double tx3, double ty3, double tz3,
+			double epsilon) {
+		assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert epsilon >= 0. : AssertMessages.positiveOrZeroParameter(11);
+		final var sqDist = Triangle3afp.calculatesDistanceSquaredTriangleSegment(
+				tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
+				cx1, cy1, cz1, cx2, cy2, cz2,
+				epsilon);
+		final var r = cradius + epsilon;
+		return sqDist <= r * r;
+	}
+
 	@Pure
 	@Override
 	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return intersectsCapsuleCapsule(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return intersectsCapsuleSphere(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				sphere.getX(), sphere.getY(), sphere.getZ(),
+				sphere.getRadius(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return intersectsCapsuleAlignedBox(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				prism.getMinX(), prism.getMinY(), prism.getMinZ(),
+				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return intersectsCapsuleSegment(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				segment.getX1(), segment.getY1(), segment.getZ1(),
+				segment.getX2(), segment.getY2(), segment.getZ2(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Triangle3afp<?, ?, ?, ?, ?, ?, ?> triangle) {
 		assert triangle != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return intersectsCapsuleTriangle(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				triangle.getX1(), triangle.getY1(), triangle.getZ1(),
+				triangle.getX2(), triangle.getY2(), triangle.getZ2(),
+				triangle.getX3(), triangle.getY3(), triangle.getZ3(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return intersectsCapsulePathIterator(
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				getRadius(),
+				iterator,
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return multishape.intersects(this);
 	}
 
 	@Pure

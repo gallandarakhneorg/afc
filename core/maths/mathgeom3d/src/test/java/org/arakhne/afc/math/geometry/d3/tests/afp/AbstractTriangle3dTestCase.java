@@ -3407,9 +3407,99 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@EnumSource(CoordinateSystem3D.class)
 		public final void capsule_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertEpsilonEquals(createPoint(1, 1, 1), getS().getClosestPointTo(createCapsule(20, 20, 20, 31, 25, 24, 2)));
 		}
 
+		@DisplayName("(Capsule3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Far opposite side -> nearest triangle vertex should be (0,0,0)
+			assertEpsilonEquals(createPoint(0, 0, 0),
+					getS().getClosestPointTo(createCapsule(-20, -20, -20, -31, -25, -24, 2)));
+		}
+
+		@DisplayName("(Capsule3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule centered on triangle vertex (1,0,1)
+			assertEpsilonEquals(createPoint(1, 0, 1),
+					getS().getClosestPointTo(createCapsule(1, 0, 1, 1, 0, 1, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule centered on vertex (0,0,0)
+			assertEpsilonEquals(createPoint(0, 0, 0),
+					getS().getClosestPointTo(createCapsule(0, 0, 0, 0, 0, 0, 0.5)));
+		}
+
+		@DisplayName("(Capsule3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule crossing near triangle interior
+			assertEpsilonEquals(createPoint(0.5, 0.5, 0.5),
+					getS().getClosestPointTo(createCapsule(0.5, 0.5, -2, 0.5, 0.5, 3, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule near edge between (0,0,0) and (1,0,1)
+			assertEpsilonEquals(createPoint(0.5, 0.0, 0.5),
+					getS().getClosestPointTo(createCapsule(0.5, -3, 0.5, 0.5, -1, 0.5, 0.2)));
+		}
+
+		@DisplayName("(Capsule3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Degenerate capsule (sphere) near triangle plane
+			assertEpsilonEquals(createPoint(0.2, 0.2, 0.2),
+					getS().getClosestPointTo(createCapsule(0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.01)));
+		}
+
+		@DisplayName("(Capsule3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule axis roughly parallel to plane and near vertex (1,1,1)
+			assertEpsilonEquals(createPoint(1, 1, 1),
+					getS().getClosestPointTo(createCapsule(2, 2, 2, 3, 2, 2, 0.2)));
+		}
+
+		@DisplayName("(Capsule3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule near triangle edge ((1,1,1)-(1,0,1)): expect projection on this edge
+			assertEpsilonEquals(createPoint(1.0, 0.4, 1.0),
+					getS().getClosestPointTo(createCapsule(3, 0.4, 1, 4, 0.4, 1, 0.5)));
+		}
+
+		@DisplayName("(Capsule3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Large radius far capsule that engulfs triangle area
+			assertEpsilonEquals(createPoint(1.0,1.0,1.0),
+					getS().getClosestPointTo(createCapsule(100, 100, 100, 120, 130, 140, 500)));
+		}
+		
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)
@@ -7375,9 +7465,90 @@ public abstract class AbstractTriangle3dTestCase<T extends Triangle3afp<?, T, ?,
 		@EnumSource(CoordinateSystem3D.class)
 		public final void capsule_1(CoordinateSystem3D cs) {
 			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-			fail("Todo");
+			assertFalse(getS().intersects(createCapsule(20, 20, 20, 31, 25, 24, 2)));
 		}
 
+		@DisplayName("(Capsule3afp) #2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_2(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Far opposite side
+			assertFalse(getS().intersects(createCapsule(-20, -20, -20, -31, -25, -24, 2)));
+		}
+
+		@DisplayName("(Capsule3afp) #3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_3(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule crossing triangle interior
+			assertTrue(getS().intersects(createCapsule(0.5, 0.5, -2, 0.5, 0.5, 3, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_4(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Degenerate capsule (sphere) centered on triangle vertex
+			assertTrue(getS().intersects(createCapsule(1, 1, 1, 1, 1, 1, 0.01)));
+		}
+
+		@DisplayName("(Capsule3afp) #5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_5(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Degenerate capsule (sphere) near but outside triangle
+			assertFalse(getS().intersects(createCapsule(1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.1)));
+		}
+
+		@DisplayName("(Capsule3afp) #6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_6(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule along edge (0,0,0)-(1,0,1)
+			assertTrue(getS().intersects(createCapsule(0, 0, 0, 1, 0, 1, 0.01)));
+		}
+
+		@DisplayName("(Capsule3afp) #7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_7(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Capsule parallel to triangle plane but sufficiently far
+			assertFalse(getS().intersects(createCapsule(0, 0, 5, 1, 1, 6, 0.2)));
+		}
+
+		@DisplayName("(Capsule3afp) #8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_8(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Tangent-like touch near edge with exact reach
+			assertTrue(getS().intersects(createCapsule(0.5, -1, 0.5, 0.5, -0.2, 0.5, 0.2)));
+		}
+
+		@DisplayName("(Capsule3afp) #9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_9(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Just outside previous tangent configuration
+			assertFalse(getS().intersects(createCapsule(0.5, -1, 0.5, 0.5, -0.2, 0.5, 0.19)));
+		}
+
+		@DisplayName("(Capsule3afp) #10")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem3D.class)
+		public final void capsule_10(CoordinateSystem3D cs) {
+			CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+			// Huge radius intersects from far away
+			assertTrue(getS().intersects(createCapsule(100, 100, 100, 120, 130, 140, 500)));
+		}
+		
 		@DisplayName("(Sphere3afp) #1")
 		@ParameterizedTest(name = "{index} => {0}")
 		@EnumSource(CoordinateSystem3D.class)

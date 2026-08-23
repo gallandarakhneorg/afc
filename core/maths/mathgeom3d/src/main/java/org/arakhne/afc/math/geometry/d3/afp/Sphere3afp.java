@@ -489,7 +489,12 @@ public interface Sphere3afp<
 	@Override
 	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return Capsule3afp.intersectsCapsuleSphere(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getX(), getY(), getZ(), getRadius(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
@@ -589,7 +594,14 @@ public interface Sphere3afp<
 	@Override
 	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		final var cp = getGeomFactory().newPoint();
+		Capsule3afp.findsClosestPointToCapsuleSphere(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getX(), getY(), getZ(), getRadius(),
+				null, cp);
+		return cp;
 	}
 
 	@Pure

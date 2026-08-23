@@ -1947,7 +1947,13 @@ public interface Segment3afp<
 	@Override
 	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return Capsule3afp.intersectsCapsuleSegment(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
@@ -2026,7 +2032,15 @@ public interface Segment3afp<
 	@Override
 	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		final var point = getGeomFactory().newPoint();
+		Capsule3afp.findsClosestPointToCapsuleSegment(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2(),
+				null, point);
+		return point;
 	}
 
 	@Pure

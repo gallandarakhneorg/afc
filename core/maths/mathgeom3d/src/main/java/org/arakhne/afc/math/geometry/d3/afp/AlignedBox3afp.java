@@ -1536,7 +1536,13 @@ public interface AlignedBox3afp<
 	@Override
 	default boolean intersects(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null :  AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		return Capsule3afp.intersectsCapsuleAlignedBox(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getMinX(), getMinY(), getMinZ(),
+				getMaxX(), getMaxY(), getMaxZ(),
+				GeomConstants.DISTANCE_EPSILON);
 	}
 
 	@Pure
@@ -1647,7 +1653,15 @@ public interface AlignedBox3afp<
 	@Override
 	default P getClosestPointTo(Capsule3afp<?, ?, ?, ?, ?, ?, ?> capsule) {
 		assert capsule != null : AssertMessages.notNullParameter();
-		throw new UnsupportedOperationException();
+		final P cp = getGeomFactory().newPoint();
+		Capsule3afp.findsClosestPointToCapsuleAlignedBox(
+				capsule.getX1(), capsule.getY1(), capsule.getZ1(),
+				capsule.getX2(), capsule.getY2(), capsule.getZ2(),
+				capsule.getRadius(),
+				getMinX(), getMinY(), getMinZ(),
+				getMaxX(), getMaxY(), getMaxZ(),
+				null, cp);
+		return cp;
 	}
 
 	@Override
