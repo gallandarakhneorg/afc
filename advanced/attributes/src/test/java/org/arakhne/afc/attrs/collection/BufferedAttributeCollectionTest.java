@@ -29,6 +29,7 @@ import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeValue;
+import org.junit.jupiter.api.DisplayName;
 
 /**
  * Stub for CacheProvider.
@@ -141,13 +142,14 @@ class CacheProviderStub extends BufferedAttributeCollection {
 }
 
 /**
- * Test for BufferedAttributeProvider.
+ * Test for BufferedAttributeCollection.
  * 
  * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("BufferedAttributeCollection")
 @SuppressWarnings("all")
 public class BufferedAttributeCollectionTest extends AbstractAttributeCollectionTest<CacheProviderStub> {
 

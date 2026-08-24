@@ -21,16 +21,18 @@
 package org.arakhne.afc.attrs.collection;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
+import org.junit.jupiter.api.DisplayName;
 
 
 /**
- * Test for HeapAttributeProvider.
+ * Test for HeapAttributeCollection.
  * 
  * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("HeapAttributeCollection")
 @SuppressWarnings("all")
 public class HeapAttributeCollectionTest extends AbstractAttributeCollectionTest<HeapAttributeCollection> {
 

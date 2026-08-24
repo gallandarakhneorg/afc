@@ -27,6 +27,7 @@ import java.util.Map;
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeValue;
+import org.junit.jupiter.api.DisplayName;
 
 /**
  * Stub for BufferedAttributeContrainer.
@@ -100,15 +101,16 @@ class ReadOnlyCacheProviderStub extends AbstractBufferedAttributeProvider {
 }
 
 /**
- * Test for BufferedAttributeContainer.
+ * Test for AbstractBufferedAttributeProvider.
  * 
  * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("AbstractBufferedAttributeProvider")
 @SuppressWarnings("all")
-public class AbstractBufferedAttributeProviderTest extends AbstractAttributeProviderTest<ReadOnlyCacheProviderStub> {
+public class AbstractBufferedAttributeProviderTest extends AbstractAttributeProviderTestCase<ReadOnlyCacheProviderStub> {
 
 	/**
 	 */
