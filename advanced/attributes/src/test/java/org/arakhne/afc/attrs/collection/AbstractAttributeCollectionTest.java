@@ -466,6 +466,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		}
 
 		@DisplayName("(String,Object,false)")
+		@Nested
 		public class WithoutOverwrite {
 		
 			@DisplayName("#1")
@@ -509,6 +510,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			@Test
 			public void renameAttribute_4() {
 				assertTrue(testData.renameAttribute("B", "ZZZ", false));   //$NON-NLS-1$ //$NON-NLS-2$
+				listenerStub.reset();
 				assertFalse(testData.renameAttribute("toto", "XXX", false));   //$NON-NLS-1$ //$NON-NLS-2$
 				// Testing events
 				var message = id+": renaming toto to XXX";  //$NON-NLS-1$
@@ -519,7 +521,6 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			@DisplayName("#5")
 			@Test
 			public void renameAttribute_5() {
-				testData.renameAttribute("B", "ZZZ", false);   //$NON-NLS-1$ //$NON-NLS-2$
 				assertTrue(testData.renameAttribute("B", "ZZZ", false));   //$NON-NLS-1$ //$NON-NLS-2$
 				assertTrue(testData.hasAttribute("A"));  //$NON-NLS-1$
 				assertFalse(testData.hasAttribute("X"));  //$NON-NLS-1$
@@ -544,6 +545,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			@Test
 			public void renameAttribute_7() {
 				testData.renameAttribute("B", "ZZZ", false);   //$NON-NLS-1$ //$NON-NLS-2$
+				listenerStub.reset();
 				assertFalse(testData.renameAttribute("F", "A", false));   //$NON-NLS-1$ //$NON-NLS-2$
 				// Testing events
 				var message = id+": renaming F to A";  //$NON-NLS-1$
@@ -555,6 +557,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			@Test
 			public void renameAttribute_8() {
 				testData.renameAttribute("B", "ZZZ", false);   //$NON-NLS-1$ //$NON-NLS-2$
+				oldValue = testData.getAttribute("F");  //$NON-NLS-1$
 				AttributeValue oldValue2 = testData.getAttribute("A");  //$NON-NLS-1$
 				testData.renameAttribute("F", "A", false);   //$NON-NLS-1$ //$NON-NLS-2$
 				assertTrue(testData.hasAttribute("A"));  //$NON-NLS-1$
@@ -573,6 +576,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		}
 
 		@DisplayName("(String,Object,true)")
+		@Nested
 		public class WithOverwrite {
 
 			@DisplayName("#1")
@@ -616,13 +620,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			@Test
 			public void renameAttributeOverwrite_4() {
 				testData.renameAttribute("B", "ZZZ", true);   //$NON-NLS-1$ //$NON-NLS-2$
+				listenerStub.reset();
 				assertFalse(testData.renameAttribute("toto", "XXX", true));   //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
-			@DisplayName("#5")
-			@Test
-			public void renameAttributeOverwrite_5() {
-				testData.renameAttribute("B", "ZZZ", true);   //$NON-NLS-1$ //$NON-NLS-2$
 				// Testing events
 				var message = id+": renaming toto to XXX";  //$NON-NLS-1$
 				listenerStub.assertEmpty(message);
@@ -649,6 +648,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			@Test
 			public void renameAttributeOverwrite_7() {
 				testData.renameAttribute("B", "ZZZ", true);   //$NON-NLS-1$ //$NON-NLS-2$
+				listenerStub.reset();
 				oldValue = testData.getAttribute("F");  //$NON-NLS-1$
 				AttributeValue oldValue2 = testData.getAttribute("A");  //$NON-NLS-1$
 		

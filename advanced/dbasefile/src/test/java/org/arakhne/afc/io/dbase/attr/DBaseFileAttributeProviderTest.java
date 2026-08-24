@@ -33,6 +33,8 @@ import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.Attribute;
@@ -43,13 +45,7 @@ import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.Resources;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 14.0
- */
+@DisplayName("DBaseFileAttributeProvider")
 @SuppressWarnings("all")
 public class DBaseFileAttributeProviderTest extends AbstractTestCase {
 
@@ -70,178 +66,356 @@ public class DBaseFileAttributeProviderTest extends AbstractTestCase {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.resource = Resources.getResource(TEST_FILENAME);
-		assertNotNull(this.resource);
-		this.provider = DBaseFileAttributePool.getContainer(this.resource, 19);
+		resource = Resources.getResource(TEST_FILENAME);
+		assertNotNull(resource);
+		provider = DBaseFileAttributePool.getContainer(resource, 19);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.provider = null;
-		this.resource = null;
+		provider = null;
+		resource = null;
 	}
 
-	@Test
-	public void testGetResource() {
-		assertEquals(this.resource, this.provider.getResource());
+	@DisplayName("getResource")
+	@Nested
+	public class GetResource {
+
+		@DisplayName("#1")
+		@Test
+		public void testGetResource() {
+			assertEquals(resource, provider.getResource());
+		}
 	}
 
-	@Test
-	public void testGetRecordNumber() {
-		assertEquals(19, this.provider.getRecordNumber());
+	@DisplayName("getRecordNumber")
+	@Nested
+	public class GetRecordNumber {
+
+		@DisplayName("#1")
+		@Test
+		public void testGetRecordNumber() {
+			assertEquals(19, provider.getRecordNumber());
+		}
 	}
 
-	@Test
-	public void testGetAttributeCount() {
-		assertEquals(4, this.provider.getAttributeCount());
+	@DisplayName("getAttributeCount")
+	@Nested
+	public class GetAttributeCount {
+
+		@DisplayName("#1")
+		@Test
+		public void testGetAttributeCount() {
+			assertEquals(4, provider.getAttributeCount());
+		}
 	}
 
-	@Test
-	public void testHasAttribute() {
-		assertTrue(this.provider.hasAttribute("SOURCE")); //$NON-NLS-1$
-		assertTrue(this.provider.hasAttribute("CATEGORIE")); //$NON-NLS-1$
-		assertTrue(this.provider.hasAttribute("NATURE")); //$NON-NLS-1$
-		assertTrue(this.provider.hasAttribute("HAUTEUR")); //$NON-NLS-1$
-		assertFalse(this.provider.hasAttribute("NOFIELD")); //$NON-NLS-1$
-		assertFalse(this.provider.hasAttribute("NEWFIELD")); //$NON-NLS-1$
+	@DisplayName("hasAttribute")
+	@Nested
+	public class HasAttribute {
+
+		@DisplayName("testHasAttribute_1")
+		@Test
+		public void testHasAttribute_1() {
+			assertTrue(provider.hasAttribute("SOURCE")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttribute_2")
+		@Test
+		public void testHasAttribute_2() {
+			assertTrue(provider.hasAttribute("CATEGORIE")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttribute_3")
+		@Test
+		public void testHasAttribute_3() {
+			assertTrue(provider.hasAttribute("NATURE")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttribute_4")
+		@Test
+		public void testHasAttribute_4() {
+			assertTrue(provider.hasAttribute("HAUTEUR")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttribute_5")
+		@Test
+		public void testHasAttribute_5() {
+			assertFalse(provider.hasAttribute("NOFIELD")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttribute_6")
+		@Test
+		public void testHasAttribute_6() {
+			assertFalse(provider.hasAttribute("NEWFIELD")); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	public void testHasAttributeInDBase() {
-		assertTrue(this.provider.hasAttributeInDBase("SOURCE")); //$NON-NLS-1$
-		assertTrue(this.provider.hasAttributeInDBase("CATEGORIE")); //$NON-NLS-1$
-		assertTrue(this.provider.hasAttributeInDBase("NATURE")); //$NON-NLS-1$
-		assertTrue(this.provider.hasAttributeInDBase("HAUTEUR")); //$NON-NLS-1$
-		assertFalse(this.provider.hasAttributeInDBase("NOFIELD")); //$NON-NLS-1$
-		assertFalse(this.provider.hasAttributeInDBase("NEWFIELD")); //$NON-NLS-1$
+	@DisplayName("hasAttributeInDBase")
+	@Nested
+	public class HasAttributeInDBase {
+
+		@DisplayName("testHasAttributeInDBase_1")
+		@Test
+		public void testHasAttributeInDBase_1() {
+			assertTrue(provider.hasAttributeInDBase("SOURCE")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttributeInDBase_2")
+		@Test
+		public void testHasAttributeInDBase_2() {
+			assertTrue(provider.hasAttributeInDBase("CATEGORIE")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttributeInDBase_3")
+		@Test
+		public void testHasAttributeInDBase_3() {
+			assertTrue(provider.hasAttributeInDBase("NATURE")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttributeInDBase_4")
+		@Test
+		public void testHasAttributeInDBase_4() {
+			assertTrue(provider.hasAttributeInDBase("HAUTEUR")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttributeInDBase_5")
+		@Test
+		public void testHasAttributeInDBase_5() {
+			assertFalse(provider.hasAttributeInDBase("NOFIELD")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testHasAttributeInDBase_6")
+		@Test
+		public void testHasAttributeInDBase_6() {
+			assertFalse(provider.hasAttributeInDBase("NEWFIELD")); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	public void testGetAllAttributeNames() {
-		Collection<String> names = this.provider.getAllAttributeNames();
-		assertNotNull(names);
-		assertEquals(4, names.size());
-		Iterator<String> iterator = names.iterator();
-		assertTrue(iterator.hasNext());
-		assertEquals("SOURCE", iterator.next()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		assertEquals("CATEGORIE", iterator.next()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		assertEquals("NATURE", iterator.next()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		assertEquals("HAUTEUR", iterator.next()); //$NON-NLS-1$
-		assertFalse(iterator.hasNext());
+	@DisplayName("getAllAttributeNames")
+	@Nested
+	public class GetAllAttributeNames {
+
+		@DisplayName("#1")
+		@Test
+		public void testGetAllAttributeNames() {
+			Collection<String> names = provider.getAllAttributeNames();
+			assertNotNull(names);
+			assertEquals(4, names.size());
+			Iterator<String> iterator = names.iterator();
+			assertTrue(iterator.hasNext());
+			assertEquals("SOURCE", iterator.next()); //$NON-NLS-1$
+			assertTrue(iterator.hasNext());
+			assertEquals("CATEGORIE", iterator.next()); //$NON-NLS-1$
+			assertTrue(iterator.hasNext());
+			assertEquals("NATURE", iterator.next()); //$NON-NLS-1$
+			assertTrue(iterator.hasNext());
+			assertEquals("HAUTEUR", iterator.next()); //$NON-NLS-1$
+			assertFalse(iterator.hasNext());
+		}
 	}
 
-	@Test
-	public void testGetAttributeObjectFromDBase() throws Exception {
-		assertEquals(PHOTOGRAMMETRIE_VALUE,
-				this.provider.getAttributeObjectFromDBase("SOURCE").getValue()); //$NON-NLS-1$
-		assertEquals(15.,
-				this.provider.getAttributeObjectFromDBase("HAUTEUR").getValue()); //$NON-NLS-1$
-		assertNull(this.provider.getAttributeObjectFromDBase("NOFIELD")); //$NON-NLS-1$
-		assertNull(this.provider.getAttributeObjectFromDBase("NEWFIELD")); //$NON-NLS-1$
+	@DisplayName("getAttributeObjectFromDBase")
+	@Nested
+	public class GetAttributeObjectFromDBase {
+
+		@DisplayName("testGetAttributeObjectFromDBase_1")
+		@Test
+		public void testGetAttributeObjectFromDBase_1() throws Exception {
+			assertEquals(PHOTOGRAMMETRIE_VALUE,
+					provider.getAttributeObjectFromDBase("SOURCE").getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeObjectFromDBase_2")
+		@Test
+		public void testGetAttributeObjectFromDBase_2() throws Exception {
+			assertEquals(15.,
+					provider.getAttributeObjectFromDBase("HAUTEUR").getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeObjectFromDBase_3")
+		@Test
+		public void testGetAttributeObjectFromDBase_3() throws Exception {
+			assertNull(provider.getAttributeObjectFromDBase("NOFIELD")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeObjectFromDBase_4")
+		@Test
+		public void testGetAttributeObjectFromDBase_4() throws Exception {
+			assertNull(provider.getAttributeObjectFromDBase("NEWFIELD")); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	public void testGetAttributeObject() throws Exception {
-		assertEquals(PHOTOGRAMMETRIE_VALUE,
-				this.provider.getAttributeObject("SOURCE").getValue()); //$NON-NLS-1$
-		assertEquals(15.,
-				this.provider.getAttributeObject("HAUTEUR").getValue()); //$NON-NLS-1$
-		assertNull(this.provider.getAttributeObject("NOFIELD")); //$NON-NLS-1$
-		assertNull(this.provider.getAttributeObject("NEWFIELD")); //$NON-NLS-1$
+	@DisplayName("getAttributeObject")
+	@Nested
+	public class GetAttributeObject {
+
+		@DisplayName("testGetAttributeObject_1")
+		@Test
+		public void testGetAttributeObject_1() throws Exception {
+			assertEquals(PHOTOGRAMMETRIE_VALUE,
+					provider.getAttributeObject("SOURCE").getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeObject_2")
+		@Test
+		public void testGetAttributeObject_2() throws Exception {
+			assertEquals(15.,
+					provider.getAttributeObject("HAUTEUR").getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeObject_3")
+		@Test
+		public void testGetAttributeObject_3() throws Exception {
+			assertNull(provider.getAttributeObject("NOFIELD")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeObject_4")
+		@Test
+		public void testGetAttributeObject_4() throws Exception {
+			assertNull(provider.getAttributeObject("NEWFIELD")); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	public void testGetAttributeString() throws Exception {
-		assertEquals(PHOTOGRAMMETRIE_VALUE,
-				this.provider.getAttribute("SOURCE").getValue()); //$NON-NLS-1$
-		assertEquals(15.,
-				this.provider.getAttribute("HAUTEUR").getValue()); //$NON-NLS-1$
-		assertNull(this.provider.getAttribute("NOFIELD")); //$NON-NLS-1$
-		assertNull(this.provider.getAttribute("NEWFIELD")); //$NON-NLS-1$
+	@DisplayName("getAttribute")
+	@Nested
+	public class GetAttribute {
+
+		private AttributeValue defaultValue;
+
+		@BeforeEach
+		public void setUp() {
+			defaultValue = new AttributeValueImpl(false);
+		}
+
+		@DisplayName("testGetAttributeString_1")
+		@Test
+		public void testGetAttributeString_1() throws Exception {
+			assertEquals(PHOTOGRAMMETRIE_VALUE,
+					provider.getAttribute("SOURCE").getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeString_2")
+		@Test
+		public void testGetAttributeString_2() throws Exception {
+			assertEquals(15.,
+					provider.getAttribute("HAUTEUR").getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeString_3")
+		@Test
+		public void testGetAttributeString_3() throws Exception {
+			assertNull(provider.getAttribute("NOFIELD")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeString_4")
+		@Test
+		public void testGetAttributeString_4() throws Exception {
+			assertNull(provider.getAttribute("NEWFIELD")); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeStringAttributeValue_1")
+		@Test
+		public void testGetAttributeStringAttributeValue_1() throws Exception {
+			assertEquals(PHOTOGRAMMETRIE_VALUE,
+					provider.getAttribute("SOURCE", defaultValue).getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeStringAttributeValue_2")
+		@Test
+		public void testGetAttributeStringAttributeValue_2() throws Exception {
+			assertEquals(15.,
+					provider.getAttribute("HAUTEUR", defaultValue).getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeStringAttributeValue_3")
+		@Test
+		public void testGetAttributeStringAttributeValue_3() throws Exception {
+			assertEquals(false, provider.getAttribute("NOFIELD", defaultValue).getValue()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAttributeStringAttributeValue_4")
+		@Test
+		public void testGetAttributeStringAttributeValue_4() throws Exception {
+			assertEquals(false, provider.getAttribute("NEWFIELD", defaultValue).getValue()); //$NON-NLS-1$
+		}
 	}
 
-	@Test
-	public void testGetAttributeStringAttributeValue() throws Exception {
-		AttributeValue defaultValue = new AttributeValueImpl(false);
-		assertEquals(PHOTOGRAMMETRIE_VALUE,
-				this.provider.getAttribute("SOURCE",defaultValue).getValue()); //$NON-NLS-1$
-		assertEquals(15.,
-				this.provider.getAttribute("HAUTEUR",defaultValue).getValue()); //$NON-NLS-1$
-		assertEquals(false,this.provider.getAttribute("NOFIELD",defaultValue).getValue()); //$NON-NLS-1$
-		assertEquals(false,this.provider.getAttribute("NEWFIELD",defaultValue).getValue()); //$NON-NLS-1$
+	@DisplayName("getAllAttributes")
+	@Nested
+	public class GetAllAttributes {
+
+		@DisplayName("#1")
+		@Test
+		public void testGetAllAttributes() throws Exception {
+			Collection<Attribute> attrs = provider.getAllAttributes();
+			assertNotNull(attrs);
+			assertEquals(4,attrs.size());
+			Iterator<Attribute> iterator = attrs.iterator();
+			Attribute attr;
+			assertTrue(iterator.hasNext());
+			attr = iterator.next();
+			assertEquals("SOURCE", attr.getName()); //$NON-NLS-1$
+	    	assertEquals(PHOTOGRAMMETRIE_VALUE, attr.getValue());
+			assertTrue(iterator.hasNext());
+			attr = iterator.next();
+			assertEquals("CATEGORIE", attr.getName()); //$NON-NLS-1$
+	    	assertEquals("Religieux", attr.getValue()); //$NON-NLS-1$
+			assertTrue(iterator.hasNext());
+			attr = iterator.next();
+			assertEquals("NATURE", attr.getName()); //$NON-NLS-1$
+	    	assertEquals("Eglise", attr.getValue()); //$NON-NLS-1$
+			assertTrue(iterator.hasNext());
+			attr = iterator.next();
+			assertEquals("HAUTEUR", attr.getName()); //$NON-NLS-1$
+	    	assertEquals(15., attr.getValue());
+			assertFalse(iterator.hasNext());
+		}
 	}
 
-	@Test
-	public void testGetAllAttributes() throws Exception {
-		Collection<Attribute> attrs = this.provider.getAllAttributes();
-		assertNotNull(attrs);
-		assertEquals(4,attrs.size());
-		Iterator<Attribute> iterator = attrs.iterator();
-		Attribute attr;
-		assertTrue(iterator.hasNext());
-		attr = iterator.next();
-		assertEquals("SOURCE", attr.getName()); //$NON-NLS-1$
-    	assertEquals(PHOTOGRAMMETRIE_VALUE, attr.getValue());
-		assertTrue(iterator.hasNext());
-		attr = iterator.next();
-		assertEquals("CATEGORIE", attr.getName()); //$NON-NLS-1$
-    	assertEquals("Religieux", attr.getValue()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		attr = iterator.next();
-		assertEquals("NATURE", attr.getName()); //$NON-NLS-1$
-    	assertEquals("Eglise", attr.getValue()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		attr = iterator.next();
-		assertEquals("HAUTEUR", attr.getName()); //$NON-NLS-1$
-    	assertEquals(15., attr.getValue());
-		assertFalse(iterator.hasNext());
-	}
+	@DisplayName("getAllAttributesByType")
+	@Nested
+	public class GetAllAttributesByType {
 
-	@Test
-	public void testGetAllAttributesByType() throws Exception {
-		Map<AttributeType,Collection<Attribute>> themap = this.provider.getAllAttributesByType();
-		assertNotNull(themap);
-		assertEquals(2,themap.size());
-		
-		Collection<Attribute> attrs;
-		Attribute attr;
-		Iterator<Attribute> iterator;
-		
-		attrs = themap.get(AttributeType.STRING);
-		assertNotNull(attrs);
-		assertEquals(3, attrs.size());		
-		iterator = attrs.iterator();
-		assertTrue(iterator.hasNext());
-		attr = iterator.next();
-		assertEquals("SOURCE", attr.getName()); //$NON-NLS-1$
-    	assertEquals(PHOTOGRAMMETRIE_VALUE, attr.getValue());
-		assertTrue(iterator.hasNext());
-		attr = iterator.next();
-		assertEquals("CATEGORIE", attr.getName()); //$NON-NLS-1$
-    	assertEquals("Religieux", attr.getValue()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		attr = iterator.next();
-		assertEquals("NATURE", attr.getName()); //$NON-NLS-1$
-    	assertEquals("Eglise", attr.getValue()); //$NON-NLS-1$
-		assertFalse(iterator.hasNext());		
-    	
-		attrs = themap.get(AttributeType.REAL);
-		assertNotNull(attrs);
-		assertEquals(1, attrs.size());		
-		iterator = attrs.iterator();
-    	assertTrue(iterator.hasNext());
-		attr = iterator.next();
-		assertEquals("HAUTEUR", attr.getName()); //$NON-NLS-1$
-    	assertEquals(15., attr.getValue());
-		assertFalse(iterator.hasNext());		
-	}
-
-	@Test
-	public void testFreeMemory() {
-		this.provider.freeMemory();
+		@DisplayName("#1")
+		@Test
+		public void testGetAllAttributesByType() throws Exception {
+			Map<AttributeType,Collection<Attribute>> themap = provider.getAllAttributesByType();
+			assertNotNull(themap);
+			assertEquals(2,themap.size());
+			
+			Collection<Attribute> attrs;
+			Attribute attr;
+			Iterator<Attribute> iterator;
+			
+			attrs = themap.get(AttributeType.STRING);
+			assertNotNull(attrs);
+			assertEquals(3, attrs.size());		
+			iterator = attrs.iterator();
+			assertTrue(iterator.hasNext());
+			attr = iterator.next();
+			assertEquals("SOURCE", attr.getName()); //$NON-NLS-1$
+	    	assertEquals(PHOTOGRAMMETRIE_VALUE, attr.getValue());
+			assertTrue(iterator.hasNext());
+			attr = iterator.next();
+			assertEquals("CATEGORIE", attr.getName()); //$NON-NLS-1$
+	    	assertEquals("Religieux", attr.getValue()); //$NON-NLS-1$
+			assertTrue(iterator.hasNext());
+			attr = iterator.next();
+			assertEquals("NATURE", attr.getName()); //$NON-NLS-1$
+	    	assertEquals("Eglise", attr.getValue()); //$NON-NLS-1$
+			assertFalse(iterator.hasNext());		
+	    	
+			attrs = themap.get(AttributeType.REAL);
+			assertNotNull(attrs);
+			assertEquals(1, attrs.size());		
+			iterator = attrs.iterator();
+	    	assertTrue(iterator.hasNext());
+			attr = iterator.next();
+			assertEquals("HAUTEUR", attr.getName()); //$NON-NLS-1$
+	    	assertEquals(15., attr.getValue());
+			assertFalse(iterator.hasNext());		
+		}
 	}
 
 }
