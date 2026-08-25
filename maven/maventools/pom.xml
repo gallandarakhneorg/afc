@@ -47,6 +47,13 @@
 			<groupId>org.eclipse.aether</groupId>
 			<artifactId>aether-api</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>testtools</artifactId>
+			<scope>test</scope>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 	<build>

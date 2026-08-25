@@ -1,0 +1,97 @@
+/*
+ * $Id$
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2026 The original authors and other contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.arakhne.maven.tests;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+
+import org.arakhne.maven.JavaSourceFileFilter;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+@DisplayName("JavaSourceFileFilter")
+@SuppressWarnings("all")
+public class JavaSourceFileFilterTest {
+
+    private final JavaSourceFileFilter filter = new JavaSourceFileFilter();
+
+    @DisplayName("accept")
+    @Nested
+    public class Accept {
+
+        @DisplayName("(null)")
+        @Test
+        void accept_null_returnsFalse() {
+            assertFalse(filter.accept(null));
+        }
+
+        @DisplayName("(folder)")
+        @Test
+        void accept_directory_returnsTrue() {
+            File directory = new File(System.getProperty("java.io.tmpdir"));
+            assertTrue(directory.isDirectory(), "Precondition failed: expected a directory");
+            assertTrue(filter.accept(directory));
+        }
+
+        @DisplayName("(java file)")
+        @Test
+        void accept_javaFile_returnsTrue() {
+            File file = new File("Example.java");
+            assertTrue(filter.accept(file));
+        }
+
+        @DisplayName("(other file)")
+        @Test
+        void accept_nonJavaFile_returnsFalse() {
+            File file = new File("readme.txt");
+            assertFalse(filter.accept(file));
+        }
+
+        @DisplayName("(JAVA file)")
+        @Test
+        void accept_caseSensitiveExtension_uppercaseReturnsFalse() {
+            File file = new File("EXAMPLE.JAVA");
+            assertFalse(filter.accept(file), "Filter is case-sensitive and expects '.java'");
+        }
+
+        @DisplayName("(custom java filename)")
+        @Test
+        void accept_filenameEndingWithJava_returnsTrue() {
+            File file = new File("my.custom.Example.java");
+            assertTrue(filter.accept(file));
+        }
+    }
+
+    @DisplayName("toString")
+    @Nested
+    public class ToString {
+
+        @DisplayName("returns expected label")
+        @Test
+        void toString_returnsExpectedLabel() {
+            assertEquals("Java Source (.java)", filter.toString());
+        }
+    }
+}
