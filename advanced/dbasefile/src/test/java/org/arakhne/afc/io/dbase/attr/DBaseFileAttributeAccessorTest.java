@@ -31,6 +31,8 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.AttributeValue;
@@ -44,6 +46,7 @@ import org.arakhne.afc.vmutil.Resources;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("DBaseFileAttributeAccessor")
 @SuppressWarnings("all")
 public class DBaseFileAttributeAccessorTest extends AbstractTestCase {
 
@@ -55,58 +58,170 @@ public class DBaseFileAttributeAccessorTest extends AbstractTestCase {
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.resource = Resources.getResource(TEST_FILENAME);
-		assertNotNull(this.resource);
-		this.pool = DBaseFileAttributePool.getPool(this.resource);
-		assertNotNull(this.pool);
-		this.accessor = this.pool.getAccessor(4);
+		resource = Resources.getResource(TEST_FILENAME);
+		assertNotNull(resource);
+		pool = DBaseFileAttributePool.getPool(resource);
+		assertNotNull(pool);
+		accessor = pool.getAccessor(4);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.pool.close();
-		this.accessor = null;
-		this.pool = null;
-		this.resource = null;
+		pool.close();
+		accessor = null;
+		pool = null;
+		resource = null;
 	}
 
-	@Test
-	public void testGetResource() {
-		assertEquals(this.resource, this.accessor.getResource());
+	@DisplayName("getResource")
+	@Nested
+	public class GetResource {
+		@Test
+		public void testGetResource() {
+			assertEquals(resource, accessor.getResource());
+		}
 	}
 
-	@Test
-	public void testGetRecordNumber() {
-		assertEquals(4, this.accessor.getRecordNumber());
+	@DisplayName("getRecordNumber")
+	@Nested
+	public class GetRecordNumber {
+		@Test
+		public void testGetRecordNumber() {
+			assertEquals(4, accessor.getRecordNumber());
+		}
 	}
 
-	@Test
-	public void testGetAttributeCount() {
-		assertEquals(4, this.accessor.getAttributeCount());
+	@DisplayName("getAttributeCount")
+	@Nested
+	public class GetAttributeCount {
+		@Test
+		public void testGetAttributeCount() {
+			assertEquals(4, accessor.getAttributeCount());
+		}
 	}
 
-	@Test
-	public void testGetAllAttributeNames() {
-		Collection<String> names = this.accessor.getAllAttributeNames();
-		assertNotNull(names);
-		assertEquals(4, names.size());
-		Iterator<String> iterator = names.iterator();
-		assertTrue(iterator.hasNext());
-		assertEquals("SOURCE", iterator.next()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		assertEquals("CATEGORIE", iterator.next()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		assertEquals("NATURE", iterator.next()); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		assertEquals("HAUTEUR", iterator.next()); //$NON-NLS-1$
-		assertFalse(iterator.hasNext());
+	@DisplayName("getAllAttributeNames")
+	@Nested
+	public class GetAllAttributeNames {
+
+		@DisplayName("testGetAllAttributeNames_1")
+		@Test
+		public void testGetAllAttributeNames_1() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			assertNotNull(names);
+		}
+
+		@DisplayName("testGetAllAttributeNames_2")
+		@Test
+		public void testGetAllAttributeNames_2() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			assertEquals(4, names.size());
+		}
+
+		@DisplayName("testGetAllAttributeNames_3")
+		@Test
+		public void testGetAllAttributeNames_3() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("testGetAllAttributeNames_4")
+		@Test
+		public void testGetAllAttributeNames_4() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			assertEquals("SOURCE", iterator.next()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAllAttributeNames_5")
+		@Test
+		public void testGetAllAttributeNames_5() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("testGetAllAttributeNames_6")
+		@Test
+		public void testGetAllAttributeNames_6() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			iterator.next();
+			assertEquals("CATEGORIE", iterator.next()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAllAttributeNames_7")
+		@Test
+		public void testGetAllAttributeNames_7() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("testGetAllAttributeNames_8")
+		@Test
+		public void testGetAllAttributeNames_8() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			iterator.next();
+			iterator.next();
+			assertEquals("NATURE", iterator.next()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAllAttributeNames_9")
+		@Test
+		public void testGetAllAttributeNames_9() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertTrue(iterator.hasNext());
+		}
+
+		@DisplayName("testGetAllAttributeNames_10")
+		@Test
+		public void testGetAllAttributeNames_10() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			iterator.next();
+			iterator.next();
+			iterator.next();
+			assertEquals("HAUTEUR", iterator.next()); //$NON-NLS-1$
+		}
+
+		@DisplayName("testGetAllAttributeNames_11")
+		@Test
+		public void testGetAllAttributeNames_11() {
+			Collection<String> names = accessor.getAllAttributeNames();
+			Iterator<String> iterator = names.iterator();
+			while (iterator.hasNext()) {
+				iterator.next();
+			}
+			assertFalse(iterator.hasNext());
+		}
 	}
 
-	@Test
-	public void testLoadValue() throws Exception {
-		AttributeValue value = this.accessor.loadValue("CATEGORIE"); //$NON-NLS-1$
-		assertNotNull(value);
-		assertEquals("Religieux", value.getValue()); //$NON-NLS-1$
-	}
+	@DisplayName("loadValue")
+	@Nested
+	public class LoadValue {
 
+		@DisplayName("testLoadValue_1")
+		@Test
+		public void testLoadValue_1() throws Exception {
+			AttributeValue value = accessor.loadValue("CATEGORIE"); //$NON-NLS-1$
+			assertNotNull(value);
+		}
+
+		@DisplayName("testLoadValue_2")
+		@Test
+		public void testLoadValue_2() throws Exception {
+			AttributeValue value = accessor.loadValue("CATEGORIE"); //$NON-NLS-1$
+			assertEquals("Religieux", value.getValue()); //$NON-NLS-1$
+		}
+	}
 }

@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.Attribute;
@@ -50,6 +51,7 @@ import org.arakhne.afc.vmutil.Resources;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("DBaseFileWriter")
 @SuppressWarnings("all")
 public class DBaseFileWriterTest extends AbstractTestCase {
 	
@@ -90,7 +92,6 @@ public class DBaseFileWriterTest extends AbstractTestCase {
 		return true;
 	}
 
-
 	@AfterEach
 	public void tearDown() throws Exception {
 		this.list.clear();
@@ -125,10 +126,15 @@ public class DBaseFileWriterTest extends AbstractTestCase {
 		}
 	}
 
+	@DisplayName("Validate input")
 	@Test
-	public void testWrite() throws Exception {
+	public void validateInput() throws Exception {
 		assertTestingInputStream(this.list);
+	}
 		
+	@DisplayName("write")
+	@Test
+	public void write() throws Exception {
 		File tmpFile = File.createTempFile("dbfwriter", ".dbf");  //$NON-NLS-1$//$NON-NLS-2$
 		tmpFile.deleteOnExit();
 		
@@ -164,7 +170,5 @@ public class DBaseFileWriterTest extends AbstractTestCase {
 			tmpFile.delete();
 		}
 	}
-
-
 
 }

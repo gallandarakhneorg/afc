@@ -29,10 +29,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.io.dbase.DBaseFileReader;
 import org.arakhne.afc.io.dbase.DBaseFileRecord;
@@ -40,6 +36,11 @@ import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.Resources;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author $Author: sgalland$
@@ -48,6 +49,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("DBaseFileAttributePool")
 @SuppressWarnings("all")
 public class DBaseFileAttributePoolTest extends AbstractTestCase {
 
@@ -86,11 +88,13 @@ public class DBaseFileAttributePoolTest extends AbstractTestCase {
 		this.resource = null;
 	}
 
+	@DisplayName("getResource")
 	@Test
 	public void testGetResource() {
 		assertEquals(this.resource, this.pool.getResource());
 	}
 
+	@DisplayName("getReader")
 	@Test
 	public void testGetReader() throws Exception {
 		DBaseFileReader reader = this.pool.getReader();
@@ -105,6 +109,7 @@ public class DBaseFileAttributePoolTest extends AbstractTestCase {
     	assertEquals(15., record.getFieldValue(3));
 	}
 
+	@DisplayName("getAllAttributeNames")
 	@Test
 	public void testGetAllAttributeNames() {
 		Collection<String> names = this.pool.getAllAttributeNames(2);
@@ -122,42 +127,61 @@ public class DBaseFileAttributePoolTest extends AbstractTestCase {
 		assertFalse(iterator.hasNext());
 	}
 
+	@DisplayName("getAttributeCount")
 	@Test
 	public void testGetAttributeCount() {
 		assertEquals(4, this.pool.getAttributeCount());
 	}
 
-	@Test
-	public void testGetRawValue() throws Exception {
-		OutputParameter<AttributeType> type = new OutputParameter<>();
-		Object value;
-		
-		value = this.pool.getRawValue(1, "NATURE", type); //$NON-NLS-1$
-		assertEquals(AttributeType.STRING, type.get());
-		assertEquals(BATIMENT_RELIGIEUX_VALUE, value);
+	@DisplayName("getRawValue")
+	@Nested
+	public class GetRawValue {
 
-		value = this.pool.getRawValue(8, "SOURCE", type); //$NON-NLS-1$
-		assertEquals(AttributeType.STRING, type.get());
-		assertEquals(BDTOPO_VALUE, value);
+		private OutputParameter<AttributeType> type;
+
+		@BeforeEach
+		public void setUp() {
+			type = new OutputParameter<>();
+		}
+
+		@DisplayName("#1")
+		@Test
+		public void testGetRawValue_1() throws Exception {
+			var value = pool.getRawValue(1, "NATURE", type); //$NON-NLS-1$
+			assertEquals(AttributeType.STRING, type.get());
+			assertEquals(BATIMENT_RELIGIEUX_VALUE, value);
+		}
+
+		@DisplayName("#2")
+		@Test
+		public void testGetRawValue_2() throws Exception {
+			var value = pool.getRawValue(8, "SOURCE", type); //$NON-NLS-1$
+			assertEquals(AttributeType.STRING, type.get());
+			assertEquals(BDTOPO_VALUE, value);
+		}
 	}
 
+	@DisplayName("getContainer")
 	@Test
 	public void testGetContainerURLInt() {
 		assertNotNull(DBaseFileAttributePool.getContainer(this.resource, 3));
 	}
 
+	@DisplayName("getProvider")
 	@Test
-	public void testGetContainerURIInt() throws Exception {
+	public void testGetProviderURIInt() throws Exception {
 		assertNotNull(DBaseFileAttributePool.getProvider(this.resource.toURI(), 3));
 	}
 
+	@DisplayName("getAttributeCount")
 	@Test
-	public void testGetProviderURLInt() {
+	public void testGetCollectionURLInt() {
 		assertNotNull(DBaseFileAttributePool.getCollection(this.resource, 3));
 	}
 
+	@DisplayName("getCollection")
 	@Test
-	public void testGetProviderURIInt() throws Exception {
+	public void testGetCollectionURIInt() throws Exception {
 		assertNotNull(DBaseFileAttributePool.getCollection(this.resource.toURI(), 3));
 	}
 
