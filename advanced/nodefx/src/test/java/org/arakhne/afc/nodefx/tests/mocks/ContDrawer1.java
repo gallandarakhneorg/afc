@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.nodefx.tests;
+package org.arakhne.afc.nodefx.tests.mocks;
 
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;

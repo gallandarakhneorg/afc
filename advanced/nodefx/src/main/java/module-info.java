@@ -37,6 +37,8 @@ open module org.arakhne.afc.advanced.nodefx {
 	requires org.arakhne.afc.core.mathgen;
 	requires transitive org.arakhne.afc.core.mathgeom2d;
 	requires transitive org.arakhne.afc.advanced.javafx;
+	requires org.eclipse.xtext.xbase.lib;
+	requires org.arakhne.afc.core.references;
 
 	exports org.arakhne.afc.nodefx;
 	exports org.arakhne.afc.nodefx.drawers;

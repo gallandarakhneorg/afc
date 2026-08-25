@@ -18,22 +18,22 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.nodefx.tests;
+package org.arakhne.afc.nodefx.tests.mocks;
 
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 @SuppressWarnings("all")
-public class MyDrawer1 implements Drawer<String> {
+public class MyDrawer2 implements Drawer<Number> {
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, String element) {
+	public void draw(ZoomableGraphicsContext gc, Number element) {
 		//
 	}
 
 	@Override
-	public Class<? extends String> getPrimitiveType() {
-		return String.class;
+	public Class<? extends Number> getPrimitiveType() {
+		return Integer.class;
 	}
 
 }

@@ -18,36 +18,22 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.nodefx.tests;
+package org.arakhne.afc.nodefx.tests.mocks;
 
-import java.util.Iterator;
-
-import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.util.InformedIterable;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 @SuppressWarnings("all")
-public class MyDoc implements InformedIterable<Number>, BoundedElement2afp<Rectangle2d> {
+public class MyDrawer3 implements Drawer<Number> {
 
-	private Rectangle2d bounds;
-
-	public MyDoc(Rectangle2d bounds) {
-		this.bounds = bounds;
+	@Override
+	public void draw(ZoomableGraphicsContext gc, Number element) {
+		//
 	}
 
 	@Override
-	public Iterator<Number> iterator() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Rectangle2d getBoundingBox() {
-		return this.bounds;
-	}
-
-	@Override
-	public Class<? extends Integer> getElementType() {
-		return Integer.class;
+	public Class<? extends Number> getPrimitiveType() {
+		return Double.class;
 	}
 
 }
