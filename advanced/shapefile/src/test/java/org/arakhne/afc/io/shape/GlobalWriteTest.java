@@ -36,7 +36,7 @@ import java.util.TreeMap;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
+import org.junit.jupiter.api.DisplayName;
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeType;
@@ -68,8 +68,9 @@ import org.arakhne.afc.vmutil.FileSystem;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("Global Write")
 @SuppressWarnings("all")
-public class GlobalWriteTest extends AbstractIoShapeTest {
+public class GlobalWriteTest extends AbstractIoShapeTestCase {
 
 	/**
 	 */
@@ -149,9 +150,6 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 		}
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	public void testShpShxDbfCreationByHand() throws Exception {
 		File shpFile = File.createTempFile(GlobalWriteTest.class.getSimpleName(), ".shp"); //$NON-NLS-1$
 		File shxFile = FileSystem.replaceExtension(shpFile, ".shx"); //$NON-NLS-1$
@@ -183,9 +181,6 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 		}
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	public void testShpShxDbfEmbeddedCreation() throws Exception {
 		File shpFile = File.createTempFile(GlobalWriteTest.class.getSimpleName(), ".shp"); //$NON-NLS-1$
 		File shxFile = FileSystem.replaceExtension(shpFile, ".shx"); //$NON-NLS-1$
@@ -240,7 +235,7 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 			return new Point3d(point.getX(), point.getY(), point.getZ());
 		}
 		
-	} // class Point3dImporter
+	}
 
 	/**
 	 * @author $Author: sgalland$
@@ -318,7 +313,7 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 			return 1;
 		}
 		
-	} // class Point3dExporter
+	}
 
 	/**
 	 * @author $Author: sgalland$
@@ -335,40 +330,25 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 		private final Attribute attr3 = new AttributeImpl(ATTR3, "hello world"); //$NON-NLS-1$
 		private final Attribute attr5;
 		
-		/**
-		 * @param index
-		 */
 		public TestingAttributeProvider(int index) {
 			this.attr5 = new AttributeImpl(ATTR5, index);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void freeMemory() {
 			//
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public Collection<String> getAllAttributeNames() {
 			return Arrays.asList(ATTR1, ATTR2, ATTR3, ATTR5);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public Collection<Attribute> getAllAttributes() {
 			return Arrays.asList(this.attr1, this.attr2, this.attr3, this.attr5);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
 			Map<AttributeType, Collection<Attribute>> theMap = new TreeMap<>();
@@ -379,9 +359,6 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 			return theMap;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public AttributeValue getAttribute(String name) {
 			if (ATTR1.equals(name)) return this.attr1;
@@ -391,9 +368,6 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 			return null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public AttributeValue getAttribute(String name, AttributeValue defaultValue) {
 			if (ATTR1.equals(name)) return this.attr1;
@@ -403,17 +377,11 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 			return defaultValue;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public int getAttributeCount() {
 			return 5;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public Attribute getAttributeObject(String name) {
 			if (ATTR1.equals(name)) return this.attr1;
@@ -423,9 +391,6 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 			return null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean hasAttribute(String name) {
 			if (ATTR1.equals(name)) return true;
@@ -440,5 +405,5 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 			throw new UnsupportedOperationException();
 		}
 		
-	} // class TestingAttributeProvider
+	}
 }

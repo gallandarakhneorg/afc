@@ -29,6 +29,8 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeProvider;
@@ -45,45 +47,85 @@ import org.arakhne.afc.io.shape.ShapeMultiPatchType;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("AbstractShapeFileWriter")
 @SuppressWarnings("all")
-public class AbstractShapeFileWriterTest extends AbstractIoShapeTest {
+public class AbstractShapeFileWriterTest extends AbstractIoShapeTestCase {
 
 	private File outputFile;
 	private AbstractShapeFileWriterStub writer;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.outputFile = File.createTempFile("unittest", ".shx"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.outputFile.deleteOnExit();
-		this.writer = new AbstractShapeFileWriterStub(this.outputFile, ShapeElementType.POLYLINE);
+		outputFile = File.createTempFile("unittest", ".shx"); //$NON-NLS-1$ //$NON-NLS-2$
+		outputFile.deleteOnExit();
+		writer = new AbstractShapeFileWriterStub(outputFile, ShapeElementType.POLYLINE);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.outputFile.delete();
-		this.writer.close();
-		this.outputFile = null;
-		this.writer = null;
+		outputFile.delete();
+		writer.close();
+		outputFile = null;
+		writer = null;
 	}
 
-	@Test
-	public void testGetElementType() {
-		assertEquals(ShapeElementType.POLYLINE, this.writer.getElementType());
+	@DisplayName("getElementType")
+	@Nested
+	public class GetElementType {
+
+		@Test
+		public void testGetElementType() {
+			assertEquals(ShapeElementType.POLYLINE, writer.getElementType());
+		}
 	}
 
-	@Test
-	public void testWriteE() throws Exception {
-		this.writer.write(1);
-		assertEquals(1, this.writer.lastWritten);
+	@DisplayName("write")
+	@Nested
+	public class Write {
 
-		this.writer.write(1024);
-		assertEquals(1024, this.writer.lastWritten);
-	}
+		@DisplayName("(int)")
+		@Nested
+		public class WithInt {
 
-	@Test
-	public void testWriteCollection() throws Exception {
-		this.writer.write(Arrays.asList(1, 2, 3, 4));
-		assertEquals(4, this.writer.lastWritten);
+			@BeforeEach
+			public void setUp() {
+				// No local variables to move for this test group.
+				// Kept to follow the requested pattern.
+			}
+
+			@DisplayName("write 1")
+			@Test
+			public void testWriteE_write1() throws Exception {
+				writer.write(1);
+				assertEquals(1, writer.lastWritten);
+			}
+
+			@DisplayName("write 1024")
+			@Test
+			public void testWriteE_write1024() throws Exception {
+				writer.write(1024);
+				assertEquals(1024, writer.lastWritten);
+			}
+		}
+
+		@DisplayName("(Collection)")
+		@Nested
+		public class WithCollection {
+
+			private Collection<Integer> values;
+
+			@BeforeEach
+			public void setUp() {
+				values = Arrays.asList(1, 2, 3, 4);
+			}
+
+			@DisplayName("write [1,2,3,4]")
+			@Test
+			public void testWriteCollection_writeValues() throws Exception {
+				writer.write(values);
+				assertEquals(4, writer.lastWritten);
+			}
+		}
 	}
 
 	/**
@@ -107,9 +149,6 @@ public class AbstractShapeFileWriterTest extends AbstractIoShapeTest {
 			super(file, type, null, null);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected ESRIBounds getFileBounds() {
 			return new ESRIBounds(
@@ -119,51 +158,33 @@ public class AbstractShapeFileWriterTest extends AbstractIoShapeTest {
 					0., 0.);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected void writeElement(int recIndex, Integer element, ShapeElementType type) throws IOException {
 			assertEquals(ShapeElementType.POLYLINE, type);
-			this.lastWritten = element.intValue();
+			lastWritten = element.intValue();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected AttributeProvider getAttributeProvider(Integer element)
 				throws IOException {
 			return null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected AttributeProvider[] getAttributeProviders(Collection<? extends Integer> elements) throws IOException {
 			return null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected int getGroupCountFor(Integer element) throws IOException {
 			return 1;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected ShapeMultiPatchType getGroupTypeFor(Integer element, int groupIndex) throws IOException {
 			return null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected ESRIPoint getPointAt(Integer element, int groupIndex,
 				int pointIndex, boolean expectM, boolean expectZ)
@@ -171,9 +192,6 @@ public class AbstractShapeFileWriterTest extends AbstractIoShapeTest {
 			return new ESRIPoint();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected int getPointCountFor(Integer element, int groupIndex)
 				throws IOException {

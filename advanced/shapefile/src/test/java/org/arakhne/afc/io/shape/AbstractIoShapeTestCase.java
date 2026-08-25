@@ -35,7 +35,7 @@ import org.arakhne.afc.testtools.AbstractTestCase;
  * @since 14.0
  */
 @SuppressWarnings("all")
-public class AbstractIoShapeTest extends AbstractTestCase {
+public abstract class AbstractIoShapeTestCase extends AbstractTestCase {
 
 	protected Point2d randomPoint2D() {
 		return new Point2d(getRandom().nextDouble() * 100, getRandom().nextDouble() * 100);

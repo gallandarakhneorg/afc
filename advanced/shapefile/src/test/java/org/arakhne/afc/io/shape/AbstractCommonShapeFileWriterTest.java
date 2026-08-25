@@ -25,15 +25,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import org.arakhne.afc.io.shape.AbstractCommonShapeFileWriter;
-import org.arakhne.afc.io.shape.ESRIBounds;
-import org.arakhne.afc.io.shape.ShapeElementType;
-import org.arakhne.afc.io.shape.ShapeFileIndexFilter;
 
 /**
  * @author $Author: sgalland$
@@ -42,45 +40,84 @@ import org.arakhne.afc.io.shape.ShapeFileIndexFilter;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("AbstractCommonShapeFileWriter")
 @SuppressWarnings("all")
-public class AbstractCommonShapeFileWriterTest extends AbstractIoShapeTest {
+public class AbstractCommonShapeFileWriterTest extends AbstractIoShapeTestCase {
 
 	private AbstractCommonShapeFileWriterStub writer;
 	private File outputFile;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.outputFile = File.createTempFile("test", "."+ShapeFileIndexFilter.EXTENSION_SHX);  //$NON-NLS-1$//$NON-NLS-2$
-		this.outputFile.deleteOnExit();
-		this.writer = new AbstractCommonShapeFileWriterStub(this.outputFile, ShapeElementType.POLYGON);
+		outputFile = File.createTempFile("test", "."+ShapeFileIndexFilter.EXTENSION_SHX);  //$NON-NLS-1$//$NON-NLS-2$
+		outputFile.deleteOnExit();
+		writer = new AbstractCommonShapeFileWriterStub(outputFile, ShapeElementType.POLYGON);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.writer.close();
-		this.writer = null;
-		this.outputFile.delete();
-		this.outputFile = null;
+		writer.close();
+		writer = null;
+		outputFile.delete();
+		outputFile = null;
 	}
 
-	@Test
-	public void testGetElementType() {
-		assertEquals(ShapeElementType.POLYGON, this.writer.getElementType());
+	@DisplayName("getElementType")
+	@Nested
+	public class GetElementType {
+
+		@Test
+		public void testGetElementType() {
+			assertEquals(ShapeElementType.POLYGON, writer.getElementType());
+		}
 	}
 
-	@Test
-	public void testWriteE() throws Exception {
-		this.writer.write(1);
-		assertEquals(1, this.writer.lastWritten);
+	@DisplayName("write")
+	@Nested
+	public class Write {
 
-		this.writer.write(1024);
-		assertEquals(1024, this.writer.lastWritten);
-	}
+		@DisplayName("(int)")
+		@Nested
+		public class WithInt {
 
-	@Test
-	public void testWriteCollection() throws Exception {
-		this.writer.write(Arrays.asList(1, 2, 3, 4));
-		assertEquals(4, this.writer.lastWritten);
+			@BeforeEach
+			public void setUp() {
+				// No local variables to lift for this group.
+			}
+
+			@DisplayName("write(1)")
+			@Test
+			public void testWriteE_write1() throws Exception {
+				writer.write(1);
+				assertEquals(1, writer.lastWritten);
+			}
+
+			@DisplayName("write(1024)")
+			@Test
+			public void testWriteE_write1024() throws Exception {
+				writer.write(1024);
+				assertEquals(1024, writer.lastWritten);
+			}
+		}
+
+		@DisplayName("(Collection)")
+		@Nested
+		public class WithCollection {
+
+			private Collection<Integer> values;
+
+			@BeforeEach
+			public void setUp() {
+				values = Arrays.asList(1, 2, 3, 4);
+			}
+
+			@DisplayName("write(Arrays.asList(1, 2, 3, 4))")
+			@Test
+			public void testWriteCollection_writeList() throws Exception {
+				writer.write(values);
+				assertEquals(4, writer.lastWritten);
+			}
+		}
 	}
 
 	/**
@@ -104,9 +141,6 @@ public class AbstractCommonShapeFileWriterTest extends AbstractIoShapeTest {
 			super(file, type);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected ESRIBounds getFileBounds() {
 			return new ESRIBounds(
@@ -116,13 +150,10 @@ public class AbstractCommonShapeFileWriterTest extends AbstractIoShapeTest {
 					0., 0.);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected void writeElement(int recIndex, Integer element, ShapeElementType type) throws IOException {
 			assertEquals(ShapeElementType.POLYGON, type);
-			this.lastWritten = element.intValue();
+			lastWritten = element.intValue();
 		}
 		
 	}

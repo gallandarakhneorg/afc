@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.io.shape;
 
+import org.arakhne.afc.vmutil.annotations.XtextOperator;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -123,6 +125,21 @@ public class ShapeFileIndexRecord implements Comparable<ShapeFileIndexRecord> {
 			return cmp;
 		}
 		return this.length - record.length;
+	}
+
+	/** Compare this record to the given one. The sign of the result corresponds to the order description: negative if this record
+	 * is strictly lower than the argument; zero if the two records aer equal; positive if this record is strictly greater than
+	 * the argument.
+	 *
+	 * @param record the record to compare to.
+	 * @return negative if lower than; zero if equal; positive if greater than.
+	 * @since 18.0
+	 */
+	@Pure
+	@Inline(" compareTo($1)")
+	@XtextOperator
+	public int operator_spaceship(ShapeFileIndexRecord record) {
+		return compareTo(record);
 	}
 
 	@Override

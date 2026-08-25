@@ -31,6 +31,8 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
@@ -53,8 +55,9 @@ import org.arakhne.afc.math.geometry.d3.d.Point3d;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("ShapeFileWriter")
 @SuppressWarnings("all")
-public class ShapeFileWriterTest extends AbstractIoShapeTest {
+public class ShapeFileWriterTest extends AbstractIoShapeTestCase {
 
 	private File outputFile;
 	private ShapeFileWriter<Point3d> writer;
@@ -64,7 +67,7 @@ public class ShapeFileWriterTest extends AbstractIoShapeTest {
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.points = randomPoints3D();
+		points = randomPoints3D();
 		
 		double x = Double.POSITIVE_INFINITY;
 		double X = Double.NEGATIVE_INFINITY;
@@ -73,7 +76,7 @@ public class ShapeFileWriterTest extends AbstractIoShapeTest {
 		double z = Double.POSITIVE_INFINITY;
 		double Z = Double.NEGATIVE_INFINITY;
 		
-		for(Point3d p : this.points) {
+		for(Point3d p : points) {
 			if (p.getX()<x) x = p.getX();
 			if (p.getX()>X) X = p.getX();
 			if (p.getY()<y) y = p.getY();
@@ -82,92 +85,149 @@ public class ShapeFileWriterTest extends AbstractIoShapeTest {
 			if (p.getZ()>Z) Z = p.getZ();
 		}
 		
-		this.bounds = new ESRIBounds(x,X,y,Y,z,Z,
+		bounds = new ESRIBounds(x,X,y,Y,z,Z,
 				-getRandom().nextDouble() * 1000.,
 				getRandom().nextDouble() * 1000.);
 		
-		this.outputFile = File.createTempFile("unittest", ".shp"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.outputFile.deleteOnExit();
+		outputFile = File.createTempFile("unittest", ".shp"); //$NON-NLS-1$ //$NON-NLS-2$
+		outputFile.deleteOnExit();
 		
-		this.writer = new ShapeFileWriter<>(
-				this.outputFile, 
+		writer = new ShapeFileWriter<>(
+				outputFile, 
 				ShapeElementType.POINT, 
-				new ElementExporterStub(this.bounds));
+				new ElementExporterStub(bounds));
 		
-		this.fileSize = ESRIFileUtil.HEADER_BYTES + this.points.length * (8+20);
+		fileSize = ESRIFileUtil.HEADER_BYTES + points.length * (8+20);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.outputFile.delete();
-		this.writer.close();
-		this.outputFile = null;
-		this.writer = null;
-		this.bounds = null;
-		this.points = null;
+		outputFile.delete();
+		writer.close();
+		outputFile = null;
+		writer = null;
+		bounds = null;
+		points = null;
 	}
 
 	private void assertContent() throws Exception {
 		ShapeFileReader<Point3d> reader = new ShapeFileReader<>(
-				this.outputFile,
+				outputFile,
 				new ElementFactoryStub());
 		
 		ESRIBounds b = reader.getBoundsFromHeader();
 		assertNotNull(b);
-		assertEpsilonEquals(this.bounds.getMinX(), b.getMinX());
-		assertEpsilonEquals(this.bounds.getMaxX(), b.getMaxX());
-		assertEpsilonEquals(this.bounds.getMinY(), b.getMinY());
-		assertEpsilonEquals(this.bounds.getMaxY(), b.getMaxY());
-		assertEpsilonEquals(this.bounds.getMinZ(), b.getMinZ());
-		assertEpsilonEquals(this.bounds.getMaxZ(), b.getMaxZ());
-		assertEpsilonEquals(this.bounds.getMinM(), b.getMinM());
-		assertEpsilonEquals(this.bounds.getMaxM(), b.getMaxM());
+		assertEpsilonEquals(bounds.getMinX(), b.getMinX());
+		assertEpsilonEquals(bounds.getMaxX(), b.getMaxX());
+		assertEpsilonEquals(bounds.getMinY(), b.getMinY());
+		assertEpsilonEquals(bounds.getMaxY(), b.getMaxY());
+		assertEpsilonEquals(bounds.getMinZ(), b.getMinZ());
+		assertEpsilonEquals(bounds.getMaxZ(), b.getMaxZ());
+		assertEpsilonEquals(bounds.getMinM(), b.getMinM());
+		assertEpsilonEquals(bounds.getMaxM(), b.getMaxM());
 		
 		assertEquals(ShapeElementType.POINT, reader.getShapeElementType());
 		
-		assertEquals(this.fileSize, reader.getFileSize());
+		assertEquals(fileSize, reader.getFileSize());
 		
 		Point3d pts;
-		for(int i=0; i<this.points.length; ++i) {
+		for(int i=0; i<points.length; ++i) {
 			pts = reader.read();
 			assertNotNull(pts);
-			assertEpsilonEquals(this.points[i].getX(), pts.getX());
-			assertEpsilonEquals(this.points[i].getY(), pts.getY());
+			assertEpsilonEquals(points[i].getX(), pts.getX());
+			assertEpsilonEquals(points[i].getY(), pts.getY());
 			assertEpsilonEquals(0., pts.getZ());
 		}
 		assertNull(reader.read());
 		reader.close();
 	}
 
-	@Test
-	public void testGetFileBounds() {
-		ESRIBounds b = this.writer.getFileBounds();
-		
-		assertEpsilonEquals(this.bounds.getMinX(), b.getMinX());
-		assertEpsilonEquals(this.bounds.getMaxX(), b.getMaxX());
-		assertEpsilonEquals(this.bounds.getMinY(), b.getMinY());
-		assertEpsilonEquals(this.bounds.getMaxY(), b.getMaxY());
-		assertEpsilonEquals(this.bounds.getMinZ(), b.getMinZ());
-		assertEpsilonEquals(this.bounds.getMaxZ(), b.getMaxZ());
-		assertEpsilonEquals(this.bounds.getMinM(), b.getMinM());
-		assertEpsilonEquals(this.bounds.getMaxM(), b.getMaxM());
-	}
+	@DisplayName("getFileBounds")
+	@Nested
+	public class GetFileBounds {
 
-	@Test
-	public void testWriteE() throws Exception {
-		for(int i=0; i<this.points.length; ++i) {
-			this.writer.write(this.points[i]);
+		private ESRIBounds b;
+
+		@BeforeEach
+		public void setUp() {
+			b = writer.getFileBounds();
 		}
-		this.writer.close();
-		assertContent();
+
+		@DisplayName("getMinX")
+		@Test
+		public void testGetFileBounds_getMinX() {
+			assertEpsilonEquals(bounds.getMinX(), b.getMinX());
+		}
+
+		@DisplayName("getMaxX")
+		@Test
+		public void testGetFileBounds_getMaxX() {
+			assertEpsilonEquals(bounds.getMaxX(), b.getMaxX());
+		}
+
+		@DisplayName("getMinY")
+		@Test
+		public void testGetFileBounds_getMinY() {
+			assertEpsilonEquals(bounds.getMinY(), b.getMinY());
+		}
+
+		@DisplayName("getMaxY")
+		@Test
+		public void testGetFileBounds_getMaxY() {
+			assertEpsilonEquals(bounds.getMaxY(), b.getMaxY());
+		}
+
+		@DisplayName("getMinZ")
+		@Test
+		public void testGetFileBounds_getMinZ() {
+			assertEpsilonEquals(bounds.getMinZ(), b.getMinZ());
+		}
+
+		@DisplayName("getMaxZ")
+		@Test
+		public void testGetFileBounds_getMaxZ() {
+			assertEpsilonEquals(bounds.getMaxZ(), b.getMaxZ());
+		}
+
+		@DisplayName("getMinM")
+		@Test
+		public void testGetFileBounds_getMinM() {
+			assertEpsilonEquals(bounds.getMinM(), b.getMinM());
+		}
+
+		@DisplayName("getMaxM")
+		@Test
+		public void testGetFileBounds_getMaxM() {
+			assertEpsilonEquals(bounds.getMaxM(), b.getMaxM());
+		}
 	}
 
-	@Test
-	public void testWriteCollectionOfQextendsE() throws Exception {
-		this.writer.write(Arrays.asList(this.points));
-		this.writer.close();
-		assertContent();
+	@DisplayName("write")
+	@Nested
+	public class Write {
+
+		@DisplayName("(Point)")
+		@Nested
+		public class FromPoint {
+			@Test
+			public void testWriteE() throws Exception {
+				for(int i=0; i<points.length; ++i) {
+					writer.write(points[i]);
+				}
+				writer.close();
+				assertContent();
+			}
+		}
+
+		@DisplayName("(Collection)")
+		@Test
+		public void testWriteCollectionOfQextendsE() throws Exception {
+			writer.write(Arrays.asList(points));
+			writer.close();
+			assertContent();
+		}
 	}
+
 
 	/**
 	 * @author $Author: sgalland$
@@ -183,7 +243,7 @@ public class ShapeFileWriterTest extends AbstractIoShapeTest {
 		 * @param b
 		 */
 		public ElementExporterStub(ESRIBounds b) {
-			this.bounds = new ESRIBounds(b);
+			bounds = new ESRIBounds(b);
 		}
 
 		/**
@@ -207,7 +267,7 @@ public class ShapeFileWriterTest extends AbstractIoShapeTest {
 		 */
 		@Override
 		public ESRIBounds getFileBounds() {
-			return this.bounds;
+			return bounds;
 		}
 
 		/**

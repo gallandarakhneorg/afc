@@ -21,6 +21,10 @@
 package org.arakhne.afc.io.shape;
 
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.arakhne.afc.vmutil.annotations.GroovyOperator;
+import org.arakhne.afc.vmutil.annotations.ScalaOperator;
+import org.arakhne.afc.vmutil.annotations.XtextOperator;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -153,6 +157,7 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 	 * @param bounds the bounds to make the union from.
 	 * @return the union of this bounds and the given one.
 	 */
+	@Pure
 	public ESRIBounds createUnion(ESRIBounds bounds) {
 		final var eb = new ESRIBounds();
 		eb.minx = (bounds.minx < this.minx) ? bounds.minx : this.minx;
@@ -164,6 +169,50 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 		eb.minm = (bounds.minm < this.minm) ? bounds.minm : this.minm;
 		eb.maxm = (bounds.maxm < this.maxm) ? this.maxm : bounds.maxm;
 		return eb;
+	}
+
+	/** Create and replies an union of this bounds and the given bounds.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param bounds the bounds to make the union from.
+	 * @return the union of this bounds and the given one.
+	 */
+	@Pure
+	@Inline("createUnion($1)")
+	@XtextOperator
+	public ESRIBounds operator_plus(ESRIBounds bounds) {
+		return createUnion(bounds);
+	}
+
+	/** Create and replies an union of this bounds and the given bounds.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the <a href="http://scala-lang.org/">Scala Language</a>.
+	 *
+	 * @param bounds the bounds to make the union from.
+	 * @return the union of this bounds and the given one.
+	 */
+	@Pure
+	@ScalaOperator
+	public ESRIBounds $plus(ESRIBounds bounds) {
+		return createUnion(bounds);
+	}
+
+	/** Create and replies an union of this bounds and the given bounds.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on <a href="http://groovy-lang.org/">Groovy</a>.
+	 *
+	 * @param bounds the bounds to make the union from.
+	 * @return the union of this bounds and the given one.
+	 */
+	@Pure
+	@GroovyOperator
+	public ESRIBounds plus(ESRIBounds bounds) {
+		return createUnion(bounds);
 	}
 
 	/** Add a point to this bounds.
@@ -195,6 +244,22 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 		if (point.getM() > this.maxm) {
 			this.maxm = point.getM();
 		}
+	}
+
+	/** Add a point to this bounds.
+	 *
+	 * <p>This function is an implementation of the operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param point the point to add.
+	 * @since 18.0
+	 */
+	@Pure
+	@Inline("add($1)")
+	@XtextOperator
+	public void operator_add(ESRIPoint point) {
+		add(point);
 	}
 
 	@Override
@@ -256,6 +321,20 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 			return cmp;
 		}
 		return (int) Math.signum(bounds.maxm - this.maxm);
+	}
+
+	/** Compare this ESRI bounds to the given one. The sign of the result corresponds to the order description: negative if this ERSI Bounds
+	 * is strictly lower than the argument; zero if the two records aer equal; positive if this record is strictly greater than
+	 * the argument.
+	 *
+	 * @param bounds the bounds to compare to.
+	 * @return negative if lower than; zero if equal; positive if greater than.
+	 * @since 18.0
+	 */
+	@Pure
+	@Inline(" compareTo($1)")
+	public int operator_spaceship(ESRIBounds bounds) {
+		return compareTo(bounds);
 	}
 
 	/** Replies the min x.

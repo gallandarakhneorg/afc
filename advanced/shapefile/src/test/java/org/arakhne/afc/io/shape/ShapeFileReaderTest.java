@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.io.shape;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,6 +32,8 @@ import java.net.URL;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
@@ -49,8 +51,9 @@ import org.arakhne.afc.vmutil.Resources;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("ShapeFileReader")
 @SuppressWarnings("all")
-public class ShapeFileReaderTest extends AbstractIoShapeTest {
+public class ShapeFileReaderTest extends AbstractIoShapeTestCase {
 
 	private static final String SHP_TEST_FILE = "org/arakhne/afc/io/shape/test.shp"; //$NON-NLS-1$
 	private static final String SHX_TEST_FILE = "org/arakhne/afc/io/shape/test.shx"; //$NON-NLS-1$
@@ -81,82 +84,121 @@ public class ShapeFileReaderTest extends AbstractIoShapeTest {
 		return new ShapeFileReader<>(this.shpResource, null, shxReader, new NullFactory());
 	}
 
-	@Test
-	public void testGetShapeElementType_noshx() throws Exception {
-		ShapeFileReader<Integer> reader = createNoShx();
-		assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
-	}
+	@DisplayName("getShapeElementType")
+	@Nested
+	public class getShapeElementType {
 
-	@Test
-	public void testGetShapeElementType_shx() throws Exception {
-		ShapeFileReader<Integer> reader = createShx();
-		assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
-	}
-
-	@Test
-	public void testIsSeekEnabled_noshx() throws Exception {
-		ShapeFileReader<Integer> reader = createNoShx();
-		assertFalse(reader.isSeekEnabled());
-		reader.disableSeek();
-		assertFalse(reader.isSeekEnabled());
-	}
-
-	@Test
-	public void testIsSeekEnabled_shx() throws Exception {
-		ShapeFileReader<Integer> reader = createShx();
-		assertTrue(reader.isSeekEnabled());
-		reader.disableSeek();
-		assertFalse(reader.isSeekEnabled());
-	}
-
-	@Test
-	public void testSeek_noshx() throws Exception {
-		ShapeFileReader<Integer> reader = createNoShx();
-		
-		try {
-			reader.seek(0);
-			fail("IOException was expected"); //$NON-NLS-1$
-		}
-		catch(IOException exception) {
-			// Expected exception
+		@DisplayName("Without SHX")
+		@Test
+		public void testGetShapeElementType_noshx() throws Exception {
+			ShapeFileReader<Integer> reader = createNoShx();
+			assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
 		}
 
-		try {
-			reader.seek(18);
-			fail("IOException was expected"); //$NON-NLS-1$
-		}
-		catch(IOException exception) {
-			// Expected exception
-		}
-
-		try {
-			reader.seek(9);
-			fail("IOException was expected"); //$NON-NLS-1$
-		}
-		catch(IOException exception) {
-			// Expected exception
+		@DisplayName("With SHX")
+		@Test
+		public void testGetShapeElementType_shx() throws Exception {
+			ShapeFileReader<Integer> reader = createShx();
+			assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
 		}
 	}
 
-	@Test
-	public void testSeek_shx() throws Exception {
-		ShapeFileReader<Integer> reader = createShx();
-		
-		reader.seek(0);
-		assertEquals(Integer.valueOf(5), reader.read());
+	@DisplayName("isSeekEnabled")
+	@Nested
+	public class IsSeekEnabled {
 
-		reader.seek(1);
-		assertEquals(Integer.valueOf(8), reader.read());
+		private ShapeFileReader<Integer> readerWithoutShx;
+		private ShapeFileReader<Integer> readerWithShx;
 
-		reader.seek(2);
-		assertEquals(Integer.valueOf(5), reader.read());
-
-		try {
-			reader.seek(1000);
-			fail("EOFException was expected"); //$NON-NLS-1$
+		@BeforeEach
+		public void setUp() throws Exception {
+			readerWithoutShx = createNoShx();
+			readerWithShx = createShx();
 		}
-		catch(EOFException exception) {
-			//Expected exception
+
+		@DisplayName("Without SHX - initial state")
+		@Test
+		public void testIsSeekEnabled_noshx_initialState() throws Exception {
+			assertFalse(readerWithoutShx.isSeekEnabled());
+		}
+
+		@DisplayName("Without SHX - after disableSeek")
+		@Test
+		public void testIsSeekEnabled_noshx_afterDisableSeek() throws Exception {
+			readerWithoutShx.disableSeek();
+			assertFalse(readerWithoutShx.isSeekEnabled());
+		}
+
+		@DisplayName("With SHX - initial state")
+		@Test
+		public void testIsSeekEnabled_shx_initialState() throws Exception {
+			assertTrue(readerWithShx.isSeekEnabled());
+		}
+
+		@DisplayName("With SHX - after disableSeek")
+		@Test
+		public void testIsSeekEnabled_shx_afterDisableSeek() throws Exception {
+			readerWithShx.disableSeek();
+			assertFalse(readerWithShx.isSeekEnabled());
+		}
+	}
+
+	@DisplayName("seek")
+	@Nested
+	public class Seek {
+
+		private ShapeFileReader<Integer> readerWithoutShx;
+		private ShapeFileReader<Integer> readerWithShx;
+
+		@BeforeEach
+		public void setUp() throws Exception {
+			readerWithoutShx = createNoShx();
+			readerWithShx = createShx();
+		}
+
+		@DisplayName("Without SHX - seek(0)")
+		@Test
+		public void testSeek_noshx_seek0() throws Exception {
+			assertThrows(IOException.class, () -> readerWithoutShx.seek(0));
+		}
+
+		@DisplayName("Without SHX - seek(18)")
+		@Test
+		public void testSeek_noshx_seek18() throws Exception {
+			assertThrows(IOException.class, () -> readerWithoutShx.seek(18));
+		}
+
+		@DisplayName("Without SHX - seek(9)")
+		@Test
+		public void testSeek_noshx_seek9() throws Exception {
+			assertThrows(IOException.class, () -> readerWithoutShx.seek(9));
+		}
+
+		@DisplayName("With SHX - seek(0) then read")
+		@Test
+		public void testSeek_shx_seek0_read() throws Exception {
+			readerWithShx.seek(0);
+			assertEquals(Integer.valueOf(5), readerWithShx.read());
+		}
+
+		@DisplayName("With SHX - seek(1) then read")
+		@Test
+		public void testSeek_shx_seek1_read() throws Exception {
+			readerWithShx.seek(1);
+			assertEquals(Integer.valueOf(8), readerWithShx.read());
+		}
+
+		@DisplayName("With SHX - seek(2) then read")
+		@Test
+		public void testSeek_shx_seek2_read() throws Exception {
+			readerWithShx.seek(2);
+			assertEquals(Integer.valueOf(5), readerWithShx.read());
+		}
+
+		@DisplayName("With SHX - seek(1000)")
+		@Test
+		public void testSeek_shx_seek1000() throws Exception {
+			assertThrows(EOFException.class, () -> readerWithShx.seek(1000));
 		}
 	}
 

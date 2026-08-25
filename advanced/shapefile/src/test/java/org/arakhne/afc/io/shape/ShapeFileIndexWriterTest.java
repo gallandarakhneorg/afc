@@ -30,6 +30,8 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.io.shape.ESRIBounds;
@@ -46,8 +48,9 @@ import org.arakhne.afc.io.shape.ShapeFileIndexWriter;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("ShapeFileIndexWriter")
 @SuppressWarnings("all")
-public class ShapeFileIndexWriterTest extends AbstractIoShapeTest {
+public class ShapeFileIndexWriterTest extends AbstractIoShapeTestCase {
 
 	private ShapeFileIndexRecord[] records;
 	private ESRIBounds bounds;
@@ -57,93 +60,117 @@ public class ShapeFileIndexWriterTest extends AbstractIoShapeTest {
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.records = new ShapeFileIndexRecord[10];
+		records = new ShapeFileIndexRecord[10];
 		int offset = ESRIFileUtil.HEADER_BYTES;
-		for(int i=0; i<this.records.length; ++i) {
+		for(int i=0; i<records.length; ++i) {
 			int length = getRandom().nextInt(255)+9;
 			// ensure even length
 			length = (length/2) * 2;
-			this.records[i] = new ShapeFileIndexRecord(offset, length, false, i);
+			records[i] = new ShapeFileIndexRecord(offset, length, false, i);
 			offset += length;
 		}
-		this.fileSize = ESRIFileUtil.HEADER_BYTES + this.records.length * 8;
-		this.outputFile = File.createTempFile("unittest", ".shx");  //$NON-NLS-1$//$NON-NLS-2$
-		this.outputFile.deleteOnExit();
-		this.bounds = new ESRIBounds(
+		fileSize = ESRIFileUtil.HEADER_BYTES + records.length * 8;
+		outputFile = File.createTempFile("unittest", ".shx");  //$NON-NLS-1$//$NON-NLS-2$
+		outputFile.deleteOnExit();
+		bounds = new ESRIBounds(
 				933441.7999726594, 942959.9281735239,
 				-2309936.5466717673, -2292935.499999934,
 				123., 3456.,
 				-2445., 45567.);
-		this.writer = new ShapeFileIndexWriter(this.outputFile, ShapeElementType.POLYGON, this.bounds);
+		writer = new ShapeFileIndexWriter(outputFile, ShapeElementType.POLYGON, bounds);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.writer.close();
-		this.outputFile.delete();
-		this.records = null;
-		this.outputFile = null;
-		this.bounds = null;
-		this.writer = null;
+		writer.close();
+		outputFile.delete();
+		records = null;
+		outputFile = null;
+		bounds = null;
+		writer = null;
 	}
 
 	private void assertContent() throws Exception {
-		ShapeFileIndexReader reader = new ShapeFileIndexReader(this.outputFile);
+		ShapeFileIndexReader reader = new ShapeFileIndexReader(outputFile);
 		
 		ESRIBounds b = reader.getBoundsFromHeader();
 		assertNotNull(b);
-		assertEpsilonEquals(this.bounds.getMinX(), b.getMinX());
-		assertEpsilonEquals(this.bounds.getMaxX(), b.getMaxX());
-		assertEpsilonEquals(this.bounds.getMinY(), b.getMinY());
-		assertEpsilonEquals(this.bounds.getMaxY(), b.getMaxY());
-		assertEpsilonEquals(this.bounds.getMinZ(), b.getMinZ());
-		assertEpsilonEquals(this.bounds.getMaxZ(), b.getMaxZ());
-		assertEpsilonEquals(this.bounds.getMinM(), b.getMinM());
-		assertEpsilonEquals(this.bounds.getMaxM(), b.getMaxM());
+		assertEpsilonEquals(bounds.getMinX(), b.getMinX());
+		assertEpsilonEquals(bounds.getMaxX(), b.getMaxX());
+		assertEpsilonEquals(bounds.getMinY(), b.getMinY());
+		assertEpsilonEquals(bounds.getMaxY(), b.getMaxY());
+		assertEpsilonEquals(bounds.getMinZ(), b.getMinZ());
+		assertEpsilonEquals(bounds.getMaxZ(), b.getMaxZ());
+		assertEpsilonEquals(bounds.getMinM(), b.getMinM());
+		assertEpsilonEquals(bounds.getMaxM(), b.getMaxM());
 		
 		assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
 		
-		assertEquals(this.fileSize, reader.getFileSize());
+		assertEquals(fileSize, reader.getFileSize());
 		
 		ShapeFileIndexRecord record;
-		for(int i=0; i<this.records.length; ++i) {
+		for(int i=0; i<records.length; ++i) {
 			record = reader.read();
 			assertNotNull(record);
-			assertEquals(this.records[i].getOffsetInFile(), record.getOffsetInFile());
-			assertEquals(this.records[i].getRecordContentLength(), record.getRecordContentLength());
+			assertEquals(records[i].getOffsetInFile(), record.getOffsetInFile());
+			assertEquals(records[i].getRecordContentLength(), record.getRecordContentLength());
 		}
 		assertNull(reader.read());
 		reader.close();
 	}
 	
-	@Test
-	public void testGetFileBounds() {
-		assertSame(this.bounds, this.writer.getFileBounds());
-	}
-
-	@Test
-	public void testWriteCollection() throws Exception {
-		this.writer.write(Arrays.asList(this.records));
-		this.writer.close();
-		assertContent();
-	}
-
-	@Test
-	public void testWriteShapeFileRecord() throws Exception {
-		for(int i=0; i<this.records.length; ++i) {
-			this.writer.write(this.records[i]);
+	@DisplayName("getFileBounds")
+	@Nested
+	public class GetFileBounds {
+		@Test
+		public void testGetFileBounds() {
+			assertSame(bounds, writer.getFileBounds());
 		}
-		this.writer.close();
-		assertContent();
 	}
 
-	@Test
-	public void testWriteInt() throws Exception {
-		for(int i=0; i<this.records.length; ++i) {
-			this.writer.write(this.records[i].getEntireRecordLength());
+	@DisplayName("write")
+	@Nested
+	public class Write {
+
+		@DisplayName("(Collection)")
+		@Nested
+		public class WithCollection {
+
+			@Test
+			public void testWriteCollection() throws Exception {
+				writer.write(Arrays.asList(records));
+				writer.close();
+				assertContent();
+			}
 		}
-		this.writer.close();
-		assertContent();
+
+		@DisplayName("(FileRecord)")
+		@Nested
+		public class WithFileRecord {
+
+			@Test
+			public void testWriteShapeFileRecord() throws Exception {
+				for(int i=0; i<records.length; ++i) {
+					writer.write(records[i]);
+				}
+				writer.close();
+				assertContent();
+			}
+		}
+
+		@DisplayName("(int)")
+		@Nested
+		public class WithInt {
+
+			@Test
+			public void testWriteInt() throws Exception {
+				for(int i=0; i<records.length; ++i) {
+					writer.write(records[i].getEntireRecordLength());
+				}
+				writer.close();
+				assertContent();
+			}
+		}
 	}
 
 }

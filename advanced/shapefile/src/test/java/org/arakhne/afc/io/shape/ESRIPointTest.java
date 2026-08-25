@@ -22,6 +22,7 @@ package org.arakhne.afc.io.shape;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.io.shape.ESRIPoint;
@@ -33,8 +34,9 @@ import org.arakhne.afc.io.shape.ESRIPoint;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("ESRIPoint")
 @SuppressWarnings("all")
-public class ESRIPointTest extends AbstractIoShapeTest {
+public class ESRIPointTest extends AbstractIoShapeTestCase {
 
 	private double x, y, z, m;
 	private ESRIPoint pts;
@@ -53,14 +55,15 @@ public class ESRIPointTest extends AbstractIoShapeTest {
 		this.pts = null;
 	}
 
+	@DisplayName("getM")
 	@Test
 	public void testGetM() {
 		assertEpsilonEquals(this.m, this.pts.getM());
 	}
 
+	@DisplayName("setM")
 	@Test
 	public void testSetM() {
-		assertEpsilonEquals(this.m, this.pts.getM());
 		double nm = getRandom().nextDouble();
 		this.pts.setM(nm);
 		assertEpsilonEquals(nm, this.pts.getM());

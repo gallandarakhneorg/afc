@@ -20,13 +20,17 @@
 
 package org.arakhne.afc.io.shape;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.stream.Stream;
 
-import org.arakhne.afc.io.shape.ShapeFileException;
-import org.arakhne.afc.io.shape.ShapeMultiPatchType;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author $Author: sgalland$
@@ -35,47 +39,47 @@ import org.arakhne.afc.io.shape.ShapeMultiPatchType;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("ShapeMultiPatchType")
 @SuppressWarnings("all")
-public class ShapeMultiPatchTypeTest extends AbstractIoShapeTest {
+public class ShapeMultiPatchTypeTest extends AbstractIoShapeTestCase {
 
-	@Test
-	public void testFromESRIInteger() throws Exception {
-		int n = getRandom().nextInt(5) - getRandom().nextInt(5);
-		ShapeMultiPatchType expected;
-		switch(n) {
-		case 0:
-			expected = ShapeMultiPatchType.TRIANGLE_STRIP;
-			break;
-		case 1:
-			expected = ShapeMultiPatchType.TRIANGLE_FAN;
-			break;
-		case 2:
-			expected = ShapeMultiPatchType.OUTER_RING;
-			break;
-		case 3:
-			expected = ShapeMultiPatchType.INNER_RING;
-			break;
-		case 4:
-			expected = ShapeMultiPatchType.FIRST_RING;
-			break;
-		case 5:
-			expected = ShapeMultiPatchType.RING;
-			break;
-		default:
-			expected = null;
+	public static Stream<Arguments> generateValidCases() {
+		final var arguments = new ArrayList<Arguments>();
+		for (final var expected : ShapeMultiPatchType.values()) {
+			arguments.add(Arguments.of(expected.partType, expected));
 		}
-		
-		if (expected==null) {
-			try {
-				ShapeMultiPatchType.fromESRIInteger(n);
-				fail("ShapeFileException was expected"); //$NON-NLS-1$
-			}
-			catch(ShapeFileException exception) {
-				// expected exception
+		return arguments.stream();
+	}
+	
+	public static Stream<Arguments> generateInvalidCases() {
+		final var arguments = new ArrayList<Arguments>();
+		for (var i = -5; i < 0; ++i) {
+			arguments.add(Arguments.of(i));
+		}
+		int max = -1;
+		for (final var expected : ShapeMultiPatchType.values()) {
+			if (max < expected.partType) {
+				max = expected.partType;
 			}
 		}
-		else
-			assertEquals(expected, ShapeMultiPatchType.fromESRIInteger(n));
+		for (var i = max + 1; i < 50; ++i) {
+			arguments.add(Arguments.of(i));
+		}
+		return arguments.stream();
+	}
+
+	@DisplayName("fromESRIInteger - valid")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("generateValidCases")
+	public void testFromESRIInteger_valid(Integer i, ShapeMultiPatchType expected) throws Exception {
+		assertEquals(expected, ShapeMultiPatchType.fromESRIInteger(i));
+	}
+
+	@DisplayName("fromESRIInteger - invalid")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("generateInvalidCases")
+	public void testFromESRIInteger_invalid(Integer i) throws Exception {
+		assertThrows(ShapeFileException.class, () -> ShapeMultiPatchType.fromESRIInteger(i));
 	}
 
 }

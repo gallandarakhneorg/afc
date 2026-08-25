@@ -32,6 +32,8 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.io.shape.AbstractCommonShapeFileReader;
@@ -46,8 +48,9 @@ import org.arakhne.afc.vmutil.Resources;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("AbstractCommonShapeFileReader")
 @SuppressWarnings("all")
-public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
+public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTestCase {
 
 	private static final String TEST_FILE = "org/arakhne/afc/io/shape/test.shx"; //$NON-NLS-1$
 	private static final int TEST_FILE_SIZE = 268;
@@ -57,189 +60,511 @@ public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.resource = Resources.getResource(TEST_FILE);
-		assertNotNull(this.resource);
-		this.reader = new AbstractCommonShapeFileReaderStub(this.resource);
+		resource = Resources.getResource(TEST_FILE);
+		assertNotNull(resource);
+		reader = new AbstractCommonShapeFileReaderStub(resource);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.reader.close();
-		this.reader = null;
-		this.resource = null;
+		reader.close();
+		reader = null;
+		resource = null;
 	}
 
-	@Test
-	public void testIsHeaderRead() throws Exception {
-		assertFalse(this.reader.isHeaderRead());
-		this.reader.readHeader();
-		assertTrue(this.reader.isHeaderRead());
+	@DisplayName("isHeaderRead")
+	@Nested
+	public class IsHeaderRead {
+
+		@DisplayName("initial state")
+		@Test
+		public void testIsHeaderRead_initialState() throws Exception {
+			assertFalse(reader.isHeaderRead());
+		}
+
+		@DisplayName("after readHeader")
+		@Test
+		public void testIsHeaderRead_afterReadHeader() throws Exception {
+			reader.readHeader();
+			assertTrue(reader.isHeaderRead());
+		}
 	}
 
-	@Test
-	public void testGetFileSize() throws Exception {
-		assertEquals(TEST_FILE_SIZE, this.reader.getFileSize());
+	@DisplayName("getFileSize")
+	@Nested
+	public class GetFileSize {
+
+		@DisplayName("file size")
+		@Test
+		public void testGetFileSize_fileSize() throws Exception {
+			assertEquals(TEST_FILE_SIZE, reader.getFileSize());
+		}
 	}
 
-	@Test
-	public void testGetShapeElementType() throws Exception {
-		assertEquals(ShapeElementType.POLYGON, this.reader.getShapeElementType());
+	@DisplayName("getShapeElementType")
+	@Nested
+	public class GetShapeElementType {
+
+		@DisplayName("shape element type")
+		@Test
+		public void testGetShapeElementType_shapeElementType() throws Exception {
+			assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
+		}
 	}
 
-	@Test
-	public void testGetFileReadingPosition() throws Exception {
-		assertEquals(100, this.reader.getFileReadingPosition());
-		this.reader.readHeader();
-		assertEquals(100, this.reader.getFileReadingPosition());
-		this.reader.read();
-		assertEquals(108, this.reader.getFileReadingPosition());
-		this.reader.read();
-		assertEquals(116, this.reader.getFileReadingPosition());
+	@DisplayName("getFileReadingPosition")
+	@Nested
+	public class GetFileReadingPosition {
+
+		@DisplayName("initial position")
+		@Test
+		public void testGetFileReadingPosition_initialPosition() throws Exception {
+			assertEquals(100, reader.getFileReadingPosition());
+		}
+
+		@DisplayName("position after readHeader")
+		@Test
+		public void testGetFileReadingPosition_afterReadHeader() throws Exception {
+			reader.readHeader();
+			assertEquals(100, reader.getFileReadingPosition());
+		}
+
+		@DisplayName("position after first read")
+		@Test
+		public void testGetFileReadingPosition_afterFirstRead() throws Exception {
+			reader.readHeader();
+			reader.read();
+			assertEquals(108, reader.getFileReadingPosition());
+		}
+
+		@DisplayName("position after second read")
+		@Test
+		public void testGetFileReadingPosition_afterSecondRead() throws Exception {
+			reader.readHeader();
+			reader.read();
+			reader.read();
+			assertEquals(116, reader.getFileReadingPosition());
+		}
 	}
 
-	@Test
-	public void testGetBoundsFromHeader() throws Exception {
-		ESRIBounds bounds = this.reader.getBoundsFromHeader();
-		assertNotNull(bounds);
-		assertEpsilonEquals(936456.700, bounds.getMinX());
-		assertEpsilonEquals(2300653.700, bounds.getMinY());
-		assertEpsilonEquals(0., bounds.getMinZ());
-		assertEpsilonEquals(0., bounds.getMinM());
-		assertEpsilonEquals(941093.900, bounds.getMaxX());
-		assertEpsilonEquals(2308847.400, bounds.getMaxY());
-		assertEpsilonEquals(0., bounds.getMaxZ());
-		assertEpsilonEquals(0., bounds.getMaxM());
+	@DisplayName("getBoundsFromHeader")
+	@Nested
+	public class GetBoundsFromHeader {
+
+		private ESRIBounds bounds;
+
+		@BeforeEach
+		public void setUp() throws Exception {
+			bounds = reader.getBoundsFromHeader();
+		}
+
+		@DisplayName("bounds not null")
+		@Test
+		public void testGetBoundsFromHeader_notNull() throws Exception {
+			assertNotNull(bounds);
+		}
+
+		@DisplayName("minX")
+		@Test
+		public void testGetBoundsFromHeader_minX() throws Exception {
+			assertEpsilonEquals(936456.700, bounds.getMinX());
+		}
+
+		@DisplayName("minY")
+		@Test
+		public void testGetBoundsFromHeader_minY() throws Exception {
+			assertEpsilonEquals(2300653.700, bounds.getMinY());
+		}
+
+		@DisplayName("minZ")
+		@Test
+		public void testGetBoundsFromHeader_minZ() throws Exception {
+			assertEpsilonEquals(0., bounds.getMinZ());
+		}
+
+		@DisplayName("minM")
+		@Test
+		public void testGetBoundsFromHeader_minM() throws Exception {
+			assertEpsilonEquals(0., bounds.getMinM());
+		}
+
+		@DisplayName("maxX")
+		@Test
+		public void testGetBoundsFromHeader_maxX() throws Exception {
+			assertEpsilonEquals(941093.900, bounds.getMaxX());
+		}
+
+		@DisplayName("maxY")
+		@Test
+		public void testGetBoundsFromHeader_maxY() throws Exception {
+			assertEpsilonEquals(2308847.400, bounds.getMaxY());
+		}
+
+		@DisplayName("maxZ")
+		@Test
+		public void testGetBoundsFromHeader_maxZ() throws Exception {
+			assertEpsilonEquals(0., bounds.getMaxZ());
+		}
+
+		@DisplayName("maxM")
+		@Test
+		public void testGetBoundsFromHeader_maxM() throws Exception {
+			assertEpsilonEquals(0., bounds.getMaxM());
+		}
+	}
+	
+	@DisplayName("isSeekEnabled")
+	@Nested
+	public class IsSeekEnabled {
+
+		@DisplayName("initial state")
+		@Test
+		public void testIsSeekEnabled_initialState() throws Exception {
+			assertTrue(reader.isSeekEnabled());
+		}
+
+		@DisplayName("after disableSeek")
+		@Test
+		public void testIsSeekEnabled_afterDisableSeek() throws Exception {
+			reader.disableSeek();
+			assertFalse(reader.isSeekEnabled());
+		}
 	}
 
-	@Test
-	public void testIsSeekEnabled() throws Exception {
-		assertTrue(this.reader.isSeekEnabled());
-		this.reader.disableSeek();
-		assertFalse(this.reader.isSeekEnabled());
+	@DisplayName("disableSeek")
+	@Nested
+	public class DisableSeek {
+
+		@DisplayName("initial state")
+		@Test
+		public void testDisableSeek_initialState() throws Exception {
+			assertTrue(reader.isSeekEnabled());
+		}
+
+		@DisplayName("after disableSeek")
+		@Test
+		public void testDisableSeek_afterDisableSeek() throws Exception {
+			reader.disableSeek();
+			assertFalse(reader.isSeekEnabled());
+		}
 	}
 
-	@Test
-	public void testDisableSeek() throws Exception {
-		assertTrue(this.reader.isSeekEnabled());
-		this.reader.disableSeek();
-		assertFalse(this.reader.isSeekEnabled());
-	}
+	@DisplayName("read")
+	@Nested
+	public class Read {
 
-	@Test
-	public void testRead() throws Exception {
-		Object obj = this.reader.read();
-		assertNotNull(obj);
-		assertTrue(obj instanceof NumberStub);
-		assertEpsilonEquals(0., ((NumberStub)obj).doubleValue());
-		
-		obj = this.reader.read();
-		assertNotNull(obj);
-		assertTrue(obj instanceof NumberStub);
-		assertEpsilonEquals(1., ((NumberStub)obj).doubleValue());
+		private Object obj;
 
-		obj = this.reader.read();
-		assertNotNull(obj);
-		assertTrue(obj instanceof NumberStub);
-		assertEpsilonEquals(2., ((NumberStub)obj).doubleValue());
-	}
+		@BeforeEach
+		public void setUp() {
+			obj = null;
+		}
 
-	@Test
-	public void testIterator() throws Exception {
-		Iterator<Object> iterator = this.reader.iterator();
-		int recordCount = (TEST_FILE_SIZE - 100) / 8;
-		Object obj;
-		
-		for(int i=0; i<recordCount; ++i) {
-			assertTrue(iterator.hasNext());
-			obj = iterator.next();
+		@DisplayName("first read not null")
+		@Test
+		public void testRead_first_notNull() throws Exception {
+			obj = reader.read();
 			assertNotNull(obj);
+		}
+
+		@DisplayName("first read type")
+		@Test
+		public void testRead_first_type() throws Exception {
+			obj = reader.read();
 			assertTrue(obj instanceof NumberStub);
-			assertEquals(i, ((Number)obj).intValue());
 		}
-		
-		assertFalse(iterator.hasNext());
-	}
 
-	@Test
-	public void testIteratorClass() throws Exception {
-		Iterator<SubNumberStub> iterator = this.reader.iterator(SubNumberStub.class);
-		int recordCount = (TEST_FILE_SIZE - 100) / 8;
-		SubNumberStub obj;
-		
-		for(int i=0, j=1; i<recordCount/2; ++i, j+=2) {
-			assertTrue(iterator.hasNext(), "record #"+Integer.toString(i)); //$NON-NLS-1$
-			obj = iterator.next();
-			assertNotNull(obj, "record #"+Integer.toString(i)); //$NON-NLS-1$
-			assertEquals(j, obj.intValue(), "record #"+Integer.toString(i)); //$NON-NLS-1$
+		@DisplayName("first read value")
+		@Test
+		public void testRead_first_value() throws Exception {
+			obj = reader.read();
+			assertEpsilonEquals(0., ((NumberStub) obj).doubleValue());
 		}
-		
-		assertFalse(iterator.hasNext());
-	}
 
-	@Test
-	public void testIteratorBoolean_true() throws Exception {
-		Iterator<Object> iterator = this.reader.iterator(true);
-		int recordCount = (TEST_FILE_SIZE - 100) / 8;
-		Object obj;
-		
-		for(int i=0; i<recordCount; ++i) {
-			assertTrue(iterator.hasNext());
-			obj = iterator.next();
+		@DisplayName("second read not null")
+		@Test
+		public void testRead_second_notNull() throws Exception {
+			reader.read();
+			obj = reader.read();
 			assertNotNull(obj);
+		}
+
+		@DisplayName("second read type")
+		@Test
+		public void testRead_second_type() throws Exception {
+			reader.read();
+			obj = reader.read();
 			assertTrue(obj instanceof NumberStub);
-			assertEquals(i, ((Number)obj).intValue());
 		}
-		
-		assertFalse(iterator.hasNext());
-	}
 
-	@Test
-	public void testIteratorBoolean_false() throws Exception {
-		Iterator<Object> iterator = this.reader.iterator(false);
-		int recordCount = (TEST_FILE_SIZE - 100) / 8;
-		Object obj;
-		
-		for(int i=0; i<recordCount; ++i) {
-			assertTrue(iterator.hasNext());
-			obj = iterator.next();
+		@DisplayName("second read value")
+		@Test
+		public void testRead_second_value() throws Exception {
+			reader.read();
+			obj = reader.read();
+			assertEpsilonEquals(1., ((NumberStub) obj).doubleValue());
+		}
+
+		@DisplayName("third read not null")
+		@Test
+		public void testRead_third_notNull() throws Exception {
+			reader.read();
+			reader.read();
+			obj = reader.read();
 			assertNotNull(obj);
+		}
+
+		@DisplayName("third read type")
+		@Test
+		public void testRead_third_type() throws Exception {
+			reader.read();
+			reader.read();
+			obj = reader.read();
 			assertTrue(obj instanceof NumberStub);
-			assertEquals(i, ((Number)obj).intValue());
 		}
-		
-		assertFalse(iterator.hasNext());
+
+		@DisplayName("third read value")
+		@Test
+		public void testRead_third_value() throws Exception {
+			reader.read();
+			reader.read();
+			obj = reader.read();
+			assertEpsilonEquals(2., ((NumberStub) obj).doubleValue());
+		}
 	}
 
-	@Test
-	public void testIteratorClassBoolean_true() throws Exception {
-		Iterator<SubNumberStub> iterator = this.reader.iterator(SubNumberStub.class, true);
-		int recordCount = (TEST_FILE_SIZE - 100) / 8;
-		SubNumberStub obj;
-		
-		for(int i=0,j=1; i<recordCount/2; ++i,j+=2) {
-			assertTrue(iterator.hasNext());
-			obj = iterator.next();
-			assertNotNull(obj);
-			assertEquals(j, ((Number)obj).intValue());
-		}
-		
-		assertFalse(iterator.hasNext());
-	}
+	@DisplayName("iterator")
+	@Nested
+	public class IteratorTest {
 
-	@Test
-	public void testIteratorClassBoolean_false() throws Exception {
-		Iterator<SubNumberStub> iterator = this.reader.iterator(SubNumberStub.class, false);
-		int recordCount = (TEST_FILE_SIZE - 100) / 8;
-		SubNumberStub obj;
-		
-		for(int i=0,j=1; i<recordCount/2; ++i, j+=2) {
-			assertTrue(iterator.hasNext());
-			obj = iterator.next();
-			assertNotNull(obj);
-			assertEquals(j, ((Number)obj).intValue());
+		@DisplayName("()")
+		@Nested
+		public class DefaultIterator {
+
+			private Iterator<Object> iterator;
+			private int recordCount;
+			private Object obj;
+
+			@BeforeEach
+			public void setUp() throws Exception {
+				iterator = reader.iterator();
+				recordCount = (TEST_FILE_SIZE - 100) / 8;
+				obj = null;
+			}
+
+			@DisplayName("iterates all records")
+			@Test
+			public void testIterator_iteratesAllRecords() throws Exception {
+				for (int i = 0; i < recordCount; ++i) {
+					assertTrue(iterator.hasNext());
+					obj = iterator.next();
+					assertNotNull(obj);
+					assertTrue(obj instanceof NumberStub);
+					assertEquals(i, ((Number) obj).intValue());
+				}
+			}
+
+			@DisplayName("hasNext false at end")
+			@Test
+			public void testIterator_hasNextFalseAtEnd() throws Exception {
+				for (int i = 0; i < recordCount; ++i) {
+					iterator.next();
+				}
+				assertFalse(iterator.hasNext());
+			}
 		}
-		
-		assertFalse(iterator.hasNext());
+
+		@DisplayName("(Class)")
+		@Nested
+		public class WithClass {
+
+			private Iterator<SubNumberStub> iterator;
+			private int recordCount;
+			private SubNumberStub obj;
+
+			@BeforeEach
+			public void setUp() throws Exception {
+				iterator = reader.iterator(SubNumberStub.class);
+				recordCount = (TEST_FILE_SIZE - 100) / 8;
+				obj = null;
+			}
+
+			@DisplayName("iterates filtered records")
+			@Test
+			public void testIteratorClass_iteratesFilteredRecords() throws Exception {
+				for (int i = 0, j = 1; i < recordCount / 2; ++i, j += 2) {
+					assertTrue(iterator.hasNext(), "record #" + Integer.toString(i)); //$NON-NLS-1$
+					obj = iterator.next();
+					assertNotNull(obj, "record #" + Integer.toString(i)); //$NON-NLS-1$
+					assertEquals(j, obj.intValue(), "record #" + Integer.toString(i)); //$NON-NLS-1$
+				}
+			}
+
+			@DisplayName("hasNext false at end")
+			@Test
+			public void testIteratorClass_hasNextFalseAtEnd() throws Exception {
+				for (int i = 0; i < recordCount / 2; ++i) {
+					iterator.next();
+				}
+				assertFalse(iterator.hasNext());
+			}
+		}
+
+		@DisplayName("(boolean)")
+		@Nested
+		public class WithBoolean {
+
+			@DisplayName("true")
+			@Nested
+			public class WithTrue {
+
+				private Iterator<Object> iterator;
+				private int recordCount;
+				private Object obj;
+
+				@BeforeEach
+				public void setUp() throws Exception {
+					iterator = reader.iterator(true);
+					recordCount = (TEST_FILE_SIZE - 100) / 8;
+					obj = null;
+				}
+
+				@DisplayName("iterates all records")
+				@Test
+				public void testIteratorBoolean_true_iteratesAllRecords() throws Exception {
+					for (int i = 0; i < recordCount; ++i) {
+						assertTrue(iterator.hasNext());
+						obj = iterator.next();
+						assertNotNull(obj);
+						assertTrue(obj instanceof NumberStub);
+						assertEquals(i, ((Number) obj).intValue());
+					}
+				}
+
+				@DisplayName("hasNext false at end")
+				@Test
+				public void testIteratorBoolean_true_hasNextFalseAtEnd() throws Exception {
+					for (int i = 0; i < recordCount; ++i) {
+						iterator.next();
+					}
+					assertFalse(iterator.hasNext());
+				}
+			}
+
+			@DisplayName("false")
+			@Nested
+			public class WithFalse {
+
+				private Iterator<Object> iterator;
+				private int recordCount;
+				private Object obj;
+
+				@BeforeEach
+				public void setUp() throws Exception {
+					iterator = reader.iterator(false);
+					recordCount = (TEST_FILE_SIZE - 100) / 8;
+					obj = null;
+				}
+
+				@DisplayName("iterates all records")
+				@Test
+				public void testIteratorBoolean_false_iteratesAllRecords() throws Exception {
+					for (int i = 0; i < recordCount; ++i) {
+						assertTrue(iterator.hasNext());
+						obj = iterator.next();
+						assertNotNull(obj);
+						assertTrue(obj instanceof NumberStub);
+						assertEquals(i, ((Number) obj).intValue());
+					}
+				}
+
+				@DisplayName("hasNext false at end")
+				@Test
+				public void testIteratorBoolean_false_hasNextFalseAtEnd() throws Exception {
+					for (int i = 0; i < recordCount; ++i) {
+						iterator.next();
+					}
+					assertFalse(iterator.hasNext());
+				}
+			}
+		}
+
+		@DisplayName("(Class,boolean)")
+		@Nested
+		public class WithClassBoolean {
+
+			@DisplayName("true")
+			@Nested
+			public class WithTrue {
+
+				private Iterator<SubNumberStub> iterator;
+				private int recordCount;
+				private SubNumberStub obj;
+
+				@BeforeEach
+				public void setUp() throws Exception {
+					iterator = reader.iterator(SubNumberStub.class, true);
+					recordCount = (TEST_FILE_SIZE - 100) / 8;
+					obj = null;
+				}
+
+				@DisplayName("iterates filtered records")
+				@Test
+				public void testIteratorClassBoolean_true_iteratesFilteredRecords() throws Exception {
+					for (int i = 0, j = 1; i < recordCount / 2; ++i, j += 2) {
+						assertTrue(iterator.hasNext());
+						obj = iterator.next();
+						assertNotNull(obj);
+						assertEquals(j, ((Number) obj).intValue());
+					}
+				}
+
+				@DisplayName("hasNext false at end")
+				@Test
+				public void testIteratorClassBoolean_true_hasNextFalseAtEnd() throws Exception {
+					for (int i = 0; i < recordCount / 2; ++i) {
+						iterator.next();
+					}
+					assertFalse(iterator.hasNext());
+				}
+			}
+
+			@DisplayName("false")
+			@Nested
+			public class WithFalse {
+
+				private Iterator<SubNumberStub> iterator;
+				private int recordCount;
+				private SubNumberStub obj;
+
+				@BeforeEach
+				public void setUp() throws Exception {
+					iterator = reader.iterator(SubNumberStub.class, false);
+					recordCount = (TEST_FILE_SIZE - 100) / 8;
+					obj = null;
+				}
+
+				@DisplayName("iterates filtered records")
+				@Test
+				public void testIteratorClassBoolean_false_iteratesFilteredRecords() throws Exception {
+					for (int i = 0, j = 1; i < recordCount / 2; ++i, j += 2) {
+						assertTrue(iterator.hasNext());
+						obj = iterator.next();
+						assertNotNull(obj);
+						assertEquals(j, ((Number) obj).intValue());
+					}
+				}
+
+				@DisplayName("hasNext false at end")
+				@Test
+				public void testIteratorClassBoolean_false_hasNextFalseAtEnd() throws Exception {
+					for (int i = 0; i < recordCount / 2; ++i) {
+						iterator.next();
+					}
+					assertFalse(iterator.hasNext());
+				}
+			}
+		}
 	}
 
 	/**
@@ -253,32 +578,22 @@ public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
 
 		private int n;
 		
-		/**
-		 * @param file
-		 * @throws IOException
-		 */
 		public AbstractCommonShapeFileReaderStub(URL file) throws IOException {
 			super(file);
-			this.n = 0;
+			n = 0;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected Object readRecord(int recrodNumber) throws EOFException, IOException {
 			readLEDouble();
-			int r = this.n;
-			this.n++;
+			int r = n;
+			n++;
 			if (r%2==0) {
 				return new NumberStub(r);
 			}
 			return new SubNumberStub(r);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void seek(int recordIndex) throws IOException {
 			//
@@ -298,27 +613,18 @@ public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
 		
 		private final int i;
 		
-		/**
-		 * @param i
-		 */
 		public NumberStub(int i) {
 			this.i = i;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public double doubleValue() {
-			return this.i;
+			return i;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public float floatValue() {
-			return this.i;
+			return i;
 		}
 
 		/**
@@ -326,7 +632,7 @@ public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
 		 */
 		@Override
 		public int intValue() {
-			return this.i;
+			return i;
 		}
 
 		/**
@@ -334,7 +640,7 @@ public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
 		 */
 		@Override
 		public long longValue() {
-			return this.i;
+			return i;
 		}
 		
 		/**
@@ -342,7 +648,7 @@ public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
 		 */
 		@Override
 		public String toString() {
-			return getClass().getName()+"="+Integer.toString(this.i); //$NON-NLS-1$
+			return getClass().getName()+"="+Integer.toString(i); //$NON-NLS-1$
 		}
 		
 	}
