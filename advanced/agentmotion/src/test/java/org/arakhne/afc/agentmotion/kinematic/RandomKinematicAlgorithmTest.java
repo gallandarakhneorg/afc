@@ -22,14 +22,16 @@ package org.arakhne.afc.agentmotion.kinematic;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.arakhne.afc.agentmotion.AbstractMathTestCase;
 import org.arakhne.afc.agentmotion.AgentMotion;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Random Kinematic Algorithm")
 @SuppressWarnings("all")
 public class RandomKinematicAlgorithmTest extends AbstractMathTestCase {
 
@@ -45,6 +47,7 @@ public class RandomKinematicAlgorithmTest extends AbstractMathTestCase {
 		this.random = null;
 	}
 	
+	@DisplayName("calculate")
 	@Test
 	public void calculate() {
 		AgentMotion m = this.random.calculate(new Point2d(1, 2), new Vector2d(3, 4), 5, 6, 7, 8);

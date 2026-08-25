@@ -20,12 +20,14 @@
 
 package org.arakhne.afc.agentmotion.kinematic;
 
-import org.arakhne.afc.agentmotion.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Arriving Kinematic Algorithm")
 @SuppressWarnings("all")
 public class ArrivingKinematicAlgorithmTest extends AbstractMathTestCase {
 
@@ -41,11 +43,13 @@ public class ArrivingKinematicAlgorithmTest extends AbstractMathTestCase {
 		this.arriving = null;
 	}
 	
+	@DisplayName("calculate - far")
 	@Test
 	public void calculate_far() {
 		assertFpVectorEquals(3.42997, 2.05798, this.arriving.calculate(new Point2d(1, 2), 3, 4, new Point2d(6, 5)));
 	}
 
+	@DisplayName("calculate - close")
 	@Test
 	public void calculate_close() {
 		assertFpVectorEquals(0, 0, this.arriving.calculate(new Point2d(6.1, 4.8), 3, 4, new Point2d(6, 5)));

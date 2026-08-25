@@ -20,12 +20,14 @@
 
 package org.arakhne.afc.agentmotion.common;
 
-import org.arakhne.afc.agentmotion.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Fleeing Algorithm")
 @SuppressWarnings("all")
 public class FleeingAlgorithmTest extends AbstractMathTestCase {
 
@@ -41,6 +43,7 @@ public class FleeingAlgorithmTest extends AbstractMathTestCase {
 		this.flee = null;
 	}
 	
+	@DisplayName("calculate")
 	@Test
 	public void calculate() {
 		assertFpVectorEquals(-3.42997, -2.05798, this.flee.calculate(new Point2d(1, 2),  3, 4, new Point2d(6, 5)));

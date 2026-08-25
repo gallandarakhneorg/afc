@@ -20,13 +20,15 @@
 
 package org.arakhne.afc.agentmotion.common;
 
-import org.arakhne.afc.agentmotion.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Evading Algorithm")
 @SuppressWarnings("all")
 public class EvadingAlgorithmTest extends AbstractMathTestCase {
 
@@ -46,6 +48,7 @@ public class EvadingAlgorithmTest extends AbstractMathTestCase {
 		this.flee = null;
 	}
 	
+	@DisplayName("calculate")
 	@Test
 	public void calculate() {
 		assertFpVectorEquals(-2.82843, -2.82843, this.evade.calculate(new Point2d(1, 2),  3, 4, new Point2d(6, 5),

@@ -20,14 +20,16 @@
 
 package org.arakhne.afc.agentmotion.common;
 
-import org.arakhne.afc.agentmotion.AbstractMathTestCase;
 import org.arakhne.afc.agentmotion.kinematic.AligningKinematicAlgorithm;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Facing Algorithm")
 @SuppressWarnings("all")
 public class FacingAlgorithmTest extends AbstractMathTestCase {
 
@@ -47,11 +49,13 @@ public class FacingAlgorithmTest extends AbstractMathTestCase {
 		this.align = null;
 	}
 	
+	@DisplayName("calculate - far")
 	@Test
 	public void calculate_far() {
 		assertEpsilonEquals(-1.5708, this.face.calculate(new Point2d(1, 2), new Vector2d(-3, 5), 3, 4, new Point2d(6, 5)));
 	}
 
+	@DisplayName("calculate - close")
 	@Test
 	public void calculate_close() {
 		assertZero(this.face.calculate(new Point2d(1, 2), new Vector2d(5, 3.1), 3, 4, new Point2d(6, 5)));

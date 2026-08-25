@@ -20,12 +20,14 @@
 
 package org.arakhne.afc.agentmotion.kinematic;
 
-import org.arakhne.afc.agentmotion.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Aligning Kinematic Algorithm")
 @SuppressWarnings("all")
 public class AligningKinematicAlgorithmTest extends AbstractMathTestCase {
 
@@ -41,11 +43,13 @@ public class AligningKinematicAlgorithmTest extends AbstractMathTestCase {
 		this.aligning = null;
 	}
 	
+	@DisplayName("calculate - far")
 	@Test
 	public void calculate_far() {
 		assertEpsilonEquals(-1.33971, this.aligning.calculate(new Vector2d(-1, 2), 3, 4, new Vector2d(6, 5)));
 	}
 
+	@DisplayName("calculate - close")
 	@Test
 	public void calculate_close() {
 		assertZero(this.aligning.calculate(new Vector2d(6.1, 4.8), 3, 4, new Vector2d(6, 5)));
