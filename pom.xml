@@ -116,6 +116,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>mathgeom2dtests</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
 				<artifactId>mathgeom3d</artifactId>
 				<version>${afc.version}</version>
 			</dependency>

@@ -20,6 +20,7 @@
 		<module>mathgeombase</module>
 		<module>mathgeombasetests</module>
 		<module>mathgeom2d</module>
+		<module>mathgeom2dtests</module>
 		<module>mathgeom1d</module>
 		<module>mathgeom3d</module>
 		<module>mathphysics</module>
