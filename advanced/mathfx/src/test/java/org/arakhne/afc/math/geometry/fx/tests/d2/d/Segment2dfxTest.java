@@ -24,98 +24,299 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractSegment2afpTest;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractSegment2afpTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.d.Rectangle2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Segment2dfx;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("Segment2dfx")
 @SuppressWarnings("all")
-public class Segment2dfxTest extends AbstractSegment2afpTest<Segment2dfx, Rectangle2dfx> {
+public class Segment2dfxTest extends AbstractSegment2afpTestCase<Segment2dfx, Rectangle2dfx> {
 
 	@Override
 	protected TestShapeFactory2dfx createFactory() {
 		return TestShapeFactory2dfx.SINGLETON;
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void x1Property(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(0, this.shape.getX1());
-		
-		DoubleProperty property = this.shape.x1Property();
-		assertNotNull(property);
-		assertEpsilonEquals(0, property.get());
-		
-		this.shape.setX1(456.159);
-		assertEpsilonEquals(456.159, property.get());
-		
-		assertEpsilonEquals(456.159, this.shape.getX1());
+	@DisplayName("x1Property")
+	@Nested
+	public class X1Property {
+
+		private DoubleProperty property;
+
+		public void setUp(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			property = shape.x1Property();
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x1Property_assertion1(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(0, shape.getX1());
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x1Property_assertion2(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotNull(property);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x1Property_assertion3(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(0, property.get());
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x1Property_assertion4(CoordinateSystem2D cs) {
+			setUp(cs);
+			shape.setX1(456.159);
+			assertEpsilonEquals(456.159, property.get());
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x1Property_assertion5(CoordinateSystem2D cs) {
+			setUp(cs);
+			shape.setX1(456.159);
+			assertEpsilonEquals(456.159, shape.getX1());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void y1Property(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(0, this.shape.getY1());
-		
-		DoubleProperty property = this.shape.y1Property();
-		assertNotNull(property);
-		assertEpsilonEquals(0, property.get());
-		
-		this.shape.setY1(456.159);
-		assertEpsilonEquals(456.159, property.get());
-		
-		assertEpsilonEquals(456.159, this.shape.getY1());
+	@DisplayName("y1Property")
+	@Nested
+	public class Y1Property {
+
+		private DoubleProperty property;
+
+		public void setUp(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			property = shape.y1Property();
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y1Property_assertion1(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(0, shape.getY1());
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y1Property_assertion2(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotNull(property);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y1Property_assertion3(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(0, property.get());
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y1Property_assertion4(CoordinateSystem2D cs) {
+			setUp(cs);
+			shape.setY1(456.159);
+			assertEpsilonEquals(456.159, property.get());
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y1Property_assertion5(CoordinateSystem2D cs) {
+			setUp(cs);
+			shape.setY1(456.159);
+			assertEpsilonEquals(456.159, shape.getY1());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void x2Property(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(1, this.shape.getX2());
-		
-		DoubleProperty property = this.shape.x2Property();
-		assertNotNull(property);
-		assertEpsilonEquals(1, property.get());
-		
-		this.shape.setX2(456.159);
-		assertEpsilonEquals(456.159, property.get());
-		
-		assertEpsilonEquals(456.159, this.shape.getX2());
+	@DisplayName("x2Property")
+	@Nested
+	public class X2Property {
+
+		private DoubleProperty property;
+
+		public void setUp(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			property = shape.x2Property();
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x2Property_assertion1(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(1, shape.getX2());
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x2Property_assertion2(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotNull(property);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x2Property_assertion3(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(1, property.get());
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x2Property_assertion4(CoordinateSystem2D cs) {
+			setUp(cs);
+			shape.setX2(456.159);
+			assertEpsilonEquals(456.159, property.get());
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void x2Property_assertion5(CoordinateSystem2D cs) {
+			setUp(cs);
+			shape.setX2(456.159);
+			assertEpsilonEquals(456.159, shape.getX2());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void y2Property(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEpsilonEquals(1, this.shape.getY2());
-		
-		DoubleProperty property = this.shape.y2Property();
-		assertNotNull(property);
-		assertEpsilonEquals(1, property.get());
-		
-		this.shape.setY2(456.159);
-		assertEpsilonEquals(456.159, property.get());
-		
-		assertEpsilonEquals(456.159, this.shape.getY2());
+	@DisplayName("y2Property")
+	@Nested
+	public class Y2Property {
+
+		private DoubleProperty property;
+
+		public void setUp(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			property = shape.y2Property();
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y2Property_assertion1(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(1, shape.getY2());
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y2Property_assertion2(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotNull(property);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y2Property_assertion3(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(1, property.get());
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y2Property_assertion4(CoordinateSystem2D cs) {
+			setUp(cs);
+			shape.setY2(456.159);
+			assertEpsilonEquals(456.159, property.get());
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void y2Property_assertion5(CoordinateSystem2D cs) {
+			setUp(cs);
+			shape.setY2(456.159);
+			assertEpsilonEquals(456.159, shape.getY2());
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void boundingBoxProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		ObjectProperty<Rectangle2dfx> property = this.shape.boundingBoxProperty();
-		assertNotNull(property);
-		Rectangle2dfx box = property.get();
-		assertNotNull(box);
-		assertEpsilonEquals(0, box.getMinX());
-		assertEpsilonEquals(0, box.getMinY());
-		assertEpsilonEquals(1, box.getMaxX());
-		assertEpsilonEquals(1, box.getMaxY());
-	}
+	@DisplayName("boundingBoxProperty")
+	@Nested
+	public class BoundingBoxProperty {
 
+		private ObjectProperty<Rectangle2dfx> property;
+		private Rectangle2dfx box;
+
+		public void setUp(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			property = shape.boundingBoxProperty();
+			box = property.get();
+		}
+
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void boundingBoxProperty_assertion1(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotNull(property);
+		}
+
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void boundingBoxProperty_assertion2(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotNull(box);
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void boundingBoxProperty_assertion3(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(0, box.getMinX());
+		}
+
+		@DisplayName("#4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void boundingBoxProperty_assertion4(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(0, box.getMinY());
+		}
+
+		@DisplayName("#5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void boundingBoxProperty_assertion5(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(1, box.getMaxX());
+		}
+
+		@DisplayName("#6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void boundingBoxProperty_assertion6(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(1, box.getMaxY());
+		}
+	}
 }

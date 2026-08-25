@@ -35,6 +35,7 @@ import org.arakhne.afc.math.geometry.fx.d2.i.Point2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Rectangle2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Segment2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Vector2ifx;
+import org.junit.jupiter.api.DisplayName;
 
 @SuppressWarnings("all")
 public class TestShapeFactory2ifx implements TestShapeFactory<Point2ifx, Vector2ifx, Rectangle2ifx> {

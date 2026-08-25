@@ -25,13 +25,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
+import org.arakhne.afc.math.geometry.base.tests.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.d.GeomFactory2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.UnitVectorProperty;
 import org.arakhne.afc.math.geometry.fx.d2.d.Vector2dfx;
-import org.arakhne.afc.math.geometry.fx.tests.AbstractMathTestCase;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("UnitVectorProperty")
 @SuppressWarnings("all")
 public class UnitVectorPropertyTest extends AbstractMathTestCase {
 
@@ -44,81 +47,133 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 	
 	@BeforeEach
 	public void setUp() {
-		this.property = new UnitVectorProperty(this, "test", new GeomFactory2dfx()); //$NON-NLS-1$
+		property = new UnitVectorProperty(this, "test", new GeomFactory2dfx()); //$NON-NLS-1$
 		double length = Math.hypot(ox, oy);
-		this.property.set(ox / length, oy / length);
+		property.set(ox / length, oy / length);
 	}
 	
-	@Test
-	public void setDoubleDouble_notUnitVector() {
-		assertThrows(AssertionError.class, () -> this.property.set(ox, oy));
+	@DisplayName("set")
+	@Nested
+	public class Set {
+
+		@DisplayName("(double,double)")
+		@Nested
+		public class WithDoubleDouble {
+
+			@DisplayName("Not unit vector")
+			@Test
+			public void setDoubleDouble_notUnitVector() {
+				assertThrows(AssertionError.class, () -> property.set(ox, oy));
+			}
+	
+			@DisplayName("Unit vector")
+			@Test
+			public void setDoubleDouble_unitVector() {
+				property.set(0.031598, -0.999501);
+				assertEpsilonEquals(0.031598, property.getX());
+				assertEpsilonEquals(-0.999501, property.getY());
+			}
+
+			@DisplayName("Any vector")
+			@Test
+			public void setDoubleDouble_onVector() {
+				assertThrows(RuntimeException.class, () -> {
+					Vector2D v = property.get();
+					v.set(0.031598, -0.999501);
+				});
+			}
+		}
+
+		@DisplayName("(Vector2D)")
+		@Nested
+		public class WithVector2D {
+
+			@DisplayName("Not unit vector")
+			@Test
+			public void setVector2fx_notUnitVector() {
+				assertThrows(AssertionError.class, () -> property.set(new Vector2dfx(ox, oy)));
+			}
+
+			@DisplayName("Unit vector")
+			@Test
+			public void setVector2fx_unitVector() {
+				property.set(new Vector2dfx(0.031598, -0.999501));
+				assertEpsilonEquals(0.031598, property.getX());
+				assertEpsilonEquals(-0.999501, property.getY());
+			}
+
+			@DisplayName("Any vector")
+			@Test
+			public void setVector2D_onVector() {
+				assertThrows(RuntimeException.class, () -> {
+					Vector2D v = property.get();
+					v.set(new Vector2dfx(0.031598, -0.999501));
+				});
+			}
+		}
+	}
+
+	@DisplayName("get")
+	@Nested
+	public class Get {
+
+		@DisplayName("#1")
+		@Test
+		public void get() {
+			Vector2D v = property.get();
+			assertNotNull(v);
+			assertEpsilonEquals(ux, v.getX());
+			assertEpsilonEquals(uy, v.getY());
+		}
 	}
 	
-	@Test
-	public void setDoubleDouble_unitVector() {
-		this.property.set(0.031598, -0.999501);
-		assertEpsilonEquals(0.031598, this.property.getX());
-		assertEpsilonEquals(-0.999501, this.property.getY());
-	}
+	@DisplayName("getX")
+	@Nested
+	public class GetX {
 
-	@Test
-	public void setVector2fx_notUnitVector() {
-		assertThrows(AssertionError.class, () -> this.property.set(new Vector2dfx(ox, oy)));
+		@DisplayName("#1")
+		@Test
+		public void getX() {
+			assertEpsilonEquals(ux, property.getX());
+		}
 	}
 	
-	@Test
-	public void setVector2fx_unitVector() {
-		this.property.set(new Vector2dfx(0.031598, -0.999501));
-		assertEpsilonEquals(0.031598, this.property.getX());
-		assertEpsilonEquals(-0.999501, this.property.getY());
-	}
+	@DisplayName("getY")
+	@Nested
+	public class GetY {
 
-	@Test
-	public void setVector2D_onVector() {
-		assertThrows(RuntimeException.class, () -> {
-			Vector2D v = this.property.get();
-			v.set(new Vector2dfx(0.031598, -0.999501));
-		});
-	}
-
-	@Test
-	public void setDoubleDouble_onVector() {
-		assertThrows(RuntimeException.class, () -> {
-			Vector2D v = this.property.get();
-			v.set(0.031598, -0.999501);
-		});
-	}
-
-	@Test
-	public void get() {
-		Vector2D v = this.property.get();
-		assertNotNull(v);
-		assertEpsilonEquals(ux, v.getX());
-		assertEpsilonEquals(uy, v.getY());
+		@DisplayName("#1")
+		@Test
+		public void getY() {
+			assertEpsilonEquals(uy, property.getY());
+		}
+	
 	}
 	
-	@Test
-	public void getX() {
-		assertEpsilonEquals(ux, this.property.getX());
-	}
+	@DisplayName("xProperty")
+	@Nested
+	public class XProperty {
 
-	@Test
-	public void getY() {
-		assertEpsilonEquals(uy, this.property.getY());
+		@DisplayName("#1")
+		@Test
+		public void xProperty() {
+			ReadOnlyDoubleProperty x = property.xProperty();
+			assertNotNull(x);
+			assertEpsilonEquals(ux, x.get());
+		}
 	}
+	
+	@DisplayName("yProperty")
+	@Nested
+	public class YProperty {
 
-	@Test
-	public void xProperty() {
-		ReadOnlyDoubleProperty x = this.property.xProperty();
-		assertNotNull(x);
-		assertEpsilonEquals(ux, x.get());
-	}
-
-	@Test
-	public void yProperty() {
-		ReadOnlyDoubleProperty y = this.property.yProperty();
-		assertNotNull(y);
-		assertEpsilonEquals(uy, y.get());
+		@DisplayName("#1")
+		@Test
+		public void yProperty() {
+			ReadOnlyDoubleProperty y = property.yProperty();
+			assertNotNull(y);
+			assertEpsilonEquals(uy, y.get());
+		}
 	}
 
 }

@@ -25,12 +25,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import javafx.beans.property.IntegerProperty;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.tests.AbstractTuple2DTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.i.Tuple2ifx;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("Tuple2ifx")
 @SuppressWarnings("all")
 public class Tuple2ifxTest extends AbstractTuple2DTestCase<Tuple2ifx> {
 
@@ -44,50 +47,181 @@ public class Tuple2ifxTest extends AbstractTuple2DTestCase<Tuple2ifx> {
 		return new Tuple2ifx(x, y);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void xProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		IntegerProperty property = this.t.xProperty();
-		assertNotNull(property);
-		IntegerProperty property2 = this.t.xProperty();
-		assertSame(property, property2);
-		assertEquals(1, property.get());
+	@DisplayName("xProperty")
+	@Nested
+	public class XProperty {
+
+		@DisplayName("get")
+		@Nested
+		public class Get {
+
+			private IntegerProperty property;
+			private IntegerProperty property2;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = t.xProperty();
+				property2 = t.xProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xProperty_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertNotNull(property);
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xProperty_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertSame(property, property2);
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xProperty_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(1, property.get());
+			}
+		}
+
+		@DisplayName("set")
+		@Nested
+		public class Set {
+
+			private IntegerProperty property;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = t.xProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(1, t.ix());
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(-2, t.iy());
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(345, t.ix());
+			}
+
+			@DisplayName("#4")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion4(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(-2, t.iy());
+			}
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void yProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		IntegerProperty property = this.t.yProperty();
-		assertNotNull(property);
-		IntegerProperty property2 = this.t.yProperty();
-		assertSame(property, property2);
-		assertEquals(-2, property.get());
-	}
+	@DisplayName("yProperty")
+	@Nested
+	public class YProperty {
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void xPropertySetter(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(1, this.t.ix());
-		assertEquals(-2, this.t.iy());
-		IntegerProperty property = this.t.xProperty();
-		property.set(345);
-		assertEquals(345, this.t.ix());
-		assertEquals(-2, this.t.iy());
-	}
+		@DisplayName("get")
+		@Nested
+		public class Get {
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void yPropertySetter(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(1, this.t.ix());
-		assertEquals(-2, this.t.iy());
-		IntegerProperty property = this.t.yProperty();
-		property.set(345);
-		assertEquals(1, this.t.ix());
-		assertEquals(345, this.t.iy());
-	}
+			private IntegerProperty property;
+			private IntegerProperty property2;
 
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = t.yProperty();
+				property2 = t.yProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yProperty_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertNotNull(property);
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yProperty_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertSame(property, property2);
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yProperty_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(-2, property.get());
+			}
+		}
+
+		@DisplayName("set")
+		@Nested
+		public class Set {
+
+			private IntegerProperty property;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = t.yProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(1, t.ix());
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(-2, t.iy());
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(1, t.ix());
+			}
+
+			@DisplayName("#4")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion4(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(345, t.iy());
+			}
+		}
+	}
 }

@@ -24,7 +24,9 @@ import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.base.tests.AbstractUnmodifiableVector2DTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.d.Point2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Vector2dfx;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("UnmodifiableVector2dfx")
 @SuppressWarnings("all")
 public class UnmodifiableVector2dfxTest extends AbstractUnmodifiableVector2DTestCase<Vector2dfx, Point2dfx> {
 

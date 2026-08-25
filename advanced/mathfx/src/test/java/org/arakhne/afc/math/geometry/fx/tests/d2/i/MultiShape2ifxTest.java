@@ -20,13 +20,15 @@
 
 package org.arakhne.afc.math.geometry.fx.tests.d2.i;
 
-import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractMultiShape2aiTest;
+import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractMultiShape2aiTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.i.MultiShape2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Rectangle2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Shape2ifx;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("MultiShape2ifx")
 @SuppressWarnings("all")
-public class MultiShape2ifxTest extends AbstractMultiShape2aiTest<MultiShape2ifx<Shape2ifx<?>>, Shape2ifx<?>, Rectangle2ifx> {
+public class MultiShape2ifxTest extends AbstractMultiShape2aiTestCase<MultiShape2ifx<Shape2ifx<?>>, Shape2ifx<?>, Rectangle2ifx> {
 
 	@Override
 	protected TestShapeFactory2ifx createFactory() {

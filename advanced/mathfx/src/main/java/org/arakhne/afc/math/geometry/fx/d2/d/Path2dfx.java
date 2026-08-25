@@ -38,6 +38,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
@@ -261,9 +262,12 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	}
 
 	@Override
-	public void toBoundingBox(Rectangle2dfx box) {
+	public void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
-		box.set(boundingBoxProperty().get());
+		final var bounds = boundingBoxProperty().get();
+		box.setFromCorners(
+				bounds.getMinX(), bounds.getMinY(),
+				bounds.getMaxX(), bounds.getMaxY());
 	}
 
 	/** Replies the windingRule property.
@@ -414,13 +418,14 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	}
 
 	@Override
-	public void closePath() {
+	public Path2dfx closePath() {
 		if (this.types == null
 				|| this.types.isEmpty()
 				|| this.types.get(this.types.size() - 1) != PathElementType.CLOSE
 				&& this.types.get(this.types.size() - 1) != PathElementType.MOVE_TO) {
 			this.types.add(PathElementType.CLOSE);
 		}
+		return this;
 	}
 
 	@Override
@@ -598,7 +603,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	}
 
 	@Override
-	public void moveTo(double x, double y) {
+	public Path2dfx moveTo(double x, double y) {
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
 			assert this.coords != null && !this.coords.isEmpty();
@@ -609,10 +614,11 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			final var coords = innerCoordinatesProperty();
 			coords.add(getGeomFactory().newPoint(x, y));
 		}
+		return this;
 	}
 
 	@Override
-	public void moveTo(Point2D<?, ?> position) {
+	public Path2dfx moveTo(Point2D<?, ?> position) {
 		assert position != null : AssertMessages.notNullParameter();
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
@@ -624,6 +630,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			final var coords = innerCoordinatesProperty();
 			coords.add(getGeomFactory().convertToPoint(position));
 		}
+		return this;
 	}
 
 	private void ensureMoveTo() {
@@ -633,33 +640,36 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	}
 
 	@Override
-	public void lineTo(double x, double y) {
+	public Path2dfx lineTo(double x, double y) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
 		final var coords = innerCoordinatesProperty();
 		coords.add(getGeomFactory().newPoint(x, y));
+		return this;
 	}
 
 	@Override
-	public void lineTo(Point2D<?, ?> to) {
+	public Path2dfx lineTo(Point2D<?, ?> to) {
 		assert to != null : AssertMessages.notNullParameter();
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
 		final var coords = innerCoordinatesProperty();
 		coords.add(getGeomFactory().convertToPoint(to));
+		return this;
 	}
 
 	@Override
-	public void quadTo(double x1, double y1, double x2, double y2) {
+	public Path2dfx quadTo(double x1, double y1, double x2, double y2) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.QUAD_TO);
 		final var coords = innerCoordinatesProperty();
 		coords.add(getGeomFactory().newPoint(x1, y1));
 		coords.add(getGeomFactory().newPoint(x2, y2));
+		return this;
 	}
 
 	@Override
-	public void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
+	public Path2dfx quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
 		assert ctrl != null : AssertMessages.notNullParameter(0);
 		assert to != null : AssertMessages.notNullParameter(1);
 		ensureMoveTo();
@@ -667,20 +677,22 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 		final var coords = innerCoordinatesProperty();
 		coords.add(getGeomFactory().convertToPoint(ctrl));
 		coords.add(getGeomFactory().convertToPoint(to));
+		return this;
 	}
 
 	@Override
-	public void curveTo(double x1, double y1, double x2, double y2, double x3, double y3) {
+	public Path2dfx curveTo(double x1, double y1, double x2, double y2, double x3, double y3) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.CURVE_TO);
 		final var coords = innerCoordinatesProperty();
 		coords.add(getGeomFactory().newPoint(x1, y1));
 		coords.add(getGeomFactory().newPoint(x2, y2));
 		coords.add(getGeomFactory().newPoint(x3, y3));
+		return this;
 	}
 
 	@Override
-	public void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
+	public Path2dfx curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
 		assert ctrl1 != null : AssertMessages.notNullParameter(0);
 		assert ctrl2 != null : AssertMessages.notNullParameter(1);
 		assert to != null : AssertMessages.notNullParameter(2);
@@ -690,6 +702,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 		coords.add(getGeomFactory().convertToPoint(ctrl1));
 		coords.add(getGeomFactory().convertToPoint(ctrl2));
 		coords.add(getGeomFactory().convertToPoint(to));
+		return this;
 	}
 
 	/** Replies the private coordinates property.

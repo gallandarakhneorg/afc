@@ -27,8 +27,12 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.arakhne.afc.math.geometry.base.tests.AbstractVector2DTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.d.Point2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Vector2dfx;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Vector2dfx")
 @SuppressWarnings("all")
 public class Vector2dfxTest extends AbstractVector2DTestCase<Vector2dfx, Point2dfx, Vector2dfx> {
 
@@ -52,40 +56,116 @@ public class Vector2dfxTest extends AbstractVector2DTestCase<Vector2dfx, Point2d
 		return new Point2dfx(x, y);
 	}
 
-	@Test
-	public void staticToOrientationVector() {
-		assertFpVectorEquals(1, 0, Vector2dfx.toOrientationVector(0));
-		assertFpVectorEquals(-1, 0, Vector2dfx.toOrientationVector(Math.PI));
-		assertFpVectorEquals(0, 1, Vector2dfx.toOrientationVector(Math.PI/2));
-		assertFpVectorEquals(0, -1, Vector2dfx.toOrientationVector(-Math.PI/2));
+	@DisplayName("toOrientationVector")
+	@Nested
+	public class ToOrientationVector {
 
-		assertInlineParameterUsage(Vector2dfx.class, "toOrientationVector", double.class); //$NON-NLS-1$
+		@DisplayName("staticToOrientationVector_assertion1")
+		@Test
+		public void staticToOrientationVector_assertion1() {
+			assertFpVectorEquals(1, 0, Vector2dfx.toOrientationVector(0));
+		}
+
+		@DisplayName("staticToOrientationVector_assertion2")
+		@Test
+		public void staticToOrientationVector_assertion2() {
+			assertFpVectorEquals(-1, 0, Vector2dfx.toOrientationVector(Math.PI));
+		}
+
+		@DisplayName("staticToOrientationVector_assertion3")
+		@Test
+		public void staticToOrientationVector_assertion3() {
+			assertFpVectorEquals(0, 1, Vector2dfx.toOrientationVector(Math.PI/2));
+		}
+
+		@DisplayName("staticToOrientationVector_assertion4")
+		@Test
+		public void staticToOrientationVector_assertion4() {
+			assertFpVectorEquals(0, -1, Vector2dfx.toOrientationVector(-Math.PI/2));
+		}
+
+		@DisplayName("inlineParameterUsage")
+		@Test
+		public void inlineParameterUsage() {
+			assertInlineParameterUsage(Vector2dfx.class, "toOrientationVector", double.class);
+		}
 	}
+	
+	@DisplayName("lengthProperty")
+	@Nested
+	public class LengthProperty {
 
-	@Test
-	public void lengthProperty() {
-		Vector2dfx vector = new Vector2dfx(1, 2);
-		assertEpsilonEquals(2.23607, vector.getLength());
+		private Vector2dfx vector;
+		private ReadOnlyDoubleProperty property;
 		
-		ReadOnlyDoubleProperty property = vector.lengthProperty();
-		assertNotNull(property);
-		assertEpsilonEquals(2.23607, property.get());
+		@BeforeEach
+		public void setUp() {
+			vector = new Vector2dfx(1, 2);
+			property = vector.lengthProperty();
+		}
 		
-		vector.set(4, -10);
-		assertEpsilonEquals(10.77033, property.get());
+		@DisplayName("lengthProperty_1")
+		@Test
+		public void lengthProperty_1() {
+			assertEpsilonEquals(2.23607, vector.getLength());
+		}
+		
+		@DisplayName("lengthProperty_2")
+		@Test
+		public void lengthProperty_2() {
+			assertNotNull(property);
+		}
+		
+		@DisplayName("lengthProperty_3")
+		@Test
+		public void lengthProperty_3() {
+			assertEpsilonEquals(2.23607, property.get());
+		}
+		
+		@DisplayName("lengthProperty_4")
+		@Test
+		public void lengthProperty_4() {
+			vector.set(4, -10);
+			assertEpsilonEquals(10.77033, property.get());
+		}
 	}
+	
+	@DisplayName("lengthSquaredProperty")
+	@Nested
+	public class LengthSquaredProperty {
 
-	@Test
-	public void lengthSquaredProperty() {
-		Vector2dfx vector = new Vector2dfx(1, 2);
-		assertEpsilonEquals(5, vector.getLengthSquared());
-		
-		ReadOnlyDoubleProperty property = vector.lengthSquaredProperty();
-		assertNotNull(property);
-		assertEpsilonEquals(5, property.get());
-		
-		vector.set(4, -10);
-		assertEpsilonEquals(116, property.get());
+		private Vector2dfx vector;
+		private ReadOnlyDoubleProperty property;
+
+		@BeforeEach
+		public void setUp() {
+			vector = new Vector2dfx(1, 2);
+			property = vector.lengthSquaredProperty();
+		}
+
+		@DisplayName("lengthSquaredProperty_assertion1")
+		@Test
+		public void lengthSquaredProperty_assertion1() {
+			assertEpsilonEquals(5, vector.getLengthSquared());
+		}
+
+		@DisplayName("lengthSquaredProperty_assertion2")
+		@Test
+		public void lengthSquaredProperty_assertion2() {
+			assertNotNull(property);
+		}
+
+		@DisplayName("lengthSquaredProperty_assertion3")
+		@Test
+		public void lengthSquaredProperty_assertion3() {
+			assertEpsilonEquals(5, property.get());
+		}
+
+		@DisplayName("lengthSquaredProperty_assertion4")
+		@Test
+		public void lengthSquaredProperty_assertion4() {
+			vector.set(4, -10);
+			assertEpsilonEquals(116, property.get());
+		}
 	}
-
 }

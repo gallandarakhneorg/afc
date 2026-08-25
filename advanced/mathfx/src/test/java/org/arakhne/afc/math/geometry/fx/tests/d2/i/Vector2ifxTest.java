@@ -25,8 +25,11 @@ import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParamete
 import org.arakhne.afc.math.geometry.base.tests.AbstractVector2DTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.i.Point2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Vector2ifx;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Vector2ifx")
 @SuppressWarnings("all")
 public class Vector2ifxTest extends AbstractVector2DTestCase<Vector2ifx, Point2ifx, Vector2ifx> {
 
@@ -50,15 +53,38 @@ public class Vector2ifxTest extends AbstractVector2DTestCase<Vector2ifx, Point2i
 		return new Point2ifx(x, y);
 	}
 
-    @Test
-    public void staticToOrientationVector() {
-        assertFpVectorEquals(1, 0, Vector2ifx.toOrientationVector(0));
-        assertFpVectorEquals(-1, 0, Vector2ifx.toOrientationVector(Math.PI));
-        assertFpVectorEquals(0, 1, Vector2ifx.toOrientationVector(Math.PI/2));
-        assertFpVectorEquals(0, -1, Vector2ifx.toOrientationVector(-Math.PI/2));
+	@DisplayName("toOrientationVector")
+	@Nested
+	public class ToOrientationVector {
 
-        assertInlineParameterUsage(Vector2ifx.class, "toOrientationVector", double.class); //$NON-NLS-1$
-    }
+		@DisplayName("#1")
+		@Test
+		public void staticToOrientationVector_assertion1() {
+			assertFpVectorEquals(1, 0, Vector2ifx.toOrientationVector(0));
+		}
 
+		@DisplayName("#2")
+		@Test
+		public void staticToOrientationVector_assertion2() {
+			assertFpVectorEquals(-1, 0, Vector2ifx.toOrientationVector(Math.PI));
+		}
 
+		@DisplayName("#3")
+		@Test
+		public void staticToOrientationVector_assertion3() {
+			assertFpVectorEquals(0, 1, Vector2ifx.toOrientationVector(Math.PI/2));
+		}
+
+		@DisplayName("#4")
+		@Test
+		public void staticToOrientationVector_assertion4() {
+			assertFpVectorEquals(0, -1, Vector2ifx.toOrientationVector(-Math.PI/2));
+		}
+
+		@DisplayName("#5")
+		@Test
+		public void staticToOrientationVector_assertion5() {
+			assertInlineParameterUsage(Vector2ifx.class, "toOrientationVector", double.class);
+		}
+	}
 }

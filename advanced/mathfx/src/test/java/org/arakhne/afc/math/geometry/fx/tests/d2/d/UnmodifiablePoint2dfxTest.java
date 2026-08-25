@@ -23,8 +23,6 @@ package org.arakhne.afc.math.geometry.fx.tests.d2.d;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Shape2D;
@@ -32,7 +30,13 @@ import org.arakhne.afc.math.geometry.base.tests.AbstractUnmodifiablePoint2DTestC
 import org.arakhne.afc.math.geometry.fx.d2.d.Circle2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Point2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Vector2dfx;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("UnmodifiablePoint2dfx")
 @SuppressWarnings("all")
 public class UnmodifiablePoint2dfxTest extends AbstractUnmodifiablePoint2DTestCase<Point2dfx, Vector2dfx> {
 
@@ -56,33 +60,131 @@ public class UnmodifiablePoint2dfxTest extends AbstractUnmodifiablePoint2DTestCa
 		return new Point2dfx(x, y);
 	}
 
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void operator_andShape2D(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		Shape2D shape = new Circle2dfx(5, 8, 5);
-		assertFalse(createPoint(0,0).operator_and(shape));
-		assertFalse(createPoint(11,10).operator_and(shape));
-		assertFalse(createPoint(11,50).operator_and(shape));
-		assertFalse(createPoint(9,12).operator_and(shape));
-		assertTrue(createPoint(9,11).operator_and(shape));
-		assertTrue(createPoint(8,12).operator_and(shape));
-		assertTrue(createPoint(3,7).operator_and(shape));
-		assertFalse(createPoint(10,11).operator_and(shape));
-		assertTrue(createPoint(9,10).operator_and(shape));
+	@DisplayName("this && Shape2D")
+	@Nested
+	public class OperatorAndShape2D {
+
+		private Shape2D shape;
+
+		public void setUp(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape = new Circle2dfx(5, 8, 5);
+		}
+		
+		@DisplayName("operator_andShape2D_assertion1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion1(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertFalse(createPoint(0,0).operator_and(shape));
+		}
+
+		@DisplayName("operator_andShape2D_assertion2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion2(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertFalse(createPoint(11,10).operator_and(shape));
+		}
+
+		@DisplayName("operator_andShape2D_assertion3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion3(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertFalse(createPoint(11,50).operator_and(shape));
+		}
+
+		@DisplayName("operator_andShape2D_assertion4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion4(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertFalse(createPoint(9,12).operator_and(shape));
+		}
+
+		@DisplayName("operator_andShape2D_assertion5")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion5(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertTrue(createPoint(9,11).operator_and(shape));
+		}
+
+		@DisplayName("operator_andShape2D_assertion6")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion6(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertTrue(createPoint(8,12).operator_and(shape));
+		}
+
+		@DisplayName("operator_andShape2D_assertion7")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion7(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertTrue(createPoint(3,7).operator_and(shape));
+		}
+
+		@DisplayName("operator_andShape2D_assertion8")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion8(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertFalse(createPoint(10,11).operator_and(shape));
+		}
+
+		@DisplayName("operator_andShape2D_assertion9")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_andShape2D_assertion9(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertTrue(createPoint(9,10).operator_and(shape));
+		}
 	}
 	
-	@Override
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void operator_upToShape2D(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		Shape2D shape = new Circle2dfx(5, 8, 5);
-		assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
-		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));
-		assertEpsilonEquals(1.6483, createPoint(-1.2,5.6).operator_upTo(shape));
-		assertEpsilonEquals(0, createPoint(7.6,5.6).operator_upTo(shape));
-	}
+	@DisplayName("this .. Shape2D")
+	@Nested
+	public class OperatorUpToShape2D {
 
+		private Shape2D shape;
+
+		public void setUp(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			shape = new Circle2dfx(5, 8, 5);
+		}
+		
+		@DisplayName("operator_upToShape2D_assertion1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_upToShape2D_assertion1(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
+		}
+
+		@DisplayName("operator_upToShape2D_assertion2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_upToShape2D_assertion2(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));
+		}
+
+		@DisplayName("operator_upToShape2D_assertion3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_upToShape2D_assertion3(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(1.6483, createPoint(-1.2,5.6).operator_upTo(shape));
+		}
+
+		@DisplayName("operator_upToShape2D_assertion4")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void operator_upToShape2D_assertion4(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertEpsilonEquals(0, createPoint(7.6,5.6).operator_upTo(shape));
+		}
+	}
 }

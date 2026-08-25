@@ -34,6 +34,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ModifiableObservableListBase;
 import org.arakhne.afc.javafx.changes.SimpleListUpdateChange;
+import org.arakhne.afc.math.geometry.base.d2.BoundsReceiver2D;
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -156,9 +157,12 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 
 	@Pure
 	@Override
-	public void toBoundingBox(Rectangle2dfx box) {
+	public void toBoundingBox(BoundsReceiver2D box) {
 		assert box != null : AssertMessages.notNullParameter();
-		box.set(boundingBoxProperty().get());
+		final var bounds = boundingBoxProperty().get();
+		box.setFromCorners(
+				bounds.getMinX(), bounds.getMinY(),
+				bounds.getMaxX(), bounds.getMaxY());
 	}
 
 	/** Internal list.

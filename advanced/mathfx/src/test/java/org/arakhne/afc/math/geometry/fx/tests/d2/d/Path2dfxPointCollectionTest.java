@@ -20,13 +20,15 @@
 
 package org.arakhne.afc.math.geometry.fx.tests.d2.d;
 
-import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPointCollectionTest;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPointCollectionTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.d.Point2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Rectangle2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Vector2dfx;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("Path2dfxPointCollection")
 @SuppressWarnings("all")
-public class Path2dfxPointCollectionTest extends AbstractPointCollectionTest<Point2dfx, Vector2dfx, Rectangle2dfx> {
+public class Path2dfxPointCollectionTest extends AbstractPointCollectionTestCase<Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	@Override
 	protected TestShapeFactory2dfx createFactory() {

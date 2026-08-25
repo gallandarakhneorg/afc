@@ -20,13 +20,15 @@
 
 package org.arakhne.afc.math.geometry.fx.tests.d2.d;
 
-import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPathWindingRule2afpTest;
+import org.arakhne.afc.math.geometry.d2.tests.afp.AbstractPathWindingRule2afpTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.d.Point2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Rectangle2dfx;
 import org.arakhne.afc.math.geometry.fx.d2.d.Vector2dfx;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("PathWindingRule2dfx")
 @SuppressWarnings("all")
-public class PathWindingRule2dfxTest extends AbstractPathWindingRule2afpTest<Point2dfx, Vector2dfx, Rectangle2dfx> {
+public class PathWindingRule2dfxTest extends AbstractPathWindingRule2afpTestCase<Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	@Override
 	protected TestShapeFactory2dfx createFactory() {

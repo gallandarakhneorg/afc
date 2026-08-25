@@ -24,12 +24,11 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
-import org.arakhne.afc.math.geometry.base.d2.GeomFactory2D;
+import org.arakhne.afc.math.geometry.base.d2.ImmutableVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.base.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
-import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -200,65 +199,8 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 
 	@Pure
 	@Override
-	public UnmodifiableVector2D<Vector2ifx, Point2ifx> toUnmodifiable() {
-		return new UnmodifiableVector2D<>() {
-
-			private static final long serialVersionUID = -3525974627723161583L;
-
-			@Override
-			public GeomFactory2D<Vector2ifx, Point2ifx> getGeomFactory() {
-				return Vector2ifx.this.getGeomFactory();
-			}
-
-			@Override
-			public Vector2ifx toUnitVector() {
-				return Vector2ifx.this.toUnitVector();
-			}
-
-			@Override
-			public Vector2ifx toOrthogonalVector() {
-				return Vector2ifx.this.toOrthogonalVector();
-			}
-
-			@Override
-			@SuppressWarnings("checkstyle:superclone")
-			public Vector2ifx clone() {
-				return Vector2ifx.this.getGeomFactory().newVector(
-						Vector2ifx.this.ix(),
-						Vector2ifx.this.iy());
-			}
-
-			@Override
-			public double getX() {
-				return Vector2ifx.this.getX();
-			}
-
-			@Override
-			public int ix() {
-				return Vector2ifx.this.ix();
-			}
-
-			@Override
-			public double getY() {
-				return Vector2ifx.this.getY();
-			}
-
-			@Override
-			public int iy() {
-				return Vector2ifx.this.iy();
-			}
-
-			@Override
-			public String toString() {
-				return Vector2ifx.this.toString();
-			}
-
-			@Override
-			public void toJson(JsonBuffer buffer) {
-				Vector2ifx.this.toJson(buffer);
-			}
-
-		};
+	public UnmodifiableVector2D<?, ?> toUnmodifiable() {
+		return new ImmutableVector2D(ix(), iy());
 	}
 
 }

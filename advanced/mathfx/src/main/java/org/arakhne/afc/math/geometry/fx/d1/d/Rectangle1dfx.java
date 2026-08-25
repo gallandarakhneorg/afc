@@ -306,6 +306,15 @@ public class Rectangle1dfx extends AbstractShape1dfx<Rectangle1dfx>
 	}
 
 	@Override
+	public void set(Segment1D<?, ?> segment, double x, double y, double width, double height) {
+		setSegment(segment);
+		minXProperty().set(x);
+		minYProperty().set(y);
+		maxXProperty().set(x + width);
+		maxYProperty().set(y + height);
+	}
+
+	@Override
 	public ObjectProperty<Rectangle1dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);

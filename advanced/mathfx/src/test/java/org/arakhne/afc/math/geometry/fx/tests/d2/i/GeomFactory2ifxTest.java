@@ -23,13 +23,15 @@ package org.arakhne.afc.math.geometry.fx.tests.d2.i;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
 import org.arakhne.afc.math.geometry.base.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
-import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractGeomFactory2aiTest;
+import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractGeomFactory2aiTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.i.GeomFactory2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Point2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Vector2ifx;
+import org.junit.jupiter.api.DisplayName;
 
+@DisplayName("GeomFactory2ifx")
 @SuppressWarnings("all")
-public class GeomFactory2ifxTest extends AbstractGeomFactory2aiTest {
+public class GeomFactory2ifxTest extends AbstractGeomFactory2aiTestCase {
 
 	@Override
 	protected GeomFactory2ai<?, ?, ?, ?> createFactory() {

@@ -26,106 +26,374 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import javafx.beans.property.IntegerProperty;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractCircle2aiTest;
+import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractCircle2aiTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.i.Circle2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Rectangle2ifx;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("Circle2ifx")
 @SuppressWarnings("all")
-public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2ifx> {
+public class Circle2ifxTest extends AbstractCircle2aiTestCase<Circle2ifx, Rectangle2ifx> {
 
 	@Override
 	protected TestShapeFactory2ifx createFactory() {
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void xProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		IntegerProperty property = this.shape.xProperty();
-		assertNotNull(property);
-		IntegerProperty property2 = this.shape.xProperty();
-		assertSame(property, property2);
-		assertEquals(5, property.get());
+	@DisplayName("xProperty")
+	@Nested
+	public class XProperty {
+
+		@DisplayName("get")
+		@Nested
+		public class Get {
+
+			private IntegerProperty property;
+			private IntegerProperty property2;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = shape.xProperty();
+				property2 = shape.xProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xProperty_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertNotNull(property);
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xProperty_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertSame(property, property2);
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xProperty_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(5, property.get());
+			}
+		}
+
+		@DisplayName("set")
+		@Nested
+		public class Set {
+
+			private IntegerProperty property;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = shape.xProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(5, shape.getX());
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(8, shape.getY());
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(5, shape.getRadius());
+			}
+
+			@DisplayName("#4")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion4(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(345, shape.getX());
+			}
+
+			@DisplayName("#5")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion5(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(8, shape.getY());
+			}
+
+			@DisplayName("#6")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void xPropertySetter_assertion6(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(5, shape.getRadius());
+			}
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void yProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		IntegerProperty property = this.shape.yProperty();
-		assertNotNull(property);
-		IntegerProperty property2 = this.shape.yProperty();
-		assertSame(property, property2);
-		assertEquals(8, property.get());
+	@DisplayName("yProperty")
+	@Nested
+	public class YProperty {
+
+		@DisplayName("get")
+		@Nested
+		public class Get {
+
+			private IntegerProperty property;
+			private IntegerProperty property2;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = shape.yProperty();
+				property2 = shape.yProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yProperty_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertNotNull(property);
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yProperty_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertSame(property, property2);
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yProperty_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(8, property.get());
+			}
+		}
+
+		@DisplayName("set")
+		@Nested
+		public class Set {
+
+			private IntegerProperty property;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = shape.yProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(5, shape.getX());
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(8, shape.getY());
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(5, shape.getRadius());
+			}
+
+			@DisplayName("#4")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion4(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(5, shape.getX());
+			}
+
+			@DisplayName("#5")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion5(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(345, shape.getY());
+			}
+
+			@DisplayName("#6")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void yPropertySetter_assertion6(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(5, shape.getRadius());
+			}
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void radiusProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		IntegerProperty property = this.shape.radiusProperty();
-		assertNotNull(property);
-		IntegerProperty property2 = this.shape.radiusProperty();
-		assertSame(property, property2);
-		assertEquals(5, property.get());
+	@DisplayName("radiusProperty")
+	@Nested
+	public class RadiusProperty {
+
+		@DisplayName("get")
+		@Nested
+		public class Get {
+
+			private IntegerProperty property;
+			private IntegerProperty property2;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = shape.radiusProperty();
+				property2 = shape.radiusProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusProperty_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertNotNull(property);
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusProperty_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertSame(property, property2);
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusProperty_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(5, property.get());
+			}
+		}
+
+		@DisplayName("set")
+		@Nested
+		public class Set {
+
+			private IntegerProperty property;
+
+			public void setUp(CoordinateSystem2D cs) {
+				CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+				property = shape.radiusProperty();
+			}
+
+			@DisplayName("#1")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusPropertySetter_assertion1(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(5, shape.getX());
+			}
+
+			@DisplayName("#2")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusPropertySetter_assertion2(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(8, shape.getY());
+			}
+
+			@DisplayName("#3")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusPropertySetter_assertion3(CoordinateSystem2D cs) {
+				setUp(cs);
+				assertEquals(5, shape.getRadius());
+			}
+
+			@DisplayName("#4")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusPropertySetter_assertion4(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(5, shape.getX());
+			}
+
+			@DisplayName("#5")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusPropertySetter_assertion5(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(8, shape.getY());
+			}
+
+			@DisplayName("#6")
+			@ParameterizedTest(name = "{index} => {0}")
+			@EnumSource(CoordinateSystem2D.class)
+			public void radiusPropertySetter_assertion6(CoordinateSystem2D cs) {
+				setUp(cs);
+				property.set(345);
+				assertEquals(345, shape.getRadius());
+			}
+		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void xPropertySetter(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(5, this.shape.getX());
-		assertEquals(8, this.shape.getY());
-		assertEquals(5, this.shape.getRadius());
-		IntegerProperty property = this.shape.xProperty();
-		property.set(345);
-		assertEquals(345, this.shape.getX());
-		assertEquals(8, this.shape.getY());
-		assertEquals(5, this.shape.getRadius());
-	}
+	@DisplayName("clone")
+	@Nested
+	public class CloneTest {
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void yPropertySetter(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(5, this.shape.getX());
-		assertEquals(8, this.shape.getY());
-		assertEquals(5, this.shape.getRadius());
-		IntegerProperty property = this.shape.yProperty();
-		property.set(345);
-		assertEquals(5, this.shape.getX());
-		assertEquals(345, this.shape.getY());
-		assertEquals(5, this.shape.getRadius());
-	}
+		private Circle2ifx clone;
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void radiusPropertySetter(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		assertEquals(5, this.shape.getX());
-		assertEquals(8, this.shape.getY());
-		assertEquals(5, this.shape.getRadius());
-		IntegerProperty property = this.shape.radiusProperty();
-		property.set(345);
-		assertEquals(5, this.shape.getX());
-		assertEquals(8, this.shape.getY());
-		assertEquals(345, this.shape.getRadius());
-	}
+		public void setUp(CoordinateSystem2D cs) {
+			clone = shape.clone();
+		}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	@Override
-	public void testClone(CoordinateSystem2D cs) {
-		super.testClone(cs);
-		Circle2ifx clone = this.shape.clone();
-		assertNotSame(this.shape.xProperty(), clone.xProperty());
-		assertNotSame(this.shape.yProperty(), clone.yProperty());
-		assertNotSame(this.shape.radiusProperty(), clone.radiusProperty());
-	}
+		@DisplayName("#1")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void testClone_assertion1(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotSame(shape.xProperty(), clone.xProperty());
+		}
 
+		@DisplayName("#2")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void testClone_assertion2(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotSame(shape.yProperty(), clone.yProperty());
+		}
+
+		@DisplayName("#3")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void testClone_assertion3(CoordinateSystem2D cs) {
+			setUp(cs);
+			assertNotSame(shape.radiusProperty(), clone.radiusProperty());
+		}
+	}
 }

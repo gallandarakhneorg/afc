@@ -29,160 +29,214 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.math.geometry.base.PathElementType;
 import org.arakhne.afc.math.geometry.base.PathWindingRule;
 import org.arakhne.afc.math.geometry.base.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractPath2aiTest;
+import org.arakhne.afc.math.geometry.d2.tests.ai.AbstractPath2aiTestCase;
 import org.arakhne.afc.math.geometry.fx.d2.i.Path2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Point2ifx;
 import org.arakhne.afc.math.geometry.fx.d2.i.Rectangle2ifx;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("Path2ifx")
 @SuppressWarnings("all")
-public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
+public class Path2ifxTest extends AbstractPath2aiTestCase<Path2ifx, Rectangle2ifx> {
 
 	@Override
 	protected TestShapeFactory2ifx createFactory() {
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	@Override
-	public void testClone(CoordinateSystem2D cs) {
-		super.testClone(cs);
-		Path2ifx clone = this.shape.clone();
-		for (int i = 0; i < this.shape.size() * 2; ++i) {
-			assertEquals(this.shape.getCoordAt(i), clone.getCoordAt(i));
-		}
-		for (int i = 0; i < this.shape.getPathElementCount(); ++i) {
-			assertEquals(this.shape.getPathElementTypeAt(i), clone.getPathElementTypeAt(i));
+	@DisplayName("clone")
+	@Nested
+	public class CloneTest {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void testClone(CoordinateSystem2D cs) {
+			Path2ifx clone = shape.clone();
+			for (int i = 0; i < shape.size() * 2; ++i) {
+				assertEquals(shape.getCoordAt(i), clone.getCoordAt(i));
+			}
+			for (int i = 0; i < shape.getPathElementCount(); ++i) {
+				assertEquals(shape.getPathElementTypeAt(i), clone.getPathElementTypeAt(i));
+			}
 		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void boundingBoxProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		ObjectProperty<Rectangle2ifx> property = this.shape.boundingBoxProperty();
-		assertNotNull(property);
-		Rectangle2ifx box = property.get();
-		assertNotNull(box);
-		assertEquals(0, box.getMinX());
-		assertEquals(-5, box.getMinY());
-		assertEquals(7, box.getMaxX());
-		assertEquals(3, box.getMaxY());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void controlPointBoundingBoxProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		ObjectProperty<Rectangle2ifx> property = this.shape.controlPointBoundingBoxProperty();
-		assertNotNull(property);
-		Rectangle2ifx box = property.get();
-		assertNotNull(box);
-		assertEquals(0, box.getMinX());
-		assertEquals(-5, box.getMinY());
-		assertEquals(7, box.getMaxX());
-		assertEquals(5, box.getMaxY());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void coordinatesProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		ReadOnlyListProperty<Point2ifx> property = this.shape.coordinatesProperty();
-		assertNotNull(property);
-		assertEquals(7, property.size());
-		assertEquals(0, property.get(0).ix());
-		assertEquals(0, property.get(0).iy());
-		assertEquals(2, property.get(1).ix());
-		assertEquals(2, property.get(1).iy());
-		assertEquals(3, property.get(2).ix());
-		assertEquals(0, property.get(2).iy());
-		assertEquals(4, property.get(3).ix());
-		assertEquals(3, property.get(3).iy());
-		assertEquals(5, property.get(4).ix());
-		assertEquals(-1, property.get(4).iy());
-		assertEquals(6, property.get(5).ix());
-		assertEquals(5, property.get(5).iy());
-		assertEquals(7, property.get(6).ix());
-		assertEquals(-5, property.get(6).iy());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void isCurvedProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		BooleanProperty property = this.shape.isCurvedProperty();
-		assertNotNull(property);
-		assertTrue(property.get());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void isEmptyProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		BooleanProperty property = this.shape.isEmptyProperty();
-		assertNotNull(property);
-		assertFalse(property.get());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void isMultiPartsProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		BooleanProperty property = this.shape.isMultiPartsProperty();
-		assertNotNull(property);
-		assertFalse(property.get());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void isPolygonProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		BooleanProperty property = this.shape.isPolygonProperty();
-		assertNotNull(property);
-		assertTrue(property.get());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void isPolylineProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		BooleanProperty property = this.shape.isPolylineProperty();
-		assertNotNull(property);
-		assertFalse(property.get());
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void typesProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		ReadOnlyListProperty<PathElementType> property = this.shape.typesProperty();
-		assertNotNull(property);
-		assertEquals(5, property.size());
-		assertSame(PathElementType.MOVE_TO, property.get(0));
-		assertSame(PathElementType.LINE_TO, property.get(1));
-		assertSame(PathElementType.QUAD_TO, property.get(2));
-		assertSame(PathElementType.CURVE_TO, property.get(3));
-		assertSame(PathElementType.CLOSE, property.get(4));
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem2D.class)
-	public void windingRuleProperty(CoordinateSystem2D cs) {
-		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-		ObjectProperty<PathWindingRule> property = this.shape.windingRuleProperty();
-		assertNotNull(property);
-		assertSame(PathWindingRule.NON_ZERO, property.get());
-		this.shape.setWindingRule(PathWindingRule.EVEN_ODD);
-		assertSame(PathWindingRule.EVEN_ODD, property.get());
-		property.set(PathWindingRule.NON_ZERO);
-		assertSame(PathWindingRule.NON_ZERO, property.get());
+	@DisplayName("boundingBoxProperty")
+	@Nested
+	public class BoundingBoxProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void boundingBoxProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			ObjectProperty<Rectangle2ifx> property = shape.boundingBoxProperty();
+			assertNotNull(property);
+			Rectangle2ifx box = property.get();
+			assertNotNull(box);
+			assertEquals(0, box.getMinX());
+			assertEquals(-5, box.getMinY());
+			assertEquals(7, box.getMaxX());
+			assertEquals(3, box.getMaxY());
+		}
 	}
 
+	@DisplayName("controlPointBoundingBoxProperty")
+	@Nested
+	public class ControlPointBoundingBoxProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void controlPointBoundingBoxProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			ObjectProperty<Rectangle2ifx> property = shape.controlPointBoundingBoxProperty();
+			assertNotNull(property);
+			Rectangle2ifx box = property.get();
+			assertNotNull(box);
+			assertEquals(0, box.getMinX());
+			assertEquals(-5, box.getMinY());
+			assertEquals(7, box.getMaxX());
+			assertEquals(5, box.getMaxY());
+		}
+	}
+
+	@DisplayName("coordinatesProperty")
+	@Nested
+	public class CoordinatesProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void coordinatesProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			ReadOnlyListProperty<Point2ifx> property = shape.coordinatesProperty();
+			assertNotNull(property);
+			assertEquals(7, property.size());
+			assertEquals(0, property.get(0).ix());
+			assertEquals(0, property.get(0).iy());
+			assertEquals(2, property.get(1).ix());
+			assertEquals(2, property.get(1).iy());
+			assertEquals(3, property.get(2).ix());
+			assertEquals(0, property.get(2).iy());
+			assertEquals(4, property.get(3).ix());
+			assertEquals(3, property.get(3).iy());
+			assertEquals(5, property.get(4).ix());
+			assertEquals(-1, property.get(4).iy());
+			assertEquals(6, property.get(5).ix());
+			assertEquals(5, property.get(5).iy());
+			assertEquals(7, property.get(6).ix());
+			assertEquals(-5, property.get(6).iy());
+		}
+	}
+
+	@DisplayName("isCurvedProperty")
+	@Nested
+	public class IsCurvedProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void isCurvedProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			BooleanProperty property = shape.isCurvedProperty();
+			assertNotNull(property);
+			assertTrue(property.get());
+		}
+	}
+
+	@DisplayName("isEmptyProperty")
+	@Nested
+	public class IsEmptyProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void isEmptyProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			BooleanProperty property = shape.isEmptyProperty();
+			assertNotNull(property);
+			assertFalse(property.get());
+		}
+	}
+
+	@DisplayName("isMultiPartsProperty")
+	@Nested
+	public class IsMultiPartsProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void isMultiPartsProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			BooleanProperty property = shape.isMultiPartsProperty();
+			assertNotNull(property);
+			assertFalse(property.get());
+		}
+	}
+
+	@DisplayName("isPolygonProperty")
+	@Nested
+	public class IsPolygonProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void isPolygonProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			BooleanProperty property = shape.isPolygonProperty();
+			assertNotNull(property);
+			assertTrue(property.get());
+		}
+	}
+
+	@DisplayName("isPolylineProperty")
+	@Nested
+	public class IsPolylineProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void isPolylineProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			BooleanProperty property = shape.isPolylineProperty();
+			assertNotNull(property);
+			assertFalse(property.get());
+		}
+	}
+
+	@DisplayName("typesProperty")
+	@Nested
+	public class TsypesProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void typesProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			ReadOnlyListProperty<PathElementType> property = shape.typesProperty();
+			assertNotNull(property);
+			assertEquals(5, property.size());
+			assertSame(PathElementType.MOVE_TO, property.get(0));
+			assertSame(PathElementType.LINE_TO, property.get(1));
+			assertSame(PathElementType.QUAD_TO, property.get(2));
+			assertSame(PathElementType.CURVE_TO, property.get(3));
+			assertSame(PathElementType.CLOSE, property.get(4));
+		}
+	}
+
+	@DisplayName("windingRuleProperty")
+	@Nested
+	public class WindingRuleProperty {
+
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+		public void windingRuleProperty(CoordinateSystem2D cs) {
+			CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			ObjectProperty<PathWindingRule> property = shape.windingRuleProperty();
+			assertNotNull(property);
+			assertSame(PathWindingRule.NON_ZERO, property.get());
+			shape.setWindingRule(PathWindingRule.EVEN_ODD);
+			assertSame(PathWindingRule.EVEN_ODD, property.get());
+			property.set(PathWindingRule.NON_ZERO);
+			assertSame(PathWindingRule.NON_ZERO, property.get());
+		}
+	}
 }
