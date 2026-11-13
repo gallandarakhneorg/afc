@@ -24,6 +24,8 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import org.arakhne.afc.gis.GISSet;
 import org.arakhne.afc.gis.location.GeoId;
@@ -46,7 +48,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 14.0
  * @see GISPrimitive
  */
-abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
+public abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 
 	/** Internal representation.
 	 */
@@ -244,6 +246,18 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 
 	@Override
 	@Pure
+	public Iterator<P> iterator(GeoLocation location) {
+		if (location != null) {
+			final var objBounds = location.toBounds2D();
+			if (objBounds != null) {
+				return new GeoLocationBasedIterator<>(location, this.grid.iterator(objBounds));
+			}
+		}
+		return null;
+	}
+
+	@Override
+	@Pure
 	public Iterator<P> iterator(Rectangle2afp<?, ?, ?, ?, ?, ?> clipBounds) {
 		return iterator(clipBounds, -1);
 	}
@@ -410,6 +424,16 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	@Pure
 	public Iterable<P> toIterable(final Rectangle2afp<?, ?, ?, ?, ?, ?> clipBounds, final int budget) {
 		return () -> AbstractGISGridSet.this.iterator(clipBounds, budget);
+	}
+
+	/** Replies the grid.
+	 *
+	 * @return the grid.
+	 * @since 18.0
+	 */
+	@Pure
+	public Grid<P> getGrid() {
+		return this.grid;
 	}
 
 	//-----------------------------------------------------------------
@@ -617,5 +641,63 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 		}
 
 	} /* class BoundsIterator */
+
+	/**
+	 * This class describes an iterator GIS primitives with a specific geolocation.
+	 *
+	 * @param <P> is the type of the user data inside the node.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 18.0
+	 * @see GISPrimitive
+	 */
+	private static class GeoLocationBasedIterator<P extends GISPrimitive> implements Iterator<P> {
+
+		private final GeoLocation location;
+
+		private final Iterator<P> iterator;
+
+		private P next;
+
+		/** Constructor.
+		 *
+		 * @param location the reference geolocation.
+		 * @param iterator the iterator.
+		 */
+		GeoLocationBasedIterator(GeoLocation location, Iterator<P> iterator) {
+			this.location = location;
+			this.iterator = iterator;
+			searchNext();
+		}
+
+		private void searchNext() {
+			this.next = null;
+			while (this.next == null && this.iterator.hasNext()) {
+				final var element = this.iterator.next();
+				if (Objects.equals(element.getGeoLocation(), this.location)) {
+					this.next = element;
+				}
+			}
+		}
+
+		@Override
+		@Pure
+		public boolean hasNext() {
+			return this.next != null;
+		}
+
+		@Override
+		public P next() {
+			final var element = this.next;
+			if (element == null) {
+				throw new NoSuchElementException();
+			}
+			searchNext();
+			return element;
+		}
+
+	} /* class GeoLocationBasedIterator */
 
 }

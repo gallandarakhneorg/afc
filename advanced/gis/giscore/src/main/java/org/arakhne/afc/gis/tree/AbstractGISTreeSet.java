@@ -25,6 +25,8 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import org.arakhne.afc.gis.GISSet;
 import org.arakhne.afc.gis.location.GeoId;
@@ -278,6 +280,18 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Pure
 	public Iterator<P> iterator() {
 		return this.tree.dataBreadthFirstIterator();
+	}
+
+	@Override
+	@Pure
+	public Iterator<P> iterator(GeoLocation location) {
+		if (location != null) {
+			final var objBounds = location.toBounds2D();
+			if (objBounds != null) {
+				return new GeoLocationBasedIterator<>(location, iterator(objBounds));
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -860,5 +874,63 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 		}
 
 	} /* class PointSelector */
+
+	/**
+	 * This class describes an iterator GIS primitives with a specific geolocation.
+	 *
+	 * @param <P> is the type of the user data inside the node.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 18.0
+	 * @see GISPrimitive
+	 */
+	private static class GeoLocationBasedIterator<P extends GISPrimitive> implements Iterator<P> {
+
+		private final GeoLocation location;
+
+		private final Iterator<P> iterator;
+
+		private P next;
+
+		/** Constructor.
+		 *
+		 * @param location the reference geolocation.
+		 * @param iterator the iterator.
+		 */
+		GeoLocationBasedIterator(GeoLocation location, Iterator<P> iterator) {
+			this.location = location;
+			this.iterator = iterator;
+			searchNext();
+		}
+
+		private void searchNext() {
+			this.next = null;
+			while (this.next == null && this.iterator.hasNext()) {
+				final var element = this.iterator.next();
+				if (Objects.equals(element.getGeoLocation(), this.location)) {
+					this.next = element;
+				}
+			}
+		}
+
+		@Override
+		@Pure
+		public boolean hasNext() {
+			return this.next != null;
+		}
+
+		@Override
+		public P next() {
+			final var element = this.next;
+			if (element == null) {
+				throw new NoSuchElementException();
+			}
+			searchNext();
+			return element;
+		}
+
+	} /* class GeoLocationBasedIterator */
 
 }

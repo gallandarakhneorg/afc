@@ -68,6 +68,7 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 		}
 	}
 
+
 	@Override
 	@Pure
 	public GeoId toGeoId() {
@@ -165,7 +166,7 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 	 * @return the coordinates of this geo-location.
 	 */
 	@Pure
-	float[] toArray() {
+	public float[] toArray() {
 		return this.pts;
 	}
 

@@ -32,7 +32,7 @@ import org.arakhne.afc.gis.primitive.GISPrimitive;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-interface AroundCellIterable<P extends GISPrimitive> extends Iterable<GridCell<P>> {
+public interface AroundCellIterable<P extends GISPrimitive> extends Iterable<GridCell<P>> {
 
 	/** Replies the extended iterator on the cells around a specified ont.
 	 *

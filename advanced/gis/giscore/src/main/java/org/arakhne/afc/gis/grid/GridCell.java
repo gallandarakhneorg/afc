@@ -27,6 +27,7 @@ import java.util.TreeSet;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -40,7 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 14.0
  * @see GISPrimitive
  */
-class GridCell<P extends GISPrimitive> implements Iterable<P> {
+public class GridCell<P extends GISPrimitive> implements Iterable<P> {
 
 	private final int row;
 
@@ -58,7 +59,7 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 	 * @param column is the column index of the cell.
 	 * @param bounds are the bounds of the grid cell.
 	 */
-	GridCell(int row, int column, Rectangle2d bounds) {
+	public GridCell(int row, int column, Rectangle2d bounds) {
 		this.row = row;
 		this.col = column;
 		this.bounds = bounds;

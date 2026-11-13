@@ -43,7 +43,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 14.0
  * @see GISPrimitive
  */
-class Grid<P extends GISPrimitive> implements Iterable<P> {
+public class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	private final int nrows;
 
@@ -63,7 +63,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 * @param bounds are the bounds of the grid cell.
 	 */
 	@SuppressWarnings("unchecked")
-	Grid(int nRows, int nColumns, Rectangle2d bounds) {
+	public Grid(int nRows, int nColumns, Rectangle2d bounds) {
 		this.nrows = nRows;
 		this.ncolumns = nColumns;
 		this.bounds = bounds;
@@ -284,7 +284,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 * @param createCells indicates if the not already created cells should be created.
 	 * @return the grid cells.
 	 */
-	protected Iterable<GridCell<P>> getGridCellsOn(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds, boolean createCells) {
+	public Iterable<GridCell<P>> getGridCellsOn(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds, boolean createCells) {
 		if (bounds.intersects(this.bounds)) {
 			final var c1 = getColumnFor(bounds.getMinX());
 			final var r1 = getRowFor(bounds.getMinY());

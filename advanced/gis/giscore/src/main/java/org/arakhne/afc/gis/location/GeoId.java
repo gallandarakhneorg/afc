@@ -68,7 +68,7 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 	/** Constructor.
 	 * @param id is a unique identifier.
 	 */
-	GeoId(String id) {
+	public GeoId(String id) {
 		this.id = id;
 	}
 
@@ -79,7 +79,7 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 	 * @param uppery is the uppest y-coordinate of the bounds.
 	 * @param id is a unique identifier.
 	 */
-	GeoId(double lowerx, double lowery, double upperx, double uppery, String id) {
+	public GeoId(double lowerx, double lowery, double upperx, double uppery, String id) {
 		final var geoid = new StringBuilder(id);
 		geoid.append('#');
 		geoid.append((long) Math.floor(lowerx));

@@ -60,9 +60,9 @@ public class StandardGISGridSet<P extends GISPrimitive>
 	}
 
 	@Override
-	public boolean add(P point) {
-		if (this.grid.addElement(point)) {
-			updateComponentType(point);
+	public boolean add(P primitive) {
+		if (this.grid.addElement(primitive)) {
+			updateComponentType(primitive);
 			return true;
 		}
 		return false;

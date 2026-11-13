@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.gis.grid;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 14.0
  * @see GISPrimitive
  */
-class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElement<P>> {
+public class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElement<P>> {
 
 	private final P element;
 

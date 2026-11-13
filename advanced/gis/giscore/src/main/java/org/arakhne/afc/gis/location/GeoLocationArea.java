@@ -53,10 +53,11 @@ public final class GeoLocationArea extends AbstractGeoLocation {
 	 * @param y2 y coordinate of the second area corner.
 	 */
 	public GeoLocationArea(double x1, double y1, double x2, double y2) {
-		this.x1 = GeoLocationUtil.castDistance(Math.min(x1, x2));
-		this.y1 = GeoLocationUtil.castDistance(Math.min(y1, y2));
-		this.x2 = GeoLocationUtil.castDistance(Math.max(x1, x2));
-		this.y2 = GeoLocationUtil.castDistance(Math.max(y1, y2));
+		this(
+				GeoLocationUtil.castDistance(Math.min(x1, x2)),
+				GeoLocationUtil.castDistance(Math.min(y1, y2)),
+				GeoLocationUtil.castDistance(Math.max(x1, x2)),
+				GeoLocationUtil.castDistance(Math.max(y1, y2)));
 	}
 
 	/** Constructor.
@@ -65,10 +66,30 @@ public final class GeoLocationArea extends AbstractGeoLocation {
 	public GeoLocationArea(Shape2d<?> area) {
 		assert area != null;
 		final var box = area.toBoundingBox();
-		this.x1 = GeoLocationUtil.castDistance(box.getMinX());
-		this.y1 = GeoLocationUtil.castDistance(box.getMinY());
-		this.x2 = GeoLocationUtil.castDistance(box.getMaxX());
-		this.y2 = GeoLocationUtil.castDistance(box.getMaxY());
+		this(
+				GeoLocationUtil.castDistance(box.getMinX()),
+				GeoLocationUtil.castDistance(box.getMinY()),
+				GeoLocationUtil.castDistance(box.getMaxX()),
+				GeoLocationUtil.castDistance(box.getMaxY()));
+	}
+
+	/** Constructor.
+	 * @param x1 x coordinate of the first area corner.
+	 * @param y1 y coordinate of the first area corner.
+	 * @param x2 x coordinate of the second area corner.
+	 * @param y2 y coordinate of the second area corner.
+	 */
+	private GeoLocationArea(float x1, float y1, float x2, float y2) {
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
+	}
+
+	@Pure
+	@Override
+	public GeoLocationArea clone() {
+		return (GeoLocationArea) super.clone();
 	}
 
 	@Pure

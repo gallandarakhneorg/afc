@@ -34,7 +34,7 @@ import org.arakhne.afc.gis.primitive.GISPrimitive;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-interface AroundCellIterator<P extends GISPrimitive> extends Iterator<GridCell<P>> {
+public interface AroundCellIterator<P extends GISPrimitive> extends Iterator<GridCell<P>> {
 
 	/** Replies the index of the cocentric circle on which the last element
 	 * replied by {@link #next()} is.

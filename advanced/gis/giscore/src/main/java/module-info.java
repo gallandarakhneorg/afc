@@ -44,6 +44,6 @@ open module org.arakhne.afc.gis.giscore {
 	exports org.arakhne.afc.gis.location;
 	exports org.arakhne.afc.gis.mapelement;
 	exports org.arakhne.afc.gis.maplayer;
-	exports org.arakhne.afc.gis.primitive;
 	exports org.arakhne.afc.gis.tree;
+	exports org.arakhne.afc.gis.primitive;
 }

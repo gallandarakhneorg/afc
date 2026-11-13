@@ -79,7 +79,9 @@ public interface GISSet<P extends GISPrimitive> extends Set<P> {
 	 */
 	P get(GeoId identifier);
 
-	/** Replies the element which as the specified location.
+	/** Replies the first element which as the specified location.
+	 * If multiple elements have equal geo-locations, the first is replied.
+	 * To obtain all the elements from the geo-location, uses
 	 *
 	 * @param location is the location of the element to find.
 	 * @return the entity or {@code null} if none was found.
@@ -124,6 +126,14 @@ public interface GISSet<P extends GISPrimitive> extends Set<P> {
 	 * @return the index or {@code -1} if the object was not inside this set.
 	 */
 	int indexOf(Object obj);
+
+	/** Replies the set of elements that have a geo-location to the given location.
+	 *
+	 * @param geolocation the geo-location to search for.
+	 * @return the elements inside the specified bounds.
+	 * @since 18.0
+	 */
+	Iterator<P> iterator(GeoLocation geolocation);
 
 	/** Replies the set of elements that have an intersection with the specified rectangle.
 	 *
