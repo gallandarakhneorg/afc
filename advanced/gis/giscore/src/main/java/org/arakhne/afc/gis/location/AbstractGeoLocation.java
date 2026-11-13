@@ -36,6 +36,16 @@ public abstract class AbstractGeoLocation implements GeoLocation {
 
 	@Pure
 	@Override
+	public AbstractGeoLocation clone() {
+		try {
+			return (AbstractGeoLocation) super.clone();
+		} catch (CloneNotSupportedException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	@Pure
+	@Override
 	public final String toString() {
 		return toGeoId().toString();
 	}

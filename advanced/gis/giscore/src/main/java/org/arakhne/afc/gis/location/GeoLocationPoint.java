@@ -51,6 +51,12 @@ public final class GeoLocationPoint extends AbstractGeoLocation {
 		this.y = GeoLocationUtil.castDistance(y);
 	}
 
+	@Pure
+	@Override
+	public GeoLocationPoint clone() {
+		return (GeoLocationPoint) super.clone();
+	}
+
 	@Override
 	@Pure
 	public GeoId toGeoId() {

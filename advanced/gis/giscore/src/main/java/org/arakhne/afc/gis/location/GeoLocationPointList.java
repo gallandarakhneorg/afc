@@ -68,6 +68,11 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 		}
 	}
 
+	@Pure
+	@Override
+	public GeoLocationPointList clone() {
+		return (GeoLocationPointList) super.clone();
+	}
 
 	@Override
 	@Pure

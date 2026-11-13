@@ -47,6 +47,12 @@ public final class GeoLocationNowhere extends AbstractGeoLocation {
 
 	@Pure
 	@Override
+	public GeoLocationNowhere clone() {
+		return (GeoLocationNowhere) super.clone();
+	}
+
+	@Pure
+	@Override
 	public GeoId toGeoId() {
 		return new GeoId(GeoLocationUtil.makeInternalId(this.uid));
 	}

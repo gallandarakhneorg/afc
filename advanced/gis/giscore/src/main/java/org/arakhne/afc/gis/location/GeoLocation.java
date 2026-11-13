@@ -34,7 +34,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public interface GeoLocation extends Comparable<GeoLocation> {
+public interface GeoLocation extends Comparable<GeoLocation>, Cloneable {
+
+	/** Clone this geolocation.
+	 *
+	 * @return the clone.
+	 * @since 18.0
+	 */
+	@Pure
+	GeoLocation clone();
 
 	/** Replies the string representation of the geo-location.
 	 *
