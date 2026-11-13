@@ -112,7 +112,7 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 	@Pure
 	@Override
 	public String toString() {
-		return ReflectionUtil.toString(this);
+		return toGeogebra();
 	}
 
 	@Override

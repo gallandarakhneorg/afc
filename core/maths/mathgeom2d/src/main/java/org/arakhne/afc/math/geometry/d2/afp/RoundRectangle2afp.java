@@ -328,7 +328,7 @@ public interface RoundRectangle2afp<
         assert r2y1 <= r2y2 : AssertMessages.lowerEqualParameters(7, Double.valueOf(r2y1), 9, Double.valueOf(r2y2));
         assert r2aw >= 0. : AssertMessages.positiveOrZeroParameter(10);
         assert r2ah >= 0. : AssertMessages.positiveOrZeroParameter(11);
-        if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
+        if (Rectangle2afp.intersectsInteriorRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
             // Boundings rectangles are intersecting
 
             // Test internal rectangles
@@ -340,16 +340,16 @@ public interface RoundRectangle2afp<
             final var r2InnerMaxX = r2x2 - r2aw;
             final var r2InnerMinY = r2y1 + r2ah;
             final var r2InnerMaxY = r2y2 - r2ah;
-            if (Rectangle2afp.intersectsRectangleRectangle(
+            if (Rectangle2afp.intersectsInteriorRectangleRectangle(
                     r1InnerMinX, r1y1, r1InnerMaxX, r1y2,
                     r2InnerMinX, r2y1, r2InnerMaxX, r2y2)
-                    || Rectangle2afp.intersectsRectangleRectangle(
+                    || Rectangle2afp.intersectsInteriorRectangleRectangle(
                             r1InnerMinX, r1y1, r1InnerMaxX, r1y2,
                             r2x1, r2InnerMinY, r2x2, r2InnerMaxY)
-                    || Rectangle2afp.intersectsRectangleRectangle(
+                    || Rectangle2afp.intersectsInteriorRectangleRectangle(
                             r1x1, r1InnerMinY, r1x2, r1InnerMaxY,
                             r2InnerMinX, r2y1, r2InnerMaxX, r2y2)
-                    || Rectangle2afp.intersectsRectangleRectangle(
+                    || Rectangle2afp.intersectsInteriorRectangleRectangle(
                             r1x1, r1InnerMinY, r1x2, r1InnerMaxY,
                             r2x1, r2InnerMinY, r2x2, r2InnerMaxY)) {
                 return true;
@@ -461,7 +461,7 @@ public interface RoundRectangle2afp<
         assert r1ah >= 0. : AssertMessages.positiveOrZeroParameter(5);
         assert r2x1 <= r2x2 : AssertMessages.lowerEqualParameters(6, Double.valueOf(r2x1), 8, Double.valueOf(r2x2));
         assert r2y1 <= r2y2 : AssertMessages.lowerEqualParameters(7, Double.valueOf(r2y1), 9, Double.valueOf(r2y2));
-        if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
+        if (Rectangle2afp.intersectsInteriorRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
             // Boundings rectangles are intersecting
 
             // Test internal rectangles
@@ -469,10 +469,10 @@ public interface RoundRectangle2afp<
             final var r1InnerMaxX = r1x2 - r1aw;
             final var r1InnerMinY = r1y1 + r1ah;
             final var r1InnerMaxY = r1y2 - r1ah;
-            if (Rectangle2afp.intersectsRectangleRectangle(
+            if (Rectangle2afp.intersectsInteriorRectangleRectangle(
                     r1InnerMinX, r1y1, r1InnerMaxX, r1y2,
                     r2x1, r2y1, r2x2, r2y2)
-                    || Rectangle2afp.intersectsRectangleRectangle(
+                    || Rectangle2afp.intersectsInteriorRectangleRectangle(
                             r1x1, r1InnerMinY, r1x2, r1InnerMaxY,
                             r2x1, r2y1, r2x2, r2y2)) {
                 return true;

@@ -417,27 +417,88 @@ public interface Rectangle2afp<
         return Math.fma(dx, dx, dy * dy);
     }
 
-    /** Replies if two rectangles are intersecting.
+    /** Replies if two axis-aligned rectangles intersect, including at their borders or corners.
      *
-     * @param x1 is the first corner of the first rectangle.
-     * @param y1 is the first corner of the first rectangle.
-     * @param x2 is the second corner of the first rectangle.
-     * @param y2 is the second corner of the first rectangle.
-     * @param x3 is the first corner of the second rectangle.
-     * @param y3 is the first corner of the second rectangle.
-     * @param x4 is the second corner of the second rectangle.
-     * @param y4 is the second corner of the second rectangle.
+     *<p>Rectangles with zero width or height are treated as line segments or points.
+     *
+     * @param minX1 is the first corner of the first rectangle.
+     * @param minY1 is the first corner of the first rectangle.
+     * @param maxX1 is the second corner of the first rectangle.
+     * @param maxY1 is the second corner of the first rectangle.
+     * @param minX2 is the first corner of the second rectangle.
+     * @param minY2 is the first corner of the second rectangle.
+     * @param maxX2 is the second corner of the second rectangle.
+     * @param maxY2 is the second corner of the second rectangle.
      * @return {@code true} if the two shapes are intersecting; otherwise
      *     {@code false}
+     * @see #intersectsInteriorRectangleRectangle(double, double, double, double, double, double, double, double)
      */
     @Pure
-    static boolean intersectsRectangleRectangle(double x1, double y1, double x2, double y2,
-            double x3, double y3, double x4, double y4) {
-        assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, Double.valueOf(x1), 2, Double.valueOf(x2));
-        assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, Double.valueOf(y1), 3, Double.valueOf(y2));
-        assert x3 <= x4 : AssertMessages.lowerEqualParameters(4, Double.valueOf(x3), 6, Double.valueOf(x4));
-        assert y3 <= y4 : AssertMessages.lowerEqualParameters(5, Double.valueOf(y3), 7, Double.valueOf(y4));
-        return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4;
+    static boolean intersectsRectangleRectangle(double minX1, double minY1, double maxX1, double maxY1,
+            double minX2, double minY2, double maxX2, double maxY2) {
+        assert minX1 <= maxX1 : AssertMessages.lowerEqualParameters(0, Double.valueOf(minX1), 2, Double.valueOf(maxX1));
+        assert minY1 <= maxY1 : AssertMessages.lowerEqualParameters(1, Double.valueOf(minY1), 3, Double.valueOf(maxY1));
+        assert minX2 <= maxX2 : AssertMessages.lowerEqualParameters(4, Double.valueOf(minX2), 6, Double.valueOf(maxX2));
+        assert minY2 <= maxY2 : AssertMessages.lowerEqualParameters(5, Double.valueOf(minY2), 7, Double.valueOf(maxY2));
+        return minX1 <= maxX2 && maxX1 >= minX2 && minY1 <= maxY2 && maxY1 >= minY2;
+    }
+
+    /** Tests whether the interiors of two axis-aligned rectangles intersect.
+     *
+     * <p>Rectangles that share only an edge or a corner do not intersect.
+     * A zero-width or zero-height rectangle is treated as a line segment;
+     * a rectangle with both dimensions zero is treated as a point. Such
+     * degenerate rectangles intersect when their relative interiors overlap.
+     *
+     * <p>Each minimum coordinate must be less than or equal to its
+     * corresponding maximum coordinate.
+     *
+     * @param minX1 is the first corner of the first rectangle.
+     * @param minY1 is the first corner of the first rectangle.
+     * @param maxX1 is the second corner of the first rectangle.
+     * @param maxY1 is the second corner of the first rectangle.
+     * @param minX2 is the first corner of the second rectangle.
+     * @param minY2 is the first corner of the second rectangle.
+     * @param maxX2 is the second corner of the second rectangle.
+     * @param maxY2 is the second corner of the second rectangle.
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     *     {@code false}
+     * @since 18.0
+     * @see #intersectsRectangleRectangle(double, double, double, double, double, double, double, double)
+     */
+    @Pure
+    static boolean intersectsInteriorRectangleRectangle(double minX1, double minY1, double maxX1, double maxY1,
+    		double minX2, double minY2, double maxX2, double maxY2) {
+    	assert minX1 <= maxX1 : AssertMessages.lowerEqualParameters(0, Double.valueOf(minX1), 2, Double.valueOf(maxX1));
+    	assert minY1 <= maxY1 : AssertMessages.lowerEqualParameters(1, Double.valueOf(minY1), 3, Double.valueOf(maxY1));
+    	assert minX2 <= maxX2 : AssertMessages.lowerEqualParameters(4, Double.valueOf(minX2), 6, Double.valueOf(maxX2));
+    	assert minY2 <= maxY2 : AssertMessages.lowerEqualParameters(5, Double.valueOf(minY2), 7, Double.valueOf(maxY2));
+        if (minX1 == maxX1 && minX2 == maxX2) {
+            if (minX1 != minX2) {
+            	return false;
+            }
+        } else if (minX1 == maxX1) {
+            if (minX1 <= minX2 || minX1 >= maxX2) {
+            	return false;
+            }
+        } else if (minX2 == maxX2) {
+            if (minX2 <= minX1 || minX2 >= maxX1) {
+            	return false;
+            }
+        } else if (minX1 >= maxX2 || maxX1 <= minX2) {
+        	return false;
+        }
+
+        if (minY1 == maxY1 && minY2 == maxY2) {
+            return minY1 == minY2;
+        }
+        if (minY1 == maxY1) {
+            return minY1 > minY2 && minY1 < maxY2;
+        }
+        if (minY2 == maxY2) {
+            return minY2 > minY1 && minY2 < maxY1;
+        }
+        return minY1 < maxY2 && maxY1 > minY2;
     }
 
     /** Replies if two rectangles are intersecting.
@@ -873,7 +934,7 @@ public interface Rectangle2afp<
     @Override
     default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        return intersectsRectangleRectangle(
+        return intersectsInteriorRectangleRectangle(
                 getMinX(), getMinY(),
                 getMaxX(), getMaxY(),
                 rectangle.getMinX(), rectangle.getMinY(),

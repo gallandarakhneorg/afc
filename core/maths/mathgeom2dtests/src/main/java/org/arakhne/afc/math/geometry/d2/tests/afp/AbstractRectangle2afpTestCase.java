@@ -148,7 +148,7 @@ public abstract class AbstractRectangle2afpTestCase<T extends Rectangle2afp<?, T
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_5(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			assertFalse(Rectangle2afp.intersectsRectangleRectangle(5, 8, 10, 18, 0, 0, 5, 100));
+			assertTrue(Rectangle2afp.intersectsRectangleRectangle(5, 8, 10, 18, 0, 0, 5, 100));
         }
 
         @DisplayName("#6")
@@ -156,7 +156,7 @@ public abstract class AbstractRectangle2afpTestCase<T extends Rectangle2afp<?, T
 		@EnumSource(CoordinateSystem2D.class)
 	    public void test_6(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
-			assertFalse(Rectangle2afp.intersectsRectangleRectangle(0, 0, 5, 100, 5, 8, 10, 18));
+			assertTrue(Rectangle2afp.intersectsRectangleRectangle(0, 0, 5, 100, 5, 8, 10, 18));
         }
 
         @DisplayName("#7")
@@ -205,6 +205,108 @@ public abstract class AbstractRectangle2afpTestCase<T extends Rectangle2afp<?, T
 	    public void test_12(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assertTrue(Rectangle2afp.intersectsRectangleRectangle(6, 9, 9.5, 15, 5, 8, 10, 18));
+		}
+
+	}
+
+	@DisplayName("intersectsInteriorRectangleRectangle")
+	@Nested
+	public class IntersectsInteriorRectangleRectangle {
+
+        @DisplayName("#1")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_1(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(Rectangle2afp.intersectsInteriorRectangleRectangle(5, 8, 10, 18, 0, 0, 1, 1));
+        }
+
+        @DisplayName("#2")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_2(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(Rectangle2afp.intersectsInteriorRectangleRectangle(0, 0, 1, 1, 5, 8, 10, 18));
+        }
+
+        @DisplayName("#3")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_3(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(Rectangle2afp.intersectsInteriorRectangleRectangle(5, 8, 10, 18, 0, 20, 1, 22));
+        }
+
+        @DisplayName("#4")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_4(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(Rectangle2afp.intersectsInteriorRectangleRectangle(0, 20, 1, 22, 5, 8, 10, 18));
+        }
+
+        @DisplayName("#5")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_5(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(Rectangle2afp.intersectsInteriorRectangleRectangle(5, 8, 10, 18, 0, 0, 5, 100));
+        }
+
+        @DisplayName("#6")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_6(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(Rectangle2afp.intersectsInteriorRectangleRectangle(0, 0, 5, 100, 5, 8, 10, 18));
+        }
+
+        @DisplayName("#7")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_7(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertTrue(Rectangle2afp.intersectsInteriorRectangleRectangle(5, 8, 10, 18, 0, 0, 5.1, 100));
+        }
+
+        @DisplayName("#8")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_8(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertTrue(Rectangle2afp.intersectsInteriorRectangleRectangle(0, 0, 5.1, 100, 5, 8, 10, 18));
+        }
+
+        @DisplayName("#9")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_9(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertTrue(Rectangle2afp.intersectsInteriorRectangleRectangle(5, 8, 10, 18, 6, 9, 9.5, 15));
+        }
+
+        @DisplayName("#10")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_10(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertTrue(Rectangle2afp.intersectsInteriorRectangleRectangle(6, 9, 9.5, 15, 5, 8, 10, 18));
+        }
+
+        @DisplayName("#11")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_11(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertTrue(Rectangle2afp.intersectsInteriorRectangleRectangle(5, 8, 10, 18, 6, 9, 9.5, 15));
+        }
+
+        @DisplayName("#12")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void test_12(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertTrue(Rectangle2afp.intersectsInteriorRectangleRectangle(6, 9, 9.5, 15, 5, 8, 10, 18));
 		}
 
 	}
@@ -4561,6 +4663,54 @@ public abstract class AbstractRectangle2afpTestCase<T extends Rectangle2afp<?, T
 	    public void rectangle_12(CoordinateSystem2D cs) {
 	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 			assertTrue(createRectangle(0, 0, 5.1, 8.1).intersects(getS()));
+		}
+
+		@DisplayName("(Rectangle2afp) #13")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void rectangle_13(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertTrue(createRectangle(5, 8, 5, 10).intersects(getS()));
+		}
+
+		@DisplayName("(Rectangle2afp) #14")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void rectangle_14(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(createRectangle(0, 0, 5, 8).intersects(getS()));
+		}
+
+		@DisplayName("(Rectangle2afp) #15")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void rectangle_15(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(createRectangle(5, 0, 5, 8).intersects(getS()));
+		}
+
+		@DisplayName("(Rectangle2afp) #16")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void rectangle_16(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(createRectangle(0, 8, 5, 8).intersects(getS()));
+		}
+
+		@DisplayName("(Rectangle2afp) #17")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void rectangle_17(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(createRectangle(10, 8, 5, 8).intersects(getS()));
+		}
+
+		@DisplayName("(Rectangle2afp) #18")
+    	@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(CoordinateSystem2D.class)
+	    public void rectangle_18(CoordinateSystem2D cs) {
+	    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+			assertFalse(createRectangle(5, 18, 5, 8).intersects(getS()));
 		}
 
 		@DisplayName("(Triangle2afp) #1")
