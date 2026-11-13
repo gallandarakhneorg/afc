@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.gis.primitive;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
@@ -51,6 +52,32 @@ public abstract class AbstractBoundedGISElement<C extends GISContainer<?>, T ext
 	 */
 	public AbstractBoundedGISElement(UUID id, AttributeCollection attributeSource) {
 		super(id, attributeSource);
+	}
+
+	@Pure
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (super.equals(obj)) {
+			if (obj instanceof AbstractBoundedGISElement element) {
+				return  this.bounds == null && element.bounds == null
+							|| this.bounds != null && this.bounds.equals(element.getBoundingBox());
+			}
+		}
+		return false;
+	}
+
+	@Pure
+	@Override
+	public int hashCode() {
+		var result = super.hashCode();
+        result = 31 * result + Objects.hashCode(this.bounds);
+        return result ^ (result >> 31);
 	}
 
 	@Override

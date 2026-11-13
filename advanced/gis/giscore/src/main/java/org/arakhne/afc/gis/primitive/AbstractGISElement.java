@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.arakhne.afc.attrs.attr.Attribute;
@@ -93,6 +94,34 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 		}
 
 		this.attributeSource.addAttributeChangeListener(this);
+	}
+
+	@Pure
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof AbstractGISElement element) {
+			if (this.uid == null) {
+				return element.getUUID() == null && this.attributeSource.equals(element.attributeSource);
+			}
+			return this.uid.equals(element.getUUID())
+					&& this.attributeSource.equals(element.attributeSource);
+		}
+		return false;
+	}
+
+	@Pure
+	@Override
+	public int hashCode() {
+		var result = 1L;
+        result = 31 * result + Objects.hashCode(this.uid);
+        result = 31 * result + Objects.hashCode(this.attributeSource);
+        return (int) (result ^ (result >> 31));
 	}
 
 	@Override
