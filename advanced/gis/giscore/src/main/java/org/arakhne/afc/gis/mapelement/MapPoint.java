@@ -178,7 +178,7 @@ public class MapPoint extends MapPonctualElement {
 	 * @param sizeInMeters the size of the point.
 	 */
 	public void setPointSize(double sizeInMeters) {
-		this.pointSize = sizeInMeters;
+		this.pointSize = Math.max(0, sizeInMeters);
 		fireShapeChanged();
 		fireElementChanged();
 	}
