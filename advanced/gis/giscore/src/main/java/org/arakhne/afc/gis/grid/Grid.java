@@ -184,11 +184,11 @@ public class Grid<P extends GISPrimitive> implements Iterable<P> {
 	public GridCell<P> removeCellAt(int row, int column) {
 		final var cell = this.cells[row][column];
 		if (cell != null) {
-			this.cells[row][column] = null;
-			--this.cellCount;
 			for (final var element : cell) {
 				removeElement(element);
 			}
+			this.cells[row][column] = null;
+			--this.cellCount;
 		}
 		return cell;
 	}
@@ -746,12 +746,13 @@ public class Grid<P extends GISPrimitive> implements Iterable<P> {
 						final var gElement = this.elementIterator.next();
 						final var pElement = gElement.get();
 						final Rectangle2d pBounds = pElement.getGeoLocation().toBounds2D();
-						if ((this.iterationBounds.isEmpty() && this.iterationBounds.equals(pBounds)
-							 || this.iterationBounds.intersects(pBounds)) && !this.closeList.contains(gElement)) {
-							this.next = pElement;
-							this.closeList.add(gElement);
-							if (this.budget > 0) {
-								--this.budget;
+						if (this.iterationBounds.intersects(pBounds)) {
+							if (this.closeList.add(gElement)) {
+								this.next = pElement;
+								if (this.budget > 0) {
+									assert this.next != null;
+									--this.budget;
+								}
 							}
 						}
 					}
