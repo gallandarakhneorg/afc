@@ -45,12 +45,27 @@ public class GridCellElement<P extends GISPrimitive> implements Comparable<GridC
 
 	private final List<GridCell<P>> cells = new WeakArrayList<>(1);
 
+	private WeakReference<GridCell<P>> referenceCell;
+
 	/** Constructor.
 	 * @param element the element.
 	 */
-	GridCellElement(P element) {
+	public GridCellElement(P element) {
 		assert element != null;
 		this.element = element;
+	}
+
+	private boolean setReferenceCell(GridCell<P> cell) {
+		if (this.referenceCell == null) {
+			this.referenceCell = new WeakReference<>(cell);
+			return true;
+		}
+		final var ref = this.referenceCell.get();
+		if (ref == null) {
+			this.referenceCell = new WeakReference<>(cell);
+			return true;
+		}
+		return false;
 	}
 
 	/** Add a reference from this element to a cell that is containing this element.
@@ -60,8 +75,25 @@ public class GridCellElement<P extends GISPrimitive> implements Comparable<GridC
 	 *     {@code false} if the added cell is not the reference.
 	 */
 	public boolean addCellLink(GridCell<P> cell) {
-		if (this.cells.add(cell)) {
-			return isReferenceCell(cell);
+		assert cell != null;
+		this.cells.add(cell);
+		return setReferenceCell(cell);
+	}
+
+	private boolean unsetReferenceCell(GridCell<P> cell) {
+		if (this.referenceCell != null) {
+			var ref = this.referenceCell.get();
+			if (ref == cell) {
+				this.referenceCell = null;
+				// Set the reference to the next cell in the list
+				if (!this.cells.isEmpty()) {
+					ref = this.cells.get(0);
+					if (ref != null) {
+						this.referenceCell = new WeakReference<>(ref);
+					}
+				}
+				return true;
+			}
 		}
 		return false;
 	}
@@ -73,11 +105,9 @@ public class GridCellElement<P extends GISPrimitive> implements Comparable<GridC
 	 *     {@code false} if the removed cell is not the reference.
 	 */
 	public boolean removeCellLink(GridCell<P> cell) {
-		final var idx = this.cells.indexOf(cell);
-		if (idx >= 0) {
-			this.cells.remove(idx);
-		}
-		return idx == 0;
+		assert cell != null;
+		this.cells.remove(cell);
+		return unsetReferenceCell(cell);
 	}
 
 	/** Replies the cell on which the given element is located.
@@ -86,8 +116,14 @@ public class GridCellElement<P extends GISPrimitive> implements Comparable<GridC
 	 * @return a copy of the cells.
 	 */
 	public List<GridCell<P>> consumeCells() {
-		final var list = new ArrayList<>(this.cells);
+		final var list = new ArrayList<GridCell<P>>(this.cells.size());
+		for (final var cell : this.cells) {
+			if (cell != null) {
+				list.add(cell);
+			}
+		}
 		this.cells.clear();
+		this.referenceCell = null;
 		return list;
 	}
 
@@ -101,7 +137,7 @@ public class GridCellElement<P extends GISPrimitive> implements Comparable<GridC
 	 */
 	@Pure
 	public boolean isReferenceCell(GridCell<P> cell) {
-		return !this.cells.isEmpty() && this.cells.get(0) == cell;
+		return this.referenceCell != null && this.referenceCell.get() == cell;
 	}
 
 	@Override
