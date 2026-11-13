@@ -270,7 +270,9 @@ public class GridCell<P extends GISPrimitive> implements Iterable<P> {
 				final var element = this.iterator.next();
 				if (element != null) {
 					final var e = element.get();
-					if (e != null && e.getGeoLocation().toBounds2D().intersects(this.bounds)) {
+					assert e != null : AssertMessages.notNullParameter();
+					final var ebounds = e.getGeoLocation().toBounds2D();
+					if (ebounds != null && this.bounds.intersects(ebounds)) {
 						this.next = e;
 					}
 				}
