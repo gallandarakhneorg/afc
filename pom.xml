@@ -28,9 +28,9 @@
 		<!-- Version of SLF4J library (org.slf4j:slf4j-api) -->
 		<slf4j.version>2.0.18</slf4j.version>
 		<!--  Version of the Jackson API (usually included by Bootique) (com.fasterxml.jackson.core:jackson-core) -->
-		<jacksonapi.version>2.22.2</jacksonapi.version>
+		<jacksonapi.version>2.22.3</jacksonapi.version>
 		<!--  Version of the Jackson API (usually included by Bootique) (com.fasterxml.jackson.core:jackson-annotations) -->
-		<jacksonannot.version>2.21</jacksonannot.version>
+		<jacksonannot.version>2.22</jacksonannot.version>
 		<!-- URL of the deployment server base -->
 		<afc.deployment.server>org.arakhne-ftp</afc.deployment.server>
 		<afc.deployment.base>${env.ARAKHNEORG_SFTP}</afc.deployment.base>
