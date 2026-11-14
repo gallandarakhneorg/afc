@@ -29,6 +29,8 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
@@ -50,6 +52,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("SubRoadNetwork as SubGraphNetwork")
 @SuppressWarnings("all")
 public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 
@@ -60,939 +63,1031 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 
 	private SubRoadNetwork subNetwork;
 
-	@BeforeEach
-	public void setUp() throws Exception {
+	protected void initNetwork() throws Exception {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 		try {
 			Rectangle2d worldRect = new Rectangle2d(-500, -500, 1000, 1000);
-			this.network = new StandardRoadNetwork(worldRect, new HeapAttributeCollection());
+			network = new StandardRoadNetwork(worldRect, new HeapAttributeCollection());
 
 			//-------------------------------
 			// PICTURE testnetwork1.png
 			//-------------------------------
 
-			this.segment1 = new RoadSegmentStub("segment1",0.,0.,100.,100.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment1);
+			segment1 = new RoadSegmentStub("segment1",0.,0.,100.,100.); //$NON-NLS-1$
+			network.addRoadSegment(segment1);
 
-			this.segment2 = new RoadSegmentStub("segment2",100.,7.,100.,100.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment2);
+			segment2 = new RoadSegmentStub("segment2",100.,7.,100.,100.); //$NON-NLS-1$
+			network.addRoadSegment(segment2);
 
-			this.segment3 = new RoadSegmentStub("segment3",100.0001,7.,-100.,-300.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment3);
+			segment3 = new RoadSegmentStub("segment3",100.0001,7.,-100.,-300.); //$NON-NLS-1$
+			network.addRoadSegment(segment3);
 
-			this.segment4 = new RoadSegmentStub("segment4",-100.,-300.,0.,0.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment4);
+			segment4 = new RoadSegmentStub("segment4",-100.,-300.,0.,0.); //$NON-NLS-1$
+			network.addRoadSegment(segment4);
 
-			this.segment5 = new RoadSegmentStub("segment5",100.,7.,0.,10.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment5);
+			segment5 = new RoadSegmentStub("segment5",100.,7.,0.,10.); //$NON-NLS-1$
+			network.addRoadSegment(segment5);
 
-			this.segment6 = new RoadSegmentStub("segment6",new double[] {100.,7.,200.,-20.,400.,0.,150.,50.,100.,7.}); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment6);
+			segment6 = new RoadSegmentStub("segment6",new double[] {100.,7.,200.,-20.,400.,0.,150.,50.,100.,7.}); //$NON-NLS-1$
+			network.addRoadSegment(segment6);
 
-			this.segment7 = new RoadSegmentStub("segment7",100.,7.,100.,-10.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment7);
+			segment7 = new RoadSegmentStub("segment7",100.,7.,100.,-10.); //$NON-NLS-1$
+			network.addRoadSegment(segment7);
 
-			this.segment8 = new RoadSegmentStub("segment8",170.,7.,100.,7.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment8);
+			segment8 = new RoadSegmentStub("segment8",170.,7.,100.,7.); //$NON-NLS-1$
+			network.addRoadSegment(segment8);
 
-			this.segment9 = new RoadSegmentStub("segment9",120.,100.,100.,7.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment9);
+			segment9 = new RoadSegmentStub("segment9",120.,100.,100.,7.); //$NON-NLS-1$
+			network.addRoadSegment(segment9);
 
-			this.segment10 = new RoadSegmentStub("segment10",-100.,0.,0.,10.); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment10);
+			segment10 = new RoadSegmentStub("segment10",-100.,0.,0.,10.); //$NON-NLS-1$
+			network.addRoadSegment(segment10);
 
-			this.segment11 = new RoadSegmentStub("segment11",new double[] {0.,10.,-50.,100.,100.,500.,150.,100.,100.,7.}); //$NON-NLS-1$
-			this.network.addRoadSegment(this.segment11);
+			segment11 = new RoadSegmentStub("segment11",new double[] {0.,10.,-50.,100.,100.,500.,150.,100.,100.,7.}); //$NON-NLS-1$
+			network.addRoadSegment(segment11);
 
-			this.subNetwork = new SubRoadNetwork();
+			subNetwork = new SubRoadNetwork();
 		}
 		catch(RoadNetworkException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	@AfterEach
-	public void tearDown() {
-		this.subNetwork = null;
+	@DisplayName("getSegmentCount")
+	@Nested
+	public class GetSegmentCountTest {
 
-		this.segment1.setStartPoint(null);
-		this.segment1.setEndPoint(null);
-		this.segment1.clear();
-		this.segment1 = null;
+		@BeforeEach
+		public void setUp() throws Exception {
+			initNetwork();
+		}
 
-		this.segment2.setStartPoint(null);
-		this.segment2.setEndPoint(null);
-		this.segment2.clear();
-		this.segment2 = null;
+		@DisplayName("#1")
+		@Test
+		public void testSize_1() {
+			var iterator = network.depthIterator(
+					segment3, 10., 50.,
+					segment3.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(1, subNetwork.getSegmentCount());
+		}
 
-		this.segment3.setStartPoint(null);
-		this.segment3.setEndPoint(null);
-		this.segment3.clear();
-		this.segment3 = null;
+		@DisplayName("#2")
+		@Test
+		public void testSize_2() {
+			var iterator = network.depthIterator(
+					segment3, 400., 10.,
+					segment3.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(2, subNetwork.getSegmentCount());
+		}
 
-		this.segment4.setStartPoint(null);
-		this.segment4.setEndPoint(null);
-		this.segment4.clear();
-		this.segment4 = null;
+		@DisplayName("#3")
+		@Test
+		public void testSize_3() {
+			var iterator = network.depthIterator(
+					segment3, 690., 10.,
+					segment3.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(3, subNetwork.getSegmentCount());
+		}
 
-		this.segment5.setStartPoint(null);
-		this.segment5.setEndPoint(null);
-		this.segment5.clear();
-		this.segment5 = null;
+		@DisplayName("#4")
+		@Test
+		public void testSize_4() {
+			var iterator = network.depthIterator(
+					segment3, 830, 10.,
+					segment3.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(3, subNetwork.getSegmentCount());
+		}
 
-		this.segment6.setStartPoint(null);
-		this.segment6.setEndPoint(null);
-		this.segment6.clear();
-		this.segment6 = null;
+		@DisplayName("#5")
+		@Test
+		public void testSize_5() {
+			var iterator = network.depthIterator(
+					segment3, 920, 10.,
+					segment3.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(3, subNetwork.getSegmentCount());
+		}
 
-		this.segment7.setStartPoint(null);
-		this.segment7.setEndPoint(null);
-		this.segment7.clear();
-		this.segment7 = null;
+		@DisplayName("#6")
+		@Test
+		public void testSize_6() {
+			var iterator = network.depthIterator(
+					segment8, 10., 50.,
+					segment8.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(1, subNetwork.getSegmentCount());
+		}
 
-		this.segment8.setStartPoint(null);
-		this.segment8.setEndPoint(null);
-		this.segment8.clear();
-		this.segment8 = null;
+		@DisplayName("#7")
+		@Test
+		public void testSize_7() {
+			var iterator = network.depthIterator(
+					segment8, 400., 10.,
+					segment8.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(7, subNetwork.getSegmentCount());
+		}
 
-		this.segment9.setStartPoint(null);
-		this.segment9.setEndPoint(null);
-		this.segment9.clear();
-		this.segment9 = null;
+		@DisplayName("#8")
+		@Test
+		public void testSize_8() {
+			var iterator = network.depthIterator(
+					segment8, 690., 10.,
+					segment8.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(8, subNetwork.getSegmentCount());
+		}
 
-		this.segment10.setStartPoint(null);
-		this.segment10.setEndPoint(null);
-		this.segment10.clear();
-		this.segment10 = null;
+		@DisplayName("#9")
+		@Test
+		public void testSize_9() {
+			var iterator = network.depthIterator(
+					segment8, 830, 10.,
+					segment8.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(9, subNetwork.getSegmentCount());
+		}
 
-		this.segment11.setStartPoint(null);
-		this.segment11.setEndPoint(null);
-		this.segment11.clear();
-		this.segment11 = null;
-
-		this.network = null;
-
-		System.gc(); System.gc();
+		@DisplayName("#10")
+		@Test
+		public void testSize_10() {
+			var iterator = network.depthIterator(
+					segment8, 920, 10.,
+					segment8.getBeginPoint(),
+					false,true);
+			subNetwork.build(iterator);
+			assertEquals(9, subNetwork.getSegmentCount());
+		}
 	}
 
-	@Test
-	public void testSize_01() {
-		GraphIterator<RoadSegment,RoadConnection> iterator;
+	@DisplayName("depthIterator")
+	@Nested
+	public class DepthIteratorTest {
 
-		iterator = this.network.depthIterator(
-				this.segment3, 10., 50.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(1, this.subNetwork.getSegmentCount());
-
-		iterator = this.network.depthIterator(
-				this.segment3, 400., 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(2, this.subNetwork.getSegmentCount());
-
-		iterator = this.network.depthIterator(
-				this.segment3, 690., 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(3, this.subNetwork.getSegmentCount());
-
-		iterator = this.network.depthIterator(
-				this.segment3, 830, 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(3, this.subNetwork.getSegmentCount());
-
-		iterator = this.network.depthIterator(
-				this.segment3, 920, 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(3, this.subNetwork.getSegmentCount());
-	}
-
-	@Test
-	public void testSize_02() {
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		iterator = this.network.depthIterator(
-				this.segment8, 10., 50.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(1, this.subNetwork.getSegmentCount());
-
-		iterator = this.network.depthIterator(
-				this.segment8, 400., 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(7, this.subNetwork.getSegmentCount());
-
-		iterator = this.network.depthIterator(
-				this.segment8, 690., 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(8, this.subNetwork.getSegmentCount());
-
-		iterator = this.network.depthIterator(
-				this.segment8, 830, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(9, this.subNetwork.getSegmentCount());
-
-		iterator = this.network.depthIterator(
-				this.segment8, 920, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(iterator);
-		assertEquals(9, this.subNetwork.getSegmentCount());
-	}
-
-	@Test
-	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_01() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment3, 1020, 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 50., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 400., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 690., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 830., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 920., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 1020., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_02() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment8, 1020, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.depthIterator(this.segment8, 50., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment8, 400., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertFalse(iterator.hasNext());
+		@BeforeEach
+		public void setUp() throws Exception {
+			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+			initNetwork();
+		}
 		
-		iterator = this.subNetwork.depthIterator(this.segment8, 690., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertFalse(iterator.hasNext());
+		@DisplayName("(RoadSegment,double,double,RoadConnection)")
+		@Nested
+		public class RoadSegmentDoubleDoubleRoadConnectionTest {
 
-		iterator = this.subNetwork.depthIterator(this.segment8, 830., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
+			@DisplayName("Test 1")
+			@Nested
+			public class ATest {
 
-		iterator = this.subNetwork.depthIterator(this.segment8, 920., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
+				@BeforeEach
+				public void setUp() {
+					var mainIterator = network.depthIterator(
+							segment3, 1020, 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+				}
+				
+				@DisplayName("#1")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_1() {
+					var iterator = subNetwork.depthIterator(segment3, 50., 10.,
+							segment3.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#2")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_2() {
+					var iterator = subNetwork.depthIterator(segment3, 400., 10.,
+							segment3.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#3")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_3() {
+					var iterator = subNetwork.depthIterator(segment3, 690., 10.,
+							segment3.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#4")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_4() {
+					var iterator = subNetwork.depthIterator(segment3, 830., 10.,
+							segment3.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#5")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_5() {
+					var iterator = subNetwork.depthIterator(segment3, 920., 10.,
+							segment3.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#6")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_6() {
+					var iterator = subNetwork.depthIterator(segment3, 1020., 10.,
+							segment3.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+			}
 
-		iterator = this.subNetwork.depthIterator(this.segment8, 1020., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
+			@DisplayName("Test 2")
+			@Nested
+			public class BTest {
+
+				@BeforeEach
+				public void setUp() {
+					var mainIterator = network.depthIterator(
+							segment8, 1020, 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+				}
+				
+				@DisplayName("#1")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_1() {
+					var iterator = subNetwork.depthIterator(segment8, 50., 10.,
+							segment8.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#2")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_2() {
+					var iterator = subNetwork.depthIterator(segment8, 400., 10.,
+							segment8.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#3")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_3() {
+					var iterator = subNetwork.depthIterator(segment8, 690., 10.,
+							segment8.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#4")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_4() {
+					var iterator = subNetwork.depthIterator(segment8, 830., 10.,
+							segment8.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#5")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_5() {
+					var iterator = subNetwork.depthIterator(segment8, 920., 10.,
+							segment8.getBeginPoint(),false,true);
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#6")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_6() {
+					var iterator = subNetwork.depthIterator(segment8, 1020., 10.,
+							segment8.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+			}
+
+			@DisplayName("Test 3")
+			@Nested
+			public class CTest {
+
+				@BeforeEach
+				public void setUp() {
+					var mainIterator = network.depthIterator(
+							segment3, 1020, 10., segment3.getEndPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+				}
+				
+				@DisplayName("#1")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_1() {
+					var iterator = subNetwork.depthIterator(segment3, 50., 10.,
+							segment3.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#2")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_2() {
+					var iterator = subNetwork.depthIterator(segment3, 400., 10.,
+							segment3.getBeginPoint(),false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+			}
+		}
+		
+		@DisplayName("(RoadSegment,double,double)")
+		@Nested
+		public class RoadSegmentDoubleDoubleTest {
+
+			@DisplayName("Test 1")
+			@Nested
+			public class ATest {
+
+				@BeforeEach
+				public void setUp() {
+					var mainIterator = network.depthIterator(
+							segment3, 1020, 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+				}
+				
+				@DisplayName("#1")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_1() {
+					var iterator = subNetwork.depthIterator(segment3, 50., 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#2")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_2() {
+					var iterator = subNetwork.depthIterator(segment3, 400., 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#3")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_3() {
+					var iterator = subNetwork.depthIterator(segment3, 690., 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#4")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_4() {
+					var iterator = subNetwork.depthIterator(segment3, 830., 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#5")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_5() {
+					var iterator = subNetwork.depthIterator(segment3, 920., 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#6")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_6() {
+					var iterator = subNetwork.depthIterator(segment3, 1020., 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+			}			
+
+			@DisplayName("Test 2")
+			@Nested
+			public class BTest {
+
+				@BeforeEach
+				public void setUp() {
+					var mainIterator = network.depthIterator(
+							segment8, 1020, 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+				}
+				
+				@DisplayName("#1")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_1() {
+					var iterator = subNetwork.depthIterator(segment8, 50., 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#2")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_2() {
+					var iterator = subNetwork.depthIterator(segment8, 400., 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#3")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_3() {
+					var iterator = subNetwork.depthIterator(segment8, 690., 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#4")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_4() {
+					var iterator = subNetwork.depthIterator(segment8, 830., 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#5")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_5() {
+					var iterator = subNetwork.depthIterator(segment8, 920., 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+				
+				@DisplayName("#6")
+				@Test
+				public void testDepthIteratorRoadSegmentDoubleDouble_6() {
+					var iterator = subNetwork.depthIterator(segment8, 1020., 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+			}
+		}
 	}
 
-	@Test
-	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_03() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	@DisplayName("iterator")
+	@Nested
+	public class IteratorTest {
+	
+		@DisplayName("()")
+		@Nested
+		public class VoidTest {
 
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
+			@BeforeEach
+			public void setUp() throws Exception {
+				assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+				initNetwork();
+			}
 
-		mainIterator = this.network.depthIterator(
-				this.segment3, 1020, 10., this.segment3.getEndPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
+			@DisplayName("#1")
+			@Test
+			public void testIteratorVoid_1() {
+				var mainIterator = network.depthIterator(
+						segment3, 920, 10.,
+						segment3.getBeginPoint(),
+						false,true);
+				subNetwork.build(mainIterator);
 
-		iterator = this.subNetwork.depthIterator(this.segment3, 50., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertFalse(iterator.hasNext());
+				var iterator = subNetwork.iterator();
+				assertTrue(iterator.hasNext());
+				assertEquals(segment3, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment4, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment1, iterator.next());
+				assertFalse(iterator.hasNext());
+			}
+		
+			@DisplayName("#2")
+			@Test
+			public void testIteratorVoid_2() {
+				var mainIterator = network.depthIterator(
+						segment8, 920, 10.,
+						segment8.getBeginPoint(),
+						false,true);
+				subNetwork.build(mainIterator);
+		
+				var iterator = subNetwork.iterator();
+				assertTrue(iterator.hasNext());
+				assertEquals(segment8, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment2, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment5, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment3, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment7, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment6, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment11, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment4, iterator.next());
+				assertTrue(iterator.hasNext());
+				assertEquals(segment1, iterator.next());
+				assertFalse(iterator.hasNext());
+			}
+		}
 
-		iterator = this.subNetwork.depthIterator(this.segment3, 400., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertFalse(iterator.hasNext());
+		@DisplayName("(RoadSegment,RoadConnection,boolean,boolean)")
+		@Nested
+		public class RoadSegmentRoadConnectionBooleanBooleanTest {
+
+			@DisplayName("No cycle - Not oriented")
+			@Nested
+			public class NoCycleNotOrientedTest {
+				
+				@BeforeEach
+				public void setUp() throws Exception {
+					assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+					initNetwork();
+					var mainIterator = network.depthIterator(
+							segment3, 1020, 10.,
+							segment3.getBeginPoint(),
+							false,false);
+					subNetwork.build(mainIterator);
+				}
+
+				@DisplayName("#1")
+				@Test
+				public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_notOriented() throws Exception {
+					var iterator = subNetwork.iterator(segment3, segment3.getBeginPoint(), false, false);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment9, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment10, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+			}
+
+			@DisplayName("No cycle - Oriented")
+			@Nested
+			public class NoCycleOrientedTest {
+				
+				@BeforeEach
+				public void setUp() throws Exception {
+					assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+					initNetwork();
+				}
+
+				@DisplayName("#1")
+				@Test
+				public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented_1() throws Exception {
+					var mainIterator = network.depthIterator(
+							segment3, 1020, 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+					var iterator = subNetwork.iterator(segment3, segment3.getBeginPoint(), false, true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+
+				@DisplayName("#2")
+				@Test
+				public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented_2() throws Exception {
+					var mainIterator = network.depthIterator(
+							segment8, 1020, 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+					var iterator = subNetwork.iterator(segment8, segment8.getBeginPoint(), false, true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+			}
+
+			@DisplayName("Cycle - Not oriented")
+			@Nested
+			public class CycleNotOrientedTest {
+				
+				@BeforeEach
+				public void setUp() throws Exception {
+					assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+					initNetwork();
+				}
+
+				@DisplayName("#1")
+				@Test
+				public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_notOriented_1() throws Exception {
+					var mainIterator = network.depthIterator(segment3, 1020, 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+					var iterator = subNetwork.iterator(
+							segment3, segment3.getBeginPoint(),
+							true, false);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+
+				@DisplayName("#2")
+				@Test
+				public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_notOriented_2() throws Exception {
+					var mainIterator = network.depthIterator(segment8, 1020, 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+					var iterator = subNetwork.iterator(
+							segment8, segment8.getBeginPoint(),
+							true, false);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment9, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment9, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment10, iterator.next());
+					assertTrue(iterator.hasNext());
+				}
+			}
+
+			@DisplayName("Cycle - Oriented")
+			@Nested
+			public class CycleOrientedTest {
+				
+				@BeforeEach
+				public void setUp() throws Exception {
+					assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+					initNetwork();
+				}
+
+				@DisplayName("#1")
+				@Test
+				public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_oriented_1() throws Exception {
+					var mainIterator = network.depthIterator(segment3, 1020, 10.,
+							segment3.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+					var iterator = subNetwork.iterator(segment3, segment3.getBeginPoint(),
+							true, true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment1, iterator.next());
+					assertFalse(iterator.hasNext());
+				}
+
+				@DisplayName("#2")
+				@Test
+				public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_oriented_2() throws Exception {
+					var mainIterator = network.depthIterator(segment8, 1020, 10.,
+							segment8.getBeginPoint(),
+							false,true);
+					subNetwork.build(mainIterator);
+					var iterator = subNetwork.iterator(segment8, segment8.getBeginPoint(),
+							true, true);
+					assertTrue(iterator.hasNext());
+					assertEquals(segment8, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment3, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment7, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment6, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment11, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment4, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment2, iterator.next());
+					assertTrue(iterator.hasNext());
+					assertEquals(segment5, iterator.next());
+					assertTrue(iterator.hasNext());
+				}
+			}
+		}
 	}
-
-	@Test
-	public void testDepthIteratorRoadSegmentDoubleDouble_01() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment3, 1020, 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 50., 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 400., 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 690., 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 830., 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 920., 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 1020., 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testDepthIteratorRoadSegmentDoubleDouble_02() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment8, 1020, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.depthIterator(this.segment8, 50., 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment8, 400., 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment8, 690., 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment8, 830., 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment8, 920., 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment8, 1020., 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_notOriented() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment3, 1020, 10.,
-				this.segment3.getBeginPoint(),
-				false,false);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator(this.segment3, this.segment3.getBeginPoint(), false, false);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment10, iterator.next());
-
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented_01() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment3, 1020, 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator(this.segment3, this.segment3.getBeginPoint(), false, true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented_02() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment8, 1020, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator(this.segment3, this.segment3.getBeginPoint(), false, true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented_03() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment8, 1020, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator(this.segment8, this.segment8.getBeginPoint(), false, true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_notOriented_01() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(this.segment3, 1020, 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator(
-				this.segment3, this.segment3.getBeginPoint(),
-				true, false);
-
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_notOriented_02() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(this.segment8, 1020, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator(
-				this.segment8, this.segment8.getBeginPoint(),
-				true, false);
-
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment10, iterator.next());
-		assertTrue(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_oriented_01() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(this.segment3, 1020, 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator(this.segment3, this.segment3.getBeginPoint(),
-				true, true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_oriented_02() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(this.segment8, 1020, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator(this.segment8, this.segment8.getBeginPoint(),
-				true, true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorVoid_01() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		Iterator<RoadSegment> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment3, 920, 10.,
-				this.segment3.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator();
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testIteratorVoid_02() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		Iterator<RoadSegment> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment8, 920, 10.,
-				this.segment8.getBeginPoint(),
-				false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.iterator();
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
 }

@@ -22,6 +22,7 @@ package org.arakhne.afc.testtools;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /** Class that is testing if the assertions are enabled.
@@ -36,6 +37,7 @@ public class EnableAssertion {
 
 	/** Test if assertions are enabled.
 	 */
+	@DisplayName("Has assertions")
 	@Test
 	public void enableAssert() {
 		assertThrows(AssertionError.class, () -> {

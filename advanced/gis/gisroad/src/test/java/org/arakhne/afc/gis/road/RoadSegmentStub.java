@@ -21,8 +21,7 @@
 package org.arakhne.afc.gis.road;
 
 import java.util.ArrayList;
-
-import org.eclipse.xtext.xbase.lib.Pure;
+import java.util.Random;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.math.geometry.base.d2.Point2D;
@@ -30,6 +29,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Stub for RoadSegment.
  *
@@ -54,33 +54,31 @@ public class RoadSegmentStub extends RoadPolyline {
 	 * @param label
 	 */
 	public RoadSegmentStub(String label) {
-		this(label, false);
+		this(label, false, false);
 	}
 
-	/**
-	 * @param label
-	 * @param allowGroups
-	 */
-	public RoadSegmentStub(String label, boolean allowGroups) {
+	public RoadSegmentStub(String label, boolean allowGroups, boolean allowLoop) {
 		super(new HeapAttributeCollection());
 
 		this.label = label;
+		
+		var rnd = new Random();
 
-		int groupCount = allowGroups ? (int)(Math.random() * 10.)+1 : 1;
+		int groupCount = rnd.nextInt(1, 10);
 		this.groupIdx = new int[groupCount];
 
 		double length=0;
 		double minX=0, maxX=0, minY=0, maxY=0;
 
 		for(int idxGrp=0; idxGrp<groupCount; ++idxGrp) {
-			int pointCount = (int)(Math.random() * 50.)+2;
+			int pointCount = rnd.nextInt(allowLoop ? 3 : 2, 50);
 
 			this.groupIdx[idxGrp] = this.points.size();
 			double ox=0,oy=0;
 
 			for(int i=0; i<pointCount; ++i) {
-				double x = Math.random() * 1000. - 500.;
-				double y = Math.random() * 1000. - 500.;
+				double x = rnd.nextDouble(-500., 500.);
+				double y = rnd.nextDouble(-500., 500.);
 				Point2d pts = new Point2d(x,y);
 				if (i==0)
 					addGroup(pts);

@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
@@ -50,6 +51,7 @@ import org.arakhne.afc.vmutil.Resources;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("ShapeFileRoadNetwork")
 @SuppressWarnings("all")
 public class ShapeFileRoadNetworkTest extends AbstractGisTest {
 
@@ -92,6 +94,7 @@ public class ShapeFileRoadNetworkTest extends AbstractGisTest {
 		return network;
 	}
 
+	@DisplayName("loadNetwork")
 	@Test
 	public void testLoadNetwork() throws IOException {
 		RoadNetwork network = loadNetwork();

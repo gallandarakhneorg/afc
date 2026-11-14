@@ -33,6 +33,7 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
@@ -56,6 +57,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("Clockwise iterator")
 @SuppressWarnings("all")
 public class ClockwiseTest extends AbstractGisTest {
 
@@ -212,6 +214,7 @@ public class ClockwiseTest extends AbstractGisTest {
 		assertEpsilonEquals(expectedSegments, actualSegments, "segments|EXCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
 	}
 
+	@DisplayName("Clockwise iterator")
 	@Test
 	public void testToClockwiseIterator() {
 		int segmentIdx = 0;
@@ -332,6 +335,7 @@ public class ClockwiseTest extends AbstractGisTest {
 		assertEpsilonEquals(expectedSegments, actualSegments, "segments|EXCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
 	}
 
+	@DisplayName("Counter-clockwise iterator")
 	@Test
 	public void testToCounterclockwiseIterator() {
 		int segmentIdx = 0;
@@ -342,8 +346,9 @@ public class ClockwiseTest extends AbstractGisTest {
 		}
 	}
 
+	@DisplayName("Specific coordinates")
 	@Test
-	public void testSpecificalCoordinates() {
+	public void testSpecificCoordinates() {
 		// The following cases are feeded back by Olivier
 
 		Point2d problem1 = new Point2d(935579.5, 2311395.0);

@@ -28,6 +28,8 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
@@ -51,6 +53,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("SubRoadNetwork as SubRoadNetwork")
 @SuppressWarnings("all")
 public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 
@@ -66,57 +69,57 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 		try {
 			Rectangle2d worldRect = new Rectangle2d(-500, -500, 1000, 1000);
-			this.network = new StandardRoadNetwork(worldRect, new HeapAttributeCollection());
+			network = new StandardRoadNetwork(worldRect, new HeapAttributeCollection());
 
 			//----------------------------------------
 			// Picture testnetwork1.png
 			//----------------------------------------
 
-			this.segment1 = new RoadSegmentStub("segment1",0.,0.,100.,100.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 1);
-			this.network.addRoadSegment(this.segment1);
+			segment1 = new RoadSegmentStub("segment1",0.,0.,100.,100.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 1);
+			network.addRoadSegment(segment1);
 
-			this.segment2 = new RoadSegmentStub("segment2",100.,7.,100.,100.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 2);
-			this.network.addRoadSegment(this.segment2);
+			segment2 = new RoadSegmentStub("segment2",100.,7.,100.,100.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 2);
+			network.addRoadSegment(segment2);
 
-			this.segment3 = new RoadSegmentStub("segment3",100.0001,7.,-100.,-300.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 3);
-			this.network.addRoadSegment(this.segment3);
+			segment3 = new RoadSegmentStub("segment3",100.0001,7.,-100.,-300.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 3);
+			network.addRoadSegment(segment3);
 
-			this.segment4 = new RoadSegmentStub("segment4",-100.,-300.,0.,0.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 4);
-			this.network.addRoadSegment(this.segment4);
+			segment4 = new RoadSegmentStub("segment4",-100.,-300.,0.,0.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 4);
+			network.addRoadSegment(segment4);
 
-			this.segment5 = new RoadSegmentStub("segment5",100.,7.,0.,10.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 5);
-			this.network.addRoadSegment(this.segment5);
+			segment5 = new RoadSegmentStub("segment5",100.,7.,0.,10.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 5);
+			network.addRoadSegment(segment5);
 
-			this.segment6 = new RoadSegmentStub("segment6",new double[] {100.,7.,200.,-20.,400.,0.,150.,50.,100.,7.}); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 6);
-			this.network.addRoadSegment(this.segment6);
+			segment6 = new RoadSegmentStub("segment6",new double[] {100.,7.,200.,-20.,400.,0.,150.,50.,100.,7.}); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 6);
+			network.addRoadSegment(segment6);
 
-			this.segment7 = new RoadSegmentStub("segment7",100.,7.,100.,-10.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 7);
-			this.network.addRoadSegment(this.segment7);
+			segment7 = new RoadSegmentStub("segment7",100.,7.,100.,-10.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 7);
+			network.addRoadSegment(segment7);
 
-			this.segment8 = new RoadSegmentStub("segment8",170.,7.,100.,7.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 8);
-			this.network.addRoadSegment(this.segment8);
+			segment8 = new RoadSegmentStub("segment8",170.,7.,100.,7.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 8);
+			network.addRoadSegment(segment8);
 
-			this.segment9 = new RoadSegmentStub("segment9",120.,100.,100.,7.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 9);
-			this.network.addRoadSegment(this.segment9);
+			segment9 = new RoadSegmentStub("segment9",120.,100.,100.,7.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 9);
+			network.addRoadSegment(segment9);
 
-			this.segment10 = new RoadSegmentStub("segment10",-100.,0.,0.,10.); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 10);
-			this.network.addRoadSegment(this.segment10);
+			segment10 = new RoadSegmentStub("segment10",-100.,0.,0.,10.); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 10);
+			network.addRoadSegment(segment10);
 
-			this.segment11 = new RoadSegmentStub("segment11",new double[] {0.,10.,-50.,100.,100.,500.,150.,100.,100.,7.}); //$NON-NLS-1$
-			this.segment1.addUserData(USER_DATA_TEST, 11);
-			this.network.addRoadSegment(this.segment11);
+			segment11 = new RoadSegmentStub("segment11",new double[] {0.,10.,-50.,100.,100.,500.,150.,100.,100.,7.}); //$NON-NLS-1$
+			segment1.addUserData(USER_DATA_TEST, 11);
+			network.addRoadSegment(segment11);
 
-			this.subNetwork = new SubRoadNetwork();
+			subNetwork = new SubRoadNetwork();
 		}
 		catch(RoadNetworkException e) {
 			throw new RuntimeException(e);
@@ -125,270 +128,311 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 
 	@AfterEach
 	public void tearDown() {
-		this.subNetwork = null;
+		subNetwork = null;
 
-		this.segment1.setStartPoint(null);
-		this.segment1.setEndPoint(null);
-		this.segment1.clear();
-		this.segment1 = null;
+		segment1.setStartPoint(null);
+		segment1.setEndPoint(null);
+		segment1.clear();
+		segment1 = null;
 
-		this.segment2.setStartPoint(null);
-		this.segment2.setEndPoint(null);
-		this.segment2.clear();
-		this.segment2 = null;
+		segment2.setStartPoint(null);
+		segment2.setEndPoint(null);
+		segment2.clear();
+		segment2 = null;
 
-		this.segment3.setStartPoint(null);
-		this.segment3.setEndPoint(null);
-		this.segment3.clear();
-		this.segment3 = null;
+		segment3.setStartPoint(null);
+		segment3.setEndPoint(null);
+		segment3.clear();
+		segment3 = null;
 
-		this.segment4.setStartPoint(null);
-		this.segment4.setEndPoint(null);
-		this.segment4.clear();
-		this.segment4 = null;
+		segment4.setStartPoint(null);
+		segment4.setEndPoint(null);
+		segment4.clear();
+		segment4 = null;
 
-		this.segment5.setStartPoint(null);
-		this.segment5.setEndPoint(null);
-		this.segment5.clear();
-		this.segment5 = null;
+		segment5.setStartPoint(null);
+		segment5.setEndPoint(null);
+		segment5.clear();
+		segment5 = null;
 
-		this.segment6.setStartPoint(null);
-		this.segment6.setEndPoint(null);
-		this.segment6.clear();
-		this.segment6 = null;
+		segment6.setStartPoint(null);
+		segment6.setEndPoint(null);
+		segment6.clear();
+		segment6 = null;
 
-		this.segment7.setStartPoint(null);
-		this.segment7.setEndPoint(null);
-		this.segment7.clear();
-		this.segment7 = null;
+		segment7.setStartPoint(null);
+		segment7.setEndPoint(null);
+		segment7.clear();
+		segment7 = null;
 
-		this.segment8.setStartPoint(null);
-		this.segment8.setEndPoint(null);
-		this.segment8.clear();
-		this.segment8 = null;
+		segment8.setStartPoint(null);
+		segment8.setEndPoint(null);
+		segment8.clear();
+		segment8 = null;
 
-		this.segment9.setStartPoint(null);
-		this.segment9.setEndPoint(null);
-		this.segment9.clear();
-		this.segment9 = null;
+		segment9.setStartPoint(null);
+		segment9.setEndPoint(null);
+		segment9.clear();
+		segment9 = null;
 
-		this.segment10.setStartPoint(null);
-		this.segment10.setEndPoint(null);
-		this.segment10.clear();
-		this.segment10 = null;
+		segment10.setStartPoint(null);
+		segment10.setEndPoint(null);
+		segment10.clear();
+		segment10 = null;
 
-		this.segment11.setStartPoint(null);
-		this.segment11.setEndPoint(null);
-		this.segment11.clear();
-		this.segment11 = null;
+		segment11.setStartPoint(null);
+		segment11.setEndPoint(null);
+		segment11.clear();
+		segment11 = null;
 
-		this.network = null;
+		network = null;
 
 		System.gc(); System.gc();
 	}
 
-	@Test
-	public void testIteratorWithWrappingTest_01() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	@DisplayName("iterator")
+	@Nested
+	public class IteratorTest {
 
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-		Iterator<RoadSegment> iterator2;
-
-		iterator = this.network.depthIterator(this.segment3, 50., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_T(this.segment3, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment3, 400., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment4, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment3, 690., 10.,
-				this.segment3.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment4, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment1, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment3, 830, 10.,
-				this.segment3.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment4, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment1, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment3, 920, 10.,
-				this.segment3.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment4, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment1, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment3, 1020, 10.,
-				this.segment3.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment4, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment1, iterator2.next());
-		assertFalse(iterator2.hasNext());
-	}
-
-	@Test
-	public void testIteratorWithWrappingTest_02() {
-		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-		Iterator<RoadSegment> iterator2;
-
-		iterator = this.network.depthIterator(this.segment8, 50., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_T(this.segment8, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment8, 400., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment8, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment2, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment5, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment7, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment6, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment11, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment8, 690., 10.,
-				this.segment8.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment8, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment2, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment5, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment7, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment6, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment11, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment4, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment8, 830, 10.,
-				this.segment8.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment8, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment2, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment5, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment7, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment6, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment11, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment4, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment1, iterator2.next());
-		assertFalse(iterator2.hasNext());
+		@BeforeEach
+		public void setUp() {
+			assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		}
 		
-		iterator = this.network.depthIterator(this.segment8, 920, 10.,
-				this.segment8.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment8, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment2, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment5, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment7, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment6, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment11, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment4, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment1, iterator2.next());
-		assertFalse(iterator2.hasNext());
-
-		iterator = this.network.depthIterator(this.segment8, 1020, 10.,
-				this.segment8.getBeginPoint(),false,true);
-		this.subNetwork.build(iterator);
-		iterator2 = this.subNetwork.iterator();
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_T_W(this.segment8, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment2, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment5, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment3, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment7, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment6, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment11, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_W(this.segment4, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertWrapSegment_W_T(this.segment1, iterator2.next());
-		assertFalse(iterator2.hasNext());
+		@DisplayName("#1")
+		@Test
+		public void testIteratorWithWrappingTest_1() {
+			var iterator = network.depthIterator(segment3, 50., 10.,
+					segment3.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_T(segment3, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#2")
+		@Test
+		public void testIteratorWithWrappingTest_2() {
+			var iterator = network.depthIterator(segment3, 400., 10.,
+					segment3.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment4, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#3")
+		@Test
+		public void testIteratorWithWrappingTest_3() {
+			var iterator = network.depthIterator(segment3, 690., 10.,
+					segment3.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment4, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment1, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#4")
+		@Test
+		public void testIteratorWithWrappingTest_4() {
+			var iterator = network.depthIterator(segment3, 830, 10.,
+					segment3.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment4, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment1, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#5")
+		@Test
+		public void testIteratorWithWrappingTest_5() {
+			var iterator = network.depthIterator(segment3, 920, 10.,
+					segment3.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment4, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment1, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#6")
+		@Test
+		public void testIteratorWithWrappingTest_6() {
+			var iterator = network.depthIterator(segment3, 1020, 10.,
+					segment3.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment4, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment1, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#7")
+		@Test
+		public void testIteratorWithWrappingTest_7() {
+			var iterator = network.depthIterator(segment8, 50., 10.,
+					segment8.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_T(segment8, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#8")
+		@Test
+		public void testIteratorWithWrappingTest_8() {
+			var iterator = network.depthIterator(segment8, 400., 10.,
+					segment8.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment8, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment2, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment5, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment7, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment6, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment11, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#9")
+		@Test
+		public void testIteratorWithWrappingTest_9() {
+			var iterator = network.depthIterator(segment8, 690., 10.,
+					segment8.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment8, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment2, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment5, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment7, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment6, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment11, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment4, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#10")
+		@Test
+		public void testIteratorWithWrappingTest_10() {
+			var iterator = network.depthIterator(segment8, 830, 10.,
+					segment8.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment8, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment2, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment5, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment7, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment6, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment11, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment4, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment1, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#11")
+		@Test
+		public void testIteratorWithWrappingTest_11() {
+			var iterator = network.depthIterator(segment8, 920, 10.,
+					segment8.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment8, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment2, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment5, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment7, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment6, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment11, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment4, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment1, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
+		
+		@DisplayName("#12")
+		@Test
+		public void testIteratorWithWrappingTest_12() {
+			var iterator = network.depthIterator(segment8, 1020, 10.,
+					segment8.getBeginPoint(),false,true);
+			subNetwork.build(iterator);
+			var iterator2 = subNetwork.iterator();
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_T_W(segment8, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment2, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment5, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment3, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment7, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment6, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment11, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_W(segment4, iterator2.next());
+			assertTrue(iterator2.hasNext());
+			assertWrapSegment_W_T(segment1, iterator2.next());
+			assertFalse(iterator2.hasNext());
+		}
 	}
-
 }

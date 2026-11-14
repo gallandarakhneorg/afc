@@ -29,6 +29,7 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
@@ -48,6 +49,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("SubRoadNetwork - read only")
 @SuppressWarnings("all")
 public class SubRoadNetworkReadOnlyTest extends AbstractGisTest {
 
@@ -173,6 +175,7 @@ public class SubRoadNetworkReadOnlyTest extends AbstractGisTest {
 		System.gc(); System.gc();
 	}
 
+	@DisplayName("#1")
 	@Test
 	public void testUserDataReadOnly() {
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;

@@ -27,9 +27,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import java.lang.ref.SoftReference;
 import java.net.URL;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
@@ -50,6 +47,9 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.graph.astar.AStarHeuristic;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.Resources;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /** Unit test dedicated to A* search algorithm on road network.
  *
@@ -59,6 +59,7 @@ import org.arakhne.afc.vmutil.Resources;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("Astar")
 @SuppressWarnings("all")
 public class AstarTest extends AbstractGisTest {
 
@@ -186,6 +187,7 @@ public class AstarTest extends AbstractGisTest {
 		return segments;
 	}
 
+	@DisplayName("Data set")
 	@Test
 	public void testDataset() {
 		Point1d start, end;
@@ -234,8 +236,6 @@ public class AstarTest extends AbstractGisTest {
 		return pos;
 	}
 
-	/**
-	 */
 	private void runAstarTextWithHeuristic(AStarHeuristic<RoadConnection> heuristic) {
 		Point1d start, end;
 		Point2d start2d, end2d;
@@ -276,11 +276,13 @@ public class AstarTest extends AbstractGisTest {
 		}
 	}
 
+	@DisplayName("With default heuristic")
 	@Test
 	public void testAstarDefaultHeuristic() {
 		runAstarTextWithHeuristic(null);
 	}
 
+	@DisplayName("With distance heuristic")
 	@Test
 	public void testAstarDistanceHeuristic() {
 		RoadAStarDistanceHeuristic heuristic = new RoadAStarDistanceHeuristic();
