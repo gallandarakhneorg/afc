@@ -27,12 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
 import java.util.Iterator;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.MapElement;
@@ -47,6 +43,14 @@ import org.arakhne.afc.io.shape.ShapeFileIndexReader;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.Resources;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author $Author: sgalland$
@@ -55,6 +59,7 @@ import org.arakhne.afc.vmutil.Resources;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("GISShapeFileReader")
 @SuppressWarnings("all")
 public class GISShapeFileReaderTest {
 
@@ -113,68 +118,88 @@ public class GISShapeFileReaderTest {
 
 	};
 
-	@Nested
 	@DisplayName("-DBF-SHX")
+	@Nested
 	public class WithoutDbfWithoutShx extends AbstractTestCase {
 
 		private GISShapeFileReader reader;
 
 		@BeforeEach
 		public void setUp() throws Exception {
-			this.reader = new GISShapeFileReader(shpUrl);
+			reader = new GISShapeFileReader(shpUrl);
 		}
 
 		@AfterEach
 		public void tearDown() throws Exception {
-			this.reader.close();
-			this.reader = null;
+			reader.close();
+			reader = null;
 		}
 
+		@DisplayName("getMapElementType")
 		@Test
 		public void getMapElementType() {
-			assertEquals(MapPolygon.class, this.reader.getMapElementType());
+			assertEquals(MapPolygon.class, reader.getMapElementType());
 		}
 
+		@DisplayName("getMapMetricProjection")
 		@Test
 		public void getMapMetricProjection() {
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, this.reader.getMapMetricProjection());
+			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, reader.getMapMetricProjection());
 		}
 
-		@Test
-		public void setMapMetricProjection() {
-			this.reader.setMapMetricProjection(MapMetricProjection.FRANCE_LAMBERT_93);
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_93, this.reader.getMapMetricProjection());
+		@DisplayName("setMapMetricProjection")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(MapMetricProjection.class)
+		public void setMapMetricProjection(MapMetricProjection projection) {
+			reader.setMapMetricProjection(projection);
+			assertEquals(projection, reader.getMapMetricProjection());
 		}
 
+		@DisplayName("getFileSize")
 		@Test
 		public void getFileSize() throws Exception {
-			assertEquals(4764, this.reader.getFileSize());
+			assertEquals(4764, reader.getFileSize());
 		}
 
+		@DisplayName("getShapeElementType")
 		@Test
 		public void getShapeElementType() {
-			assertEquals(ShapeElementType.POLYGON, this.reader.getShapeElementType());
+			assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
 		}
 
-		@Test
-		public void getFileReadingPosition() throws Exception {
-			assertEquals(ESRIFileUtil.HEADER_BYTES, this.reader.getFileReadingPosition());
-			this.reader.read();
-			assertEquals(236, this.reader.getFileReadingPosition());
+		@DisplayName("getFileReadingPosition")
+		@Nested
+		public class GetFileReadingPositionTest {
+
+			@DisplayName("Before read")
+			@Test
+			public void beforeRead() throws Exception {
+				assertEquals(ESRIFileUtil.HEADER_BYTES, reader.getFileReadingPosition());
+			}
+
+			@DisplayName("After read")
+			@Test
+			public void afterRead() throws Exception {
+				reader.read();
+				assertEquals(236, reader.getFileReadingPosition());
+			}
+
 		}
 
+		@DisplayName("getBoundsFromHeader")
 		@Test
 		public void getBoundsFromHeader() {
-			ESRIBounds bounds = this.reader.getBoundsFromHeader();
+			ESRIBounds bounds = reader.getBoundsFromHeader();
 			assertEpsilonEquals(936456.7, bounds.getMinX());
 			assertEpsilonEquals(2300653.7, bounds.getMinY());
 			assertEpsilonEquals(941093.9, bounds.getMaxX());
 			assertEpsilonEquals(2308847.4, bounds.getMaxY());
 		}
 
+		@DisplayName("read")
 		@Test
 		public void read() throws Exception {
-			MapElement element = this.reader.read();
+			MapElement element = reader.read();
 			assertTrue(element instanceof MapPolygon);
 			MapPolygon poly = (MapPolygon) element;
 			Iterator<Point2d> iterator = poly.pointIterator();
@@ -187,100 +212,161 @@ public class GISShapeFileReaderTest {
 			assertFalse(iterator.hasNext());
 		}
 
-		@Test
-		public void iterator() {
-			Point2d p;
-			Iterator<MapElement> iterator = this.reader.iterator();
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = (MapPolygon) iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		@DisplayName("iterator")
+		@Nested
+		public class IteratorTest {
+
+			@DisplayName("()")
+			@Test
+			public void noArgument() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator();
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
-
-		@Test
-		public void iteratorBoolean() {
-			Point2d p;
-			Iterator<MapElement> iterator = this.reader.iterator(false);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = (MapPolygon) iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			@DisplayName("(false)")
+			@Test
+			public void falseArgument() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator(false);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
-
-		@Test
-		public void iteratorClass_polygon() {
-			Point2d p;
-			Iterator<MapPolygon> iterator = this.reader.iterator(MapPolygon.class);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			@DisplayName("(true)")
+			@Test
+			public void trueArgument() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator(true);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
 
-		@Test
-		public void iteratorClass_polyline() {
-			Iterator<MapPolyline> iterator = this.reader.iterator(MapPolyline.class);
-			assertFalse(iterator.hasNext());
-		}
-
-		@Test
-		public void iteratorClassBoolean_false() {
-			Point2d p;
-			Iterator<MapPolygon> iterator = this.reader.iterator(MapPolygon.class, false);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			@DisplayName("(MapPolygon.class)")
+			@Test
+			public void iteratorClass_polygon() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
+	
+			@DisplayName("(MapPolyline.class)")
+			@Test
+			public void iteratorClass_polyline() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class);
+				assertFalse(iterator.hasNext());
+			}
+	
+			@DisplayName("(MapPolygon.class, false)")
+			@Test
+			public void iteratorClass_polygonfalse() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class, false);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
+				}
+				assertEquals(ALL_XS.length, j);
+			}
+	
+			@DisplayName("(MapPolygon.class, true)")
+			@Test
+			public void iteratorClass_polygontrue() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class, true);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
+				}
+				assertEquals(ALL_XS.length, j);
+			}
+
+			@DisplayName("(MapPolyline.class, false)")
+			@Test
+			public void iteratorClassBoolean_polylinefalse() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class, false);
+				assertFalse(iterator.hasNext());
+			}
+
+			@DisplayName("(MapPolyline.class, true)")
+			@Test
+			public void iteratorClassBoolean_polylinetrue() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class, true);
+				assertFalse(iterator.hasNext());
+			}
 		}
 
-		@Test
-		public void iteratorClassBoolean_polyline() {
-			Iterator<MapPolyline> iterator = this.reader.iterator(MapPolyline.class, false);
-			assertFalse(iterator.hasNext());
-			
-		}
-
-		@Test
-		public void seek() throws Exception {
-			assertThrows(SeekOperationDisabledException.class, () -> this.reader.seek(4));
+		private static IntStream positiveIntegers() {
+	        return new Random(42).ints(10, 1, 1001);
+	    }
+		
+		@DisplayName("seek")
+		@ParameterizedTest(name = "{index} => {0}")
+	    @MethodSource("positiveIntegers")
+		public void seek(int value) throws Exception {
+			assertThrows(SeekOperationDisabledException.class, () -> reader.seek(value));
 		}
 		
 	}
 
-	@Nested
 	@DisplayName("+DBF-SHX")
+	@Nested
 	public class WithDbfWithoutShx extends AbstractTestCase {
 
 		private DBaseFileReader dbaseReader;
@@ -289,63 +375,82 @@ public class GISShapeFileReaderTest {
 
 		@BeforeEach
 		public void setUp() throws Exception {
-			this.dbaseReader = new DBaseFileReader(dbfUrl);
-			this.reader = new GISShapeFileReader(shpUrl, this.dbaseReader);
+			dbaseReader = new DBaseFileReader(dbfUrl);
+			reader = new GISShapeFileReader(shpUrl, dbaseReader);
 		}
 
 		@AfterEach
 		public void tearDown() throws Exception {
-			this.dbaseReader.close();
-			this.dbaseReader = null;
-			this.reader.close();
-			this.reader = null;
+			dbaseReader.close();
+			dbaseReader = null;
+			reader.close();
+			reader = null;
 		}
 
+		@DisplayName("getMapElementType")
 		@Test
 		public void getMapElementType() {
-			assertEquals(MapPolygon.class, this.reader.getMapElementType());
+			assertEquals(MapPolygon.class, reader.getMapElementType());
 		}
 
+		@DisplayName("getMapMetricProjection")
 		@Test
 		public void getMapMetricProjection() {
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, this.reader.getMapMetricProjection());
+			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, reader.getMapMetricProjection());
 		}
 
-		@Test
-		public void setMapMetricProjection() {
-			this.reader.setMapMetricProjection(MapMetricProjection.FRANCE_LAMBERT_93);
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_93, this.reader.getMapMetricProjection());
+		@DisplayName("setMapMetricProjection")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(MapMetricProjection.class)
+		public void setMapMetricProjection(MapMetricProjection projection) {
+			reader.setMapMetricProjection(projection);
+			assertEquals(projection, reader.getMapMetricProjection());
 		}
 
+		@DisplayName("getFileSize")
 		@Test
 		public void getFileSize() throws Exception {
-			assertEquals(4764, this.reader.getFileSize());
+			assertEquals(4764, reader.getFileSize());
 		}
 
+		@DisplayName("getShapeElementType")
 		@Test
 		public void getShapeElementType() {
-			assertEquals(ShapeElementType.POLYGON, this.reader.getShapeElementType());
+			assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
 		}
 
-		@Test
-		public void getFileReadingPosition() throws Exception {
-			assertEquals(ESRIFileUtil.HEADER_BYTES, this.reader.getFileReadingPosition());
-			this.reader.read();
-			assertEquals(236, this.reader.getFileReadingPosition());
+		@DisplayName("getFileReadingPosition")
+		@Nested
+		public class GetFileReadingPositionTest {
+
+			@DisplayName("Before read")
+			@Test
+			public void beforeRead() throws Exception {
+				assertEquals(ESRIFileUtil.HEADER_BYTES, reader.getFileReadingPosition());
+			}
+
+			@DisplayName("After read")
+			@Test
+			public void afterRead() throws Exception {
+				reader.read();
+				assertEquals(236, reader.getFileReadingPosition());
+			}
 		}
 
+		@DisplayName("getBoundsFromHeader")
 		@Test
 		public void getBoundsFromHeader() {
-			ESRIBounds bounds = this.reader.getBoundsFromHeader();
+			ESRIBounds bounds = reader.getBoundsFromHeader();
 			assertEpsilonEquals(936456.7, bounds.getMinX());
 			assertEpsilonEquals(2300653.7, bounds.getMinY());
 			assertEpsilonEquals(941093.9, bounds.getMaxX());
 			assertEpsilonEquals(2308847.4, bounds.getMaxY());
 		}
 
+		@DisplayName("read")
 		@Test
 		public void read() throws Exception {
-			MapElement element = this.reader.read();
+			MapElement element = reader.read();
 			assertTrue(element instanceof MapPolygon);
 			MapPolygon poly = (MapPolygon) element;
 			Iterator<Point2d> iterator = poly.pointIterator();
@@ -358,94 +463,157 @@ public class GISShapeFileReaderTest {
 			assertFalse(iterator.hasNext());
 		}
 
-		@Test
-		public void iterator() {
-			Point2d p;
-			Iterator<MapElement> iterator = this.reader.iterator();
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = (MapPolygon) iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		@DisplayName("iterator")
+		@Nested
+		public class IteratorTest {
+
+			@DisplayName("()")
+			@Test
+			public void iterator() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator();
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
-
-		@Test
-		public void iteratorBoolean() {
-			Point2d p;
-			Iterator<MapElement> iterator = this.reader.iterator(false);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = (MapPolygon) iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			@DisplayName("(false)")
+			@Test
+			public void iteratorBoolean_false() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator(false);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
-
-		@Test
-		public void iteratorClass_polygon() {
-			Point2d p;
-			Iterator<MapPolygon> iterator = this.reader.iterator(MapPolygon.class);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			@DisplayName("(true)")
+			@Test
+			public void iteratorBoolean_true() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator(true);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
 
-		@Test
-		public void iteratorClass_polyline() {
-			Iterator<MapPolyline> iterator = this.reader.iterator(MapPolyline.class);
-			assertFalse(iterator.hasNext());
-		}
-
-		@Test
-		public void iteratorClassBoolean_false() {
-			Point2d p;
-			Iterator<MapPolygon> iterator = this.reader.iterator(MapPolygon.class, false);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			@DisplayName("(MapPolygon.class)")
+			@Test
+			public void iteratorClass_polygon() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
+	
+			@DisplayName("(MapPolyline.class)")
+			@Test
+			public void iteratorClass_polyline() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class);
+				assertFalse(iterator.hasNext());
+			}
+	
+			@DisplayName("(MapPolygon.class, false)")
+			@Test
+			public void iteratorClassBoolean_polygonfalse() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class, false);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
+				}
+				assertEquals(ALL_XS.length, j);
+			}
+	
+			@DisplayName("(MapPolygon.class, true)")
+			@Test
+			public void iteratorClassBoolean_polygontrue() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class, true);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
+				}
+				assertEquals(ALL_XS.length, j);
+			}
+
+			@DisplayName("(MapPolyline.class, false)")
+			@Test
+			public void iteratorClassBoolean_polylinefalse() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class, false);
+				assertFalse(iterator.hasNext());
+				
+			}
+
+			@DisplayName("(MapPolyline.class, false)")
+			@Test
+			public void iteratorClassBoolean_polylinetrue() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class, true);
+				assertFalse(iterator.hasNext());
+				
+			}
 		}
 
-		@Test
-		public void iteratorClassBoolean_polyline() {
-			Iterator<MapPolyline> iterator = this.reader.iterator(MapPolyline.class, false);
-			assertFalse(iterator.hasNext());
-			
-		}
-
-		@Test
-		public void seek() throws Exception {
-			assertThrows(SeekOperationDisabledException.class, () -> this.reader.seek(4));
+		private static IntStream positiveIntegers() {
+	        return new Random(42).ints(10, 1, 1001);
+	    }
+		
+		@DisplayName("seek")
+		@ParameterizedTest(name = "{index} => {0}")
+	    @MethodSource("positiveIntegers")
+		public void seek(int value) throws Exception {
+			assertThrows(SeekOperationDisabledException.class, () -> reader.seek(value));
 		}
 
 	}
@@ -460,63 +628,82 @@ public class GISShapeFileReaderTest {
 
 		@BeforeEach
 		public void setUp() throws Exception {
-			this.shxReader = new ShapeFileIndexReader(shxUrl);
-			this.reader = new GISShapeFileReader(shpUrl, this.shxReader);
+			shxReader = new ShapeFileIndexReader(shxUrl);
+			reader = new GISShapeFileReader(shpUrl, shxReader);
 		}
 
 		@AfterEach
 		public void tearDown() throws Exception {
-			this.shxReader.close();
-			this.shxReader = null;
-			this.reader.close();
-			this.reader = null;
+			shxReader.close();
+			shxReader = null;
+			reader.close();
+			reader = null;
 		}
 
+		@DisplayName("getMapElementType")
 		@Test
 		public void getMapElementType() {
-			assertEquals(MapPolygon.class, this.reader.getMapElementType());
+			assertEquals(MapPolygon.class, reader.getMapElementType());
 		}
 
+		@DisplayName("getMapMetricProjection")
 		@Test
 		public void getMapMetricProjection() {
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, this.reader.getMapMetricProjection());
+			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, reader.getMapMetricProjection());
 		}
 
-		@Test
-		public void setMapMetricProjection() {
-			this.reader.setMapMetricProjection(MapMetricProjection.FRANCE_LAMBERT_93);
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_93, this.reader.getMapMetricProjection());
+		@DisplayName("setMapMetricProjection")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(MapMetricProjection.class)
+		public void setMapMetricProjection(MapMetricProjection projection) {
+			reader.setMapMetricProjection(projection);
+			assertEquals(projection, reader.getMapMetricProjection());
 		}
 
+		@DisplayName("getFileSize")
 		@Test
 		public void getFileSize() throws Exception {
-			assertEquals(4764, this.reader.getFileSize());
+			assertEquals(4764, reader.getFileSize());
 		}
 
+		@DisplayName("getShapeElementType")
 		@Test
 		public void getShapeElementType() {
-			assertEquals(ShapeElementType.POLYGON, this.reader.getShapeElementType());
+			assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
 		}
 
-		@Test
-		public void getFileReadingPosition() throws Exception {
-			assertEquals(ESRIFileUtil.HEADER_BYTES, this.reader.getFileReadingPosition());
-			this.reader.read();
-			assertEquals(236, this.reader.getFileReadingPosition());
+		@DisplayName("getFileReadingPosition")
+		@Nested
+		public class GetFileReadingPositionTest {
+
+			@DisplayName("Before read")
+			@Test
+			public void beforeRead() throws Exception {
+				assertEquals(ESRIFileUtil.HEADER_BYTES, reader.getFileReadingPosition());
+			}
+
+			@DisplayName("After read")
+			@Test
+			public void afterRead() throws Exception {
+				reader.read();
+				assertEquals(236, reader.getFileReadingPosition());
+			}
 		}
 
+		@DisplayName("getBoundsFromHeader")
 		@Test
 		public void getBoundsFromHeader() {
-			ESRIBounds bounds = this.reader.getBoundsFromHeader();
+			ESRIBounds bounds = reader.getBoundsFromHeader();
 			assertEpsilonEquals(936456.7, bounds.getMinX());
 			assertEpsilonEquals(2300653.7, bounds.getMinY());
 			assertEpsilonEquals(941093.9, bounds.getMaxX());
 			assertEpsilonEquals(2308847.4, bounds.getMaxY());
 		}
 
+		@DisplayName("read")
 		@Test
 		public void read() throws Exception {
-			MapElement element = this.reader.read();
+			MapElement element = reader.read();
 			assertTrue(element instanceof MapPolygon);
 			MapPolygon poly = (MapPolygon) element;
 			Iterator<Point2d> iterator = poly.pointIterator();
@@ -529,96 +716,159 @@ public class GISShapeFileReaderTest {
 			assertFalse(iterator.hasNext());
 		}
 
-		@Test
-		public void iterator() {
-			Point2d p;
-			Iterator<MapElement> iterator = this.reader.iterator();
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = (MapPolygon) iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		@DisplayName("iterator")
+		@Nested
+		public class IteratorTest {
+
+			@DisplayName("()")
+			@Test
+			public void iterator() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator();
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
-
-		@Test
-		public void iteratorBoolean() {
-			Point2d p;
-			Iterator<MapElement> iterator = this.reader.iterator(false);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = (MapPolygon) iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			@DisplayName("(false)")
+			@Test
+			public void iteratorBoolean_false() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator(false);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
-
-		@Test
-		public void iteratorClass_polygon() {
-			Point2d p;
-			Iterator<MapPolygon> iterator = this.reader.iterator(MapPolygon.class);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			@DisplayName("(true)")
+			@Test
+			public void iteratortrue() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator(true);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
 
-		@Test
-		public void iteratorClass_polyline() {
-			Iterator<MapPolyline> iterator = this.reader.iterator(MapPolyline.class);
-			assertFalse(iterator.hasNext());
-		}
-
-		@Test
-		public void iteratorClassBoolean_false() {
-			Point2d p;
-			Iterator<MapPolygon> iterator = this.reader.iterator(MapPolygon.class, false);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			@DisplayName("(MapPolygon.class)")
+			@Test
+			public void iteratorClass_polygon() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
+	
+			@DisplayName("(MapPolyline.class)")
+			@Test
+			public void iteratorClass_polyline() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class);
+				assertFalse(iterator.hasNext());
+			}
+	
+			@DisplayName("(MapPolygon.class, false)")
+			@Test
+			public void iteratorClassBoolean_polygonfalse() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class, false);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
+				}
+				assertEquals(ALL_XS.length, j);
+			}
+	
+			@DisplayName("(MapPolygon.class, true)")
+			@Test
+			public void iteratorClassBoolean_polygontue() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class, true);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
+				}
+				assertEquals(ALL_XS.length, j);
+			}
+
+			@DisplayName("(MapPolyline.class, false)")
+			@Test
+			public void iteratorClassBoolean_polylinefalse() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class, false);
+				assertFalse(iterator.hasNext());
+				
+			}
+
+			@DisplayName("(MapPolyline.class, true)")
+			@Test
+			public void iteratorClassBoolean_polylinetrue() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class, true);
+				assertFalse(iterator.hasNext());
+				
+			}
+
 		}
 
-		@Test
-		public void iteratorClassBoolean_polyline() {
-			Iterator<MapPolyline> iterator = this.reader.iterator(MapPolyline.class, false);
-			assertFalse(iterator.hasNext());
-			
-		}
-
+		private static IntStream positiveIntegers() {
+	        return new Random(42).ints(10, 1, 1001);
+	    }
+		
+		@DisplayName("seek")
 		@Test
 		public void seek() throws Exception {
-			this.reader.seek(4);
+			reader.seek(4);
 
-			MapElement element = this.reader.read();
+			MapElement element = reader.read();
 			assertTrue(element instanceof MapPolygon);
 			MapPolygon poly = (MapPolygon) element;
 			Iterator<Point2d> iterator = poly.pointIterator();
@@ -645,66 +895,85 @@ public class GISShapeFileReaderTest {
 
 		@BeforeEach
 		public void setUp() throws Exception {
-			this.dbaseReader = new DBaseFileReader(dbfUrl);
-			this.shxReader = new ShapeFileIndexReader(shxUrl);
-			this.reader = new GISShapeFileReader(shpUrl, this.dbaseReader, this.shxReader);
+			dbaseReader = new DBaseFileReader(dbfUrl);
+			shxReader = new ShapeFileIndexReader(shxUrl);
+			reader = new GISShapeFileReader(shpUrl, dbaseReader, shxReader);
 		}
 
 		@AfterEach
 		public void tearDown() throws Exception {
-			this.dbaseReader.close();
-			this.dbaseReader = null;
-			this.shxReader.close();
-			this.shxReader = null;
-			this.reader.close();
-			this.reader = null;
+			dbaseReader.close();
+			dbaseReader = null;
+			shxReader.close();
+			shxReader = null;
+			reader.close();
+			reader = null;
 		}
 
+		@DisplayName("getMapElementType")
 		@Test
 		public void getMapElementType() {
-			assertEquals(MapPolygon.class, this.reader.getMapElementType());
+			assertEquals(MapPolygon.class, reader.getMapElementType());
 		}
 
+		@DisplayName("getMapMetricProjection")
 		@Test
 		public void getMapMetricProjection() {
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, this.reader.getMapMetricProjection());
+			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, reader.getMapMetricProjection());
 		}
 
-		@Test
-		public void setMapMetricProjection() {
-			this.reader.setMapMetricProjection(MapMetricProjection.FRANCE_LAMBERT_93);
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_93, this.reader.getMapMetricProjection());
+		@DisplayName("setMapMetricProjection")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(MapMetricProjection.class)
+		public void setMapMetricProjection(MapMetricProjection projection) {
+			reader.setMapMetricProjection(projection);
+			assertEquals(projection, reader.getMapMetricProjection());
 		}
 
+		@DisplayName("getFileSize")
 		@Test
 		public void getFileSize() throws Exception {
-			assertEquals(4764, this.reader.getFileSize());
+			assertEquals(4764, reader.getFileSize());
 		}
 
+		@DisplayName("getShapeElementType")
 		@Test
 		public void getShapeElementType() {
-			assertEquals(ShapeElementType.POLYGON, this.reader.getShapeElementType());
+			assertEquals(ShapeElementType.POLYGON, reader.getShapeElementType());
 		}
 
-		@Test
-		public void getFileReadingPosition() throws Exception {
-			assertEquals(ESRIFileUtil.HEADER_BYTES, this.reader.getFileReadingPosition());
-			this.reader.read();
-			assertEquals(236, this.reader.getFileReadingPosition());
+		@DisplayName("getFileReadingPosition")
+		@Nested
+		public class GetFileReadingPositionTest {
+
+			@DisplayName("Before read")
+			@Test
+			public void beforeRead() throws Exception {
+				assertEquals(ESRIFileUtil.HEADER_BYTES, reader.getFileReadingPosition());
+			}
+
+			@DisplayName("After read")
+			@Test
+			public void afterRead() throws Exception {
+				reader.read();
+				assertEquals(236, reader.getFileReadingPosition());
+			}
 		}
 
+		@DisplayName("getBoundsFromHeader")
 		@Test
 		public void getBoundsFromHeader() {
-			ESRIBounds bounds = this.reader.getBoundsFromHeader();
+			ESRIBounds bounds = reader.getBoundsFromHeader();
 			assertEpsilonEquals(936456.7, bounds.getMinX());
 			assertEpsilonEquals(2300653.7, bounds.getMinY());
 			assertEpsilonEquals(941093.9, bounds.getMaxX());
 			assertEpsilonEquals(2308847.4, bounds.getMaxY());
 		}
 
+		@DisplayName("read")
 		@Test
 		public void read() throws Exception {
-			MapElement element = this.reader.read();
+			MapElement element = reader.read();
 			assertTrue(element instanceof MapPolygon);
 			MapPolygon poly = (MapPolygon) element;
 			Iterator<Point2d> iterator = poly.pointIterator();
@@ -717,96 +986,154 @@ public class GISShapeFileReaderTest {
 			assertFalse(iterator.hasNext());
 		}
 
-		@Test
-		public void iterator() {
-			Point2d p;
-			Iterator<MapElement> iterator = this.reader.iterator();
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = (MapPolygon) iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		@DisplayName("iterator")
+		@Nested
+		public class IteratorTest {
+
+			@DisplayName("()")
+			@Test
+			public void iterator() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator();
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
-
-		@Test
-		public void iteratorBoolean() {
-			Point2d p;
-			Iterator<MapElement> iterator = this.reader.iterator(false);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = (MapPolygon) iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			@DisplayName("(false)")
+			@Test
+			public void iteratorBoolean_false() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator(false);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
-
-		@Test
-		public void iteratorClass_polygon() {
-			Point2d p;
-			Iterator<MapPolygon> iterator = this.reader.iterator(MapPolygon.class);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			@DisplayName("(true)")
+			@Test
+			public void iteratorBoolean_true() {
+				Point2d p;
+				Iterator<MapElement> iterator = reader.iterator(true);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = (MapPolygon) iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
-		}
 
-		@Test
-		public void iteratorClass_polyline() {
-			Iterator<MapPolyline> iterator = this.reader.iterator(MapPolyline.class);
-			assertFalse(iterator.hasNext());
-		}
-
-		@Test
-		public void iteratorClassBoolean_false() {
-			Point2d p;
-			Iterator<MapPolygon> iterator = this.reader.iterator(MapPolygon.class, false);
-			int j = 0;
-			for (; iterator.hasNext(); ++j) {
-				MapPolygon poly = iterator.next();
-				Iterator<Point2d> iterator2 = poly.pointIterator();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					p = iterator2.next();
-					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			@DisplayName("(MapPolygon.class)")
+			@Test
+			public void iteratorClass_polygon() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
 				}
-				assertFalse(iterator2.hasNext());
+				assertEquals(ALL_XS.length, j);
 			}
-			assertEquals(ALL_XS.length, j);
+	
+			@DisplayName("(MapPolyline.class)")
+			@Test
+			public void iteratorClass_polyline() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class);
+				assertFalse(iterator.hasNext());
+			}
+	
+			@DisplayName("(MapPolygon.class, false)")
+			@Test
+			public void iteratorClassBoolean_polygonfalse() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class, false);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
+				}
+				assertEquals(ALL_XS.length, j);
+			}
+	
+			@DisplayName("(MapPolygon.class, true)")
+			@Test
+			public void iteratorClassBoolean_polygontrue() {
+				Point2d p;
+				Iterator<MapPolygon> iterator = reader.iterator(MapPolygon.class, true);
+				int j = 0;
+				for (; iterator.hasNext(); ++j) {
+					MapPolygon poly = iterator.next();
+					Iterator<Point2d> iterator2 = poly.pointIterator();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						p = iterator2.next();
+						assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
+					assertFalse(iterator2.hasNext());
+				}
+				assertEquals(ALL_XS.length, j);
+			}
+
+			@DisplayName("(MapPolyline.class, false)")
+			@Test
+			public void iteratorClassBoolean_polylinefalse() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class, false);
+				assertFalse(iterator.hasNext());
+				
+			}
+
+			@DisplayName("(MapPolyline.class, true)")
+			@Test
+			public void iteratorClassBoolean_polylinetrue() {
+				Iterator<MapPolyline> iterator = reader.iterator(MapPolyline.class, true);
+				assertFalse(iterator.hasNext());
+				
+			}
 		}
 
-		@Test
-		public void iteratorClassBoolean_polyline() {
-			Iterator<MapPolyline> iterator = this.reader.iterator(MapPolyline.class, false);
-			assertFalse(iterator.hasNext());
-			
-		}
-
+		@DisplayName("seek")
 		@Test
 		public void seek() throws Exception {
-			this.reader.seek(4);
+			reader.seek(4);
 
-			MapElement element = this.reader.read();
+			MapElement element = reader.read();
 			assertTrue(element instanceof MapPolygon);
 			MapPolygon poly = (MapPolygon) element;
 			Iterator<Point2d> iterator = poly.pointIterator();

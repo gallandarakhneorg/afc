@@ -32,6 +32,8 @@ import java.util.TreeMap;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.mapelement.MapCircle;
@@ -51,6 +53,7 @@ import org.arakhne.afc.testtools.AbstractTestCase;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("MapElementGroup")
 @SuppressWarnings("all")
 public class MapElementGroupTest extends AbstractTestCase {
 
@@ -64,117 +67,234 @@ public class MapElementGroupTest extends AbstractTestCase {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		this.point = new MapPoint(0, 0);
-		this.multiPoint = new MapMultiPoint();
-		this.multiPoint.addPoint(0,  0);
-		this.multiPoint.addPoint(1,  1);
-		this.polyline = new MapPolyline();
-		this.polyline.addPoint(0,  0);
-		this.polyline.addPoint(1,  1);
-		this.polygon = new MapPolygon();
-		this.polygon.addPoint(0,  0);
-		this.polygon.addPoint(1,  1);
-		this.circle = new MapCircle(0, 0, 1);
-		this.group = new MapElementGroup();
+		point = new MapPoint(0, 0);
+		multiPoint = new MapMultiPoint();
+		multiPoint.addPoint(0,  0);
+		multiPoint.addPoint(1,  1);
+		polyline = new MapPolyline();
+		polyline.addPoint(0,  0);
+		polyline.addPoint(1,  1);
+		polygon = new MapPolygon();
+		polygon.addPoint(0,  0);
+		polygon.addPoint(1,  1);
+		circle = new MapCircle(0, 0, 1);
+		group = new MapElementGroup();
 	}
 
 	@AfterEach
 	public void tearDown() {
-		this.group = null;
+		group = null;
 	}
 
-	@Test
-	public void classifiesElementMapElement() {
-		assertEquals(ShapeElementType.POINT, MapElementGroup.classifiesElement(new MapPoint(0, 0)));
-		assertEquals(ShapeElementType.MULTIPOINT, MapElementGroup.classifiesElement(new MapMultiPoint()));
-		assertEquals(ShapeElementType.POLYLINE, MapElementGroup.classifiesElement(new MapPolyline()));
-		assertEquals(ShapeElementType.POLYGON, MapElementGroup.classifiesElement(new MapPolygon()));
-		assertEquals(ShapeElementType.UNSUPPORTED, MapElementGroup.classifiesElement(new MapCircle(0, 0)));
+	@DisplayName("classifiesElement")
+	@Nested
+	public class ClassifiesElementTest {
+
+		@DisplayName("(MapPoint)")
+		@Test
+		public void classifiesElementMapPoint() {
+			assertEquals(ShapeElementType.POINT, MapElementGroup.classifiesElement(new MapPoint(0, 0)));
+		}
+
+		@DisplayName("(MapMultiPoint)")
+		@Test
+		public void classifiesElementMapMultiPoint() {
+			assertEquals(ShapeElementType.MULTIPOINT, MapElementGroup.classifiesElement(new MapMultiPoint()));
+		}
+
+		@DisplayName("(MapPolyline)")
+		@Test
+		public void classifiesElementMapPolyline() {
+			assertEquals(ShapeElementType.POLYLINE, MapElementGroup.classifiesElement(new MapPolyline()));
+		}
+
+		@DisplayName("(MapPolygon)")
+		@Test
+		public void classifiesElementMapPolygon() {
+			assertEquals(ShapeElementType.POLYGON, MapElementGroup.classifiesElement(new MapPolygon()));
+		}
+
+		@DisplayName("(MapCircle)")
+		@Test
+		public void classifiesElementMapCircle() {
+			assertEquals(ShapeElementType.UNSUPPORTED, MapElementGroup.classifiesElement(new MapCircle(0, 0)));
+		}
+
 	}
 
-	@Test
-	public void classifiesElementsMapIterator() {
-		Map<ShapeElementType, MapElementGroup> map = new TreeMap<>();
+	@DisplayName("classifiesElements")
+	@Nested
+	public class ClassifiesElementsTest {
 
-		MapElementGroup.classifiesElements(map,
-				Arrays.asList(this.point, this.multiPoint, this.polyline, this.polygon, this.circle).iterator());
+		@DisplayName("(Map, Iterator)")
+		@Nested
+		public class ClassifiesElementMapIteratorTest {
 
-		assertSame(this.point, map.get(ShapeElementType.POINT).elements.iterator().next());
-		assertSame(this.multiPoint, map.get(ShapeElementType.MULTIPOINT).elements.iterator().next());
-		assertSame(this.polyline, map.get(ShapeElementType.POLYLINE).elements.iterator().next());
-		assertSame(this.polygon, map.get(ShapeElementType.POLYGON).elements.iterator().next());
+			@DisplayName("#1")
+			@Test
+			public void classifiesElementsMapIterator() {
+				Map<ShapeElementType, MapElementGroup> map = new TreeMap<>();
+		
+				MapElementGroup.classifiesElements(map,
+						Arrays.asList(point, multiPoint, polyline, polygon, circle).iterator());
+		
+				assertSame(point, map.get(ShapeElementType.POINT).elements.iterator().next());
+				assertSame(multiPoint, map.get(ShapeElementType.MULTIPOINT).elements.iterator().next());
+				assertSame(polyline, map.get(ShapeElementType.POLYLINE).elements.iterator().next());
+				assertSame(polygon, map.get(ShapeElementType.POLYGON).elements.iterator().next());
+			}
+		}
+
+		@DisplayName("(Map, Collection)")
+		@Nested
+		public class ClassifiesElementMapCollectionTest {
+
+			@DisplayName("#1")
+			@Test
+			public void classifiesElementsCollection() {
+				Map<ShapeElementType, MapElementGroup> map = new TreeMap<>();
+	
+				MapElementGroup.classifiesElements(map,
+						Arrays.asList(point, multiPoint, polyline, polygon, circle));
+	
+				assertSame(point, map.get(ShapeElementType.POINT).elements.iterator().next());
+				assertSame(multiPoint, map.get(ShapeElementType.MULTIPOINT).elements.iterator().next());
+				assertSame(polyline, map.get(ShapeElementType.POLYLINE).elements.iterator().next());
+				assertSame(polygon, map.get(ShapeElementType.POLYGON).elements.iterator().next());
+			}
+
+		}
+
+		@DisplayName("(Iterator)")
+		@Nested
+		public class ClassifiesElementIteratorTest {
+
+			@DisplayName("#1")
+			@Test
+			public void classifiesElementsIterator() {
+				Map<ShapeElementType, MapElementGroup> map = MapElementGroup.classifiesElements(
+						Arrays.asList(point, multiPoint, polyline, polygon, circle).iterator());
+	
+				assertSame(point, map.get(ShapeElementType.POINT).elements.iterator().next());
+				assertSame(multiPoint, map.get(ShapeElementType.MULTIPOINT).elements.iterator().next());
+				assertSame(polyline, map.get(ShapeElementType.POLYLINE).elements.iterator().next());
+				assertSame(polygon, map.get(ShapeElementType.POLYGON).elements.iterator().next());
+			}
+
+		}
+
+		@DisplayName("(Collection)")
+		@Nested
+		public class ClassifiesElementCollectionTest {
+
+			@DisplayName("#1")
+			@Test
+			public void classifiesElementsMapCollection() {
+				Map<ShapeElementType, MapElementGroup> map = MapElementGroup.classifiesElements(
+						Arrays.asList(point, multiPoint, polyline, polygon, circle));
+	
+				assertSame(point, map.get(ShapeElementType.POINT).elements.iterator().next());
+				assertSame(multiPoint, map.get(ShapeElementType.MULTIPOINT).elements.iterator().next());
+				assertSame(polyline, map.get(ShapeElementType.POLYLINE).elements.iterator().next());
+				assertSame(polygon, map.get(ShapeElementType.POLYGON).elements.iterator().next());
+			}
+
+		}
+
 	}
 
-	@Test
-	public void classifiesElementsCollection() {
-		Map<ShapeElementType, MapElementGroup> map = new TreeMap<>();
+	@DisplayName("add(MapElement)")
+	@Nested
+	public class AddMapElementTest {
+		
+		@DisplayName("#1")
+		@Test
+		public void addMapElement() {
+			group.add(point);
+			group.add(multiPoint);
+			group.add(polyline);
+			group.add(polygon);
+			group.add(circle);
+			Iterator<? extends MapElement> iterator = group.elements.iterator();
+			assertTrue(iterator.hasNext());
+			assertSame(point, iterator.next());
+			assertTrue(iterator.hasNext());
+			assertSame(multiPoint, iterator.next());
+			assertTrue(iterator.hasNext());
+			assertSame(polyline, iterator.next());
+			assertTrue(iterator.hasNext());
+			assertSame(polygon, iterator.next());
+			assertTrue(iterator.hasNext());
+			assertSame(circle, iterator.next());
+			assertFalse(iterator.hasNext());
+		}
 
-		MapElementGroup.classifiesElements(map,
-				Arrays.asList(this.point, this.multiPoint, this.polyline, this.polygon, this.circle));
+		@DisplayName("#2")
+		@Test
+		public void addNoElements() {
+		    Iterator<? extends MapElement> iterator = group.elements.iterator();
+		    assertFalse(iterator.hasNext());
+		}
 
-		assertSame(this.point, map.get(ShapeElementType.POINT).elements.iterator().next());
-		assertSame(this.multiPoint, map.get(ShapeElementType.MULTIPOINT).elements.iterator().next());
-		assertSame(this.polyline, map.get(ShapeElementType.POLYLINE).elements.iterator().next());
-		assertSame(this.polygon, map.get(ShapeElementType.POLYGON).elements.iterator().next());
+		@DisplayName("#3")
+		@Test
+		public void addSingleElement() {
+		    group.add(point);
+
+		    Iterator<? extends MapElement> iterator = group.elements.iterator();
+		    assertTrue(iterator.hasNext());
+		    assertSame(point, iterator.next());
+		    assertFalse(iterator.hasNext());
+		}
+
 	}
 
-	@Test
-	public void classifiesElementsIterator() {
-		Map<ShapeElementType, MapElementGroup> map = MapElementGroup.classifiesElements(
-				Arrays.asList(this.point, this.multiPoint, this.polyline, this.polygon, this.circle).iterator());
+	@DisplayName("getBounds")
+	@Nested
+	public class GetBoundsTest {
+		
+		@DisplayName("#1")
+		@Test
+		public void getBounds() {
+			group.add(point);
+			group.add(multiPoint);
+			group.add(polyline);
+			group.add(polygon);
+			group.add(circle);
+			ESRIBounds bounds = group.getBounds();
+			assertEpsilonEquals(-1, bounds.getMinX());
+			assertEpsilonEquals(-1, bounds.getMinY());
+			assertEpsilonEquals(1, bounds.getMaxX());
+			assertEpsilonEquals(1, bounds.getMaxY());
+		}
 
-		assertSame(this.point, map.get(ShapeElementType.POINT).elements.iterator().next());
-		assertSame(this.multiPoint, map.get(ShapeElementType.MULTIPOINT).elements.iterator().next());
-		assertSame(this.polyline, map.get(ShapeElementType.POLYLINE).elements.iterator().next());
-		assertSame(this.polygon, map.get(ShapeElementType.POLYGON).elements.iterator().next());
-	}
+		@DisplayName("#2")
+		@Test
+		public void getBoundsWhenEmpty() {
+		    ESRIBounds bounds = group.getBounds();
 
-	@Test
-	public void classifiesElementsMapCollection() {
-		Map<ShapeElementType, MapElementGroup> map = MapElementGroup.classifiesElements(
-				Arrays.asList(this.point, this.multiPoint, this.polyline, this.polygon, this.circle));
+		    assertNaN(bounds.getMinX());
+		    assertNaN(bounds.getMinY());
+		    assertNaN(bounds.getMaxX());
+		    assertNaN(bounds.getMaxY());
+		}
 
-		assertSame(this.point, map.get(ShapeElementType.POINT).elements.iterator().next());
-		assertSame(this.multiPoint, map.get(ShapeElementType.MULTIPOINT).elements.iterator().next());
-		assertSame(this.polyline, map.get(ShapeElementType.POLYLINE).elements.iterator().next());
-		assertSame(this.polygon, map.get(ShapeElementType.POLYGON).elements.iterator().next());
-	}
+		@DisplayName("#3")
+		@Test
+		public void getBoundsIndependentOfInsertionOrder() {
+		    group.add(circle);
+		    group.add(polygon);
+		    group.add(polyline);
+		    group.add(multiPoint);
+		    group.add(point);
 
-	@Test
-	public void addMapElement() {
-		this.group.add(this.point);
-		this.group.add(this.multiPoint);
-		this.group.add(this.polyline);
-		this.group.add(this.polygon);
-		this.group.add(this.circle);
-
-		Iterator<? extends MapElement> iterator = this.group.elements.iterator();
-		assertTrue(iterator.hasNext());
-		assertSame(this.point, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertSame(this.multiPoint, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertSame(this.polyline, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertSame(this.polygon, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertSame(this.circle, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void getBounds() {
-		this.group.add(this.point);
-		this.group.add(this.multiPoint);
-		this.group.add(this.polyline);
-		this.group.add(this.polygon);
-		this.group.add(this.circle);
-
-		ESRIBounds bounds = this.group.getBounds();
-		assertEpsilonEquals(-1, bounds.getMinX());
-		assertEpsilonEquals(-1, bounds.getMinY());
-		assertEpsilonEquals(1, bounds.getMaxX());
-		assertEpsilonEquals(1, bounds.getMaxY());
+		    ESRIBounds bounds = group.getBounds();
+		    assertEpsilonEquals(-1, bounds.getMinX());
+		    assertEpsilonEquals(-1, bounds.getMinY());
+		    assertEpsilonEquals(1, bounds.getMaxX());
+		    assertEpsilonEquals(1, bounds.getMaxY());
+		}
+		
 	}
 
 }

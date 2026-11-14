@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
@@ -44,6 +45,7 @@ import org.arakhne.afc.vmutil.Resources;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("GISLayerWriter+GISLayerReader")
 @SuppressWarnings("all")
 public class GISLayerWriterReaderTest extends AbstractTestCase {
 
@@ -55,16 +57,19 @@ public class GISLayerWriterReaderTest extends AbstractTestCase {
 		TEST_DBASE_FILE = Resources.getResource(GISLayerWriterReaderTest.class, "test.dbf"); //$NON-NLS-1$
 	}
 	
+	@DisplayName("Found shape file")
 	@Test
 	public void shapeResource() {
 		assertNotNull(TEST_SHAPE_FILE);
 	}
 
+	@DisplayName("Found dBase file")
 	@Test
 	public void dbaseResource() {
 		assertNotNull(TEST_DBASE_FILE);
 	}
 
+	@DisplayName("Reading + Writing")
 	@Test
 	public void testReaderWriter_shapeOnly() throws IOException {
 		getLogger().info("Reading "+FileSystem.basename(TEST_SHAPE_FILE)+"..."); //$NON-NLS-1$ //$NON-NLS-2$

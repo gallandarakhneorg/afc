@@ -32,7 +32,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.MapPolygon;
 import org.arakhne.afc.io.dbase.DBaseFileReader;
@@ -50,6 +51,7 @@ import org.arakhne.afc.vmutil.FileSystem;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@DisplayName("GISShapeFileWriter")
 @SuppressWarnings("all")
 public class GISShapeFileWriterTest {
 
@@ -113,80 +115,90 @@ public class GISShapeFileWriterTest {
 		@BeforeEach
 		public void setUp() throws Exception {
 			ESRIBounds bounds = new ESRIBounds(936456.7, 941093.9, 2300653.7, 2308847.4);
-			this.file = File.createTempFile("unittest", ".shp"); //$NON-NLS-1$ //$NON-NLS-2$
-			this.writer = new GISShapeFileWriter(this.file, ShapeElementType.POLYGON, bounds.toRectangle2d());
+			file = File.createTempFile("unittest", ".shp"); //$NON-NLS-1$ //$NON-NLS-2$
+			writer = new GISShapeFileWriter(file, ShapeElementType.POLYGON, bounds.toRectangle2d());
 		}
 
 		@AfterEach
 		public void tearDown() throws Exception {
-			this.writer.close();
-			this.writer = null;
-			this.file.delete();
-			this.file = null;
+			writer.close();
+			writer = null;
+			file.delete();
+			file = null;
 		}
 
+		@DisplayName("getMapMetricProjection")
 		@Test
 		public void getMapMetricProjection() {
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, this.writer.getMapMetricProjection());
+			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, writer.getMapMetricProjection());
 		}
 
-		@Test
-		public void setMapMetricProjection() {
-			this.writer.setMapMetricProjection(MapMetricProjection.FRANCE_LAMBERT_93);
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_93, this.writer.getMapMetricProjection());
+		@DisplayName("setMapMetricProjection")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(MapMetricProjection.class)
+		public void setMapMetricProjection(MapMetricProjection projection) {
+			writer.setMapMetricProjection(projection);
+			assertEquals(projection, writer.getMapMetricProjection());
 		}
 
+		@DisplayName("getElementType")
 		@Test
 		public void getElementType() {
-			assertSame(ShapeElementType.POLYGON, this.writer.getElementType());
+			assertSame(ShapeElementType.POLYGON, writer.getElementType());
 		}
 
-		@Test
-		public void writeE() throws Exception {
-			MapPolygon poly = new MapPolygon();
-			for (int i = 0; i < ALL_XS[0].length; ++i) {
-				poly.addPoint(ALL_XS[0][i], ALL_YS[0][i]);
-			}
-			this.writer.write(poly);
-			this.writer.close();
-			
-			try (GISShapeFileReader reader = new GISShapeFileReader(this.file)) {
-				MapPolygon elt = (MapPolygon) reader.read();
-				int i = 0;
-				for (Point2d p : elt.points()) {
-					assertEpsilonEquals(ALL_XS[0][i], p.getX());
-					assertEpsilonEquals(ALL_YS[0][i], p.getY());
-					++i;
-				}
-			}
-		}
+		@DisplayName("write")
+		@Nested
+		public class WriteTest {
 
-		@Test
-		public void writeCollection() throws Exception {
-			List<MapPolygon> list = new ArrayList<>();
-			for (int j = 0; j < ALL_XS.length; ++j) {
+			@DisplayName("(MapElement)")
+			@Test
+			public void writeE() throws Exception {
 				MapPolygon poly = new MapPolygon();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					poly.addPoint(ALL_XS[j][i], ALL_YS[j][i]);
+				for (int i = 0; i < ALL_XS[0].length; ++i) {
+					poly.addPoint(ALL_XS[0][i], ALL_YS[0][i]);
 				}
-				list.add(poly);
-			}
-			this.writer.write(list);			
-			this.writer.close();
-			
-			try (GISShapeFileReader reader = new GISShapeFileReader(this.file)) {
-				for (int j = 0; j <ALL_XS.length; ++j) {
+				writer.write(poly);
+				writer.close();
+				
+				try (GISShapeFileReader reader = new GISShapeFileReader(file)) {
 					MapPolygon elt = (MapPolygon) reader.read();
 					int i = 0;
 					for (Point2d p : elt.points()) {
-						assertEpsilonEquals(ALL_XS[j][i], p.getX());
-						assertEpsilonEquals(ALL_YS[j][i], p.getY());
+						assertEpsilonEquals(ALL_XS[0][i], p.getX());
+						assertEpsilonEquals(ALL_YS[0][i], p.getY());
 						++i;
 					}
 				}
 			}
+	
+			@DisplayName("(Collection)")
+			@Test
+			public void writeCollection() throws Exception {
+				List<MapPolygon> list = new ArrayList<>();
+				for (int j = 0; j < ALL_XS.length; ++j) {
+					MapPolygon poly = new MapPolygon();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						poly.addPoint(ALL_XS[j][i], ALL_YS[j][i]);
+					}
+					list.add(poly);
+				}
+				writer.write(list);			
+				writer.close();
+				
+				try (GISShapeFileReader reader = new GISShapeFileReader(file)) {
+					for (int j = 0; j <ALL_XS.length; ++j) {
+						MapPolygon elt = (MapPolygon) reader.read();
+						int i = 0;
+						for (Point2d p : elt.points()) {
+							assertEpsilonEquals(ALL_XS[j][i], p.getX());
+							assertEpsilonEquals(ALL_YS[j][i], p.getY());
+							++i;
+						}
+					}
+				}
+			}
 		}
-
 	}
 
 	@Nested
@@ -204,97 +216,107 @@ public class GISShapeFileWriterTest {
 		@BeforeEach
 		public void setUp() throws Exception {
 			ESRIBounds bounds = new ESRIBounds(936456.7, 941093.9, 2300653.7, 2308847.4);
-			this.file = File.createTempFile("unittest", ".shp"); //$NON-NLS-1$ //$NON-NLS-2$
-			this.file2 = FileSystem.replaceExtension(this.file, ".dbf"); //$NON-NLS-1$
-			this.dbfWriter = new DBaseFileWriter(this.file2);
-			this.writer = new GISShapeFileWriter(this.file, ShapeElementType.POLYGON, bounds.toRectangle2d(),
-					this.dbfWriter);
+			file = File.createTempFile("unittest", ".shp"); //$NON-NLS-1$ //$NON-NLS-2$
+			file2 = FileSystem.replaceExtension(file, ".dbf"); //$NON-NLS-1$
+			dbfWriter = new DBaseFileWriter(file2);
+			writer = new GISShapeFileWriter(file, ShapeElementType.POLYGON, bounds.toRectangle2d(),
+					dbfWriter);
 		}
 
 		@AfterEach
 		public void tearDown() throws Exception {
-			this.writer.close();
-			this.writer = null;
-			this.dbfWriter.close();
-			this.dbfWriter = null;
-			this.file.delete();
-			this.file = null;
-			this.file2.delete();
-			this.file2 = null;
+			writer.close();
+			writer = null;
+			dbfWriter.close();
+			dbfWriter = null;
+			file.delete();
+			file = null;
+			file2.delete();
+			file2 = null;
 		}
 
+		@DisplayName("getMapMetricProjection")
 		@Test
 		public void getMapMetricProjection() {
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, this.writer.getMapMetricProjection());
+			assertEquals(MapMetricProjection.FRANCE_LAMBERT_2_EXTENDED, writer.getMapMetricProjection());
 		}
 
-		@Test
-		public void setMapMetricProjection() {
-			this.writer.setMapMetricProjection(MapMetricProjection.FRANCE_LAMBERT_93);
-			assertEquals(MapMetricProjection.FRANCE_LAMBERT_93, this.writer.getMapMetricProjection());
+		@DisplayName("setMapMetricProjection")
+		@ParameterizedTest(name = "{index} => {0}")
+		@EnumSource(MapMetricProjection.class)
+		public void setMapMetricProjection(MapMetricProjection projection) {
+			writer.setMapMetricProjection(projection);
+			assertEquals(projection, writer.getMapMetricProjection());
 		}
 
+		@DisplayName("getElementType")
 		@Test
 		public void getElementType() {
-			assertSame(ShapeElementType.POLYGON, this.writer.getElementType());
+			assertSame(ShapeElementType.POLYGON, writer.getElementType());
 		}
 
-		@Test
-		public void writeE() throws Exception {
-			MapPolygon poly = new MapPolygon();
-			for (int i = 0; i < ALL_XS[0].length; ++i) {
-				poly.addPoint(ALL_XS[0][i], ALL_YS[0][i]);
-			}
-			poly.setAttribute("myattr", "myvalue"); //$NON-NLS-1$ //$NON-NLS-2$
-			this.writer.write(poly);
-			this.writer.close();
-			this.dbfWriter.close();
-			
-			try (DBaseFileReader dbfReader = new DBaseFileReader(this.file2)) {
-				try (GISShapeFileReader reader = new GISShapeFileReader(this.file, dbfReader)) {
-					MapPolygon elt = (MapPolygon) reader.read();
-					int i = 0;
-					for (Point2d p : elt.points()) {
-						assertEpsilonEquals(ALL_XS[0][i], p.getX());
-						assertEpsilonEquals(ALL_YS[0][i], p.getY());
-						++i;
-					}
-					assertEquals("myvalue", elt.getAttribute("myattr", (String) null)); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-			}
-		}
+		@DisplayName("write")
+		@Nested
+		public class WriteTest {
 
-		@Test
-		public void writeCollection() throws Exception {
-			List<MapPolygon> list = new ArrayList<>();
-			for (int j = 0; j < ALL_XS.length; ++j) {
+			@DisplayName("(MapElement)")
+			@Test
+			public void writeE() throws Exception {
 				MapPolygon poly = new MapPolygon();
-				for (int i = 0; i < ALL_XS[j].length; ++i) {
-					poly.addPoint(ALL_XS[j][i], ALL_YS[j][i]);
+				for (int i = 0; i < ALL_XS[0].length; ++i) {
+					poly.addPoint(ALL_XS[0][i], ALL_YS[0][i]);
 				}
 				poly.setAttribute("myattr", "myvalue"); //$NON-NLS-1$ //$NON-NLS-2$
-				list.add(poly);
-			}
-			this.writer.write(list);			
-			this.writer.close();
-			this.dbfWriter.close();
-			
-			try (DBaseFileReader dbfReader = new DBaseFileReader(this.file2)) {
-				try (GISShapeFileReader reader = new GISShapeFileReader(this.file, dbfReader)) {
-					for (int j = 0; j <ALL_XS.length; ++j) {
+				writer.write(poly);
+				writer.close();
+				dbfWriter.close();
+				
+				try (DBaseFileReader dbfReader = new DBaseFileReader(file2)) {
+					try (GISShapeFileReader reader = new GISShapeFileReader(file, dbfReader)) {
 						MapPolygon elt = (MapPolygon) reader.read();
 						int i = 0;
 						for (Point2d p : elt.points()) {
-							assertEpsilonEquals(ALL_XS[j][i], p.getX());
-							assertEpsilonEquals(ALL_YS[j][i], p.getY());
+							assertEpsilonEquals(ALL_XS[0][i], p.getX());
+							assertEpsilonEquals(ALL_YS[0][i], p.getY());
 							++i;
 						}
 						assertEquals("myvalue", elt.getAttribute("myattr", (String) null)); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
+	
+			@DisplayName("(Collection)")
+			@Test
+			public void writeCollection() throws Exception {
+				List<MapPolygon> list = new ArrayList<>();
+				for (int j = 0; j < ALL_XS.length; ++j) {
+					MapPolygon poly = new MapPolygon();
+					for (int i = 0; i < ALL_XS[j].length; ++i) {
+						poly.addPoint(ALL_XS[j][i], ALL_YS[j][i]);
+					}
+					poly.setAttribute("myattr", "myvalue"); //$NON-NLS-1$ //$NON-NLS-2$
+					list.add(poly);
+				}
+				writer.write(list);			
+				writer.close();
+				dbfWriter.close();
+				
+				try (DBaseFileReader dbfReader = new DBaseFileReader(file2)) {
+					try (GISShapeFileReader reader = new GISShapeFileReader(file, dbfReader)) {
+						for (int j = 0; j <ALL_XS.length; ++j) {
+							MapPolygon elt = (MapPolygon) reader.read();
+							int i = 0;
+							for (Point2d p : elt.points()) {
+								assertEpsilonEquals(ALL_XS[j][i], p.getX());
+								assertEpsilonEquals(ALL_YS[j][i], p.getY());
+								++i;
+							}
+							assertEquals("myvalue", elt.getAttribute("myattr", (String) null)); //$NON-NLS-1$ //$NON-NLS-2$
+						}
+					}
+				}
+			}
 		}
-
 	}
 
 }

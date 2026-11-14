@@ -168,7 +168,7 @@ public class MapElementGroup {
 		this.elements.add(element);
 	}
 
-	/** Replies the bounds of the group.
+	/** Replies the bounds of the group. If the group is empty the provided bounds are set to {@link Double#NaN}.
 	 *
 	 * @return the bounds of the group.
 	 */
